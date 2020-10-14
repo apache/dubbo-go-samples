@@ -1,0 +1,10 @@
+language: golang
+
+sudo: required
+go:
+  - 1.13
+env:
+  - GO111MODULE=on
+import:
+  - golang/helloworld/dubbo/.travis.yml
+#  - golang/direct/dubbo/.travis.yml

@@ -1,0 +1,20 @@
+stages:
+  - Test direct
+jobs:
+  include:
+    - stage: Test direct
+      go: 1.13
+      script:
+        - echo "Test direct ..."
+        - docker run -d --network host zookeeper
+        - echo "zookeeper listen in [:]2181"
+        - PROJECT_HOME=$(pwd)
+        - cd ${PROJECT_HOME}/golang/direct/dubbo/go-server/
+        - assembly/linux/dev.sh
+        - cd target/*/*/
+        - nohup bin/load.sh start > a.out&
+        - cd ${PROJECT_HOME}/golang/direct/dubbo/go-client/
+        - assembly/linux/dev.sh
+        - cd target/*/*/
+        - ls -la bin/
+        - bin/load.sh start
