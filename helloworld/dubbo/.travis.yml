@@ -1,0 +1,24 @@
+stages:
+  - Test hello world
+jobs:
+  include:
+    - stage: Test hello world
+      name: "prepare env"
+      script:
+        - PROJECT_HOME=$(pwd)
+        - docker run -d --network host zookeeper
+        - echo "zookeeper listen in [:]2181"
+        - cd ${PROJECT_HOME}/golang/helloworld/dubbo/go-server/
+#        - rm -rf assembly
+#        - wget "https://github.com/dubbogo/resources/raw/master/tools/integration/testing/go-server/assembly.tar"
+#        - tar -xvf assembly.tar
+        - assembly/linux/dev.sh
+        - cd target/*/*/
+        - nohup bin/load.sh start > a.out&
+        - cd ${PROJECT_HOME}/golang/helloworld/dubbo/go-client/
+#        - rm -rf assembly
+#        - wget "https://github.com/dubbogo/resources/raw/master/tools/integration/testing/go-client/assembly.tar"
+#        - tar -xvf assembly.tar
+        - assembly/linux/dev.sh
+        - cd target/*/*/
+        - bin/load.sh start
