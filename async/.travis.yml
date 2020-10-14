@@ -4,7 +4,7 @@ jobs:
   include:
     - stage: Test async
       script:
-        - PROJECT_HOME=$(pwd)/golang
+        - PROJECT_HOME=$(pwd)
         - CASE_HOME=/direct/dubbo
         - GO_SERVER=/go-server
         - GO_CLIENT=/go-client
