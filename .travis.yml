@@ -8,3 +8,4 @@ env:
 import:
   - helloworld/dubbo/.travis.yml
   - direct/dubbo/.travis.yml
+  - async/.travis.yml
