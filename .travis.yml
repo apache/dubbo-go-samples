@@ -6,5 +6,5 @@ go:
 env:
   - GO111MODULE=on
 import:
-  - golang/helloworld/dubbo/.travis.yml
-#  - golang/direct/dubbo/.travis.yml
+  - helloworld/dubbo/.travis.yml
+  - golang/direct/dubbo/.travis.yml
