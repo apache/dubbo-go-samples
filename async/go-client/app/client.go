@@ -62,10 +62,12 @@ func main() {
 	user := &User{}
 	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 	if err != nil {
-		panic(err)
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
 	}
 	gxlog.CInfo("response result: %v\n", user)
-	initSignal()
+	//initSignal()
 }
 
 func initSignal() {

@@ -59,6 +59,7 @@ func main() {
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
+		return
 	}
 	gxlog.CInfo("response result: %v\n", user)
 }
