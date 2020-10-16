@@ -8,11 +8,11 @@ require (
 	github.com/emicklei/go-restful/v3 v3.0.0
 	github.com/golang/protobuf v1.4.0
 	github.com/opentracing/opentracing-go v1.1.0
-	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
-	github.com/openzipkin/zipkin-go v0.2.2
+	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5 // indirect
+	github.com/openzipkin/zipkin-go v0.2.2 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.1.0
-	github.com/uber/jaeger-client-go v2.22.1+incompatible
+	github.com/uber/jaeger-client-go v2.22.1+incompatible // indirect
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	google.golang.org/grpc v1.26.0
 )
