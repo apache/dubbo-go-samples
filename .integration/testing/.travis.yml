@@ -5,7 +5,7 @@ jobs:
     - stage: Test %DIR%
       script:
         - PROJECT_HOME=$(pwd)
-        - CASE_HOME=%DIR%
+        - CASE_HOME=/%DIR%
         - GO_SERVER=/go-server
         - GO_CLIENT=/go-client
         - docker run -d --network host zookeeper

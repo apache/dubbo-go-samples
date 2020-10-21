@@ -5,7 +5,7 @@ jobs:
     - stage: Test metric/dubbo
       script:
         - PROJECT_HOME=$(pwd)
-        - CASE_HOME=metric/dubbo
+        - CASE_HOME=/metric/dubbo
         - GO_SERVER=/go-server
         - GO_CLIENT=/go-client
         - docker run -d --network host zookeeper
