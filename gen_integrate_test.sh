@@ -33,4 +33,7 @@ sed "s/%DIR%/$targetDir/g" .integration/testing/.travis.yml > $dir/.travis.yml
 echo "Copy integration_testing.sh.... "
 cp .integration/testing/integration_testing.sh $dir/go-client/
 cp .integration/testing/integration_testing.sh $dir/go-server/
+
+echo "Modify .travis.yml.... "
+echo "  - $dir/.travis.yml" >> .travis.yml
 echo "Auto test case for $dir finished!"
