@@ -14,16 +14,18 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-allSamples=`find .|grep /assembly/linux/dev.sh | awk '{gsub("/assembly/linux/dev.sh","");print}'`
-currentFolder=`pwd`
+#!/bin/bash
 
-for singleSample in $allSamples
-do
+set -e
+set -x
 
-cd $singleSample
-
-sh ./assembly/linux/dev.sh
-
-cd $currentFolder
-
-done
+rm -rf assembly
+cp -r $1/.integration/testing/$2/assembly .
+assembly/linux/dev.sh
+cd target/*/*/
+# is async
+if [[ $3 ]]; then
+	nohup bin/load.sh start > a.out&
+else
+	bin/load.sh start
+fi
