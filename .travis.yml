@@ -9,3 +9,4 @@ import:
   - helloworld/dubbo/.travis.yml
   - direct/dubbo/.travis.yml
   - async/.travis.yml
+  - metric/dubbo/.travis.yml
