@@ -14,16 +14,26 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-allSamples=`find .|grep /assembly/linux/dev.sh | awk '{gsub("/assembly/linux/dev.sh","");print}'`
-currentFolder=`pwd`
+read -p "Enter integrate testing dir ( Like: direct/dubbo ) : " dir
+echo "Generating auto test case for $dir "
+if [ ! -d "$dir/go-client" ]; then
+  mkdir "$dir/go-client"
+  echo "Create $dir/go-client success. "
+fi
 
-for singleSample in $allSamples
-do
+if [ ! -d "$dir/go-server" ]; then
+  mkdir "$dir/go-server"
+  echo "Create $dir/go-server success. "
+fi
 
-cd $singleSample
+echo "Copy travis.yml.... "
+targetDir=${dir//\//\\\/}
+sed "s/%DIR%/$targetDir/g" .integration/testing/.travis.yml > $dir/.travis.yml
 
-sh ./assembly/linux/dev.sh
+echo "Copy integration_testing.sh.... "
+cp .integration/testing/integration_testing.sh $dir/go-client/
+cp .integration/testing/integration_testing.sh $dir/go-server/
 
-cd $currentFolder
-
-done
+echo "Modify .travis.yml.... "
+echo "  - $dir/.travis.yml" >> .travis.yml
+echo "Auto test case for $dir finished!"
