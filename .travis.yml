@@ -10,3 +10,4 @@ import:
   - direct/dubbo/.travis.yml
   - async/.travis.yml
   - metric/dubbo/.travis.yml
+  - filter/custom_filter/dubbo/.travis.yml
