@@ -11,3 +11,6 @@ import:
   - async/.travis.yml
   - metric/dubbo/.travis.yml
   - filter/custom_filter/dubbo/.travis.yml
+  - configcenter/apollo/dubbo/.travis.yml
+  - configcenter/zookeeper/dubbo/.travis.yml
+  - configcenter/nacos/dubbo/.travis.yml
