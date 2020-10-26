@@ -1,3 +1,9 @@
+github:
+    features:
+        wiki: true
+        issues: true
+        merge: true
+        projects: true
 notifications:
     commits:      commits@dubbo.apache.org
     issues:       notifications@dubbo.apache.org
