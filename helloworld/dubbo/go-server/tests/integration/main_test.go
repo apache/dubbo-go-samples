@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,8 +17,46 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
-var (
-	Version = "2.7.5"
+import (
+	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/apache/dubbo-go/config"
 )
+
+import (
+	"context"
+	"os"
+	"testing"
+	"time"
+)
+
+var userProvider = new(UserProvider)
+
+func TestMain(m *testing.M) {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&User{})
+	config.Load()
+	time.Sleep(3 * time.Second)
+
+	os.Exit(m.Run())
+}
+
+type User struct {
+	Id   string
+	Name string
+	Age  int32
+	Time time.Time
+}
+
+type UserProvider struct {
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
+}
+
+func (User) JavaClassName() string {
+	return "com.ikurento.user.User"
+}
