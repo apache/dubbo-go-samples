@@ -24,37 +24,37 @@ import (
 )
 
 import (
+	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/apache/dubbo-samples/golang/helloworld/dubbo/go-client/pkg"
 	"github.com/dubbogo/gost/log"
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/protocol"
-
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
+	"github.com/apache/dubbo-go/config"
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-var (
-	survivalTimeout int = 10e9
-)
+var userProvider = new(pkg.UserProvider)
 
-// they are necessary:
-// 		export CONF_CONSUMER_FILE_PATH="xxx"
-// 		export APP_LOG_CONF_FILE="xxx"
+func init() {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&pkg.User{})
+}
+
+// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
-	time.Sleep(3e9)
+	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &User{}
+	user := &pkg.User{}
 	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 	if err != nil {
 		gxlog.CError("error: %v\n", err)

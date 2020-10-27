@@ -56,6 +56,15 @@ endif
 OUT_DIR := $(BASE_DIR)/$(GOOS)_$(GOARCH)/$(BUILD_TYPE)
 LOG_FILE := $(OUT_DIR)/$(PROJECT_NAME).log
 
+.PHONY: all
+all: help
+help: $(realpath $(firstword $(MAKEFILE_LIST)))
+	@echo
+	@echo " Choose a command run in "$(PROJECT_NAME)":"
+	@echo
+	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
+	@echo
+
 ## build: Build application's binaries
 .PHONY: build
 build: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
@@ -83,14 +92,20 @@ clean: stop
 	$(info   >  Cleanning up binaries and logs)
 	@rm -rf $(OUT_DIR)
 
-## start: Start to run the application
+## start: Start the application (for server)
 .PHONY: start
 start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
 
-## stop: Stop running the application
+## run: Run the application (for client)
+.PHONY: run
+run: build
+	$(info   >  Running application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
+	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) 2>&1 | tee $(LOG_FILE)
+
+## stop: Stop running the application (for server)
 .PHONY: stop
 stop:
 	$(info   >  Stopping the application $(PROJECT_NAME))
@@ -102,17 +117,3 @@ integration:
 	$(info   >  Running integration test for application $(PROJECT_NAME))
 	@go clean -testcache
 	@go test -tags integration -v ./tests/...
-
-.PHONY: help
-all: help
-help: Makefile
-	@echo
-	@echo " Choose a command run in "$(PROJECT_NAME)":"
-	@echo
-	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
-	@echo
-
-
-
-
-
