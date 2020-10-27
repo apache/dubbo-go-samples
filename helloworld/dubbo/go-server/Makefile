@@ -13,9 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SOURCES = cmd/server.go
-BINARY = user_info_server
-PORT = 20000
+SOURCES = $(wildcard cmd/*.go)
+
+BASE_DIR := dist
+PROJECT_NAME = $(shell basename "$(PWD)")
+PID=/tmp/.$(PROJECTNAME).pid
+
 export APP_LOG_CONF_FILE = $(shell pwd)/conf/log.yml
 export CONF_PROVIDER_FILE_PATH = $(shell pwd)/conf/server.yml
 export CONF_CONSUMER_FILE_PATH = $(shell pwd)/conf/client.yml
@@ -34,19 +37,13 @@ else
 	export GOOS ?= windows
 endif
 
-ifeq ($(GOOS),windows)
-	GOLANGCI_LINT := golangci-lint.exe
-	export BINARY_EXT ?= .exe
+ifeq ($(GOOS), windows)
+	export EXT_NAME ?= .exe
 else
-	GOLANGCI_LINT := golangci-lint
-	export BINARY_EXT ?=
+	export EXT_NAME ?=
 endif
 
-LOG := $(BINARY).log
-
 CGO ?= 0
-
-BASE_DIR := ./dist
 ifeq ($(DEBUG), true)
 	BUILD_TYPE := debug
 	GCFLAGS := -gcflags="all=-N -l"
@@ -55,44 +52,65 @@ else
 	BUILD_TYPE := release
 	LDFLAGS := "-s -w"
 endif
+
 OUT_DIR := $(BASE_DIR)/$(GOOS)_$(GOARCH)/$(BUILD_TYPE)
+LOG_FILE := $(OUT_DIR)/$(PROJECT_NAME).log
 
+## build: Build application's binaries
 .PHONY: build
-build: $(OUT_DIR)/$(BINARY)$(BINARY_EXT)
+build: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 
-.PHONY: $(OUT_DIR)/$(BINARY)$(BINARY_EXT)
-$(OUT_DIR)/$(BINARY)$(BINARY_EXT):
-	$(info build $(OUT_DIR)/$(BINARY)$(BINARY_EXT))
-	CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(GCFLAGS) -ldflags=$(LDFLAGS) -i -o $(OUT_DIR)/$(BINARY)$(BINARY_EXT) $(SOURCES)
+.PHONY: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
+$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME):
+	$(info   >  Buiding application binary: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME))
+	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(GCFLAGS) -ldflags=$(LDFLAGS) -i -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
 
-.PHONY: zookeeper-up
-zookeeper-up:
-	docker-compose -f docker/docker-compose.yml up -d
+## docker-up: Shutdown dependency services on docker
+.PHONY: docker-up
+docker-up:
+	$(info   >  Starting dependency services with docker/docker-compose.yml)
+	@docker-compose -f docker/docker-compose.yml up -d
 
-.PHONY: zookeeper-down
-zookeeper-down:
-	docker-compose -f docker/docker-compose.yml down
+## docker-down: Shutdown dependency services on docker
+.PHONY: docker-down
+docker-down:
+	$(info   >  Stopping dependency services with docker/docker-compose.yml)
+	@docker-compose -f docker/docker-compose.yml down
 
+## clean: Clean up the output and the binary of the application
 .PHONY: clean
-clean:
-	$(info about to clean up $(OUT_DIR))
+clean: stop
+	$(info   >  Cleanning up binaries and logs)
 	@rm -rf $(OUT_DIR)
-	@-rm $(LOG)
 
+## start: Start to run the application
 .PHONY: start
 start: build
-	$(info start $(BINARY), output is redirected to $(LOG))
-	@-$(OUT_DIR)/$(BINARY)$(BINARY_EXT) > $(LOG) 2>&1 &
+	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
+	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
+	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
 
+## stop: Stop running the application
 .PHONY: stop
 stop:
-	$(eval PID := $(shell lsof -Pi :$(PORT) -sTCP:LISTEN -t))
-	$(info stop $(BINARY) with PID $(PID))
-	@-kill $(PID) 2>/dev/null || true
+	$(info   >  Stopping the application $(PROJECT_NAME))
+	@-kill `cat $(PID)` 2>/dev/null || true
 
+## integration: Run integration test for this application
 .PHONY: integration
 integration:
-	go clean -testcache && go test -tags integration -v ./tests/...
+	$(info   >  Running integration test for application $(PROJECT_NAME))
+	@go clean -testcache
+	@go test -tags integration -v ./tests/...
+
+.PHONY: help
+all: help
+help: Makefile
+	@echo
+	@echo " Choose a command run in "$(PROJECT_NAME)":"
+	@echo
+	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
+	@echo
 
 
 
