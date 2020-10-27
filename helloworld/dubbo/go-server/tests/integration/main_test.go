@@ -58,5 +58,5 @@ func (u *UserProvider) Reference() string {
 }
 
 func (User) JavaClassName() string {
-	return "com.ikurento.user.User"
+	return "org.apache.dubbo.User"
 }

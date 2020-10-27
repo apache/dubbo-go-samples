@@ -45,11 +45,7 @@ var (
 	survivalTimeout = int(3e9)
 )
 
-// The following environment variables are required:
-// 		export CONF_PROVIDER_FILE_PATH="xxx"
-// 		export APP_LOG_CONF_FILE="xxx"
 func main() {
-
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 
