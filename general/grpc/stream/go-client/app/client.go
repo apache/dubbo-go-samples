@@ -27,7 +27,7 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
@@ -54,16 +54,68 @@ func main() {
 	config.Load()
 	time.Sleep(time.Second)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
+	gxlog.CInfo("\n\n\n===== start to test SayHelloTwoSidesStream ======")
 	reply := &HelloReply{}
-	req := &HelloRequest{
-		Name: "xujianhai",
+	stream, err := grpcGreeterImpl.SayHelloTwoSidesStream(context.TODO())
+	if err != nil {
+		logger.Errorf("stream get err = %s", err.Error())
+		return
 	}
-	err := grpcGreeterImpl.SayHello(context.TODO(), req, reply)
+
+	if err := stream.Send(&HelloRequest{Name: "request 1"}); err != nil {
+		logger.Errorf("send stream req err = %s", err.Error())
+	}
+	if err := stream.Send(&HelloRequest{Name: "request 2"}); err != nil {
+		logger.Errorf("send stream req err = %s", err.Error())
+	}
+	reply, err = stream.Recv()
 	if err != nil {
 		panic(err)
 	}
 	gxlog.CInfo("client response result: %v\n", reply)
+	reply, err = stream.Recv()
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("client response result: %v\n", reply)
+
+	gxlog.CInfo("\n\n\n===== start to test SayHelloClientStream =====")
+	clientStream, err := grpcGreeterImpl.SayHelloClientStream(context.TODO())
+	if err != nil {
+		logger.Errorf("stream get err = %s", err.Error())
+		return
+	}
+
+	if err := clientStream.Send(&HelloRequest{Name: "request 1"}); err != nil {
+		logger.Errorf("send stream req err = %s", err.Error())
+	}
+	if err := clientStream.Send(&HelloRequest{Name: "request 2"}); err != nil {
+		logger.Errorf("send stream req err = %s", err.Error())
+	}
+	err = clientStream.RecvMsg(reply)
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("client response result: %v\n", reply)
+
+	gxlog.CInfo("\n\n\n===== start to test SayHelloServerStream =====")
+	req := &HelloRequest{}
+	serverStream, err := grpcGreeterImpl.SayHelloServerStream(context.TODO(), req)
+	if err != nil {
+		logger.Errorf("stream get err = %s", err.Error())
+		return
+	}
+	reply, err = serverStream.Recv()
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("client response result: %v\n", reply)
+	reply, err = serverStream.Recv()
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("client response result: %v\n", reply)
+
 	initSignal()
 }
 
