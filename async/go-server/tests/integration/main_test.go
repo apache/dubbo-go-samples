@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,16 +17,36 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
-	"context"
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go/common"
+	"github.com/apache/dubbo-go/config"
 	"github.com/apache/dubbo-go/protocol"
 	"github.com/apache/dubbo-go/remoting"
 	gxlog "github.com/dubbogo/gost/log"
+)
+
+import (
+	"context"
+	"os"
+	"testing"
 	"time"
 )
+
+var userProvider = &UserProvider{
+	ch: make(chan *User),
+}
+
+func TestMain(m *testing.M) {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&User{})
+	config.Load()
+	time.Sleep(3 * time.Second)
+
+	os.Exit(m.Run())
+}
 
 type User struct {
 	Id   string
@@ -35,7 +57,7 @@ type User struct {
 
 type UserProvider struct {
 	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-	Ch      chan *User
+	ch      chan *User
 }
 
 func (u *UserProvider) Reference() string {
@@ -51,12 +73,12 @@ func (u *UserProvider) CallBack(res common.CallbackResponse) {
 		if reply, ok := r.Reply.(*remoting.Response); ok {
 			if result, ok := reply.Result.(*protocol.RPCResult); ok {
 				if user, ok := result.Rest.(*User); ok {
-					u.Ch <- user
+					u.ch <- user
 				}
 			}
 		}
 	}
-	u.Ch <- nil
+	u.ch <- nil
 }
 
 func (User) JavaClassName() string {
