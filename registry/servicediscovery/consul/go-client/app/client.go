@@ -27,8 +27,6 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-
 	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
@@ -45,6 +43,11 @@ import (
 	_ "github.com/apache/dubbo-go/metadata/service/remote"
 	_ "github.com/apache/dubbo-go/registry/consul"
 	_ "github.com/apache/dubbo-go/registry/servicediscovery"
+	gxlog "github.com/dubbogo/gost/log"
+)
+
+import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 var (
@@ -59,14 +62,14 @@ func main() {
 	config.Load()
 	time.Sleep(3e9)
 
-	fmt.Printf("\033[32;40m" + "\n\n\nstart to test dubbo" + "\033[0m\n")
+	gxlog.CInfo("\n\n\nstart to test dubbo\n")
 	user := &User{}
 	for i := 0; i < 5; i++ {
 		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("\033[32;40m"+"response result: %v\n"+"\033[0m\n", user)
+		gxlog.CInfo("response result: %v\n", user)
 	}
 	initSignal()
 }
