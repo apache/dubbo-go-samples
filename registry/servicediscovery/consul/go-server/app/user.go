@@ -19,13 +19,16 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go/config"
+)
+
+import (
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 func init() {
@@ -45,9 +48,9 @@ type UserProvider struct {
 }
 
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	fmt.Printf("\033[32;40m"+"req:%#v"+"\033[0m\n", req)
+	gxlog.CInfo("req: %v\n", req)
 	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
-	fmt.Printf("\033[32;40m"+"rsp:%#v"+"\033[0m\n", rsp)
+	gxlog.CInfo("rsp: %v\n", rsp)
 	return &rsp, nil
 }
 
