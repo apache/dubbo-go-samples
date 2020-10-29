@@ -19,7 +19,9 @@ package main
 
 import (
 	"fmt"
+)
 
+import (
 	"github.com/apache/dubbo-go/common/logger"
 	"github.com/apache/dubbo-go/config"
 )
