@@ -19,10 +19,6 @@ package pkg
 
 import (
 	"context"
-	"github.com/apache/dubbo-go/common"
-	"github.com/apache/dubbo-go/protocol"
-	"github.com/apache/dubbo-go/remoting"
-	gxlog "github.com/dubbogo/gost/log"
 	"time"
 )
 
@@ -35,28 +31,10 @@ type User struct {
 
 type UserProvider struct {
 	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-	Ch      chan *User
 }
 
 func (u *UserProvider) Reference() string {
 	return "UserProvider"
-}
-
-// to enable async call:
-// 1. need to implement AsyncCallbackService
-// 2. need to specify references -> UserProvider -> async in conf/client.yml
-func (u *UserProvider) CallBack(res common.CallbackResponse) {
-	gxlog.CInfo("CallBack res: %v", res)
-	if r, ok := res.(remoting.AsyncCallbackResponse); ok {
-		if reply, ok := r.Reply.(*remoting.Response); ok {
-			if result, ok := reply.Result.(*protocol.RPCResult); ok {
-				if user, ok := result.Rest.(*User); ok {
-					u.Ch <- user
-				}
-			}
-		}
-	}
-	u.Ch <- nil
 }
 
 func (User) JavaClassName() string {
