@@ -20,8 +20,15 @@
 package integration
 
 import (
+	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	"github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/registry/protocol"
+	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
 import (
