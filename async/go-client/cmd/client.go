@@ -41,7 +41,7 @@ import (
 )
 
 var userProvider = &pkg.UserProvider{
-	Ch: make(chan *pkg.User),
+	//Ch: make(chan *pkg.User),
 }
 
 func init() {
@@ -64,6 +64,6 @@ func main() {
 		return
 	}
 
-	user = <-userProvider.Ch
+	//user = <-userProvider.Ch
 	gxlog.CInfo("response result: %v\n", user)
 }
