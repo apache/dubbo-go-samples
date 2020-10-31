@@ -14,4 +14,4 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-helloworld/dubbo/integrate_test.sh
+#helloworld/dubbo/integrate_test.sh
