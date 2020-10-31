@@ -16,6 +16,9 @@
 
 docker run --name zookeeper -p2181:2181 -d zookeeper
 cd helloworld/go-server
+# start server
+make -f ../../build/Makefile start
+# start integration
 make -f ../../build/Makefile integration
-make -f ../../build/Makefile clean
-make -f ../../build/Makefile docker-down
+# stop server
+make -f ../../build/Makefile stop
