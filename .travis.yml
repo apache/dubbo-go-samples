@@ -5,8 +5,9 @@ go:
   - 1.13
 env:
   - GO111MODULE=on
-import:
-  - helloworld/dubbo/.travis.yml
-  - direct/dubbo/.travis.yml
-  - async/.travis.yml
-  - metric/dubbo/.travis.yml
+script:
+  - ./start_integrate_test.sh
+#  - helloworld/dubbo/.travis.yml
+#  - direct/dubbo/.travis.yml
+#  - async/.travis.yml
+#  - metric/dubbo/.travis.yml
