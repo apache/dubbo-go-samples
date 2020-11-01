@@ -6,8 +6,8 @@ import (
 )
 
 import (
-	perrors "github.com/pkg/errors"
 	"github.com/dubbogo/gost/log"
+	perrors "github.com/pkg/errors"
 )
 
 import (
