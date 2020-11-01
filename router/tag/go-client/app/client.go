@@ -64,7 +64,7 @@ func main() {
 	user := &User{}
 	ctx := context.Background()
 	atm := map[string]string{
-		"dubbo.tag":       "fuck",
+		"dubbo.tag":       "beijing",
 		"dubbo.force.tag": "true",
 	}
 	ctx = context.WithValue(ctx, constant.AttachmentKey, atm)
