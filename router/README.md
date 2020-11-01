@@ -1,16 +1,19 @@
 ## 1.Run java server & java client following 
 
 [README](https://github.com/dubbogo/dubbogo-samples/blob/master/README.md)（You must run java program to initialize configuration in zookeeper）
- 
-## 2.Use condition router feature 
 
-### 2.1.with config file 
- 
+## 2.Use router feature 
+
+### 2.1 use condition router with config file 
+
 Modify [router_config.yml](go-client/profiles/dev/router_config.yml) what you want to config
- 
+
 [How to write router_config.yml](http://dubbo.apache.org/en-us/docs/user/demos/routing-rule.html)
 
-### 2.2.with config center
+### 2.2 use tag router
+[How to use tag router](http://dubbo.apache.org/en-us/docs/user/demos/routing-rule.html)
+
+### 2.3 with config center
 
 #### zookeeper
 
@@ -24,10 +27,9 @@ config_center:
 ```
 
 Make sure dubbo-admin, dubbo-server and dubbo-client use the same zookeeper.
- 
+
 ## 3.go client 
 
 Then start dubbo-go client following [README](https://github.com/dubbogo/dubbogo-samples/blob/master/README.md).
 
 to check your router, enjoy it.
-
