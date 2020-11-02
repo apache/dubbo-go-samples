@@ -90,8 +90,8 @@ docker-down:
 .PHONY: clean
 clean: stop
 	$(info   >  Cleanning up binaries and logs)
-	@rm -rf $(OUT_DIR)
-	@rm $(PID)
+	@-rm -rf $(OUT_DIR)
+	@-rm $(PID)
 
 ## start: Start the application (for server)
 .PHONY: start
