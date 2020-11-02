@@ -43,12 +43,12 @@
         </dependencies>
     </dependencyManagement>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.25</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -118,29 +118,29 @@
     </dependencies>
 
     <repositories>
-		<repository>
+        <repository>
             <id>nexus-aliyu</id>
             <url>https://maven.aliyun.com/nexus/content/groups/public</url>
-		<releases>
-			<enabled>true</enabled>
-		</releases>
-		<snapshots>
-			<enabled>false</enabled>
-		</snapshots>
-		</repository>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     <pluginRepositories>
-		  <pluginRepository>
-              <id>nexus-aliyu</id>
-              <url>https://maven.aliyun.com/nexus/content/groups/public</url>
-			<releases>
-			<enabled>true</enabled>
-			</releases>
-			<snapshots>
-			<enabled>false</enabled>
-			</snapshots>
-		  </pluginRepository>
-		</pluginRepositories>
+        <pluginRepository>
+            <id>nexus-aliyu</id>
+            <url>https://maven.aliyun.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 
     <build>
