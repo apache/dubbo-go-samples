@@ -13,25 +13,26 @@
   limitations under the License.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 
-	<!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
-	<dubbo:application name="user-info-client" />
-	<!-- 连接到哪个本地注册中心 -->
-	<dubbo:registry id="ikurento"  address="zookeeper://127.0.0.1:2181" />
-	<!-- dubbo.registry.address from dubbo.properties -->
-	<!-- dubbo:registry address="${dubbo.registry.address}" / -->
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="user-info-client"/>
+    <!-- 连接到哪个本地注册中心 -->
+    <dubbo:registry id="ikurento" address="zookeeper://127.0.0.1:2181"/>
+    <!-- dubbo.registry.address from dubbo.properties -->
+    <!-- dubbo:registry address="${dubbo.registry.address}" / -->
 
-	<!-- 用dubbo协议在20880端口暴露服务 -->
-	<dubbo:protocol id="dubbo" name="dubbo" />
-	<dubbo:protocol id="jsonrpc" name="jsonrpc" />
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol id="dubbo" name="dubbo"/>
+    <dubbo:protocol id="jsonrpc" name="jsonrpc"/>
 
-	<!-- 声明需要使用的服务接口 -->
-	<dubbo:reference registry="ikurento" check="false" id="userProvider" protocol="dubbo" interface="com.ikurento.user.UserProvider">
-		<!--<dubbo:parameter key="heartbeat" value="10000"/ -->
+    <!-- 声明需要使用的服务接口 -->
+    <dubbo:reference registry="ikurento" check="false" id="userProvider" protocol="dubbo"
+                     interface="com.ikurento.user.UserProvider">
+        <!--<dubbo:parameter key="heartbeat" value="10000"/ -->
     </dubbo:reference>
 </beans>
