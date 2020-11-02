@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,50 +17,37 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
-	"time"
+	"github.com/apache/dubbo-go/common/constant"
+	"github.com/apache/dubbo-samples/golang/zone/go-client/pkg"
+	"testing"
 )
-
 import (
-	"github.com/dubbogo/gost/log"
+	"github.com/stretchr/testify/assert"
 )
 
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go/config"
-)
+func TestGetUser(t *testing.T) {
+	ctx := context.WithValue(context.Background(), constant.REGISTRY_KEY+"."+constant.ZONE_FORCE_KEY, true)
 
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
+	var hz, sh int
+	user := &pkg.User{}
+	for i := 0; i < 50; i++ {
+		err := userProvider.GetUser(ctx, []interface{}{i}, user)
+		if err != nil {
+			panic(err)
+		}
+		if "dev-hz" == user.Id {
+			hz++
+		}
+		if "dev-sh" == user.Id {
+			sh++
+		}
+	}
 
-type User struct {
-	Id   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-type UserProvider struct {
-}
-
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	env := config.GetProviderConfig().ApplicationConfig.Environment
-	rsp := User{env, "Alex Stocks", 18, time.Now()}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "com.ikurento.user.User"
+	assert.Greater(t, hz, 0)
+	assert.Greater(t, sh, 0)
+	assert.Equal(t, 50, hz+sh)
 }
