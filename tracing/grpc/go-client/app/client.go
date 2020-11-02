@@ -49,7 +49,6 @@ var (
 	survivalTimeout int = 10e9
 )
 
-
 // they are necessary:
 // 		export CONF_CONSUMER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
