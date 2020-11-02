@@ -1,41 +1,40 @@
 # dubbo client yaml configure file
 
-
 check: true
 # client
-request_timeout : "3s"
+request_timeout: "3s"
 # connect timeout
-connect_timeout : "3s"
+connect_timeout: "3s"
 
 # application config
 application:
-  organization : "ikurento.com"
-  name  : "BDTService"
-  module : "dubbogo user-info client"
-  version : "0.0.1"
-  owner : "ZX"
-  environment : "dev"
+  organization: "dubbo.io"
+  name: "UserInfoTest"
+  module: "dubbo-go user-info client"
+  version: "0.0.1"
+  environment: "dev"
 
-registries :
+# registry config
+registries:
   "etcd":
     protocol: "etcdv3"
-    timeout	: "3s"
+    timeout: "3s"
     address: "127.0.0.1:2379"
     username: ""
     password: ""
 
-
+# reference config
 references:
   "UserProvider":
-    # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册
-    protocol : "dubbo"
-    interface : "com.ikurento.user.UserProvider"
+    registry: "etcd"
+    protocol: "dubbo"
+    interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
-    methods :
+    methods:
       - name: "GetUser"
         retries: 3
 
-
+# protocol config
 protocol_conf:
   dubbo:
     reconnect_interval: 0
