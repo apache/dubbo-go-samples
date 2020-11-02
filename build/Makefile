@@ -28,6 +28,8 @@ export GOPROXY ?= https://goproxy.io,direct
 export GOSUMDB ?= sum.golang.org
 export GOARCH ?= amd64
 
+export DOCKER_HOST_IP = $(shell ifconfig en0 | grep inet | grep -v inet6 | awk '{print $$2}')
+
 OS := $(shell uname)
 ifeq ($(OS), Linux)
 	export GOOS ?= linux
