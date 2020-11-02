@@ -13,32 +13,32 @@
   limitations under the License.
 -->
 <assembly>
-	<id>assembly</id>
-	<formats>
-		<format>tar.gz</format>
-	</formats>
-	<includeBaseDirectory>true</includeBaseDirectory>
-	<fileSets>
-		<fileSet>
-			<directory>${project.build.directory}/dubbo/META-INF/assembly/bin</directory>
-			<outputDirectory>bin</outputDirectory>
-			<fileMode>0755</fileMode>
+    <id>assembly</id>
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}/dubbo/META-INF/assembly/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
-		</fileSet>
-		<fileSet>
+        </fileSet>
+        <fileSet>
             <directory>src/main/resources</directory>
             <includes>
                 <include>dubbo.properties</include>
                 <include>log4j.*</include>
             </includes>
-			<outputDirectory>conf</outputDirectory>
-			<fileMode>0644</fileMode>
+            <outputDirectory>conf</outputDirectory>
+            <fileMode>0644</fileMode>
             <directoryMode>0755</directoryMode>
-		</fileSet>
-	</fileSets>
-	<dependencySets>
-		<dependencySet>
-			<outputDirectory>lib</outputDirectory>
-		</dependencySet>
-	</dependencySets>
+        </fileSet>
+    </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+        </dependencySet>
+    </dependencySets>
 </assembly>
