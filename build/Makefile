@@ -17,7 +17,7 @@ SOURCES = $(wildcard cmd/*.go)
 
 BASE_DIR := dist
 PROJECT_NAME = $(shell basename "$(PWD)")
-PID=/tmp/.$(PROJECTNAME).pid
+PID = /tmp/.$(PROJECT_NAME).pid
 
 export APP_LOG_CONF_FILE = $(shell pwd)/conf/log.yml
 export CONF_PROVIDER_FILE_PATH = $(shell pwd)/conf/server.yml
@@ -91,6 +91,7 @@ docker-down:
 clean: stop
 	$(info   >  Cleanning up binaries and logs)
 	@rm -rf $(OUT_DIR)
+	@rm $(PID)
 
 ## start: Start the application (for server)
 .PHONY: start
