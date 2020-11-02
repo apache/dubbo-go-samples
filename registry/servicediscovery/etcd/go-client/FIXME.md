@@ -1,0 +1,1 @@
+In order to make the client work, an empty conf/server.yml is required. Need further investigation.
