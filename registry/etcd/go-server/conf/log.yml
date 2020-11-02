@@ -14,7 +14,7 @@ encoderConfig:
   callerKey: "caller"
   stacktraceKey: "stacktrace"
   lineEnding: ""
-  levelEncoder: "capitalColor"
+  levelEncoder: "capital"
   timeEncoder: "iso8601"
   durationEncoder: "seconds"
   callerEncoder: "short"
