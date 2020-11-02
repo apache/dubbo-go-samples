@@ -1,52 +1,49 @@
 # dubbo client yaml configure file
 
-
-check: false
+check: true
 # client
-request_timeout : "3s"
+request_timeout: "3s"
 # connect timeout
-connect_timeout : "3s"
+connect_timeout: "3s"
 
 # application config
 application:
-  organization : "ikurento.com"
-  name  : "BDTService"
-  module : "dubbogo user-info client"
-  version : "0.0.1"
-  owner : "ZX"
-  environment : "dev"
+  organization: "dubbo.io"
+  name: "UserInfoClient"
+  module: "dubbo-go user-info client"
+  version: "0.0.1"
+  environment: "dev"
 
-registries :
-  "demoZk":
+# registry config
+registries:
+  "shanghaiZk":
     protocol: "zookeeper"
-    timeout	: "3s"
+    timeout: "3s"
     address: "127.0.0.1:2182"
     username: ""
     password: ""
     zone: shanghai
     weight: 50
 
-  "demoZk1":
+  "hangzhouZk":
     protocol: "zookeeper"
     timeout: "3s"
     address: "127.0.0.1:2183"
     zone: hangzhou
     weight: 200
-    # if you open 'preferred', there will always use this registry
-#    preferred: true
 
+# reference config
 references:
   "UserProvider":
-    # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册
-    registry: "demoZk,demoZk1"
-    protocol : "dubbo"
-    interface : "com.ikurento.user.UserProvider"
+    registry: "shanghaiZk,hangzhouZk"
+    protocol: "dubbo"
+    interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
-    methods :
-    - name: "GetUser"
-      retries: 3
+    methods:
+      - name: "GetUser"
+        retries: 3
 
-
+# protocol config
 protocol_conf:
   dubbo:
     reconnect_interval: 0
