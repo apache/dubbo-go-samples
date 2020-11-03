@@ -95,6 +95,8 @@ github.com/apache/dubbo-go v1.5.3 h1:cr4bRXHvd8z/Limorjf87yEhVeLTYGHPaXXN2qBKh6E
 github.com/apache/dubbo-go v1.5.3/go.mod h1:MmCthhkWG4/t1c5lqN4VQGvUdi+9yLhb58++vn88EyE=
 github.com/apache/dubbo-go v1.5.4-0.20201101090614-382ef0bbf0b5 h1:NJDUVmulEYs7P3ovyMfCHzxKEh5rCpXwzY8MDWcTaiI=
 github.com/apache/dubbo-go v1.5.4-0.20201101090614-382ef0bbf0b5/go.mod h1:QIqjEvIbgmuk1mESsQSsTsFngHlYLGAmRN9gXN+YJq4=
+github.com/apache/dubbo-go v1.5.4 h1:kRVw2p6Fqk5PlJGHeb8IVFg5AuBJFPFvCvRm7/i3Qco=
+github.com/apache/dubbo-go v1.5.4/go.mod h1:QIqjEvIbgmuk1mESsQSsTsFngHlYLGAmRN9gXN+YJq4=
 github.com/apache/dubbo-go-hessian2 v1.7.0 h1:u2XxIuepu/zb6JcGZc7EbvKboXdKoJbf7rbmeq6SF1w=
 github.com/apache/dubbo-go-hessian2 v1.7.0/go.mod h1:7rEw9guWABQa6Aqb8HeZcsYPHsOS7XT1qtJvkmI6c5w=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
