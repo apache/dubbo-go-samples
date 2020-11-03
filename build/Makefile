@@ -15,13 +15,9 @@
 
 SOURCES = $(wildcard cmd/*.go)
 
-BASE_DIR := dist
+BASE_DIR := $(shell pwd)/dist
 PROJECT_NAME = $(shell basename "$(PWD)")
 PID = /tmp/.$(PROJECT_NAME).pid
-
-export APP_LOG_CONF_FILE = $(shell pwd)/conf/log.yml
-export CONF_PROVIDER_FILE_PATH = $(shell pwd)/conf/server.yml
-export CONF_CONSUMER_FILE_PATH = $(shell pwd)/conf/client.yml
 
 export GO111MODULE ?= on
 export GOPROXY ?= https://goproxy.io,direct
@@ -58,6 +54,11 @@ endif
 OUT_DIR := $(BASE_DIR)/$(GOOS)_$(GOARCH)/$(BUILD_TYPE)
 LOG_FILE := $(OUT_DIR)/$(PROJECT_NAME).log
 
+export APP_LOG_CONF_FILE ?= $(OUT_DIR)/conf/log.yml
+export CONF_PROVIDER_FILE_PATH ?= $(OUT_DIR)/conf/server.yml
+export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
+export CONF_ROUTER_FILE_PATH ?= $(OUT_DIR)/conf/router_config.yml
+
 .PHONY: all
 all: help
 help: $(realpath $(firstword $(MAKEFILE_LIST)))
@@ -75,6 +76,11 @@ build: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME):
 	$(info   >  Buiding application binary: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME))
 	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(GCFLAGS) -ldflags=$(LDFLAGS) -i -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
+	@mkdir -p $(OUT_DIR)/conf
+	@-test -f conf/log.yml && cat conf/log.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/log.yml
+	@-test -f conf/server.yml && cat conf/server.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/server.yml
+	@-test -f conf/client.yml && cat conf/client.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/client.yml
+	@-test -f conf/router_config.yml && cat conf/router_config.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/router_config.yml
 
 ## docker-up: Shutdown dependency services on docker
 .PHONY: docker-up
