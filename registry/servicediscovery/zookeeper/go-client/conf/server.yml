@@ -3,7 +3,7 @@
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoServer"
+  name: "UserInfoTest"
   module: "dubbo-go user-info server"
   version: "0.0.1"
   environment: "dev"

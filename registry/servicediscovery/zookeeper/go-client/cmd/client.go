@@ -37,6 +37,7 @@ import (
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/metadata/mapping/dynamic"
+	_ "github.com/apache/dubbo-go/metadata/mapping/memory"
 	_ "github.com/apache/dubbo-go/metadata/report/zookeeper"
 	_ "github.com/apache/dubbo-go/metadata/service/remote"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
