@@ -90,8 +90,11 @@ github.com/apache/dubbo-go v1.4.0-rc1.0.20201101152817-e7901ee86390 h1:OL5XqqwdS
 github.com/apache/dubbo-go v1.4.0-rc1.0.20201101152817-e7901ee86390/go.mod h1:qrHQ2zyuFwzqwv/fs4rzthEBNwPjyOFf+6xKE38qp9Q=
 github.com/apache/dubbo-go v1.5.3 h1:cr4bRXHvd8z/Limorjf87yEhVeLTYGHPaXXN2qBKh6E=
 github.com/apache/dubbo-go v1.5.3/go.mod h1:MmCthhkWG4/t1c5lqN4VQGvUdi+9yLhb58++vn88EyE=
+github.com/apache/dubbo-go v1.5.4 h1:kRVw2p6Fqk5PlJGHeb8IVFg5AuBJFPFvCvRm7/i3Qco=
+github.com/apache/dubbo-go v1.5.4/go.mod h1:QIqjEvIbgmuk1mESsQSsTsFngHlYLGAmRN9gXN+YJq4=
 github.com/apache/dubbo-go-hessian2 v1.7.0 h1:u2XxIuepu/zb6JcGZc7EbvKboXdKoJbf7rbmeq6SF1w=
 github.com/apache/dubbo-go-hessian2 v1.7.0/go.mod h1:7rEw9guWABQa6Aqb8HeZcsYPHsOS7XT1qtJvkmI6c5w=
+github.com/apache/dubbo-go-samples v0.0.0-20201103011256-c666d1c4033f h1:fPQOZl7j+kvjfazc39aOvBi0ppy6MxwofUPaMh+yZO0=
 github.com/apache/dubbo-samples v0.0.0-20201031084347-a22e051076d2 h1:MT2ff2MTEpXytkMlYi4whQucA3cT17UmEoJROZjaUpg=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
 github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e/go.mod h1:3U/XgcO3hCbHZ8TKRvWD2dDTCfh9M9ya+I9JpbB7O8o=

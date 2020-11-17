@@ -21,7 +21,7 @@ package integration
 
 import (
 	"context"
-	"github.com/apache/dubbo-samples/golang/general/grpc/protobuf"
+	"github.com/apache/dubbo-go-samples/golang/general/grpc/protobuf"
 	"google.golang.org/grpc"
 
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
