@@ -15,9 +15,10 @@
 #  limitations under the License.
 
 docker run --name zookeeper -p2181:2181 -d zookeeper
+cd helloworld/go-server
 # start server
-make -f build/Makefile PROJECT_DIR=/helloworld/go-server start
+make -f ../../build/Makefile start
 # start integration
-make -f build/Makefile PROJECT_DIR=/helloworld/go-server integration
+make -f ../../build/Makefile integration
 # stop server
-make -f build/Makefile PROJECT_DIR=/helloworld/go-server stop
+make -f ../../build/Makefile stop
