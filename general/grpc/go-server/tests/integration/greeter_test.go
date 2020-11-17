@@ -21,7 +21,7 @@ package integration
 
 import (
 	"context"
-	"github.com/apache/dubbo-samples/golang/general/grpc/protobuf"
+	"github.com/apache/dubbo-go-samples/golang/general/grpc/protobuf"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

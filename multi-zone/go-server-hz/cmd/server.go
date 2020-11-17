@@ -27,7 +27,7 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-samples/golang/zone/go-server-hz/pkg"
+	"github.com/apache/dubbo-go-samples/golang/zone/go-server-hz/pkg"
 
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"

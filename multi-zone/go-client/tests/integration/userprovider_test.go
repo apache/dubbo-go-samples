@@ -22,7 +22,7 @@ package integration
 import (
 	"context"
 	"github.com/apache/dubbo-go/common/constant"
-	"github.com/apache/dubbo-samples/golang/zone/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/golang/zone/go-client/pkg"
 	"testing"
 )
 import (
