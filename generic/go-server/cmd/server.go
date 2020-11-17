@@ -38,7 +38,7 @@ import (
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 
-	"github.com/apache/dubbo-go-samples/golang/generic/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/generic/go-server/pkg"
 )
 
 var (

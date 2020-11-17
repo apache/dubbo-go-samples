@@ -1,4 +1,4 @@
-module github.com/apache/dubbo-samples/golang
+module github.com/apache/dubbo-go-samples
 
 require (
 	github.com/apache/dubbo-go v1.5.4

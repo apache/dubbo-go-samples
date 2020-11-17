@@ -22,8 +22,8 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/golang/seata/filter"
-	dao2 "github.com/apache/dubbo-go-samples/golang/seata/product-svc/app/dao"
+	"github.com/apache/dubbo-go-samples/seata/filter"
+	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
 )
 
 import (
