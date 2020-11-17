@@ -19,8 +19,8 @@ package main
 
 import (
 	"context"
-	"github.com/apache/dubbo-samples/golang/general/grpc/go-client/pkg"
-	"github.com/apache/dubbo-samples/golang/general/grpc/protobuf"
+	"github.com/apache/dubbo-go-samples/golang/general/grpc/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/golang/general/grpc/protobuf"
 	"github.com/dubbogo/gost/log"
 	"time"
 )

@@ -22,7 +22,7 @@ package integration
 import (
 	"context"
 	"github.com/apache/dubbo-go-hessian2/java_exception"
-	"github.com/apache/dubbo-samples/golang/general/dubbo/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/golang/general/dubbo/go-server/pkg"
 	"testing"
 )
 import (
