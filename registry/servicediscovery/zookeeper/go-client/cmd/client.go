@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/golang/registry/servicediscovery/zookeeper/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/zookeeper/go-client/pkg"
 
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"

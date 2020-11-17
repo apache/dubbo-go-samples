@@ -19,7 +19,7 @@ package pkg
 
 import (
 	"context"
-	"github.com/apache/dubbo-go-samples/golang/general/grpc/protobuf"
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 	"google.golang.org/grpc"
 )
 

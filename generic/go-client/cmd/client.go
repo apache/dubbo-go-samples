@@ -27,7 +27,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/golang/generic/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/generic/go-client/pkg"
 	"github.com/dubbogo/gost/log"
 )
 

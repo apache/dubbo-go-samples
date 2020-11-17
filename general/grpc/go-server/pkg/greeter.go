@@ -20,7 +20,7 @@ package pkg
 import (
 	"context"
 	"fmt"
-	"github.com/apache/dubbo-go-samples/golang/general/grpc/protobuf"
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )
 
 type GreeterProvider struct {

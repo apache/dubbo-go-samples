@@ -19,7 +19,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/apache/dubbo-go-samples/golang/general/grpc/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/general/grpc/go-server/pkg"
 	"os"
 	"os/signal"
 	"syscall"

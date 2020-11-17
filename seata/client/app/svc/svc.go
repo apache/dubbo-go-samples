@@ -20,14 +20,14 @@ package svc
 import (
 	"context"
 	"github.com/apache/dubbo-go/config"
-	"github.com/apache/dubbo-go-samples/golang/seata/filter"
+	"github.com/apache/dubbo-go-samples/seata/filter"
 
 	"errors"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/golang/seata/order-svc/app/dao"
-	dao2 "github.com/apache/dubbo-go-samples/golang/seata/product-svc/app/dao"
+	"github.com/apache/dubbo-go-samples/seata/order-svc/app/dao"
+	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
 )
 
 import (

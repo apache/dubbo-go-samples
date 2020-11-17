@@ -1,4 +1,4 @@
-module github.com/apache/dubbo-samples/golang/seata
+module github.com/apache/dubbo-go-samples/seata
 
 require (
 	github.com/apache/dubbo-go v1.4.1
