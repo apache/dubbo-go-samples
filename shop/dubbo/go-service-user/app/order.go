@@ -65,5 +65,3 @@ type OrderProvider struct {
 func (u *OrderProvider) Reference() string {
 	return "OrderProvider"
 }
-
-
