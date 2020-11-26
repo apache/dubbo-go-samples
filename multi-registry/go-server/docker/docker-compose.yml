@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  demoZk1:
+    image: zookeeper
+    ports:
+      - 2181:2181
+    restart: on-failure
+  demoZk2:
+    image: zookeeper
+    ports:
+      - 2182:2181
+    restart: on-failure
