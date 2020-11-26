@@ -26,3 +26,5 @@ make -f ../../../build/Makefile integration
 make -f ../../../build/Makefile stop
 
 make -f ../../../build/Makefile docker-down
+
+cd
