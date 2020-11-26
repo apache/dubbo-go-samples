@@ -54,7 +54,7 @@ jobs:
               go get -v -t -d ./...
           fi
 
-      - name: Test
+      - name: Integration Test
         run: |
           ./start_integrate_test.sh
           

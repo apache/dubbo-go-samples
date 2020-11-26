@@ -14,14 +14,14 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-make -f ../../build/Makefile docker-up
+make -f ../../../build/Makefile docker-up
 
-cd helloworld/go-server
+cd generate/dubbo/go-server
 # start server
-make -f ../../build/Makefile start
+make -f ../../../build/Makefile start
 # start integration
-make -f ../../build/Makefile integration
+make -f ../../../build/Makefile integration
 # stop server
-make -f ../../build/Makefile stop
+make -f ../../../build/Makefile stop
 
-make -f ../../build/Makefile docker-down
+make -f ../../../build/Makefile docker-down
