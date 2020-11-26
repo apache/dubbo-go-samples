@@ -27,4 +27,4 @@ make -f ../../build/Makefile stop
 
 make -f ../../build/Makefile docker-down
 
-cd
+cd ../..
