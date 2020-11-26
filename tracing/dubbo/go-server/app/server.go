@@ -26,11 +26,11 @@ import (
 )
 
 import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/opentracing/opentracing-go"
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
 	"github.com/openzipkin/zipkin-go"
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
-	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
