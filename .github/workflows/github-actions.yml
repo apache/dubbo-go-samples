@@ -54,6 +54,6 @@ jobs:
               go get -v -t -d ./...
           fi
 
-      - name: Verify
+      - name: Test
         run: |
-          make verify
+          ./start_integrate_test.sh
