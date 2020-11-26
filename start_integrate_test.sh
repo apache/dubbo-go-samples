@@ -15,3 +15,4 @@
 #  limitations under the License.
 
 helloworld/integrate_test.sh
+general/dubbo/integrate_test.sh

@@ -14,9 +14,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+cd helloworld/go-server
+
 make -f ../../build/Makefile docker-up
 
-cd helloworld/go-server
 # start server
 make -f ../../build/Makefile start
 # start integration
