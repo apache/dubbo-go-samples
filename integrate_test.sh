@@ -14,17 +14,20 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-cd helloworld/go-server
+if [ -z "$1" ]; then
+  echo 'Provide test directory please, like : ./integrate_test.sh $(pwd)/helloworld/go-server .'
+  exit
+fi
 
-make -f ../../build/Makefile docker-up
+P_DIR=$1
+
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile docker-up
 
 # start server
-make -f ../../build/Makefile start
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile start
 # start integration
-make -f ../../build/Makefile integration
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile integration
 # stop server
-make -f ../../build/Makefile stop
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile stop
 
-make -f ../../build/Makefile docker-down
-
-cd ../..
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile docker-down

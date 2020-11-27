@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SOURCES = $(wildcard cmd/*.go)
-
 BASE_DIR := dist
 PROJECT_NAME = $(shell basename "$(PWD)")
 PID = /tmp/.$(PROJECT_NAME).pid
 PROJECT_DIR=$(shell pwd)
+
+SOURCES = $(wildcard $(PROJECT_DIR)/cmd/*.go)
 
 export GO111MODULE ?= on
 export GOPROXY ?= https://goproxy.io,direct
@@ -84,22 +84,22 @@ $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME):
 config:
 	$(info   >  Setting up config files)
 	@mkdir -p $(OUT_DIR)/conf
-	@-test -f conf/log.yml && cat conf/log.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/log.yml && echo "  > $(OUT_DIR)/conf/log.yml"
-	@-test -f conf/server.yml && cat conf/server.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/server.yml && echo "  > $(OUT_DIR)/conf/server.yml"
-	@-test -f conf/client.yml && cat conf/client.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/client.yml && echo "  > $(OUT_DIR)/conf/client.yml"
-	@-test -f conf/router_config.yml && cat conf/router_config.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/router_config.yml && echo "  > $(OUT_DIR)/conf/router_config.yml"
+	@-test -f $(PROJECT_DIR)/conf/log.yml && cat $(PROJECT_DIR)/conf/log.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/log.yml && echo "  > $(OUT_DIR)/conf/log.yml"
+	@-test -f $(PROJECT_DIR)/conf/server.yml && cat $(PROJECT_DIR)/conf/server.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/server.yml && echo "  > $(OUT_DIR)/conf/server.yml"
+	@-test -f $(PROJECT_DIR)/conf/client.yml && cat $(PROJECT_DIR)/conf/client.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/client.yml && echo "  > $(OUT_DIR)/conf/client.yml"
+	@-test -f $(PROJECT_DIR)/conf/router_config.yml && cat $(PROJECT_DIR)/conf/router_config.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/router_config.yml && echo "  > $(OUT_DIR)/conf/router_config.yml"
 
 ## docker-up: Shutdown dependency services on docker
 .PHONY: docker-up
 docker-up:
-	$(info   >  Starting dependency services with docker/docker-compose.yml)
-	@docker-compose -f docker/docker-compose.yml up -d
+	$(info   >  Starting dependency services with $(PROJECT_DIR)/docker/docker-compose.yml)
+	@docker-compose -f $(PROJECT_DIR)/docker/docker-compose.yml up -d
 
 ## docker-down: Shutdown dependency services on docker
 .PHONY: docker-down
 docker-down:
-	$(info   >  Stopping dependency services with docker/docker-compose.yml)
-	@docker-compose -f docker/docker-compose.yml down
+	$(info   >  Stopping dependency services with $(PROJECT_DIR)/docker/docker-compose.yml)
+	@docker-compose -f $(PROJECT_DIR)/docker/docker-compose.yml down
 
 ## clean: Clean up the output and the binary of the application
 .PHONY: clean
@@ -132,4 +132,4 @@ stop:
 integration:
 	$(info   >  Running integration test for application $(PROJECT_NAME))
 	@go clean -testcache
-	@go test -tags integration -v ./tests/...
+	@go test -tags integration -v $(PROJECT_DIR)/tests/...
