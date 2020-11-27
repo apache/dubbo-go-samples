@@ -14,5 +14,4 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-helloworld/integrate_test.sh
-general/dubbo/integrate_test.sh
+./integrate_test.sh $(pwd)/helloworld/go-server
