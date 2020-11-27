@@ -19,7 +19,7 @@ if [ -z "$1" ]; then
   exit
 fi
 
-P_DIR=$1
+P_DIR=$(pwd)/$1
 
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile docker-up
 
