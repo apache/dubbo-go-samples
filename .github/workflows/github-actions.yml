@@ -54,14 +54,6 @@ jobs:
               go get -v -t -d ./...
           fi
 
-      - name: Async
+      - name: Integration Test
         run: |
-          ./integrate_test.sh async/go-server
-
-      - name: Hello world
-        run: |
-          ./integrate_test.sh helloworld/go-server
-
-      - name: General dubbo
-        run: |
-          ./integrate_test.sh general/dubbo/go-server
+          ./start_integrate_test.sh
