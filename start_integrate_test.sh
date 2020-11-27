@@ -14,4 +14,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+./integrate_test.sh async/go-server
 ./integrate_test.sh helloworld/go-server
+./integrate_test.sh general/dubbo/go-server
