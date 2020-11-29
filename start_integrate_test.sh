@@ -14,17 +14,28 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+# async
 ./integrate_test.sh async/go-server
+
+# config center
 ./integrate_test.sh configcenter/apollo/go-server
 ./integrate_test.sh configcenter/nacos/go-server
+
+ direct
 ./integrate_test.sh direct/go-server
 
+# filter
 ./integrate_test.sh filter/custom_filter/go-server
 ./integrate_test.sh filter/tpslimit/go-server
 
+# general
 ./integrate_test.sh general/dubbo/go-server
+
+# generic
 ./integrate_test.sh generic/dubbo/go-server
 
-./integrate_test.sh metric/go-server
-
+# hello world
 ./integrate_test.sh helloworld/go-server
+
+# metric
+./integrate_test.sh metric/go-server
