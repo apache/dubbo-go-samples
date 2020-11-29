@@ -32,13 +32,13 @@ array+=("direct/go-server")
 array+=("general/dubbo/go-server")
 
 # generic
-#array+=("generic/dubbo/go-server")
+array+=("generic/go-server")
 
 # hello world
-array+=("helloworld/dubbo/go-server")
+array+=("helloworld/go-server")
 
 # metric
-array+=("metric/dubbo/go-server")
+array+=("metric/go-server")
 
 
 for((i=0;i<${#array[*]};i++))
