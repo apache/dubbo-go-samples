@@ -32,7 +32,7 @@ array+=("direct/go-server")
 array+=("general/dubbo/go-server")
 
 # generic
-array+=("generic/dubbo/go-server")
+#array+=("generic/dubbo/go-server")
 
 # hello world
 array+=("helloworld/dubbo/go-server")
