@@ -15,30 +15,32 @@
 #  limitations under the License.
 
 # async
-#./integrate_test.sh async/go-server
-#
-## config center
-#./integrate_test.sh configcenter/apollo/go-server
-#./integrate_test.sh configcenter/nacos/go-server
-#
-## direct
-#./integrate_test.sh direct/go-server
-#
-## filter
-#./integrate_test.sh filter/custom_filter/go-server
-#./integrate_test.sh filter/tpslimit/go-server
+array=("async/go-server")
 
-## generic
-#./integrate_test.sh generic/dubbo/go-server
-#
-## hello world
-#./integrate_test.sh helloworld/go-server
-#
-## metric
-#./integrate_test.sh metric/go-server
+# config center
+array+=("configcenter/apollo/go-server")
+array+=("configcenter/nacos/go-server")
 
-array=("general/dubbo/go-server")
-#通过下标遍历
+# filter
+array+=("filter/custom_filter/go-server")
+array+=("filter/tpslimit/go-server")
+
+# direct
+array+=("direct/go-server")
+
+# general
+array+=("general/dubbo/go-server")
+
+# generic
+array+=("generic/dubbo/go-server")
+
+# hello world
+array+=("helloworld/dubbo/go-server")
+
+# metric
+array+=("metric/dubbo/go-server")
+
+
 for((i=0;i<${#array[*]};i++))
 do
 	./integrate_test.sh ${array[i]}
