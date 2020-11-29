@@ -45,6 +45,13 @@ import (
 var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {
+	// return panic
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println(r)
+			os.Exit(1)
+		}
+	}()
 	config.SetConsumerService(userProvider)
 	hessian.RegisterJavaEnum(Gender(MAN))
 	hessian.RegisterJavaEnum(Gender(WOMAN))
