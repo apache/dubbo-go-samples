@@ -42,7 +42,8 @@ array=("general/dubbo/go-server")
 for((i=0;i<${#array[*]};i++))
 do
 	./integrate_test.sh ${array[i]}
-	if [ $? -gt 0 ]; then
-    exit $?
+	result=$?
+	if [ $result -gt 0 ]; then
+    exit $result
 	fi
 done
