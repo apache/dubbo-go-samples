@@ -32,5 +32,5 @@ fi
 
 
 if [ -f "${PROJECT_HOME}/assembly/common/build.sh" ]; then
-	sh ${PROJECT_HOME}/assembly/common/build.sh
+	. ${PROJECT_HOME}/assembly/common/build.sh
 fi
