@@ -125,6 +125,7 @@ run: build
 .PHONY: stop
 stop:
 	$(info   >  Stopping the application $(PROJECT_NAME))
+	@cat $(PID) | sed "/^/s/^/  \>  Killing PID: /"
 	@-kill `cat $(PID)` 2>/dev/null || true
 
 ## integration: Run integration test for this application
