@@ -132,6 +132,7 @@ stop:
 .PHONY: integration
 integration: export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
 integration: export CONF_ROUTER_FILE_PATH ?= $(OUT_DIR)/conf/router_config.yml
+integration: export CONF_PROVIDER_FILE_PATH ?= $(OUT_DIR)/conf/server.yml
 integration:
 	$(info   >  Running integration test for application $(PROJECT_NAME))
 	@go clean -testcache
