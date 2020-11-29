@@ -133,3 +133,8 @@ integration:
 	$(info   >  Running integration test for application $(PROJECT_NAME))
 	@go clean -testcache
 	@go test -tags integration -v $(PROJECT_DIR)/tests/...
+
+## integration: Run all step integration test for this application
+.PHONY: test
+test: docker-up start integration stop docker-down
+	$(info   >  Running test for application $(PROJECT_NAME))
