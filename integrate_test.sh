@@ -28,6 +28,6 @@ make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f 
 # start integration
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile integration
 # stop server
-make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile stop
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile clean
 
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile docker-down
