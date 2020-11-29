@@ -56,9 +56,6 @@ OUT_DIR := $(BASE_DIR)/$(GOOS)_$(GOARCH)/$(BUILD_TYPE)
 LOG_FILE := $(OUT_DIR)/$(PROJECT_NAME).log
 
 export APP_LOG_CONF_FILE ?= $(OUT_DIR)/conf/log.yml
-export CONF_PROVIDER_FILE_PATH ?= $(OUT_DIR)/conf/server.yml
-export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
-export CONF_ROUTER_FILE_PATH ?= $(OUT_DIR)/conf/router_config.yml
 
 .PHONY: all
 all: help
@@ -110,6 +107,7 @@ clean: stop
 
 ## start: Start the application (for server)
 .PHONY: start
+start: export CONF_PROVIDER_FILE_PATH ?= $(OUT_DIR)/conf/server.yml
 start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
@@ -117,6 +115,8 @@ start: build
 
 ## run: Run the application (for client)
 .PHONY: run
+run: export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
+run: export CONF_ROUTER_FILE_PATH ?= $(OUT_DIR)/conf/router_config.yml
 run: build
 	$(info   >  Running application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) 2>&1 | tee $(LOG_FILE)
@@ -130,6 +130,8 @@ stop:
 
 ## integration: Run integration test for this application
 .PHONY: integration
+integration: export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
+integration: export CONF_ROUTER_FILE_PATH ?= $(OUT_DIR)/conf/router_config.yml
 integration:
 	$(info   >  Running integration test for application $(PROJECT_NAME))
 	@go clean -testcache
