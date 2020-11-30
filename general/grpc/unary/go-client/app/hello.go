@@ -15,34 +15,23 @@
  * limitations under the License.
  */
 
-package main
+package pkg
 
 import (
 	"context"
-)
-
-import (
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 	"google.golang.org/grpc"
 )
 
-import (
-	"github.com/apache/dubbo-go/config"
-)
-
-var grpcGreeterImpl = new(GrpcGreeterImpl)
-
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
-}
 
 type GrpcGreeterImpl struct {
-	SayHello func(ctx context.Context, in *HelloRequest, out *HelloReply) error
+	SayHello func(ctx context.Context, in *protobuf.HelloRequest, out *protobuf.HelloReply) error
 }
 
 func (u *GrpcGreeterImpl) Reference() string {
 	return "GrpcGreeterImpl"
 }
 
-func (u *GrpcGreeterImpl) GetDubboStub(cc *grpc.ClientConn) GreeterClient {
-	return NewGreeterClient(cc)
+func (u *GrpcGreeterImpl) GetDubboStub(cc *grpc.ClientConn) protobuf.GreeterClient {
+	return protobuf.NewGreeterClient(cc)
 }

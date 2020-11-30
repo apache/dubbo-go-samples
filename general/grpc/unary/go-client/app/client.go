@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+<<<<<<< HEAD:general/grpc/unary/go-client/app/client.go
 	"fmt"
 	"os"
 	"os/signal"
@@ -28,12 +29,17 @@ import (
 
 import (
 	gxlog "github.com/dubbogo/gost/log"
+=======
+	"github.com/apache/dubbo-go-samples/general/grpc/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
+	"github.com/dubbogo/gost/log"
+	"time"
+>>>>>>> feature/addTravis:general/grpc/go-client/cmd/client.go
 )
 
 import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
@@ -43,20 +49,20 @@ import (
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-var (
-	survivalTimeout int = 10e9
-)
+var grpcGreeterImpl = new(pkg.GrpcGreeterImpl)
 
-// they are necessary:
-// 		export CONF_CONSUMER_FILE_PATH="xxx"
-// 		export APP_LOG_CONF_FILE="xxx"
+func init() {
+	config.SetConsumerService(grpcGreeterImpl)
+}
+
+// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
 	config.Load()
-	time.Sleep(time.Second)
+	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	reply := &HelloReply{}
-	req := &HelloRequest{
+	reply := &protobuf.HelloReply{}
+	req := &protobuf.HelloRequest{
 		Name: "xujianhai",
 	}
 	err := grpcGreeterImpl.SayHello(context.TODO(), req, reply)
@@ -64,29 +70,4 @@ func main() {
 		panic(err)
 	}
 	gxlog.CInfo("client response result: %v\n", reply)
-	initSignal()
-}
-
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
-		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(time.Duration(survivalTimeout), func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
-
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("app exit now...")
-			return
-		}
-	}
 }

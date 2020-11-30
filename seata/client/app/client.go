@@ -27,7 +27,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-samples/golang/seata/client/app/svc"
+	"github.com/apache/dubbo-go-samples/seata/client/app/svc"
 )
 
 import (
