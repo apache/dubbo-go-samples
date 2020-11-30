@@ -15,34 +15,27 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package pkg
 
 import (
 	"context"
 	"fmt"
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )
-
-import (
-	"github.com/apache/dubbo-go/config"
-)
-
-func init() {
-	config.SetProviderService(NewGreeterProvider())
-}
 
 type GreeterProvider struct {
-	*GreeterProviderBase
+	*protobuf.GreeterProviderBase
 }
 
 func NewGreeterProvider() *GreeterProvider {
 	return &GreeterProvider{
-		GreeterProviderBase: &GreeterProviderBase{},
+		GreeterProviderBase: &protobuf.GreeterProviderBase{},
 	}
 }
 
-func (g *GreeterProvider) SayHello(ctx context.Context, req *HelloRequest) (reply *HelloReply, err error) {
+func (g *GreeterProvider) SayHello(ctx context.Context, req *protobuf.HelloRequest) (reply *protobuf.HelloReply, err error) {
 	fmt.Printf("req: %v", req)
-	return &HelloReply{Message: "this is message from reply"}, nil
+	return &protobuf.HelloReply{Message: "this is message from reply"}, nil
 }
 
 func (g *GreeterProvider) Reference() string {

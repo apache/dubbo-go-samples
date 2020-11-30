@@ -1,28 +1,26 @@
 # dubbo server yaml configure file
 
-
 # application config
 application:
-  organization : "ikurento.com"
-  name : "BDTService"
-  module : "dubbogo say-hello client"
-  version : "0.0.1"
-  owner : "ZX"
-  environment : "test"
+  organization: "dubbo.io"
+  name: "GreeterGrpcServer"
+  module: "dubbo-go greeter grpc server"
+  version: "0.0.1"
+  environment: "dev"
 
-registries :
+# registry config
+registries:
   "demoZk":
     protocol: "zookeeper"
-    timeout	: "3s"
+    timeout: "3s"
     address: "127.0.0.1:2181"
 
+# service config
 services:
   "GrpcGreeterImpl":
-    # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册
     registry: "demoZk"
-    protocol : "grpc"
-    # 相当于dubbo.xml中的interface
-    interface : "io.grpc.examples.helloworld.GreeterGrpc$IGreeter"
+    protocol: "grpc"
+    interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
     loadbalance: "random"
     warmup: "100"
     cluster: "failover"
@@ -31,11 +29,11 @@ services:
         retries: 1
         loadbalance: "random"
 
+# protocol config
 protocols:
   "grpc":
     name: "grpc"
     port: 20000
-
 
 protocol_conf:
   grpc:
