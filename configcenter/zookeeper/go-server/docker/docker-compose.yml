@@ -6,8 +6,3 @@ services:
     ports:
       - 2181:2181
     restart: on-failure
-    command: docker exec -it zookeeper sh && zkCli.sh -server 127.0.0.1:2181 set /dubbo/config/user-info-server/dubbo.properties "dubbo.service.com.ikurento.user.UserProvider.cluster=failback
-        dubbo.service.com.ikurento.user.UserProvider.protocol=myDubbo
-        dubbo.protocols.myDubbo.port=20000
-        dubbo.protocols.myDubbo.name=dubbo
-        "
