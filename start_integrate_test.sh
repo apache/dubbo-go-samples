@@ -15,39 +15,40 @@
 #  limitations under the License.
 
 # async
-array=("async/go-server")
-
-# config center
-array+=("configcenter/apollo/go-server")
-array+=("configcenter/nacos/go-server")
-
-# direct
-array+=("direct/go-server")
-
-# filter
-array+=("filter/custom_filter/go-server")
-array+=("filter/tpslimit/go-server")
-
-# general
-array+=("general/dubbo/go-server")
-array+=("general/grpc/go-server")
-#array+=("general/jsonrpc/go-server")
-#array+=("general/rest/go-server")
-
-# generic
-array+=("generic/go-server")
-
-# hello world
-array+=("helloworld/go-server")
-
-# metric
-array+=("metric/go-server")
-
-# multi-registry
-array+=("multi-registry/go-server")
-
-# router
-array+=("router/condition/go-server")
+#array=("async/go-server")
+#
+## config center
+#array+=("configcenter/apollo/go-server")
+#array+=("configcenter/nacos/go-server")
+array+=("configcenter/zookeeper/go-server")
+#
+## direct
+#array+=("direct/go-server")
+#
+## filter
+#array+=("filter/custom_filter/go-server")
+#array+=("filter/tpslimit/go-server")
+#
+## general
+#array+=("general/dubbo/go-server")
+#array+=("general/grpc/go-server")
+##array+=("general/jsonrpc/go-server")
+##array+=("general/rest/go-server")
+#
+## generic
+#array+=("generic/go-server")
+#
+## hello world
+#array+=("helloworld/go-server")
+#
+## metric
+#array+=("metric/go-server")
+#
+## multi-registry
+#array+=("multi-registry/go-server")
+#
+## router
+#array+=("router/condition/go-server")
 #array+=("router/tag/go-server")
 
 
