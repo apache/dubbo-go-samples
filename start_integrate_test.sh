@@ -21,15 +21,18 @@ array=("async/go-server")
 array+=("configcenter/apollo/go-server")
 array+=("configcenter/nacos/go-server")
 
+# direct
+array+=("direct/go-server")
+
 # filter
 array+=("filter/custom_filter/go-server")
 array+=("filter/tpslimit/go-server")
 
-# direct
-array+=("direct/go-server")
-
 # general
 array+=("general/dubbo/go-server")
+array+=("general/grpc/go-server")
+#array+=("general/jsonrpc/go-server")
+#array+=("general/rest/go-server")
 
 # generic
 array+=("generic/go-server")
@@ -39,6 +42,12 @@ array+=("helloworld/go-server")
 
 # metric
 array+=("metric/go-server")
+
+# multi-registry
+array+=("multi-registry/go-server")
+
+# router
+array+=("router/condition/go-server")
 
 
 for((i=0;i<${#array[*]};i++))
