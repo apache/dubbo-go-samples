@@ -48,6 +48,7 @@ array+=("multi-registry/go-server")
 
 # router
 array+=("router/condition/go-server")
+#array+=("router/tag/go-server")
 
 
 for((i=0;i<${#array[*]};i++))
