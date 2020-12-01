@@ -6,5 +6,3 @@ services:
     ports:
       - 2181:2181
     restart: on-failure
-    command:
-      - docker exec -it zookeeper sh
