@@ -20,7 +20,7 @@ array=("async/go-server")
 # config center
 array+=("configcenter/apollo/go-server")
 array+=("configcenter/nacos/go-server")
-array+=("configcenter/zookeeper/go-server")
+#array+=("configcenter/zookeeper/go-server")
 
 # direct
 array+=("direct/go-server")
