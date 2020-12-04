@@ -61,7 +61,7 @@ type DefaultValueRejectedExecutionHandler struct {
 	defaultResult sync.Map
 }
 
-func (mh *DefaultValueRejectedExecutionHandler) RejectedExecution(url common.URL, invocation protocol.Invocation) protocol.Result {
+func (mh *DefaultValueRejectedExecutionHandler) RejectedExecution(url *common.URL, invocation protocol.Invocation) protocol.Result {
 	// put your custom business here.
 	logger.Error("Here is my custom rejected handler. I want to do something if the requests are rejected. ")
 	// in most cases, if the request was rejected, you won't want to invoke the origin provider.
