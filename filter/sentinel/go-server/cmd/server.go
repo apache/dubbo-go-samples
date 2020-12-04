@@ -26,6 +26,7 @@ import (
 )
 
 import (
+	"github.com/alibaba/sentinel-golang/core/flow"
 	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
@@ -50,6 +51,19 @@ var (
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
+	_, err := flow.LoadRules([]*flow.Rule{
+		{
+			ID: 777,
+			// protocol:consumer:interfaceName:group:version:method
+			Resource:        "dubbo:provider:org.apache.dubbo.UserProvider:::GetUser()",
+			MetricType:      flow.QPS,
+			Count:           1,
+			ControlBehavior: flow.Reject,
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
 
 	initSignal()
 }
