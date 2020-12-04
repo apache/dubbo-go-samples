@@ -105,6 +105,8 @@ github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239/go.mod h1:2FmKhYU
 github.com/apache/dubbo-getty v1.3.10 h1:ys5mwjPdxG/KwkPjS6EI0RzQtU6p6FCPoKpaFEzpAL0=
 github.com/apache/dubbo-getty v1.3.10/go.mod h1:x6rraK01BL5C7jUM2fPl5KMkAxLVIx54ZB8/XEOik9Y=
 github.com/apache/dubbo-go v1.4.0-rc1.0.20200919130513-8a059ddd7bf7/go.mod h1:KIvoPmZH/0PPmBnty4dz4uXtTFUYQ37jMJsXaEYn+WQ=
+github.com/apache/dubbo-go v1.4.0-rc1.0.20201204081815-7efba166a92c h1:N2X3C+AzeH6gadheT2Z5/Dttog2UeMYLHs5Ghf3zFdI=
+github.com/apache/dubbo-go v1.4.0-rc1.0.20201204081815-7efba166a92c/go.mod h1:e7hrz7SxWEX/tfxKlkZs3GiCFfbVGfuJGPNyIIQH9Zc=
 github.com/apache/dubbo-go v1.5.2-0.20200919130513-8a059ddd7bf7 h1:o2wh0fKS1YXsLLDGYQTA2QFZOQ93RvCdUdodN50OyVc=
 github.com/apache/dubbo-go v1.5.2-0.20200919130513-8a059ddd7bf7/go.mod h1:KIvoPmZH/0PPmBnty4dz4uXtTFUYQ37jMJsXaEYn+WQ=
 github.com/apache/dubbo-go v1.5.2-0.20201130054912-90a367336b7e h1:VY0A5R6SWPlTNN29QGqP9ivirVI4+AX01k7g8jjbLmM=
