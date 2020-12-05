@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-BASE_DIR := dist
 PROJECT_NAME = $(shell basename "$(PWD)")
 PID = /tmp/.$(PROJECT_NAME).pid
 PROJECT_DIR=$(shell pwd)
+BASE_DIR := $(PROJECT_DIR)/dist
+
 
 SOURCES = $(wildcard $(PROJECT_DIR)/cmd/*.go)
 
@@ -130,8 +131,8 @@ stop:
 
 ## integration: Run integration test for this application
 .PHONY: integration
-integration: export CONF_CONSUMER_FILE_PATH ?= ../../$(OUT_DIR)/conf/client.yml
-integration: export CONF_ROUTER_FILE_PATH ?= ../../$(OUT_DIR)/conf/router_config.yml
+integration: export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
+integration: export CONF_ROUTER_FILE_PATH ?= $(OUT_DIR)/conf/router_config.yml
 integration:
 	$(info   >  Running integration test for application $(PROJECT_NAME))
 	@go clean -testcache
