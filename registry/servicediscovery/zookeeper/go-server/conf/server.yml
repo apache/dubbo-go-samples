@@ -7,7 +7,6 @@ application:
   module: "dubbo-go user-info server"
   version: "0.0.1"
   environment: "dev"
-  metadataType: "remote"
 
 # registry config
 registries:
@@ -15,7 +14,7 @@ registries:
     protocol: "service-discovery"
     params:
       service_discovery: "zk-dis"
-      name_mapping: "dynamic"
+      name_mapping: "in-memory"
       metadata: "default"
 
 remote:
