@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-BASE_DIR := dist
 PROJECT_NAME = $(shell basename "$(PWD)")
 PID = /tmp/.$(PROJECT_NAME).pid
 PROJECT_DIR=$(shell pwd)
+BASE_DIR := $(PROJECT_DIR)/dist
+
 
 SOURCES = $(wildcard $(PROJECT_DIR)/cmd/*.go)
 
