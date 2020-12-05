@@ -111,6 +111,8 @@ github.com/apache/dubbo-go v1.5.2-0.20200919130513-8a059ddd7bf7 h1:o2wh0fKS1YXsL
 github.com/apache/dubbo-go v1.5.2-0.20200919130513-8a059ddd7bf7/go.mod h1:KIvoPmZH/0PPmBnty4dz4uXtTFUYQ37jMJsXaEYn+WQ=
 github.com/apache/dubbo-go v1.5.2-0.20201130054912-90a367336b7e h1:VY0A5R6SWPlTNN29QGqP9ivirVI4+AX01k7g8jjbLmM=
 github.com/apache/dubbo-go v1.5.2-0.20201130054912-90a367336b7e/go.mod h1:e7hrz7SxWEX/tfxKlkZs3GiCFfbVGfuJGPNyIIQH9Zc=
+github.com/apache/dubbo-go v1.5.2-0.20201205063214-68ff8be79d6d h1:tK9EJh7WiYbMRdNzbJL7xLjECvWwrJ4nl1MJNezHaLs=
+github.com/apache/dubbo-go v1.5.2-0.20201205063214-68ff8be79d6d/go.mod h1:e7hrz7SxWEX/tfxKlkZs3GiCFfbVGfuJGPNyIIQH9Zc=
 github.com/apache/dubbo-go v1.5.3-0.20201015161623-1268a960bc7b h1:KqMRVxf+UZXBWY3OHKLvICrXxFceaa1wU/n5Hpx4M5s=
 github.com/apache/dubbo-go v1.5.3-0.20201015161623-1268a960bc7b/go.mod h1:MmCthhkWG4/t1c5lqN4VQGvUdi+9yLhb58++vn88EyE=
 github.com/apache/dubbo-go v1.5.3 h1:cr4bRXHvd8z/Limorjf87yEhVeLTYGHPaXXN2qBKh6E=
