@@ -40,6 +40,9 @@ array+=("helloworld/go-server")
 # metric
 array+=("metric/go-server")
 
+# registry/servicediscovery/zookeeper
+array+=("registry/servicediscovery/zookeeper/go-server")
+
 
 for((i=0;i<${#array[*]};i++))
 do
