@@ -9,7 +9,7 @@ connect_timeout: "3s"
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoTest"
+  name: "UserInfoServer"
   module: "dubbo-go user-info client"
   version: "0.0.1"
   environment: "dev"
@@ -19,7 +19,7 @@ registries:
   "demoServiceDiscovery":
     protocol: "service-discovery"
     params:
-      service_discovery: "zk-dis"
+      service_discovery: "zk-dis1"
       name_mapping: "in-memory"
       metadata: "default"
 
@@ -33,7 +33,7 @@ metadata_report:
   remote_ref: "zk1"
 
 service_discovery:
-  zk-dis:
+  zk-dis1:
     protocol: "zookeeper"
     remote_ref: "zk1"
 
