@@ -35,7 +35,6 @@ import (
 	_ "github.com/apache/dubbo-go/cluster/router/condition"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/config_center/zookeeper"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
@@ -50,6 +49,7 @@ func init() {
 }
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+// need to setup environment variable "CONF_ROUTER_FILE_PATH" to "conf/router_config.yml" before run
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
