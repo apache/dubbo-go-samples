@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package main
+package pkg
 
 import (
 	"context"
@@ -23,15 +23,15 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go/config"
 )
 
-var userProvider = &UserProvider{}
+import (
+	gxlog "github.com/dubbogo/gost/log"
+)
 
 func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
+	config.SetProviderService(new(UserProvider))
 }
 
 type User struct {
@@ -42,13 +42,19 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+}
+
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+	gxlog.CInfo("req: %v\n", req)
+	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	gxlog.CInfo("rsp: %v\n", rsp)
+	return &rsp, nil
 }
 
 func (u *UserProvider) Reference() string {
 	return "UserProvider"
 }
 
-func (User) JavaClassName() string {
+func (u User) JavaClassName() string {
 	return "com.ikurento.user.User"
 }

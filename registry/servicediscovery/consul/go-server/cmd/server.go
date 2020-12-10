@@ -18,7 +18,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -27,58 +26,50 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go/common/logger"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/protocol"
-
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-
-	_ "github.com/apache/dubbo-go/metadata/mapping/dynamic"
-	_ "github.com/apache/dubbo-go/metadata/report/consul"
-	_ "github.com/apache/dubbo-go/metadata/service/remote"
-	_ "github.com/apache/dubbo-go/registry/consul"
-	_ "github.com/apache/dubbo-go/registry/servicediscovery"
-	gxlog "github.com/dubbogo/gost/log"
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/consul/go-server/pkg"
 )
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/apache/dubbo-go/common/logger"
+	"github.com/apache/dubbo-go/config"
+	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/protocol/jsonrpc"
+	_ "github.com/apache/dubbo-go/registry/protocol"
+
+	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
+
+	_ "github.com/apache/dubbo-go/registry/consul"
+
+	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	_ "github.com/apache/dubbo-go/metadata/mapping/memory"
+	_ "github.com/apache/dubbo-go/metadata/report/consul"
+	_ "github.com/apache/dubbo-go/metadata/service/remote"
+	_ "github.com/apache/dubbo-go/registry/servicediscovery"
 )
 
 var (
-	survivalTimeout int = 10e9
+	survivalTimeout = int(3e9)
 )
 
 // they are necessary:
-// 		export CONF_CONSUMER_FILE_PATH="xxx"
+// 		export CONF_PROVIDER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
-	hessian.RegisterPOJO(&User{})
-	config.Load()
-	time.Sleep(3e9)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo\n")
-	user := &User{}
-	for i := 0; i < 5; i++ {
-		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-		if err != nil {
-			panic(err)
-		}
-		gxlog.CInfo("response result: %v\n", user)
-	}
+	// ------for hessian2------
+	hessian.RegisterPOJO(&pkg.User{})
+	config.Load()
+
 	initSignal()
 }
 
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
-		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
 		logger.Infof("get signal %s", sig.String())
@@ -92,7 +83,7 @@ func initSignal() {
 			})
 
 			// The program exits normally or timeout forcibly exits.
-			fmt.Println("app exit now...")
+			fmt.Println("provider app exit now...")
 			return
 		}
 	}
