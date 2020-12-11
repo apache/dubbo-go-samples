@@ -51,6 +51,9 @@ array+=("metric/go-server")
 array+=("router/condition/go-server")
 #array+=("router/tag/go-server")
 
+# registry
+array+=("registry/servicediscovery/consul/go-server")
+
 
 for((i=0;i<${#array[*]};i++))
 do
