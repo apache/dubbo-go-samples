@@ -53,6 +53,7 @@ array+=("router/condition/go-server")
 
 # registry/servicediscovery/zookeeper
 array+=("registry/servicediscovery/zookeeper/go-server")
+array+=("registry/servicediscovery/file/go-server")
 
 
 for((i=0;i<${#array[*]};i++))
