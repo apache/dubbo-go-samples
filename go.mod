@@ -3,7 +3,9 @@ module github.com/apache/dubbo-go-samples
 require (
 	github.com/apache/dubbo-go v1.5.2-0.20201205063214-68ff8be79d6d
 	github.com/apache/dubbo-go-hessian2 v1.7.0
+	github.com/bwmarrin/snowflake v0.3.0
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
+	github.com/dk-lockdown/seata-golang v0.1.0-fix
 	github.com/dubbogo/gost v1.9.2
 	github.com/emicklei/go-restful/v3 v3.0.0
 	github.com/golang/protobuf v1.4.3
