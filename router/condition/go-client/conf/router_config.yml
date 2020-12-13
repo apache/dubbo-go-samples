@@ -10,4 +10,4 @@ routerRules:
     priority: 1
     force: true
     conditions:
-      - method=GetUser => host=$HOST_IP
+      - method = GetUser => host = 1.2.3.4

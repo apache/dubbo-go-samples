@@ -42,6 +42,7 @@ references:
   "UserProvider":
     registry: "demoServiceDiscovery"
     protocol: "dubbo"
+    provide_by: "UserInfoServer"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
     methods:
