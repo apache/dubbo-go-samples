@@ -35,7 +35,8 @@ type ProductSvc struct {
 }
 
 func (svc *ProductSvc) AllocateInventory(ctx context.Context, reqs []*dao2.AllocateInventoryReq) (*dao2.AllocateInventoryResult, error) {
-	val := ctx.Value(filter.SEATA_XID)
+	attach := ctx.Value("attachment").(map[string]interface{})
+	val := attach[filter.SEATA_XID]
 	xid := val.(string)
 
 	rootContext := &context2.RootContext{Context: ctx}
