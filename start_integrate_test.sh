@@ -54,7 +54,7 @@ array+=("router/condition/go-server")
 # registry/servicediscovery/zookeeper
 array+=("registry/servicediscovery/zookeeper/go-server")
 # registry/servicediscovery/consul
-array+=("registry/servicediscovery/consul/go-server")
+#array+=("registry/servicediscovery/consul/go-server")
 
 
 for((i=0;i<${#array[*]};i++))
