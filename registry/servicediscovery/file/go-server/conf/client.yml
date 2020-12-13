@@ -9,7 +9,7 @@ connect_timeout: "3s"
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoTest"
+  name: "UserInfoServer"
   module: "dubbo-go user-info client"
   version: "0.0.1"
   environment: "dev"
