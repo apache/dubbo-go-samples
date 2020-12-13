@@ -27,7 +27,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/consul/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/consul/go-client/pkg/pojo"
 )
 
 import (
@@ -55,11 +55,11 @@ var (
 	survivalTimeout int = 10e9
 )
 
-var userProvider = new(pkg.UserProvider)
+var userProvider = new(pojo.UserProvider)
 
 func init() {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
+	hessian.RegisterPOJO(&pojo.User{})
 }
 
 // they are necessary:
@@ -70,7 +70,7 @@ func main() {
 	time.Sleep(3e9)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo\n")
-	user := &pkg.User{}
+	user := &pojo.User{}
 	for i := 0; i < 5; i++ {
 		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 		if err != nil {

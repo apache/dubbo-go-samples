@@ -26,7 +26,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/consul/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/consul/go-server/pkg/pojo"
 )
 
 import (
@@ -60,7 +60,7 @@ var (
 func main() {
 
 	// ------for hessian2------
-	hessian.RegisterPOJO(&pkg.User{})
+	hessian.RegisterPOJO(&pojo.User{})
 	config.Load()
 
 	initSignal()

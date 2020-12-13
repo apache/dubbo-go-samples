@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package pkg
+package pojo
 
 import (
 	"context"

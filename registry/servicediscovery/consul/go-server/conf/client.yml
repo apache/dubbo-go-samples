@@ -10,7 +10,7 @@ connect_timeout : "3s"
 # application config
 application:
   organization : "ikurento.com"
-  name  : "UserInfoTest"
+  name  : "user-info-client"
   module : "dubbogo user-info client"
   version : "0.0.1"
   owner : "ZX"

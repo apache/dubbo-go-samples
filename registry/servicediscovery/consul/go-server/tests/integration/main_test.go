@@ -20,6 +20,13 @@
 package integration
 
 import (
+	"context"
+	"os"
+	"testing"
+	"time"
+)
+
+import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
@@ -36,13 +43,6 @@ import (
 	_ "github.com/apache/dubbo-go/registry/consul"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/servicediscovery"
-)
-
-import (
-	"context"
-	"os"
-	"testing"
-	"time"
 )
 
 var userProvider = new(UserProvider)
