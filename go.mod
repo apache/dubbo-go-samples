@@ -21,5 +21,3 @@ require (
 )
 
 go 1.13
-
-replace github.com/apache/dubbo-go v1.5.2-0.20201205063214-68ff8be79d6d => ../../../dubbo-go
