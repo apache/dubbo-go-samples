@@ -29,6 +29,7 @@ import (
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/metadata/mapping/memory"
 	_ "github.com/apache/dubbo-go/metadata/report/consul"
+	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
 	_ "github.com/apache/dubbo-go/metadata/service/remote"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/protocol/jsonrpc"
