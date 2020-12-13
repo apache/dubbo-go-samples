@@ -19,13 +19,13 @@ package main
 
 import (
 	"context"
-	"github.com/apache/dubbo-go/config"
 	"time"
 )
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go-samples/general/dubbo/go-client/pkg"
+	"github.com/apache/dubbo-go/config"
 	"github.com/dubbogo/gost/log"
 )
 
@@ -40,7 +40,6 @@ import (
 )
 
 var (
-	survivalTimeout int = 10e9
 	userProvider        = new(pkg.UserProvider)
 	userProvider1       = new(pkg.UserProvider1)
 	userProvider2       = new(pkg.UserProvider2)
@@ -55,18 +54,18 @@ func main() {
 	config.SetConsumerService(userProvider)
 
 	// FIXME: cannot make multi-references work
-	//config.SetConsumerService(userProvider1)
-	//config.SetConsumerService(userProvider2)
+	config.SetConsumerService(userProvider1)
+	config.SetConsumerService(userProvider2)
 	config.Load()
 
 	time.Sleep(6 * time.Second)
 
 	gxlog.CInfo("\n\ntest")
 	test()
-	//gxlog.CInfo("\n\ntest1")
-	//test1()
-	//gxlog.CInfo("\n\ntest2")
-	//test2()
+	gxlog.CInfo("\n\ntest1")
+	test1()
+	gxlog.CInfo("\n\ntest2")
+	test2()
 }
 
 func test() {

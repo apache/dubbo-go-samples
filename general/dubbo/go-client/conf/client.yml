@@ -30,16 +30,19 @@ references:
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
-#  "UserProvider1":
-#    registry: "demoZk"
-#    protocol: "dubbo"
-#    interface: "org.apache.dubbo.UserProvider"
-#    cluster: "failover"
-#  "UserProvider2":
-#    registry: "demoZk"
-#    protocol: "dubbo"
-#    interface: "org.apache.dubbo.UserProvider"
-#    cluster: "failover"
+  "UserProvider1":
+    registry: "demoZk"
+    protocol: "dubbo"
+    version: "2.0"
+    interface: "org.apache.dubbo.UserProvider"
+    cluster: "failover"
+  "UserProvider2":
+    registry: "demoZk"
+    protocol: "dubbo"
+    group: "as"
+    version: "2.0"
+    interface: "org.apache.dubbo.UserProvider"
+    cluster: "failover"
 
 # protocol config
 protocol_conf:
