@@ -20,6 +20,13 @@
 package integration
 
 import (
+	"context"
+	"os"
+	"testing"
+	"time"
+)
+
+import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
@@ -30,17 +37,12 @@ import (
 	_ "github.com/apache/dubbo-go/metadata/mapping/memory"
 	_ "github.com/apache/dubbo-go/metadata/report/consul"
 	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
+	_ "github.com/apache/dubbo-go/metadata/service/remote"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/protocol/jsonrpc"
 	_ "github.com/apache/dubbo-go/registry/consul"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/servicediscovery"
-)
-
-import (
-	"context"
-	"os"
-	"testing"
-	"time"
 )
 
 var userProvider = new(UserProvider)
@@ -70,5 +72,5 @@ func (u *UserProvider) Reference() string {
 }
 
 func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	return "com.ikurento.user.User"
 }
