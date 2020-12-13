@@ -20,8 +20,6 @@ package main
 import (
 	"context"
 	"fmt"
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/consul/go-client/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -29,6 +27,11 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/consul/go-client/pkg"
+)
+
+import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
