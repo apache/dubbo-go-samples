@@ -4,7 +4,7 @@
 # application config
 application:
   organization: "ikurento.com"
-  name: "user-info-server"
+  name: "UserInfoServer"
   module: "dubbogo user-info server"
   version: "0.0.1"
   owner: "ZX"
@@ -52,7 +52,7 @@ services:
 protocols:
   "dubbo":
     name: "dubbo"
-    port: 20000
+    port: 20001
 
 
 protocol_conf:
