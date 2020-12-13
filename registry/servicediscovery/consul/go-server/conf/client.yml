@@ -1,44 +1,58 @@
 # dubbo client yaml configure file
 
+
 check: true
 # client
-request_timeout: "3s"
+request_timeout : "3s"
 # connect timeout
-connect_timeout: "3s"
+connect_timeout : "3s"
 
 # application config
 application:
-  organization: "dubbo.io"
-  name: "UserInfoServer"
-  module: "dubbo-go user-info client"
-  version: "0.0.1"
-  environment: "dev"
+  organization : "ikurento.com"
+  name  : "user-info-client"
+  module : "dubbogo user-info client"
+  version : "0.0.1"
+  owner : "ZX"
+  environment : "dev"
 
-# registry config
+
 registries:
   "demoServiceDiscovery":
     protocol: "service-discovery"
     params:
-      service_discovery: "file1"
+      service_discovery: "consul_dis"
       name_mapping: "in-memory"
       metadata: "default"
 
-service_discovery:
-  file1:
-    protocol: "file"
+remote:
+  consul1:
+    address: "127.0.0.1:8500"
+    timeout: "5s"
 
-# reference config
+metadata_report:
+  protocol: "consul"
+  remote_ref: "consul1"
+
+service_discovery:
+  consul_dis:
+    protocol: "consul"
+    remote_ref: "consul1"
+
+
 references:
   "UserProvider":
+    # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册
     registry: "demoServiceDiscovery"
-    protocol: "dubbo"
-    interface: "org.apache.dubbo.UserProvider"
+    protocol : "dubbo"
+    provide_by: "UserInfoServer"
+    interface : "com.ikurento.user.UserProvider"
     cluster: "failover"
-    methods:
-      - name: "GetUser"
-        retries: 3
+    methods :
+    - name: "GetUser"
+      retries: 3
 
-# protocol config
+
 protocol_conf:
   dubbo:
     reconnect_interval: 0
