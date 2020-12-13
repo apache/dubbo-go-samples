@@ -30,6 +30,7 @@ service_discovery:
 # reference config
 references:
   "UserProvider":
+    provide_by: "UserInfoServer"
     registry: "demoServiceDiscovery"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"

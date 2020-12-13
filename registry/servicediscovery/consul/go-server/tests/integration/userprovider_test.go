@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,40 +17,22 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
 )
-
 import (
-	"github.com/apache/dubbo-go-samples/seata/filter"
-	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
+	"github.com/stretchr/testify/assert"
 )
 
-import (
-	context2 "github.com/dk-lockdown/seata-golang/client/context"
-)
-
-type ProductSvc struct {
-	dao *dao2.Dao
-}
-
-func (svc *ProductSvc) AllocateInventory(ctx context.Context, reqs []*dao2.AllocateInventoryReq) (*dao2.AllocateInventoryResult, error) {
-	attach := ctx.Value("attachment").(map[string]interface{})
-	val := attach[filter.SEATA_XID]
-	xid := val.(string)
-
-	rootContext := &context2.RootContext{Context: ctx}
-	rootContext.Bind(xid)
-
-	err := svc.dao.AllocateInventory(rootContext, reqs)
-	if err == nil {
-		return &dao2.AllocateInventoryResult{true}, nil
-	}
-	return &dao2.AllocateInventoryResult{false}, err
-}
-
-func (svc *ProductSvc) Reference() string {
-	return "ProductSvc"
+func TestGetUser(t *testing.T) {
+	user := &User{}
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	assert.Nil(t, err)
+	assert.Equal(t, "A001", user.Id)
+	assert.Equal(t, "Alex Stocks", user.Name)
+	assert.Equal(t, int32(18), user.Age)
+	assert.NotNil(t, user.Time)
 }

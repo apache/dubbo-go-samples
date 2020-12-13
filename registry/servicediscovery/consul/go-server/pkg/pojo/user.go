@@ -15,40 +15,46 @@
  * limitations under the License.
  */
 
-package main
+package pojo
 
 import (
 	"context"
+	"time"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/seata/filter"
-	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
+	"github.com/apache/dubbo-go/config"
 )
 
 import (
-	context2 "github.com/dk-lockdown/seata-golang/client/context"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
-type ProductSvc struct {
-	dao *dao2.Dao
+func init() {
+	config.SetProviderService(new(UserProvider))
 }
 
-func (svc *ProductSvc) AllocateInventory(ctx context.Context, reqs []*dao2.AllocateInventoryReq) (*dao2.AllocateInventoryResult, error) {
-	attach := ctx.Value("attachment").(map[string]interface{})
-	val := attach[filter.SEATA_XID]
-	xid := val.(string)
-
-	rootContext := &context2.RootContext{Context: ctx}
-	rootContext.Bind(xid)
-
-	err := svc.dao.AllocateInventory(rootContext, reqs)
-	if err == nil {
-		return &dao2.AllocateInventoryResult{true}, nil
-	}
-	return &dao2.AllocateInventoryResult{false}, err
+type User struct {
+	Id   string
+	Name string
+	Age  int32
+	Time time.Time
 }
 
-func (svc *ProductSvc) Reference() string {
-	return "ProductSvc"
+type UserProvider struct {
+}
+
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+	gxlog.CInfo("req: %v\n", req)
+	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	gxlog.CInfo("rsp: %v\n", rsp)
+	return &rsp, nil
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
+}
+
+func (u User) JavaClassName() string {
+	return "com.ikurento.user.User"
 }
