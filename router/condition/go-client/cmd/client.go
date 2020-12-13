@@ -20,7 +20,6 @@ package main
 import (
 	"context"
 	"os"
-	"time"
 )
 
 import (
@@ -53,7 +52,6 @@ func init() {
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
-	time.Sleep(6 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &pkg.User{}
