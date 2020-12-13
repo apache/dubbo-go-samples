@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  consul:
+    image: consul:latest
+    ports:
+      - 8500:8500
+    restart: on-failure
+    command: agent -server -bind=0.0.0.0 -client=0.0.0.0 -node=consul_Server1 -bootstrap-expect=1 -ui
