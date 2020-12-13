@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,53 +17,60 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
 	"os"
+	"testing"
 	"time"
 )
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/router/condition/go-client/pkg"
-	"github.com/dubbogo/gost/log"
-)
 
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	_ "github.com/apache/dubbo-go/cluster/router/condition"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "github.com/apache/dubbo-go/metadata/mapping/memory"
+	_ "github.com/apache/dubbo-go/metadata/report/consul"
+	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
+	_ "github.com/apache/dubbo-go/metadata/service/remote"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/protocol/jsonrpc"
+	_ "github.com/apache/dubbo-go/registry/consul"
 	_ "github.com/apache/dubbo-go/registry/protocol"
-	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	_ "github.com/apache/dubbo-go/registry/servicediscovery"
 )
 
-var userProvider = new(pkg.UserProvider)
+var userProvider = new(UserProvider)
 
-func init() {
+func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
+	hessian.RegisterPOJO(&User{})
+	config.Load()
+	time.Sleep(3 * time.Second)
+
+	os.Exit(m.Run())
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-// need to setup environment variable "CONF_ROUTER_FILE_PATH" to "conf/router_config.yml" before run
-func main() {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
-	time.Sleep(6 * time.Second)
+type User struct {
+	Id   string
+	Name string
+	Age  int32
+	Time time.Time
+}
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+type UserProvider struct {
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
+}
+
+func (User) JavaClassName() string {
+	return "com.ikurento.user.User"
 }
