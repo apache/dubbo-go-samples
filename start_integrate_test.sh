@@ -51,7 +51,9 @@ array+=("metric/go-server")
 array+=("router/condition/go-server")
 #array+=("router/tag/go-server")
 
-# registry
+# registry/servicediscovery/zookeeper
+array+=("registry/servicediscovery/zookeeper/go-server")
+# registry/servicediscovery/consul
 array+=("registry/servicediscovery/consul/go-server")
 
 
