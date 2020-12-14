@@ -1,7 +1,7 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	github.com/apache/dubbo-go v1.5.2-0.20201213072836-1f708d7cb6c5
+	github.com/apache/dubbo-go v1.5.5-0.20201214154155-807de6b51b1b
 	github.com/apache/dubbo-go-hessian2 v1.7.0
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dk-lockdown/seata-golang v0.1.0-fix
