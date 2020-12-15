@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,38 +15,23 @@
  * limitations under the License.
  */
 
-package integration
-
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	_ "github.com/apache/dubbo-go/cluster/router/condition"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/protocol"
-	_ "github.com/apache/dubbo-go/registry/zookeeper"
-)
+package pojo
 
 import (
 	"context"
-	"os"
-	"testing"
 	"time"
 )
 
-var userProvider = new(UserProvider)
+import (
+	"github.com/apache/dubbo-go/config"
+)
 
-func TestMain(m *testing.M) {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
-	config.Load()
-	time.Sleep(6 * time.Second)
+import (
+	gxlog "github.com/dubbogo/gost/log"
+)
 
-	os.Exit(m.Run())
+func init() {
+	config.SetProviderService(new(UserProvider))
 }
 
 type User struct {
@@ -59,13 +42,19 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+}
+
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+	gxlog.CInfo("req: %v\n", req)
+	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	gxlog.CInfo("rsp: %v\n", rsp)
+	return &rsp, nil
 }
 
 func (u *UserProvider) Reference() string {
 	return "UserProvider"
 }
 
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+func (u User) JavaClassName() string {
+	return "com.ikurento.user.User"
 }
