@@ -35,7 +35,8 @@ type OrderSvc struct {
 }
 
 func (svc *OrderSvc) CreateSo(ctx context.Context, reqs []*dao2.SoMaster) (*dao2.CreateSoResult, error) {
-	val := ctx.Value(filter.SEATA_XID)
+	attach := ctx.Value("attachment").(map[string]interface{})
+	val := attach[filter.SEATA_XID]
 	xid := val.(string)
 
 	rootContext := &context2.RootContext{Context: ctx}
