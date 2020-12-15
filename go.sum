@@ -113,6 +113,8 @@ github.com/apache/dubbo-go v1.5.5-0.20201214154155-807de6b51b1b h1:WHTpCjv9/b/Lq
 github.com/apache/dubbo-go v1.5.5-0.20201214154155-807de6b51b1b/go.mod h1:KAty5L/vcHjh3qcTfC4R5Nfd0tkk7MLJnux/IQKfQLg=
 github.com/apache/dubbo-go v1.5.5-0.20201215084654-a347a0498e77 h1:sn0IV+DJ7kNlF+8h6blGd6ZIdaVMdTTs9VtHw02goB8=
 github.com/apache/dubbo-go v1.5.5-0.20201215084654-a347a0498e77/go.mod h1:KAty5L/vcHjh3qcTfC4R5Nfd0tkk7MLJnux/IQKfQLg=
+github.com/apache/dubbo-go v1.5.5-rc1 h1:33yiuW9P6U1OVugHplXolB48dWN7B2qEZQWw+aT4VHA=
+github.com/apache/dubbo-go v1.5.5-rc1/go.mod h1:KAty5L/vcHjh3qcTfC4R5Nfd0tkk7MLJnux/IQKfQLg=
 github.com/apache/dubbo-go-hessian2 v1.7.0 h1:u2XxIuepu/zb6JcGZc7EbvKboXdKoJbf7rbmeq6SF1w=
 github.com/apache/dubbo-go-hessian2 v1.7.0/go.mod h1:7rEw9guWABQa6Aqb8HeZcsYPHsOS7XT1qtJvkmI6c5w=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
