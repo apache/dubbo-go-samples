@@ -18,6 +18,7 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
+	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
 	google.golang.org/grpc v1.34.0
 	google.golang.org/grpc/examples v0.0.0-20210107225343-0bd76be2bb6b // indirect
 )
