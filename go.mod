@@ -22,4 +22,5 @@ require (
 
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
+replace github.com/alibaba/sentinel-golang => github.com/alibaba/sentinel-golang v1.0.1
 go 1.13
