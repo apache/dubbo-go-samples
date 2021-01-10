@@ -1,4 +1,4 @@
-level: "error"
+level: "info"
 development: true
 disableCaller: false
 disableStacktrace: false
