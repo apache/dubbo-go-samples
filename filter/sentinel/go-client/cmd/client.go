@@ -23,6 +23,8 @@ import (
 )
 
 import (
+	"github.com/alibaba/sentinel-golang/api"
+	sentinelConf "github.com/alibaba/sentinel-golang/core/config"
 	"github.com/alibaba/sentinel-golang/core/flow"
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go-samples/helloworld/go-client/pkg"
@@ -53,14 +55,17 @@ func main() {
 	config.Load()
 	time.Sleep(3 * time.Second)
 
+	if err := initSentinel(); err != nil {
+		panic(err)
+	}
 	_, err := flow.LoadRules([]*flow.Rule{
 		{
-			ID: 666,
 			// protocol:consumer:interfaceName:group:version:method
-			Resource:        "dubbo:consumer:org.apache.dubbo.UserProvider:::GetUser()",
-			MetricType:      flow.QPS,
-			Count:           1,
-			ControlBehavior: flow.Reject,
+			Resource:               "dubbo:consumer:org.apache.dubbo.UserProvider:::GetUser()",
+			TokenCalculateStrategy: flow.Direct,
+			ControlBehavior:        flow.Reject,
+			Threshold:              1,
+			StatIntervalInMs:       1000,
 		},
 	})
 	if err != nil {
@@ -78,4 +83,10 @@ func main() {
 		gxlog.CInfo("response result: %v\n", user)
 	}
 
+}
+
+func initSentinel() error {
+	// custom changes configs
+	conf := sentinelConf.NewDefaultConfig()
+	return api.InitWithConfig(conf)
 }
