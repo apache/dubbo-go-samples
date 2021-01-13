@@ -46,7 +46,7 @@ var (
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
 	config.SetProviderService(pkg.NewGreeterProvider())
-	go config.Load()
+	config.Load()
 	initSignal()
 }
 
