@@ -34,7 +34,7 @@ services:
 protocols:
   "dubbo3":
     name: "dubbo3"
-    port: 20000
+    port: 19998
 
 protocol_conf:
   grpc:

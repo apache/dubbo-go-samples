@@ -21,6 +21,7 @@ import (
 	"context"
 	dubbo3 "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/dubbo3"
 	"github.com/apache/dubbo-go-samples/general/dubbo3/unary-client/dubbo3-client/pkg"
+	"github.com/apache/dubbo-go/common/logger"
 	"github.com/dubbogo/gost/log"
 	"sync"
 	"time"
@@ -62,7 +63,7 @@ func main() {
 		go func() {
 			err := grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
 			if err != nil {
-				panic(err)
+				logger.Error(err)
 			}
 			gxlog.CInfo("client response result: %v\n", reply)
 			//wg.Done()

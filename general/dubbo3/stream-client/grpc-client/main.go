@@ -22,13 +22,14 @@ import (
 	pb "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/grpc"
 	"log"
 	"os"
+	"time"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
 const (
-	address = "localhost:20000"
+	address = "localhost:19998"
 	//address     = "localhost:50051"
 )
 
@@ -47,33 +48,43 @@ func main() {
 		name = os.Args[1]
 	}
 
-	for i := 0; i < 100; i++ {
-		r, err := c.Dubbo3SayHello(context.Background())
-		if err != nil {
-			fmt.Println("say hello err:", err)
-		}
+	//rcache := make([]protobuf.Dubbo3Greeter_Dubbo3SayHelloClient, 0)
 
-		if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
-			fmt.Println("say hello err:", err)
-		}
-		if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
-			fmt.Println("say hello err:", err)
-		}
-		//time.Sleep(time.Second * 10)
-		if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
-			fmt.Println("say hello err:", err)
-		}
-		rsp := &pb.Dubbo3HelloReply{}
-		if err := r.RecvMsg(rsp); err != nil {
-			fmt.Println("err = ", err)
-		}
-		fmt.Printf("firstSend Got rsp = %+v\n", rsp)
-		rsp = &pb.Dubbo3HelloReply{}
-		if err := r.RecvMsg(rsp); err != nil {
-			fmt.Println("err = ", err)
-		}
-		fmt.Printf("firstSend Got rsp = %+v\n", rsp)
+	for i := 0; i < 10; i++ {
+		go func() {
+			r, err := c.Dubbo3SayHello(context.Background())
+			if err != nil {
+				fmt.Println("say hello err:", err)
+			}
+			if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
+				fmt.Println("say hello err:", err)
+			}
+			if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
+				fmt.Println("say hello err:", err)
+			}
+			//time.Sleep(time.Second * 10)
+			if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
+				fmt.Println("say hello err:", err)
+			}
+			rsp := &pb.Dubbo3HelloReply{}
+			if err := r.RecvMsg(rsp); err != nil {
+				fmt.Println("err = ", err)
+			}
+			fmt.Printf("firstSend Got rsp = %+v\n", rsp)
+			rsp = &pb.Dubbo3HelloReply{}
+			if err := r.RecvMsg(rsp); err != nil {
+				fmt.Println("err = ", err)
+			}
+			fmt.Printf("firstSend Got rsp = %+v\n", rsp)
+		}()
 
+		//rcache = append(rcache, r)
 	}
+
+	time.Sleep(time.Second*5)
+
+	//for _, r := range rcache{
+	//
+	//}
 
 }

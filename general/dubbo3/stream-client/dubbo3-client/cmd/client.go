@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"fmt"
+	protobuf "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/dubbo3"
 	"sync"
 	"time"
 )
@@ -57,37 +58,37 @@ func testMultiThreadStreamClient() {
 	//ctx = context.WithValue(ctx,"tri-req-id","id value" )
 
 	wg := sync.WaitGroup{}
-	for i := 0; i < 100; i++ {
-		wg.Add(1)
-		go func() {
-			r, err := grpcGreeterImpl.Dubbo3SayHello(ctx)
-			if err != nil {
-				panic(err)
-			}
-			if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng1"}); err != nil {
-				fmt.Println("say hello err:", err)
-			}
-			if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng2"}); err != nil {
-				fmt.Println("say hello err:", err)
-			}
-			if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng3"}); err != nil {
-				fmt.Println("say hello err:", err)
-			}
+	clientList := make([]protobuf.Dubbo3Greeter_Dubbo3SayHelloClient, 0,1000 )
+	for i := 0; i < 10; i++ {
 
-			rsp := &dubbo3.Dubbo3HelloReply{}
-			if err := r.RecvMsg(rsp); err != nil {
-				fmt.Println("err = ", err)
-			}
-			fmt.Printf("firstSend Got rsp = %+v\n", rsp)
-			rsp = &dubbo3.Dubbo3HelloReply{}
-			if err := r.RecvMsg(rsp); err != nil {
-				fmt.Println("err = ", err)
-			}
-			fmt.Printf("firstSend Got rsp = %+v\n", rsp)
-			wg.Done()
-		}()
+		r, err := grpcGreeterImpl.Dubbo3SayHello(ctx)
+		if err != nil {
+			panic(err)
+		}
+		clientList = append(clientList, r)
+		if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng1"}); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+		if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng2"}); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+		if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng3"}); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+
+		rsp := &dubbo3.Dubbo3HelloReply{}
+		if err := r.RecvMsg(rsp); err != nil {
+			fmt.Println("err = ", err)
+		}
+		fmt.Printf("firstSend Got rsp = %+v\n", rsp)
+		rsp = &dubbo3.Dubbo3HelloReply{}
+		if err := r.RecvMsg(rsp); err != nil {
+			fmt.Println("err = ", err)
+		}
+		fmt.Printf("firstSend Got rsp = %+v\n", rsp)
 	}
 	wg.Wait()
+	time.Sleep(time.Second*3)
 }
 
 func testStreamClient() {

@@ -36,8 +36,7 @@ func NewGreeterProvider() *GreeterProvider {
 // Dubbo3SayHello2 is a unary-client rpc example
 func (s *GreeterProvider) Dubbo3SayHello2(ctx context.Context, in *dubbo3.Dubbo3HelloRequest) (*dubbo3.Dubbo3HelloReply, error) {
 	fmt.Println("######### get server request name :" + in.Myname)
-
-	return &dubbo3.Dubbo3HelloReply{Msg: "Hello " + in.Myname}, nil
+	return &dubbo3.Dubbo3HelloReply{Msg: "Hello " + in.Myname},nil
 }
 
 // Dubbo3SayHello is a server rpc exmple

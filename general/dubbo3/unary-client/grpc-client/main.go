@@ -18,6 +18,7 @@
 package main
 
 import (
+	"fmt"
 	pb "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/grpc"
 	"log"
 	"os"
@@ -28,7 +29,7 @@ import (
 )
 
 const (
-	address     = "localhost:20000"
+	address     = "localhost:19998"
 	defaultName = "jifeng"
 )
 
@@ -47,12 +48,12 @@ func main() {
 		name = os.Args[1]
 	}
 	wg := sync.WaitGroup{}
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 200; i++ {
 		wg.Add(1)
 		go func() {
 			r, err := c.Dubbo3SayHello2(context.Background(), &pb.Dubbo3HelloRequest{Myname: name})
 			if err != nil {
-				log.Fatalf("could not greet: %v", err)
+				fmt.Print("could not greet: %v", err)
 			}
 			log.Printf("####### get client %+v", r)
 			wg.Done()

@@ -27,7 +27,7 @@ registries:
 references:
   "GrpcGreeterImpl":
     registry: "demoZk"
-    url: "dubbo3://localhost:20000"
+    url: "dubbo3://localhost:19998"
     protocol: "dubbo3"
     interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
     cluster: "failover"
