@@ -50,7 +50,7 @@ func main() {
 
 	//rcache := make([]protobuf.Dubbo3Greeter_Dubbo3SayHelloClient, 0)
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 1; i++ {
 		go func() {
 			r, err := c.Dubbo3SayHello(context.Background())
 			if err != nil {

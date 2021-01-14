@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	dubbo3 "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/dubbo3"
 	"github.com/apache/dubbo-go-samples/general/dubbo3/unary-client/dubbo3-client/pkg"
 	"github.com/apache/dubbo-go/common/logger"
@@ -65,7 +66,7 @@ func main() {
 			if err != nil {
 				logger.Error(err)
 			}
-			gxlog.CInfo("client response result: %v\n", reply)
+			fmt.Printf("client response result: %v\n", reply)
 			//wg.Done()
 			wg.Done()
 		}()

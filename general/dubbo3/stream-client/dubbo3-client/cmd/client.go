@@ -59,8 +59,7 @@ func testMultiThreadStreamClient() {
 
 	wg := sync.WaitGroup{}
 	clientList := make([]protobuf.Dubbo3Greeter_Dubbo3SayHelloClient, 0,1000 )
-	for i := 0; i < 10; i++ {
-
+	for i := 0; i < 1; i++ {
 		r, err := grpcGreeterImpl.Dubbo3SayHello(ctx)
 		if err != nil {
 			panic(err)
