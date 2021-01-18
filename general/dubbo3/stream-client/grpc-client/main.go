@@ -21,7 +21,6 @@ import (
 	"fmt"
 	pb "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/grpc"
 	"log"
-	"os"
 	"time"
 
 	"golang.org/x/net/context"
@@ -43,39 +42,72 @@ func main() {
 	c := pb.NewDubbo3GreeterClient(conn)
 
 	// Contact the grpc-client and print out its response.
-	name := "jifeng"
-	if len(os.Args) > 1 {
-		name = os.Args[1]
-	}
+	//name := "jifeng"
+	//if len(os.Args) > 1 {
+	//	name = os.Args[1]
+	//}
 
 	//rcache := make([]protobuf.Dubbo3Greeter_Dubbo3SayHelloClient, 0)
 
+	BigDataReq := pb.BigStreamData{
+		WantSize: 17000,
+		Data: make([]byte, 17000),
+	}
 	for i := 0; i < 1; i++ {
 		go func() {
-			r, err := c.Dubbo3SayHello(context.Background())
+			// Test BigStream
+			r, err := c.BigStreamTest(context.Background())
 			if err != nil {
 				fmt.Println("say hello err:", err)
 			}
-			if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
+			if err := r.Send(&BigDataReq); err != nil {
 				fmt.Println("say hello err:", err)
 			}
-			if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
+			BigDataReq.WantSize++
+			if err := r.Send(&BigDataReq); err != nil {
 				fmt.Println("say hello err:", err)
 			}
+			BigDataReq.WantSize++
 			//time.Sleep(time.Second * 10)
-			if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
+			if err := r.Send(&BigDataReq); err != nil {
 				fmt.Println("say hello err:", err)
 			}
-			rsp := &pb.Dubbo3HelloReply{}
+			rsp := &pb.BigStreamData{}
 			if err := r.RecvMsg(rsp); err != nil {
 				fmt.Println("err = ", err)
 			}
-			fmt.Printf("firstSend Got rsp = %+v\n", rsp)
-			rsp = &pb.Dubbo3HelloReply{}
+			fmt.Printf("firstSend Got len = %+v\n", len(rsp.Data))
+			rsp = &pb.BigStreamData{}
 			if err := r.RecvMsg(rsp); err != nil {
 				fmt.Println("err = ", err)
 			}
-			fmt.Printf("firstSend Got rsp = %+v\n", rsp)
+			fmt.Printf("secondSend Got len = %+v\n", len(rsp.Data))
+
+			// Test SayHello
+			//r, err := c.Dubbo3SayHello(context.Background())
+			//if err != nil {
+			//	fmt.Println("say hello err:", err)
+			//}
+			//if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
+			//	fmt.Println("say hello err:", err)
+			//}
+			//if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
+			//	fmt.Println("say hello err:", err)
+			//}
+			////time.Sleep(time.Second * 10)
+			//if err := r.Send(&pb.Dubbo3HelloRequest{Myname: name}); err != nil {
+			//	fmt.Println("say hello err:", err)
+			//}
+			//rsp := &pb.Dubbo3HelloReply{}
+			//if err := r.RecvMsg(rsp); err != nil {
+			//	fmt.Println("err = ", err)
+			//}
+			//fmt.Printf("firstSend Got rsp = %+v\n", rsp)
+			//rsp = &pb.Dubbo3HelloReply{}
+			//if err := r.RecvMsg(rsp); err != nil {
+			//	fmt.Println("err = ", err)
+			//}
+			//fmt.Printf("firstSend Got rsp = %+v\n", rsp)
 		}()
 
 		//rcache = append(rcache, r)

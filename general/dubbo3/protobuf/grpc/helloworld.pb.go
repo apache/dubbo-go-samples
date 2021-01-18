@@ -104,28 +104,81 @@ func (m *Dubbo3HelloReply) GetMsg() string {
 	return ""
 }
 
+type BigStreamData struct {
+	Data                 []byte   `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	WantSize             int32    `protobuf:"varint,2,opt,name=wantSize,proto3" json:"wantSize,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *BigStreamData) Reset()         { *m = BigStreamData{} }
+func (m *BigStreamData) String() string { return proto.CompactTextString(m) }
+func (*BigStreamData) ProtoMessage()    {}
+func (*BigStreamData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_17b8c58d586b62f2, []int{2}
+}
+
+func (m *BigStreamData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_BigStreamData.Unmarshal(m, b)
+}
+func (m *BigStreamData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_BigStreamData.Marshal(b, m, deterministic)
+}
+func (m *BigStreamData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_BigStreamData.Merge(m, src)
+}
+func (m *BigStreamData) XXX_Size() int {
+	return xxx_messageInfo_BigStreamData.Size(m)
+}
+func (m *BigStreamData) XXX_DiscardUnknown() {
+	xxx_messageInfo_BigStreamData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_BigStreamData proto.InternalMessageInfo
+
+func (m *BigStreamData) GetData() []byte {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+func (m *BigStreamData) GetWantSize() int32 {
+	if m != nil {
+		return m.WantSize
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Dubbo3HelloRequest)(nil), "protobuf.Dubbo3HelloRequest")
 	proto.RegisterType((*Dubbo3HelloReply)(nil), "protobuf.Dubbo3HelloReply")
+	proto.RegisterType((*BigStreamData)(nil), "protobuf.BigStreamData")
 }
 
 func init() { proto.RegisterFile("helloworld.proto", fileDescriptor_17b8c58d586b62f2) }
 
 var fileDescriptor_17b8c58d586b62f2 = []byte{
-	// 205 bytes of a gzipped FileDescriptorProto
+	// 276 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0xc8, 0x48, 0xcd, 0xc9,
 	0xc9, 0x2f, 0xcf, 0x2f, 0xca, 0x49, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x00, 0x53,
 	0x49, 0xa5, 0x69, 0x4a, 0x3a, 0x5c, 0x42, 0x2e, 0xa5, 0x49, 0x49, 0xf9, 0xc6, 0x1e, 0x20, 0x35,
 	0x41, 0xa9, 0x85, 0xa5, 0xa9, 0xc5, 0x25, 0x42, 0x62, 0x5c, 0x6c, 0xb9, 0x95, 0x79, 0x89, 0xb9,
 	0xa9, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x50, 0x9e, 0x92, 0x0a, 0x97, 0x00, 0x8a, 0xea,
-	0x82, 0x9c, 0x4a, 0x21, 0x01, 0x2e, 0xe6, 0xdc, 0xe2, 0x74, 0xa8, 0x42, 0x10, 0xd3, 0x68, 0x03,
-	0x23, 0x17, 0x2f, 0x44, 0x99, 0x7b, 0x51, 0x6a, 0x6a, 0x49, 0x6a, 0x91, 0x50, 0x00, 0x17, 0x1f,
-	0x44, 0x20, 0x38, 0xb1, 0x12, 0xac, 0x55, 0x48, 0x46, 0x0f, 0xe6, 0x04, 0x3d, 0x4c, 0xfb, 0xa5,
-	0xa4, 0x70, 0xc8, 0x16, 0xe4, 0x54, 0x2a, 0x31, 0x68, 0x30, 0x1a, 0x30, 0x0a, 0xf9, 0x72, 0xf1,
-	0xa3, 0x9a, 0x68, 0x44, 0x89, 0x91, 0x4e, 0xda, 0x5c, 0x02, 0xf9, 0x45, 0xe9, 0x7a, 0x89, 0x05,
-	0x89, 0xc9, 0x19, 0xa9, 0x7a, 0x29, 0x20, 0x05, 0x4e, 0xfc, 0x60, 0x15, 0xe1, 0xa0, 0x60, 0x0b,
-	0x00, 0x69, 0x0d, 0x60, 0x5c, 0xc4, 0xc4, 0xec, 0xe1, 0x13, 0x9e, 0xc4, 0x06, 0x36, 0xc9, 0x18,
-	0x10, 0x00, 0x00, 0xff, 0xff, 0x66, 0x6c, 0x45, 0x54, 0x58, 0x01, 0x00, 0x00,
+	0x82, 0x9c, 0x4a, 0x21, 0x01, 0x2e, 0xe6, 0xdc, 0xe2, 0x74, 0xa8, 0x42, 0x10, 0x53, 0xc9, 0x9e,
+	0x8b, 0xd7, 0x29, 0x33, 0x3d, 0xb8, 0xa4, 0x28, 0x35, 0x31, 0xd7, 0x25, 0xb1, 0x24, 0x51, 0x48,
+	0x88, 0x8b, 0x25, 0x25, 0xb1, 0x24, 0x11, 0xac, 0x86, 0x27, 0x08, 0xcc, 0x16, 0x92, 0xe2, 0xe2,
+	0x28, 0x4f, 0xcc, 0x2b, 0x09, 0xce, 0xac, 0x4a, 0x95, 0x60, 0x52, 0x60, 0xd4, 0x60, 0x0d, 0x82,
+	0xf3, 0x8d, 0x7e, 0x32, 0x72, 0xf1, 0x42, 0xec, 0x71, 0x2f, 0x4a, 0x4d, 0x2d, 0x49, 0x2d, 0x12,
+	0x0a, 0xe0, 0xe2, 0x83, 0x08, 0x04, 0x27, 0x56, 0x82, 0xed, 0x16, 0x92, 0xd1, 0x83, 0xf9, 0x41,
+	0x0f, 0xd3, 0x03, 0x52, 0x52, 0x38, 0x64, 0x0b, 0x72, 0x2a, 0x95, 0x18, 0x34, 0x18, 0x0d, 0x18,
+	0x85, 0x7c, 0xb9, 0xf8, 0x51, 0x4d, 0x34, 0xa2, 0xc4, 0x48, 0x21, 0x77, 0x24, 0x3f, 0x87, 0x80,
+	0x82, 0x50, 0x1c, 0xa1, 0x1c, 0x25, 0x30, 0xa4, 0x70, 0x49, 0x40, 0xdc, 0xe5, 0xa4, 0xcd, 0x25,
+	0x90, 0x5f, 0x94, 0xae, 0x97, 0x58, 0x90, 0x98, 0x9c, 0x91, 0xaa, 0x97, 0x02, 0xb2, 0xc9, 0x89,
+	0x1f, 0x6c, 0x55, 0x38, 0x28, 0x02, 0x03, 0x40, 0x7a, 0x03, 0x18, 0x17, 0x31, 0x31, 0x7b, 0xf8,
+	0x84, 0x27, 0xb1, 0x81, 0x8d, 0x32, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x8f, 0x73, 0xa3, 0x7c,
+	0xe2, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -143,6 +196,7 @@ type Dubbo3GreeterClient interface {
 	// Sends a greeting
 	Dubbo3SayHello(ctx context.Context, opts ...grpc.CallOption) (Dubbo3Greeter_Dubbo3SayHelloClient, error)
 	Dubbo3SayHello2(ctx context.Context, in *Dubbo3HelloRequest, opts ...grpc.CallOption) (*Dubbo3HelloReply, error)
+	BigStreamTest(ctx context.Context, opts ...grpc.CallOption) (Dubbo3Greeter_BigStreamTestClient, error)
 }
 
 type dubbo3GreeterClient struct {
@@ -193,11 +247,43 @@ func (c *dubbo3GreeterClient) Dubbo3SayHello2(ctx context.Context, in *Dubbo3Hel
 	return out, nil
 }
 
+func (c *dubbo3GreeterClient) BigStreamTest(ctx context.Context, opts ...grpc.CallOption) (Dubbo3Greeter_BigStreamTestClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Dubbo3Greeter_serviceDesc.Streams[1], "/protobuf.Dubbo3Greeter/BigStreamTest", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &dubbo3GreeterBigStreamTestClient{stream}
+	return x, nil
+}
+
+type Dubbo3Greeter_BigStreamTestClient interface {
+	Send(*BigStreamData) error
+	Recv() (*BigStreamData, error)
+	grpc.ClientStream
+}
+
+type dubbo3GreeterBigStreamTestClient struct {
+	grpc.ClientStream
+}
+
+func (x *dubbo3GreeterBigStreamTestClient) Send(m *BigStreamData) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *dubbo3GreeterBigStreamTestClient) Recv() (*BigStreamData, error) {
+	m := new(BigStreamData)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // Dubbo3GreeterServer is the server API for Dubbo3Greeter service.
 type Dubbo3GreeterServer interface {
 	// Sends a greeting
 	Dubbo3SayHello(Dubbo3Greeter_Dubbo3SayHelloServer) error
 	Dubbo3SayHello2(context.Context, *Dubbo3HelloRequest) (*Dubbo3HelloReply, error)
+	BigStreamTest(Dubbo3Greeter_BigStreamTestServer) error
 }
 
 // UnimplementedDubbo3GreeterServer can be embedded to have forward compatible implementations.
@@ -209,6 +295,9 @@ func (*UnimplementedDubbo3GreeterServer) Dubbo3SayHello(srv Dubbo3Greeter_Dubbo3
 }
 func (*UnimplementedDubbo3GreeterServer) Dubbo3SayHello2(ctx context.Context, req *Dubbo3HelloRequest) (*Dubbo3HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Dubbo3SayHello2 not implemented")
+}
+func (*UnimplementedDubbo3GreeterServer) BigStreamTest(srv Dubbo3Greeter_BigStreamTestServer) error {
+	return status.Errorf(codes.Unimplemented, "method BigStreamTest not implemented")
 }
 
 func RegisterDubbo3GreeterServer(s *grpc.Server, srv Dubbo3GreeterServer) {
@@ -259,6 +348,32 @@ func _Dubbo3Greeter_Dubbo3SayHello2_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dubbo3Greeter_BigStreamTest_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(Dubbo3GreeterServer).BigStreamTest(&dubbo3GreeterBigStreamTestServer{stream})
+}
+
+type Dubbo3Greeter_BigStreamTestServer interface {
+	Send(*BigStreamData) error
+	Recv() (*BigStreamData, error)
+	grpc.ServerStream
+}
+
+type dubbo3GreeterBigStreamTestServer struct {
+	grpc.ServerStream
+}
+
+func (x *dubbo3GreeterBigStreamTestServer) Send(m *BigStreamData) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *dubbo3GreeterBigStreamTestServer) Recv() (*BigStreamData, error) {
+	m := new(BigStreamData)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _Dubbo3Greeter_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "protobuf.Dubbo3Greeter",
 	HandlerType: (*Dubbo3GreeterServer)(nil),
@@ -272,6 +387,12 @@ var _Dubbo3Greeter_serviceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "Dubbo3SayHello",
 			Handler:       _Dubbo3Greeter_Dubbo3SayHello_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "BigStreamTest",
+			Handler:       _Dubbo3Greeter_BigStreamTest_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

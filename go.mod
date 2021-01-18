@@ -2,7 +2,7 @@ module github.com/apache/dubbo-go-samples
 
 require (
 	github.com/apache/dubbo-go v1.5.5
-	github.com/apache/dubbo-go-hessian2 v1.8.0
+	github.com/apache/dubbo-go-hessian2 v1.8.2
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dk-lockdown/seata-golang v0.1.0-fix
 	github.com/dubbogo/gost v1.10.1
@@ -25,10 +25,9 @@ require (
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
 replace (
-github.com/apache/dubbo-go v1.5.5 => ../dubbo-go
-github.com/dubbogo/triple v0.0.0-20210109081225-7eb79b3a65e1 => ../triple
-google.golang.org/grpc v1.34.0 => ../../grpc-workplace/grpc-go/grpc-go
+	github.com/apache/dubbo-go v1.5.5 => ../dubbo-go
+	github.com/dubbogo/triple v0.0.0-20210109081225-7eb79b3a65e1 => ../triple
+	google.golang.org/grpc v1.34.0 => ../../grpc-workplace/grpc-go/grpc-go
 )
-
 
 go 1.13

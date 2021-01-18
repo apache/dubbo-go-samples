@@ -41,6 +41,34 @@ func (s *server) Dubbo3SayHello2(ctx context.Context, in *pb.Dubbo3HelloRequest)
 
 }
 
+func (s *server) BigStreamTest(svr pb.Dubbo3Greeter_BigStreamTestServer ) error{
+	c, err := svr.Recv()
+	if err != nil {
+		return err
+	}
+	fmt.Println("server server recv 1 len  = ", len(c.Data))
+	c2, err := svr.Recv()
+	if err != nil {
+		return err
+	}
+	fmt.Println("server server recv 2 len = ",  len(c2.Data))
+	c3, err := svr.Recv()
+	if err != nil {
+		return err
+	}
+	fmt.Println("server server recv 3 len = ",  len(c3.Data))
+
+	svr.Send(&pb.BigStreamData{
+		Data: make([]byte, c.WantSize),
+	})
+	fmt.Println("server server send 1 len = ", c.WantSize)
+	svr.Send(&pb.BigStreamData{
+		Data: make([]byte, c2.WantSize),
+	})
+	fmt.Println("server server send 2 len = ", c2.WantSize)
+	return nil
+}
+
 func (s *server) Dubbo3SayHello(svr pb.Dubbo3Greeter_Dubbo3SayHelloServer) error {
 	c, err := svr.Recv()
 	if err != nil {
