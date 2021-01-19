@@ -20,9 +20,8 @@ package main
 import (
 	"context"
 	"fmt"
-	dubbo3 "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/dubbo3"
+	pb "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/dubbo3"
 	"github.com/apache/dubbo-go-samples/general/dubbo3/unary-client/dubbo3-client/pkg"
-	"github.com/apache/dubbo-go/common/logger"
 	"github.com/dubbogo/gost/log"
 	"sync"
 	"time"
@@ -52,22 +51,41 @@ func main() {
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	reply := &dubbo3.Dubbo3HelloReply{}
-	req := &dubbo3.Dubbo3HelloRequest{
-		Myname: "jifeng",
-	}
+	//reply := &dubbo3.Dubbo3HelloReply{}
+	//req := &dubbo3.Dubbo3HelloRequest{
+	//	Myname: "jifeng",
+	//}
+	BigDataReq := pb.BigData{
+			WantSize: 271828,
+			Data: make([]byte, 314159),
+		}
+
+
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
 	wg := sync.WaitGroup{}
 	for i := 0; i < 1; i++ {
 		wg.Add(1)
 		go func() {
-			err := grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
-			if err != nil {
-				logger.Error(err)
+			rsp, err := grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
+			if err != nil{
+				panic(err)
 			}
-			fmt.Printf("client response result: %v\n", reply)
-			//wg.Done()
+			fmt.Println("rsp len = ", len(rsp.Data))
+			time.Sleep(time.Second)
+
+			rsp, err = grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
+			if err != nil{
+				panic(err)
+			}
+			fmt.Println("rsp len = ", len(rsp.Data))
+
+			//err := grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			//if err != nil {
+			//	logger.Error(err)
+			//}
+			//fmt.Printf("client response result: %v\n", reply)
+			////wg.Done()
 			wg.Done()
 		}()
 	}

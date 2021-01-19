@@ -25,7 +25,8 @@ service Dubbo3Greeter {
   // Sends a greeting
   rpc Dubbo3SayHello (stream Dubbo3HelloRequest) returns (stream Dubbo3HelloReply) {}
   rpc Dubbo3SayHello2 ( Dubbo3HelloRequest) returns ( Dubbo3HelloReply) {}
-  rpc BigStreamTest (stream BigStreamData) returns ( stream BigStreamData){}
+  rpc BigStreamTest (stream BigData) returns ( stream BigData){}
+  rpc BigUnaryTest (BigData) returns (BigData){}
 }
 
 // The request message containing the user's name.
@@ -38,7 +39,7 @@ message Dubbo3HelloReply {
   string msg = 1;
 }
 
-message BigStreamData {
+message BigData {
   bytes data = 1;
   int32 wantSize = 2;
 }

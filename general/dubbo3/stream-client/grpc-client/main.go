@@ -49,39 +49,49 @@ func main() {
 
 	//rcache := make([]protobuf.Dubbo3Greeter_Dubbo3SayHelloClient, 0)
 
-	BigDataReq := pb.BigStreamData{
-		WantSize: 17000,
-		Data: make([]byte, 17000),
+
+
+	BigDataReq := pb.BigData{
+		WantSize: 271828,
+		Data: make([]byte, 314159),
 	}
+
+
+
 	for i := 0; i < 1; i++ {
 		go func() {
+			start := time.Now().Nanosecond()
+
+
+
+
 			// Test BigStream
-			r, err := c.BigStreamTest(context.Background())
-			if err != nil {
-				fmt.Println("say hello err:", err)
-			}
-			if err := r.Send(&BigDataReq); err != nil {
-				fmt.Println("say hello err:", err)
-			}
-			BigDataReq.WantSize++
-			if err := r.Send(&BigDataReq); err != nil {
-				fmt.Println("say hello err:", err)
-			}
-			BigDataReq.WantSize++
-			//time.Sleep(time.Second * 10)
-			if err := r.Send(&BigDataReq); err != nil {
-				fmt.Println("say hello err:", err)
-			}
-			rsp := &pb.BigStreamData{}
-			if err := r.RecvMsg(rsp); err != nil {
-				fmt.Println("err = ", err)
-			}
-			fmt.Printf("firstSend Got len = %+v\n", len(rsp.Data))
-			rsp = &pb.BigStreamData{}
-			if err := r.RecvMsg(rsp); err != nil {
-				fmt.Println("err = ", err)
-			}
-			fmt.Printf("secondSend Got len = %+v\n", len(rsp.Data))
+			//r, err := c.BigStreamTest(context.Background())
+			//if err != nil {
+			//	fmt.Println("say hello err:", err)
+			//}
+			//if err := r.Send(&BigDataReq); err != nil {
+			//	fmt.Println("say hello err:", err)
+			//}
+			//BigDataReq.WantSize++
+			//if err := r.Send(&BigDataReq); err != nil {
+			//	fmt.Println("say hello err:", err)
+			//}
+			//BigDataReq.WantSize++
+			////time.Sleep(time.Second * 10)
+			//if err := r.Send(&BigDataReq); err != nil {
+			//	fmt.Println("say hello err:", err)
+			//}
+			//rsp := &pb.BigData{}
+			//if err := r.RecvMsg(rsp); err != nil {
+			//	fmt.Println("err = ", err)
+			//}
+			//fmt.Printf("firstSend Got len = %+v\n", len(rsp.Data))
+			//rsp = &pb.BigData{}
+			//if err := r.RecvMsg(rsp); err != nil {
+			//	fmt.Println("err = ", err)
+			//}
+			//fmt.Printf("secondSend Got len = %+v\n", len(rsp.Data))
 
 			// Test SayHello
 			//r, err := c.Dubbo3SayHello(context.Background())
@@ -108,7 +118,12 @@ func main() {
 			//	fmt.Println("err = ", err)
 			//}
 			//fmt.Printf("firstSend Got rsp = %+v\n", rsp)
+
+
+			fmt.Println("time cost = ", time.Now().Nanosecond() - start)
 		}()
+
+
 
 		//rcache = append(rcache, r)
 	}

@@ -26,6 +26,7 @@ import (
 
 type GrpcGreeterImpl struct {
 	Dubbo3SayHello2 func(ctx context.Context, in *dubbo32.Dubbo3HelloRequest, out *dubbo32.Dubbo3HelloReply) error
+	BigUnaryTest func(ctx context.Context, in*dubbo32.BigData) (*dubbo32.BigData,error)
 }
 
 func (u *GrpcGreeterImpl) Reference() string {

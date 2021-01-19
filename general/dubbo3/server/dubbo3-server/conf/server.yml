@@ -11,10 +11,9 @@ application:
 # registry config
 registries:
   "demoConsul":
-    protocol: "consul"
+    protocol: "zookeeper"
     timeout: "3s"
-    address: "127.0.0.1:8500"
-    simplified: true
+    address: "127.0.0.1:2181"
 
 # service config
 services:

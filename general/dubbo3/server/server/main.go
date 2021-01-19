@@ -38,7 +38,13 @@ type server struct{}
 func (s *server) Dubbo3SayHello2(ctx context.Context, in *pb.Dubbo3HelloRequest) (*pb.Dubbo3HelloReply, error) {
 	fmt.Println("######### get server request name :" + in.Myname)
 	return &pb.Dubbo3HelloReply{Msg: "Hello " + in.Myname}, nil
+}
 
+func (s *server) BigUnaryTest(ctx context.Context , in *pb.BigData) (*pb.BigData, error){
+	fmt.Println("server unary recv len = ",  len(in.Data))
+	return &pb.BigData{
+		Data: make([]byte, in.WantSize),
+	}, nil
 }
 
 func (s *server) BigStreamTest(svr pb.Dubbo3Greeter_BigStreamTestServer ) error{
@@ -58,11 +64,11 @@ func (s *server) BigStreamTest(svr pb.Dubbo3Greeter_BigStreamTestServer ) error{
 	}
 	fmt.Println("server server recv 3 len = ",  len(c3.Data))
 
-	svr.Send(&pb.BigStreamData{
+	svr.Send(&pb.BigData{
 		Data: make([]byte, c.WantSize),
 	})
 	fmt.Println("server server send 1 len = ", c.WantSize)
-	svr.Send(&pb.BigStreamData{
+	svr.Send(&pb.BigData{
 		Data: make([]byte, c2.WantSize),
 	})
 	fmt.Println("server server send 2 len = ", c2.WantSize)

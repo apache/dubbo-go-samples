@@ -21,7 +21,6 @@ import (
 	"fmt"
 	pb "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/grpc"
 	"log"
-	"os"
 	"sync"
 
 	"golang.org/x/net/context"
@@ -43,20 +42,31 @@ func main() {
 	c := pb.NewDubbo3GreeterClient(conn)
 
 	// Contact the client and print out its response.
-	name := defaultName
-	if len(os.Args) > 1 {
-		name = os.Args[1]
+	//name := defaultName
+	//if len(os.Args) > 1 {
+	//	name = os.Args[1]
+	//}
+	BigDataReq := pb.BigData{
+		WantSize: 271828,
+		Data: make([]byte, 314159),
 	}
+
 	wg := sync.WaitGroup{}
-	for i := 0; i < 200; i++ {
+	for i := 0; i < 1; i++ {
 		wg.Add(1)
 		go func() {
-			r, err := c.Dubbo3SayHello2(context.Background(), &pb.Dubbo3HelloRequest{Myname: name})
-			if err != nil {
-				fmt.Print("could not greet: %v", err)
+			// Test Big Unary
+			rsp, err := c.BigUnaryTest(context.Background(), &BigDataReq)
+			if err != nil{
+				panic(err)
 			}
-			log.Printf("####### get client %+v", r)
-			wg.Done()
+			fmt.Println("rsp len = ", len(rsp.Data))
+			//r, err := c.Dubbo3SayHello2(context.Background(), &pb.Dubbo3HelloRequest{Myname: name})
+			//if err != nil {
+			//	fmt.Print("could not greet: %v", err)
+			//}
+			//log.Printf("####### get client %+v", r)
+			//wg.Done()
 		}()
 	}
 	wg.Wait()

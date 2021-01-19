@@ -50,7 +50,46 @@ func main() {
 	config.Load()
 	time.Sleep(time.Second * 3)
 	//testStreamClient()
-	testMultiThreadStreamClient()
+	//testMultiThreadStreamClient()
+	go func() {
+		for i := 0; i < 1;  i++{
+			go testBigData()
+		}
+	}()
+	time.Sleep(time.Second*3)
+}
+
+func testBigData(){
+	ctx := context.Background()
+	//ctx = context.WithValue(ctx,"tri-req-id","id value" )
+	req := dubbo3.BigData{
+		WantSize: 271828,
+		Data: make([]byte, 314159),
+	}
+
+	r, err := grpcGreeterImpl.BigStreamTest(ctx)
+	if err != nil {
+		panic(err)
+	}
+	start := time.Now().Nanosecond()
+	for i := 0; i < 3; i++{
+		if err := r.Send(&req); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+		req.WantSize++
+	}
+
+	rsp := &dubbo3.BigData{}
+	if err := r.RecvMsg(rsp); err != nil {
+		fmt.Println("err = ", err)
+	}
+	fmt.Printf("firstSend Got rsp = %+v\n", len(rsp.Data))
+	rsp = &dubbo3.BigData{}
+	if err := r.RecvMsg(rsp); err != nil {
+		fmt.Println("err = ", err)
+	}
+	fmt.Printf("firstSend Got rsp = %+v\n", len(rsp.Data))
+	fmt.Println("time cost = ", time.Now().Nanosecond() - start)
 }
 
 func testMultiThreadStreamClient() {

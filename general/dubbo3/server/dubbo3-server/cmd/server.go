@@ -26,6 +26,7 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/general/dubbo3/server/dubbo3-server/pkg"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"
@@ -33,9 +34,8 @@ import (
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo3"
-	_ "github.com/apache/dubbo-go/registry/consul"
 	_ "github.com/apache/dubbo-go/registry/protocol"
-	"github.com/apache/dubbo-go-samples/general/dubbo3/server/dubbo3-server/pkg"
+	_ "github.com/apache/dubbo-go/registry/zookeeper"
 	_ "github.com/dubbogo/triple/pkg/triple"
 )
 

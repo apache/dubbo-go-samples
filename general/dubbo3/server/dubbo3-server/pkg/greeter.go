@@ -33,6 +33,34 @@ func NewGreeterProvider() *GreeterProvider {
 	}
 }
 
+func (s *GreeterProvider) BigStreamTest(svr dubbo3.Dubbo3Greeter_BigStreamTestServer) error{
+	c, err := svr.Recv()
+	if err != nil {
+		return err
+	}
+	fmt.Println("server server recv 1 = ", len(c.Data))
+	c2, err := svr.Recv()
+	if err != nil {
+		return err
+	}
+	fmt.Println("server server recv 2 = ", len(c2.Data))
+	c3, err := svr.Recv()
+	if err != nil {
+		return err
+	}
+	fmt.Println("server server recv 3 = ", len(c3.Data))
+
+	svr.Send(&dubbo3.BigData{
+		Data: make([]byte, c.WantSize),
+		WantSize: 0,
+	})
+	svr.Send(&dubbo3.BigData{
+		Data: make([]byte, c2.WantSize),
+		WantSize: 0,
+	})
+	return nil
+}
+
 // Dubbo3SayHello2 is a unary-client rpc example
 func (s *GreeterProvider) Dubbo3SayHello2(ctx context.Context, in *dubbo3.Dubbo3HelloRequest) (*dubbo3.Dubbo3HelloReply, error) {
 	fmt.Println("######### get server request name :" + in.Myname)
@@ -63,6 +91,12 @@ func (g *GreeterProvider) Dubbo3SayHello(svr dubbo3.Dubbo3Greeter_Dubbo3SayHello
 	})
 	fmt.Println("server server send 2 = ", c3.Myname)
 	return nil
+}
+func (s *GreeterProvider) BigUnaryTest(ctx context.Context , in *dubbo3.BigData) (*dubbo3.BigData, error){
+	fmt.Println("server unary recv len = ",  len(in.Data))
+	return &dubbo3.BigData{
+		Data: make([]byte, in.WantSize),
+	}, nil
 }
 
 func (g *GreeterProvider) Reference() string {
