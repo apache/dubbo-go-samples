@@ -47,12 +47,12 @@ func main() {
 	//	name = os.Args[1]
 	//}
 	BigDataReq := pb.BigData{
-		WantSize: 271828,
-		Data: make([]byte, 314159),
+		WantSize: 2,
+		Data: make([]byte, 3),
 	}
 
 	wg := sync.WaitGroup{}
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 10; i++ {
 		wg.Add(1)
 		go func() {
 			// Test Big Unary
@@ -66,7 +66,7 @@ func main() {
 			//	fmt.Print("could not greet: %v", err)
 			//}
 			//log.Printf("####### get client %+v", r)
-			//wg.Done()
+			wg.Done()
 		}()
 	}
 	wg.Wait()

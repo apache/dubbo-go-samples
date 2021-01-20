@@ -52,11 +52,12 @@ func main() {
 	//testStreamClient()
 	//testMultiThreadStreamClient()
 	go func() {
-		for i := 0; i < 1;  i++{
+
+		for i := 0; i < 10;  i++{
 			go testBigData()
 		}
 	}()
-	time.Sleep(time.Second*3)
+	time.Sleep(time.Second*300)
 }
 
 func testBigData(){
@@ -72,7 +73,7 @@ func testBigData(){
 		panic(err)
 	}
 	start := time.Now().Nanosecond()
-	for i := 0; i < 3; i++{
+	for i := 0; i < 300; i++{
 		if err := r.Send(&req); err != nil {
 			fmt.Println("say hello err:", err)
 		}
