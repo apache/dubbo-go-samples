@@ -56,15 +56,15 @@ func main() {
 	//	Myname: "jifeng",
 	//}
 	BigDataReq := pb.BigData{
-			WantSize: 271828,
-			Data: make([]byte, 314159),
+		WantSize: 271828,
+		Data: make([]byte, 314159),
 		}
 
 
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
 	wg := sync.WaitGroup{}
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 400; i++ {
 		wg.Add(1)
 		go func() {
 			rsp, err := grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
