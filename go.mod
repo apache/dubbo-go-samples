@@ -3,15 +3,15 @@ module github.com/apache/dubbo-go-samples
 require (
 	cloud.google.com/go v0.50.0 // indirect
 	github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5 // indirect
-	github.com/alibaba/sentinel-golang v1.0.1
+	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-go v1.5.2-0.20210110131210-794ab77916f1
-	github.com/apache/dubbo-go-hessian2 v1.8.1
+	github.com/apache/dubbo-go-hessian2 v1.8.2
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/coreos/bbolt v1.3.3 // indirect
 	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
 	github.com/dk-lockdown/seata-golang v0.1.0-fix
 	github.com/docker/go-connections v0.4.0 // indirect
-	github.com/dubbogo/gost v1.10.1
+	github.com/dubbogo/gost v1.11.0
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
@@ -31,7 +31,7 @@ require (
 	github.com/openzipkin/zipkin-go v0.2.2
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.8.0
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.7.0
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20200122045848-3419fae592fc // indirect
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
