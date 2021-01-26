@@ -1,5 +1,10 @@
 # Consul Service Discovery Example
-### 1. config
+### 1. Introduction
+[Consul](https://www.consul.io/docs/intro) is a service mesh solution providing a full featured control plane with service discovery, configuration, and segmentation functionality.\
+Dubbogo can use consul as service discovery middleware and metadata reporter. \
+Before using consul, pls make sure consul server is running in your environment and match the config below.\
+
+### 2. Important config
 ```yaml
 registries: # registry config
   "demoServiceDiscovery": 
@@ -24,7 +29,7 @@ metadata_report:
   protocol: "consul"
   remote_ref: "consul1"
 ```
-### 2. import
+### 3. Import block
 To use consul as service discovery, make sure you add import in you server and client:
 ```go
 import(
