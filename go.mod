@@ -4,7 +4,8 @@ require (
 	cloud.google.com/go v0.50.0 // indirect
 	github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5 // indirect
 	github.com/alibaba/sentinel-golang v1.0.2
-	github.com/apache/dubbo-go v1.5.2-0.20210110131210-794ab77916f1
+	github.com/apache/dubbo-getty v1.4.1 // indirect
+	github.com/apache/dubbo-go v1.5.5
 	github.com/apache/dubbo-go-hessian2 v1.8.2
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/coreos/bbolt v1.3.3 // indirect
@@ -12,6 +13,7 @@ require (
 	github.com/dk-lockdown/seata-golang v0.1.0-fix
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/dubbogo/gost v1.11.0
+	github.com/dubbogo/triple v0.0.0-20210109081225-7eb79b3a65e1 // indirect
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
@@ -36,10 +38,14 @@ require (
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	go.etcd.io/bbolt v1.3.4 // indirect
-	google.golang.org/grpc v1.26.0
+	golang.org/x/sys v0.0.0-20201223074533-0d417f636930 // indirect
+	google.golang.org/grpc v1.34.0
+	google.golang.org/grpc/examples v0.0.0-20210109011638-fb40d83340e8 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )
 
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
+
+replace github.com/apache/dubbo-go v1.5.5 => ../../../dubbo-go
 
 go 1.13
