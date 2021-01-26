@@ -134,6 +134,7 @@ stop:
 integration: export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
 integration: export CONF_ROUTER_FILE_PATH ?= $(OUT_DIR)/conf/router_config.yml
 integration:
+	sleep 10s # waiting for registry and server ready
 	$(info   >  Running integration test for application $(PROJECT_NAME))
 	@go clean -testcache
 	@go test -tags integration -v $(PROJECT_DIR)/tests/...
