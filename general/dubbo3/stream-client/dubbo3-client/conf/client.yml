@@ -30,7 +30,7 @@ references:
     registry: "demoConsul"
     protocol: "dubbo3"
     interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
-    url: dubbo3://localhost:19998
+#    url: dubbo3://localhost:19996
     cluster: "failover"
     methods:
       - name: "SayHello"

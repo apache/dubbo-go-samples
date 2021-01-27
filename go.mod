@@ -5,8 +5,8 @@ require (
 	github.com/apache/dubbo-go-hessian2 v1.8.2
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dk-lockdown/seata-golang v0.1.0-fix
-	github.com/dubbogo/gost v1.10.1
-	github.com/dubbogo/triple v0.0.0-20210109081225-7eb79b3a65e1
+	github.com/dubbogo/gost v1.11.0
+	github.com/dubbogo/triple v0.0.0-20210126122925-f5ca080bd156
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.0 // indirect
@@ -15,7 +15,7 @@ require (
 	github.com/openzipkin/zipkin-go v0.2.2
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.8.0
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.7.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b

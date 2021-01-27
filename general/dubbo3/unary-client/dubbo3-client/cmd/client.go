@@ -51,8 +51,8 @@ func main() {
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	//reply := &dubbo3.Dubbo3HelloReply{}
-	//req := &dubbo3.Dubbo3HelloRequest{
+	//reply := &pb.Dubbo3HelloReply{}
+	//req := &pb.Dubbo3HelloRequest{
 	//	Myname: "jifeng",
 	//}
 	BigDataReq := pb.BigData{
@@ -64,25 +64,58 @@ func main() {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
 	wg := sync.WaitGroup{}
-	for i := 0; i < 400; i++ {
+	// todo concurrent thread bug fix
+	// 大量数据存在线程安全问醍
+	for i := 0; i < 10; i++ {
 		wg.Add(1)
 		go func() {
-			rsp, err := grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
+			rsp, err := grpcGreeterImpl.BigUnaryTest(ctx, &BigDataReq)
 			if err != nil{
 				panic(err)
 			}
 			fmt.Println("rsp len = ", len(rsp.Data))
 			time.Sleep(time.Second)
 
-			rsp, err = grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
-			if err != nil{
-				panic(err)
-			}
-			fmt.Println("rsp len = ", len(rsp.Data))
+			//rsp, err = grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			////time.Sleep(time.Second)
+			//
+			//rsp, err = grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
 
 			//err := grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
 			//if err != nil {
-			//	logger.Error(err)
+			//	panic(err)
 			//}
 			//fmt.Printf("client response result: %v\n", reply)
 			////wg.Done()

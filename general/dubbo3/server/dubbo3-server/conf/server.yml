@@ -11,9 +11,10 @@ application:
 # registry config
 registries:
   "demoConsul":
-    protocol: "zookeeper"
+    protocol: "consul"
     timeout: "3s"
-    address: "127.0.0.1:2181"
+    address: "127.0.0.1:8500"
+    simplified: true
 
 # service config
 services:
@@ -33,7 +34,7 @@ services:
 protocols:
   "dubbo3":
     name: "dubbo3"
-    port: 19998
+    port: 19996
 
 protocol_conf:
   grpc:

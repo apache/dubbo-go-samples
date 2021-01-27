@@ -51,13 +51,15 @@ func main() {
 	time.Sleep(time.Second * 3)
 	//testStreamClient()
 	//testMultiThreadStreamClient()
-	go func() {
-
-		for i := 0; i < 10;  i++{
-			go testBigData()
-		}
-	}()
-	time.Sleep(time.Second*300)
+	wg := sync.WaitGroup{}
+	for i := 0; i < 400;  i++{
+		wg.Add(1)
+		go func() {
+			testBigData()
+			wg.Done()
+		}()
+	}
+	wg.Wait()
 }
 
 func testBigData(){
@@ -73,7 +75,7 @@ func testBigData(){
 		panic(err)
 	}
 	start := time.Now().Nanosecond()
-	for i := 0; i < 300; i++{
+	for i := 0; i < 3; i++{
 		if err := r.Send(&req); err != nil {
 			fmt.Println("say hello err:", err)
 		}

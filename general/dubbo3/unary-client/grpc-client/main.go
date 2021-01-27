@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	address     = "localhost:19998"
+	address     = "localhost:19996"
 	defaultName = "jifeng"
 )
 
@@ -47,8 +47,8 @@ func main() {
 	//	name = os.Args[1]
 	//}
 	BigDataReq := pb.BigData{
-		WantSize: 2,
-		Data: make([]byte, 3),
+		WantSize: 271828,
+		Data: make([]byte, 314159),
 	}
 
 	wg := sync.WaitGroup{}
@@ -61,6 +61,42 @@ func main() {
 				panic(err)
 			}
 			fmt.Println("rsp len = ", len(rsp.Data))
+			////
+			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+
+			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
 			//r, err := c.Dubbo3SayHello2(context.Background(), &pb.Dubbo3HelloRequest{Myname: name})
 			//if err != nil {
 			//	fmt.Print("could not greet: %v", err)
