@@ -42,8 +42,7 @@ import (
 
 var userProvider = new(pkg.UserProvider)
 
-
-func setConfigByAPI(){
+func setConfigByAPI() {
 	consumerConfig := config.NewConsumerConfig(
 		config.WithConsumerAppConfig(config.NewDefaultApplicationConfig()),
 		config.WithConsumerConnTimeout(time.Second*3),

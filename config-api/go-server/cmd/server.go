@@ -44,7 +44,7 @@ var (
 	survivalTimeout = int(3e9)
 )
 
-func setConfigByAPI(){
+func setConfigByAPI() {
 	providerConfig := config.NewProviderConfig(
 		config.WithProviderAppConfig(config.NewDefaultApplicationConfig()),
 		config.WithProviderProtocol("dubbo", "dubbo", "20000"),
@@ -62,11 +62,11 @@ func setConfigByAPI(){
 	config.SetProviderConfig(*providerConfig)
 }
 
-func init(){
+func init() {
 	setConfigByAPI()
 }
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
+// needn't to setup environment variable  before run
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
