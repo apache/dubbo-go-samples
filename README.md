@@ -1,5 +1,7 @@
 # Dubbo Golang Examples
 
+![CI](https://github.com/apache/dubbo-go-samples/workflows/CI/badge.svg)
+
 ## What It Contains
 
 * helloworld: A simplest example. It contain 'go-client', 'go-server', 'java-server' of dubbo protocol. 
