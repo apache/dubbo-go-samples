@@ -1,7 +1,7 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	github.com/alibaba/sentinel-golang v1.0.2
+	github.com/alibaba/sentinel-golang v0.6.2
 	github.com/apache/dubbo-go v1.5.5
 	github.com/apache/dubbo-go-hessian2 v1.7.0
 	github.com/bwmarrin/snowflake v0.3.0
@@ -21,6 +21,9 @@ require (
 	google.golang.org/grpc v1.26.0
 )
 
-replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
+replace (
+	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
+	github.com/alibaba/sentinel-golang => github.com/alibaba/sentinel-golang v1.0.1
+)
 
 go 1.13
