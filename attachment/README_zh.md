@@ -32,66 +32,6 @@ func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, e
 }
 ```
 
-### 如何运行
+请参阅根目录中的 [HOWTO.md](../HOWTO_zh.md) 来运行本例。
 
-#### 通过 Makefile 的方式快速开始
-
-*先决条件：需要提前安装好 Docker*
-
-1. **启动服务端**
-    ```bash
-    cd attachment/server
-    make -f ../../build/Makefile docker-up start
-    ```
-2. **运行客户端**
-    ```bash
-   cd attachment/client
-   make -f ../../build/Makefile run 
-   ```
-3. **集成测试**
-   ```bash
-   cd attachment/server
-   make -f ../../build/Makefile integration
-   ```
-4. **清理现场**
-   ```bash
-   cd attachment/server
-   make -f ../../build/Makefile clean docker-down
-   ```
-
-#### 在 IDE 中运行
-
-这里以 *Intellij GoLand* 为例。在 GoLand 中打开 dubbo-go-samples 工程之后，按照以下的步骤来运行/调试本示例:
-
-1. **启动 zookeeper 服务器**
-   
-   打开 "attachment/go-server/docker/docker-compose.yaml" 这个文件，然后点击位于编辑器左边 gutter 栏位中的 ▶︎▶︎ 图标运行，"Service" Tab 应当会弹出并输出类似下面的文本信息:
-   ```
-   Deploying 'Compose: docker'...
-   /usr/local/bin/docker-compose -f .../dubbo-go-samples/attachment/go-server/docker/docker-compose.yml up -d
-   Creating network "docker_default" with the default driver
-   Creating docker_zookeeper_1 ...
-   'Compose: docker' has been deployed successfully.
-   ```
-   
-2. **启动服务提供方**
-
-   打开 "attachment/go-server/cmd/server.go" 文件，然后点击左边 gutter 栏位中紧挨着 "main" 函数的 ▶︎ 图标，并从弹出的菜单中选择 "Modify Run Configuration..."，并确保以下配置的准确:
-   * Working Directory: "attachment/go-server" 目录的绝对路径，比如： */home/dubbo-go-samples/attachment/go-server*
-   * Environment: CONF_PROVIDER_FILE_PATH=conf/server.yml, 另外也可以指定这个环境变量 "APP_LOG_CONF_FILE=conf/log.yml"
-   
-   这样示例中的服务端就准备就绪，随时可以运行了。
-     
-3. **运行服务消费方**
-
-   打开 "attachment/go-client/cmd/client.go" 这个文件，然后从左边 gutter 栏位中点击紧挨着 "main" 函数的 ▶︎ 图标，然后从弹出的菜单中选择 "Modify Run Configuration..."，并确保以下配置的准确:
-   * Working Directory: "attachment/go-client" 目录的绝对路径，比如： */home/dubbo-go-samples/attachment/go-client*
-   * Environment: CONF_CONSUMER_FILE_PATH=conf/client.yml, 另外也可以指定这个环境变量 "APP_LOG_CONF_FILE=conf/log.yml"
-     
-   然后就可以运行并调用远端的服务了，如果调用成功，将会有以下的输出:
-   ```
-   [2021-02-03/16:19:30 main.main: client.go: 66] response result: &{A001 Alex Stocks 18 2020-02-04 16:19:30.422 +0800 CST}
-   ```
-
-如果需要调试该示例或者 dubbo-go 框架，可以在 IDE 中从 "Run" 切换到 "Debug"。如果要结束的话，直接点击 ◼︎ 就好了。
 
