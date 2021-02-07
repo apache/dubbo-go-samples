@@ -33,7 +33,7 @@ import (
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo3"
 	_ "github.com/apache/dubbo-go/protocol/grpc"
-	_ "github.com/apache/dubbo-go/registry/consul"
+	_ "github.com/apache/dubbo-go/registry/zookeeper"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	"github.com/apache/dubbo-go-samples/general/dubbo3/stream-client/dubbo3-client/pkg"
 	dubbo3 "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/dubbo3"
@@ -52,7 +52,7 @@ func main() {
 	//testStreamClient()
 	//testMultiThreadStreamClient()
 	wg := sync.WaitGroup{}
-	for i := 0; i < 400;  i++{
+	for i := 0; i < 100;  i++{
 		wg.Add(1)
 		go func() {
 			testBigData()

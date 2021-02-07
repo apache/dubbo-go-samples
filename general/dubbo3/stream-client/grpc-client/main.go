@@ -21,6 +21,7 @@ import (
 	"fmt"
 	pb "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/grpc"
 	"log"
+	"sync"
 	"time"
 
 	"golang.org/x/net/context"
@@ -28,8 +29,7 @@ import (
 )
 
 const (
-	address = "localhost:19996"
-	//address     = "localhost:50051"
+	address = "localhost:20001"
 )
 
 func main() {
@@ -41,25 +41,19 @@ func main() {
 	defer conn.Close()
 	c := pb.NewDubbo3GreeterClient(conn)
 
-	// Contact the grpc-client and print out its response.
-	//name := "jifeng"
-	//if len(os.Args) > 1 {
-	//	name = os.Args[1]
-	//}
-
-	//rcache := make([]protobuf.Dubbo3Greeter_Dubbo3SayHelloClient, 0)
-
-
 
 	BigDataReq := pb.BigData{
 		WantSize: 271828,
 		Data: make([]byte, 314159),
 	}
 
+	wg := sync.WaitGroup{}
 
-
-	for i := 0; i < 100; i++ {
+	// todo multi thread error
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			start := time.Now().Nanosecond()
 
 			// Test BigStream
@@ -119,16 +113,6 @@ func main() {
 
 			fmt.Println("time cost = ", time.Now().Nanosecond() - start)
 		}()
-
-
-
-		//rcache = append(rcache, r)
 	}
-
-	time.Sleep(time.Second*5)
-
-	//for _, r := range rcache{
-	//
-	//}
-
+	wg.Wait()
 }

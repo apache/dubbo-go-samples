@@ -10,19 +10,16 @@ connect_timeout: "3s"
 application:
   organization: "dubbo.io"
   name: "GreeterGrpcConsumer"
-  module: "dubbo-go greeter grpc client"
+  module: "dubbo-go3.0 greeter client"
   version: "0.0.1"
   environment: "dev"
 
 # registry config
 registries:
   "demoConsul":
-    protocol: "consul"
+    protocol: "zookeeper"
     timeout: "3s"
-    address: "127.0.0.1:8500"
-    username: ""
-    password: ""
-    simplified: true
+    address: "127.0.0.1:2181"
 
 # reference config
 references:
@@ -30,7 +27,7 @@ references:
     registry: "demoConsul"
     protocol: "dubbo3"
     interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
-#    url: dubbo3://localhost:19996
+    url: dubbo3://localhost:20001
     cluster: "failover"
     methods:
       - name: "SayHello"

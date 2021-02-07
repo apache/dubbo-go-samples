@@ -28,8 +28,7 @@ import (
 )
 
 const (
-	address     = "localhost:19996"
-	defaultName = "jifeng"
+	address     = "localhost:20001"
 )
 
 func main() {
@@ -52,7 +51,7 @@ func main() {
 	}
 
 	wg := sync.WaitGroup{}
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 100; i++ {
 		wg.Add(1)
 		go func() {
 			// Test Big Unary
@@ -67,7 +66,7 @@ func main() {
 			//	panic(err)
 			//}
 			//fmt.Println("rsp len = ", len(rsp.Data))
-
+			//
 			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
 			//if err != nil{
 			//	panic(err)

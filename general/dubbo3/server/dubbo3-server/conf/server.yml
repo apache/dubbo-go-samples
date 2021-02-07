@@ -4,17 +4,16 @@
 application:
   organization: "dubbo.io"
   name: "GreeterGrpcServer"
-  module: "dubbo-go greeter grpc server"
+  module: "dubbo-go3.0 greeter server"
   version: "0.0.1"
   environment: "dev"
 
 # registry config
 registries:
   "demoConsul":
-    protocol: "consul"
+    protocol: "zookeeper"
     timeout: "3s"
-    address: "127.0.0.1:8500"
-    simplified: true
+    address: "127.0.0.1:2181"
 
 # service config
 services:
@@ -34,7 +33,7 @@ services:
 protocols:
   "dubbo3":
     name: "dubbo3"
-    port: 19996
+    port: 20001
 
 protocol_conf:
   grpc:

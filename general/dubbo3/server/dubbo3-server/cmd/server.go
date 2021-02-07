@@ -34,7 +34,7 @@ import (
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo3"
-	_ "github.com/apache/dubbo-go/registry/consul"
+	_ "github.com/apache/dubbo-go/registry/nacos"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 	_ "github.com/dubbogo/triple/pkg/triple"

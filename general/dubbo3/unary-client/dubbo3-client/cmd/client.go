@@ -64,9 +64,8 @@ func main() {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
 	wg := sync.WaitGroup{}
-	// todo concurrent thread bug fix
-	// 大量数据存在线程安全问醍
-	for i := 0; i < 10; i++ {
+
+	for i := 0; i < 100; i++ {
 		wg.Add(1)
 		go func() {
 			rsp, err := grpcGreeterImpl.BigUnaryTest(ctx, &BigDataReq)
