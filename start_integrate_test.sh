@@ -28,7 +28,7 @@ array+=("direct/go-server")
 # filter
 array+=("filter/custom_filter/go-server")
 array+=("filter/tpslimit/go-server")
-array+=("filter/sentinel/go-server")
+#array+=("filter/sentinel/go-server")
 
 # general
 array+=("general/dubbo/go-server")

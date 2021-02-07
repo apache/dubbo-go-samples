@@ -19,7 +19,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/apache/dubbo-go-samples/general/grpc/go-server/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -44,7 +43,6 @@ var (
 
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
-	config.SetProviderService(pkg.NewGreeterProvider())
 	config.Load()
 	initSignal()
 }
