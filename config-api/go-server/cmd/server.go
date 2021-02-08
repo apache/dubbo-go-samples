@@ -18,9 +18,7 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -29,8 +27,9 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/helloworld/go-server/pkg"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
@@ -38,7 +37,6 @@ import (
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/metrics/prometheus"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
@@ -48,13 +46,30 @@ var (
 	survivalTimeout = int(3e9)
 )
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
-func main() {
-	var addr = flag.String("listen-address", ":8080", "The address to listen on for HTTP requests.")
-	flag.Parse()
-	http.Handle("/metrics", promhttp.Handler())
-	go http.ListenAndServe(*addr, nil)
+func setConfigByAPI() {
+	providerConfig := config.NewProviderConfig(
+		config.WithProviderAppConfig(config.NewDefaultApplicationConfig()),
+		config.WithProviderProtocol("dubbo", "dubbo", "20000"),
+		config.WithProviderRegistry("demoZk", config.NewDefaultRegistryConfig("zookeeper")),
+		config.WithProviderServices("UserProvider", config.NewServiceConfigByAPI(
+			config.WithServiceRegistry("demoZk"),
+			config.WithServiceProtocol("dubbo"),
+			config.WithServiceInterface("org.apache.dubbo.UserProvider"),
+			config.WithServiceLoadBalance("random"),
+			config.WithServiceWarmUpTime("100"),
+			config.WithServiceCluster("failover"),
+			config.WithServiceMethod("GetUser", "1", "random"),
+		)),
+	)
+	config.SetProviderConfig(*providerConfig)
+}
 
+func init() {
+	setConfigByAPI()
+}
+
+// needn't to setup environment variable  before run
+func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 
