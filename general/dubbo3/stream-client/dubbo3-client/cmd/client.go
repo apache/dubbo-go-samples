@@ -21,6 +21,7 @@ import (
 	"context"
 	"fmt"
 	protobuf "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/dubbo3"
+	"go.uber.org/atomic"
 	"sync"
 	"time"
 )
@@ -52,7 +53,7 @@ func main() {
 	//testStreamClient()
 	//testMultiThreadStreamClient()
 	wg := sync.WaitGroup{}
-	for i := 0; i < 100;  i++{
+	for i := 0; i < 200;  i++{
 		wg.Add(1)
 		go func() {
 			testBigData()
@@ -62,23 +63,43 @@ func main() {
 	wg.Wait()
 }
 
+var firstSend atomic.Int32
+var secondSend atomic.Int32
+var thirdSend atomic.Int32
+var firstRecv atomic.Int32
+var secondRecv atomic.Int32
+
+
 func testBigData(){
 	ctx := context.Background()
 	//ctx = context.WithValue(ctx,"tri-req-id","id value" )
+	dataSend := make([]byte, 300000)
+	copy( dataSend[:5] , []byte("hello"))
+	copy(dataSend[len(dataSend) - 5:] , []byte("world"))
 	req := dubbo3.BigData{
-		WantSize: 271828,
-		Data: make([]byte, 314159),
+		WantSize: 300000,
+		Data: dataSend,
 	}
 
 	r, err := grpcGreeterImpl.BigStreamTest(ctx)
 	if err != nil {
 		panic(err)
 	}
-	start := time.Now().Nanosecond()
+	//start := time.Now().Nanosecond()
 	for i := 0; i < 3; i++{
 		if err := r.Send(&req); err != nil {
 			fmt.Println("say hello err:", err)
 		}
+		//if i == 0{
+		//	fmt.Println("firstSend = ", firstSend.Inc())
+		//}
+		//if i == 1{
+		//	fmt.Println("secondSend = ", secondSend.Inc())
+		//}
+		//if i == 2{
+		//	thirdSend.Inc()
+		//	fmt.Println("thirdSend = ", thirdSend.Inc())
+		//}
 		req.WantSize++
 	}
 
@@ -86,13 +107,15 @@ func testBigData(){
 	if err := r.RecvMsg(rsp); err != nil {
 		fmt.Println("err = ", err)
 	}
+	//fmt.Println("firstRecv = ", firstRecv.Inc())
 	fmt.Printf("firstSend Got rsp = %+v\n", len(rsp.Data))
 	rsp = &dubbo3.BigData{}
 	if err := r.RecvMsg(rsp); err != nil {
 		fmt.Println("err = ", err)
 	}
-	fmt.Printf("firstSend Got rsp = %+v\n", len(rsp.Data))
-	fmt.Println("time cost = ", time.Now().Nanosecond() - start)
+	//fmt.Println("secondRecv = ", secondRecv.Inc())
+	fmt.Printf("sendSend Got rsp = %+v\n", len(rsp.Data))
+	//fmt.Println("time cost = ", time.Now().Nanosecond() - start)
 }
 
 func testMultiThreadStreamClient() {
@@ -118,6 +141,44 @@ func testMultiThreadStreamClient() {
 		}
 
 		rsp := &dubbo3.Dubbo3HelloReply{}
+		if err := r.RecvMsg(rsp); err != nil {
+			fmt.Println("err = ", err)
+		}
+		fmt.Printf("firstSend Got rsp = %+v\n", rsp)
+		rsp = &dubbo3.Dubbo3HelloReply{}
+		if err := r.RecvMsg(rsp); err != nil {
+			fmt.Println("err = ", err)
+		}
+		if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng1"}); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+		if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng2"}); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+		if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng3"}); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+
+		rsp = &dubbo3.Dubbo3HelloReply{}
+		if err := r.RecvMsg(rsp); err != nil {
+			fmt.Println("err = ", err)
+		}
+		fmt.Printf("firstSend Got rsp = %+v\n", rsp)
+		rsp = &dubbo3.Dubbo3HelloReply{}
+		if err := r.RecvMsg(rsp); err != nil {
+			fmt.Println("err = ", err)
+		}
+		if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng1"}); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+		if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng2"}); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+		if err := r.Send(&dubbo3.Dubbo3HelloRequest{Myname: "jifeng3"}); err != nil {
+			fmt.Println("say hello err:", err)
+		}
+
+		rsp = &dubbo3.Dubbo3HelloReply{}
 		if err := r.RecvMsg(rsp); err != nil {
 			fmt.Println("err = ", err)
 		}
