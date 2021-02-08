@@ -19,7 +19,7 @@ package pkg
 
 import (
 	"context"
-	"github.com/apache/dubbo-go/common/constant"
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
@@ -27,7 +27,7 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/apache/dubbo-go/common/constant"
 	"github.com/apache/dubbo-go/config"
 )
 
