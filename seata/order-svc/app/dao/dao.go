@@ -27,8 +27,8 @@ import (
 )
 
 import (
-	"github.com/dk-lockdown/seata-golang/client/at/exec"
-	"github.com/dk-lockdown/seata-golang/client/context"
+	"github.com/transaction-wg/seata-golang/pkg/client/at/exec"
+	"github.com/transaction-wg/seata-golang/pkg/client/context"
 )
 
 const (
