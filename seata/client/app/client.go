@@ -36,9 +36,9 @@ import (
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
-	"github.com/dk-lockdown/seata-golang/client"
-	config2 "github.com/dk-lockdown/seata-golang/client/config"
-	"github.com/dk-lockdown/seata-golang/client/tm"
+	"github.com/transaction-wg/seata-golang/pkg/client"
+	config2 "github.com/transaction-wg/seata-golang/pkg/client/config"
+	"github.com/transaction-wg/seata-golang/pkg/client/tm"
 
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 
