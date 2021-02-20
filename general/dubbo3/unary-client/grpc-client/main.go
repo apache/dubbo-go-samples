@@ -46,8 +46,8 @@ func main() {
 	//	name = os.Args[1]
 	//}
 	BigDataReq := pb.BigData{
-		WantSize: 271828,
-		Data: make([]byte, 314159),
+		WantSize: 200000,
+		Data: make([]byte, 30000),
 	}
 
 	wg := sync.WaitGroup{}
@@ -60,25 +60,24 @@ func main() {
 				panic(err)
 			}
 			fmt.Println("rsp len = ", len(rsp.Data))
-			////
-			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
-			//if err != nil{
-			//	panic(err)
-			//}
-			//fmt.Println("rsp len = ", len(rsp.Data))
-			//
-			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
-			//if err != nil{
-			//	panic(err)
-			//}
-			//fmt.Println("rsp len = ", len(rsp.Data))
-			//
-			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
-			//if err != nil{
-			//	panic(err)
-			//}
-			//fmt.Println("rsp len = ", len(rsp.Data))
-			//
+			rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			if err != nil{
+				panic(err)
+			}
+			fmt.Println("rsp len = ", len(rsp.Data))
+
+			rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			if err != nil{
+				panic(err)
+			}
+			fmt.Println("rsp len = ", len(rsp.Data))
+
+			rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			if err != nil{
+				panic(err)
+			}
+			fmt.Println("rsp len = ", len(rsp.Data))
+
 			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
 			//if err != nil{
 			//	panic(err)

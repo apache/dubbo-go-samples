@@ -20,6 +20,7 @@ package main
 import (
 	"fmt"
 	pb "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/grpc"
+	"go.uber.org/atomic"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -46,32 +47,44 @@ func (s *server) BigUnaryTest(ctx context.Context , in *pb.BigData) (*pb.BigData
 		Data: make([]byte, in.WantSize),
 	}, nil
 }
+var  finish = 0
+var firstSend atomic.Int32
+var secondSend atomic.Int32
+var thirdRecv atomic.Int32
+var firstRecv atomic.Int32
+var secondRecv atomic.Int32
 
 func (s *server) BigStreamTest(svr pb.Dubbo3Greeter_BigStreamTestServer ) error{
 	c, err := svr.Recv()
 	if err != nil {
 		return err
 	}
+	fmt.Println("firstRecv = ", firstRecv.Inc())
 	fmt.Println("server server recv 1 len  = ", len(c.Data))
 	c2, err := svr.Recv()
 	if err != nil {
 		return err
 	}
-	fmt.Println("server server recv 2 len = ",  len(c2.Data))
+	fmt.Println("secondRecv = ", secondRecv.Inc())
+	//fmt.Println("server server recv 2 = ", len)
 	c3, err := svr.Recv()
 	if err != nil {
 		return err
 	}
 	fmt.Println("server server recv 3 len = ",  len(c3.Data))
 
+	fmt.Println("thirdRecv = ", thirdRecv.Inc())
 	svr.Send(&pb.BigData{
 		Data: make([]byte, c.WantSize),
 	})
 	fmt.Println("server server send 1 len = ", c.WantSize)
+	fmt.Println("firstSend = ", firstSend.Inc())
 	svr.Send(&pb.BigData{
 		Data: make([]byte, c2.WantSize),
 	})
 	fmt.Println("server server send 2 len = ", c2.WantSize)
+	fmt.Println("secondSend = ", secondSend.Inc())
+	fmt.Println(finish)
 	return nil
 }
 

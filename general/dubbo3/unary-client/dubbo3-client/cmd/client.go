@@ -51,16 +51,14 @@ func main() {
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	//reply := &pb.Dubbo3HelloReply{}
-	//req := &pb.Dubbo3HelloRequest{
-	//	Myname: "jifeng",
-	//}
-	BigDataReq := pb.BigData{
-		WantSize: 271828,
-		Data: make([]byte, 314159),
-		}
-
-
+	reply := &pb.Dubbo3HelloReply{}
+	req := &pb.Dubbo3HelloRequest{
+		Myname: "jifeng",
+	}
+	//BigDataReq := pb.BigData{
+	//	WantSize: 300000,
+	//	Data: make([]byte, 300000),
+	//	}
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
 	wg := sync.WaitGroup{}
@@ -68,13 +66,13 @@ func main() {
 	for i := 0; i < 100; i++ {
 		wg.Add(1)
 		go func() {
-			rsp, err := grpcGreeterImpl.BigUnaryTest(ctx, &BigDataReq)
-			if err != nil{
-				panic(err)
-			}
-			fmt.Println("rsp len = ", len(rsp.Data))
-			time.Sleep(time.Second)
-
+			//rsp, err := grpcGreeterImpl.BigUnaryTest(ctx, &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			////time.Sleep(time.Second)
+			//
 			//rsp, err = grpcGreeterImpl.BigUnaryTest(context.Background(), &BigDataReq)
 			//if err != nil{
 			//	panic(err)
@@ -112,11 +110,35 @@ func main() {
 			//}
 			//fmt.Println("rsp len = ", len(rsp.Data))
 
-			//err := grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
-			//if err != nil {
-			//	panic(err)
-			//}
-			//fmt.Printf("client response result: %v\n", reply)
+			err := grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Printf("client response result: %v\n", reply)
+
+			err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Printf("client response result: %v\n", reply)
+
+			err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Printf("client response result: %v\n", reply)
+
+			err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Printf("client response result: %v\n", reply)
+
+			err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			if err != nil {
+				panic(err)
+			}
+			fmt.Printf("client response result: %v\n", reply)
 			////wg.Done()
 			wg.Done()
 		}()

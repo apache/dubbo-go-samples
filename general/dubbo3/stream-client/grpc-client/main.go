@@ -20,12 +20,10 @@ package main
 import (
 	"fmt"
 	pb "github.com/apache/dubbo-go-samples/general/dubbo3/protobuf/grpc"
-	"log"
-	"sync"
-	"time"
-
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"log"
+	"sync"
 )
 
 const (
@@ -43,18 +41,18 @@ func main() {
 
 
 	BigDataReq := pb.BigData{
-		WantSize: 271828,
-		Data: make([]byte, 314159),
+		WantSize: 300000,
+		Data: make([]byte, 300000),
 	}
 
 	wg := sync.WaitGroup{}
 
 	// todo multi thread error
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 200; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			start := time.Now().Nanosecond()
+			//start := time.Now().Nanosecond()
 
 			// Test BigStream
 			r, err := c.BigStreamTest(context.Background())
@@ -111,7 +109,7 @@ func main() {
 			//fmt.Printf("firstSend Got rsp = %+v\n", rsp)
 
 
-			fmt.Println("time cost = ", time.Now().Nanosecond() - start)
+			//fmt.Println("time cost = ", time.Now().Nanosecond() - start)
 		}()
 	}
 	wg.Wait()

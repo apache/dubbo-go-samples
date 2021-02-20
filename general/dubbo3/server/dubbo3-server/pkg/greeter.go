@@ -38,17 +38,17 @@ func (s *GreeterProvider) BigStreamTest(svr dubbo3.Dubbo3Greeter_BigStreamTestSe
 	if err != nil {
 		return err
 	}
-	fmt.Println("server server recv 1 = ", len(c.Data))
+	fmt.Println("stream server recv 1 = ", len(c.Data))
 	c2, err := svr.Recv()
 	if err != nil {
 		return err
 	}
-	fmt.Println("server server recv 2 = ", len(c2.Data))
+	fmt.Println("stream server recv 2 = ", len(c2.Data))
 	c3, err := svr.Recv()
 	if err != nil {
 		return err
 	}
-	fmt.Println("server server recv 3 = ", len(c3.Data))
+	fmt.Println("stream server recv 3 = ", len(c3.Data))
 
 	svr.Send(&dubbo3.BigData{
 		Data: make([]byte, c.WantSize),
