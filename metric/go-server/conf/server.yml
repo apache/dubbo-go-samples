@@ -9,7 +9,7 @@ metrics:
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoServer"
+  name: "metric_dubbo_server"
   module: "dubbo-go user-info server"
   version: "0.0.1"
   environment: "dev"
