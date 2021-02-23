@@ -1,12 +1,14 @@
-## Dubbo-Go Restful Usage
+## Dubbo-Go Restful 示例
 
-### 1. Introduction
+[Official Document](https://dubbo.apache.org/zh/blog/2021/01/14/dubbo-go-%E4%B8%AD-rest-%E5%8D%8F%E8%AE%AE%E5%AE%9E%E7%8E%B0/)
 
-Develop restful application in dubbo-go.
+### 1. 介绍
 
-### 2. How to configure
+使用Dubbo-go开发restful应用.
 
-provider side
+### 2. 使用示例
+
+生产者
 
 ```yaml
 # server.yml
@@ -59,7 +61,7 @@ protocols:
     port: 8888
 ```
 
-consumer side
+消费者
 
 ```yaml
 # client.yml
