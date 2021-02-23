@@ -23,7 +23,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-
 type GrpcGreeterImpl struct {
 	SayHello func(ctx context.Context, in *protobuf.HelloRequest, out *protobuf.HelloReply) error
 }
