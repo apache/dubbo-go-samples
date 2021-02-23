@@ -1,8 +1,8 @@
-## Hello World Example
+## Hello World 实例
 
-### Configuration
+### 配置
 
-registy config
+注册中心配置
 
 ```yaml
 # registry config
@@ -14,7 +14,7 @@ registries:
 
 ```
 
-provider config
+服务提供者配置
 
 ```yaml
 # service config
@@ -30,7 +30,7 @@ services:
         retries: 1
 ```
 
-consumer config
+服务消费者配置
 
 ```yaml
 # reference config
@@ -46,9 +46,9 @@ references:
         retries: 3
 ```
 
-### Code
+### 代码示例
 
-provider
+生产者示例
 
 ```go
 // init 
@@ -86,7 +86,7 @@ func (u *UserProvider) Reference() string {
 }
 ```
 
-consumer
+消费者示例
 
 ```go
 var userProvider = new(pkg.UserProvider)
