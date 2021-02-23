@@ -27,7 +27,7 @@ import (
 )
 
 import (
-	context2 "github.com/dk-lockdown/seata-golang/client/context"
+	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
 )
 
 type ProductSvc struct {
