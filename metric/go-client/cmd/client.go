@@ -19,15 +19,13 @@ package main
 
 import (
 	"context"
-	"io/ioutil"
-	"net/http"
 	"os"
 	"time"
 )
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/helloworld/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/metric/go-client/pkg"
 	"github.com/dubbogo/gost/log"
 )
 
@@ -51,22 +49,20 @@ func init() {
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
+	gxlog.CInfo("\n\n\nstart to test dubbo\n")
 	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
 
-	res, err := http.Get("http://localhost:8080/metrics")
-	defer res.Body.Close()
-	data, _ := ioutil.ReadAll(res.Body)
-	gxlog.CInfo("metrics: %v\n", string(data))
+	for {
+		err := userProvider.GetUser(context.TODO(), []interface{}{"dubbo-go"}, user)
+		if err != nil {
+			gxlog.CError("error: %v\n", err)
+			os.Exit(1)
+			return
+		}
+		gxlog.CInfo("response result: %v\n", user)
+		time.Sleep(3 * time.Second)
+	}
 }
