@@ -30,8 +30,6 @@ import (
 
 type Gender hessian.JavaEnum
 
-
-
 const (
 	MAN hessian.JavaEnum = iota
 	WOMAN

@@ -1,17 +1,12 @@
 application_id: "aggregation-svc"
 transaction_service_group: "127.0.0.1:8091"
-seata_version: "1.1.0"
+enable-client-batch-send-request: true
+seata_version: "1.2.0"
 # tcp
 getty:
   reconnect_interval: 0
   connection_number: 1
   heartbeat_period: "10s"
-  session_timeout: "180s"
-  pool_size: 4
-  pool_ttl: 600
-  gr_pool_size: 200
-  queue_len: 64
-  queue_number: 10
   getty_session_param:
     compress_encoding : false
     tcp_no_delay : true

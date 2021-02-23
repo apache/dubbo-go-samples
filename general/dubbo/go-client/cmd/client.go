@@ -40,9 +40,9 @@ import (
 )
 
 var (
-	userProvider        = new(pkg.UserProvider)
-	userProvider1       = new(pkg.UserProvider1)
-	userProvider2       = new(pkg.UserProvider2)
+	userProvider  = new(pkg.UserProvider)
+	userProvider1 = new(pkg.UserProvider1)
+	userProvider2 = new(pkg.UserProvider2)
 )
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run

@@ -49,8 +49,8 @@ references:
     interface : "com.ikurento.user.UserProvider"
     cluster: "failover"
     methods :
-    - name: "GetUser"
-      retries: 3
+      - name: "GetUser"
+        retries: 3
 
 
 protocol_conf:
