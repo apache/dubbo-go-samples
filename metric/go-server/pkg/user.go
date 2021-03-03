@@ -50,7 +50,8 @@ type UserProvider struct {
 
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
 	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	id := req[0].(string)
+	rsp := User{id, "Alex Stocks", 18, time.Now()}
 	span, ctx := opentracing.StartSpanFromContext(ctx, "User-Server-Span")
 	time.Sleep(100 * time.Millisecond)
 	span.Finish()
