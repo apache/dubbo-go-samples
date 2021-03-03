@@ -21,6 +21,9 @@ package integration
 
 import (
 	"github.com/stretchr/testify/assert"
+)
+
+import (
 	"testing"
 )
 
