@@ -26,12 +26,6 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log"
-	"github.com/emicklei/go-restful/v3"
-)
-
-import (
-	_ "github.com/apache/dubbo-go-samples/general/rest/go-server/pkg"
 	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
@@ -39,12 +33,18 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/rest"
 	"github.com/apache/dubbo-go/protocol/rest/server/server_impl"
 	_ "github.com/apache/dubbo-go/registry/protocol"
+	"github.com/dubbogo/gost/log"
+	"github.com/emicklei/go-restful/v3"
 
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+)
+
+import (
+	_ "github.com/apache/dubbo-go-samples/general/rest/go-server/pkg"
 )
 
 var (

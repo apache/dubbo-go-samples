@@ -20,15 +20,10 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/apache/dubbo-go-samples/general/rest/go-client/pkg"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-)
-
-import (
-	"github.com/dubbogo/gost/log"
 )
 
 import (
@@ -37,12 +32,17 @@ import (
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/protocol/rest"
 	_ "github.com/apache/dubbo-go/registry/protocol"
+	"github.com/dubbogo/gost/log"
 
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/general/rest/go-client/pkg"
 )
 
 var (
