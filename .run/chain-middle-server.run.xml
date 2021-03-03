@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="chain-middle-server" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$/chain" />
+    <envs>
+      <env name="CONF_PROVIDER_FILE_PATH" value="middle/conf/server.yml" />
+      <env name="CONF_CONSUMER_FILE_PATH" value="middle/conf/client.yml" />
+      <env name="APP_LOG_CONF_FILE" value="middle/conf/log.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <filePath value="$PROJECT_DIR$/chain/middle/cmd/server.go" />
+    <package value="github.com/apache/dubbo-go-samples/chain/middle/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>
