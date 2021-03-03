@@ -37,8 +37,10 @@ import (
 	"time"
 )
 
-var chinese = new(ChineseService)
-var american = new(AmericanService)
+var (
+	chinese  = new(ChineseService)
+	american = new(AmericanService)
+)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(chinese)
