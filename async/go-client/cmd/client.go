@@ -25,7 +25,7 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/helloworld/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/async/go-client/pkg"
 	"github.com/dubbogo/gost/log"
 )
 
@@ -40,9 +40,7 @@ import (
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-var userProvider = &pkg.UserProvider{
-	//Ch: make(chan *pkg.User),
-}
+var userProvider = pkg.NewUserProvider()
 
 func init() {
 	config.SetConsumerService(userProvider)
@@ -64,6 +62,5 @@ func main() {
 		return
 	}
 
-	//user = <-userProvider.Ch
-	gxlog.CInfo("response result: %v\n", user)
+	gxlog.CInfo("response result: %v\n", userProvider.GetResponse())
 }
