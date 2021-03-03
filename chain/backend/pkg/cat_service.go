@@ -19,6 +19,9 @@ package pkg
 
 import (
 	"fmt"
+)
+
+import (
 	"github.com/apache/dubbo-go/config"
 )
 
