@@ -23,13 +23,16 @@
     └── tests
         └── integration
 ```
+
 - go-server: 服务提供者
 - go-client: 服务消费者
 
 #### 服务提供者
+
 直连示例代码说明：
 
 1. 配置dubbo 服务协议，注册中心，服务信息等，具体参阅 [server.yml](go-server/conf/server.yml)
+
 ```yaml
 services:
   "UserProvider":
@@ -44,12 +47,15 @@ services:
       retries: 1
       loadbalance: "random"
 ```
+
 2. 应用启动：注册服务
+
 ```go
 hessian.RegisterPOJO(&pkg.User{})
 config.Load()
 initSignal()
 ```
+
 - 基于`hessian`序列化协议，使用[apache/dubbo-go-hessian2](https://github.com/apache/dubbo-go-hessian2) RegisterPOJO注册一个POJO实例
 - Dubbo Init：注册服务，详情参考[apache/dubbo-go/../config_loader.go](https://github.com/apache/dubbo-go/blob/master/config/config_loader.go)
     - init router
@@ -59,6 +65,7 @@ initSignal()
     - service config
     - init the shutdown callback
 - 初始化 signal 包：将输入信号（对应信号）转发到 `chan`， signal包不会为了向`chan`发送信息而阻塞，调用者应该保证`chan`有足够的缓存空间可以跟上期望的信号频率，此处单一信号用于通知的通道，缓存为设置 `1`
+    
     ```go
     func initSignal() {
         signals := make(chan os.Signal, 1)
@@ -89,6 +96,7 @@ initSignal()
 1. 在程序启动之初设置需要订阅的 `dubbo` 服务，
    确保配置文件 `client.yml` 已配置订阅服务相关信息，可自定义设置服务属性等，覆盖 Provider 的属性配置，详情参阅 [client.yml](go-client/conf/client.yml),
    保留最少配置 `application` 和 `references` 验证点对点直连效果，无需注册中心等配置
+
 ```go
 var userProvider = new(pkg.UserProvider)
 
@@ -97,6 +105,7 @@ func init() {
     hessian.RegisterPOJO(&pkg.User{})
 }
 ```
+
 ```yaml
 application:
   organization: "dubbo.io"
@@ -116,7 +125,9 @@ references:
       - name: "GetUser"
         retries: 3
 ```
+
 2. 应用启动：直连服务，完成一次服务调用
+
 ```go
 hessian.RegisterPOJO(&pkg.User{})
 config.Load()
@@ -130,11 +141,22 @@ err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 #### 1. 环境配置
 
 配置环境变量，指定服务加载所需配置文件路径
+
+- go-server:
+
 ```shell
 APP_LOG_CONF_FILE=direct/go-server/conf/log.yml;
 CONF_CONSUMER_FILE_PATH=direct/go-server/conf/client.yml;
 CONF_PROVIDER_FILE_PATH=direct/go-server/conf/server.yml
 ```
+
+- go-client:
+
+```shell
+APP_LOG_CONF_FILE=direct/go-client/conf/log.yml;
+CONF_CONSUMER_FILE_PATH=direct/go-client/conf/client.yml
+```
+
 详情请参阅 [dubbo-go/.../env.go](https://github.com/apache/dubbo-go/blob/master/common/constant/env.go)
 
 
