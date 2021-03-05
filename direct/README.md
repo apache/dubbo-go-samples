@@ -140,6 +140,7 @@ Refer to  [HOWTO.md](../HOWTO_zh.md) under the root directory to run this sample
 #### 1. Environment Configuration
 
 Configure the environment variable to specify the configuration file path required for the service to load.
+
 - go-server:
 
 ```shell
