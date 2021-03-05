@@ -145,7 +145,6 @@ Configure the environment variable to specify the configuration file path requir
 
 ```shell
 APP_LOG_CONF_FILE=direct/go-server/conf/log.yml;
-CONF_CONSUMER_FILE_PATH=direct/go-server/conf/client.yml;
 CONF_PROVIDER_FILE_PATH=direct/go-server/conf/server.yml
 ```
 
