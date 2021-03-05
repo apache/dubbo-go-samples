@@ -65,4 +65,4 @@ config.NewDefaultApplicationConfig()
 
   现在，通过api只能进行配置初始化过程，而通过api进行配置特定字段的修改也很重要。在以后可能会在config/consumer_config.go  config/provider_config.go 文件中进行进一步支持。
 
-  
+请参阅根目录中的 [HOWTO.md](../HOWTO_zh.md) 来运行本例。

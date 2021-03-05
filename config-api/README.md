@@ -61,3 +61,5 @@ config.NewDefaultApplicationConfig()
 - need improve\
 Now, api config is only support to create config by api, it also needs to set specific config field after read from yaml file by api.\
 There maybe future-change in config/consumer_config.go  config/provider_config.go to export more api.
+
+Pls. refer to [HOWTO.md](../HOWTO.md) under the root directory to run this sample.
