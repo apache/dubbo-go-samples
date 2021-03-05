@@ -21,15 +21,12 @@ package integration
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	gxlog "github.com/dubbogo/gost/log"
-)
-
-import (
 	"github.com/apache/dubbo-go/common"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
 	"github.com/apache/dubbo-go/protocol"
 	"github.com/apache/dubbo-go/remoting"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
