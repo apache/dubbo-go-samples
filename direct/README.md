@@ -21,6 +21,7 @@ This example provides the `Consumer` point-to-point direct connection `Provider`
     └── tests
         └── integration
 ```
+
 - go-server: The Service Provider
 - go-client: The Service Consumer
 
@@ -28,6 +29,7 @@ This example provides the `Consumer` point-to-point direct connection `Provider`
 Direct example code description:
 
 1. Configure the Dubbo protocol, registry, service information, See [server.yml](go-server/conf/server.yml)
+
 ```yaml
 services:
   "UserProvider":
@@ -43,11 +45,13 @@ services:
       loadbalance: "random"
 ```
 2. Startup: Register the service
+
 ```go
 hessian.RegisterPOJO(&pkg.User{})
 config.Load()
 initSignal()
 ```
+
 - Based on the `hessian` serialization protocol, using [apache/dubbo-go-hessian2](https://github.com/apache/dubbo-go-hessian2) RegisterPOJO register a POJO
 - Dubbo Init: Registration service, See [apache/dubbo-go/../config_loader.go](https://github.com/apache/dubbo-go/blob/master/config/config_loader.go)
     - init router
@@ -87,6 +91,7 @@ initSignal()
 1. Set up the `dubbo service` you need to subscribe to at the beginning of the program startup.
    Make sure that the configuration file [client.yml](go-client/conf/client.yml) has been configured with the relevant information of the subscription service, and the service properties can be customized to override the configuration of the Provider's properties.
    Retain minimum configuration `application` and `references` verification point-to-point direct connection effect, no need to configure the registry.
+
 ```go
 var userProvider = new(pkg.UserProvider)
 
@@ -114,7 +119,9 @@ references:
       - name: "GetUser"
         retries: 3
 ```
+
 2. Startup: Direct connection to the service to complete a service call
+
 ```go
 hessian.RegisterPOJO(&pkg.User{})
 config.Load()
@@ -131,16 +138,19 @@ Refer to  [HOWTO.md](../HOWTO_zh.md) under the root directory to run this sample
 
 Configure the environment variable to specify the configuration file path required for the service to load.
 - go-server:
+
 ```shell
 APP_LOG_CONF_FILE=direct/go-server/conf/log.yml;
 CONF_CONSUMER_FILE_PATH=direct/go-server/conf/client.yml;
 CONF_PROVIDER_FILE_PATH=direct/go-server/conf/server.yml
 ```
 - go-client:
+
 ```shell
 APP_LOG_CONF_FILE=direct/go-client/conf/log.yml;
 CONF_CONSUMER_FILE_PATH=direct/go-client/conf/client.yml
 ```
+
 See [dubbo-go/.../env.go](https://github.com/apache/dubbo-go/blob/master/common/constant/env.go)
 
 
