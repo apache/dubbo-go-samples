@@ -60,7 +60,7 @@ func init() {
 
 // define dto
 type User struct {
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 	Time time.Time
@@ -99,7 +99,7 @@ func init() {
 
 // define dto
 type User struct {
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 	Time time.Time
