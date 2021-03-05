@@ -6,7 +6,7 @@ In the development and testing environment, it is often necessary to bypass the 
 
 This example provides the `Consumer` point-to-point direct connection `Provider` based on Dubbo-Go to complete service calls to help better understand the connectivity of Dubbo-Go.
 
-### 目录
+### Introduction
 
 ```
 ├── go-client     
@@ -21,8 +21,8 @@ This example provides the `Consumer` point-to-point direct connection `Provider`
     └── tests
         └── integration
 ```
-- go-server: 服务提供者
-- go-client: 服务消费者
+- go-server: The Service Provider
+- go-client: The Service Consumer
 
 #### Provider
 Direct example code description:
