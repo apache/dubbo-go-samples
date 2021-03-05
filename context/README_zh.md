@@ -58,3 +58,6 @@ ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]interface{}
 	intValue := ctxAtta["int-value"].(int64),
 ```
 
+请参阅根目录中的 [HOWTO.md](../HOWTO_zh.md) 来运行本例。
+
+
