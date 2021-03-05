@@ -44,6 +44,7 @@ services:
       retries: 1
       loadbalance: "random"
 ```
+
 2. Startup: Register the service
 
 ```go
@@ -61,6 +62,7 @@ initSignal()
     - service config
     - init the shutdown callback
 - Init Signal ：
+  
     ```go
     func initSignal() {
         signals := make(chan os.Signal, 1)
@@ -100,6 +102,7 @@ func init() {
     hessian.RegisterPOJO(&pkg.User{})
 }
 ```
+
 ```yaml
 application:
   organization: "dubbo.io"
@@ -144,6 +147,7 @@ APP_LOG_CONF_FILE=direct/go-server/conf/log.yml;
 CONF_CONSUMER_FILE_PATH=direct/go-server/conf/client.yml;
 CONF_PROVIDER_FILE_PATH=direct/go-server/conf/server.yml
 ```
+
 - go-client:
 
 ```shell
