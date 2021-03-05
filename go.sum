@@ -87,8 +87,8 @@ github.com/aliyun/alibaba-cloud-sdk-go v1.61.18/go.mod h1:v8ESoHo4SyHmuB4b1tJqDH
 github.com/apache/dubbo-getty v1.4.2/go.mod h1:ansXgKxxyhCOiQL29nO5ce1MDcEKmCyZuNR9oMs3hek=
 github.com/apache/dubbo-getty v1.4.3 h1:PCKpryDasKOxwT5MBC6MIMO+0NLOaHF6Xco9YXQw7HI=
 github.com/apache/dubbo-getty v1.4.3/go.mod h1:ansXgKxxyhCOiQL29nO5ce1MDcEKmCyZuNR9oMs3hek=
-github.com/apache/dubbo-go v1.5.6-0.20210204121013-9c3bd0e9c92d h1:XkkzT6RlIyEW0iXgfcC67kj8A9k/gNPeOk9Fs0czIIY=
-github.com/apache/dubbo-go v1.5.6-0.20210204121013-9c3bd0e9c92d/go.mod h1:L8Z5+HVym1j3loJL2pdCvJkVBC0Il8uxUlv7bzDu/io=
+github.com/apache/dubbo-go v1.5.6-rc1.0.20210225142527-f1f81ebd8292 h1:7Recoqb9kO8pqSYIjH9LxXVh1TftCf0KHsJaO7w7ykE=
+github.com/apache/dubbo-go v1.5.6-rc1.0.20210225142527-f1f81ebd8292/go.mod h1:oMwy4E3YDz0VoDuvIvSU+XtQNylBAxLWui1lvyBE9GM=
 github.com/apache/dubbo-go-hessian2 v1.8.2 h1:CQq2Mmlrk6Fqmudwl9Dqps8drTrBFnmXRlzgOjj0FqA=
 github.com/apache/dubbo-go-hessian2 v1.8.2/go.mod h1:xQUjE7F8PX49nm80kChFvepA/AvqAZ0oh/UaB6+6pBE=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
@@ -626,8 +626,8 @@ github.com/munnerz/goautoneg v0.0.0-20120707110453-a547fc61f48d/go.mod h1:+n7T8m
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f/go.mod h1:ZdcZmHo+o7JKHSa8/e818NopupXU1YMK5fe1lsApnBw=
-github.com/nacos-group/nacos-sdk-go v1.0.5 h1:xwLS0Ao7fSB3HoDFR+JRZ1fh0HuvgHPOWBdals37Oxc=
-github.com/nacos-group/nacos-sdk-go v1.0.5/go.mod h1:hlAPn3UdzlxIlSILAyOXKxjFSvDJ9oLzTJ9hLAK1KzA=
+github.com/nacos-group/nacos-sdk-go v1.0.6 h1:0OqjS37qIKKKZKRQSJ5pNFGRrfzP7+gD4L6dvOkPFZw=
+github.com/nacos-group/nacos-sdk-go v1.0.6/go.mod h1:hlAPn3UdzlxIlSILAyOXKxjFSvDJ9oLzTJ9hLAK1KzA=
 github.com/nats-io/jwt v0.3.0/go.mod h1:fRYCDE99xlTsqUzISS1Bi75UBJ6ljOJQOAAu5VglpSg=
 github.com/nats-io/jwt v0.3.2/go.mod h1:/euKqTS1ZD+zzjYrY7pseZrTtWQSjujC7xjPc8wL6eU=
 github.com/nats-io/nats-server/v2 v2.1.2/go.mod h1:Afk+wRZqkMQs/p45uXdrVLuab3gwv3Z8C4HTBu8GD/k=
