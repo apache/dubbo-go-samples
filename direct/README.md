@@ -1,24 +1,22 @@
-# Direct 示例
+# Direct Example
 
-### 背景
+### Backend
 
-在开发及测试环境下，经常需要绕过注册中心，测试指定服务提供者，这时候可能需要点对点直连，
-点对点直连方式，将以服务接口为单位，忽略注册中心的提供者列表，A 接口配置点对点，不影响 B 接口从注册中心获取列表。
+In the development and testing environment, it is often necessary to bypass the registry and test the designated service provider, which may require point-to-point direct connection. The point-to-point direct connection method will be based on the service interface and ignore the list of providers in the registry. Interface A is configured point-to-point and does not affect interface B to get the list from the registry.
 
-本示例提供基于 Dubbo-go 的`Consumer`点对点直连`Provider`完成服务调用，帮助更好理解 Dubbo-go 的连通性。
-
+This example provides the `Consumer` point-to-point direct connection `Provider` based on Dubbo-Go to complete service calls to help better understand the connectivity of Dubbo-Go.
 
 ### 目录
 
 ```
 ├── go-client     
-│   ├── cmd       启动入口
-│   ├── conf      消费者配置：dubbo 服务属性配置、日志属性配置
-│   └── pkg       业务包  
+│   ├── cmd       
+│   ├── conf      
+│   └── pkg         
 └── go-server     
-    ├── cmd       启动入口
-    ├── conf      服务提供者配置：dubbo 服务属性配置、日志属性配置
-    ├── docker    docker compose： Zookeeper 
+    ├── cmd       
+    ├── conf      
+    ├── docker     
     ├── pkg
     └── tests
         └── integration
@@ -26,10 +24,10 @@
 - go-server: 服务提供者
 - go-client: 服务消费者
 
-#### 服务提供者
-直连示例代码说明：
+#### Provider
+Direct example code description:
 
-1. 配置dubbo 服务协议，注册中心，服务信息等，具体参阅 [server.yml](go-server/conf/server.yml)
+1. Configure the Dubbo protocol, registry, service information, See [server.yml](go-server/conf/server.yml)
 ```yaml
 services:
   "UserProvider":
@@ -44,21 +42,21 @@ services:
       retries: 1
       loadbalance: "random"
 ```
-2. 应用启动：注册服务
+2. Startup: Register the service
 ```go
 hessian.RegisterPOJO(&pkg.User{})
 config.Load()
 initSignal()
 ```
-- 基于`hessian`序列化协议，使用[apache/dubbo-go-hessian2](https://github.com/apache/dubbo-go-hessian2) RegisterPOJO注册一个POJO实例
-- Dubbo Init：注册服务，详情参考[apache/dubbo-go/../config_loader.go](https://github.com/apache/dubbo-go/blob/master/config/config_loader.go)
+- Based on the `hessian` serialization protocol, using [apache/dubbo-go-hessian2](https://github.com/apache/dubbo-go-hessian2) RegisterPOJO register a POJO
+- Dubbo Init: Registration service, See [apache/dubbo-go/../config_loader.go](https://github.com/apache/dubbo-go/blob/master/config/config_loader.go)
     - init router
     - init the global event dispatcher
     - start the metadata report if config set
     - reference config
     - service config
     - init the shutdown callback
-- 初始化 signal 包：将输入信号（对应信号）转发到 `chan`， signal包不会为了向`chan`发送信息而阻塞，调用者应该保证`chan`有足够的缓存空间可以跟上期望的信号频率，此处单一信号用于通知的通道，缓存为设置 `1`
+- Init Signal ：
     ```go
     func initSignal() {
         signals := make(chan os.Signal, 1)
@@ -84,11 +82,11 @@ initSignal()
     }
     ```
 
-#### 服务消费者
+#### Consumer
 
-1. 在程序启动之初设置需要订阅的 `dubbo` 服务，
-   确保配置文件 `client.yml` 已配置订阅服务相关信息，可自定义设置服务属性等，覆盖 Provider 的属性配置，详情参阅 [client.yml](go-client/conf/client.yml),
-   保留最少配置 `application` 和 `references` 验证点对点直连效果，无需注册中心等配置
+1. Set up the `dubbo service` you need to subscribe to at the beginning of the program startup.
+   Make sure that the configuration file [client.yml](go-client/conf/client.yml) has been configured with the relevant information of the subscription service, and the service properties can be customized to override the configuration of the Provider's properties.
+   Retain minimum configuration `application` and `references` verification point-to-point direct connection effect, no need to configure the registry.
 ```go
 var userProvider = new(pkg.UserProvider)
 
@@ -116,7 +114,7 @@ references:
       - name: "GetUser"
         retries: 3
 ```
-2. 应用启动：订阅服务，完成一次服务调用
+2. Startup: Direct connection to the service to complete a service call
 ```go
 hessian.RegisterPOJO(&pkg.User{})
 config.Load()
@@ -125,26 +123,34 @@ err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 ```
 
 
-### 如何运行
-请参阅根目录中的 [HOWTO.md](../HOWTO_zh.md) 来运行本例。
-#### 1. 环境配置
+### How To Run
 
-配置环境变量，指定服务加载所需配置文件路径
+Refer to  [HOWTO.md](../HOWTO_zh.md) under the root directory to run this sample.
+
+#### 1. Environment Configuration
+
+Configure the environment variable to specify the configuration file path required for the service to load.
+- go-server:
 ```shell
 APP_LOG_CONF_FILE=direct/go-server/conf/log.yml;
 CONF_CONSUMER_FILE_PATH=direct/go-server/conf/client.yml;
 CONF_PROVIDER_FILE_PATH=direct/go-server/conf/server.yml
 ```
-详情请参阅 [dubbo-go/.../env.go](https://github.com/apache/dubbo-go/blob/master/common/constant/env.go)
+- go-client:
+```shell
+APP_LOG_CONF_FILE=direct/go-client/conf/log.yml;
+CONF_CONSUMER_FILE_PATH=direct/go-client/conf/client.yml
+```
+See [dubbo-go/.../env.go](https://github.com/apache/dubbo-go/blob/master/common/constant/env.go)
 
 
-#### 2. 启动注册中心
+#### 2. Start The Registry
 
-本示例使用 Zookeeper 做注册中心， 可以直接运行 docker zookeeper 环境，配置详情请参阅 `docker-compose.yml`
+This example uses ZooKeeper as the registry, so you can run the Docker ZooKeeper environment directly. See [docker-compose.yml](go-server/docker/docker-compose.yml)
 
-#### 3. 启动服务提供者
-#### 4. 启动服务提供者
+#### 3. Start The Provider
+#### 4. Start The Consumer
 
 
-请参阅根目录中的 [HOWTO.md](../HOWTO_zh.md) 来运行本例。
+Refer to  [HOWTO.md](../HOWTO_zh.md) under the root directory to run this sample.
 

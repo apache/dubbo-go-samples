@@ -1,5 +1,4 @@
 # dubbo server yaml configure file
-check: true
 # application config
 application:
   organization : "dubbo.io"
