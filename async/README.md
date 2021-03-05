@@ -8,7 +8,7 @@ provider:
 
 ```golang
 type AsyncCallbackService interface {
-CallBack(response CallbackResponse)
+    CallBack(response CallbackResponse) // callback
 }
 ```
 
