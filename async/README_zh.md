@@ -7,7 +7,7 @@ Dubbo-go 提供同步调用的同时，还提供了客户端异步调用的能�
 
 ```golang
 type AsyncCallbackService interface {
-	CallBack(response CallbackResponse)
+	CallBack(response CallbackResponse) // callback
 }
 ```
 
