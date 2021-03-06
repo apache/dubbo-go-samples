@@ -74,4 +74,4 @@ services:
     interface: "org.apache.dubbo.demo.AmericanService"
 ```
 
-Pls. refer to [HOWTO.md](../HOWTO.md) under the root directory to run this sample.
+_Pls. refer to [HOWTO.md](../HOWTO.md) under the root directory to run this sample._
