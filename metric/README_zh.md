@@ -10,7 +10,7 @@
 
 ### 注意事项
 
-* [prometheus](https://prometheus.io/docs/introduction/overview) 需要的是一个合法的名称而根据 [dubbo-go源码](https://github.com/apache/dubbo-go/blob/master/metrics/prometheus/reporter.go) 得知`namespace = config.GetApplicationConfig().Name`说你你服务的名称字母、数组、下划线才可以
+* [prometheus](https://prometheus.io/docs/introduction/overview) 需要的是一个合法的名称而根据 [dubbo-go源码](https://github.com/apache/dubbo-go/blob/master/metrics/prometheus/reporter.go) 得知`namespace = config.GetApplicationConfig().Name`也就是说你服务的名称字母、数组、下划线才可以
 
 * 需要修改[prometheus.yml](./go-server/docker/config/prometheus.yml)ip为本地物理机器的ip
 
