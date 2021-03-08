@@ -19,11 +19,14 @@ package pkg
 
 import (
 	"context"
+	"time"
+)
+
+import (
 	"github.com/apache/dubbo-go/common"
 	"github.com/apache/dubbo-go/protocol"
 	"github.com/apache/dubbo-go/remoting"
 	gxlog "github.com/dubbogo/gost/log"
-	"time"
 )
 
 type User struct {
@@ -38,12 +41,14 @@ type UserProvider struct {
 	ch      chan *User
 }
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
+func NewUserProvider() *UserProvider {
+	return &UserProvider{
+		ch: make(chan *User),
+	}
 }
 
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
 }
 
 // to enable async call:
@@ -61,4 +66,13 @@ func (u *UserProvider) CallBack(res common.CallbackResponse) {
 		}
 	}
 	u.ch <- nil
+}
+
+func (u *UserProvider) GetResponse() *User {
+	user := <-u.ch
+	return user
+}
+
+func (User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }

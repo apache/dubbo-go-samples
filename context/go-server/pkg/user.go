@@ -19,16 +19,13 @@ package pkg
 
 import (
 	"context"
+)
+
+import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-)
-
-import (
-	"github.com/dubbogo/gost/log"
-)
-
-import (
 	"github.com/apache/dubbo-go/common/constant"
 	"github.com/apache/dubbo-go/config"
+	"github.com/dubbogo/gost/log"
 )
 
 func init() {

@@ -5,7 +5,7 @@ Context in server end can be used to read specific field that dubbo-go framework
 It can also used to transfer base-type of golang, even 
 
 ### 2. How to get dubbo-go default field
-You can get dubbo attachement in this way:
+You can get dubbo attachment in this way:
 ```go
 ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]interface{})
 	rsp := ContextContent{
@@ -54,3 +54,5 @@ As demo in go-server/server.go shows
     // get value you sent
 	intValue := ctxAtta["int-value"].(int64),
 ```
+
+Pls. refer to [HOWTO.md](../HOWTO.md) under the root directory to run this sample.
