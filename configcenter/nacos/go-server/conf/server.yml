@@ -8,7 +8,7 @@ config_center:
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoServer"
+  name: "user-info-server"
   module: "dubbo-go user-info server"
   version: "0.0.1"
   environment: "dev"
