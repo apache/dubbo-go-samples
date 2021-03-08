@@ -16,7 +16,7 @@ config_center:
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoClient"
+  name: "user-info-client"
   module: "dubbo-go user-info client"
   version: "0.0.1"
   environment: "dev"
