@@ -28,10 +28,6 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/metric/go-server/pkg"
-)
-
-import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
@@ -45,6 +41,10 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/metric/go-server/pkg"
 )
 
 var (
