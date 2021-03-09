@@ -28,7 +28,7 @@ dubbo
     ├── user-info-client     
     │   └── dubbo.properties <- 服务消费者
     └── user-info-server     
-        
+        └── dubbo.properties <- 服务提供者
 ```
 
 ##### 1. 准备应用外化配置
