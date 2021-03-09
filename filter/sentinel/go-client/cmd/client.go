@@ -27,11 +27,6 @@ import (
 	sentinelConf "github.com/alibaba/sentinel-golang/core/config"
 	"github.com/alibaba/sentinel-golang/core/flow"
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/helloworld/go-client/pkg"
-	"github.com/dubbogo/gost/log"
-)
-
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
@@ -40,6 +35,11 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	"github.com/dubbogo/gost/log"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/filter/sentinel/go-client/pkg"
 )
 
 var userProvider = new(pkg.UserProvider)
