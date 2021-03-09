@@ -14,17 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.dubbo;
 
-package com.ikurento.user;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public class Provider {
 
-public class UserProviderImpl implements UserProvider {
-    private static final Logger LOG = LoggerFactory.getLogger("UserLogger"); //Output to user-server.log
-
-    public User GetUser(String userId) {
-        return new User(userId, "zhangsan", 18);
+    /**
+     * To get ipv6 address to work, add
+     * System.setProperty("java.net.preferIPv6Addresses", "true");
+     * before running your application.
+     */
+    public static void main(String[] args) throws Exception {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo.provider.xml"});
+        context.start();
+        System.in.read(); // press any key to exit
     }
-
 }
