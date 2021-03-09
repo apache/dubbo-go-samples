@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.ikurento.user;
+package org.apache.dubbo;
 
 import java.util.Date;
 import java.io.Serializable;

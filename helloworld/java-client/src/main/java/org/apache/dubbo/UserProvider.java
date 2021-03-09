@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ikurento.user;
+package org.apache.dubbo;
 
 public interface UserProvider {
 	User GetUser(String userId);

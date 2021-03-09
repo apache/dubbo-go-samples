@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.ikurento.user;
+package org.apache.dubbo;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
