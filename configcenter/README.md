@@ -22,11 +22,11 @@ If use Zookeeper as config center, global externalized configuration and applica
 dubbo
 └── config
     ├── dubbo
-    │   └── dubbo.properties <- 全局
+    │   └── dubbo.properties <- global
     ├── user-info-client     
-    │   └── dubbo.properties <- 服务消费者
+    │   └── dubbo.properties <- service consumer
     └── user-info-server     
-        
+        └── dubbo.properties <- service provider
 ```
 
 ##### 1. Prepare externalized configurations
