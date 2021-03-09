@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.ikurento.user;
+package org.apache.dubbo;
 
 public interface UserProvider {
 
