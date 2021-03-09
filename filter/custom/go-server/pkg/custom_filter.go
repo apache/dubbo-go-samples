@@ -24,13 +24,10 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log"
-)
-
-import (
 	"github.com/apache/dubbo-go/common/extension"
 	"github.com/apache/dubbo-go/filter"
 	"github.com/apache/dubbo-go/protocol"
+	"github.com/dubbogo/gost/log"
 )
 
 func init() {
