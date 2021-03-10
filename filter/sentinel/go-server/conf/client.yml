@@ -23,8 +23,6 @@ registries :
     username: ""
     password: ""
 
-filter: "sentinel-provider"
-
 # reference config
 references:
   "UserProvider":
