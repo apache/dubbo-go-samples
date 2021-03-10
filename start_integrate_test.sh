@@ -20,7 +20,7 @@ array=("async/go-server")
 # config center
 array+=("configcenter/apollo/go-server")
 array+=("configcenter/nacos/go-server")
-#array+=("configcenter/zookeeper/go-server")
+array+=("configcenter/zookeeper/go-server")
 
 # direct
 array+=("direct/go-server")
@@ -28,7 +28,7 @@ array+=("direct/go-server")
 # filter
 array+=("filter/custom/go-server")
 array+=("filter/tpslimit/go-server")
-#array+=("filter/sentinel/go-server")
+array+=("filter/sentinel/go-server")
 
 # general
 array+=("general/dubbo/go-server")
