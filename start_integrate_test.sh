@@ -26,7 +26,7 @@ array+=("configcenter/nacos/go-server")
 array+=("direct/go-server")
 
 # filter
-array+=("filter/custom_filter/go-server")
+array+=("filter/custom/go-server")
 array+=("filter/tpslimit/go-server")
 #array+=("filter/sentinel/go-server")
 
