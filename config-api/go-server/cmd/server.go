@@ -39,7 +39,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/helloworld/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/config-api/go-server/pkg"
 )
 
 var (
