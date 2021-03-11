@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,23 +15,10 @@
  * limitations under the License.
  */
 
-package integration
+package org.apache.dubbo;
 
-import (
-	"context"
-	"testing"
-)
+public interface UserProvider {
 
-import (
-	"github.com/stretchr/testify/assert"
-)
+    User GetUser(String userId); // the first alpha is Upper case to compatible with golang.
 
-func TestGetUser(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	assert.Nil(t, err)
-	assert.Equal(t, "A001", user.ID)
-	assert.Equal(t, "Alex Stocks", user.Name)
-	assert.Equal(t, int32(18), user.Age)
-	assert.NotNil(t, user.Time)
 }
