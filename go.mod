@@ -5,7 +5,7 @@ require (
 	github.com/apache/dubbo-go v1.5.6-0.20210204121013-9c3bd0e9c92d
 	github.com/apache/dubbo-go-hessian2 v1.8.2
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/transaction-wg/seata-golang v0.1.8
+	github.com/transaction-wg/seata-golang v0.2.0
 	github.com/dubbogo/gost v1.11.0
 	github.com/emicklei/go-restful/v3 v3.4.0 // indirect
 	github.com/gogo/protobuf v1.3.1 // indirect
