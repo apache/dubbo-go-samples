@@ -32,7 +32,7 @@ require (
 	github.com/prometheus/client_golang v1.8.0
 	github.com/stretchr/testify v1.7.0
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20200122045848-3419fae592fc // indirect
-	github.com/transaction-wg/seata-golang v0.1.8
+	github.com/transaction-wg/seata-golang v0.2.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	go.etcd.io/bbolt v1.3.4 // indirect
