@@ -19,13 +19,13 @@ package main
 
 import (
 	"context"
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go/config"
 	"os"
 	"time"
 )
 
 import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
