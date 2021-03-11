@@ -25,7 +25,7 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/filter/custom_filter/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/helloworld/go-client/pkg"
 	"github.com/dubbogo/gost/log"
 )
 
