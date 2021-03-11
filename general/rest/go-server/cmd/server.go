@@ -26,51 +26,43 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
+	_ "github.com/apache/dubbo-go/protocol/rest"
+	"github.com/apache/dubbo-go/protocol/rest/server/server_impl"
 	_ "github.com/apache/dubbo-go/registry/protocol"
+	"github.com/dubbogo/gost/log"
+	"github.com/emicklei/go-restful/v3"
+
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
+
+	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/config-api/go-server/pkg"
+	_ "github.com/apache/dubbo-go-samples/general/rest/go-server/pkg"
 )
 
 var (
 	survivalTimeout = int(3e9)
 )
 
-func setConfigByAPI() {
-	providerConfig := config.NewProviderConfig(
-		config.WithProviderAppConfig(config.NewDefaultApplicationConfig()),
-		config.WithProviderProtocol("dubbo", "dubbo", "20000"),
-		config.WithProviderRegistry("demoZk", config.NewDefaultRegistryConfig("zookeeper")),
-		config.WithProviderServices("UserProvider", config.NewServiceConfigByAPI(
-			config.WithServiceRegistry("demoZk"),
-			config.WithServiceProtocol("dubbo"),
-			config.WithServiceInterface("org.apache.dubbo.UserProvider"),
-			config.WithServiceLoadBalance("random"),
-			config.WithServiceWarmUpTime("100"),
-			config.WithServiceCluster("failover"),
-			config.WithServiceMethod("GetUser", "1", "random"),
-		)),
-	)
-	config.SetProviderConfig(*providerConfig)
-}
-
-func init() {
-	setConfigByAPI()
-}
-
-// needn't to setup environment variable  before run
+// they are necessary:
+// 		export CONF_PROVIDER_FILE_PATH="xxx"
+// 		export APP_LOG_CONF_FILE="xxx"
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
+	server_impl.AddGoRestfulServerFilter(func(request *restful.Request, response *restful.Response, chain *restful.FilterChain) {
+		gxlog.CInfo(request.SelectedRoutePath())
+		chain.ProcessFilter(request, response)
+	})
+	server_impl.AddGoRestfulServerFilter(func(request *restful.Request, response *restful.Response, chain *restful.FilterChain) {
+		gxlog.CInfo("filter2")
+		chain.ProcessFilter(request, response)
+	})
 	config.Load()
 
 	initSignal()
@@ -85,7 +77,7 @@ func initSignal() {
 		logger.Infof("get signal %s", sig.String())
 		switch sig {
 		case syscall.SIGHUP:
-			// reload()
+		// reload()
 		default:
 			time.AfterFunc(time.Duration(survivalTimeout), func() {
 				logger.Warnf("app exit now by force...")

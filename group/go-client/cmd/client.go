@@ -25,6 +25,11 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/apache/dubbo-go-samples/group/go-client/pkg"
+	"github.com/dubbogo/gost/log"
+)
+
+import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
@@ -33,47 +38,35 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
-	"github.com/dubbogo/gost/log"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/config-api/go-client/pkg"
-)
-
-var userProvider = new(pkg.UserProvider)
-
-func setConfigByAPI() {
-	consumerConfig := config.NewConsumerConfig(
-		config.WithConsumerAppConfig(config.NewDefaultApplicationConfig()),
-		config.WithConsumerConnTimeout(time.Second*3),
-		config.WithConsumerRequestTimeout(time.Second*3),
-		config.WithConsumerRegistryConfig("demoZk", config.NewDefaultRegistryConfig("zookeeper")),
-		config.WithConsumerReferenceConfig("UserProvider", config.NewReferenceConfigByAPI(
-			config.WithReferenceRegistry("demoZk"),
-			config.WithReferenceProtocol("dubbo"),
-			config.WithReferenceInterface("org.apache.dubbo.UserProvider"),
-			config.WithReferenceMethod("GetUser", "3", "random"),
-			config.WithReferenceCluster("failover"),
-		)),
-	)
-	config.SetConsumerConfig(*consumerConfig)
-}
+var userProviderA = new(pkg.UserProviderGroupA)
+var userProviderB = new(pkg.UserProviderGroupB)
 
 func init() {
-	setConfigByAPI()
-	config.SetConsumerService(userProvider)
+	config.SetConsumerService(userProviderA)
+	config.SetConsumerService(userProviderB)
 	hessian.RegisterPOJO(&pkg.User{})
 }
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
+
 	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	err := userProviderA.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+	gxlog.CInfo("response result: %v\n", user)
+
+	user = &pkg.User{}
+	err = userProviderB.GetUser(context.TODO(), []interface{}{"A001"}, user)
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
