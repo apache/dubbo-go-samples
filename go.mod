@@ -10,6 +10,7 @@ require (
 	github.com/coreos/bbolt v1.3.3 // indirect
 	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
+	github.com/transaction-wg/seata-golang v0.2.0
 	github.com/dubbogo/gost v1.11.0
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/gogo/protobuf v1.3.1 // indirect
