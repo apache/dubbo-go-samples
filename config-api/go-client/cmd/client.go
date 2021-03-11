@@ -37,7 +37,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/helloworld/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/config-api/go-client/pkg"
 )
 
 var userProvider = new(pkg.UserProvider)
