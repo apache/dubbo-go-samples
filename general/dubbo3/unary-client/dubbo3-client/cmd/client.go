@@ -63,7 +63,7 @@ func main() {
 	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
 	wg := sync.WaitGroup{}
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 1; i++ {
 		wg.Add(1)
 		go func() {
 			//rsp, err := grpcGreeterImpl.BigUnaryTest(ctx, &BigDataReq)
@@ -116,29 +116,29 @@ func main() {
 			}
 			fmt.Printf("client response result: %v\n", reply)
 
-			err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Printf("client response result: %v\n", reply)
-
-			err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Printf("client response result: %v\n", reply)
-
-			err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Printf("client response result: %v\n", reply)
-
-			err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Printf("client response result: %v\n", reply)
+			//err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			//if err != nil {
+			//	panic(err)
+			//}
+			//fmt.Printf("client response result: %v\n", reply)
+			//
+			//err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			//if err != nil {
+			//	panic(err)
+			//}
+			//fmt.Printf("client response result: %v\n", reply)
+			//
+			//err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			//if err != nil {
+			//	panic(err)
+			//}
+			//fmt.Printf("client response result: %v\n", reply)
+			//
+			//err = grpcGreeterImpl.Dubbo3SayHello2(ctx, req, reply)
+			//if err != nil {
+			//	panic(err)
+			//}
+			//fmt.Printf("client response result: %v\n", reply)
 			////wg.Done()
 			wg.Done()
 		}()

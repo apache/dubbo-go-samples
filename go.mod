@@ -6,19 +6,17 @@ require (
 	github.com/apache/dubbo-go-hessian2 v1.8.2
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dk-lockdown/seata-golang v0.1.0-fix
-	github.com/dubbogo/gost v1.11.0
-	github.com/dubbogo/triple v0.0.0-20210209070209-fbd5ecacd554
+	github.com/dubbogo/gost v1.11.2
+	github.com/dubbogo/triple v0.0.0-20210314060249-a8daea612f94
 	github.com/emicklei/go-restful/v3 v3.4.0
-	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/golang/protobuf v1.4.3
-	github.com/google/go-cmp v0.5.0 // indirect
 	github.com/labstack/echo/v4 v4.1.15 // indirect
 	github.com/micro/go-micro/v2 v2.9.1 // indirect
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.2.2
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_golang v1.8.0
+	github.com/prometheus/client_golang v1.9.0
 	github.com/stretchr/testify v1.7.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
@@ -31,9 +29,17 @@ require (
 
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
-replace github.com/apache/dubbo-go => github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
+//replace (
+//	github.com/dubbogo/net => ../net
+//)
+//replace github.com/apache/dubbo-go => ../dubbo-go //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
+//
+//replace github.com/dubbogo/triple => ../triple //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
 
-replace golang.org/x/net => github.com/dubbogo/net v0.0.0-20210209064142-0e3827157a56
+//replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
+
+//
+//replace golang.org/x/net => github.com/dubbogo/net v0.0.0-20210209064142-0e3827157a56
 
 //replace github.com/apache/dubbo-go => ../dubbo-go
 

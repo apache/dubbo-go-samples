@@ -45,38 +45,47 @@ func main() {
 	//if len(os.Args) > 1 {
 	//	name = os.Args[1]
 	//}
-	BigDataReq := pb.BigData{
-		WantSize: 200000,
-		Data: make([]byte, 30000),
+	//BigDataReq := pb.BigData{
+	//	WantSize: 200000,
+	//	Data: make([]byte, 30000),
+	//}
+	req := &pb.Dubbo3HelloRequest{
+		Myname: "jifeng",
 	}
+	ctx := context.Background()
 
 	wg := sync.WaitGroup{}
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 1; i++ {
 		wg.Add(1)
 		go func() {
 			// Test Big Unary
-			rsp, err := c.BigUnaryTest(context.Background(), &BigDataReq)
-			if err != nil{
+			reply ,err := c.Dubbo3SayHello2(ctx, req)
+			if err != nil {
 				panic(err)
 			}
-			fmt.Println("rsp len = ", len(rsp.Data))
-			rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
-			if err != nil{
-				panic(err)
-			}
-			fmt.Println("rsp len = ", len(rsp.Data))
-
-			rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
-			if err != nil{
-				panic(err)
-			}
-			fmt.Println("rsp len = ", len(rsp.Data))
-
-			rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
-			if err != nil{
-				panic(err)
-			}
-			fmt.Println("rsp len = ", len(rsp.Data))
+			fmt.Printf("client response result: %v\n", reply)
+			//rsp, err := c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
+			//
+			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
+			//if err != nil{
+			//	panic(err)
+			//}
+			//fmt.Println("rsp len = ", len(rsp.Data))
 
 			//rsp, err = c.BigUnaryTest(context.Background(), &BigDataReq)
 			//if err != nil{

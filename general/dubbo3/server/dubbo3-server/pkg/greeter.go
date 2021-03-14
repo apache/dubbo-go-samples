@@ -65,7 +65,7 @@ func (s *GreeterProvider) BigStreamTest(svr dubbo3.Dubbo3Greeter_BigStreamTestSe
 func (s *GreeterProvider) Dubbo3SayHello2(ctx context.Context, in *dubbo3.Dubbo3HelloRequest) (*dubbo3.Dubbo3HelloReply, error) {
 	fmt.Println("######### get server request name :" + in.Myname)
 	fmt.Println("get tri-req-id = ", ctx.Value("tri-req-id"))
-	return &dubbo3.Dubbo3HelloReply{Msg: "Hello " + in.Myname},nil
+	return &dubbo3.Dubbo3HelloReply{Msg: "Hello " + in.Myname}, nil
 }
 
 // Dubbo3SayHello is a server rpc exmple

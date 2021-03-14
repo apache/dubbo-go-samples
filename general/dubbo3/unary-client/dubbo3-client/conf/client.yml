@@ -29,7 +29,7 @@ references:
     registry: "demoZk"
     protocol: "dubbo3"
     interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
-    url: dubbo3://localhost:20001
+#    url: dubbo3://localhost:20001
     cluster: "failover"
     methods:
       - name: "SayHello"
