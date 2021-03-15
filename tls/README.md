@@ -24,11 +24,11 @@ Can be run in`config.Load` to import configuration before .
 ```go
 func init(){
   //Certificate
-  serverPemPath, _ := filepath.Abs ("../../certs/ server.pem ")
+  serverPemPath, _ := filepath.Abs ("../certs/ server.pem ")
   //Private key
-  serverKeyPath, _ := filepath.Abs ("../../certs/ server.key ")
+  serverKeyPath, _ := filepath.Abs ("../certs/ server.key ")
   //CA certificate
-  caPemPath, _ := filepath.Abs ("../../certs/ ca.pem ")
+  caPemPath, _ := filepath.Abs ("../certs/ ca.pem ")
   //Turn on TLS
   config.SetSslEnabled (true)
   //Import TLS configuration

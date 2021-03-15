@@ -47,9 +47,9 @@ client端的设置和server端类似，不需要设置证书
 ```go
 func init(){
   // 私钥
-	clientKeyPath, _ := filepath.Abs("../../certs/ca.key")
+	clientKeyPath, _ := filepath.Abs("../certs/ca.key")
   // ca证书
-	caPemPath, _ := filepath.Abs("../../certs/ca.pem")
+	caPemPath, _ := filepath.Abs("../certs/ca.pem")
   // 开启tls
 	config.SetSslEnabled(true)
   // 导入tls配置
