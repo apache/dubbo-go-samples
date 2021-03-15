@@ -16,26 +16,21 @@ application:
 
 # registry config
 registries:
-  "shanghaiZk":
-    protocol: "zookeeper"
+  "shanghaiNacos":
+    protocol: "nacos"
     timeout: "3s"
-    address: "127.0.0.1:2182"
-    username: ""
-    password: ""
-    zone: shanghai
-    weight: 50
+    address: "127.0.0.1:8849"
+    preferred: true
 
-  "hangzhouZk":
-    protocol: "zookeeper"
+  "hangzhouNacos":
+    protocol: "nacos"
     timeout: "3s"
-    address: "127.0.0.1:2183"
-    zone: hangzhou
-    weight: 200
+    address: "127.0.0.1:8848"
 
 # reference config
 references:
   "UserProvider":
-    registry: "shanghaiZk,hangzhouZk"
+    registry: "hangzhouNacos,shanghaiNacos"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"

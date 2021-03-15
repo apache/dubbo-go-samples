@@ -10,16 +10,18 @@ application:
 
 # registry config
 registries:
-  "demoZk":
-    protocol: "zookeeper"
+  "hangzhouNacos":
+    protocol: "nacos"
     timeout: "3s"
-    address: "127.0.0.1:2183"
-    zone: hangzhou
+    address: "127.0.0.1:8847"
+#    username: "nacos"
+#    password: "nacos"
+#    zone: hangzhou
 
 # service config
 services:
   "UserProvider":
-    registry: "demoZk"
+    registry: "nacos"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     loadbalance: "random"

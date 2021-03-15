@@ -6,6 +6,7 @@ require (
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-go v1.5.6-rc1.0.20210225142527-f1f81ebd8292
 	github.com/apache/dubbo-go-hessian2 v1.8.2
+	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/coreos/bbolt v1.3.3 // indirect
 	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
@@ -20,6 +21,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/imdario/mergo v0.3.9 // indirect
+	github.com/jinzhu/copier v0.2.8 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/linode/linodego v0.10.0 // indirect
 	github.com/miekg/dns v1.1.27 // indirect
