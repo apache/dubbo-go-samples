@@ -1,8 +1,24 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package main
 
 import (
 	"fmt"
-	getty "github.com/apache/dubbo-getty"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -11,15 +27,18 @@ import (
 )
 
 import (
+	getty "github.com/apache/dubbo-getty"
+	"github.com/apache/dubbo-go-samples/tls/go-server/pkg"
 	hessian "github.com/apache/dubbo-go-hessian2"
+)
+
+import (
 	"github.com/apache/dubbo-go/common/logger"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
-
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
-
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
@@ -31,9 +50,9 @@ var (
 )
 
 func init(){
-	serverPemPath, _ := filepath.Abs("../../certs/server.pem")
-	serverKeyPath, _ := filepath.Abs("../../certs/server.key")
-	caPemPath, _ := filepath.Abs("../../certs/ca.pem")
+	serverPemPath, _ := filepath.Abs("../certs/server.pem")
+	serverKeyPath, _ := filepath.Abs("../certs/server.key")
+	caPemPath, _ := filepath.Abs("../certs/ca.pem")
 	config.SetSslEnabled(true)
 	config.SetServerTlsConfigBuilder(&getty.ServerTlsConfigBuilder{
 		ServerKeyCertChainPath:        serverPemPath,
@@ -50,7 +69,7 @@ func init(){
 
 func main() {
 	// 在运行的时候序列化
-	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&pkg.User{})
 	// 加载配置
 	config.Load()
 	// 优雅的结束程序
