@@ -19,7 +19,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/apache/dubbo-go-samples/registry/nacos/go-server/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -38,6 +37,10 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/nacos"
 	_ "github.com/apache/dubbo-go/registry/protocol"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/registry/nacos/go-server/pkg"
 )
 
 var (
