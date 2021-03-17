@@ -49,7 +49,6 @@ func init() {
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
