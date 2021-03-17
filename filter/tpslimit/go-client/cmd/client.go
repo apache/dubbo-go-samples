@@ -19,17 +19,12 @@ package main
 
 import (
 	"context"
-	"os"
+	"fmt"
 	"time"
 )
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/filter/tpslimit/go-client/pkg"
-	"github.com/dubbogo/gost/log"
-)
-
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
@@ -38,6 +33,10 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/filter/tpslimit/go-client/pkg"
 )
 
 var userProvider = new(pkg.UserProvider)
@@ -53,13 +52,13 @@ func main() {
 	config.Load()
 	time.Sleep(3 * time.Second)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+	fmt.Println("\n\n\nstart to test dubbo")
+	for i := 0; i < 50; i++ {
+		user := &pkg.User{}
+		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+		}
+		fmt.Printf("response: %v\n", user)
 	}
-	gxlog.CInfo("response result: %v\n", user)
 }

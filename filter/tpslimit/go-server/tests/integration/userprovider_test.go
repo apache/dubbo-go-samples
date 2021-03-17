@@ -21,9 +21,12 @@ package integration
 
 import (
 	"context"
-	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
+)
+
+import (
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetUser(t *testing.T) {
