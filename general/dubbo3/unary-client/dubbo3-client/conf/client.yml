@@ -27,9 +27,10 @@ registries:
 references:
   "GrpcGreeterImpl":
     registry: "demoZk"
-    protocol: "dubbo3"
-    interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
-#    url: dubbo3://localhost:20001
+    protocol: "tri"
+#    interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
+    interface: "protobuf.Dubbo3Greeter"
+    url: tri://localhost:20001
     cluster: "failover"
     methods:
       - name: "SayHello"
@@ -37,7 +38,7 @@ references:
 
 # protocol config
 protocol_conf:
-  dubbo3:
+  tri:
     reconnect_interval: 0
     connection_number: 2
     heartbeat_period: "5s"

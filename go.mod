@@ -29,12 +29,12 @@ require (
 
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
-//replace (
-//	github.com/dubbogo/net => ../net
-//)
-//replace github.com/apache/dubbo-go => ../dubbo-go //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
-//
-//replace github.com/dubbogo/triple => ../triple //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
+replace (
+	github.com/dubbogo/net => ../net
+)
+replace github.com/apache/dubbo-go => ../dubbo-go //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
+
+replace github.com/dubbogo/triple => ../triple //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
 
 //replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
 

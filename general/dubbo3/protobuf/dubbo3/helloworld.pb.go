@@ -14,6 +14,7 @@ import (
 )
 
 import (
+	dubboConstant "github.com/apache/dubbo-go/common/constant"
 	"github.com/apache/dubbo-go/protocol"
 	dgrpc "github.com/apache/dubbo-go/protocol/grpc"
 	"github.com/apache/dubbo-go/protocol/invocation"
@@ -452,7 +453,8 @@ func NewDubbo3GreeterDubbo3Client(cc *dubbo3.TripleConn) Dubbo3GreeterClient {
 	return &dubbo3greeterDubbo3Client{cc}
 }
 func (c *dubbo3greeterDubbo3Client) Dubbo3SayHello(ctx context.Context, opt ...grpc.CallOption) (Dubbo3Greeter_Dubbo3SayHelloClient, error) {
-	stream, err := c.cc.NewStream(ctx, "/protobuf.Dubbo3Greeter/Dubbo3SayHello", opt...)
+	interfaceKey := ctx.Value(dubboConstant.INTERFACE_KEY).(string)
+	stream, err := c.cc.NewStream(ctx, "/"+interfaceKey+"/Dubbo3SayHello", opt...)
 	if err != nil {
 		return nil, err
 	}
@@ -461,14 +463,16 @@ func (c *dubbo3greeterDubbo3Client) Dubbo3SayHello(ctx context.Context, opt ...g
 }
 func (c *dubbo3greeterDubbo3Client) Dubbo3SayHello2(ctx context.Context, in *Dubbo3HelloRequest, opt ...grpc.CallOption) (*Dubbo3HelloReply, error) {
 	out := new(Dubbo3HelloReply)
-	err := c.cc.Invoke(ctx, "/protobuf.Dubbo3Greeter/Dubbo3SayHello2", in, out)
+	interfaceKey := ctx.Value(dubboConstant.INTERFACE_KEY).(string)
+	err := c.cc.Invoke(ctx, "/"+interfaceKey+"/Dubbo3SayHello2", in, out)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 func (c *dubbo3greeterDubbo3Client) BigStreamTest(ctx context.Context, opt ...grpc.CallOption) (Dubbo3Greeter_BigStreamTestClient, error) {
-	stream, err := c.cc.NewStream(ctx, "/protobuf.Dubbo3Greeter/BigStreamTest", opt...)
+	interfaceKey := ctx.Value(dubboConstant.INTERFACE_KEY).(string)
+	stream, err := c.cc.NewStream(ctx, "/"+interfaceKey+"/BigStreamTest", opt...)
 	if err != nil {
 		return nil, err
 	}
@@ -477,7 +481,8 @@ func (c *dubbo3greeterDubbo3Client) BigStreamTest(ctx context.Context, opt ...gr
 }
 func (c *dubbo3greeterDubbo3Client) BigUnaryTest(ctx context.Context, in *BigData, opt ...grpc.CallOption) (*BigData, error) {
 	out := new(BigData)
-	err := c.cc.Invoke(ctx, "/protobuf.Dubbo3Greeter/BigUnaryTest", in, out)
+	interfaceKey := ctx.Value(dubboConstant.INTERFACE_KEY).(string)
+	err := c.cc.Invoke(ctx, "/"+interfaceKey+"/BigUnaryTest", in, out)
 	if err != nil {
 		return nil, err
 	}

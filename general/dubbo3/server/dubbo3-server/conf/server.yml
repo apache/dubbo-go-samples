@@ -19,8 +19,9 @@ registries:
 services:
   "GrpcGreeterImpl":
     registry: "demoConsul"
-    protocol: "dubbo3"
-    interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
+    protocol: "tri"
+#    interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
+    interface: "protobuf.Dubbo3Greeter"
     loadbalance: "random"
     warmup: "100"
     cluster: "failover"
@@ -31,8 +32,8 @@ services:
 
 # protocol config
 protocols:
-  "dubbo3":
-    name: "dubbo3"
+  "tri":
+    name: "tri"
     port: 20001
 
 protocol_conf:
