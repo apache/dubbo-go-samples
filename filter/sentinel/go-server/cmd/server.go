@@ -42,7 +42,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/filter/custom_filter/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/filter/sentinel/go-server/pkg"
 )
 
 var (
