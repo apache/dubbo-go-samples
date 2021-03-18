@@ -453,7 +453,7 @@ func NewDubbo3GreeterDubbo3Client(cc *dubbo3.TripleConn) Dubbo3GreeterClient {
 	return &dubbo3greeterDubbo3Client{cc}
 }
 func (c *dubbo3greeterDubbo3Client) Dubbo3SayHello(ctx context.Context, opt ...grpc.CallOption) (Dubbo3Greeter_Dubbo3SayHelloClient, error) {
-	interfaceKey := ctx.Value(dubboConstant.INTERFACE_KEY).(string)
+	interfaceKey := ctx.Value(dubboConstant.DubboCtxKey(dubboConstant.INTERFACE_KEY)).(string)
 	stream, err := c.cc.NewStream(ctx, "/"+interfaceKey+"/Dubbo3SayHello", opt...)
 	if err != nil {
 		return nil, err
@@ -463,7 +463,7 @@ func (c *dubbo3greeterDubbo3Client) Dubbo3SayHello(ctx context.Context, opt ...g
 }
 func (c *dubbo3greeterDubbo3Client) Dubbo3SayHello2(ctx context.Context, in *Dubbo3HelloRequest, opt ...grpc.CallOption) (*Dubbo3HelloReply, error) {
 	out := new(Dubbo3HelloReply)
-	interfaceKey := ctx.Value(dubboConstant.INTERFACE_KEY).(string)
+	interfaceKey := ctx.Value(dubboConstant.DubboCtxKey(dubboConstant.INTERFACE_KEY)).(string)
 	err := c.cc.Invoke(ctx, "/"+interfaceKey+"/Dubbo3SayHello2", in, out)
 	if err != nil {
 		return nil, err
@@ -471,7 +471,7 @@ func (c *dubbo3greeterDubbo3Client) Dubbo3SayHello2(ctx context.Context, in *Dub
 	return out, nil
 }
 func (c *dubbo3greeterDubbo3Client) BigStreamTest(ctx context.Context, opt ...grpc.CallOption) (Dubbo3Greeter_BigStreamTestClient, error) {
-	interfaceKey := ctx.Value(dubboConstant.INTERFACE_KEY).(string)
+	interfaceKey := ctx.Value(dubboConstant.DubboCtxKey(dubboConstant.INTERFACE_KEY)).(string)
 	stream, err := c.cc.NewStream(ctx, "/"+interfaceKey+"/BigStreamTest", opt...)
 	if err != nil {
 		return nil, err
@@ -481,7 +481,7 @@ func (c *dubbo3greeterDubbo3Client) BigStreamTest(ctx context.Context, opt ...gr
 }
 func (c *dubbo3greeterDubbo3Client) BigUnaryTest(ctx context.Context, in *BigData, opt ...grpc.CallOption) (*BigData, error) {
 	out := new(BigData)
-	interfaceKey := ctx.Value(dubboConstant.INTERFACE_KEY).(string)
+	interfaceKey := ctx.Value(dubboConstant.DubboCtxKey(dubboConstant.INTERFACE_KEY)).(string)
 	err := c.cc.Invoke(ctx, "/"+interfaceKey+"/BigUnaryTest", in, out)
 	if err != nil {
 		return nil, err

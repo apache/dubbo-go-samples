@@ -7,7 +7,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dk-lockdown/seata-golang v0.1.0-fix
 	github.com/dubbogo/gost v1.11.2
-	github.com/dubbogo/triple v0.0.0-20210314060249-a8daea612f94
+	github.com/dubbogo/triple v0.0.0-20210318081906-6fdf7ced4828
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.4.3
 	github.com/labstack/echo/v4 v4.1.15 // indirect
@@ -29,9 +29,8 @@ require (
 
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
-replace (
-	github.com/dubbogo/net => ../net
-)
+replace github.com/dubbogo/net => ../net
+
 replace github.com/apache/dubbo-go => ../dubbo-go //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
 
 replace github.com/dubbogo/triple => ../triple //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
