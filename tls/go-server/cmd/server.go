@@ -28,11 +28,7 @@ import (
 
 import (
 	getty "github.com/apache/dubbo-getty"
-	"github.com/apache/dubbo-go-samples/tls/go-server/pkg"
 	hessian "github.com/apache/dubbo-go-hessian2"
-)
-
-import (
 	"github.com/apache/dubbo-go/common/logger"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
@@ -44,7 +40,11 @@ import (
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-// 生存时间
+import (
+	"github.com/apache/dubbo-go-samples/tls/go-server/pkg"
+)
+
+// survival time
 var (
 	survivalTimeout = 	int(3e9)
 )
@@ -62,21 +62,21 @@ func init(){
 }
 
 /*
-	需要配置环境变量
-	export CONF_PROVIDER_FILE_PATH="xx"
-	export APP_LOG_CONF_FILE="xx"
+	they are necessary:
+		export CONF_PROVIDER_FILE_PATH="xx"
+		export APP_LOG_CONF_FILE="xx"
  */
 
 func main() {
-	// 在运行的时候序列化
+	// serializing at run time
 	hessian.RegisterPOJO(&pkg.User{})
-	// 加载配置
+	// load configuration
 	config.Load()
-	// 优雅的结束程序
+	// elegant ending procedure
 	initSignal()
 }
 
-// 优雅的结束程序
+// elegant ending procedure
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 

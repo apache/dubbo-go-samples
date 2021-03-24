@@ -60,4 +60,5 @@ func init(){
 }
 ```
 
-其余设置同helloworld保持一致皆可。
+其余设置同helloworld(https://github.com/apache/dubbo-go-samples/tree/master/helloworld)保持一致皆可。
+
