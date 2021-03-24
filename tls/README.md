@@ -1,6 +1,6 @@
 ## TLS encrypted transmission
 
-The TLS encrypted transmission of Dubbo go is realized by Dubbo Getty https://github.com/apache/dubbo-getty . Before using TLS, you need to be prepared as follows.
+The TLS encrypted transmission of dubbo-go is realized by dubbo-getty(https://github.com/apache/dubbo-getty). Before using TLS, you need to be prepared as follows.
 
 + CA certificate file
 + Key files & certificate files of client and server
@@ -46,9 +46,9 @@ The setting of the client side is similar to that of the server side, and there 
 ```go
 func init(){
 //Private key
-	clientKeyPath, _ := filepath.Abs ("../../certs/ ca.key ")
+	clientKeyPath, _ := filepath.Abs ("../certs/ ca.key ")
 //CA certificate
-	caPemPath, _ := filepath.Abs ("../../certs/ ca.pem ")
+	caPemPath, _ := filepath.Abs ("../certs/ ca.pem ")
 //Turn on TLS
 	config.SetSslEnabled (true)
 //Import TLS configuration
@@ -58,4 +58,4 @@ func init(){
   })
 }
 ```
-Other settings are consistent with HelloWorld.
+Other settings are consistent with HelloWorld(https://github.com/apache/dubbo-go-samples/tree/master/helloworld).
