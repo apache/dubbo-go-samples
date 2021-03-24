@@ -23,10 +23,10 @@ import (
 )
 
 type User struct {
-	Id		string
-	Name	string
-	Age		int32
-	Time	time.Time
+	Id   string
+	Name string
+	Age  int32
+	Time time.Time
 }
 
 type UserProvider struct {
