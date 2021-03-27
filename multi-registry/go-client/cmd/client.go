@@ -38,7 +38,9 @@ import (
 	"github.com/dubbogo/gost/log"
 )
 
-import "github.com/apache/dubbo-go-samples/multi-registry/go-client/pkg"
+import (
+	"github.com/apache/dubbo-go-samples/multi-registry/go-client/pkg"
+)
 
 var userProvider = new(pkg.UserProvider)
 
