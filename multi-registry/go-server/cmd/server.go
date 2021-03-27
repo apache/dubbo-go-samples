@@ -40,7 +40,9 @@ import (
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-import "github.com/apache/dubbo-go-samples/multi-registry/go-server/pkg"
+import (
+	"github.com/apache/dubbo-go-samples/multi-registry/go-server/pkg"
+)
 
 var (
 	survivalTimeout = int(3e9)
