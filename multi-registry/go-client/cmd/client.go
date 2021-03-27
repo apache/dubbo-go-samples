@@ -25,20 +25,20 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/multi-registry/go-client/pkg"
-	"github.com/dubbogo/gost/log"
-)
 
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/registry/nacos"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	"github.com/dubbogo/gost/log"
 )
+
+import "github.com/apache/dubbo-go-samples/multi-registry/go-client/pkg"
 
 var userProvider = new(pkg.UserProvider)
 
@@ -49,7 +49,6 @@ func init() {
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
