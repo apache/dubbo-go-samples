@@ -2,7 +2,7 @@
 
 ## Backend
 
-dubbo-go supports simultaneous registration of the same service with multiple registries, or separate registration of different services in different registries, or even simultaneous reference of services with the same name registered in different registries. In addition, the registry supports custom extensions. Here I use `zk` and `nacos` to demonstrate
+dubbo-go supports simultaneous registration of the same service with multiple registries, or separate registration of different services in different registries, or even simultaneous reference of services with the same name registered in different registries. In addition, the registry supports custom extensions. I use `zk` and `nacos` in this sample.
 
 ### Code
 
