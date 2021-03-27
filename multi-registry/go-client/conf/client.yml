@@ -16,19 +16,19 @@ application:
 
 # registry config
 registries:
-  "demoZk1":
+  "zk":
     protocol: "zookeeper"
     timeout: "3s"
     address: "127.0.0.1:2181"
-  "demoZk2":
-    protocol: "zookeeper"
-    timeout: "3s"
-    address: "127.0.0.1:2182"
+  "nacos":
+    protocol: "nacos"
+    timeout	: "3s"
+    address: "127.0.0.1:8848"
 
 # reference config
 references:
   "UserProvider":
-    registry: "demoZk1,demoZk2"
+    registry: "zk,nacos"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
