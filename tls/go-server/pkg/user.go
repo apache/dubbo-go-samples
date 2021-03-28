@@ -45,7 +45,6 @@ type User struct {
 }
 
 type UserProvider struct {
-	
 }
 
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
