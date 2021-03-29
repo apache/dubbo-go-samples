@@ -23,8 +23,11 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 	"google.golang.org/grpc"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )
 
 type GrpcGreeterImpl struct {
