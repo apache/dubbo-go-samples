@@ -15,14 +15,17 @@
  * limitations under the License.
  */
 
-package pkg
+package main
+
 
 import (
 	"context"
+)
+
+import (
 	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 	"google.golang.org/grpc"
 )
-
 
 type GrpcGreeterImpl struct {
 	SayHello func(ctx context.Context, in *protobuf.HelloRequest, out *protobuf.HelloReply) error
