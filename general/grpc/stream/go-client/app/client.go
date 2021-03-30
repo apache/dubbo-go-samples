@@ -27,11 +27,8 @@ import (
 )
 
 import (
-	gxlog "github.com/dubbogo/gost/log"
-)
-
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+	gxlog "github.com/dubbogo/gost/log"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
