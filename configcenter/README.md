@@ -73,6 +73,7 @@ The config center's configuration on the consumer side and on the provider side 
 # config center config
 config_center:
   protocol: "zookeeper"
+  group: "user-info-client"
   address: "127.0.0.1:2181"
 # application config
 application:

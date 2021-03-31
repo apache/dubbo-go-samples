@@ -77,6 +77,7 @@ zkCli set /dubbo/config/user-info-client/dubbo.properties \
 # config center config
 config_center:
   protocol: "zookeeper"
+  group: "user-info-server"
   address: "127.0.0.1:2181"
 # application config
 application:

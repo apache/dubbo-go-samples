@@ -1,9 +1,15 @@
-version: '3'
+version: '3.5'
 
 services:
-  zookeeper:
+  zk:
     image: zookeeper
+    container_name: zk
+    networks:
+      - dubbo
     ports:
       - 2181:2181
-    restart: on-failure
-
+# 网络
+networks:
+  dubbo:
+    name: dubbo-go-samples
+    driver: bridge

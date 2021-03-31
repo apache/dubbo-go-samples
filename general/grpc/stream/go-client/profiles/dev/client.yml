@@ -17,7 +17,7 @@ application:
   environment : "dev"
 
 registries :
-  "demoZk":
+  "zk":
     protocol: "zookeeper"
     timeout	: "3s"
     address: "127.0.0.1:2181"
@@ -28,7 +28,7 @@ registries :
 references:
   "GrpcGreeterImpl":
     # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册
-    registry: "demoZk"
+    registry: "zk"
     protocol : "grpc"
     interface : "io.grpc.examples.helloworld.GreeterGrpc$IGreeter"
     cluster: "failover"
