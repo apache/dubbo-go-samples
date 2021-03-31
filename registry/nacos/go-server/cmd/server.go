@@ -26,8 +26,6 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"
@@ -40,7 +38,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/registry/nacos/go-server/pkg"
+	_ "github.com/apache/dubbo-go-samples/registry/nacos/go-server/pkg"
 )
 
 var (
@@ -49,7 +47,6 @@ var (
 
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 
 	initSignal()
