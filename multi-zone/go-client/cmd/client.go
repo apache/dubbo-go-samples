@@ -68,10 +68,10 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		if "dev-hz" == user.Id {
+		if "dev-hz" == user.ID {
 			hz++
 		}
-		if "dev-sh" == user.Id {
+		if "dev-sh" == user.ID {
 			sh++
 		}
 		gxlog.CInfo("response %d result: %v\n", i, user)
