@@ -39,7 +39,7 @@ func (g Gender) String() string {
 
 type (
 	User struct {
-		Id    string `json:"id"`
+		ID    string `json:"id"`
 		Name  string `json:"name"`
 		Age   int    `json:"age"`
 		sex   Gender
@@ -50,7 +50,7 @@ type (
 
 var (
 	DefaultUser = User{
-		Id: "0", Name: "Alex Stocks", Age: 31,
+		ID: "0", Name: "Alex Stocks", Age: 31,
 		// Birth: int(time.Date(1985, time.November, 10, 23, 0, 0, 0, time.UTC).Unix()),
 		Birth: int(time.Date(1985, 11, 24, 15, 15, 0, 0, time.Local).Unix()),
 		sex:   Gender(MAN),
@@ -62,9 +62,9 @@ var (
 func init() {
 	DefaultUser.Sex = DefaultUser.sex.String()
 	userMap["A000"] = DefaultUser
-	userMap["A001"] = User{Id: "001", Name: "ZhangSheng", Age: 18, sex: MAN}
-	userMap["A002"] = User{Id: "002", Name: "Lily", Age: 20, sex: WOMAN}
-	userMap["A003"] = User{Id: "113", Name: "Moorse", Age: 30, sex: MAN}
+	userMap["A001"] = User{ID: "001", Name: "ZhangSheng", Age: 18, sex: MAN}
+	userMap["A002"] = User{ID: "002", Name: "Lily", Age: 20, sex: WOMAN}
+	userMap["A003"] = User{ID: "113", Name: "Moorse", Age: 30, sex: MAN}
 	for k, v := range userMap {
 		v.Birth = int(time.Now().AddDate(-1*v.Age, 0, 0).Unix())
 		v.Sex = userMap[k].sex.String()

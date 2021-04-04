@@ -53,7 +53,7 @@ func TestMain(m *testing.M) {
 }
 
 type User struct {
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 	Time time.Time
