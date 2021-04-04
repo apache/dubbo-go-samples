@@ -48,7 +48,7 @@ public class Consumer {
         try {
             User user1 = userProvider.GetUser("A003");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user1.getId() + ", name:" + user1.getName()
+                    " UserInfo, ID:" + user1.getID() + ", name:" + user1.getName()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
 
         } catch (Exception e) {

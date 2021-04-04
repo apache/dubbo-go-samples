@@ -22,12 +22,12 @@ func init() {
 type UserProvider1 struct {
 }
 
-func (u *UserProvider1) getUser(userId string) (*User, error) {
-	if user, ok := userMap[userId]; ok {
+func (u *UserProvider1) getUser(userID string) (*User, error) {
+	if user, ok := userMap[userID]; ok {
 		return &user, nil
 	}
 
-	return nil, fmt.Errorf("invalid user id:%s", userId)
+	return nil, fmt.Errorf("invalid user id:%s", userID)
 }
 
 func (u *UserProvider1) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
@@ -63,7 +63,7 @@ func (u *UserProvider1) GetUser2(ctx context.Context, req []interface{}, rsp *Us
 	var err error
 
 	gxlog.CInfo("req:%#v", req)
-	rsp.Id = strconv.FormatFloat(req[0].(float64), 'f', 0, 64)
+	rsp.ID = strconv.FormatFloat(req[0].(float64), 'f', 0, 64)
 	rsp.Sex = Gender(MAN).String()
 	return err
 }
