@@ -1,0 +1,22 @@
+# dubbo-go3 client yaml configure file
+# application config (not necessary)
+application:
+  organization: "dubbo.io"
+  name: "GreeterGrpcTest"
+  module: "dubbo-go3.0 client"
+  version: "0.0.1"
+  environment: "dev"
+
+# registry config
+registries:
+  "demoZk":
+    protocol: "zookeeper"
+    timeout: "3s"
+    address: "127.0.0.1:2181"
+
+# reference config
+references:
+  "GreeterProvider":
+    registry: "demoZk"
+    protocol: "tri"
+    interface: "protobuf.Greeter"

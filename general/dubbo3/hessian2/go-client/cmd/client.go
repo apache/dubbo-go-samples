@@ -18,63 +18,49 @@
 package main
 
 import (
-	"fmt"
+	"context"
+	"github.com/dubbogo/gost/log"
 	"os"
-	"os/signal"
-	"syscall"
 	"time"
 )
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/config_center/apollo"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/protocol/dubbo3"
+	_ "github.com/apache/dubbo-go/protocol/grpc"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/configcenter/apollo/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/general/dubbo3/hessian2/go-client/pkg"
 )
 
-var (
-	survivalTimeout = int(3e9)
-)
+var userProvider = new(pkg.UserProvider)
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
+func init() {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&pkg.User{})
+}
+
+// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
+	time.Sleep(3 * time.Second)
 
-	initSignal()
-}
-
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(time.Duration(survivalTimeout), func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
-
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("provider app exit now...")
-			return
-		}
+	gxlog.CInfo("\n\n\nstart to test dubbo")
+	user := &pkg.User{}
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
 	}
+	gxlog.CInfo("response result: %v\n", user)
 }

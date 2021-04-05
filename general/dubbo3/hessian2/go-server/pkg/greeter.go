@@ -14,26 +14,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-syntax = "proto3";
 
-option go_package = "protobuf/dubbo3";
-package protobuf;
+package pkg
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (User) {}
-  rpc SayHelloStream (stream HelloRequest) returns (stream User) {}
+import (
+	"context"
+	"time"
+)
+
+import (
+	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/dubbogo/gost/log"
+)
+
+func init() {
+	// ------for hessian2------
+	hessian.RegisterPOJO(&User{})
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
+type User struct {
+	Id   string
+	Name string
+	Age  int32
+	Time time.Time
 }
 
-// The response message containing the greetings
-message User {
-  string name = 1;
-  string id = 2;
-  int32 age = 3;
+type UserProvider struct {
+}
+
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+	gxlog.CInfo("req:%#v", req)
+	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	gxlog.CInfo("rsp:%#v", rsp)
+	return &rsp, nil
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
+}
+
+func (u User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }

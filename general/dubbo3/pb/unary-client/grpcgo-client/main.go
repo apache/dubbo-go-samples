@@ -14,26 +14,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-syntax = "proto3";
 
-option go_package = "protobuf/dubbo3";
-package protobuf;
+package main
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (User) {}
-  rpc SayHelloStream (stream HelloRequest) returns (stream User) {}
-}
+import (
+	"fmt"
+	"log"
+)
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
+import (
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+)
 
-// The response message containing the greetings
-message User {
-  string name = 1;
-  string id = 2;
-  int32 age = 3;
+import (
+	pb "github.com/apache/dubbo-go-samples/general/dubbo3/pb/protobuf/grpc"
+)
+
+const (
+	address = "localhost:20001"
+)
+
+func main() {
+	// Set up a connection to the client.
+	conn, err := grpc.Dial(address, grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	c := pb.NewGreeterClient(conn)
+
+	req := &pb.HelloRequest{
+		Name: "laurence",
+	}
+	ctx := context.Background()
+	rsp, err := c.SayHello(ctx, req)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("get received user = %+v\n", rsp)
 }

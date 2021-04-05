@@ -14,26 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-syntax = "proto3";
 
-option go_package = "protobuf/dubbo3";
-package protobuf;
+package pkg
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (User) {}
-  rpc SayHelloStream (stream HelloRequest) returns (stream User) {}
+import (
+	"context"
+)
+
+import (
+	"github.com/dubbogo/triple/pkg/triple"
+)
+
+import (
+	dubbo3pb "github.com/apache/dubbo-go-samples/general/dubbo3/pb/protobuf/dubbo3"
+)
+
+type GreeterProvider struct {
+	SayHelloStream func(ctx context.Context) (dubbo3pb.Greeter_SayHelloStreamClient, error)
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
+func (u *GreeterProvider) Reference() string {
+	return "GreeterProvider"
 }
 
-// The response message containing the greetings
-message User {
-  string name = 1;
-  string id = 2;
-  int32 age = 3;
+func (u *GreeterProvider) GetDubboStub(cc *triple.TripleConn) dubbo3pb.GreeterClient {
+	return dubbo3pb.NewGreeterDubbo3Client(cc)
 }
