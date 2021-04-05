@@ -23,7 +23,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.9.0
 	github.com/stretchr/testify v1.7.0
-	github.com/transaction-wg/seata-golang v0.2.0
+	github.com/transaction-wg/seata-golang v0.2.1-alpha
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	google.golang.org/grpc v1.33.1
