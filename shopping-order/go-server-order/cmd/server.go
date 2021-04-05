@@ -25,6 +25,7 @@ import (
 	"syscall"
 	"time"
 )
+
 import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
@@ -35,14 +36,14 @@ import (
 	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
-	"github.com/transaction-wg/seata-golang/pkg/client"
-	"github.com/transaction-wg/seata-golang/pkg/client/at/exec"
-	seataConfig "github.com/transaction-wg/seata-golang/pkg/client/config"
-	//_ "github.com/apache/dubbo-go/registry/nacos"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	"github.com/opentrx/mysql"
+	"github.com/transaction-wg/seata-golang/pkg/client"
+	seataConfig "github.com/transaction-wg/seata-golang/pkg/client/config"
 )
+
 import (
-	dao2 "github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg/dao"
+	orderDao "github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg/dao"
 )
 
 const (
@@ -61,7 +62,9 @@ func main() {
 	confFile := os.Getenv(SEATA_CONF_FILE)
 	seataConfig.InitConf(confFile)
 	client.NewRpcClient()
-	exec.InitDataResourceManager()
+	// init mysql driver from `opentrx/mysql`
+	mysql.InitDataResourceManager()
+	mysql.RegisterResource(seataConfig.GetATConfig().DSN)
 
 	sqlDB, err := sql.Open("mysql", seataConfig.GetATConfig().DSN)
 	if err != nil {
@@ -71,12 +74,8 @@ func main() {
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetConnMaxLifetime(4 * time.Hour)
 
-	db, err := exec.NewDB(seataConfig.GetATConfig(), sqlDB)
-	if err != nil {
-		panic(err)
-	}
-	d := &dao2.Dao{
-		DB: db,
+	d := &orderDao.Dao{
+		DB: sqlDB,
 	}
 	svc := &OrderSvc{
 		dao: d,

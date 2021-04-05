@@ -18,13 +18,18 @@
 package dao
 
 import (
+	"context"
+	"database/sql"
 	"time"
 )
+
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/bwmarrin/snowflake"
-	"github.com/transaction-wg/seata-golang/pkg/client/at/exec"
-	"github.com/transaction-wg/seata-golang/pkg/client/context"
+)
+
+import (
+// inner
 )
 
 const (
@@ -36,7 +41,7 @@ const (
 )
 
 type Dao struct {
-	*exec.DB
+	*sql.DB
 }
 
 // 现实中涉及金额可能使用长整形，这里使用 float64 仅作测试，不具有参考意义
@@ -103,9 +108,12 @@ func init() {
 	hessian.RegisterPOJO(&CreateSoResult{})
 }
 
-func (dao *Dao) CreateSO(ctx *context.RootContext, soMasters []*SoMaster) ([]uint64, error) {
+func (dao *Dao) CreateSO(ctx context.Context, soMasters []*SoMaster) ([]uint64, error) {
 	result := make([]uint64, 0, len(soMasters))
-	tx, err := dao.Begin(ctx)
+	tx, err := dao.BeginTx(ctx, &sql.TxOptions{
+		Isolation: sql.LevelDefault,
+		ReadOnly:  false,
+	})
 	if err != nil {
 		panic(err)
 	}

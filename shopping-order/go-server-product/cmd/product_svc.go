@@ -20,10 +20,12 @@ package main
 import (
 	"context"
 )
+
 import (
 	"github.com/apache/dubbo-go/common/constant"
-	seataContext "github.com/transaction-wg/seata-golang/pkg/client/context"
+	"github.com/opentrx/mysql"
 )
+
 import (
 	"github.com/apache/dubbo-go-samples/shopping-order/go-server-common/filter"
 	productDao "github.com/apache/dubbo-go-samples/shopping-order/go-server-product/pkg/dao"
@@ -37,11 +39,9 @@ func (svc *ProductSvc) AllocateInventory(ctx context.Context, reqs []*productDao
 	attach := ctx.Value(constant.AttachmentKey).(map[string]interface{})
 	val := attach[filter.SEATA_XID]
 	xid := val.(string)
-
-	rootContext := &seataContext.RootContext{Context: ctx}
-	rootContext.Bind(xid)
-
-	err := svc.dao.AllocateInventory(rootContext, reqs)
+	// set transaction xid
+	err := svc.dao.AllocateInventory(
+		context.WithValue(context.Background(), mysql.XID, xid), reqs)
 	if err == nil {
 		return &productDao.AllocateInventoryResult{true}, nil
 	}

@@ -20,12 +20,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/apache/dubbo-go-samples/shopping-order/go-client/pkg"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 )
+
 import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
@@ -35,11 +35,14 @@ import (
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
-	//_ "github.com/apache/dubbo-go/registry/nacos"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 	"github.com/transaction-wg/seata-golang/pkg/client"
 	seataConfig "github.com/transaction-wg/seata-golang/pkg/client/config"
 	"github.com/transaction-wg/seata-golang/pkg/client/tm"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/shopping-order/go-client/pkg"
 )
 
 const (

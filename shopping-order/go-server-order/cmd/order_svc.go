@@ -20,10 +20,12 @@ package main
 import (
 	"context"
 )
+
 import (
 	"github.com/apache/dubbo-go/common/constant"
-	seataContext "github.com/transaction-wg/seata-golang/pkg/client/context"
+	"github.com/opentrx/mysql"
 )
+
 import (
 	"github.com/apache/dubbo-go-samples/shopping-order/go-server-common/filter"
 	orderDao "github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg/dao"
@@ -37,11 +39,10 @@ func (svc *OrderSvc) CreateSo(ctx context.Context, reqs []*orderDao.SoMaster) (*
 	attach := ctx.Value(constant.AttachmentKey).(map[string]interface{})
 	val := attach[filter.SEATA_XID]
 	xid := val.(string)
+	// set transaction xid
+	soIds, err := svc.dao.CreateSO(
+		context.WithValue(context.Background(), mysql.XID, xid), reqs)
 
-	rootContext := &seataContext.RootContext{Context: ctx}
-	rootContext.Bind(xid)
-
-	soIds, err := svc.dao.CreateSO(rootContext, reqs)
 	if err == nil {
 		return &orderDao.CreateSoResult{soIds}, nil
 	}

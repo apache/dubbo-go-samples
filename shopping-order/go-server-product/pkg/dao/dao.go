@@ -18,9 +18,12 @@
 package dao
 
 import (
+	"context"
+	"database/sql"
+)
+
+import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/transaction-wg/seata-golang/pkg/client/at/exec"
-	"github.com/transaction-wg/seata-golang/pkg/client/context"
 )
 
 const (
@@ -29,7 +32,7 @@ const (
 )
 
 type Dao struct {
-	*exec.DB
+	*sql.DB
 }
 
 type AllocateInventoryReq struct {
@@ -55,8 +58,11 @@ func init() {
 	hessian.RegisterPOJO(&AllocateInventoryResult{})
 }
 
-func (dao *Dao) AllocateInventory(ctx *context.RootContext, reqs []*AllocateInventoryReq) error {
-	tx, err := dao.Begin(ctx)
+func (dao *Dao) AllocateInventory(ctx context.Context, reqs []*AllocateInventoryReq) error {
+	tx, err := dao.BeginTx(ctx, &sql.TxOptions{
+		Isolation: sql.LevelDefault,
+		ReadOnly:  false,
+	})
 	if err != nil {
 		return err
 	}

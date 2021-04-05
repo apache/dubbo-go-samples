@@ -16,7 +16,7 @@ getty:
     tcp_read_timeout: "1s"
     tcp_write_timeout: "5s"
     wait_timeout: "1s"
-    max_msg_len: 4096
+    max_msg_len: 8388608
     session_name: "client"
 tm:
   commit_retry_count: 5
