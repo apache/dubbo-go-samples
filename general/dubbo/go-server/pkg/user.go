@@ -69,7 +69,7 @@ func (g Gender) EnumValue(s string) hessian.JavaEnum {
 type (
 	User struct {
 		// !!! Cannot define lowercase names of variable
-		Id   string
+		ID   string
 		Name string
 		Age  int32
 		Time time.Time
@@ -79,7 +79,7 @@ type (
 
 var (
 	DefaultUser = User{
-		Id: "0", Name: "Alex Stocks", Age: 31,
+		ID: "0", Name: "Alex Stocks", Age: 31,
 		Sex: Gender(MAN),
 	}
 
@@ -88,9 +88,9 @@ var (
 
 func init() {
 	userMap["A000"] = DefaultUser
-	userMap["A001"] = User{Id: "001", Name: "ZhangSheng", Age: 18, Sex: Gender(MAN)}
-	userMap["A002"] = User{Id: "002", Name: "Lily", Age: 20, Sex: Gender(WOMAN)}
-	userMap["A003"] = User{Id: "113", Name: "Moorse", Age: 30, Sex: Gender(WOMAN)}
+	userMap["A001"] = User{ID: "001", Name: "ZhangSheng", Age: 18, Sex: Gender(MAN)}
+	userMap["A002"] = User{ID: "002", Name: "Lily", Age: 20, Sex: Gender(WOMAN)}
+	userMap["A003"] = User{ID: "113", Name: "Moorse", Age: 30, Sex: Gender(WOMAN)}
 	for k, v := range userMap {
 		v.Time = time.Now()
 		userMap[k] = v
@@ -99,8 +99,8 @@ func init() {
 
 func (u User) String() string {
 	return fmt.Sprintf(
-		"User{Id:%s, Name:%s, Age:%d, Time:%s, Sex:%s}",
-		u.Id, u.Name, u.Age, u.Time, u.Sex,
+		"User{ID:%s, Name:%s, Age:%d, Time:%s, Sex:%s}",
+		u.ID, u.Name, u.Age, u.Time, u.Sex,
 	)
 }
 

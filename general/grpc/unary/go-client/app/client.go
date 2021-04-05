@@ -19,22 +19,7 @@ package main
 
 import (
 	"context"
-<<<<<<< HEAD:general/grpc/unary/go-client/app/client.go
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
-)
-
-import (
-	gxlog "github.com/dubbogo/gost/log"
-=======
-	"github.com/apache/dubbo-go-samples/general/grpc/go-client/pkg"
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-	"github.com/dubbogo/gost/log"
-	"time"
->>>>>>> feature/addTravis:general/grpc/go-client/cmd/client.go
 )
 
 import (
@@ -43,13 +28,17 @@ import (
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/protocol/grpc"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
-var grpcGreeterImpl = new(pkg.GrpcGreeterImpl)
+import (
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
+)
+
+var grpcGreeterImpl = new(GrpcGreeterImpl)
 
 func init() {
 	config.SetConsumerService(grpcGreeterImpl)

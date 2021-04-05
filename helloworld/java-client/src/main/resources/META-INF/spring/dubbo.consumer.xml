@@ -22,7 +22,7 @@
     <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
     <dubbo:application name="user-info-client"/>
     <!-- 连接到哪个本地注册中心 -->
-    <dubbo:registry id="ikurento" address="zookeeper://127.0.0.1:2181"/>
+    <dubbo:registry id="demoZk" address="zookeeper://127.0.0.1:2181"/>
     <!-- dubbo.registry.address from dubbo.properties -->
     <!-- dubbo:registry address="${dubbo.registry.address}" / -->
 
@@ -31,8 +31,8 @@
     <dubbo:protocol id="jsonrpc" name="jsonrpc"/>
 
     <!-- 声明需要使用的服务接口 -->
-    <dubbo:reference registry="ikurento" check="false" id="userProvider" protocol="dubbo"
-                     interface="com.ikurento.user.UserProvider">
+    <dubbo:reference registry="demoZk" check="false" id="userProvider" protocol="dubbo"
+                     interface="org.apache.dubbo.UserProvider">
         <!--<dubbo:parameter key="heartbeat" value="10000"/ -->
     </dubbo:reference>
 </beans>

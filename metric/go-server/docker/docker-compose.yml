@@ -1,9 +1,41 @@
-version: '3'
+version: '3.5'
 
 services:
   zookeeper:
-    image: zookeeper
+    image: zookeeper:latest
+    container_name: zookeeper
+    networks:
+      - dubbo
     ports:
       - 2181:2181
-    restart: on-failure
-
+  #  grafana:
+  #    image: grafana/grafana:latest
+  #    container_name: grafana
+  #    restart: unless-stopped
+  #    networks:
+  #      - dubbo
+  #    ports:
+  #      - "3000:3000"
+  #    environment:
+  #      - GF_SECURITY_ADMIN_PASSWORD=admin
+  #      - GF_USERS_ALLOW_SIGN_UP=false
+  #      - GF_SERVER_DOMAIN=grafana.io
+  #      - GF_SMTP_ENABLED=true
+  #      - GF_SMTP_HOST=smtp.gmail.com:587
+  #      - GF_SMTP_USER=myadrress@gmail.com
+  #      - GF_SMTP_PASSWORD=mypassword
+  #      - GF_SMTP_FROM_ADDRESS=myaddress@gmail.com
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    networks:
+      - dubbo
+    volumes:
+      - ./config:/etc/prometheus/
+    ports:
+      - 9090:9090
+# 网络
+networks:
+  dubbo:
+    name: dubbo-go-samples
+    driver: bridge

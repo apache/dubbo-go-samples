@@ -19,8 +19,8 @@ package svc
 
 import (
 	"context"
-	"github.com/apache/dubbo-go/config"
 	"github.com/apache/dubbo-go-samples/seata/filter"
+	"github.com/apache/dubbo-go/config"
 
 	"errors"
 )
@@ -31,8 +31,8 @@ import (
 )
 
 import (
-	context2 "github.com/dk-lockdown/seata-golang/client/context"
-	"github.com/dk-lockdown/seata-golang/client/tm"
+	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
+	"github.com/transaction-wg/seata-golang/pkg/client/tm"
 )
 
 type OrderSvc struct {

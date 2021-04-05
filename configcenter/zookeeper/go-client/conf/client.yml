@@ -9,12 +9,13 @@ connect_timeout: "3s"
 # config center config
 config_center:
   protocol: "zookeeper"
+  group: "user-info-client"
   address: "127.0.0.1:2181"
 
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoClient"
+  name: "user-info-client"
   module: "dubbo-go user-info client"
   version: "0.0.1"
   environment: "dev"
@@ -34,10 +35,6 @@ references:
     registry: "demoZk"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
-    cluster: "failover"
-    methods:
-      - name: "GetUser"
-        retries: 3
 
 # protocol config
 protocol_conf:

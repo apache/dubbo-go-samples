@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zk-hs
+  labels:
+    app: zk
+spec:
+  ports:
+    - port: 2181
+      name: server
+  selector:
+    app: zk-hs
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zk-hs
+  labels:
+    app: zk-hs
+  namespace: dubbo-workplace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zk-hs
+  template:
+    metadata:
+      labels:
+        app: zk-hs
+    spec:
+      containers:
+        - name: zk-hs
+          ports:
+            - containerPort: 2181
+          image: zookeeper
+          imagePullPolicy: IfNotPresent # 这个设置 会从本地先找，没有从远处拉取

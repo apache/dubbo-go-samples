@@ -73,15 +73,15 @@ public class Consumer {
         try {
             User user1 = userProvider.GetUser("A003");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
+                    " UserInfo, ID:" + user1.getID() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
             User user2 = userProvider.GetUser0("A003","Moorse");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user2.getId() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
+                    " UserInfo, ID:" + user2.getID() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
                     + ", age:" + user2.getAge() + ", time:" + user2.getTime().toString());
             User user3 = userProvider.getUser(1);
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user3.getId() + ", name:" + user3.getName() + ", sex:" + user3.getSex().toString()
+                    " UserInfo, ID:" + user3.getID() + ", name:" + user3.getName() + ", sex:" + user3.getSex().toString()
                     + ", age:" + user3.getAge() + ", time:" + user3.getTime().toString());
 
             userProvider.GetUser3();
@@ -103,7 +103,7 @@ public class Consumer {
             for (int i = 0; i < userList.size(); i++) {
                 User user = userList.get(i);
                 System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                        " UserInfo, Id:" + user.getId() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
+                        " UserInfo, ID:" + user.getID() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
                         + ", age:" + user.getAge() + ", time:" + user.getTime().toString());
             }
         } catch (Exception e) {
@@ -122,15 +122,15 @@ public class Consumer {
         try {
             User user1 = userProvider1.GetUser("A003");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
+                    " UserInfo, ID:" + user1.getID() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
             User user2 = userProvider1.GetUser0("A003","Moorse");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user2.getId() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
+                    " UserInfo, ID:" + user2.getID() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
                     + ", age:" + user2.getAge() + ", time:" + user2.getTime().toString());
             User user3 = userProvider1.getUser(1);
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user3.getId() + ", name:" + user3.getName() + ", sex:" + user3.getSex().toString()
+                    " UserInfo, ID:" + user3.getID() + ", name:" + user3.getName() + ", sex:" + user3.getSex().toString()
                     + ", age:" + user3.getAge() + ", time:" + user3.getTime().toString());
 
             userProvider1.GetUser3();
@@ -152,7 +152,7 @@ public class Consumer {
             for (int i = 0; i < userList.size(); i++) {
                 User user = userList.get(i);
                 System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                        " UserInfo, Id:" + user.getId() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
+                        " UserInfo, ID:" + user.getID() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
                         + ", age:" + user.getAge() + ", time:" + user.getTime().toString());
             }
         } catch (Exception e) {
@@ -171,15 +171,15 @@ public class Consumer {
         try {
             User user1 = userProvider2.GetUser("A003");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
+                    " UserInfo, ID:" + user1.getID() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
             User user2 = userProvider2.GetUser0("A003","Moorse");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user2.getId() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
+                    " UserInfo, ID:" + user2.getID() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
                     + ", age:" + user2.getAge() + ", time:" + user2.getTime().toString());
             User user3 = userProvider2.getUser(1);
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user3.getId() + ", name:" + user3.getName() + ", sex:" + user3.getSex().toString()
+                    " UserInfo, ID:" + user3.getID() + ", name:" + user3.getName() + ", sex:" + user3.getSex().toString()
                     + ", age:" + user3.getAge() + ", time:" + user3.getTime().toString());
 
             userProvider2.GetUser3();
@@ -201,7 +201,7 @@ public class Consumer {
             for (int i = 0; i < userList.size(); i++) {
                 User user = userList.get(i);
                 System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                        " UserInfo, Id:" + user.getId() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
+                        " UserInfo, ID:" + user.getID() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
                         + ", age:" + user.getAge() + ", time:" + user.getTime().toString());
             }
         } catch (Exception e) {

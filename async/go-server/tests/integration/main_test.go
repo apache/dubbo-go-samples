@@ -20,6 +20,13 @@
 package integration
 
 import (
+	"context"
+	"os"
+	"testing"
+	"time"
+)
+
+import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go/common"
 	"github.com/apache/dubbo-go/config"
@@ -27,13 +34,6 @@ import (
 	"github.com/apache/dubbo-go/protocol"
 	"github.com/apache/dubbo-go/remoting"
 	gxlog "github.com/dubbogo/gost/log"
-)
-
-import (
-	"context"
-	"os"
-	"testing"
-	"time"
 )
 
 var userProvider = &UserProvider{
@@ -50,7 +50,7 @@ func TestMain(m *testing.M) {
 }
 
 type User struct {
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 	Time time.Time

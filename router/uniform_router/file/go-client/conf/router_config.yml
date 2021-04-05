@@ -1,0 +1,13 @@
+# dubbo router yaml configure file
+routerRules:
+  - scope: application
+    key: UserInfoTest
+    priority: 1
+    force: true
+    conditions: [ "host = $HOST_IP => host = $HOST_IP " ]
+  - scope: service
+    key: org.apache.dubbo.UserProvider
+    priority: 1
+    force: true
+    conditions:
+      - method = GetUser => host = 1.2.3.4

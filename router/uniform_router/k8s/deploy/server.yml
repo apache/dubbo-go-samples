@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-uniform-router-demo-server
+  labels:
+    app: k8s-uniform-router-demo-server
+  namespace: dubbo-workplace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-uniform-router-demo-server
+  template:
+    metadata:
+      labels:
+        app: k8s-uniform-router-demo-server
+    spec:
+      containers:
+        - name: k8s-uniform-router-demo-server
+          image: k8s-uniform-router-demo-server:latest
+          imagePullPolicy: IfNotPresent # 这个设置 会从本地先找，没有从远处拉取

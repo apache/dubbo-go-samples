@@ -20,24 +20,23 @@
 package integration
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go/config"
+	"context"
+	"os"
+	"testing"
+	"time"
+)
 
+import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
+	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/config_center/zookeeper"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
-)
-
-import (
-	"context"
-	"os"
-	"testing"
-	"time"
 )
 
 var userProvider = new(UserProvider)
@@ -52,7 +51,7 @@ func TestMain(m *testing.M) {
 }
 
 type User struct {
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 	Time time.Time

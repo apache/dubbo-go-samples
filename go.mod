@@ -2,48 +2,28 @@ module github.com/apache/dubbo-go-samples
 
 require (
 	github.com/alibaba/sentinel-golang v1.0.2
-	github.com/apache/dubbo-go v1.5.5
-	github.com/apache/dubbo-go-hessian2 v1.8.2
+	github.com/apache/dubbo-go v1.5.6-rc2.0.20210405062714-19c3cc3c36b1
+	github.com/apache/dubbo-go-hessian2 v1.9.1
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/dk-lockdown/seata-golang v0.1.0-fix
-	github.com/dubbogo/gost v1.11.2
-	github.com/dubbogo/triple v0.0.0-20210318081906-6fdf7ced4828
+	github.com/dubbogo/gost v1.11.3
+	github.com/dubbogo/v3router v0.1.0
 	github.com/emicklei/go-restful/v3 v3.4.0
-	github.com/golang/protobuf v1.4.3
-	github.com/labstack/echo/v4 v4.1.15 // indirect
-	github.com/micro/go-micro/v2 v2.9.1 // indirect
+	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.2.2
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.9.0
 	github.com/stretchr/testify v1.7.0
+	github.com/transaction-wg/seata-golang v0.2.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
-	go.uber.org/atomic v1.7.0
-	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
-	google.golang.org/grpc v1.35.0
-	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
-	gopkg.in/go-playground/validator.v9 v9.29.1 // indirect
+	google.golang.org/grpc v1.33.1
+	google.golang.org/grpc/examples v0.0.0-20210322221411-d26af8e39165 // indirect
 )
 
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
-replace github.com/dubbogo/net => ../net
-
-replace github.com/apache/dubbo-go => ../dubbo-go //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
-
-replace github.com/dubbogo/triple => ../triple //github.com/LaurenceLiZhixin/dubbo-go v1.5.2-0.20210209070605-a5cc93a648bb
-
-//replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
-
-//
-//replace golang.org/x/net => github.com/dubbogo/net v0.0.0-20210209064142-0e3827157a56
-
-//replace github.com/apache/dubbo-go => ../dubbo-go
-
-//replace github.com/dubbogo/triple => ../triple
-//
-//replace golang.org/x/net => ../net //github.com/dubbogo/net v0.0.0-20210208122052-3ebc7bbc2dd8
+replace github.com/nacos-group/nacos-sdk-go => github.com/nacos-group/nacos-sdk-go v1.0.7-0.20210325111144-d75caca21a46
 
 go 1.13

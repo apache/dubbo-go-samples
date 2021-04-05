@@ -1,0 +1,191 @@
+apiVersion: service.dubbo.apache.org/v1alpha1
+kind: VirtualService
+metadata:
+  name: demo-route
+spec:
+  hosts:
+    - demo  #  统一定义为应用名
+  dubbo:
+    - service: # 这个service没有匹配上，没有走这个service
+        - exact: com.taobao.hsf.demoService:1.0.0
+        - exact: com.taobao.hsf.demoService:2.0.0
+      routedetail:
+        - name: sayHello-String-method-route
+          match:
+            - method:
+                name_match:
+                  exact: "sayHello"
+          #                  argp:
+          #                    - string
+          route:
+            - destination:
+                host: demo
+                subset: v1
+              fallback:
+                destination:
+                  host: demo
+                  subset: v2
+                fallback:
+                  destination:
+                    host: demo
+                    subset: v3
+
+        - name: sayHello-method-route
+          match:
+            - method:
+                name_match:
+                  exact: "s-method"
+          route:
+            - destination:
+                host: demo
+                subset: v2
+              fallback:
+                destination:
+                  host: demo
+                  subset: v3
+        - name: some-method-route
+          match:
+            - method:
+                name_match:
+                  exact: "some-method"
+          route:
+            - destination:
+                host: demo
+                subset: v4
+        - name: final
+          match:
+            - method:
+                name_match:
+                  exact: "GetUser"
+
+          route:
+            - destination:
+                host: demo
+                subset: v1
+              fallback:
+                destination:
+                  host: demo
+                  subset: v2
+                fallback:
+                  destination:
+                    host: demo
+                    subset: v3
+            - destination:
+                host: demo
+                subset: v3
+              fallback:
+                destination:
+                  host: demo
+                  subset: v2
+                fallback:
+                  destination:
+                    host: demo
+                    subset: v1
+    - service: # 这个service 匹配上了第二个
+        - exact: com.taobao.hsf.demoService:1.0.0
+        - exact: org.apache.dubbo.UserProvider
+      routedetail:
+        - name: sayHello-String-method-route
+          match:
+            - method:
+                name_match:
+                  exact: "sayHello" # 没匹配上
+          #                  argp:
+          #                    - string
+          route:
+            - destination:
+                host: demo
+                subset: v1
+              fallback:
+                destination:
+                  host: demo
+                  subset: v2
+                fallback:
+                  destination:
+                    host: demo
+                    subset: v3
+
+        - name: sayHello-method-route
+          match:
+            - method:
+                name_match: # 没匹配上
+                  exact: "s-method"
+          route:
+            - destination:
+                host: demo
+                subset: v2
+              fallback:
+                destination:
+                  host: demo
+                  subset: v3
+        - name: some-method-route
+          match:
+            - method:
+                name_match:
+                  exact: "some-method"
+          route:
+            - destination:
+                host: demo
+                subset: v4
+
+        #        - name: interface-route
+        #          route:
+        #            - destination:
+        #              host: demo
+        #              subset: v3
+        - name: final
+          match:
+            - method:
+                name_match:
+                  exact: "GetUser" # 匹配上了
+                argc: 1 # 1 is true
+
+          route:
+            - destination:
+                host: demo
+                subset: v1
+              fallback:
+                destination:
+                  host: demo
+                  subset: v2 # 命中了这个subset
+                  weight: 9
+                fallback:
+                  destination:
+                    host: demo
+                    subset: v3
+            - destination:
+                host: demo
+                subset: v3
+              fallback:
+                destination:
+                  host: demo
+                  subset: v2
+                  weight: 91
+                fallback:
+                  destination:
+                    host: demo
+                    subset: v1
+#        - name: default # 没有match 兜底路由
+#            route:
+#              - destination:
+#                  host: demo
+#                  subset: v1
+#                fallback:
+#                  destination:
+#                    host: demo
+#                    subset: v2
+#                  fallback:
+#                    destination:
+#                      host: demo
+#                      subset: v3
+#              - destination:
+#                  host: demo
+#                  subset: v3
+#                fallback:
+#                  destination:
+#                    host: demo
+#                    subset: v2
+#                  fallback:
+#                    destination:
+#                      host: demo
+#                      subset: v1
