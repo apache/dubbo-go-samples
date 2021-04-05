@@ -2,7 +2,8 @@ module github.com/apache/dubbo-go-samples
 
 require (
 	github.com/alibaba/sentinel-golang v1.0.2
-	github.com/apache/dubbo-go v1.5.6-rc2.0.20210405062714-19c3cc3c36b1
+	github.com/apache/dubbo-getty v1.4.3
+	github.com/apache/dubbo-go v1.5.6-rc2.0.20210405080051-eeaca76e44bc
 	github.com/apache/dubbo-go-hessian2 v1.9.1
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dubbogo/gost v1.11.3
@@ -21,12 +22,14 @@ require (
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
 	google.golang.org/grpc v1.33.1
-	google.golang.org/grpc/examples v0.0.0-20210322221411-d26af8e39165 // indirect
+	google.golang.org/grpc/examples v0.0.0-20210402181922-5730f8d113ee // indirect
 	google.golang.org/protobuf v1.26.0
 )
 
-replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
-
-replace github.com/nacos-group/nacos-sdk-go => github.com/nacos-group/nacos-sdk-go v1.0.7-0.20210325111144-d75caca21a46
+replace (
+	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
+	github.com/nacos-group/nacos-sdk-go => github.com/nacos-group/nacos-sdk-go v1.0.7-0.20210325111144-d75caca21a46
+	github.com/shirou/gopsutil => github.com/shirou/gopsutil v0.0.0-20181107111621-48177ef5f880
+)
 
 go 1.13
