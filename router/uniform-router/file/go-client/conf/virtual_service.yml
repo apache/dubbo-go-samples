@@ -19,14 +19,14 @@ spec:
             - destination:
                 host: demo
                 subset: v1
-              fallback:
-                destination:
-                  host: demo
-                  subset: v2
                 fallback:
                   destination:
                     host: demo
-                    subset: v3
+                    subset: v2
+                    fallback:
+                      destination:
+                        host: demo
+                        subset: v3
 
         - name: sayHello-method-route
           match:
@@ -37,10 +37,10 @@ spec:
             - destination:
                 host: demo
                 subset: v2
-              fallback:
-                destination:
-                  host: demo
-                  subset: v3
+                fallback:
+                  destination:
+                    host: demo
+                    subset: v3
         - name: some-method-route
           match:
             - method:
@@ -60,25 +60,25 @@ spec:
             - destination:
                 host: demo
                 subset: v1
-              fallback:
-                destination:
-                  host: demo
-                  subset: v2
                 fallback:
                   destination:
                     host: demo
-                    subset: v3
+                    subset: v2
+                    fallback:
+                      destination:
+                        host: demo
+                        subset: v3
             - destination:
                 host: demo
                 subset: v3
-              fallback:
-                destination:
-                  host: demo
-                  subset: v2
                 fallback:
                   destination:
                     host: demo
-                    subset: v1
+                    subset: v2
+                    fallback:
+                      destination:
+                        host: demo
+                        subset: v1
     - service: # the second service interface name is match
         - exact: com.taobao.hsf.demoService:1.0.0
         - exact: org.apache.dubbo.UserProvider
@@ -92,14 +92,14 @@ spec:
             - destination:
                 host: demo
                 subset: v1
-              fallback:
-                destination:
-                  host: demo
-                  subset: v2
                 fallback:
                   destination:
                     host: demo
-                    subset: v3
+                    subset: v2
+                    fallback:
+                      destination:
+                        host: demo
+                        subset: v3
 
         - name: sayHello-method-route
           match:
@@ -110,10 +110,10 @@ spec:
             - destination:
                 host: demo
                 subset: v2
-              fallback:
-                destination:
-                  host: demo
-                  subset: v3
+                fallback:
+                  destination:
+                    host: demo
+                    subset: v3
         - name: some-method-route
           match:
             - method:
@@ -133,48 +133,48 @@ spec:
             - destination:
                 host: demo
                 subset: v1 # destination rule of v1 is empty, there isn't target invoker
-              fallback:
-                destination:
-                  host: demo
-                  subset: v2 # this subset is used
-                  weight: 9 # this weight is used to calculate weight with 9%
                 fallback:
                   destination:
                     host: demo
-                    subset: v3
+                    subset: v2 # this subset is used
+                    weight: 9 # this weight is used to calculate weight with 9%
+                    fallback:
+                      destination:
+                        host: demo
+                        subset: v3
             - destination:
                 host: demo
                 subset: v3 # destination rule of v3 is empty, there isn't target invoker
-              fallback:
-                destination:
-                  host: demo
-                  subset: v2 # this subset is used
-                  weight: 91 # this weight is used to calculate weight with 91%
                 fallback:
                   destination:
                     host: demo
-                    subset: v1
+                    subset: v2 # this subset is used
+                    weight: 91 # this weight is used to calculate weight with 91%
+                    fallback:
+                      destination:
+                        host: demo
+                        subset: v1
         - name: default #  you can add a finally fallback router with 'match' field, which can match any condition
-            route:
-              - destination:
-                  host: demo
-                  subset: v1
+          route:
+            - destination:
+                host: demo
+                subset: v1
                 fallback:
                   destination:
                     host: demo
                     subset: v2
-                  fallback:
-                    destination:
-                      host: demo
-                      subset: v3
-              - destination:
-                  host: demo
-                  subset: v3
+                    fallback:
+                      destination:
+                        host: demo
+                        subset: v3
+            - destination:
+                host: demo
+                subset: v3
                 fallback:
                   destination:
                     host: demo
                     subset: v2
-                  fallback:
-                    destination:
-                      host: demo
-                      subset: v1
+                    fallback:
+                      destination:
+                        host: demo
+                        subset: v1
