@@ -24,6 +24,7 @@ services:
     loadbalance: "random"
     warmup: "100"
     cluster: "failover"
+    params: { ut: other }
     methods:
       - name: "GetUser"
         retries: 1

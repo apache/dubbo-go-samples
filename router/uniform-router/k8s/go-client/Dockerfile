@@ -1,4 +1,4 @@
-FROM golang:latest@sha256:43813e40aba2a453d4fac2ab5f6357273b6491d5225f8b703eb1a9c70aa4055a as build
+FROM golang:latest as build
 WORKDIR /
 COPY ./cmd/client /
 COPY ./conf /conf

@@ -8,7 +8,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dubbogo/gost v1.11.3
 	github.com/dubbogo/triple v0.1.0
-	github.com/dubbogo/v3router v0.1.0
+	github.com/dubbogo/v3router v0.1.1-0.20210409102707-fd616089ee4b
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
@@ -27,7 +27,6 @@ require (
 )
 
 replace (
-	github.com/dubbogo/v3router => ../v3router
 	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 	github.com/nacos-group/nacos-sdk-go => github.com/nacos-group/nacos-sdk-go v1.0.7-0.20210325111144-d75caca21a46
 	github.com/shirou/gopsutil => github.com/shirou/gopsutil v0.0.0-20181107111621-48177ef5f880

@@ -33,4 +33,4 @@ spec:
           ports:
             - containerPort: 2181
           image: zookeeper
-          imagePullPolicy: IfNotPresent # 这个设置 会从本地先找，没有从远处拉取
+          imagePullPolicy: IfNotPresent # first find in local

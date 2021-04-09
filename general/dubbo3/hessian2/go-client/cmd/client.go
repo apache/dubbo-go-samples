@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"github.com/dubbogo/gost/log"
 	"os"
 	"time"
 )
@@ -35,6 +34,7 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/grpc"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	"github.com/dubbogo/gost/log"
 )
 
 import (
