@@ -5,7 +5,7 @@ spec:
   host: demo
   subsets:
     - name: all
-      labels: { ut: CENTER }
+      labels: { ut: CENTER } # 服务端url存在 `ut:CENTER` 的键值参数
     - name: center
-      labels: { ut: other }
+      labels: { ut: other } # 服务端url存在 `ut:other` 的键值参数
     - name: other

@@ -16,7 +16,7 @@ registries:
 
 # reference config
 references:
-  "GreeterProvider":
+  "greeterImpl":
     registry: "demoZk"
     protocol: "tri"
     interface: "protobuf.Greeter"

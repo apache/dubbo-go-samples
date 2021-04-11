@@ -34,4 +34,4 @@ services:
 protocols:
   "dubbo":
     name: "dubbo"
-    port: 20001
+    port: 20002

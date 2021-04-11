@@ -30,7 +30,3 @@ references:
     protocol: "tri"
     serialization: "hessian2"
     interface: "org.apache.dubbo.UserProvider"
-    cluster: "failover"
-    methods:
-      - name: "GetUser"
-        retries: 3

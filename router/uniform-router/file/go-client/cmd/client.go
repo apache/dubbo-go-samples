@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"os"
+	"time"
 )
 
 import (
@@ -57,11 +58,15 @@ func main() {
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+	for {
+		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+		if err != nil {
+			gxlog.CError("error: %v\n", err)
+			os.Exit(1)
+			return
+		}
+		gxlog.CInfo("response result: %v\n", user)
+		time.Sleep(time.Second)
 	}
-	gxlog.CInfo("response result: %v\n", user)
+
 }

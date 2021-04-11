@@ -22,3 +22,6 @@ references:
     registry: "demoZk"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
+#    params: { trafficLabel: xxx }
+# If this line is comment, the all requests would be send to server, else the request would
+# be sent to both server and server2

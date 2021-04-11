@@ -29,7 +29,3 @@ references:
     registry: "demoZk"
     protocol: "grpc"
     interface: "org.apache.dubbo.UserProvider"
-    cluster: "failover"
-    methods:
-      - name: "GetUser"
-        retries: 3

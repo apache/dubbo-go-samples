@@ -37,10 +37,9 @@ import (
 
 import (
 	dubbo3pb "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/protobuf/dubbo3"
-	"github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/stream-client/dubbogo-client/pkg"
 )
 
-var greeterProvider = new(pkg.GreeterProvider)
+var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 
 func init() {
 	config.SetConsumerService(greeterProvider)
