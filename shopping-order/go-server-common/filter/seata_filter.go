@@ -10,10 +10,6 @@ import (
 	"github.com/apache/dubbo-go/protocol"
 )
 
-import (
-// inner
-)
-
 const (
 	SEATA     = "seata"
 	SEATA_XID = "seata_xid"

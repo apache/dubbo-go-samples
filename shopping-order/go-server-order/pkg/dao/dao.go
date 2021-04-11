@@ -28,10 +28,6 @@ import (
 	"github.com/bwmarrin/snowflake"
 )
 
-import (
-// inner
-)
-
 const (
 	insertSoMaster = `INSERT INTO seata_order.so_master (sysno, so_id, buyer_user_sysno, seller_company_code, 
 		receive_division_sysno, receive_address, receive_zip, receive_contact, receive_contact_phone, stock_sysno, 

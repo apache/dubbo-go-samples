@@ -20,7 +20,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/opentrx/mysql"
 	"os"
 	"os/signal"
 	"syscall"
@@ -36,11 +35,11 @@ import (
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/registry/nacos"
 	_ "github.com/apache/dubbo-go/registry/protocol"
+	"github.com/opentrx/mysql"
 	"github.com/transaction-wg/seata-golang/pkg/client"
 	seataConfig "github.com/transaction-wg/seata-golang/pkg/client/config"
-	//_ "github.com/apache/dubbo-go/registry/nacos"
-	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
 import (
@@ -63,7 +62,6 @@ func main() {
 	confFile := os.Getenv(SEATA_CONF_FILE)
 	seataConfig.InitConf(confFile)
 	client.NewRpcClient()
-	//exec.InitDataResourceManager()
 
 	// init mysql driver of `opentrx/mysql`
 	mysql.InitDataResourceManager()

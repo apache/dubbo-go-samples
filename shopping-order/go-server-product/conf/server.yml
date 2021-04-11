@@ -6,20 +6,16 @@ application:
   environment: "dev"
 
 registries:
-  "demoZk":
-    protocol: "zookeeper"
+  "nacos":
+    protocol: "nacos"
     timeout: "3s"
-    address: "127.0.0.1:2181"
-#  "nacos":
-#    protocol: "nacos"
-#    timeout: "3s"
-#    address: "nacos:8848"
+    address: "nacos:8848"
 
 filter: "seata"
 
 services:
   "ProductSvc":
-    registry: "demoZk"
+    registry: "nacos"
     protocol: "dubbo"
     interface: "org.apache.dubbo.ProductSvc"
     loadbalance: "random"

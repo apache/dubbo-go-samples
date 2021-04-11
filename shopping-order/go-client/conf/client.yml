@@ -1,40 +1,36 @@
-check: true
+check: false
 request_timeout: "3s"
 connect_timeout: "3s"
 
 application:
   organization: "dubbo.io"
   name: "BDTService"
-  module: "dubbogo user-info client"
+  module: "dubbogo shopping-client client"
   version: "0.0.1"
   environment: "dev"
 
 registries:
-  "demoZk":
-    protocol: "zookeeper"
+  "nacos":
+    protocol: "nacos"
     timeout: "3s"
-    address: "127.0.0.1:2181"
-#  "nacos":
-#    protocol: "nacos"
-#    timeout: "3s"
-#    address: "nacos:8848"
+    address: "nacos:8848"
 
 references:
   "OrderSvc":
-    registry: "demoZk"
+    registry: "nacos"
     protocol: "dubbo"
     interface: "org.apache.dubbo.OrderSvc"
     cluster: "failover"
-    url: "dubbo://127.0.0.1:20000"
+    url: "dubbo://go-server-order:20000"
     methods:
       - name: "CreateSo"
         retries: 3
   "ProductSvc":
-    registry: "demoZk"
+    registry: "nacos"
     protocol: "dubbo"
     interface: "org.apache.dubbo.ProductSvc"
     cluster: "failover"
-    url: "dubbo://127.0.0.1:20001"
+    url: "dubbo://go-server-product:20001"
     methods:
       - name: "AllocateInventory"
         retries: 3
