@@ -9,7 +9,7 @@ connect_timeout: "3s"
 # application config
 application:
   organization: "dubbo.io"
-  name: "Dubbo3GetUserTest"
+  name: "UserProvider"
   module: "dubbo-go3.0 client"
   version: "0.0.1"
   environment: "dev"
@@ -25,7 +25,8 @@ registries:
 
 # reference config
 references:
-  "GrpcGreeterImpl":
+  "UserProvider":
     registry: "demoZk"
-    protocol: "grpc"
+    protocol: "tri"
+    serialization: "hessian2"
     interface: "org.apache.dubbo.UserProvider"

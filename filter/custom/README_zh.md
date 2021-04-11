@@ -18,7 +18,7 @@ type myCustomFilter struct{}
 func (mf myCustomFilter) Invoke(ctx context.Context, invoker protocol.Invoker, invocation protocol.Invocation) protocol.Result {
     // the logic put here...
     // you can get many params in url. And the invocation provides more information about
-    url := invoker.GetUrl()
+    url := invoker.GetURL()
     serviceKey := url.ServiceKey()
     gxlog.CInfo("Here is the my custom filter. The service is invoked: %s", serviceKey)
     return invoker.Invoke(ctx, invocation)

@@ -30,14 +30,8 @@ array+=("filter/custom/go-server")
 array+=("filter/tpslimit/go-server")
 array+=("filter/sentinel/go-server")
 
-# general
-array+=("general/dubbo/go-server")
-array+=("general/grpc/go-server")
-#array+=("general/jsonrpc/go-server")
-#array+=("general/rest/go-server")
-
-# generic
-array+=("generic/go-server")
+# todo generic temporarily has bugs
+#array+=("generic/go-server")
 
 # hello world
 array+=("helloworld/go-server")
