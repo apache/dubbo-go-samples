@@ -35,7 +35,7 @@ ifconfig en0 | grep inet | grep -v inet6 | awk '{print $2}'
 It is convenient to use environment variable 'CONF_ROUTER_FILE_PATH' to config router config in development environment. Compared to local router config file, it is more preferable to use [Dubbo Admin](https://github.com/apache/dubbo-admin) to configure router config for production use.
 
 
-In order to have router configs notified, the Dubbo consumer must have a config center pre-configure like below:
+In order to have router configs notified, the Dubbo consumer must have a config center pre-configure as follows:
 
 ```yaml
 config_center:
