@@ -20,26 +20,6 @@ SET NAMES utf8mb4;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
-# Dump of table branch_transaction
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `branch_transaction`;
-
-CREATE TABLE `branch_transaction` (
-                                      `sysno` bigint NOT NULL AUTO_INCREMENT,
-                                      `xid` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-                                      `branch_id` bigint NOT NULL,
-                                      `args_json` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                                      `state` tinyint DEFAULT NULL COMMENT '1，初始化；2，已提交；3，已回滚',
-                                      `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                                      `gmt_modified` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-                                      PRIMARY KEY (`sysno`) USING BTREE,
-                                      UNIQUE KEY `xid` (`xid`,`branch_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='事务记录表';
-
-
-
 # Dump of table inventory
 # ------------------------------------------------------------
 

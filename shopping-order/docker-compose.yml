@@ -81,13 +81,6 @@ services:
     ports:
       - "3306:3306"
 
-  zookeeper:
-    image: zookeeper
-    container_name: zookeeper
-    ports:
-      - 2181:2181
-    restart: on-failure
-
   nacos:
     image: nacos/nacos-server:latest
     container_name: nacos
