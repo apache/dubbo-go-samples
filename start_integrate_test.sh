@@ -37,7 +37,7 @@ array+=("general/grpc/go-server")
 #array+=("general/rest/go-server")
 
 # generic
-array+=("generic/go-server")
+#array+=("generic/go-server")
 
 # hello world
 array+=("helloworld/go-server")
