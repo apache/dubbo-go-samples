@@ -18,6 +18,7 @@
 * seata: A seata example
 * shop: Shop sample
 * tracing: tracing example
+* game: game service example
 
 ## How To Run
 

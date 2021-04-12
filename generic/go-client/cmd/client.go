@@ -112,7 +112,7 @@ func callGetUser() {
 func callQueryUser() {
 	gxlog.CInfo("\n\n\nstart to generic invoke")
 	user := pkg.User{
-		Id:   "3213",
+		ID:   "3213",
 		Name: "panty",
 		Age:  25,
 		Time: time.Now(),

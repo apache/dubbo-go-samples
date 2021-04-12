@@ -27,8 +27,6 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/multi-zone/go-server-hz/pkg"
-
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"
@@ -40,12 +38,17 @@ import (
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
+import (
+	"github.com/apache/dubbo-go-samples/multi-zone/go-server-hz/pkg"
+)
+
 var (
 	survivalTimeout = int(3e9)
 )
 
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
+	config.SetProviderService(new(pkg.UserProvider))
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 

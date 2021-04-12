@@ -18,6 +18,7 @@
 * seata: 展示了与 seata 的对接
 * shop: 一个在线商店的小例子
 * tracing: 链路追踪
+* game: 游戏服务例子
 
 ## 如何运行
 

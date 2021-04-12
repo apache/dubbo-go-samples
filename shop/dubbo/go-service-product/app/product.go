@@ -40,7 +40,7 @@ func init() {
 }
 
 type Product struct {
-	Id       string
+	ID       string
 	Price    int
 	Quantity int
 }

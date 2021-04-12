@@ -47,10 +47,10 @@ public class Consumer {
 
     private void testGetUser() throws Exception {
         try {
-            UserId userId = UserId.newBuilder().setId("A003").build();
-            User user1 = userProvider.getUser(userId);
+            UserID userID = UserID.newBuilder().setID("A003").build();
+            User user1 = userProvider.getUser(userID);
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                    " UserInfo, Id:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
+                    " UserInfo, ID:" + user1.getID() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,11 +59,11 @@ public class Consumer {
 
     private void testGetUserList() throws Exception {
         try {
-            UserIdList userIdList = UserIdList.newBuilder().addId("A003").addId("A002").build();
-            UserList userList = userProvider.getUserList(userIdList);
+            UserIDList userIDList = UserIDList.newBuilder().addID("A003").addID("A002").build();
+            UserList userList = userProvider.getUserList(userIDList);
             for (User user : userList.getUserList()) {
                 System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                        " UserInfo, Id:" + user.getId() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
+                        " UserInfo, ID:" + user.getID() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
                         + ", age:" + user.getAge() + ", time:" + user.getTime().toString());
             }
         } catch (Exception e) {
@@ -73,8 +73,8 @@ public class Consumer {
 
     private void testGetErr() throws Exception {
         try {
-            UserId userId = UserId.newBuilder().setId("A003").build();
-            userProvider.getErr(userId);
+            UserID userID = UserID.newBuilder().setID("A003").build();
+            userProvider.getErr(userID);
         } catch (Throwable t) {
             System.out.println("*************exception***********");
             t.printStackTrace();
@@ -83,12 +83,12 @@ public class Consumer {
 
     private void testGetUserByStream() {
         try {
-            UserId userId = UserId.newBuilder().setId("A001").build();
-            userProvider.getUserByStream(userId, new StreamObserver<User>() {
+            UserID userID = UserID.newBuilder().setID("A001").build();
+            userProvider.getUserByStream(userID, new StreamObserver<User>() {
                 @Override
                 public void onNext(User user) {
                     System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
-                            " UserInfo, Id:" + user.getId() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
+                            " UserInfo, ID:" + user.getID() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
                             + ", age:" + user.getAge() + ", time:" + user.getTime().toString());
                 }
 
