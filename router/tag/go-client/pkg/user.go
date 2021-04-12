@@ -22,10 +22,6 @@ import (
 	"time"
 )
 
-import (
-	"github.com/dubbogo/gost/log"
-)
-
 type User struct {
 	ID   string
 	Name string
@@ -34,19 +30,13 @@ type User struct {
 }
 
 type UserProvider struct {
-}
-
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
 }
 
 func (u *UserProvider) Reference() string {
 	return "UserProvider"
 }
 
-func (u User) JavaClassName() string {
+func (User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
