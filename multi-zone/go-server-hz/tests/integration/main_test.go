@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,13 +17,12 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"fmt"
+	"context"
 	"os"
-	"os/signal"
-	"syscall"
+	"testing"
 	"time"
 )
 
@@ -29,51 +30,41 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/multi-zone/go-server-sh/pkg"
-)
+var userProvider = new(UserProvider)
 
-var (
-	survivalTimeout int = 10e9
-)
-
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
-func main() {
-	config.SetProviderService(new(pkg.UserProvider))
-	hessian.RegisterPOJO(&pkg.User{})
+func TestMain(m *testing.M) {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&User{})
 	config.Load()
+	time.Sleep(3 * time.Second)
 
-	initSignal()
+	os.Exit(m.Run())
 }
 
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(time.Duration(survivalTimeout), func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
+}
 
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("provider app exit now...")
-			return
-		}
-	}
+type UserProvider struct {
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
+}
+
+func (User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
