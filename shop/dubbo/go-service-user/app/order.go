@@ -38,7 +38,7 @@ func init() {
 }
 
 type Order struct {
-	Id      string
+	ID      string
 	Name    string
 	Price   int
 	Product Product
@@ -49,7 +49,7 @@ func (u Order) JavaClassName() string {
 }
 
 type Product struct {
-	Id       string
+	ID       string
 	Price    int
 	Quantity int
 }

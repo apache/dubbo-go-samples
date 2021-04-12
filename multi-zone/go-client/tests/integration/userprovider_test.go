@@ -39,10 +39,10 @@ func TestGetUser(t *testing.T) {
 		if err != nil {
 			panic(err)
 		}
-		if "dev-hz" == user.Id {
+		if "dev-hz" == user.ID {
 			hz++
 		}
-		if "dev-sh" == user.Id {
+		if "dev-sh" == user.ID {
 			sh++
 		}
 	}

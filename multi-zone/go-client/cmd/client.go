@@ -19,37 +19,32 @@ package main
 
 import (
 	"context"
-	"github.com/apache/dubbo-go/common/constant"
 	"time"
 )
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/multi-zone/go-client/pkg"
-	"github.com/dubbogo/gost/log"
-)
-
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	"github.com/apache/dubbo-go/common/constant"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	"github.com/dubbogo/gost/log"
 )
 
-var userProvider = new(pkg.UserProvider)
-
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
+import (
+	"github.com/apache/dubbo-go-samples/multi-zone/go-client/pkg"
+)
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
+	userProvider := new(pkg.UserProvider)
+	config.SetConsumerService(userProvider)
 	config.Load()
 	time.Sleep(3 * time.Second)
 
@@ -68,10 +63,10 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		if "dev-hz" == user.Id {
+		if "dev-hz" == user.ID {
 			hz++
 		}
-		if "dev-sh" == user.Id {
+		if "dev-sh" == user.ID {
 			sh++
 		}
 		gxlog.CInfo("response %d result: %v\n", i, user)

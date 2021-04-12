@@ -49,7 +49,7 @@ func TestGetUser(t *testing.T) {
 
 func TestQueryUser(t *testing.T) {
 	user := User{
-		Id:   "3213",
+		ID:   "3213",
 		Name: "panty",
 		Age:  25,
 		Time: time.Now(),
