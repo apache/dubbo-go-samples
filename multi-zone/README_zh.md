@@ -1,8 +1,8 @@
-# Multi Zone Example
+# 多注册中心示例
 
-## Background
+## 背景
 
-Sometimes it is necessary to deploy Dubbo services into different zones for the sake of disaster tolerance or high availability. In order to consumer the services among the different registry centers, you may need to consider configuring your consumer like this:
+有些时候为了容灾或者高可用的目的，有必要把 Dubbo 服务部署到不同的区域去。为了能够同时消费到注册在不同注册中心上的服务，需要按照以下的方式来配置你的消费方：
 
 ```yaml
 # registry config
@@ -35,35 +35,35 @@ references:
         retries: 3
 ```
 
-## Run Steps
+## 运行步骤
 
-1. Start Zookeeper in docker environment.
+1. 在 Docker 环境中启动 Zookeeper 服务器
 
     ```bash
     make -f ../build/Makefile docker-up
     ```
    
-2. Start Server
+2. 启动服务端
 
-    Start Hangzhou zone server.
+   启动杭州区域的服务器。
     ```bash
    cd go-server-hz
    make -f ../../build/Makefile clean start  
    ```
    
-   Start Shanghai zone server.
+   启动上海区域的服务器。
    ```bash
    cd go-server-sh
    make -f ../../build/Makefile clean start  
   
-3. Run Consumer
+3. 运行消费方
 
     ```bash
     cd go-client
     make -f ../../build/Makefile run
     ```
    
-4. Cleanup
+4. 清理
 
    ```bash
    cd go-server-hz && \
