@@ -41,12 +41,12 @@ func init() {
 type UserProvider struct {
 }
 
-func (u *UserProvider) getUser(userId string) (*User, error) {
-	if user, ok := userMap[userId]; ok {
+func (u *UserProvider) getUser(userID string) (*User, error) {
+	if user, ok := userMap[userID]; ok {
 		return &user, nil
 	}
 
-	return nil, fmt.Errorf("invalid user id:%s", userId)
+	return nil, fmt.Errorf("invalid user id:%s", userID)
 }
 
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
@@ -82,7 +82,7 @@ func (u *UserProvider) GetUser2(ctx context.Context, req []interface{}, rsp *Use
 	var err error
 
 	gxlog.CInfo("req:%#v", req)
-	rsp.Id = strconv.Itoa(int(req[0].(int32)))
+	rsp.ID = strconv.Itoa(int(req[0].(int32)))
 	return err
 }
 
