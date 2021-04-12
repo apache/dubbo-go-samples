@@ -15,7 +15,7 @@
 1. **启动注册中心（比如 zookeeper）**
    
    ```bash
-   cd attachment/server
+   cd attachment/go-server
    make -f ../../build/Makefile docker-up 
    ```
    
@@ -30,14 +30,14 @@
    如果要停掉注册中心，可以通过运行以下的命令完成:
    
    ```bash
-   cd attachment/server
+   cd attachment/go-server
    make -f ../../build/Makefile docker-down
    ```
    
 2. **启动服务提供方**
    
     ```bash
-    cd attachment/server
+    cd attachment/go-server
     make -f ../../build/Makefile start
     ```
    
@@ -54,7 +54,7 @@
 3. **运行服务调用方**
    
     ```bash
-   cd attachment/client
+   cd attachment/go-client
    make -f ../../build/Makefile run 
    ```
 
@@ -73,7 +73,7 @@
    本项目 dubbo-go-samples 除了用来展示如何使用 dubbo-go 中的功能和特性之外，还被用于 apache/dubbo-go 的集成测试。可以按照以下的步骤来运行针对 `go-server` 设计的集成测试:
 
    ```bash
-   cd attachment/server
+   cd attachment/go-server
    make -f ../../build/Makefile integration
    ```
 
@@ -89,7 +89,7 @@
    
 4. **关闭并清理**
    ```bash
-   cd attachment/server
+   cd attachment/go-server
    make -f ../../build/Makefile clean docker-down
    ```
 
