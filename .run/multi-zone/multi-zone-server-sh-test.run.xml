@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="multi-zone-go-server-sh-test" type="GoTestRunConfiguration" factoryName="Go Test" folderName="multi-zone">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$/multi-zone" />
+    <useCustomBuildTags value="true" />
+    <envs>
+      <env name="CONF_CONSUMER_FILE_PATH" value="go-server-sh/conf/client.yml" />
+      <env name="APP_LOG_CONF_FILE" value="go-server-sh/conf/log.yml" />
+    </envs>
+    <framework value="gotest" />
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/multi-zone/go-server-sh/tests/integration" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>

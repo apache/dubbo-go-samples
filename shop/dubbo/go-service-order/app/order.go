@@ -39,7 +39,7 @@ func init() {
 }
 
 type Order struct {
-	Id      string
+	ID      string
 	Name    string
 	Price   int
 	Count   int

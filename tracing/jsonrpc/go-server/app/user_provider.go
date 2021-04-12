@@ -24,12 +24,12 @@ func init() {
 type UserProvider struct {
 }
 
-func (u *UserProvider) getUser(userId string) (*User, error) {
-	if user, ok := userMap[userId]; ok {
+func (u *UserProvider) getUser(userID string) (*User, error) {
+	if user, ok := userMap[userID]; ok {
 		return &user, nil
 	}
 
-	return nil, fmt.Errorf("invalid user id:%s", userId)
+	return nil, fmt.Errorf("invalid user id:%s", userID)
 }
 
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
@@ -46,7 +46,7 @@ func (u *UserProvider) GetUser(ctx context.Context, req []interface{}, rsp *User
 	defer span.Finish()
 	gxlog.CInfo("req:%#v", req)
 	if ctx != nil {
-		gxlog.CInfo("tracing Id: %v", ctx.Value("TracingId"))
+		gxlog.CInfo("tracing ID: %v", ctx.Value("TracingID"))
 	}
 	time.Sleep(10 * time.Millisecond)
 	user, err = u.getUser(req[0].(string))
@@ -75,7 +75,7 @@ func (u *UserProvider) GetUser2(ctx context.Context, req []interface{}, rsp *Use
 	var err error
 
 	gxlog.CInfo("req:%#v", req)
-	rsp.Id = strconv.FormatFloat(req[0].(float64), 'f', 0, 64)
+	rsp.ID = strconv.FormatFloat(req[0].(float64), 'f', 0, 64)
 	rsp.Sex = Gender(MAN).String()
 	return err
 }
