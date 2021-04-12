@@ -3,7 +3,7 @@ module github.com/apache/dubbo-go-samples/shopping-order
 require (
 	cloud.google.com/go v0.50.0 // indirect
 	github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5 // indirect
-	github.com/apache/dubbo-go v1.5.6-rc2
+	github.com/apache/dubbo-go v1.5.6
 	github.com/apache/dubbo-go-hessian2 v1.9.1
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/docker/go-connections v0.4.0 // indirect

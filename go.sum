@@ -93,6 +93,8 @@ github.com/apache/dubbo-go v1.5.6-rc1.0.20210225142527-f1f81ebd8292 h1:7Recoqb9k
 github.com/apache/dubbo-go v1.5.6-rc1.0.20210225142527-f1f81ebd8292/go.mod h1:oMwy4E3YDz0VoDuvIvSU+XtQNylBAxLWui1lvyBE9GM=
 github.com/apache/dubbo-go v1.5.6-rc2 h1:e9ziyPQx65n/dyGrA0/ce263jV2+nnSzzpdu9LbfNpc=
 github.com/apache/dubbo-go v1.5.6-rc2/go.mod h1:wLJvPWbnrf6/bhoohBT404QK4t2JoNcckMw+/fJ9P+c=
+github.com/apache/dubbo-go v1.5.6 h1:iTMrXo8jB6DxKOhM83NKDnGA8c9ZPnofCOos/GvKyF8=
+github.com/apache/dubbo-go v1.5.6/go.mod h1:wLJvPWbnrf6/bhoohBT404QK4t2JoNcckMw+/fJ9P+c=
 github.com/apache/dubbo-go-hessian2 v1.8.2 h1:CQq2Mmlrk6Fqmudwl9Dqps8drTrBFnmXRlzgOjj0FqA=
 github.com/apache/dubbo-go-hessian2 v1.8.2/go.mod h1:xQUjE7F8PX49nm80kChFvepA/AvqAZ0oh/UaB6+6pBE=
 github.com/apache/dubbo-go-hessian2 v1.9.1 h1:ceSsU/9z/gv3hzUpl8GceEhQvF3i0BionfdHUGMmjHU=
@@ -1216,6 +1218,7 @@ google.golang.org/grpc v1.33.1 h1:DGeFlSan2f+WEtCERJ4J9GJWk15TxUi8QGagfI87Xyc=
 google.golang.org/grpc v1.33.1/go.mod h1:fr5YgcSWrqhRRxogOsw7RzIpsmvOZ6IcH4kBYTpR3n0=
 google.golang.org/grpc v1.36.0 h1:o1bcQ6imQMIOpdrO3SWf2z5RV72WbDwdXuK0MDlc8As=
 google.golang.org/grpc v1.36.1 h1:cmUfbeGKnz9+2DD/UYsMQXeqbHZqZDs4eQwW0sFOpBY=
+google.golang.org/grpc v1.37.0 h1:uSZWeQJX5j11bIQ4AJoj+McDBo29cY1MCoC1wO3ts+c=
 google.golang.org/grpc/examples v0.0.0-20210301210255-fc8f38cccf75 h1:IFbcGka/Xo8VIhRtCz9UBaDblKK7/iwLiXwm9D62Jzk=
 google.golang.org/grpc/examples v0.0.0-20210301210255-fc8f38cccf75/go.mod h1:Ly7ZA/ARzg8fnPU9TyZIxoz33sEUuWX7txiqs8lPTgE=
 google.golang.org/grpc/examples v0.0.0-20210322221411-d26af8e39165 h1:MSAfAlpjtliqDmmqgrhs9WVpSbQdL+zbGc7y7m6zDVQ=
