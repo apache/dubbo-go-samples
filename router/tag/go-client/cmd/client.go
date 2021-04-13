@@ -19,42 +19,87 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	_ "github.com/apache/dubbo-go/cluster/router/condition"
+	_ "github.com/apache/dubbo-go/cluster/router/tag"
+	"github.com/apache/dubbo-go/common/constant"
+	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
+	_ "github.com/apache/dubbo-go/config_center/zookeeper"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/registry/directory"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
-	"github.com/dubbogo/gost/log"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/router/condition/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/router/tag/go-client/pkg"
 )
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-// need to setup environment variable "CONF_ROUTER_FILE_PATH" to "conf/router_config.yml" before run
+var (
+	survivalTimeout int = 10e9
+)
+
+// they are necessary:
+// 		export CONF_CONSUMER_FILE_PATH="xxx"
+// 		export APP_LOG_CONF_FILE="xxx"
+// 		export CONF_ROUTER_FILE_PATH="xxx"
 func main() {
 	userProvider := new(pkg.UserProvider)
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
+	time.Sleep(1e9)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+	ctx := context.Background()
+	atm := map[string]string{
+		"dubbo.tag":       "beijing",
+		"dubbo.force.tag": "true",
 	}
-	gxlog.CInfo("response result: %v\n", user)
+	ctx = context.WithValue(ctx, constant.AttachmentKey, atm)
+	err := userProvider.GetUser(ctx, []interface{}{"A001"}, user)
+	if err != nil {
+		panic(err)
+	}
+
+	gxlog.CInfo(fmt.Sprintf("response result: %v\n", user))
+	initSignal()
+}
+
+func initSignal() {
+	signals := make(chan os.Signal, 1)
+	// It is not possible to block SIGKILL or syscall.SIGSTOP
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
+		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	for {
+		sig := <-signals
+		logger.Infof("get signal %s", sig.String())
+		switch sig {
+		case syscall.SIGHUP:
+			// reload()
+		default:
+			time.AfterFunc(time.Duration(survivalTimeout), func() {
+				logger.Warnf("app exit now by force...")
+				os.Exit(1)
+			})
+
+			// The program exits normally or timeout forcibly exits.
+			fmt.Println("app exit now...")
+			return
+		}
+	}
 }
