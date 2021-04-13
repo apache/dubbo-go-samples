@@ -67,9 +67,9 @@ array+=("metric/go-server")
 #array+=("multi-registry/go-server")
 
 # registry
-array+=("registry/etcd/go-server")
+#array+=("registry/etcd/go-server")
 #array+=("registry/nacos/go-server")
-array+=("registry/servicediscovery/consul/go-server")
+#array+=("registry/servicediscovery/consul/go-server")
 array+=("registry/servicediscovery/etcd/go-server")
 #array+=("registry/servicediscovery/file/go-server")
 #array+=("registry/servicediscovery/nacos/go-server")
@@ -84,8 +84,6 @@ array+=("tls/go-server")
 
 for((i=0;i<${#array[*]};i++))
 do
-  echo "Y" | docker network prune
-  echo "Y" | docker container prune
 	./integrate_test.sh ${array[i]}
 	result=$?
 	if [ $result -gt 0 ]; then
