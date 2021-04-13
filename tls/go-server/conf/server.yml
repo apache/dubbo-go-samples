@@ -3,11 +3,10 @@
 
 # application config
 application:
-  organization : "ikurento.com"
-  name : "BDTService"
-  module : "dubbogo user-info server"
+  organization : "dubbo.io"
+  name : "UserInfoServer"
+  module : "dubbo-go user-info server"
   version : "0.0.1"
-  owner : "ZX"
   environment : "dev"
 
 registries :
@@ -22,7 +21,7 @@ services:
     registry: "demoZk"
     protocol : "dubbo"
     # equal to the interface in dubbo.xml
-    interface : "com.ikurento.user.UserProvider"
+    interface : "org.apache.dubbo.UserProvider"
     loadbalance: "random"
     warmup: "100"
     cluster: "failover"

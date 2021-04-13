@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,28 +17,23 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
-	"time"
+	"testing"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
+import (
+	"github.com/stretchr/testify/assert"
+)
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+func TestGetUser(t *testing.T) {
+	user := &User{}
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	assert.Nil(t, err)
+	assert.Equal(t, "A001", user.ID)
+	assert.Equal(t, "CJP", user.Name)
+	assert.Equal(t, int32(21), user.Age)
+	assert.NotNil(t, user.Time)
 }
