@@ -44,7 +44,7 @@ func TestGetUser(t *testing.T) {
 	resp := o.(map[interface{}]interface{})
 	assert.Equal(t, "Alex Stocks", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
-	assert.Equal(t, "A001", resp["id"])
+	assert.Equal(t, "A001", resp["iD"])
 }
 
 func TestQueryUser(t *testing.T) {
@@ -69,5 +69,5 @@ func TestQueryUser(t *testing.T) {
 	resp := o.(map[interface{}]interface{})
 	assert.Equal(t, "panty", resp["name"])
 	assert.Equal(t, int32(25), resp["age"])
-	assert.Equal(t, "3213", resp["id"])
+	assert.Equal(t, "3213", resp["iD"])
 }

@@ -29,6 +29,7 @@ references:
     registry: "demoZk"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
+    group: "GroupB"
     cluster: "failover"
     methods:
       - name: "GetUser"

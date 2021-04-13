@@ -24,11 +24,6 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/router/condition/go-client/pkg"
-	"github.com/dubbogo/gost/log"
-)
-
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/cluster/router/condition"
@@ -38,18 +33,18 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	"github.com/dubbogo/gost/log"
 )
 
-var userProvider = new(pkg.UserProvider)
-
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
+import (
+	"github.com/apache/dubbo-go-samples/router/condition/go-client/pkg"
+)
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 // need to setup environment variable "CONF_ROUTER_FILE_PATH" to "conf/router_config.yml" before run
 func main() {
+	userProvider := new(pkg.UserProvider)
+	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 
