@@ -33,7 +33,7 @@ func TestGetUser(t *testing.T) {
 	user := &User{}
 	ctx := context.Background()
 	atm := map[string]string{
-		"dubbo.tag":       "shanghai",
+		"dubbo.tag":       "beijing",
 		"dubbo.force.tag": "true",
 	}
 	ctx = context.WithValue(ctx, constant.AttachmentKey, atm)
