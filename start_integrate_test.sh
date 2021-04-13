@@ -14,6 +14,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+docker network prune
+docker container prune
+
 # async
 array=("async/go-server")
 
@@ -66,12 +69,12 @@ array+=("metric/go-server")
 #array+=("multi-registry/go-server")
 
 # registry
-#array+=("registry/etcd/go-server")
+array+=("registry/etcd/go-server")
 #array+=("registry/nacos/go-server")
 array+=("registry/servicediscovery/consul/go-server")
 array+=("registry/servicediscovery/etcd/go-server")
-array+=("registry/servicediscovery/file/go-server")
-array+=("registry/servicediscovery/nacos/go-server")
+#array+=("registry/servicediscovery/file/go-server")
+#array+=("registry/servicediscovery/nacos/go-server")
 array+=("registry/servicediscovery/zookeeper/go-server")
 
 # router
