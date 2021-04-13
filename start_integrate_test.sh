@@ -80,7 +80,7 @@ array+=("registry/servicediscovery/zookeeper/go-server")
 #array+=("router/tag/go-server")
 
 # tls
-array+=("tls/go-server")
+#array+=("tls/go-server")
 
 for((i=0;i<${#array[*]};i++))
 do
