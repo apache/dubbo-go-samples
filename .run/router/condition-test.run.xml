@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="condition-router-test" type="GoTestRunConfiguration" factoryName="Go Test" folderName="router">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$/router/condition" />
+    <useCustomBuildTags value="true" />
+    <envs>
+      <env name="CONF_CONSUMER_FILE_PATH" value="go-server/conf/client.yml" />
+      <env name="CONF_ROUTER_FILE_PATH" value="go-server/conf/router_config.yml" />
+      <env name="APP_LOG_CONF_FILE" value="go-server/conf/log.yml" />
+    </envs>
+    <framework value="gotest" />
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/router/condition/go-server/tests/integration" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>
