@@ -24,6 +24,7 @@ services:
     loadbalance: "random"
     warmup: "100"
     cluster: "failover"
+    tag: "beijing"
     methods:
       - name: "GetUser"
         retries: 1
