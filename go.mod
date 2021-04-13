@@ -36,4 +36,6 @@ replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-contr
 
 replace github.com/nacos-group/nacos-sdk-go => github.com/nacos-group/nacos-sdk-go v1.0.7-0.20210325111144-d75caca21a46
 
+replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
+
 go 1.13
