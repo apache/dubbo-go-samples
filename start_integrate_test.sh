@@ -40,8 +40,8 @@ array+=("filter/tpslimit/go-server")
 array+=("filter/sentinel/go-server")
 
 # game
-array+=("game/go-server-game")
-array+=("game/go-server-gate")
+#array+=("game/go-server-game")
+#array+=("game/go-server-gate")
 
 # general
 array+=("general/dubbo/go-server")
