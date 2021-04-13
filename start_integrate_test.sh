@@ -14,8 +14,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-docker network prune
-docker container prune
 
 # async
 array=("async/go-server")
@@ -86,6 +84,8 @@ array+=("tls/go-server")
 
 for((i=0;i<${#array[*]};i++))
 do
+  echo "Y" | docker network prune
+  echo "Y" | docker container prune
 	./integrate_test.sh ${array[i]}
 	result=$?
 	if [ $result -gt 0 ]; then
