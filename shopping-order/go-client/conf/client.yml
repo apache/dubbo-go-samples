@@ -1,0 +1,59 @@
+check: false
+request_timeout: "3s"
+connect_timeout: "3s"
+
+application:
+  organization: "dubbo.io"
+  name: "BDTService"
+  module: "dubbogo shopping-client client"
+  version: "0.0.1"
+  environment: "dev"
+
+registries:
+  "nacos":
+    protocol: "nacos"
+    timeout: "3s"
+    address: "nacos:8848"
+
+references:
+  "OrderSvc":
+    registry: "nacos"
+    protocol: "dubbo"
+    interface: "org.apache.dubbo.OrderSvc"
+    cluster: "failover"
+    url: "dubbo://go-server-order:20000"
+    methods:
+      - name: "CreateSo"
+        retries: 3
+  "ProductSvc":
+    registry: "nacos"
+    protocol: "dubbo"
+    interface: "org.apache.dubbo.ProductSvc"
+    cluster: "failover"
+    url: "dubbo://go-server-product:20001"
+    methods:
+      - name: "AllocateInventory"
+        retries: 3
+
+protocol_conf:
+  dubbo:
+    reconnect_interval: 0
+    connection_number: 2
+    heartbeat_period: "5s"
+    session_timeout: "20s"
+    pool_size: 64
+    pool_ttl: 600
+    getty_session_param:
+      compress_encoding: false
+      tcp_no_delay: true
+      tcp_keep_alive: true
+      keep_alive_period: "120s"
+      tcp_r_buf_size: 262144
+      tcp_w_buf_size: 65536
+      pkg_rq_size: 1024
+      pkg_wq_size: 512
+      tcp_read_timeout: "1s"
+      tcp_write_timeout: "5s"
+      wait_timeout: "1s"
+      max_msg_len: 8388608
+      session_name: "client"
