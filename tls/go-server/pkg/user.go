@@ -24,18 +24,7 @@ import (
 
 import (
 	"github.com/dubbogo/gost/log"
-	hessian "github.com/apache/dubbo-go-hessian2"
 )
-
-import (
-	"github.com/apache/dubbo-go/config"
-)
-
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
 
 type User struct {
 	ID   string
@@ -59,5 +48,5 @@ func (u *UserProvider) Reference() string {
 }
 
 func (u User) JavaClassName() string {
-	return "com.ikurento.user.User"
+	return "org.apache.dubbo.User"
 }
