@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,38 +17,26 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
-	"time"
+	"testing"
 )
 
 import (
-	"github.com/dubbogo/gost/log"
+	"github.com/apache/dubbo-go/common/constant"
+	"github.com/stretchr/testify/assert"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-type UserProvider struct {
-}
-
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+func TestGetUser(t *testing.T) {
+	user := &User{}
+	ctx := context.Background()
+	atm := map[string]string{
+		"dubbo.tag":       "beijing",
+		"dubbo.force.tag": "true",
+	}
+	ctx = context.WithValue(ctx, constant.AttachmentKey, atm)
+	err := userProvider.GetUser(ctx, []interface{}{"A001"}, user)
+	assert.NotNil(t, err)
 }

@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="condition-router-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="router">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/router/condition/go-client/conf/log.yml" />
+      <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/router/condition/go-client/conf/client.yml" />
+      <env name="CONF_ROUTER_FILE_PATH" value="$PROJECT_DIR$/router/condition/go-client/conf/router_config.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <filePath value="$PROJECT_DIR$/router/condition/go-client/cmd/client.go" />
+    <package value="github.com/apache/dubbo-go-samples/router/condition/go-client/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>
