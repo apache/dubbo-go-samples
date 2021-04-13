@@ -29,14 +29,14 @@ import (
 import (
 	getty "github.com/apache/dubbo-getty"
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go/common/logger"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/protocol"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	"github.com/apache/dubbo-go/common/logger"
+	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
+	"github.com/apache/dubbo-go/config"
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
@@ -66,8 +66,8 @@ func init(){
 		export CONF_PROVIDER_FILE_PATH="xx"
 		export APP_LOG_CONF_FILE="xx"
  */
-
 func main() {
+	config.SetProviderService(new(pkg.UserProvider))
 	// serializing at run time
 	hessian.RegisterPOJO(&pkg.User{})
 	// load configuration

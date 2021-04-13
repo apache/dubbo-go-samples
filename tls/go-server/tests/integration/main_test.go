@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,12 +17,47 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
+	"os"
+	"path/filepath"
+	"testing"
 	"time"
 )
+
+import (
+	getty "github.com/apache/dubbo-getty"
+	hessian "github.com/apache/dubbo-go-hessian2"
+	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
+	"github.com/apache/dubbo-go/config"
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
+	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/registry/protocol"
+	_ "github.com/apache/dubbo-go/registry/zookeeper"
+)
+
+var userProvider = new(UserProvider)
+
+func TestMain(m *testing.M) {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&User{})
+	clientKeyPath, _ := filepath.Abs("../certs/ca.key")
+	caPemPath, _ := filepath.Abs("../certs/ca.pem")
+	config.SetSslEnabled(true)
+	config.SetClientTlsConfigBuilder(&getty.ClientTlsConfigBuilder{
+		ClientPrivateKeyPath:          clientKeyPath,
+		ClientTrustCertCollectionPath: caPemPath,
+	})
+	config.Load()
+	time.Sleep(3 * time.Second)
+
+	os.Exit(m.Run())
+}
 
 type User struct {
 	ID   string
