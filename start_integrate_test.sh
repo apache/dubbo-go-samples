@@ -49,7 +49,7 @@ array+=("metric/go-server")
 #array+=("multi-registry/go-server")
 
 # router
-array+=("router/condition/go-server")
+#array+=("router/condition/go-server")
 #array+=("router/tag/go-server")
 
 # registry/servicediscovery/zookeeper
