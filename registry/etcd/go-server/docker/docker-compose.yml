@@ -4,6 +4,8 @@ services:
   etcd:
     image: "quay.io/coreos/etcd:latest"
     container_name: etcd
+    networks:
+      - dubbo
     environment:
       - ETCDCTL_API=3
     command: [
@@ -19,3 +21,7 @@ services:
       - "2379:2379"
       - "2380:2380"
     restart: always
+networks:
+  dubbo:
+    name: dubbo-go-samples
+    driver: bridge
