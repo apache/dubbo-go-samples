@@ -47,7 +47,7 @@ array+=("filter/sentinel/go-server")
 array+=("general/dubbo/go-server")
 array+=("general/grpc/go-server")
 #array+=("general/jsonrpc/go-server")
-array+=("general/rest/go-server")
+#array+=("general/rest/go-server")
 
 # generic
 array+=("generic/go-server")
