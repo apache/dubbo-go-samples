@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,15 +17,11 @@
  * limitations under the License.
  */
 
-package main
-
-import (
-	"context"
-	"os"
-)
+package integration
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
+
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/cluster/router/condition"
@@ -33,28 +31,41 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
-	"github.com/dubbogo/gost/log"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/router/condition/go-client/pkg"
+	"context"
+	"os"
+	"testing"
+	"time"
 )
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-// need to setup environment variable "CONF_ROUTER_FILE_PATH" to "conf/router_config.yml" before run
-func main() {
-	userProvider := new(pkg.UserProvider)
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
+var userProvider = new(UserProvider)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+func TestMain(m *testing.M) {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&User{})
+	config.Load()
+	time.Sleep(6 * time.Second)
+
+	os.Exit(m.Run())
+}
+
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
+}
+
+type UserProvider struct {
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
+}
+
+func (User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
