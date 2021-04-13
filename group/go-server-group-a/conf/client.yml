@@ -30,6 +30,7 @@ references:
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
+    group: "GroupA"
     methods:
       - name: "GetUser"
         retries: 3
