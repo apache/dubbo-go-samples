@@ -32,10 +32,9 @@ require (
 	google.golang.org/grpc/examples v0.0.0-20210322221411-d26af8e39165 // indirect
 )
 
-replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
-
-replace github.com/nacos-group/nacos-sdk-go => github.com/nacos-group/nacos-sdk-go v1.0.7-0.20210325111144-d75caca21a46
-
-replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
+replace (
+	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
+	google.golang.org/grpc => google.golang.org/grpc v1.26.0
+)
 
 go 1.13
