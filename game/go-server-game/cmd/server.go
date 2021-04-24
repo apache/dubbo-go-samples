@@ -1,8 +1,6 @@
 package main
 
 import (
-    hessian "github.com/apache/dubbo-go-hessian2"
-    "github.com/apache/dubbo-go-samples/game/pkg/pojo"
     "os"
     "os/signal"
     "syscall"
@@ -10,6 +8,7 @@ import (
 
     "github.com/apache/dubbo-go/common/logger"
     "github.com/apache/dubbo-go/config"
+    hessian "github.com/apache/dubbo-go-hessian2"
 
     _ "github.com/apache/dubbo-go/protocol/dubbo"
     _ "github.com/apache/dubbo-go/registry/protocol"
@@ -24,6 +23,7 @@ import (
     _ "github.com/apache/dubbo-go/registry/zookeeper"
 
     "github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
+    "github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
 func init() {
