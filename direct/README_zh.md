@@ -126,6 +126,8 @@ references:
         retries: 3
 ```
 
+注意，如果想调用 gRPC 服务，只需要把上面的 url 改为 ”grpc://127.0.0.1:20000" 即可。
+
 2. 应用启动：直连服务，完成一次服务调用
 
 ```go
@@ -138,6 +140,7 @@ err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 
 ### 如何运行
 请参阅根目录中的 [HOWTO.md](../HOWTO_zh.md) 来运行本例。
+
 #### 1. 环境配置
 
 配置环境变量，指定服务加载所需配置文件路径
