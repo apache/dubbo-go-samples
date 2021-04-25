@@ -31,7 +31,6 @@ import (
 
 func init() {
     config.SetProviderService(new(pkg.BasketballService))
-    // config.SetProviderService(new(JumpService))
 
     config.SetConsumerService(pkg.GameBasketball)
 
