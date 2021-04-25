@@ -13,20 +13,20 @@
 Catalog description
 
 ```shell
-├── go-server-game		# game module
-│   ├── cmd						# Main entrance
-│   ├── conf					# configuration file
-│   ├── docker				# docker-compose config file
-│   ├── pkg						# provider and consumer
+├── go-server-game    # game module
+│   ├── cmd           # Main entrance
+│   ├── conf          # configuration file
+│   ├── docker        # docker-compose config file
+│   ├── pkg           # provider and consumer
 │   └── tests
-├── go-server-gate		# gate module
-│   ├── cmd						# Main entrance
-│   ├── conf					# configuration file
-│   ├── docker				# docker-compose config file
-│   ├── pkg						# provider and consumer
+├── go-server-gate    # gate module
+│   ├── cmd           # Main entrance
+│   ├── conf          # configuration file
+│   ├── docker        # docker-compose config file
+│   ├── pkg           # provider and consumer
 │   └── tests
 └── pkg
-    ├── consumer			# public consumer
+    ├── consumer      # public consumer
     │   ├── game
     │   └── gate
     └── pojo
