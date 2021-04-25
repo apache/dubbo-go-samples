@@ -6,7 +6,7 @@
 - The two services communicate with each other RPC (both registered **provider** and **consumer**)
 - The **gate** additionally starts the http service (port **8000**), which is used to manually trigger the **gate** RPC to call **game**
 
-> Each time **gate** RPC calls (**message**） **game**, **game** will synchronously call RPC (send) **gate** to push the same message. There are two services in samples, one is basketball service, the other is jumpservice. The jumpservice part has been commented out, and the content is basically the same as basketball.
+> Each time **gate** RPC calls (**message**） **game**, **game** will synchronously call RPC (send) **gate** to push the same message. 
 
 ### outline
 
@@ -38,7 +38,7 @@ Process of initiating HTTP service
 
 
 
-From the perspective of consumer and provider, the process of initiating a call is like this
+From the perspective of consumer and provider, the process of initiating a call is as follows.
 
 <img src="http://cdn.cjpa.top/cdnimages/image-20210424100148028.png" alt="image-20210424100148028" style="zoom:33%;" />
 
@@ -132,7 +132,7 @@ references:
         retries: 0
 ```
 
-Because the consumer of game needs to call the provider of gate, the string returned by the reference method is gateConsumer.basketballService  , in the configuration file gateConsumer.basketballService  And game/pkg/consumer/gate/basketball.go  The value of intreface should be consistent with that of the provider of gate.
+Because the consumer of game needs to call the provider of gate, the string returned by the reference method is gateConsumer.basketballService , in the configuration file gateConsumer.basketballService And 'game/pkg/consumer/gate/basketball.go'. The value of interface should be consistent with that of the provider of gate.
 
 ### gate module
 
@@ -177,7 +177,7 @@ services:
 
 #### consumer size
 
-The consumer side of the gate is relatively special. Because the consumer of the gate needs to call the service in the game, in the game, the consumer directly instantiates the service of a game, and its method directly uses the instantiated object gamebasketball to call, thus realizing the function of a gateway.
+The consumer side of the gate is relatively special. Because the consumer of the gate needs to call the service in the game, the consumer directly instantiates the service of a game, and its method directly uses the instantiated object gamebasketball to call, thus realizing the function of a gateway.
 
 ```go
 var GameBasketball = new(game.BasketballService)

@@ -6,27 +6,27 @@
 - 两个服务会互相 RPC 通讯 (都同时注册 **provider** 和 **consumer**)
 - **gate** 额外启动了 http 服务 (端口 **8000**), 用于手工触发  **gate** RPC 调用 **game**
 
-> 每次 **gate** RPC调用(**Message**) **game** 后, **game** 会同步RPC调用(Send) **gate** 推送相同消息，samples中有两个服务，一个是 basketballService，一个是 jumpService，其中 jumpService 部分已经注释掉，内容和basketball 基本一致。
+> 每次 **gate** RPC调用(**Message**) **game** 后, **game** 会同步RPC调用(Send) **gate** 推送相同消息
 
 ### 概要
 
 目录说明
 
 ```bash
-├── go-server-game		# game模块
-│   ├── cmd						# 主入口
-│   ├── conf					# 配置文件
-│   ├── docker				# docker-compose文件
-│   ├── pkg						# provider和consumer
+├── go-server-game    # game模块
+│   ├── cmd           # 主入口
+│   ├── conf          # 配置文件
+│   ├── docker        # docker-compose文件
+│   ├── pkg           # provider和consumer
 │   └── tests
-├── go-server-gate		# gate模块
-│   ├── cmd						# 主入口
-│   ├── conf					# 配置文件
-│   ├── docker				# docker-compose文件
-│   ├── pkg						# provider和consumer
+├── go-server-gate    # gate模块
+│   ├── cmd           # 主入口
+│   ├── conf          # 配置文件
+│   ├── docker        # docker-compose文件
+│   ├── pkg           # provider和consumer
 │   └── tests
 └── pkg
-    ├── consumer			# 公共consumer
+    ├── consumer      # 公共consumer
     │   ├── game
     │   └── gate
     └── pojo
@@ -132,7 +132,7 @@ references:
         retries: 0
 ```
 
-由于 game 的 consumer 需要调用 gate 的provider，因此 Reference 方法返回的字符串为 gateConsumer.basketballService ，在配置文件中中 gateConsumer.basketballService 和 game/pkg/consumer/gate/basketball.go 中Reference 方法声明的一致，intreface 的值也要和 gate 的 provider 设置的一致。
+由于 game 的 consumer 需要调用 gate 的provider，因此 Reference 方法返回的字符串为 gateConsumer.basketballService ，在配置文件中 gateConsumer.basketballService 和 'game/pkg/consumer/gate/basketball.go' 中Reference 方法声明的一致，intreface 的值也要和 gate 的 provider 设置的一致。
 
 ### gate模块
 
