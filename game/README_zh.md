@@ -48,7 +48,7 @@ game提供了basketball服务端，gate提供了http服务端。
 
 #### server端
 
-server 端提供三个服务，message、online 及 offline，代码如下，具体的实现可以在 game/go-server-game/pkg/provider.go 中看到
+server 端提供三个服务，message、online 及 offline，代码如下，具体的实现可以在 'game/go-server-game/pkg/provider.go' 中看到
 
 ```go
 type BasketballService struct{}
@@ -94,7 +94,7 @@ services:
 
 #### consumer端
 
-basketball 部分的 consumer 主要用来被 gate 调用，因此主要代码放在了 game/pkg/consumer/gate/basketball.go 中，这部分作为公共部分，consumer 代码如下
+basketball 部分的 consumer 主要用来被 gate 调用，因此主要代码放在了 'game/pkg/consumer/gate/basketball.go' 中，这部分作为公共部分，consumer 代码如下
 
 ```go
 type BasketballService struct {

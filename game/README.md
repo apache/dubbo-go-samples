@@ -94,7 +94,7 @@ services:
 
 #### consumer side
 
-The consumer of basketball is mainly used to be called by gate, so the main code is put in game/pkg/consumer/gate/basketball.go,  The consumer code is as follows.
+The consumer of basketball is mainly used to be called by gate, so the main code is put in 'game/pkg/consumer/gate/basketball.go',  The consumer code is as follows.
 
 ```go
 type BasketballService struct {
