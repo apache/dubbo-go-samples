@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"os"
 	"time"
 )
 
@@ -39,6 +38,7 @@ import (
 	_ "github.com/apache/dubbo-go/metadata/mapping/memory"
 	_ "github.com/apache/dubbo-go/metadata/report/zookeeper"
 	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
+	_ "github.com/apache/dubbo-go/metadata/service/remote/remote_impl"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/servicediscovery"
@@ -59,12 +59,14 @@ func main() {
 	time.Sleep(8 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+	for i := 0; i < 123; i++ {
+		user := &pkg.User{}
+		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+		if err != nil {
+			gxlog.CError("error: %v\n", err)
+		}
+		gxlog.CInfo("response result: %v\n", user)
+		time.Sleep(1 * time.Second)
 	}
-	gxlog.CInfo("response result: %v\n", user)
+
 }
