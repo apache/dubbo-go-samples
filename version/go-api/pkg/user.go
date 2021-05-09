@@ -23,14 +23,15 @@ import (
 )
 
 type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
+	ID          string
+	Name        string
+	Age         int32
+	Time        time.Time
+	ServiceInfo string
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser func(ctx context.Context, req []interface{}) (User, error)
 }
 
 func (u *UserProvider) Reference() string {

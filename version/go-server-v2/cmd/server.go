@@ -26,7 +26,6 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"
@@ -39,17 +38,25 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/direct/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/version/go-server-v2/pkg"
 )
 
 var (
 	survivalTimeout = int(3e9)
 )
 
+func init() {
+	fmt.Println("server init...")
+	config.SetProviderService(new(pkg.UserProvider))
+}
+
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
+
+	// dubbo-go loading
 	config.Load()
+
+	fmt.Println("server starting...")
 
 	initSignal()
 }

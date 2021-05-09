@@ -28,33 +28,26 @@ import (
 	"github.com/dubbogo/gost/log"
 )
 
+import (
+	"github.com/apache/dubbo-go-samples/version/go-api/pkg"
+)
+
 func init() {
 	config.SetProviderService(new(UserProvider))
 	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
+	hessian.RegisterPOJO(&pkg.User{})
 }
 
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*pkg.User, error) {
 	gxlog.CInfo("Server V2 req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	rsp := pkg.User{"A001", "Alex Stocks", 18, time.Now(), "Provider Version 2.0"}
 	gxlog.CInfo("Server V2 rsp:%#v", rsp)
 	return &rsp, nil
 }
 
 func (u *UserProvider) Reference() string {
 	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
 }
