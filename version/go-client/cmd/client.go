@@ -47,10 +47,8 @@ func init() {
 	hessian.RegisterPOJO(&pkg.User{})
 }
 
-func GetUserStub()  {
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+func GetUserStub() {
+	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A001"})
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
@@ -64,10 +62,13 @@ func main() {
 	config.Load()
 	time.Sleep(3 * time.Second)
 
-	for i := 0; i < 10; i++ {
+	gxlog.CInfo("\nstart to test dubbo...\n")
 
-		GetUserStub()
-
-		time.Sleep(time.Second * 2)
-	}
+	GetUserStub()
+	//for i := 0; i < 10; i++ {
+	//
+	//	GetUserStub()
+	//
+	//	time.Sleep(time.Second * 2)
+	//}
 }
