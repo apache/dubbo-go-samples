@@ -24,37 +24,27 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go/config"
 	"github.com/dubbogo/gost/log"
 )
 
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
+import (
+	"github.com/apache/dubbo-go-samples/version/go-api/pkg"
+)
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
+func init() {
+	hessian.RegisterPOJO(&pkg.User{})
 }
 
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*pkg.User, error) {
 	gxlog.CInfo("Server V1 req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	rsp := pkg.User{"A001", "Alex Stocks", 18, time.Now(), "Provider Version 1.0"}
 	gxlog.CInfo("Server V1 rsp:%#v", rsp)
 	return &rsp, nil
 }
 
 func (u *UserProvider) Reference() string {
 	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
 }
