@@ -26,19 +26,8 @@ import (
 	"github.com/dubbogo/gost/log"
 )
 
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go/config"
-)
-
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
-
 type User struct {
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 	Time time.Time

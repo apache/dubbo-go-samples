@@ -10,7 +10,7 @@ application:
 
 # registry config
 registries:
-  "demoZk":
+  "zk":
     protocol: "zookeeper"
     timeout: "3s"
     address: "127.0.0.1:2181"
@@ -18,7 +18,7 @@ registries:
 # service config
 services:
   "GrpcGreeterImpl":
-    registry: "demoZk"
+    registry: "zk"
     protocol: "grpc"
     interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
     loadbalance: "random"

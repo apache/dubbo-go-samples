@@ -69,7 +69,7 @@ func (g Gender) EnumValue(s string) hessian.JavaEnum {
 
 type User struct {
 	// !!! Cannot define lowercase names of variable
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 	Time time.Time
@@ -78,8 +78,8 @@ type User struct {
 
 func (u User) String() string {
 	return fmt.Sprintf(
-		"User{Id:%s, Name:%s, Age:%d, Time:%s, Sex:%s}",
-		u.Id, u.Name, u.Age, u.Time, u.Sex,
+		"User{ID:%s, Name:%s, Age:%d, Time:%s, Sex:%s}",
+		u.ID, u.Name, u.Age, u.Time, u.Sex,
 	)
 }
 

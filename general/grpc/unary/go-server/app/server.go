@@ -41,6 +41,10 @@ var (
 	survivalTimeout = int(3 * time.Second)
 )
 
+func init() {
+	config.SetProviderService(NewGreeterProvider())
+}
+
 // they are necessary:
 // 		export CONF_PROVIDER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"

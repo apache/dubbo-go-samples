@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="shopping-go-server-product" type="GoApplicationRunConfiguration" factoryName="Go Application" singleton="false" folderName="shopping-order">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/shopping-order/go-server-product/conf/server.yml" />
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/shopping-order/go-server-product/conf/log.yml" />
+      <env name="SEATA_CONF_FILE" value="$PROJECT_DIR$/shopping-order/go-server-product/conf/seata.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <filePath value="$PROJECT_DIR$/shopping-order/go-server-product/cmd/server.go" />
+    <package value="github.com/apache/dubbo-go-samples/shopping-order/go-server-product/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>

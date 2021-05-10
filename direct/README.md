@@ -123,6 +123,8 @@ references:
         retries: 3
 ```
 
+If u wanna invoke a gRPC provider's service, pls change the url from "dubbo://127.0.0.1:20000" to "grpc://127.0.0.1:20000".
+
 2. Startup: Direct connection to the service to complete a service call
 
 ```go
