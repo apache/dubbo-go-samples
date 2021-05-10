@@ -32,7 +32,7 @@ func init() {
 type DogService struct {
 }
 
-func (d *DogService) GetId() (int, error) {
+func (d *DogService) GetID() (int, error) {
 	return 0, nil
 }
 

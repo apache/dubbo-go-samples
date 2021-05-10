@@ -138,7 +138,7 @@ func (x *User) GetName() string {
 	return ""
 }
 
-func (x *User) GetId() string {
+func (x *User) GetID() string {
 	if x != nil {
 		return x.Id
 	}

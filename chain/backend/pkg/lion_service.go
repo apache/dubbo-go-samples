@@ -32,7 +32,7 @@ func init() {
 type LionService struct {
 }
 
-func (l *LionService) GetId() (int, error) {
+func (l *LionService) GetID() (int, error) {
 	return 2, nil
 }
 

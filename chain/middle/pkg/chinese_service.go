@@ -26,7 +26,7 @@ import (
 )
 
 type DogService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }
@@ -36,7 +36,7 @@ func (d *DogService) Reference() string {
 }
 
 type TigerService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }

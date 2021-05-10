@@ -32,7 +32,7 @@ func init() {
 type CatService struct {
 }
 
-func (c *CatService) GetId() (int, error) {
+func (c *CatService) GetID() (int, error) {
 	return 1, nil
 }
 

@@ -54,7 +54,7 @@ func TestMain(m *testing.M) {
 }
 
 type CatService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }
@@ -64,7 +64,7 @@ func (c *CatService) Reference() string {
 }
 
 type DogService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }
@@ -74,7 +74,7 @@ func (d *DogService) Reference() string {
 }
 
 type TigerService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }
@@ -84,7 +84,7 @@ func (t *TigerService) Reference() string {
 }
 
 type LionService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }

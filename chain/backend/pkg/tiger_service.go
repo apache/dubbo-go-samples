@@ -32,7 +32,7 @@ func init() {
 type TigerService struct {
 }
 
-func (t *TigerService) GetId() (int, error) {
+func (t *TigerService) GetID() (int, error) {
 	return 3, nil
 }
 

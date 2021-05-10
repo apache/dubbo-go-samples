@@ -114,7 +114,7 @@ func (m *User) GetName() string {
 	return ""
 }
 
-func (m *User) GetId() string {
+func (m *User) GetID() string {
 	if m != nil {
 		return m.Id
 	}
