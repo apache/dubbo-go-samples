@@ -2,14 +2,14 @@
 
 ## 示例结构
 
-在本示例中，我们针对triple和grpc，分别提供了proto协议、服务端、普通RPC客户端、流式调用而客户端。
+在本示例中，我们针对 triple 和 grpc ，分别提供了 proto 协议、服务端、普通 RPC 客户端、流式调用而客户端。
 
-可以交叉使用任一组客户端和服务端，实现RPC调用。 
+可以交叉使用任一组客户端和服务端，实现 RPC 调用。 
 
 ## Triple 服务启动
 
 ### pb 生成
-1. 首先编写proto文件
+1. 首先编写 proto 文件
   
 ```protobuf
 syntax = "proto3";
@@ -41,15 +41,15 @@ message User {
    
 3. 安装 protoc-gen-dubbo3（用于生成适配于triple的stub）
 ```shell
-go get -u github.com/apache/dubbo-go/protocol/dubbo3/protoc-gen-dubbo3@3.0
+go get -u dubbo.apache.org/dubbo-go/v3/protocol/dubbo3/protoc-gen-dubbo3@3.0
 ```
-4. 生成pb文件
+4. 生成 pb 文件
 ```shell
     protoc -I . helloworld.proto --dubbo3_out=plugins=grpc+dubbo:.
 ```
 
 ### 服务端启动
-1. Provider结构定义
+1. Provider 结构定义
 ```go
 package pkg
 
@@ -59,7 +59,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 )
 
 import (
@@ -132,8 +132,8 @@ services:
     interface: "protobuf.Greeter" # 和grpc生成的的接口名一致，如下
 ```
 
-Grpc pb文件的接口名可见为 protobuf.Greeter, 是用户根据需要定义的。
-triple-go要想和grpc打通，一定要和grpc的接口名一致，并正确配置在yaml文件中。
+Grpc pb 文件的接口名可见为 protobuf.Greeter, 是用户根据需要定义的。
+triple-go 要想和 grpc 打通，一定要和 grpc 的接口名一致，并正确配置在 yaml 文件中。
 
 protobuf/grpc/helloworld.pb.go:
 ```go
@@ -169,7 +169,7 @@ func init() {
 }
 ```
 
-配置文件中定义好对应reference key
+配置文件中定义好对应 reference key
 ```yaml
 # reference config
 references:

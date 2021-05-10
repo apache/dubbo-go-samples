@@ -20,10 +20,11 @@ package pkg
 import (
 	"context"
 	"fmt"
+	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
-	"github.com/apache/dubbo-go/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 )
 
 import (
@@ -72,11 +73,11 @@ func (s *GreeterProvider) SayHelloStream(svr dubbo3.Greeter_SayHelloStreamServer
 
 func (s *GreeterProvider) SayHello(ctx context.Context, in *dubbo3.HelloRequest) (*dubbo3.User, error) {
 	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n" + in.Name)
-	fmt.Println("get triple header tri-req-id = ", ctx.Value("tri-req-id"))
-	fmt.Println("get triple header tri-service-version = ", ctx.Value("tri-service-version"))
+	fmt.Println("get triple header tri-req-id = ", ctx.Value(tripleConstant.TripleCtxKey(tripleConstant.TripleRequestID)))
+	fmt.Println("get triple header tri-service-version = ", ctx.Value(tripleConstant.TripleCtxKey(tripleConstant.TripleServiceVersion)))
 	return &dubbo3.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
 
 func (g *GreeterProvider) Reference() string {
-	return "GreeterProvider"
+	return "greeterImpl"
 }

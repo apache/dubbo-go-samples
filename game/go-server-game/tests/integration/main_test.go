@@ -1,37 +1,37 @@
 package integration
 
 import (
-    "os"
-    "testing"
-    "time"
+	"os"
+	"testing"
+	"time"
 
-    hessian "github.com/apache/dubbo-go-hessian2"
-    "github.com/apache/dubbo-go/config"
+	hessian "github.com/apache/dubbo-go-hessian2"
+	"dubbo.apache.org/dubbo-go/v3/config"
 
-    _ "github.com/apache/dubbo-go/protocol/dubbo"
-    _ "github.com/apache/dubbo-go/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 
-    _ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-    _ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 
-    _ "github.com/apache/dubbo-go/cluster/cluster_impl"
-    _ "github.com/apache/dubbo-go/cluster/loadbalance"
-    // _ "github.com/apache/dubbo-go/metadata/service/remote"
-    _ "github.com/apache/dubbo-go/metadata/service/inmemory"
-    _ "github.com/apache/dubbo-go/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	// _ "dubbo.apache.org/dubbo-go/v3/metadata/remote/impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
-    "github.com/apache/dubbo-go-samples/game/pkg/consumer/game"
-    "github.com/apache/dubbo-go-samples/game/pkg/pojo"
+	"github.com/apache/dubbo-go-samples/game/pkg/consumer/game"
+	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
 var gameProvider = new(game.BasketballService)
 
 func TestMain(m *testing.M) {
-    config.SetConsumerService(gameProvider)
+	config.SetConsumerService(gameProvider)
 
-    hessian.RegisterPOJO(&pojo.Result{})
-    config.Load()
-    time.Sleep(3 * time.Second)
+	hessian.RegisterPOJO(&pojo.Result{})
+	config.Load()
+	time.Sleep(3 * time.Second)
 
-    os.Exit(m.Run())
+	os.Exit(m.Run())
 }

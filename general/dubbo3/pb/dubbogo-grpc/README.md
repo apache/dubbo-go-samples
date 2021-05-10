@@ -41,7 +41,7 @@ message User {
     
 3. Install protoc-gen-dubbo3 (used to generate a stub suitable for triple)    
 ```shell
-    go get -u github.com/apache/dubbo-go/protocol/dubbo3/protoc-gen-dubbo3@3.0
+    go get -u dubbo.apache.org/dubbo-go/v3/protocol/dubbo3/protoc-gen-dubbo3@3.0
 ```
 
 4. generate pb file
@@ -60,7 +60,7 @@ import (
 )
 
 import (
-    "github.com/apache/dubbo-go/common/logger"
+    "dubbo.apache.org/dubbo-go/v3/common/logger"
 )
 
 import (

@@ -10,7 +10,7 @@
 
 ### Matters needing attention
 
-* [prometheus](https://prometheus.io/docs/introduction/overview) Need a legitimate name，Details pls see [dubbo-go](https://github.com/apache/dubbo-go/blob/master/metrics/prometheus/reporter.go)
+* [prometheus](https://prometheus.io/docs/introduction/overview) Need a legitimate name，Details pls see [dubbo-go](https://dubbo.apache.org/dubbo-go/v3/blob/master/metrics/prometheus/reporter.go)
 
 * Modify the local real ip [prometheus.yml](./go-server/docker/config/prometheus.yml)
 

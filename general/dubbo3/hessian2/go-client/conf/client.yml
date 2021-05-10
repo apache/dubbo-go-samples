@@ -29,4 +29,4 @@ references:
     registry: "demoZk"
     protocol: "tri"
     serialization: "hessian2"
-    interface: "org.apache.dubbo.UserProvider"
+    interface: "com.apache.dubbo.sample.basic.IGreeter"

@@ -14,10 +14,10 @@ import (
 )
 
 import (
-	dubboConstant "github.com/apache/dubbo-go/common/constant"
-	"github.com/apache/dubbo-go/protocol"
-	dgrpc "github.com/apache/dubbo-go/protocol/grpc"
-	"github.com/apache/dubbo-go/protocol/invocation"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	dgrpc "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
+	"dubbo.apache.org/dubbo-go/v3/protocol/invocation"
+	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 	dubbo3 "github.com/dubbogo/triple/pkg/triple"
 )
 
@@ -311,7 +311,7 @@ func NewGreeterDubbo3Client(cc *dubbo3.TripleConn) GreeterClient {
 }
 func (c *greeterDubbo3Client) SayHello(ctx context.Context, in *HelloRequest, opt ...grpc.CallOption) (*User, error) {
 	out := new(User)
-	interfaceKey := ctx.Value(dubboConstant.DubboCtxKey(dubboConstant.INTERFACE_KEY)).(string)
+	interfaceKey := ctx.Value(tripleConstant.InterfaceKey).(string)
 	err := c.cc.Invoke(ctx, "/"+interfaceKey+"/SayHello", in, out)
 	if err != nil {
 		return nil, err
@@ -319,7 +319,7 @@ func (c *greeterDubbo3Client) SayHello(ctx context.Context, in *HelloRequest, op
 	return out, nil
 }
 func (c *greeterDubbo3Client) SayHelloStream(ctx context.Context, opt ...grpc.CallOption) (Greeter_SayHelloStreamClient, error) {
-	interfaceKey := ctx.Value(dubboConstant.DubboCtxKey(dubboConstant.INTERFACE_KEY)).(string)
+	interfaceKey := ctx.Value(tripleConstant.InterfaceKey).(string)
 	stream, err := c.cc.NewStream(ctx, "/"+interfaceKey+"/SayHelloStream", opt...)
 	if err != nil {
 		return nil, err
@@ -362,7 +362,7 @@ func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec f
 	if err := dec(in); err != nil {
 		return nil, err
 	}
-	base := srv.(dgrpc.DubboGrpcService)
+	base := srv.(dgrpc.Dubbo3GrpcService)
 	args := []interface{}{}
 	args = append(args, in)
 	invo := invocation.NewRPCInvocation("SayHello", args, nil)
@@ -382,7 +382,7 @@ func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _DUBBO_Greeter_SayHelloStream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	_, ok := srv.(dgrpc.DubboGrpcService)
+	_, ok := srv.(dgrpc.Dubbo3GrpcService)
 	invo := invocation.NewRPCInvocation("SayHelloStream", nil, nil)
 	if !ok {
 		fmt.Println(invo)

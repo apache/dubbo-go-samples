@@ -33,14 +33,14 @@ metadata_report:
 使用consul作为服务注册中心，请将引入以下依赖：
 ```go
 import(
-    _ "github.com/apache/dubbo-go/metadata/report/consul"
-    _ "github.com/apache/dubbo-go/registry/servicediscovery"
+    _ "dubbo.apache.org/dubbo-go/v3/metadata/report/consul"
+    _ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
 )
 	
 ```
 如果您希望使用consul来报告数据，请引入以下依赖：
 ```go
 import(
-    _ "github.com/apache/dubbo-go/metadata/report/consul"
+    _ "dubbo.apache.org/dubbo-go/v3/metadata/report/consul"
 )
 ```

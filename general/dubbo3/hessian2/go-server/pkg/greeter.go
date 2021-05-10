@@ -19,7 +19,6 @@ package pkg
 
 import (
 	"context"
-	"time"
 )
 import (
 	"github.com/dubbogo/gost/log"
@@ -37,7 +36,6 @@ type User struct {
 	Id   string
 	Name string
 	Age  int32
-	Time time.Time
 }
 
 type UserProvider struct {
@@ -45,7 +43,7 @@ type UserProvider struct {
 
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
 	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	rsp := User{"A001", "Alex Stocks", 18}
 	gxlog.CInfo("rsp:%#v", rsp)
 	return &rsp, nil
 }
@@ -55,5 +53,5 @@ func (u *UserProvider) Reference() string {
 }
 
 func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	return "com.apache.dubbo.sample.basic.User"
 }

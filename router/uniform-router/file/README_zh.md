@@ -64,8 +64,8 @@ references:
 # If this line is comment, the all requests would be send to server, else the request would
 # be sent to both server and server2
 ```
-可见，params对于客户端url参数的定义，一旦增加这个参数，根据上述配置的路由规则，就会命中上述destination 名为 other的子集，从而对所有provider 采用负载均衡策略发起调用。\
-而如果注释掉这行参数，会将请求路由至center子集，针对单一的server发起调用。
+可见，params 对于客户端url参数的定义，一旦增加这个参数，根据上述配置的路由规则，就会命中上述 destination 名为 other 的子集，从而对所有 provider 采用负载均衡策略发起调用。\
+而如果注释掉这行参数，会将请求路由至 center 子集，针对单一的 server 发起调用。
 
 在环境变量中配置路由规则文件的路径
 
@@ -101,5 +101,5 @@ router/router-server2\
 router/router-client
 
 
-运行后，可观测到所有客户端流量都路由至router-server，并没有请求路由至router-server2
+运行后，可观测到所有客户端流量都路由至 router-server，并没有请求路由至 router-server2
 

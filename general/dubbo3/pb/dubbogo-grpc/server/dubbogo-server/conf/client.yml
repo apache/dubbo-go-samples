@@ -2,7 +2,7 @@
 # application config (not necessary)
 application:
   organization: "dubbo.io"
-  name: "GreeterGrpcTest"
+  name: "greeterImpl"
   module: "dubbo-go3.0 client"
   version: "0.0.1"
   environment: "dev"

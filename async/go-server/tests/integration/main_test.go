@@ -28,11 +28,11 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go/common"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
-	"github.com/apache/dubbo-go/protocol"
-	"github.com/apache/dubbo-go/remoting"
+	"dubbo.apache.org/dubbo-go/v3/common"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/remoting"
 	gxlog "github.com/dubbogo/gost/log"
 )
 

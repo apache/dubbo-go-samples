@@ -85,7 +85,7 @@ application:
 
 ```go
 import (
-    _ "github.com/apache/dubbo-go/config_center/zookeeper"
+    _ "dubbo.apache.org/dubbo-go/v3/config_center/zookeeper"
 )
 ```
 
