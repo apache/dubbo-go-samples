@@ -35,7 +35,7 @@
 
 ### 介绍
 
-Consume the specified service by changing the Provider and Consumer version numbers
+通过更改提供者和消费者版本号来消费指定的服务
 
 #### 提供者配置
 
