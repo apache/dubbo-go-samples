@@ -20,30 +20,29 @@
 package integration
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"context"
+	"os"
+	"testing"
+	"time"
+)
 
+import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	//_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/dynamic"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/zookeeper"
-	//_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remote"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remote/remote_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
-import (
-	"context"
-	"os"
-	"testing"
-	"time"
-)
 
 var userProvider = new(UserProvider)
 
@@ -57,7 +56,7 @@ func TestMain(m *testing.M) {
 }
 
 type User struct {
-	ID   string
+	Id   string
 	Name string
 	Age  int32
 	Time time.Time

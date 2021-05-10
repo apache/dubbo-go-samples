@@ -22,9 +22,9 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"dubbo.apache.org/dubbo-go/v3/config"
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/dubbogo/gost/log"
 )
 

@@ -30,8 +30,8 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-hessian2/java_exception"
 	"dubbo.apache.org/dubbo-go/v3/config"
+	"github.com/apache/dubbo-go-hessian2/java_exception"
 )
 
 func init() {

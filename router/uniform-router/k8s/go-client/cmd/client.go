@@ -24,9 +24,9 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	"dubbo.apache.org/dubbo-go/v3/cluster/router/v3router"
 	"dubbo.apache.org/dubbo-go/v3/common/extension"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
@@ -34,8 +34,8 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/dubbogo/gost/log"
-	uniform "github.com/dubbogo/v3router/pkg"
 )
 
 import (
@@ -45,7 +45,7 @@ import (
 var userProvider = new(pkg.UserProvider)
 
 func init() {
-	extension.SetRouterFactory("uniform", uniform.NewUniformRouterFactory)
+	extension.SetRouterFactory("uniform", v3router.NewUniformRouterFactory)
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&pkg.User{})
 }

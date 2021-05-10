@@ -30,12 +30,12 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/jsonrpc"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	hessian "github.com/apache/dubbo-go-hessian2"
 
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"

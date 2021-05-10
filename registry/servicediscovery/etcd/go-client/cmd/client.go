@@ -38,7 +38,6 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/etcd"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/remote/impl"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/jsonrpc"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/etcdv3"

@@ -27,8 +27,8 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"dubbo.apache.org/dubbo-go/v3/config"
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 func init() {
@@ -38,7 +38,7 @@ func init() {
 }
 
 type User struct {
-	ID   string
+	Id   string
 	Name string
 	Age  int32
 	Time time.Time

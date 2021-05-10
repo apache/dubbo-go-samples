@@ -19,18 +19,10 @@ package main
 
 import (
 	"context"
-	"os"
 	"time"
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/dubbogo/gost/log"
-)
-
-import (
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/zookeeper/go-client/pkg"
-
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
@@ -39,10 +31,17 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/zookeeper"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remote/remote_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/dubbogo/gost/log"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/zookeeper/go-client/pkg"
 )
 
 var userProvider = new(pkg.UserProvider)
@@ -59,12 +58,14 @@ func main() {
 	time.Sleep(8 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+	for i := 0; i < 123; i++ {
+		user := &pkg.User{}
+		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+		if err != nil {
+			gxlog.CError("error: %v\n", err)
+		}
+		gxlog.CInfo("response result: %v\n", user)
+		time.Sleep(1 * time.Second)
 	}
-	gxlog.CInfo("response result: %v\n", user)
+
 }

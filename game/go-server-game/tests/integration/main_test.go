@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"dubbo.apache.org/dubbo-go/v3/config"
+	hessian "github.com/apache/dubbo-go-hessian2"
 
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"

@@ -31,12 +31,12 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	hessian "github.com/apache/dubbo-go-hessian2"
 
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 
@@ -45,7 +45,6 @@ import (
 
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/dynamic"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/consul"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/remote/impl"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/consul"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
 	gxlog "github.com/dubbogo/gost/log"
