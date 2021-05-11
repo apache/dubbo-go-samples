@@ -82,6 +82,10 @@ array+=("registry/servicediscovery/zookeeper/go-server")
 # tls
 #array+=("tls/go-server")
 
+# version
+array+=("version/go-server-v1")
+array+=("version/go-server-v2")
+
 for((i=0;i<${#array[*]};i++))
 do
 	./integrate_test.sh ${array[i]}
