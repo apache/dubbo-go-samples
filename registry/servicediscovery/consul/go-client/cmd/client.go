@@ -31,23 +31,22 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go/common/logger"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/protocol"
 
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 
-	_ "github.com/apache/dubbo-go/metadata/mapping/dynamic"
-	_ "github.com/apache/dubbo-go/metadata/report/consul"
-	_ "github.com/apache/dubbo-go/metadata/service/remote"
-	_ "github.com/apache/dubbo-go/registry/consul"
-	_ "github.com/apache/dubbo-go/registry/servicediscovery"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/dynamic"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/consul"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/consul"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
 	gxlog "github.com/dubbogo/gost/log"
 )
 

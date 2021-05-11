@@ -25,7 +25,7 @@ import (
 	"time"
 )
 import (
-	"github.com/apache/dubbo-go/common/constant"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"github.com/stretchr/testify/assert"
 )
 

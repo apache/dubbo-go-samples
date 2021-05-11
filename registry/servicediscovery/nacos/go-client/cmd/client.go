@@ -31,20 +31,19 @@ import (
 import (
 	"github.com/apache/dubbo-go-samples/registry/servicediscovery/etcd/go-client/pkg"
 
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/config_center/nacos"
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/metadata/mapping/dynamic"
-	_ "github.com/apache/dubbo-go/metadata/report/nacos"
-	_ "github.com/apache/dubbo-go/metadata/service/remote"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/nacos"
-	_ "github.com/apache/dubbo-go/registry/protocol"
-	_ "github.com/apache/dubbo-go/registry/servicediscovery"
-	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/config_center/nacos"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/dynamic"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/nacos"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
 var userProvider = new(pkg.UserProvider)

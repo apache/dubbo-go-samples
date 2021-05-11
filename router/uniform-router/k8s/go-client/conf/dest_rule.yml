@@ -1,0 +1,11 @@
+apiVersion: service.dubbo.apache.org/v1alpha1
+kind: DestinationRule
+metadata: { name: demo-route }
+spec:
+  host: demo
+  subsets:
+    - name: all
+      labels: { ut: CENTER }
+    - name: center
+      labels: { ut: other }
+    - name: other

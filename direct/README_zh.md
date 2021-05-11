@@ -57,7 +57,7 @@ initSignal()
 ```
 
 - 基于`hessian`序列化协议，使用[apache/dubbo-go-hessian2](https://github.com/apache/dubbo-go-hessian2) RegisterPOJO注册一个POJO实例
-- Dubbo Init：注册服务，详情参考[apache/dubbo-go/../config_loader.go](https://github.com/apache/dubbo-go/blob/master/config/config_loader.go)
+- Dubbo Init：注册服务，详情参考[apache/dubbo-go/../config_loader.go](https://dubbo.apache.org/dubbo-go/v3/blob/master/config/config_loader.go)
     - init router
     - init the global event dispatcher
     - start the metadata report if config set
@@ -156,7 +156,7 @@ APP_LOG_CONF_FILE=direct/go-client/conf/log.yml;
 CONF_CONSUMER_FILE_PATH=direct/go-client/conf/client.yml
 ```
 
-详情请参阅 [dubbo-go/.../env.go](https://github.com/apache/dubbo-go/blob/master/common/constant/env.go)
+详情请参阅 [dubbo-go/.../env.go](https://dubbo.apache.org/dubbo-go/v3/blob/master/common/constant/env.go)
 
 
 #### 2. 启动注册中心

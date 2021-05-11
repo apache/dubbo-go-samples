@@ -14,7 +14,7 @@
 * helloworld: 入门例子
 * multi_registry: 多注册
 * registry: 展示与不同注册中心的对接，包含了 nacos、etcd、kubernetes 和 servicediscovery
-* router: 展示了不同的路由，包含了 condition 和 tag
+* router: 展示了 dubbo3 统一路由规则的使用，包括基于文件路由配置和k8s环境下的动态路由配置
 * seata: 展示了与 seata 的对接
 * shop: 一个在线商店的小例子
 * tracing: 链路追踪

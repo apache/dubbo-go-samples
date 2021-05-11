@@ -19,30 +19,29 @@ package main
 
 import (
 	"context"
-	"os"
 	"time"
 )
 
 import (
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remote/remote_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/dubbogo/gost/log"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/registry/servicediscovery/zookeeper/go-client/pkg"
-
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/metadata/mapping/memory"
-	_ "github.com/apache/dubbo-go/metadata/report/zookeeper"
-	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/protocol"
-	_ "github.com/apache/dubbo-go/registry/servicediscovery"
-	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
 var userProvider = new(pkg.UserProvider)
@@ -59,12 +58,14 @@ func main() {
 	time.Sleep(8 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+	for i := 0; i < 123; i++ {
+		user := &pkg.User{}
+		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+		if err != nil {
+			gxlog.CError("error: %v\n", err)
+		}
+		gxlog.CInfo("response result: %v\n", user)
+		time.Sleep(1 * time.Second)
 	}
-	gxlog.CInfo("response result: %v\n", user)
+
 }

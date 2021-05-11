@@ -22,7 +22,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go/config"
+	"dubbo.apache.org/dubbo-go/v3/config"
 )
 
 func init() {
@@ -32,7 +32,7 @@ func init() {
 type TigerService struct {
 }
 
-func (t *TigerService) GetId() (int, error) {
+func (t *TigerService) GetID() (int, error) {
 	return 3, nil
 }
 

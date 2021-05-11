@@ -54,7 +54,7 @@ initSignal()
 ```
 
 - Based on the `hessian` serialization protocol, using [apache/dubbo-go-hessian2](https://github.com/apache/dubbo-go-hessian2) RegisterPOJO register a POJO
-- Dubbo Init: Registration service, See [apache/dubbo-go/../config_loader.go](https://github.com/apache/dubbo-go/blob/master/config/config_loader.go)
+- Dubbo Init: Registration service, See [apache/dubbo-go/../config_loader.go](https://dubbo.apache.org/dubbo-go/v3/blob/master/config/config_loader.go)
     - init router
     - init the global event dispatcher
     - start the metadata report if config set
@@ -155,7 +155,7 @@ APP_LOG_CONF_FILE=direct/go-client/conf/log.yml;
 CONF_CONSUMER_FILE_PATH=direct/go-client/conf/client.yml
 ```
 
-See [dubbo-go/.../env.go](https://github.com/apache/dubbo-go/blob/master/common/constant/env.go)
+See [dubbo-go/.../env.go](https://dubbo.apache.org/dubbo-go/v3/blob/master/common/constant/env.go)
 
 
 #### 2. Start The Registry

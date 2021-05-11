@@ -28,8 +28,8 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3/config"
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go/config"
 )
 
 func init() {
