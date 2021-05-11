@@ -33,14 +33,6 @@ references:
     methods:
       - name: "Send"
         retries: 0
-#  "gateConsumer.jumpService":
-#    registry: "demoZk"
-#    protocol: "dubbo"
-#    interface: "org.apache.dubbo.gate.JumpService"
-#    cluster: "failover"
-#    methods:
-#      - name: "Send"
-#        retries: 0
 
 # protocol config
 protocol_conf:

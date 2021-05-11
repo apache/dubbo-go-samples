@@ -31,20 +31,6 @@ services:
         retries: 0
       - name: "Message"
         retries: 0
-#  "gameProvider.jumpService":
-#    registry: "demoZk"
-#    protocol: "dubbo"
-#    interface: "org.apache.dubbo.game.JumpService"
-#    loadbalance: "random"
-#    warmup: "100"
-#    cluster: "failover"
-#    methods:
-#      - name: "Online"
-#        retries: 0
-#      - name: "Offline"
-#        retries: 0
-#      - name: "Message"
-#        retries: 0
 
 # protocol config
 protocols:
