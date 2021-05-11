@@ -11,6 +11,7 @@ import (
 
     "github.com/apache/dubbo-go/common/logger"
     "github.com/apache/dubbo-go/config"
+    hessian "github.com/apache/dubbo-go-hessian2"
 
     _ "github.com/apache/dubbo-go/protocol/dubbo"
     _ "github.com/apache/dubbo-go/registry/protocol"
@@ -25,7 +26,17 @@ import (
     _ "github.com/apache/dubbo-go/registry/zookeeper"
 
     "github.com/apache/dubbo-go-samples/game/go-server-gate/pkg"
+    "github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
+
+func init() {
+    config.SetProviderService(new(pkg.BasketballService))
+
+    config.SetConsumerService(pkg.GameBasketball)
+
+    hessian.RegisterPOJO(&pojo.Result{})
+}
+
 
 func main() {
     config.Load()
@@ -59,8 +70,41 @@ func initSignal() {
 }
 
 func startHttp() {
-    http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
+
+    http.HandleFunc("/message", func(w http.ResponseWriter, r *http.Request) {
         res, err := pkg.Message(context.TODO(), "abc", "hello")
+        if err != nil {
+            _, _ = w.Write([]byte(err.Error()))
+            return
+        }
+
+        b, err := json.Marshal(res)
+        if err != nil {
+            _, _ = w.Write([]byte(err.Error()))
+            return
+        }
+
+        _, _ = w.Write(b)
+    })
+
+    http.HandleFunc("/online", func(w http.ResponseWriter, r *http.Request) {
+        res, err := pkg.Online(context.TODO(), "abc")
+        if err != nil {
+            _, _ = w.Write([]byte(err.Error()))
+            return
+        }
+
+        b, err := json.Marshal(res)
+        if err != nil {
+            _, _ = w.Write([]byte(err.Error()))
+            return
+        }
+
+        _, _ = w.Write(b)
+    })
+
+    http.HandleFunc("/offline", func(w http.ResponseWriter, r *http.Request) {
+        res, err := pkg.Offline(context.TODO(), "abc")
         if err != nil {
             _, _ = w.Write([]byte(err.Error()))
             return
