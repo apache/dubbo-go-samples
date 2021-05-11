@@ -22,11 +22,11 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go/config"
+	"dubbo.apache.org/dubbo-go/v3/config"
 )
 
 type CatService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }
@@ -36,7 +36,7 @@ func (c *CatService) Reference() string {
 }
 
 type LionService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }

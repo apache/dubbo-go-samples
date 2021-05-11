@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="router-server2" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="router">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/router/uniform-router/file/go-server2/conf/log.yml" />
+      <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/router/uniform-router/file/go-server2/conf/server.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <filePath value="$PROJECT_DIR$/router/uniform-router/file/go-server2/cmd/server.go" />
+    <package value="github.com/apache/dubbo-go-samples/router/uniform-router/file/go-server2/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>

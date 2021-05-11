@@ -1,17 +1,17 @@
 package pkg
 
 import (
-    hessian "github.com/apache/dubbo-go-hessian2"
-    "github.com/apache/dubbo-go/config"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	hessian "github.com/apache/dubbo-go-hessian2"
 
-    "github.com/apache/dubbo-go-samples/game/pkg/pojo"
+	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
 func init() {
-    config.SetProviderService(new(BasketballService))
-    // config.SetProviderService(new(JumpService))
+	config.SetProviderService(new(BasketballService))
+	// config.SetProviderService(new(JumpService))
 
-    config.SetConsumerService(gameBasketball)
+	config.SetConsumerService(gameBasketball)
 
-    hessian.RegisterPOJO(&pojo.Result{})
+	hessian.RegisterPOJO(&pojo.Result{})
 }

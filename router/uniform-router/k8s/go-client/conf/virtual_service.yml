@@ -1,0 +1,18 @@
+apiVersion: service.dubbo.apache.org/v1alpha1
+kind: VirtualService
+metadata: {name: demo-route}
+spec:
+  dubbo:
+    - routedetail:
+        - match:
+            - sourceLabels: {trafficLabel: xxx}
+          name: other-condition
+          route:
+            - destination: {host: demo, subset: other}
+        - name: center-match
+          route:
+            - destination: {host: demo, subset: center}
+      services:
+        - {regex: org.apache.dubbo.UserProvider*}
+  hosts: [demo, demo]
+

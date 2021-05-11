@@ -33,8 +33,8 @@ metadata_report:
 To use consul as service discovery, make sure you add import in you server and client:
 ```go
 import(
-    _ "github.com/apache/dubbo-go/metadata/report/consul"
-    _ "github.com/apache/dubbo-go/registry/servicediscovery"
+    _ "dubbo.apache.org/dubbo-go/v3/metadata/report/consul"
+    _ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
 )
 	
 ```
@@ -42,6 +42,6 @@ import(
 if you want to use consul to report, make sure you add import:
 ```go
 import(
-    _ "github.com/apache/dubbo-go/metadata/report/consul"
+    _ "dubbo.apache.org/dubbo-go/v3/metadata/report/consul"
 )
 ```

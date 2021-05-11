@@ -20,15 +20,15 @@
 package integration
 
 import (
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/protocol"
-	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3cluster/loadbalance"
+	_ "dubbo.apache.org/dubbo-go/v3common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3config"
+	_ "dubbo.apache.org/dubbo-go/v3filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3registry/zookeeper"
 )
 
 import (
@@ -54,7 +54,7 @@ func TestMain(m *testing.M) {
 }
 
 type CatService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }
@@ -64,7 +64,7 @@ func (c *CatService) Reference() string {
 }
 
 type DogService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }
@@ -74,7 +74,7 @@ func (d *DogService) Reference() string {
 }
 
 type TigerService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }
@@ -84,7 +84,7 @@ func (t *TigerService) Reference() string {
 }
 
 type LionService struct {
-	GetId   func() (int, error)
+	GetID   func() (int, error)
 	GetName func() (string, error)
 	Yell    func() (string, error)
 }

@@ -28,19 +28,18 @@ import (
 )
 
 import (
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 	getty "github.com/apache/dubbo-getty"
 	hessian "github.com/apache/dubbo-go-hessian2"
 	gxlog "github.com/dubbogo/gost/log"
-	"github.com/apache/dubbo-go/common/logger"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/protocol"
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	_ "github.com/apache/dubbo-go/registry/zookeeper"
-
 )
 
 import (
@@ -49,10 +48,10 @@ import (
 
 var (
 	survivalTimeout int = 10e9
-	userProvider = new(pkg.UserProvider)
+	userProvider        = new(pkg.UserProvider)
 )
 
-func init(){
+func init() {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&pkg.User{})
 	clientKeyPath, _ := filepath.Abs("../certs/ca.key")
@@ -63,6 +62,7 @@ func init(){
 		ClientTrustCertCollectionPath: caPemPath,
 	})
 }
+
 // they are necessary:
 // 		export CONF_CONSUMER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
@@ -72,7 +72,7 @@ func main() {
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &pkg.User{}
-	for i := 0;i < 10 ;i ++{
+	for i := 0; i < 10; i++ {
 		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 		if err != nil {
 			panic(err)

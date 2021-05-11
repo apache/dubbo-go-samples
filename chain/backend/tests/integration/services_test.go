@@ -30,13 +30,13 @@ func TestCat(t *testing.T) {
 	name, err := cat.GetName()
 	assert.Nil(t, err)
 	assert.Equal(t, "Cat", name)
-	id, err := cat.GetId()
+	id, err := cat.GetID()
 	assert.Nil(t, err)
 	assert.Equal(t, 1, id)
 }
 
 func TestTiger(t *testing.T) {
-	id, err := tiger.GetId()
+	id, err := tiger.GetID()
 	assert.Nil(t, err)
 	assert.Equal(t, 3, id)
 }

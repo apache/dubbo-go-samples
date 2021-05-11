@@ -19,8 +19,8 @@ package svc
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/config"
 	"github.com/apache/dubbo-go-samples/seata/filter"
-	"github.com/apache/dubbo-go/config"
 
 	"errors"
 )
