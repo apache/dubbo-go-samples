@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,39 +15,12 @@
  * limitations under the License.
  */
 
-package integration
-
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"dubbo.apache.org/dubbo-go/v3/config"
-
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-)
+package pkg
 
 import (
 	"context"
-	"os"
-	"testing"
 	"time"
 )
-
-var userProvider = new(UserProvider)
-
-func TestMain(m *testing.M) {
-	time.Sleep(time.Second*10)
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
-
-	os.Exit(m.Run())
-}
 
 type User struct {
 	ID   string

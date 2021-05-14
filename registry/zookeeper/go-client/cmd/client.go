@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,55 +15,50 @@
  * limitations under the License.
  */
 
-package integration
-
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"dubbo.apache.org/dubbo-go/v3/config"
-
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-)
+package main
 
 import (
 	"context"
 	"os"
-	"testing"
 	"time"
 )
 
-var userProvider = new(UserProvider)
+import (
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	hessian "github.com/apache/dubbo-go-hessian2"
+	gxlog "github.com/dubbogo/gost/log"
+)
 
-func TestMain(m *testing.M) {
-	time.Sleep(time.Second*10)
+import (
+	"github.com/apache/dubbo-go-samples/registry/zookeeper/go-client/pkg"
+)
+
+var userProvider = new(pkg.UserProvider)
+
+func init() {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&pkg.User{})
+}
+
+// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+func main() {
 	config.Load()
 	time.Sleep(3 * time.Second)
 
-	os.Exit(m.Run())
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	gxlog.CInfo("\n\n\nstart to test dubbo")
+	user := &pkg.User{}
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+	gxlog.CInfo("response result: %v\n", user)
 }

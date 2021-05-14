@@ -1,16 +1,10 @@
-# dubbo client yaml configure file
-
-check: true
-# client
-request_timeout: "3s"
-# connect timeout
-connect_timeout: "3s"
+# dubbo server yaml configure file
 
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoTest"
-  module: "dubbo-go user-info client"
+  name: "UserInfoServer"
+  module: "dubbo-go user-info server"
   version: "0.0.1"
   environment: "dev"
 
@@ -20,26 +14,31 @@ registries:
     protocol: "zookeeper"
     timeout: "3s"
     address: "127.0.0.1:2181"
-    username: ""
-    password: ""
 
-# reference config
-references:
+# service config
+services:
   "UserProvider":
     registry: "demoZk"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
+    loadbalance: "random"
+    warmup: "100"
     cluster: "failover"
+    methods:
+      - name: "GetUser"
+        retries: 1
+        loadbalance: "random"
 
 # protocol config
+protocols:
+  "dubbo":
+    name: "dubbo"
+    port: 20000
+
 protocol_conf:
   dubbo:
-    reconnect_interval: 0
-    connection_number: 1
-    heartbeat_period: "5s"
+    session_number: 700
     session_timeout: "180s"
-    pool_size: 64
-    pool_ttl: 600
     getty_session_param:
       compress_encoding: false
       tcp_no_delay: true
@@ -53,4 +52,4 @@ protocol_conf:
       tcp_write_timeout: "5s"
       wait_timeout: "1s"
       max_msg_len: 1024000
-      session_name: "client"
+      session_name: "server"

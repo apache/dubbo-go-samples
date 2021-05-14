@@ -1,7 +1,7 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210510003552-d1e76d9fe76f
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210513052510-3c1605204aed
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
 	github.com/apache/dubbo-go-hessian2 v1.9.1
@@ -19,6 +19,7 @@ require (
 	github.com/transaction-wg/seata-golang v0.2.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
+	github.com/vmihailenco/msgpack/v5 v5.3.1
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
 	google.golang.org/grpc v1.36.0
 	google.golang.org/grpc/examples v0.0.0-20210402181922-5730f8d113ee // indirect

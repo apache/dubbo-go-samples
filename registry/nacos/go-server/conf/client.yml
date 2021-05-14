@@ -9,22 +9,22 @@ connect_timeout: "3s"
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoTest"
+  name: "UserInfoClient"
   module: "dubbo-go user-info client"
   version: "0.0.1"
   environment: "dev"
 
 # registry config
 registries:
-  "nacos":
+  "demoNacos":
     protocol: "nacos"
-    timeout	: "3s"
+    timeout: "3s"
     address: "127.0.0.1:8848"
 
 # reference config
 references:
   "UserProvider":
-    registry: "nacos"
+    registry: "demoNacos"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"

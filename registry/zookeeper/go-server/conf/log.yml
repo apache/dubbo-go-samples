@@ -1,5 +1,4 @@
-
-level: "debug"
+level: "error"
 development: true
 disableCaller: false
 disableStacktrace: false

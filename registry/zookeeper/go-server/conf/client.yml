@@ -30,6 +30,9 @@ references:
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
+    methods:
+      - name: "GetUser"
+        retries: 3
 
 # protocol config
 protocol_conf:
