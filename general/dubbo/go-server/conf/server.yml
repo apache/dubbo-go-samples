@@ -5,7 +5,7 @@ application:
   organization: "dubbo.io"
   name: "UserInfoServer"
   module: "dubbo-go user-info server"
-  version: "2.0"
+  version: "0.0.1"
   environment: "dev"
 
 # registry config

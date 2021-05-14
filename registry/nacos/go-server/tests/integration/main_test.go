@@ -42,7 +42,6 @@ import (
 var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {
-	time.Sleep(time.Second*10)
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
 	config.Load()
