@@ -19,6 +19,8 @@ dubbo.apache.org/dubbo-go/v3 v3.0.0-20210510003552-d1e76d9fe76f h1:41dJHh03e5qQV
 dubbo.apache.org/dubbo-go/v3 v3.0.0-20210510003552-d1e76d9fe76f/go.mod h1:MzWXTcEHFQFtqGFVdmwDFna1m/8H01gj2H/T3ENP6ug=
 dubbo.apache.org/dubbo-go/v3 v3.0.0-20210513052510-3c1605204aed h1:SCTVkBx3ObDtoTnytxi8lhkcBv1tVuHyM2H6Ui0meQw=
 dubbo.apache.org/dubbo-go/v3 v3.0.0-20210513052510-3c1605204aed/go.mod h1:YVaLJ7heyFq46P5XgvRpjBmV0HhebTmK/astjJCWoo4=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-20210515020035-d385de50d0a6 h1:70EDnWLjVedhcbohclV9+lLaBX5b7G3+2LAQtzjpsXU=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-20210515020035-d385de50d0a6/go.mod h1:YVaLJ7heyFq46P5XgvRpjBmV0HhebTmK/astjJCWoo4=
 dubbo.apache.org/dubbo-go/v3/ v3.0.0-20210510003552-d1e76d9fe76f h1:41dJHh03e5qQVF2fxYH4pbtScj11ta0sISRswE8+y70=
 dubbo.apache.org/dubbo-go/v3/ v3.0.0-20210510003552-d1e76d9fe76f/go.mod h1:MzWXTcEHFQFtqGFVdmwDFna1m/8H01gj2H/T3ENP6ug=
 dubbo.apache.org/dubbo-go/v3/protocol/dubbo3/protoc-gen-dubbo3 v0.0.0-20210409035047-6463de0e1668 h1:WRpkHYsNBzFeiQvv3qAmlp0DLJ3KHAhv1BOCiB28I4Q=
