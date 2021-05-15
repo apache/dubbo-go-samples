@@ -1,15 +1,16 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210515020035-d385de50d0a6
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210515084721-4cb6e4401b78
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
 	github.com/apache/dubbo-go-hessian2 v1.9.1
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/dubbogo/gost v1.11.8
+	github.com/dubbogo/gost v1.11.9
 	github.com/dubbogo/triple v1.0.0
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.5.2
+	github.com/google/uuid v1.2.0 // indirect
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.2.2
@@ -19,10 +20,8 @@ require (
 	github.com/transaction-wg/seata-golang v0.2.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
-	github.com/vmihailenco/msgpack/v5 v5.3.1
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
 	google.golang.org/grpc v1.36.0
-	google.golang.org/grpc/examples v0.0.0-20210402181922-5730f8d113ee // indirect
 	google.golang.org/protobuf v1.26.0
 )
 
