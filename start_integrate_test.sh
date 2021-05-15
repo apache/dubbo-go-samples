@@ -15,39 +15,39 @@
 #  limitations under the License.
 
 # async
-#array=("async/go-server")
-#
-## config center
-#array+=("configcenter/apollo/go-server")
-#array+=("configcenter/nacos/go-server")
-#array+=("configcenter/zookeeper/go-server")
-#
-## direct
-#array+=("direct/go-server")
-#
-## filter
-#array+=("filter/custom/go-server")
-#array+=("filter/tpslimit/go-server")
-#array+=("filter/sentinel/go-server")
-#
-#array+=("general/dubbo/go-server")
-# todo generic temporarily has bugs
+array=("async/go-server")
+
+# config center
+array+=("configcenter/apollo/go-server")
+array+=("configcenter/nacos/go-server")
+array+=("configcenter/zookeeper/go-server")
+
+# direct
+array+=("direct/go-server")
+
+# filter
+array+=("filter/custom/go-server")
+array+=("filter/tpslimit/go-server")
+array+=("filter/sentinel/go-server")
+
+array+=("general/dubbo/go-server")
+
 array+=("generic/go-server")
 
-## hello world
-#array+=("helloworld/go-server")
-#
-## metric
-#array+=("metric/go-server")
-#
-## multi-registry
-##array+=("multi-registry/go-server")
-#
-#array+=("registry/zookeeper/go-server")
-#
-## registry/servicediscovery/zookeeper
-#array+=("registry/servicediscovery/zookeeper/go-server")
-#
+# hello world
+array+=("helloworld/go-server")
+
+# metric
+array+=("metric/go-server")
+
+# multi-registry
+# array+=("multi-registry/go-server")
+
+array+=("registry/zookeeper/go-server")
+
+# registry/servicediscovery/zookeeper
+array+=("registry/servicediscovery/zookeeper/go-server")
+
 
 for((i=0;i<${#array[*]};i++))
 do
