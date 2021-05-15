@@ -55,6 +55,7 @@ var (
 )
 
 func init() {
+	config.Load()
 	referenceConfig.GenericLoad(appName) //appName is the unique identification of RPCService
 	time.Sleep(3 * time.Second)
 }

@@ -41,8 +41,6 @@ import (
 
 var (
 	userProvider  = new(pkg.UserProvider)
-	userProvider1 = new(pkg.UserProvider1)
-	userProvider2 = new(pkg.UserProvider2)
 )
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
@@ -53,23 +51,15 @@ func main() {
 
 	config.SetConsumerService(userProvider)
 
-	// FIXME: cannot make multi-references work
-	config.SetConsumerService(userProvider1)
-	config.SetConsumerService(userProvider2)
 	config.Load()
 
 	time.Sleep(6 * time.Second)
 
 	gxlog.CInfo("\n\ntest")
 	test()
-	gxlog.CInfo("\n\ntest1")
-	test1()
-	gxlog.CInfo("\n\ntest2")
-	test2()
 }
 
 func test() {
-
 	gxlog.CInfo("\n\n\necho")
 	res, err := userProvider.Echo(context.TODO(), "OK")
 	if err != nil {
@@ -141,148 +131,6 @@ func test() {
 
 	gxlog.CInfo("\n\n\nstart to test dubbo illegal method")
 	err = userProvider.GetUser1(context.TODO(), []interface{}{"A003"}, user)
-	if err == nil {
-		panic("err is nil")
-	}
-	gxlog.CInfo("error: %v", err)
-}
-
-func test1() {
-	gxlog.CInfo("\n\n\necho")
-	res, err := userProvider1.Echo(context.TODO(), "OK")
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("res: %v\n", res)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err = userProvider1.GetUser(context.TODO(), []interface{}{"A003"}, user)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", user)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - GetUser0")
-	ret, err := userProvider1.GetUser0("A003", "Moorse")
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", ret)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - GetUsers")
-	ret1, err := userProvider1.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", ret1)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - getUser")
-	user = &pkg.User{}
-	var i int32 = 1
-	err = userProvider1.GetUser2(context.TODO(), []interface{}{i}, user)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", user)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - getUser - overload")
-	user = &pkg.User{}
-	err = userProvider1.GetUser2(context.TODO(), []interface{}{i, "overload"}, user)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", user)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - GetUser3")
-	err = userProvider1.GetUser3()
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("succ!")
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - getErr")
-	user = &pkg.User{}
-	err = userProvider1.GetErr(context.TODO(), []interface{}{"A003"}, user)
-	if err == nil {
-		panic("err is nil")
-	}
-	gxlog.CInfo("getErr - error: %v", err)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo illegal method")
-	err = userProvider1.GetUser1(context.TODO(), []interface{}{"A003"}, user)
-	if err == nil {
-		panic("err is nil")
-	}
-	gxlog.CInfo("error: %v", err)
-}
-
-func test2() {
-	gxlog.CInfo("\n\n\necho")
-	res, err := userProvider2.Echo(context.TODO(), "OK")
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("res: %v\n", res)
-
-	time.Sleep(3e9)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err = userProvider2.GetUser(context.TODO(), []interface{}{"A003"}, user)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", user)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - GetUser0")
-	ret, err := userProvider2.GetUser0("A003", "Moorse")
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", ret)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - GetUsers")
-	ret1, err := userProvider2.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", ret1)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - getUser")
-	user = &pkg.User{}
-	var i int32 = 1
-	err = userProvider2.GetUser2(context.TODO(), []interface{}{i}, user)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", user)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - getUser - overload")
-	user = &pkg.User{}
-	err = userProvider2.GetUser2(context.TODO(), []interface{}{i, "overload"}, user)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", user)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - GetUser3")
-	err = userProvider2.GetUser3()
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("succ!")
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - getErr")
-	user = &pkg.User{}
-	err = userProvider2.GetErr(context.TODO(), []interface{}{"A003"}, user)
-	if err == nil {
-		panic("err is nil")
-	}
-	gxlog.CInfo("getErr - error: %v", err)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo illegal method")
-	err = userProvider2.GetUser1(context.TODO(), []interface{}{"A003"}, user)
 	if err == nil {
 		panic("err is nil")
 	}
