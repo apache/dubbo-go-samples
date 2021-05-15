@@ -47,6 +47,7 @@ var referenceConfig = config.ReferenceConfig{
 }
 
 func TestMain(m *testing.M) {
+	config.Load()
 	referenceConfig.GenericLoad(appName)
 	time.Sleep(3 * time.Second)
 
