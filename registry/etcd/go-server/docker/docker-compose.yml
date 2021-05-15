@@ -9,6 +9,11 @@ services:
     command: [
         "etcd",
         "--name=etcd0",
+        "--advertise-client-urls=http://127.0.0.1:2379",
+        "--listen-client-urls=http://0.0.0.0:2379",
+        "--initial-advertise-peer-urls=http://127.0.0.1:2380",
+        "--listen-peer-urls=http://0.0.0.0:2380",
+        "--initial-cluster=etcd0=http://127.0.0.1:2380",
     ]
     ports:
       - "2379:2379"
