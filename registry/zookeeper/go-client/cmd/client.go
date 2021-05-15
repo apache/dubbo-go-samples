@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,7 +15,13 @@
  * limitations under the License.
  */
 
-package integration
+package main
+
+import (
+	"context"
+	"os"
+	"time"
+)
 
 import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
@@ -25,42 +29,36 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	hessian "github.com/apache/dubbo-go-hessian2"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
-	"os"
-	"testing"
-	"time"
+	"github.com/apache/dubbo-go-samples/registry/zookeeper/go-client/pkg"
 )
 
-var appName = "UserConsumerTest"
-var referenceConfig = config.ReferenceConfig{
-	InterfaceName: "org.apache.dubbo.UserProvider",
-	Cluster:       "failover",
-	Registry:      "demoZk",
-	Protocol:      dubbo.DUBBO,
-	Generic:       true,
+var userProvider = new(pkg.UserProvider)
+
+func init() {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&pkg.User{})
 }
 
-func TestMain(m *testing.M) {
+// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+func main() {
 	config.Load()
-	referenceConfig.GenericLoad(appName)
 	time.Sleep(3 * time.Second)
 
-	os.Exit(m.Run())
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	gxlog.CInfo("\n\n\nstart to test dubbo")
+	user := &pkg.User{}
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+	gxlog.CInfo("response result: %v\n", user)
 }

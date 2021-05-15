@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,42 +15,16 @@
  * limitations under the License.
  */
 
-package integration
+package pkg
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-)
-
-import (
-	"os"
-	"testing"
+	"context"
 	"time"
 )
 
-var appName = "UserConsumerTest"
-var referenceConfig = config.ReferenceConfig{
-	InterfaceName: "org.apache.dubbo.UserProvider",
-	Cluster:       "failover",
-	Registry:      "demoZk",
-	Protocol:      dubbo.DUBBO,
-	Generic:       true,
-}
-
-func TestMain(m *testing.M) {
-	config.Load()
-	referenceConfig.GenericLoad(appName)
-	time.Sleep(3 * time.Second)
-
-	os.Exit(m.Run())
-}
+import (
+	"github.com/dubbogo/gost/log"
+)
 
 type User struct {
 	ID   string
@@ -61,6 +33,20 @@ type User struct {
 	Time time.Time
 }
 
-func (User) JavaClassName() string {
+type UserProvider struct {
+}
+
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+	gxlog.CInfo("req:%#v", req)
+	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	gxlog.CInfo("rsp:%#v", rsp)
+	return &rsp, nil
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
+}
+
+func (u User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
