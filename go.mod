@@ -20,8 +20,7 @@ require (
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
-	google.golang.org/grpc v1.36.0
-	google.golang.org/grpc/examples v0.0.0-20210402181922-5730f8d113ee // indirect
+	google.golang.org/grpc v1.33.1
 	google.golang.org/protobuf v1.26.0
 )
 
@@ -29,6 +28,7 @@ replace (
 	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 	github.com/nacos-group/nacos-sdk-go => github.com/nacos-group/nacos-sdk-go v1.0.7-0.20210325111144-d75caca21a46
 	github.com/shirou/gopsutil => github.com/shirou/gopsutil v0.0.0-20181107111621-48177ef5f880
+	google.golang.org/grpc => google.golang.org/grpc v1.29.1
 )
 
 go 1.13
