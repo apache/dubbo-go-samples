@@ -30,8 +30,9 @@ array+=("filter/custom/go-server")
 array+=("filter/tpslimit/go-server")
 array+=("filter/sentinel/go-server")
 
-# todo generic temporarily has bugs
-#array+=("generic/go-server")
+array+=("general/dubbo/go-server")
+
+array+=("generic/go-server")
 
 # hello world
 array+=("helloworld/go-server")
@@ -40,12 +41,12 @@ array+=("helloworld/go-server")
 array+=("metric/go-server")
 
 # multi-registry
-#array+=("multi-registry/go-server")
+# array+=("multi-registry/go-server")
+
+array+=("registry/zookeeper/go-server")
 
 # registry/servicediscovery/zookeeper
 array+=("registry/servicediscovery/zookeeper/go-server")
-# registry/servicediscovery/consul
-#array+=("registry/servicediscovery/consul/go-server")
 
 
 for((i=0;i<${#array[*]};i++))
