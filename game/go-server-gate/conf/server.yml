@@ -1,0 +1,53 @@
+# dubbo server yaml configure file
+
+# application config
+application:
+  organization : "dubbo.io"
+  name : "GateServiceServer"
+  module : "dubbo-go gate service server"
+  version : "0.0.1"
+  environment : "dev"
+
+# registry config
+registries :
+  "demoZk":
+    protocol: "zookeeper"
+    timeout	: "3s"
+    address: "127.0.0.1:2181"
+
+# service config
+services:
+  "gateProvider.basketballService":
+    registry: "demoZk"
+    protocol : "dubbo"
+    interface : "org.apache.dubbo.gate.BasketballService"
+    loadbalance: "random"
+    warmup: "100"
+    cluster: "failover"
+    methods:
+      - name: "Send"
+        retries: 0
+
+# protocol config
+protocols:
+  "dubbo":
+    name: "dubbo"
+
+protocol_conf:
+  dubbo:
+    session_number: 700
+    session_timeout: "180s"
+    getty_session_param:
+      compress_encoding: false
+      tcp_no_delay: true
+      tcp_keep_alive: true
+      keep_alive_period: "120s"
+      tcp_r_buf_size: 262144
+      tcp_w_buf_size: 65536
+      pkg_rq_size: 1024
+      pkg_wq_size: 512
+      tcp_read_timeout: "1s"
+      tcp_write_timeout: "5s"
+      wait_timeout: "1s"
+      max_msg_len: 1024000
+      session_name: "server"

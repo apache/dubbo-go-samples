@@ -1,0 +1,62 @@
+# dubbo client yaml configure file
+
+check: false
+# client
+request_timeout : "3s"
+# connect timeout
+connect_timeout : "3s"
+
+# application config
+application:
+  organization : "dubbo.io"
+  name  : "GameServiceClient"
+  module : "dubbo-go game service client"
+  version : "0.0.1"
+  environment : "dev"
+
+# registry config
+registries :
+  "demoZk":
+    protocol: "zookeeper"
+    timeout	: "3s"
+    address: "127.0.0.1:2181"
+    username: ""
+    password: ""
+
+# reference config
+references:
+  "gameConsumer.basketballService":
+    registry: "demoZk"
+    protocol : "dubbo"
+    interface : "org.apache.dubbo.game.BasketballService"
+    cluster: "failover"
+    methods:
+      - name: "Online"
+        retries: 0
+      - name: "Offline"
+        retries: 0
+      - name: "Message"
+        retries: 0
+# protocol config
+protocol_conf:
+  dubbo:
+    reconnect_interval: 0
+    connection_number: 1
+    heartbeat_period: "5s"
+    session_timeout: "180s"
+    pool_size: 64
+    pool_ttl: 600
+    getty_session_param:
+      compress_encoding: false
+      tcp_no_delay: true
+      tcp_keep_alive: true
+      keep_alive_period: "120s"
+      tcp_r_buf_size: 262144
+      tcp_w_buf_size: 65536
+      pkg_rq_size: 1024
+      pkg_wq_size: 512
+      tcp_read_timeout: "1s"
+      tcp_write_timeout: "5s"
+      wait_timeout: "1s"
+      max_msg_len: 1024000
+      session_name: "client"
