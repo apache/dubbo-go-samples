@@ -22,12 +22,13 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/seata/filter"
-	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
+	"github.com/apache/dubbo-go/common/constant"
+	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
 )
 
 import (
-	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
+	"github.com/apache/dubbo-go-samples/seata/filter"
+	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
 )
 
 type ProductSvc struct {
@@ -35,7 +36,7 @@ type ProductSvc struct {
 }
 
 func (svc *ProductSvc) AllocateInventory(ctx context.Context, reqs []*dao2.AllocateInventoryReq) (*dao2.AllocateInventoryResult, error) {
-	attach := ctx.Value("attachment").(map[string]interface{})
+	attach := ctx.Value(constant.AttachmentKey).(map[string]interface{})
 	val := attach[filter.SEATA_XID]
 	xid := val.(string)
 
