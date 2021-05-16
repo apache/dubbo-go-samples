@@ -26,3 +26,11 @@ func Offline(ctx context.Context, uid string) (*pojo.Result, error) {
     return GameBasketball.Offline(ctx, uid)
     // return gameJump.Offline(ctx, uid)
 }
+
+func Login(ctx context.Context, data string) (*pojo.Result, error) {
+    return GameBasketball.Login(ctx, data)
+}
+
+func Score(ctx context.Context, uid string, score int) (*pojo.Result, error) {
+    return GameBasketball.Score(ctx, uid, score)
+}

@@ -7,6 +7,7 @@ new Vue({
             dialogVisible:true,
             info:{
                 name:'',
+                uid:'',
                 score:0
             },
             isMeet:false
@@ -28,6 +29,13 @@ new Vue({
     methods: {
         submitInfo:function(){
             this.dialogVisible = false
+            login({name: this.info.name}).then(Response => {
+                this.info.uid = Response.to
+                console.log(this.info)
+                this.$message({
+                    message:"欢迎" + Response.message
+                })
+            }).catch((e) => {});
         },
         moveBall:function(){
             var elem = document.getElementsByClassName("ball")
@@ -38,12 +46,13 @@ new Vue({
             function frame() {
                 var space = elem[0].getBoundingClientRect().left - gate.getBoundingClientRect().left
                 var hight = elem[0].getBoundingClientRect().top - gate.getBoundingClientRect().top
-                console.log(space < 20)
-                if (!that.isMeet && (space <20 && space > -20 && hight < 20 && hight > -20)) {
+                if (!that.isMeet && (space <60 && space > -20 && hight < 20 && hight > -20)) {
                     that.isMeet = true
-                    that.$message({
-                        message:"进球成功",
-                        type:"success"
+                    score().then(Response => {
+                        that.$message({
+                            message:"进球成功",
+                            type:"success"
+                        })
                     })
                 }
                 if (tempHeight >= that.clientHeight) {
