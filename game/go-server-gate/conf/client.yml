@@ -37,19 +37,6 @@ references:
         retries: 0
       - name: "Message"
         retries: 0
-#  "gameConsumer.jumpService":
-#    registry: "demoZk"
-#    protocol: "dubbo"
-#    interface: "org.apache.dubbo.game.JumpService"
-#    cluster: "failover"
-#    methods:
-#      - name: "Online"
-#        retries: 0
-#      - name: "Offline"
-#        retries: 0
-#      - name: "Message"
-#        retries: 0
-
 # protocol config
 protocol_conf:
   dubbo:

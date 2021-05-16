@@ -1,0 +1,54 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+#myProgress {
+    width: 100%;
+    background-color: #ddd;
+}
+#myBar {
+    width: 0%;
+    height: 30px;
+    background-color: #4CAF50;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+}
+.background{
+    background-image: url('../img/bac.png');
+    position: absolute;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height:100%;
+}
+.gate{
+    width:8rem;
+    height: 4rem;
+    top: 5%;
+    left: 50%;
+    margin-left: -4rem;
+    position: absolute;
+}
+.ball{
+    width: 3rem;
+    height: 3rem;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2.5rem;
+    position: absolute;
+}
+.people{
+    width: 5rem;
+    height: 10rem;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2.5rem;
+    position: absolute;
+}
+.info{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+}

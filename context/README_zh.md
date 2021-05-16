@@ -20,7 +20,7 @@ ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]interface{}
 
 ### 3. 从客户端通过context传递你想要的字段
 - 客户端
-  如样例 go-client/cliemt.go 所展示：
+  如样例 go-client/client.go 所展示：
 
 ```go
     // 创建request
@@ -59,5 +59,3 @@ ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]interface{}
 ```
 
 请参阅根目录中的 [HOWTO.md](../HOWTO_zh.md) 来运行本例。
-
-
