@@ -21,7 +21,6 @@ package integration
 
 import (
 	"context"
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -39,7 +38,6 @@ func TestGetUser(t *testing.T) {
 			[]interface{}{"A003"},
 		},
 	)
-	fmt.Println("============", o)
 	assert.Nil(t, err)
 	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
 	resp := o.(map[interface{}]interface{})

@@ -46,7 +46,6 @@ array+=("metric/go-server")
 array+=("registry/zookeeper/go-server")
 array+=("registry/etcd/go-server")
 
-
 # registry/servicediscovery/zookeeper
 array+=("registry/servicediscovery/zookeeper/go-server")
 
