@@ -3,12 +3,11 @@ new Vue({
     data: function () {
         return { 
             visible: false,
-            rootDom:Object, 
             dialogVisible:true,
             info:{
                 name:'',
-                uid:'',
-                score:0
+                score:0,
+                rank:0
             },
             isMeet:false
         }
@@ -27,15 +26,30 @@ new Vue({
         }
     },
     methods: {
+        getRank:function(){
+            rank({name: this.info.name}).then(Response => {
+                this.info.rank = Response.data.rank
+            }).catch(e => {
+                this.$message({
+                    message: "获取排名失败" + e,
+                    type:"danger"
+                })
+            })
+        },
         submitInfo:function(){
             this.dialogVisible = false
             login({name: this.info.name}).then(Response => {
-                this.info.uid = Response.to
-                console.log(this.info)
+                this.info.name = Response.data.to
                 this.$message({
-                    message:"欢迎" + Response.message
+                    message:"欢迎" + Response.msg
                 })
-            }).catch((e) => {});
+                this.getRank()
+            }).catch(e => {
+                this.$message({
+                    message: "登陆失败" + e,
+                    type:"danger"
+                })
+            })
         },
         moveBall:function(){
             var elem = document.getElementsByClassName("ball")
@@ -48,14 +62,22 @@ new Vue({
                 var hight = elem[0].getBoundingClientRect().top - gate.getBoundingClientRect().top
                 if (!that.isMeet && (space <60 && space > -20 && hight < 20 && hight > -20)) {
                     that.isMeet = true
-                    score().then(Response => {
+                    score(JSON.stringify({name:that.info.name, score:1})).then(Response => {
+                        that.info.score = Response.data.score
                         that.$message({
-                            message:"进球成功",
+                            message:"进球成功, 总分数为:" + Response.data.score,
                             type:"success"
+                        })
+                        that.getRank()
+                    }).catch( e => {
+                        that.$message({
+                            message: "分数统计失败" + e,
+                            type:"danger"
                         })
                     })
                 }
                 if (tempHeight >= that.clientHeight) {
+                    elem[0].style.bottom = 0 + ''
                     clearInterval(id)
                 } else{
                     tempHeight += 20
@@ -101,7 +123,6 @@ new Vue({
     mounted(){
         this.move()
         this.moveGate()
-        this.rootDom = document.getElementById("app")
     },
     created() {
         

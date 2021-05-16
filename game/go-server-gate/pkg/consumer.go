@@ -12,25 +12,14 @@ var GameBasketball = new(game.BasketballService)
 
 // just easy for demo test
 
-func Message(ctx context.Context, uid string, data string) (*pojo.Result, error) {
-    return GameBasketball.Message(ctx, uid, data)
-    // return gameJump.Message(ctx, uid, data)
-}
-
-func Online(ctx context.Context, uid string) (*pojo.Result, error) {
-    return GameBasketball.Online(ctx, uid)
-    // return gameJump.Online(ctx, uid)
-}
-
-func Offline(ctx context.Context, uid string) (*pojo.Result, error) {
-    return GameBasketball.Offline(ctx, uid)
-    // return gameJump.Offline(ctx, uid)
-}
-
 func Login(ctx context.Context, data string) (*pojo.Result, error) {
     return GameBasketball.Login(ctx, data)
 }
 
-func Score(ctx context.Context, uid string, score int) (*pojo.Result, error) {
+func Score(ctx context.Context, uid, score string) (*pojo.Result, error) {
     return GameBasketball.Score(ctx, uid, score)
+}
+
+func Rank (ctx context.Context, uid string) (*pojo.Result, error) {
+    return GameBasketball.Rank(ctx, uid)
 }

@@ -3,8 +3,7 @@ package main
 import (
     "context"
     "encoding/json"
-    "fmt"
-    "math/rand"
+    "io/ioutil"
     "net/http"
     "os"
     "os/signal"
@@ -75,77 +74,52 @@ func initSignal() {
 func startHttp() {
 
     http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Println(r.URL.Query().Get("name"))
         res, err := pkg.Login(context.TODO(), r.URL.Query().Get("name"))
         if err != nil {
-            fmt.Println("1", err.Error())
             responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
 
         b, err := json.Marshal(res)
         if err != nil {
-            fmt.Println("2", err.Error())
             responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
-        fmt.Println(b)
         responseWithOrigin(w, r, 200, b)
     })
 
     http.HandleFunc("/score", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Println(r.PostForm)
-        //res, err := pkg.Score(context.TODO(), r.URL.Query().Get)
-        //if err != nil {
-        //    responseWithOrigin(w, r, 200, []byte(err.Error()))
-        //    return
-        //}
-    })
-
-    http.HandleFunc("/message", func(w http.ResponseWriter, r *http.Request) {
-        res, err := pkg.Message(context.TODO(), strconv.Itoa(rand.Int()), r.URL.Query().Get("name"))
+        reqBody, err := ioutil.ReadAll(r.Body)
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            logger.Error(err.Error())
+        }
+        var info pojo.Info
+        json.Unmarshal(reqBody, &info)
+        res, err := pkg.Score(context.TODO(), info.Name, strconv.Itoa(info.Score))
+        if err != nil {
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
 
         b, err := json.Marshal(res)
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
         responseWithOrigin(w, r, 200, b)
     })
 
-    http.HandleFunc("/online", func(w http.ResponseWriter, r *http.Request) {
-        res, err := pkg.Online(context.TODO(), "abc")
+    http.HandleFunc("/rank", func(w http.ResponseWriter, r *http.Request) {
+        res, err := pkg.Rank(context.TODO(), r.URL.Query().Get("name"))
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
-
         b, err := json.Marshal(res)
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
-
-        responseWithOrigin(w, r, 200, b)
-    })
-
-    http.HandleFunc("/offline", func(w http.ResponseWriter, r *http.Request) {
-        res, err := pkg.Offline(context.TODO(), "abc")
-        if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
-            return
-        }
-
-        b, err := json.Marshal(res)
-        if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
-            return
-        }
-
         responseWithOrigin(w, r, 200, b)
     })
 

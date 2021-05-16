@@ -3,7 +3,6 @@ package pkg
 import (
     "context"
     "fmt"
-    "math/rand"
     "strconv"
 
     "github.com/apache/dubbo-go/common/logger"
@@ -13,29 +12,17 @@ import (
 
 type BasketballService struct{}
 
-type Info struct {
-    Name string
-    Uid string
-    Score int
-}
+var userMap = make(map[string]*pojo.Info, 0)
 
-var userMap = make(map[string]*Info, 0)
-
-func (p *BasketballService) Online(ctx context.Context, uid string) (*pojo.Result, error) {
-    logger.Infof("online: %s", uid)
-    return &pojo.Result{Code: 0, Msg: "hello this is game provider"}, nil
-}
-
-func (p *BasketballService) Offline(ctx context.Context, uid string) (*pojo.Result, error) {
-    logger.Infof("offline: %#s", uid)
-    return &pojo.Result{Code: 0, Msg: "hello this is game provider"}, nil
-}
-
-func (p *BasketballService) Message(ctx context.Context, uid, data string) (*pojo.Result, error) {
-    logger.Infof("message: %#v, %#v", uid, data)
+func (p *BasketballService) Login(ctx context.Context, uid string) (*pojo.Result, error) {
+    logger.Infof("message: %#v", uid)
+    var (
+        info *pojo.Info
+        ok bool
+    )
 
     // auto reply the same message
-    rsp, err := GateBasketball.Send(context.TODO(), uid, data)
+    rsp, err := GateBasketball.Send(context.TODO(), uid, "")
     if err != nil {
         logger.Errorf("send fail: %#s", err.Error())
         return &pojo.Result{Code: 1, Msg: err.Error()}, err
@@ -43,37 +30,75 @@ func (p *BasketballService) Message(ctx context.Context, uid, data string) (*poj
 
     fmt.Println("receive data from gate:", rsp)
 
-    return &pojo.Result{Code: 0, Data: map[string]interface{}{"to": uid, "message": data + " from game provider"}}, nil
-}
-
-func (p *BasketballService) Login(ctx context.Context, data string) (*pojo.Result, error) {
-    logger.Infof("message: %#v", data)
-    var (
-        info *Info
-        ok bool
-    )
-    if info, ok = userMap[data]; !ok {
-        fmt.Println("没有找到")
-        info = &Info{}
-        info.Uid = strconv.Itoa(rand.Int())
-        info.Name = data
-        userMap[info.Uid] = info
+    if info, ok = userMap[uid]; !ok {
+        info = &pojo.Info{}
+        info.Name = uid
+        userMap[uid] = info
     }
-    fmt.Println("找到了")
-    return &pojo.Result{Code: 0, Data: map[string]interface{}{"to": info.Uid, "message": info.Name + ", your score is " + strconv.Itoa(info.Score)}}, nil
+    return &pojo.Result{Code: 0, Msg: info.Name + ", your score is " + strconv.Itoa(info.Score) , Data: map[string]interface{}{"to": uid, "score": info.Score}}, nil
 }
 
-func (p *BasketballService) Score(ctx context.Context, uid string, score int) (*pojo.Result, error) {
+func (p *BasketballService) Score (ctx context.Context, uid, score string) (*pojo.Result, error) {
     logger.Infof("message: %#v, %#v", uid, score)
     var (
-        info *Info
+        info = &pojo.Info{}
         ok bool
     )
-    if info, ok = userMap[uid]; !ok {
-        logger.Error("user data not found")
+
+    // auto reply the same message
+    rsp, err := GateBasketball.Send(context.TODO(), uid, score)
+    if err != nil {
+        logger.Errorf("send fail: %#s", err.Error())
+        return &pojo.Result{Code: 1, Msg: err.Error()}, err
     }
-    info.Score += score
-    return &pojo.Result{Code: 0, Data: map[string]interface{}{"to": info.Uid, "message": strconv.Itoa(info.Score)}}, nil
+
+    fmt.Println("receive data from gate:", rsp)
+
+    if info, ok = userMap[uid]; !ok {
+      info = &pojo.Info{
+          Name: uid,
+      }
+      userMap[uid] = info
+      logger.Error("user data not found")
+      return &pojo.Result{Code: 1, Msg: "user data not found", Data: map[string]interface{}{}}, nil
+    }
+    intSource, err := strconv.Atoi(score)
+    if err != nil {
+        logger.Error(err.Error())
+    }
+    info.Score += intSource
+
+    return &pojo.Result{Code: 0, Msg: "进球成功", Data: map[string]interface{}{"to": uid, "score": info.Score}}, nil
+}
+
+func (p *BasketballService) Rank (ctx context.Context, uid string) (*pojo.Result, error) {
+    var (
+        rank = 1
+        info  *pojo.Info
+        ok bool
+    )
+
+    // auto reply the same message
+    rsp, err := GateBasketball.Send(context.TODO(), uid, "")
+    if err != nil {
+        logger.Errorf("send fail: %#s", err.Error())
+        return &pojo.Result{Code: 1, Msg: err.Error()}, err
+    }
+
+    fmt.Println("receive data from gate:", rsp)
+
+    if info, ok = userMap[uid]; !ok {
+        logger.Error("no user found")
+        return &pojo.Result{Code: 1, Msg: "no user found", Data: map[string]interface{}{"to": uid, "rank": rank}}, nil
+    }
+
+    for _, v := range userMap {
+        if v.Score > info.Score {
+            rank ++
+        }
+    }
+
+    return &pojo.Result{Code: 0, Msg: "success", Data: map[string]interface{}{"to": uid, "rank": rank}}, nil
 }
 
 func (p *BasketballService) Reference() string {
