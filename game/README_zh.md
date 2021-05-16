@@ -48,20 +48,20 @@ game提供了basketball服务端，gate提供了http服务端。
 
 #### server端
 
-server 端提供三个服务，message、online 及 offline，代码如下，具体的实现可以在 'game/go-server-game/pkg/provider.go' 中看到
+server 端提供三个服务，Login、Score 及 Rank，代码如下，具体的实现可以在 'game/go-server-game/pkg/provider.go' 中看到
 
 ```go
 type BasketballService struct{}
 
-func (p *BasketballService) Online(...) (...) {
+func Login(ctx context.Context, data string) (*pojo.Result, error) {
     ...
 }
 
-func (p *BasketballService) Offline(...) (...) {
+func Score(ctx context.Context, uid, score string) (*pojo.Result, error) {
     ...
 }
 
-func (p *BasketballService) Message(...) (...) {
+func Rank (ctx context.Context, uid string) (*pojo.Result, error) {
     ...
 }
 
@@ -177,21 +177,21 @@ services:
 
 #### consumer端
 
-gate 中的 consumer 端比较特使，由于 gate的consumer 需要调用 game 中的 service，所以在gaet中，consumer 直接实例化一个game的service，其方法便直接使用实例化的对象 GameBasketball 调用，这样就实现了一个网关的功能。
+gate 中的 consumer 端比较特殊，由于 gate的consumer 需要调用 game 中的 service，所以在gaet中，consumer 直接实例化一个game的service，其方法便直接使用实例化的对象 GameBasketball 调用，这样就实现了一个网关的功能。
 
 ```go
 var GameBasketball = new(game.BasketballService)
 
-func Message(ctx context.Context, uid string, data string) (*pojo.Result, error) {
-    return GameBasketball.Message(ctx, uid, data)
+func Login(ctx context.Context, data string) (*pojo.Result, error) {
+    return GameBasketball.Login(ctx, data)
 }
 
-func Online(ctx context.Context, uid string) (*pojo.Result, error) {
-    return GameBasketball.Online(ctx, uid)
+func Score(ctx context.Context, uid, score string) (*pojo.Result, error) {
+    return GameBasketball.Score(ctx, uid, score)
 }
 
-func Offline(ctx context.Context, uid string) (*pojo.Result, error) {
-    return GameBasketball.Offline(ctx, uid)
+func Rank (ctx context.Context, uid string) (*pojo.Result, error) {
+    return GameBasketball.Rank(ctx, uid)
 }
 ```
 
@@ -227,47 +227,81 @@ references:
 
 ### HTTP访问
 
-访问message
+访问login
 
-```http
-http://localhost:8000/message
+```bash
+curl --location --request GET 'http://127.0.0.1:8089/login?name=dubbogo'
+```
+
+收到账户的信息
+
+```json
+{
+    "code": 0,
+    "msg": "dubbogo, your score is 0",
+    "data": {
+        "score": 0,
+        "to": "dubbogo"
+    }
+}
+```
+
+
+
+访问 score
+
+```bash
+curl --location --request POST 'http://127.0.0.1:8089/score' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name":"cjp",
+    "score":1
+}'
 ```
 
 收到
 
 ```json
-{"code":0,"data":{"message":"hello from game provider","to":"abc"}}
+{
+    "code": 0,
+    "msg": "dubbogo, your score is 0",
+    "data": {
+        "score": 0,
+        "to": "dubbogo"
+    }
+}
 ```
 
-
-
-访问 online
+访问 rank
 
 ```http
-http://localhost:8000/online
+curl --location --request POST 'http://127.0.0.1:8089/rank?name=dubbogo'
 ```
 
 收到
 
 ```json
-{"code":0,"msg":"hello this is game provider"}
-```
-
-访问 offline
-
-```http
-http://localhost:8000/online
-```
-
-收到
-
-```json
-{"code":0,"msg":"hello this is game provider"}
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "rank": 3,
+        "to": "dubbogo"
+    }
+}
 ```
 
 可以发现，所有的http请求，都成功的转发到了 game，并且又通过调用 gate 的 send 方法把处理过的数据返回给 gate
 
 
+
+### 启动前端
+
+切换到 webside 目录，打开 index.html 即可（推荐使用chrome浏览器）
+
+![image-20210516173728198](http://cdn.cjpa.top/image-20210516173728198.png)
+
+点击小人即可进行游戏
 
 请参阅根目录中的 [HOWTO.md](../HOWTO_zh.md) 来运行本例。
 

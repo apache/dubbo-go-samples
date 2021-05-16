@@ -53,15 +53,15 @@ The server provides three services, message, online and offline. The code is as 
 ```go
 type BasketballService struct{}
 
-func (p *BasketballService) Online(...) (...) {
+func Login(ctx context.Context, data string) (*pojo.Result, error) {
     ...
 }
 
-func (p *BasketballService) Offline(...) (...) {
+func Score(ctx context.Context, uid, score string) (*pojo.Result, error) {
     ...
 }
 
-func (p *BasketballService) Message(...) (...) {
+func Rank (ctx context.Context, uid string) (*pojo.Result, error) {
     ...
 }
 
@@ -175,23 +175,23 @@ services:
         retries: 0
 ```
 
-#### consumer size
+#### consumer side
 
 The consumer side of the gate is relatively special. Because the consumer of the gate needs to call the service in the game, the consumer directly instantiates the service of a game, and its method directly uses the instantiated object gamebasketball to call, thus realizing the function of a gateway.
 
 ```go
 var GameBasketball = new(game.BasketballService)
 
-func Message(ctx context.Context, uid string, data string) (*pojo.Result, error) {
-    return GameBasketball.Message(ctx, uid, data)
+func Login(ctx context.Context, data string) (*pojo.Result, error) {
+    return GameBasketball.Login(ctx, data)
 }
 
-func Online(ctx context.Context, uid string) (*pojo.Result, error) {
-    return GameBasketball.Online(ctx, uid)
+func Score(ctx context.Context, uid, score string) (*pojo.Result, error) {
+    return GameBasketball.Score(ctx, uid, score)
 }
 
-func Offline(ctx context.Context, uid string) (*pojo.Result, error) {
-    return GameBasketball.Offline(ctx, uid)
+func Rank (ctx context.Context, uid string) (*pojo.Result, error) {
+    return GameBasketball.Rank(ctx, uid)
 }
 ```
 
@@ -224,45 +224,79 @@ references:
 
 ### HTTP access
 
-access message
+access login
 
-```http
-http://localhost:8000/message
+```bash
+curl --location --request GET 'http://127.0.0.1:8089/login?name=dubbogo'
 ```
 
 received
 
 ```json
-{"code":0,"data":{"message":"hello from game provider","to":"abc"}}
+{
+    "code": 0,
+    "msg": "dubbogo, your score is 0",
+    "data": {
+        "score": 0,
+        "to": "dubbogo"
+    }
+}
 ```
 
 
 
-access online
+access score
 
-```http
-http://localhost:8000/online
+```bash
+curl --location --request POST 'http://127.0.0.1:8089/score' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name":"cjp",
+    "score":1
+}'
 ```
 
 received
 
 ```json
-{"code":0,"msg":"hello this is game provider"}
+{
+    "code": 0,
+    "msg": "dubbogo, your score is 0",
+    "data": {
+        "score": 0,
+        "to": "dubbogo"
+    }
+}
 ```
 
-access offline
+access rank
 
-```http
-http://localhost:8000/online
+```bash
+curl --location --request POST 'http://127.0.0.1:8089/rank?name=dubbogo'
 ```
 
 received
 
 ```json
-{"code":0,"msg":"hello this is game provider"}
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "rank": 3,
+        "to": "dubbogo"
+    }
+}
 ```
 
 It can be found that all HTTP requests are successfully forwarded to game, and the processed data is returned to gate by calling the send method of gate
+
+
+
+### Start the front end
+
+Switch to webside directory and open index.html (Chrome browser is recommended)
+
+![image-20210516173728198](http://cdn.cjpa.top/image-20210516173728198.png)
 
 Pls. refer to [HOWTO.md](../HOWTO.md) under the root directory to run this sample.
 
