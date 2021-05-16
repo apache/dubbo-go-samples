@@ -33,6 +33,7 @@ require (
 )
 
 replace (
+	github.com/apache/dubbo-go => github.com/apache/dubbo-go v1.5.7-rc1
 	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 	google.golang.org/grpc => google.golang.org/grpc v1.26.0
 )
