@@ -3,15 +3,17 @@ package main
 import (
     "context"
     "encoding/json"
+    "io/ioutil"
     "net/http"
     "os"
     "os/signal"
+    "strconv"
     "syscall"
     "time"
 
+    hessian "github.com/apache/dubbo-go-hessian2"
     "github.com/apache/dubbo-go/common/logger"
     "github.com/apache/dubbo-go/config"
-    hessian "github.com/apache/dubbo-go-hessian2"
 
     _ "github.com/apache/dubbo-go/protocol/dubbo"
     _ "github.com/apache/dubbo-go/registry/protocol"
@@ -71,53 +73,67 @@ func initSignal() {
 
 func startHttp() {
 
-    http.HandleFunc("/message", func(w http.ResponseWriter, r *http.Request) {
-        res, err := pkg.Message(context.TODO(), "abc", "hello")
+    http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+        res, err := pkg.Login(context.TODO(), r.URL.Query().Get("name"))
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
 
         b, err := json.Marshal(res)
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
-
-        _, _ = w.Write(b)
+        responseWithOrigin(w, r, 200, b)
     })
 
-    http.HandleFunc("/online", func(w http.ResponseWriter, r *http.Request) {
-        res, err := pkg.Online(context.TODO(), "abc")
+    http.HandleFunc("/score", func(w http.ResponseWriter, r *http.Request) {
+        reqBody, err := ioutil.ReadAll(r.Body)
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            logger.Error(err.Error())
+        }
+        var info pojo.Info
+        json.Unmarshal(reqBody, &info)
+        res, err := pkg.Score(context.TODO(), info.Name, strconv.Itoa(info.Score))
+        if err != nil {
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
 
         b, err := json.Marshal(res)
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
-
-        _, _ = w.Write(b)
+        responseWithOrigin(w, r, 200, b)
     })
 
-    http.HandleFunc("/offline", func(w http.ResponseWriter, r *http.Request) {
-        res, err := pkg.Offline(context.TODO(), "abc")
+    http.HandleFunc("/rank", func(w http.ResponseWriter, r *http.Request) {
+        res, err := pkg.Rank(context.TODO(), r.URL.Query().Get("name"))
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
-
         b, err := json.Marshal(res)
         if err != nil {
-            _, _ = w.Write([]byte(err.Error()))
+            responseWithOrigin(w, r, 200, []byte(err.Error()))
             return
         }
-
-        _, _ = w.Write(b)
+        responseWithOrigin(w, r, 200, b)
     })
 
-    _ = http.ListenAndServe(":8000", nil)
+    _ = http.ListenAndServe("127.0.0.1:8089", nil)
+}
+
+// avoid cors
+func responseWithOrigin(w http.ResponseWriter, r *http.Request, code int, json []byte) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
+    w.Header().Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+    w.Header().Set("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Cache-Control, Content-Language, Content-Type")
+    w.Header().Set("Access-Control-Allow-Credentials", "true")
+    w.Header().Set("Content-Type", "application/json; charset=utf-8")
+    w.WriteHeader(code)
+    w.Write(json)
 }
