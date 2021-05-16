@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  zk:
+    image: zookeeper
+    container_name: zk
+    networks:
+      - dubbo
+    ports:
+      - 2181:2181
+  naocs:
+    image: nacos/nacos-server:1.4.1
+    container_name: nacos
+    networks:
+      - dubbo
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+    ports:
+      - "8848:8848"
+# 网络
+networks:
+  dubbo:
+    name: dubbo-go-samples
+    driver: bridge

@@ -1,0 +1,28 @@
+# dubbo client yaml configure file
+
+check: false
+# client
+request_timeout: "3s"
+# connect timeout
+connect_timeout: "3s"
+
+# application config
+application:
+  organization: "dubbo.io"
+  name: "UserInfoClient"
+  module: "dubbo-go user-info client"
+  version: "0.0.1"
+  environment: "dev"
+
+# reference config
+references:
+  "UserProvider":
+    registry: "demoZk"
+    protocol: "dubbo"
+    interface: "org.apache.dubbo.UserProvider"
+    cluster: "failover"
+    # this is necessary to enable direct-invoking.
+    url: "dubbo://127.0.0.1:20000"
+    methods:
+      - name: "GetUser"
+        retries: 3
