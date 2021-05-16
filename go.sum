@@ -95,6 +95,8 @@ github.com/apache/dubbo-go v1.5.6-rc2 h1:e9ziyPQx65n/dyGrA0/ce263jV2+nnSzzpdu9Lb
 github.com/apache/dubbo-go v1.5.6-rc2/go.mod h1:wLJvPWbnrf6/bhoohBT404QK4t2JoNcckMw+/fJ9P+c=
 github.com/apache/dubbo-go v1.5.6 h1:iTMrXo8jB6DxKOhM83NKDnGA8c9ZPnofCOos/GvKyF8=
 github.com/apache/dubbo-go v1.5.6/go.mod h1:wLJvPWbnrf6/bhoohBT404QK4t2JoNcckMw+/fJ9P+c=
+github.com/apache/dubbo-go v1.5.7-rc1 h1:PBK/Ox35L8QH85eBmHAqsg/EL2SnO+xwcCw67lQ4z4Q=
+github.com/apache/dubbo-go v1.5.7-rc1/go.mod h1:wLJvPWbnrf6/bhoohBT404QK4t2JoNcckMw+/fJ9P+c=
 github.com/apache/dubbo-go v1.5.7-rc1-tmp h1:5D6KR2w6N6xRai/XDuXqsVgisIMIrKMjGexDf4LWeN4=
 github.com/apache/dubbo-go v1.5.7-rc1-tmp/go.mod h1:wLJvPWbnrf6/bhoohBT404QK4t2JoNcckMw+/fJ9P+c=
 github.com/apache/dubbo-go-hessian2 v1.8.2 h1:CQq2Mmlrk6Fqmudwl9Dqps8drTrBFnmXRlzgOjj0FqA=
