@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,43 +17,23 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
+	"testing"
 )
+
 import (
-	"github.com/dubbogo/gost/log"
-)
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/stretchr/testify/assert"
 )
 
-func init() {
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
-
-type User struct {
-	Id   string
-	Name string
-	Age  int32
-}
-
-type UserProvider struct {
-}
-
-func (u UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-func (u UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "com.apache.dubbo.sample.basic.User"
+func TestGetUser(t *testing.T) {
+	user := &User{}
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	assert.Nil(t, err)
+	assert.Equal(t, "A001", user.ID)
+	assert.Equal(t, "Alex Stocks", user.Name)
+	assert.Equal(t, int32(18), user.Age)
+	assert.NotNil(t, user.Time)
 }

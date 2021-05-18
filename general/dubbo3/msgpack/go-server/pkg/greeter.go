@@ -23,14 +23,6 @@ import (
 import (
 	"github.com/dubbogo/gost/log"
 )
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-)
-
-func init() {
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
 
 type User struct {
 	Id   string
@@ -41,8 +33,8 @@ type User struct {
 type UserProvider struct {
 }
 
-func (u UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
+func (u UserProvider) GetUser(ctx context.Context,user *User) (*User, error) {
+	gxlog.CInfo("req:%#v", user)
 	rsp := User{"A001", "Alex Stocks", 18}
 	gxlog.CInfo("rsp:%#v", rsp)
 	return &rsp, nil
@@ -50,8 +42,4 @@ func (u UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, er
 
 func (u UserProvider) Reference() string {
 	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "com.apache.dubbo.sample.basic.User"
 }

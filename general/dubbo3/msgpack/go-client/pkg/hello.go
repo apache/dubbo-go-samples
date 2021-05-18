@@ -20,17 +20,6 @@ package pkg
 import (
 	"context"
 )
-import (
-	"github.com/dubbogo/gost/log"
-)
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-)
-
-func init() {
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
 
 type User struct {
 	Id   string
@@ -39,19 +28,9 @@ type User struct {
 }
 
 type UserProvider struct {
+	GetUser func(ctx context.Context, req *User, rsp *User) error
 }
 
-func (u UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-func (u UserProvider) Reference() string {
+func (u *UserProvider) Reference() string {
 	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "com.apache.dubbo.sample.basic.User"
 }
