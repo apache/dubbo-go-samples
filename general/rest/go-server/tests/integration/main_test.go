@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,44 +17,40 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
 	"os"
+	"testing"
 	"time"
 )
 
 import (
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/protocol/rest"
-	_ "github.com/apache/dubbo-go/registry/protocol"
-	"github.com/dubbogo/gost/log"
-
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-
+	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
+	"github.com/apache/dubbo-go/config"
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/registry/nacos"
+	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/rest/go-client/pkg"
+	. "github.com/apache/dubbo-go-samples/general/rest/go-server/pkg"
 )
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-func main() {
+var userProvider = new(UserProvider)
+var userProvider1 = new(UserProvider1)
+var userProvider2 = new(UserProvider2)
+
+func TestMain(m *testing.M) {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := pkg.UserProviderVar.GetUser(context.TODO(), []interface{}{"A003"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+	os.Exit(m.Run())
 }
