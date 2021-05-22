@@ -45,8 +45,13 @@ type (
 		sex   Gender
 		Birth int    `json:"time"`
 		Sex   string `json:"sex"`
+		Time  int64
 	}
 )
+
+func (User) JavaClassName() string {
+	return "org.apache.dubbo.User"
+}
 
 var (
 	DefaultUser = User{
