@@ -2,7 +2,7 @@
 
 ## Backend
 
-Zipkin is a distributed tracing system. It helps gather timing data needed to troubleshoot latency problems in service architectures. Features include both the collection and lookup of this data.
+**Zipkin** is a distributed tracing system. It helps **Dubbo-go** gathering timing data which is used to troubleshoot latency problems in service architectures.
 
 ## Introduction
 
@@ -24,7 +24,7 @@ Zipkin is a distributed tracing system. It helps gather timing data needed to tr
 Client calls ProviderA , and then calls ProviderB,
 ProviderA also makes a request to ProviderB！
 
-依赖关系：
+dependencies :
 ![dependency.png](doc/app_dependency.png)
 
 ## Code
@@ -74,7 +74,7 @@ filter: "tracing"
 
 ## Filter
 
-Dubbo-go support `opentrace filter` 实现，基于简单配置即可
+Dubbo-go supports `opentrace filter` 
 
 ```go
 func (tf *tracingFilter) Invoke(ctx context.Context, invoker protocol.Invoker, invocation protocol.Invocation) protocol.Result {
