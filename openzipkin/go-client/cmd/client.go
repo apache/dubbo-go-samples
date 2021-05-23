@@ -19,13 +19,14 @@ package main
 
 import (
 	"context"
+	"contrib.go.opencensus.io/exporter/prometheus"
+	"go.opencensus.io/stats/view"
 	"math/rand"
 	"os"
 	"time"
 )
 
 import (
-	"contrib.go.opencensus.io/exporter/prometheus"
 	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
@@ -41,7 +42,6 @@ import (
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
 	"github.com/openzipkin/zipkin-go"
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
-	"go.opencensus.io/stats/view"
 )
 
 import (
@@ -70,8 +70,26 @@ func main() {
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 
-	span, ctx := opentracing.StartSpanFromContext(context.Background(), "ClientGetUser")
-	defer span.Finish()
+	getUserAll(context.Background())
+}
+
+func getUserAll(ctx context.Context) {
+	span, ctx := opentracing.StartSpanFromContext(ctx, "getUserAll")
+
+	getUserA(ctx)
+	span.Finish()
+
+	getUserB(ctx)
+	span.Finish()
+
+	getUserA(ctx)
+	span.Finish()
+
+	getUserB(ctx)
+	span.Finish()
+}
+
+func getUserA(ctx context.Context) {
 
 	time.Sleep(time.Duration(rand.Intn(977)+300) * time.Millisecond)
 	user := &pkg.User{}
@@ -83,8 +101,12 @@ func main() {
 	}
 	gxlog.CInfo("response result: %v\n", user)
 
-	user = &pkg.User{}
-	err = userProviderB.GetUser(ctx, []interface{}{"A001"}, user)
+}
+func getUserB(ctx context.Context) {
+
+	time.Sleep(time.Duration(rand.Intn(977)+300) * time.Millisecond)
+	user := &pkg.User{}
+	err := userProviderB.GetUser(ctx, []interface{}{"A001"}, user)
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
@@ -93,6 +115,7 @@ func main() {
 	gxlog.CInfo("response result: %v\n", user)
 }
 
+// zipkin / opentracing specific stuff
 func registerZipkin() {
 	// set up a span reporter
 	reporter := zipkinhttp.NewReporter("http://localhost:9411/api/v2/spans")
@@ -103,11 +126,11 @@ func registerZipkin() {
 		gxlog.CError("unable to create local endpoint: %+v\n", err)
 	}
 
-	// set sampler
-	sampler := zipkin.NewModuloSampler(1)
+	// set sampler , default AlwaysSample
+	//sampler := zipkin.NewModuloSampler(1)
 
 	// initialize our tracer
-	nativeTracer, err := zipkin.NewTracer(reporter, zipkin.WithLocalEndpoint(endpoint), zipkin.WithSampler(sampler))
+	nativeTracer, err := zipkin.NewTracer(reporter, zipkin.WithLocalEndpoint(endpoint))
 
 	if err != nil {
 		gxlog.CError("unable to create tracer: %+v\n", err)
@@ -120,6 +143,7 @@ func registerZipkin() {
 	opentracing.SetGlobalTracer(tracer)
 }
 
+// register prometheus exporter for zipkin
 func registerPrometheus() *prometheus.Exporter {
 	pe, err := prometheus.NewExporter(prometheus.Options{Namespace: "go-client"})
 	if err != nil {

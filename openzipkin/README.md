@@ -1,5 +1,32 @@
+# Zipkin in Dubbo-go Example
 
-### Install Zipkin
+## Backend
+
+Zipkin is a distributed tracing system. It helps gather timing data needed to troubleshoot latency problems in service architectures. Features include both the collection and lookup of this data.
+
+## Introduction
+
+
+
+###
+
+```markdown
+.
+├── README.md
+├── README_zh.md
+├── docker-compose.yml
+├── go-client
+├── go-server-a
+├── go-server-b
+└── prometheus
+```
+
+- go-client ：The Service Consumer
+- go-server-a ：The Service Provider A
+- go-server-b ：The Service Provider B
+
+
+## Install Zipkin
 
 First Way:
 
@@ -22,8 +49,6 @@ Or Use Docker:
 See [/dubbo-go-sample/zipkin/docker/docker-compose.yml](docker-compose.yml)
 
 ```dockerfile
-version: '2.4'
-
 services:
   # The zipkin process services the UI, and also exposes a POST endpoint that
   # instrumentation can send trace data to.
@@ -46,15 +71,12 @@ services:
     # command: --logging.level.zipkin2=DEBUG
 ```
 
-
 ```bash
 docker-compose -f docker/docker-compose.yml up -d zipkin
 ```
 
+### How To Run
 
-
-![img.png](img.png)
-
-
+Refer to  [HOWTO.md](../HOWTO_zh.md) under the root directory to run this sample.
 
 
