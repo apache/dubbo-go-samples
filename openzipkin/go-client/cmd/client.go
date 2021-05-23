@@ -130,6 +130,7 @@ func registerZipkin() {
 	//sampler := zipkin.NewModuloSampler(1)
 
 	// initialize our tracer
+	//nativeTracer, err := zipkin.NewTracer(reporter, zipkin.WithLocalEndpoint(endpoint), zipkin.WithSampler(sampler))
 	nativeTracer, err := zipkin.NewTracer(reporter, zipkin.WithLocalEndpoint(endpoint))
 
 	if err != nil {

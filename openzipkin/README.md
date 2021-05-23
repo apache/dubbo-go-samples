@@ -8,8 +8,6 @@ Zipkin is a distributed tracing system. It helps gather timing data needed to tr
 
 
 
-###
-
 ```markdown
 .
 ├── README.md
@@ -25,6 +23,93 @@ Zipkin is a distributed tracing system. It helps gather timing data needed to tr
 - go-server-a ：The Service Provider A
 - go-server-b ：The Service Provider B
 
+## Code
+
+register Zipkin. Reporter，Endpoint，Tracer，default sample `AlwaysSample` 
+
+```go
+func registerZipkin() {
+	// set up a span reporter
+	reporter := zipkinhttp.NewReporter("http://localhost:9411/api/v2/spans")
+
+	// create our local service endpoint
+	endpoint, err := zipkin.NewEndpoint("go-server-a", "localhost:80")
+	if err != nil {
+		gxlog.CError("unable to create local endpoint: %+v\n", err)
+	}
+
+    // set sampler , default AlwaysSample
+    // sampler := zipkin.NewModuloSampler(1)
+
+	// initialize our tracer
+	// nativeTracer, err := zipkin.NewTracer(reporter, zipkin.WithLocalEndpoint(endpoint), zipkin.WithSampler(sampler))
+	nativeTracer, err := zipkin.NewTracer(reporter, zipkin.WithLocalEndpoint(endpoint))
+	if err != nil {
+		gxlog.CError("unable to create tracer: %+v\n", err)
+	}
+
+	// use zipkin-go-opentracing to wrap our tracer
+	tracer := zipkinot.Wrap(nativeTracer)
+
+	// optionally set as Global OpenTracing tracer instance
+	opentracing.SetGlobalTracer(tracer)
+}
+```
+
+## Config
+
+Provider config filter：
+
+```yaml
+
+services:
+  ...
+filter: "tracing"
+
+```
+
+## Filter
+
+Dubbo-go support `opentrace filter` 实现，基于简单配置即可
+
+```go
+func (tf *tracingFilter) Invoke(ctx context.Context, invoker protocol.Invoker, invocation protocol.Invocation) protocol.Result {
+	var (
+		spanCtx context.Context
+		span    opentracing.Span
+	)
+	operationName := invoker.GetUrl().ServiceKey() + "#" + invocation.MethodName()
+
+	wiredCtx := ctx.Value(constant.TRACING_REMOTE_SPAN_CTX)
+	preSpan := opentracing.SpanFromContext(ctx)
+
+	if preSpan != nil {
+		// it means that someone already create a span to trace, so we use the span to be the parent span
+		span = opentracing.StartSpan(operationName, opentracing.ChildOf(preSpan.Context()))
+		spanCtx = opentracing.ContextWithSpan(ctx, span)
+
+	} else if wiredCtx != nil {
+
+		// it means that there has a remote span, usually from client side. so we use this as the parent
+		span = opentracing.StartSpan(operationName, opentracing.ChildOf(wiredCtx.(opentracing.SpanContext)))
+		spanCtx = opentracing.ContextWithSpan(ctx, span)
+	} else {
+		// it means that there is not any span, so we create a span as the root span.
+		span, spanCtx = opentracing.StartSpanFromContext(ctx, operationName)
+	}
+
+	defer func() {
+		span.Finish()
+	}()
+
+	result := invoker.Invoke(spanCtx, invocation)
+	span.SetTag(successKey, result.Error() == nil)
+	if result.Error() != nil {
+		span.LogFields(log.String(errorKey, result.Error().Error()))
+	}
+	return result
+}
+```
 
 ## Install Zipkin
 
