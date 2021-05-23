@@ -19,11 +19,6 @@ package main
 
 import (
 	"fmt"
-	gxlog "github.com/dubbogo/gost/log"
-	"github.com/opentracing/opentracing-go"
-	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
-	"github.com/openzipkin/zipkin-go"
-	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -41,10 +36,16 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	gxlog "github.com/dubbogo/gost/log"
+	// trace: zipkin
+	"github.com/opentracing/opentracing-go"
+	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
+	"github.com/openzipkin/zipkin-go"
+	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/group/go-server-group-b/pkg"
+	"github.com/apache/dubbo-go-samples/openzipkin/go-server-b/pkg"
 )
 
 var (

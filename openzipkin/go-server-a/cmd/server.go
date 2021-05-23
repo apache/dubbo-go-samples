@@ -46,7 +46,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/group/go-server-group-a/pkg"
+	"github.com/apache/dubbo-go-samples/openzipkin/go-server-a/pkg"
 )
 
 var (

@@ -29,20 +29,20 @@ type User struct {
 	Time time.Time
 }
 
-type UserProviderGroupA struct {
+type UserProviderA struct {
 	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
 }
 
-func (u *UserProviderGroupA) Reference() string {
-	return "UserProviderGroupA"
+func (u *UserProviderA) Reference() string {
+	return "UserProviderA"
 }
 
-type UserProviderGroupB struct {
+type UserProviderB struct {
 	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
 }
 
-func (u *UserProviderGroupB) Reference() string {
-	return "UserProviderGroupB"
+func (u *UserProviderB) Reference() string {
+	return "UserProviderB"
 }
 
 func (User) JavaClassName() string {

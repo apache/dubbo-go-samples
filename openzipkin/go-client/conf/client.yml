@@ -25,20 +25,18 @@ registries:
 
 # reference config
 references:
-  "UserProviderGroupA":
+  "UserProviderA":
     registry: "demoZk"
     protocol: "dubbo"
-    group: "GroupA"
-    interface: "org.apache.dubbo.UserProvider"
+    interface: "org.apache.dubbo.UserProviderA"
     cluster: "failover"
     methods:
       - name: "GetUser"
         retries: 1
-  "UserProviderGroupB":
+  "UserProviderB":
     registry: "demoZk"
     protocol: "dubbo"
-    group: "GroupB"
-    interface: "org.apache.dubbo.UserProvider"
+    interface: "org.apache.dubbo.UserProviderB"
     cluster: "failover"
     methods:
       - name: "GetUser"

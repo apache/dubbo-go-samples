@@ -48,13 +48,13 @@ type UserProvider struct {
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
 	gxlog.CInfo("req:%#v", req)
 	time.Sleep(time.Duration(rand.Intn(977)+300) * time.Millisecond)
-	rsp := User{"A001", "Alex Stocks In Group B", 18, time.Now()}
+	rsp := User{"A001", "Alex Stocks In Provider B", 18, time.Now()}
 	gxlog.CInfo("rsp:%#v", rsp)
 	return &rsp, nil
 }
 
 func (u *UserProvider) Reference() string {
-	return "UserProvider"
+	return "UserProviderB"
 }
 
 func (u User) JavaClassName() string {

@@ -5,9 +5,10 @@
     <envs>
       <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/openzipkin/go-server-a/conf/log.yml" />
       <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/openzipkin/go-server-a/conf/server.yml" />
+      <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/openzipkin/go-server-a/conf/client.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/openzipkin/go-server-group-a/cmd/server.go" />
+    <filePath value="$PROJECT_DIR$/openzipkin/go-server-a/cmd/server.go" />
     <package value="github.com/apache/dubbo-go-samples/openzipkin/go-server-a/cmd" />
     <directory value="$PROJECT_DIR$" />
     <method v="2" />

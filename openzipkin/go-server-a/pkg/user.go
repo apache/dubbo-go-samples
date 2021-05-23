@@ -29,8 +29,11 @@ import (
 	"github.com/dubbogo/gost/log"
 )
 
+var userProviderB = new(UserProviderB)
+
 func init() {
 	config.SetProviderService(new(UserProvider))
+	config.SetConsumerService(userProviderB)
 	hessian.RegisterPOJO(&User{})
 }
 
@@ -49,13 +52,37 @@ func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, e
 	time.Sleep(time.Duration(rand.Intn(977)+300) * time.Millisecond)
 	rsp := User{"A001", "Alex Stocks In Group A", 18, time.Now()}
 	gxlog.CInfo("rsp:%#v", rsp)
+
+	gxlog.CInfo("request provider B , req:%#v", req)
+	getUserB(ctx)
+
 	return &rsp, nil
 }
 
+func getUserB(ctx context.Context) {
+
+	time.Sleep(time.Duration(rand.Intn(977)+300) * time.Millisecond)
+	user := &User{}
+	err := userProviderB.GetUser(ctx, []interface{}{"A001"}, user)
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		return
+	}
+	gxlog.CInfo("response result: %v\n", user)
+}
+
 func (u *UserProvider) Reference() string {
-	return "UserProvider"
+	return "UserProviderA"
 }
 
 func (u User) JavaClassName() string {
 	return "org.apache.dubbo.User"
+}
+
+type UserProviderB struct {
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+}
+
+func (u *UserProviderB) Reference() string {
+	return "UserProviderB"
 }

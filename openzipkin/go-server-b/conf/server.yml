@@ -17,12 +17,11 @@ registries:
 
 # service config
 services:
-  "UserProvider":
+  "UserProviderB":
     registry: "demoZk"
     protocol: "dubbo"
-    interface: "org.apache.dubbo.UserProvider"
+    interface: "org.apache.dubbo.UserProviderB"
     loadbalance: "random"
-    group: "GroupB"
     warmup: "100"
     cluster: "failover"
     methods:

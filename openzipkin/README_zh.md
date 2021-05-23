@@ -9,8 +9,6 @@ Zipkin是一个分布式跟踪系统。它有助于收集解决 Dubbo-go 服务�
 
 本示例演示了 Zipkin 在 Dubbo-go 应用程序中的基本用法。
 
-## 目录
-
 ```markdown
 .
 ├── README.md
@@ -25,6 +23,13 @@ Zipkin是一个分布式跟踪系统。它有助于收集解决 Dubbo-go 服务�
 - go-client ：服务消费者
 - go-server-a ：服务提供者 A
 - go-server-b ：服务提供者 B
+
+为了演示效果，示例中 Client 会同时对 ProviderA 与 ProviderB 发起请求，
+ProviderA 内部也会对 ProviderB 发起请求！
+
+依赖关系：
+![dependency.png](doc/app_dependency.png)
+
 
 ## 代码说明
 
@@ -168,3 +173,7 @@ services:
 ## 如何运行
 请参阅根目录中的 [HOWTO.md](../HOWTO_zh.md) 来运行本例。
 
+## 效果
+
+链路：
+![zipkin_trace.png](doc/zipkin_trace.png)

@@ -6,8 +6,6 @@ Zipkin is a distributed tracing system. It helps gather timing data needed to tr
 
 ## Introduction
 
-
-
 ```markdown
 .
 ├── README.md
@@ -22,6 +20,12 @@ Zipkin is a distributed tracing system. It helps gather timing data needed to tr
 - go-client ：The Service Consumer
 - go-server-a ：The Service Provider A
 - go-server-b ：The Service Provider B
+
+Client calls ProviderA , and then calls ProviderB,
+ProviderA also makes a request to ProviderB！
+
+依赖关系：
+![dependency.png](doc/app_dependency.png)
 
 ## Code
 
@@ -164,4 +168,7 @@ docker-compose -f docker/docker-compose.yml up -d zipkin
 
 Refer to  [HOWTO.md](../HOWTO_zh.md) under the root directory to run this sample.
 
+## The End
 
+Trace ：
+![zipkin_trace.png](doc/zipkin_trace.png)

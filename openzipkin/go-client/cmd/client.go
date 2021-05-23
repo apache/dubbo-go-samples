@@ -45,11 +45,11 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/group/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/openzipkin/go-client/pkg"
 )
 
-var userProviderA = new(pkg.UserProviderGroupA)
-var userProviderB = new(pkg.UserProviderGroupB)
+var userProviderA = new(pkg.UserProviderA)
+var userProviderB = new(pkg.UserProviderB)
 
 func init() {
 	config.SetConsumerService(userProviderA)
