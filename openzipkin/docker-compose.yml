@@ -1,0 +1,58 @@
+version: '2.4'
+
+services:
+  zipkin:
+    image: ghcr.io/openzipkin/zipkin-slim:${TAG:-latest}
+    container_name: zipkin
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
+    environment:
+      - STORAGE_TYPE=mem
+      # Point the zipkin at the storage backend
+      - MYSQL_HOST=mysql
+      # Uncomment to enable self-tracing
+      # - SELF_TRACING_ENABLED=true
+      # Uncomment to increase heap size
+      # - JAVA_OPTS=-Xms128m -Xmx128m -XX:+ExitOnOutOfMemoryError
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411
+    # Uncomment to enable debug logging
+    # command: --logging.level.zipkin2=DEBUG
+  prometheus:
+    # Use a quay.io mirror to prevent build outages due to Docker Hub pull quotas
+    # Use latest from https://quay.io/repository/prometheus/prometheus?tab=tags
+    image: quay.io/prometheus/prometheus:latest
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    depends_on:
+      - zipkin
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    # Use a quay.io mirror to prevent build outages due to Docker Hub pull quotas
+    # Use latest from https://quay.io/repository/app-sre/grafana?tab=tags
+    image: quay.io/app-sre/grafana:7.3.4
+#    image: quay.io/opencloudio/ibm-monitoring-grafana-operator:1.12.0
+    container_name: grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+
+  setup_grafana_datasource:
+    # This is an arbitrary small image that has curl installed
+    # Use a quay.io mirror to prevent build outages due to Docker Hub pull quotas
+    # Use latest from https://quay.io/repository/quay.io/rackspace/curl?tab=tags
+    image: quay.io/rackspace/curl:7.70.0
+    container_name: setup_grafana_datasource
+    depends_on:
+      - grafana
+    volumes:
+      - ./prometheus/create-datasource-and-dashboard.sh:/tmp/create.sh:ro
+    working_dir: /tmp
+    entrypoint: /tmp/create.sh

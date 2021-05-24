@@ -2,6 +2,7 @@ module github.com/apache/dubbo-go-samples
 
 require (
 	cloud.google.com/go v0.50.0 // indirect
+	contrib.go.opencensus.io/exporter/prometheus v0.3.0
 	github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5 // indirect
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
@@ -13,7 +14,6 @@ require (
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.4.3
 	github.com/gophercloud/gophercloud v0.3.0 // indirect
-	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/imdario/mergo v0.3.9 // indirect
 	github.com/linode/linodego v0.10.0 // indirect
 	github.com/miekg/dns v1.1.27 // indirect
@@ -28,7 +28,8 @@ require (
 	github.com/transaction-wg/seata-golang v0.2.1-alpha
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
-	google.golang.org/grpc v1.33.1
+	go.opencensus.io v0.23.0
+	google.golang.org/grpc v1.33.2
 	google.golang.org/grpc/examples v0.0.0-20210322221411-d26af8e39165 // indirect
 )
 
