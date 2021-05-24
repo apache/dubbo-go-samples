@@ -135,7 +135,7 @@ Once the process starts, you can verify zipkin server works by access http://loc
 
 Or Use Docker:
 
-See [/dubbo-go-sample/zipkin/docker/docker-compose.yml](docker-compose.yml)
+See [/dubbo-go-sample/openzipkin/docker/docker-compose.yml](docker-compose.yml)
 
 ```dockerfile
 services:
@@ -166,7 +166,7 @@ docker-compose -f docker/docker-compose.yml up -d zipkin
 
 ### How To Run
 
-Refer to  [HOWTO.md](../HOWTO_zh.md) under the root directory to run this sample.
+Refer to  [HOWTO.md](../HOWTO.md) under the root directory to run this sample.
 
 ## The End
 
