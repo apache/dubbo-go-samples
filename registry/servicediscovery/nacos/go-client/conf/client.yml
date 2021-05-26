@@ -9,7 +9,7 @@ connect_timeout: "3s"
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoServer"
+  name: "UserInfoTest"
   module: "dubbo-go user-info client"
   version: "0.0.1"
   environment: "dev"
@@ -41,7 +41,7 @@ service_discovery:
 references:
   "UserProvider":
     registry: "demoServiceDiscovery"
-    provided-by: "UserInfoServer"
+    provided_by: "UserInfoServer"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"

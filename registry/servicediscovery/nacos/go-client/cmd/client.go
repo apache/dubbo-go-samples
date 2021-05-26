@@ -59,12 +59,15 @@ func main() {
 	time.Sleep(8 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+	for i := 0; i < 123; i++ {
+		user := &pkg.User{}
+		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+		if err != nil {
+			gxlog.CError("error: %v\n", err)
+			os.Exit(1)
+			return
+		}
+		gxlog.CInfo("response result: %v\n", user)
+		time.Sleep(1 * time.Second)
 	}
-	gxlog.CInfo("response result: %v\n", user)
 }
