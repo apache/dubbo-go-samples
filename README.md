@@ -26,6 +26,7 @@
 * router: router examples, including condition and tag
 * seata: A seata example
 * shopping-center: A complete shopping sample
+* tengine: Tengine Calls Dubbo-go example
 * tls: Use TLS in Dubbo-go application
 * tracing: tracing example
 

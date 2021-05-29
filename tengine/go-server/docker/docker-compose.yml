@@ -1,0 +1,20 @@
+version: "3"
+services:
+  zookeeper:
+    image: zookeeper
+    ports:
+      - 2181:2181
+    restart: on-failure
+  tengine:
+    image: philyue/ubuntu_tengine:2.3.3
+    container_name: tengine
+    restart: on-failure:3
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=zh_CN.UTF-8
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - ./tengine/nginx.conf:/usr/local/nginx/conf/nginx.conf
