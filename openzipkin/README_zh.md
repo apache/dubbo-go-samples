@@ -143,7 +143,7 @@ java -jar zipkin.jar
 
 或者使用 Docker :
 
-See [/dubbo-go-sample/zipkin/docker/docker-compose.yml](docker-compose.yml)
+See [/dubbo-go-sample/openzipkin/docker/docker-compose.yml](docker-compose.yml)
 
 ```dockerfile
 version: '2.4'
