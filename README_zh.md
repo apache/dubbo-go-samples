@@ -21,12 +21,14 @@
 * metric: 在 Dubbo-go 中使用 metrics  
 * multi-registry: 多注册
 * multi-zone: 多区域  
+* openzipkin: Zipkin 在 Dubbo-go 应用示例，收集 Dubbo-go 服务中的延迟问题所需的链路时序数据
 * registry: 展示与不同注册中心的对接，包含了 nacos、etcd、kubernetes 和 servicediscovery
 * router: 展示了不同的路由，包含了 condition 和 tag
 * seata: 展示了与 seata 的对接
-* shopping-center: 一个在线商店的完整的例子
+* shopping-order: 一个在线商店的完整的例子
 * tls: 在 Dubbo-go 中使用 TLS
 * tracing: 链路追踪
+* version: 多版本服务调用示例
 
 ## 如何运行
 

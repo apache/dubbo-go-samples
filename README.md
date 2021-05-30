@@ -22,12 +22,14 @@
 * multi-registry: Register services to different registry centers
 * multi-zone: Call Dubbo services from different zones
 * multi_registry: A multi-registry example
+* openzipkin: Zipkin in Dubbo-go example, It helps Dubbo-go gathering tracing data for troubleshoot latency problems
 * registry: uses of different registres, including kubernetes, nacos, etcd and service-discovery
 * router: router examples, including condition and tag
 * seata: A seata example
-* shopping-center: A complete shopping sample
+* shopping-order: A complete shopping sample
 * tls: Use TLS in Dubbo-go application
 * tracing: tracing example
+* version: multiple versions example
 
 ## How To Run
 
