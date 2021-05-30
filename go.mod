@@ -4,7 +4,6 @@ require (
 	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210515084721-4cb6e4401b78
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
-	github.com/apache/dubbo-go v1.5.6
 	github.com/apache/dubbo-go-hessian2 v1.9.1
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dubbogo/gost v1.11.9
