@@ -15,7 +15,7 @@
 #  limitations under the License.
 
 if [ -z "$1" ]; then
-  echo 'Provide test directory please, like : ./integrate_test.sh $(pwd)/helloworld/go-server .'
+  echo "Provide test directory please, like : ./integrate_test.sh $(pwd)/helloworld/go-server ."
   exit
 fi
 

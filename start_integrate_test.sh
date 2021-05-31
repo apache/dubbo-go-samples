@@ -30,7 +30,10 @@ array+=("filter/custom/go-server")
 array+=("filter/tpslimit/go-server")
 array+=("filter/sentinel/go-server")
 
+# general
 array+=("general/dubbo/go-server")
+array+=("general/dubbo3/hessian2/go-server")
+array+=("general/grpc/go-server")
 
 array+=("generic/go-server")
 
@@ -45,6 +48,7 @@ array+=("metric/go-server")
 
 array+=("registry/zookeeper/go-server")
 array+=("registry/etcd/go-server")
+array+=("registry/nacos/go-server")
 
 # registry/servicediscovery/zookeeper
 array+=("registry/servicediscovery/zookeeper/go-server")
@@ -52,7 +56,7 @@ array+=("registry/servicediscovery/zookeeper/go-server")
 
 for((i=0;i<${#array[*]};i++))
 do
-	./integrate_test.sh ${array[i]}
+	./integrate_test.sh "${array[i]}"
 	result=$?
 	if [ $result -gt 0 ]; then
     exit $result
