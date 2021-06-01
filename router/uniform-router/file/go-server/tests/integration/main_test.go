@@ -24,6 +24,8 @@ import (
 
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	"dubbo.apache.org/dubbo-go/v3/cluster/router/v3router"
+	"dubbo.apache.org/dubbo-go/v3/common/extension"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
@@ -42,6 +44,7 @@ import (
 var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {
+	extension.SetRouterFactory("uniform", v3router.NewUniformRouterFactory)
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
 	config.Load()

@@ -53,6 +53,10 @@ array+=("registry/nacos/go-server")
 # registry/servicediscovery/zookeeper
 array+=("registry/servicediscovery/zookeeper/go-server")
 
+# router
+array+=("router/uniform-router/file/go-server")
+array+=("router/uniform-router/file/go-server2")
+
 
 for((i=0;i<${#array[*]};i++))
 do
