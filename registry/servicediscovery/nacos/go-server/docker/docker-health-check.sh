@@ -1,3 +1,3 @@
 sleep 10
-curl http://localhost:8848/nacos/v1/console/health/liveness
+curl http://127.0.0.1:8848/nacos/v1/console/health/liveness
 sleep 20
