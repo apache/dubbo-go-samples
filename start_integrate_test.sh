@@ -22,6 +22,9 @@ array+=("configcenter/apollo/go-server")
 array+=("configcenter/nacos/go-server")
 array+=("configcenter/zookeeper/go-server")
 
+# context
+array+=("context/go-server")
+
 # direct
 array+=("direct/go-server")
 
@@ -36,6 +39,10 @@ array+=("general/dubbo3/hessian2/go-server")
 array+=("general/grpc/go-server")
 
 array+=("generic/go-server")
+
+# group
+array+=("group/go-server-group-a")
+array+=("group/go-server-group-b")
 
 # hello world
 array+=("helloworld/go-server")
