@@ -23,8 +23,8 @@ P_DIR=$(pwd)/$1
 
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile docker-up
 
-# sleep 5 second for some program in docker init completely such as nacos
-sleep 5s
+# check docker health
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile docker-health-check
 
 # start server
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile start
