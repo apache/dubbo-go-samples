@@ -36,6 +36,7 @@ service_discovery:
   nacos1:
     protocol: "nacos"
     remote_ref: "nacos"
+    group: "dubbo"
 
 # reference config
 references:
