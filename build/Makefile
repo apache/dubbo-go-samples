@@ -120,6 +120,12 @@ start: build
 	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
 
+## start: print application log (for server)
+.PHONY: print-server-log
+print-server-log:
+	$(info   >  print server log with $(LOG_FILE))
+	@-cat $(LOG_FILE)
+
 ## run: Run the application (for client)
 .PHONY: run
 run: export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
