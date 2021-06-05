@@ -38,6 +38,3 @@ func (g *GreeterProvider) SayHello(ctx context.Context, req *protobuf.HelloReque
 	return &protobuf.HelloReply{Message: "this is message from reply"}, nil
 }
 
-func (g *GreeterProvider) Reference() string {
-	return "GrpcGreeterImpl"
-}
