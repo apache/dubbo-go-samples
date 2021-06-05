@@ -413,6 +413,10 @@ func (s *GreeterProviderBase) GetProxyImpl() protocol.Invoker {
 	return s.proxyImpl
 }
 
+func (c *GreeterProviderBase) Reference() string {
+	return "greeterImpl"
+}
+
 func _DUBBO_Greeter_SayHelloTwoSidesStream_Handler(srv interface{}, stream grpc.ServerStream) error {
 	_, ok := srv.(dgrpc.DubboGrpcService)
 	invo := invocation.NewRPCInvocation("SayHelloTwoSidesStream", nil, nil)
