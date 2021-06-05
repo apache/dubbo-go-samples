@@ -20,10 +20,6 @@
 package integration
 
 import (
-	"context"
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-	"google.golang.org/grpc"
-
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
@@ -40,8 +36,11 @@ import (
 	"testing"
 	"time"
 )
+import (
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
+)
 
-var grpcGreeterImpl = new(GrpcGreeterImpl)
+var grpcGreeterImpl = new(protobuf.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(grpcGreeterImpl)
@@ -49,16 +48,4 @@ func TestMain(m *testing.M) {
 	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
-}
-
-type GrpcGreeterImpl struct {
-	SayHello func(ctx context.Context, in *protobuf.HelloRequest, out *protobuf.HelloReply) error
-}
-
-func (u *GrpcGreeterImpl) Reference() string {
-	return "GrpcGreeterImpl"
-}
-
-func (u *GrpcGreeterImpl) GetDubboStub(cc *grpc.ClientConn) protobuf.GreeterClient {
-	return protobuf.NewGreeterClient(cc)
 }
