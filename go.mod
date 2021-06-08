@@ -1,10 +1,10 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210515084721-4cb6e4401b78
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210607024529-7ef3eff3cc00
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
-	github.com/apache/dubbo-go-hessian2 v1.9.1
+	github.com/apache/dubbo-go-hessian2 v1.9.2
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dubbogo/gost v1.11.9
 	github.com/dubbogo/triple v1.0.0
@@ -20,6 +20,7 @@ require (
 	github.com/transaction-wg/seata-golang v0.2.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
+	github.com/willf/bitset v1.1.10 // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
 	google.golang.org/grpc v1.36.0
 	google.golang.org/protobuf v1.26.0
