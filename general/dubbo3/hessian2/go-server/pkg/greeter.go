@@ -19,11 +19,10 @@ package pkg
 
 import (
 	"context"
-)
-import (
-	"github.com/dubbogo/gost/log"
-)
-import (
+	"time"
+
+	gxlog "github.com/dubbogo/gost/log"
+
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
@@ -36,6 +35,7 @@ type User struct {
 	Id   string
 	Name string
 	Age  int32
+	Time time.Time
 }
 
 type UserProvider struct {
@@ -43,7 +43,7 @@ type UserProvider struct {
 
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
 	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18}
+	rsp := User{"A001", "Alex Stocks", 18, time.Now().Local()}
 	gxlog.CInfo("rsp:%#v", rsp)
 	return &rsp, nil
 }
@@ -53,5 +53,5 @@ func (u *UserProvider) Reference() string {
 }
 
 func (u User) JavaClassName() string {
-	return "com.apache.dubbo.sample.basic.User"
+	return "org.apache.dubbo.User"
 }

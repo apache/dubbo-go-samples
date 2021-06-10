@@ -22,9 +22,7 @@ package integration
 import (
 	"context"
 	"testing"
-)
 
-import (
 	"github.com/stretchr/testify/assert"
 )
 

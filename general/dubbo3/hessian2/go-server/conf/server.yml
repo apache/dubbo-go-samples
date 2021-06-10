@@ -21,7 +21,7 @@ services:
     registry: "demoZK"
     protocol: "tri" # tri is dubbo-go3.0 protocol
     serialization: "hessian2" # hessian is serialization type
-    interface: "com.apache.dubbo.sample.basic.IGreeter"
+    interface: "org.apache.dubbo.User"
 
 # protocol config
 protocols:
