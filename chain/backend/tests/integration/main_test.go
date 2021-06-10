@@ -20,15 +20,15 @@
 package integration
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3common/proxy/proxy_factory"
-	"dubbo.apache.org/dubbo-go/v3config"
-	_ "dubbo.apache.org/dubbo-go/v3filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3metadata/service/inmemory"
-	_ "dubbo.apache.org/dubbo-go/v3protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
 import (
