@@ -25,7 +25,7 @@ registries:
 
 # reference config
 references:
-  "GrpcGreeterImpl":
+  "greeterImpl":
     registry: "demoZk"
     protocol: "grpc"
     interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
