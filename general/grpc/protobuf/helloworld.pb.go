@@ -243,6 +243,10 @@ func (s *GreeterProviderBase) GetProxyImpl() protocol.Invoker {
 	return s.proxyImpl
 }
 
+func (c *GreeterProviderBase) Reference() string {
+	return "greeterImpl"
+}
+
 func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
@@ -253,7 +257,7 @@ func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec f
 	args = append(args, in)
 	invo := invocation.NewRPCInvocation("SayHello", args, nil)
 	if interceptor == nil {
-		result := base.GetProxyImpl().Invoke(context.Background(), invo)
+		result := base.GetProxyImpl().Invoke(ctx, invo)
 		return result.Result(), result.Error()
 	}
 	info := &grpc.UnaryServerInfo{
@@ -261,7 +265,7 @@ func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/protobuf.Greeter/SayHello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		result := base.GetProxyImpl().Invoke(context.Background(), invo)
+		result := base.GetProxyImpl().Invoke(ctx, invo)
 		return result.Result(), result.Error()
 	}
 	return interceptor(ctx, in, info, handler)
