@@ -19,9 +19,6 @@ package main
 
 import (
 	"context"
-	"github.com/apache/dubbo-go-samples/general/grpc/go-client/pkg"
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-	"github.com/dubbogo/gost/log"
 	"time"
 )
 
@@ -35,9 +32,14 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/grpc"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	"github.com/dubbogo/gost/log"
 )
 
-var grpcGreeterImpl = new(pkg.GrpcGreeterImpl)
+import (
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
+)
+
+var grpcGreeterImpl = new(protobuf.GreeterClientImpl)
 
 func init() {
 	config.SetConsumerService(grpcGreeterImpl)

@@ -22,25 +22,18 @@ import (
 	"fmt"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-)
 
 type GreeterProvider struct {
-	*protobuf.GreeterProviderBase
+	*GreeterProviderBase
 }
 
 func NewGreeterProvider() *GreeterProvider {
 	return &GreeterProvider{
-		GreeterProviderBase: &protobuf.GreeterProviderBase{},
+		GreeterProviderBase: &GreeterProviderBase{},
 	}
 }
 
-func (g *GreeterProvider) SayHello(ctx context.Context, req *protobuf.HelloRequest) (reply *protobuf.HelloReply, err error) {
+func (g *GreeterProvider) SayHello(ctx context.Context, req *HelloRequest) (reply *HelloReply, err error) {
 	fmt.Printf("req: %v", req)
-	return &protobuf.HelloReply{Message: "this is message from reply"}, nil
-}
-
-func (g *GreeterProvider) Reference() string {
-	return "GrpcGreeterImpl"
+	return &HelloReply{Message: "this is message from reply"}, nil
 }
