@@ -6,7 +6,7 @@ require (
 	github.com/apache/dubbo-getty v1.4.3
 	github.com/apache/dubbo-go-hessian2 v1.9.2
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/dubbogo/gost v1.11.9
+	github.com/dubbogo/gost v1.11.11
 	github.com/dubbogo/triple v1.0.0
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.5.2
@@ -26,10 +26,6 @@ require (
 	google.golang.org/protobuf v1.26.0
 )
 
-replace (
-	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
-	github.com/nacos-group/nacos-sdk-go => github.com/nacos-group/nacos-sdk-go v1.0.7-0.20210325111144-d75caca21a46
-	github.com/shirou/gopsutil => github.com/shirou/gopsutil v0.0.0-20181107111621-48177ef5f880
-)
+replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
 go 1.13
