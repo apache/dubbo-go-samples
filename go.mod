@@ -1,13 +1,13 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210607024529-7ef3eff3cc00
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210613014016-7fedc22e18a6
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
 	github.com/apache/dubbo-go-hessian2 v1.9.2
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/dubbogo/gost v1.11.9
-	github.com/dubbogo/triple v1.0.0
+	github.com/dubbogo/gost v1.11.11
+	github.com/dubbogo/triple v1.0.1-0.20210606070217-0815f3a0a013
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.2.0 // indirect
@@ -25,9 +25,6 @@ require (
 	google.golang.org/protobuf v1.26.0
 )
 
-replace (
-	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
-	github.com/nacos-group/nacos-sdk-go => github.com/nacos-group/nacos-sdk-go v1.0.7-0.20210325111144-d75caca21a46
-)
+replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
 go 1.13
