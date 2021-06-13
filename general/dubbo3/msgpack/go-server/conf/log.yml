@@ -1,9 +1,4 @@
-<<<<<<< HEAD:general/dubbo3/msgpack/go-server/conf/log.yml
 level: "info"
-=======
-
-level: "error"
->>>>>>> 3.0:tengine/go-server/conf/log.yml
 development: true
 disableCaller: false
 disableStacktrace: false
