@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,78 +15,64 @@
  * limitations under the License.
  */
 
-package integration
+package main
+
+import (
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+)
 
 import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
 import (
-	"os"
-	"testing"
-	"time"
+	_ "github.com/apache/dubbo-go-samples/tengine/go-server/pkg"
 )
 
-var cat = new(CatService)
-var dog = new(DogService)
-var tiger = new(TigerService)
-var lion = new(LionService)
+var (
+	survivalTimeout = int(3e9)
+)
 
-func TestMain(m *testing.M) {
-	config.SetConsumerService(cat)
-	config.SetConsumerService(dog)
-	config.SetConsumerService(tiger)
-	config.SetConsumerService(lion)
+// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
+func main() {
+
 	config.Load()
-	time.Sleep(3 * time.Second)
 
-	os.Exit(m.Run())
+	initSignal()
+
 }
 
-type CatService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
+func initSignal() {
+	signals := make(chan os.Signal, 1)
+	// It is not possible to block SIGKILL or syscall.SIGSTOP
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	for {
+		sig := <-signals
+		logger.Infof("get signal %s", sig.String())
+		switch sig {
+		case syscall.SIGHUP:
+			// reload()
+		default:
+			time.AfterFunc(time.Duration(survivalTimeout), func() {
+				logger.Warnf("app exit now by force...")
+				os.Exit(1)
+			})
 
-func (c *CatService) Reference() string {
-	return "CatService"
-}
-
-type DogService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
-
-func (d *DogService) Reference() string {
-	return "DogService"
-}
-
-type TigerService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
-
-func (t *TigerService) Reference() string {
-	return "TigerService"
-}
-
-type LionService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
-
-func (l *LionService) Reference() string {
-	return "LionService"
+			// The program exits normally or timeout forcibly exits.
+			fmt.Println("provider app exit now...")
+			return
+		}
+	}
 }

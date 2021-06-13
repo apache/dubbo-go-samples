@@ -1,25 +1,20 @@
 # dubbo client yaml configure file
 
-
 check: true
 # client
 request_timeout : "3s"
 # connect timeout
 connect_timeout : "3s"
 
-config_center:
-  protocol: "zookeeper"
-  address: "127.0.0.1:2181"
-
 # application config
 application:
-  organization : "ikurento.com"
-  name  : "BDTService"
-  module : "dubbogo say-hello client"
+  organization : "dubbo.io"
+  name  : "UserConsumerTest"
+  module : "dubbo-go user-info client"
   version : "0.0.1"
-  owner : "ZX"
   environment : "dev"
 
+# registry config
 registries :
   "demoZk":
     protocol: "zookeeper"
@@ -28,24 +23,26 @@ registries :
     username: ""
     password: ""
 
+# reference config
 references:
-  "greeterImpl":
-    # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册
+  "UserProvider":
     registry: "demoZk"
-    protocol : "grpc"
-    interface : "io.grpc.examples.helloworld.GreeterGrpc$IGreeter"
+    protocol : "dubbo"
+    interface : "org.apache.dubbo.UserProvider"
     cluster: "failover"
+    # this is necessary to enable direct-invoking.
+    url:  "dubbo://127.0.0.1:20000"
     methods :
-      - name: "SayHello"
-        retries: 3
+    - name: "GetUser"
+      retries: 3
 
-
+# protocol config
 protocol_conf:
-  grpc:
+  dubbo:
     reconnect_interval: 0
-    connection_number: 2
+    connection_number: 1
     heartbeat_period: "5s"
-    session_timeout: "20s"
+    session_timeout: "180s"
     pool_size: 64
     pool_ttl: 600
     getty_session_param:
@@ -55,9 +52,10 @@ protocol_conf:
       keep_alive_period: "120s"
       tcp_r_buf_size: 262144
       tcp_w_buf_size: 65536
+      pkg_rq_size: 1024
       pkg_wq_size: 512
       tcp_read_timeout: "1s"
       tcp_write_timeout: "5s"
       wait_timeout: "1s"
-      max_msg_len: 10240
+      max_msg_len: 1024000
       session_name: "client"

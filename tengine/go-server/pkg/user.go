@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,36 +15,40 @@
  * limitations under the License.
  */
 
-package integration
+package pkg
 
 import (
-	"os"
-	"testing"
+	"context"
 	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	"github.com/dubbogo/gost/log"
 )
 
-import(
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-)
+func init() {
+	config.SetProviderService(new(UserProvider))
+}
 
-var grpcGreeterImpl = new(protobuf.GreeterClientImpl)
+type UserProvider struct {
+}
 
-func TestMain(m *testing.M) {
-	config.SetConsumerService(grpcGreeterImpl)
-	config.Load()
-	time.Sleep(3 * time.Second)
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (map[string]interface{}, error) {
 
-	os.Exit(m.Run())
+	gxlog.CInfo("req:%#v", req)
+
+	umap := make(map[string]interface{})
+	umap["ID"] = "A001"
+	umap["Name"] = "Alex Stocks"
+	umap["Age"] = 18
+	umap["Time"] = time.Now()
+
+	gxlog.CInfo("rsp:%#v", umap)
+
+	return umap, nil
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
 }
