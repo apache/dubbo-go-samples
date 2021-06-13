@@ -30,7 +30,13 @@ array+=("filter/custom/go-server")
 array+=("filter/tpslimit/go-server")
 array+=("filter/sentinel/go-server")
 
+# general-dubbo
 array+=("general/dubbo/go-server")
+
+# general-dubbo3(triple)
+array+=("general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server")
+array+=("general/dubbo3/pb/dubbogo-java/go-server")
+array+=("general/dubbo3/hessian2/go-server")
 
 array+=("generic/go-server")
 

@@ -41,9 +41,9 @@ type User struct {
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18}
+func (u *UserProvider) GetUser(ctx context.Context, usr *User) (*User, error) {
+	gxlog.CInfo("req:%#v", usr)
+	rsp := User{"12345", "" + usr.Name, 18}
 	gxlog.CInfo("rsp:%#v", rsp)
 	return &rsp, nil
 }
