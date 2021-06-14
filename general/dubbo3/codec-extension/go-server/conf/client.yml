@@ -28,5 +28,5 @@ references:
   "UserProvider":
     registry: "demoZk"
     protocol: "tri"
-    serialization: "msgpack"
-    interface: "org.apache.dubbo.UserProvider"
+    serialization: "json"
+    interface: "com.apache.dubbo.sample.basic.IGreeter"

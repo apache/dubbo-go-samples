@@ -37,7 +37,8 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/msgpack/go-client/pkg"
+	_ "github.com/apache/dubbo-go-samples/general/dubbo3/codec-extension/go-client/codec"
+	"github.com/apache/dubbo-go-samples/general/dubbo3/codec-extension/go-client/pkg"
 )
 
 var userProvider = new(pkg.UserProvider)

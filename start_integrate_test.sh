@@ -31,6 +31,8 @@ array+=("filter/tpslimit/go-server")
 array+=("filter/sentinel/go-server")
 
 array+=("general/dubbo/go-server")
+array+=("general/dubbo3/codec-extension/go-server")
+array+=("general/dubbo3/msgpack/go-server")
 
 array+=("generic/go-server")
 
@@ -48,6 +50,7 @@ array+=("registry/etcd/go-server")
 
 # registry/servicediscovery/zookeeper
 array+=("registry/servicediscovery/zookeeper/go-server")
+
 
 
 for((i=0;i<${#array[*]};i++))

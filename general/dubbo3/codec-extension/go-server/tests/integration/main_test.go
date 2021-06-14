@@ -27,7 +27,6 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
@@ -43,10 +42,8 @@ var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
-
 	os.Exit(m.Run())
 }
 
@@ -54,17 +51,12 @@ type User struct {
 	ID   string
 	Name string
 	Age  int32
-	Time time.Time
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser func(ctx context.Context, req *User, rsp *User) error
 }
 
 func (u *UserProvider) Reference() string {
 	return "UserProvider"
-}
-
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
 }

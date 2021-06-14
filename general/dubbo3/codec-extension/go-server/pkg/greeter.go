@@ -25,7 +25,7 @@ import (
 )
 
 type User struct {
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 }
@@ -35,7 +35,7 @@ type UserProvider struct {
 
 func (u *UserProvider) GetUser(ctx context.Context,user *User) (*User, error) {
 	gxlog.CInfo("req:%#v", user)
-	rsp := User{"A001", "laurence", 18}
+	rsp := User{"12345", "Hello " + user.Name, 18}
 	gxlog.CInfo("rsp:%#v", rsp)
 	return &rsp, nil
 }

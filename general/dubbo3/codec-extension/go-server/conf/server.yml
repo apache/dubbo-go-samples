@@ -20,7 +20,7 @@ services:
   "UserProvider":
     registry: "demoZK"
     protocol: "tri" # tri is dubbo-go3.0 protocol
-    serialization: "msgpack" # msgpack is serialization type
+    serialization: "json" # json is user defined serialization type
     interface: "com.apache.dubbo.sample.basic.IGreeter"
 
 # protocol config

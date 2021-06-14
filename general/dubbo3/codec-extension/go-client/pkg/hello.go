@@ -22,7 +22,7 @@ import (
 )
 
 type User struct {
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 }

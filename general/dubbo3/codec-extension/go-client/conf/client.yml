@@ -28,6 +28,6 @@ references:
   "UserProvider":
     registry: "demoZk"
     protocol: "tri"
-    serialization: "msgpack"
+    serialization: "json"
 #    url: "dubbo://127.0.0.1:20000" # target server ip:port
     interface: "com.apache.dubbo.sample.basic.IGreeter"

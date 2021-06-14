@@ -30,10 +30,9 @@ import (
 
 func TestGetUser(t *testing.T) {
 	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	err := userProvider.GetUser(context.TODO(), &User{Name: "laurence"}, user)
 	assert.Nil(t, err)
-	assert.Equal(t, "A001", user.ID)
-	assert.Equal(t, "Alex Stocks", user.Name)
+	assert.Equal(t, "12345", user.ID)
+	assert.Equal(t, "Hello laurence", user.Name)
 	assert.Equal(t, int32(18), user.Age)
-	assert.NotNil(t, user.Time)
 }

@@ -40,7 +40,8 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/msgpack/go-server/pkg"
+	_ "github.com/apache/dubbo-go-samples/general/dubbo3/codec-extension/go-client/codec"
+	"github.com/apache/dubbo-go-samples/general/dubbo3/codec-extension/go-server/pkg"
 )
 
 var (
