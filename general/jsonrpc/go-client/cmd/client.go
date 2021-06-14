@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/apache/dubbo-go-samples/general/jsonrpc/go-client/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -46,7 +47,16 @@ import (
 
 var (
 	survivalTimeout int = 10e9
+	userProvider  = new(pkg.UserProvider)
+	userProvider1 = new(pkg.UserProvider1)
+	userProvider2 = new(pkg.UserProvider2)
 )
+
+func init() {
+	config.SetConsumerService(userProvider)
+	config.SetConsumerService(userProvider1)
+	config.SetConsumerService(userProvider2)
+}
 
 // they are necessary:
 // 		export CONF_CONSUMER_FILE_PATH="xxx"
@@ -101,7 +111,7 @@ func test() {
 	time.Sleep(3e9)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &JsonRPCUser{}
+	user := &pkg.JsonRPCUser{}
 	err = userProvider.GetUser(context.TODO(), []interface{}{"A003"}, user)
 	if err != nil {
 		panic(err)
@@ -123,7 +133,7 @@ func test() {
 	gxlog.CInfo("response result: %v", ret1)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc - getUser")
-	user = &JsonRPCUser{}
+	user = &pkg.JsonRPCUser{}
 	err = userProvider.GetUser2(context.TODO(), []interface{}{1}, user)
 	if err != nil {
 		panic(err)
@@ -157,7 +167,7 @@ func test1() {
 	time.Sleep(3e9)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &JsonRPCUser{}
+	user := &pkg.JsonRPCUser{}
 	err = userProvider1.GetUser(context.TODO(), []interface{}{"A003"}, user)
 	if err != nil {
 		panic(err)
@@ -179,7 +189,7 @@ func test1() {
 	gxlog.CInfo("response result: %v", ret1)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc - getUser")
-	user = &JsonRPCUser{}
+	user = &pkg.JsonRPCUser{}
 	err = userProvider1.GetUser2(context.TODO(), []interface{}{1}, user)
 	if err != nil {
 		panic(err)
@@ -213,7 +223,7 @@ func test2() {
 	time.Sleep(3e9)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &JsonRPCUser{}
+	user := &pkg.JsonRPCUser{}
 	err = userProvider2.GetUser(context.TODO(), []interface{}{"A003"}, user)
 	if err != nil {
 		panic(err)
@@ -235,7 +245,7 @@ func test2() {
 	gxlog.CInfo("response result: %v", ret1)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc - getUser")
-	user = &JsonRPCUser{}
+	user = &pkg.JsonRPCUser{}
 	err = userProvider2.GetUser2(context.TODO(), []interface{}{1}, user)
 	if err != nil {
 		panic(err)
