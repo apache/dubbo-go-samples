@@ -48,7 +48,7 @@ func (u *UserProvider) GetUser(ctx context.Context, usr *User) (*User, error) {
 	return &rsp, nil
 }
 
-func (u *UserProvider) Reference() string {
+func (u UserProvider) Reference() string {
 	return "UserProvider"
 }
 

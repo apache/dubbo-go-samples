@@ -37,7 +37,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
-import(
+import (
 	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )
 

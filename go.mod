@@ -20,9 +20,8 @@ require (
 	github.com/transaction-wg/seata-golang v0.2.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
-	github.com/willf/bitset v1.1.10 // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b
-	google.golang.org/grpc v1.36.0
+	google.golang.org/grpc v1.38.0
 	google.golang.org/protobuf v1.26.0
 )
 
