@@ -25,70 +25,50 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remoting"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
+	"context"
 	"os"
 	"testing"
 	"time"
 )
 
-var cat = new(CatService)
-var dog = new(DogService)
-var tiger = new(TigerService)
-var lion = new(LionService)
+var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {
-	config.SetConsumerService(cat)
-	config.SetConsumerService(dog)
-	config.SetConsumerService(tiger)
-	config.SetConsumerService(lion)
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }
 
-type CatService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
 }
 
-func (c *CatService) Reference() string {
-	return "CatService"
+type UserProvider struct {
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
 }
 
-type DogService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
 }
 
-func (d *DogService) Reference() string {
-	return "DogService"
-}
-
-type TigerService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
-
-func (t *TigerService) Reference() string {
-	return "TigerService"
-}
-
-type LionService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
-
-func (l *LionService) Reference() string {
-	return "LionService"
+func (User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
