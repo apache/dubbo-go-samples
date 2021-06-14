@@ -97,4 +97,3 @@ func (g *GreeterProvider) SayHelloServerStream(req *HelloRequest, server Greeter
 	}
 	return nil
 }
-

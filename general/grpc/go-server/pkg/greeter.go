@@ -37,4 +37,3 @@ func (g *GreeterProvider) SayHello(ctx context.Context, req *protobuf.HelloReque
 	fmt.Printf("req: %v", req)
 	return &protobuf.HelloReply{Message: "this is message from reply"}, nil
 }
-

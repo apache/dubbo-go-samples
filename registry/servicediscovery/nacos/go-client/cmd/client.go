@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,7 +15,13 @@
  * limitations under the License.
  */
 
-package integration
+package main
+
+import (
+	"context"
+	"os"
+	"time"
+)
 
 import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
@@ -25,70 +29,45 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remoting"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
+	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/dubbogo/gost/log"
 )
 
 import (
-	"os"
-	"testing"
-	"time"
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/nacos/go-client/pkg"
 )
 
-var cat = new(CatService)
-var dog = new(DogService)
-var tiger = new(TigerService)
-var lion = new(LionService)
+var userProvider = new(pkg.UserProvider)
 
-func TestMain(m *testing.M) {
-	config.SetConsumerService(cat)
-	config.SetConsumerService(dog)
-	config.SetConsumerService(tiger)
-	config.SetConsumerService(lion)
+func init() {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&pkg.User{})
+}
+
+// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+func main() {
+	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
-	time.Sleep(3 * time.Second)
+	time.Sleep(8 * time.Second)
 
-	os.Exit(m.Run())
-}
-
-type CatService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
-
-func (c *CatService) Reference() string {
-	return "CatService"
-}
-
-type DogService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
-
-func (d *DogService) Reference() string {
-	return "DogService"
-}
-
-type TigerService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
-
-func (t *TigerService) Reference() string {
-	return "TigerService"
-}
-
-type LionService struct {
-	GetID   func() (int, error)
-	GetName func() (string, error)
-	Yell    func() (string, error)
-}
-
-func (l *LionService) Reference() string {
-	return "LionService"
+	gxlog.CInfo("\n\n\nstart to test dubbo")
+	for i := 0; i < 123; i++ {
+		user := &pkg.User{}
+		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+		if err != nil {
+			gxlog.CError("error: %v\n", err)
+			os.Exit(1)
+			return
+		}
+		gxlog.CInfo("response result: %v\n", user)
+		time.Sleep(1 * time.Second)
+	}
 }
