@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,43 +17,46 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
-)
-import (
-	"github.com/dubbogo/gost/log"
-)
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"os"
+	"testing"
+	"time"
 )
 
-func init() {
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
+import (
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+)
+
+var userProvider = new(UserProvider)
+
+func TestMain(m *testing.M) {
+	config.SetConsumerService(userProvider)
+	config.Load()
+	time.Sleep(3 * time.Second)
+	os.Exit(m.Run())
 }
 
 type User struct {
-	Id   string
+	ID   string
 	Name string
 	Age  int32
 }
 
 type UserProvider struct {
+	GetUser func(ctx context.Context, req *User, rsp *User) error
 }
 
-func (u UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-func (u UserProvider) Reference() string {
+func (u *UserProvider) Reference() string {
 	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "com.apache.dubbo.sample.basic.User"
 }
