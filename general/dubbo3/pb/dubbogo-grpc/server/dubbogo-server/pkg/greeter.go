@@ -77,7 +77,3 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *dubbo3.HelloRequest)
 	fmt.Println("get triple header tri-service-version = ", ctx.Value(tripleConstant.TripleCtxKey(tripleConstant.TripleServiceVersion)))
 	return &dubbo3.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
-
-func (g *GreeterProvider) Reference() string {
-	return "greeterImpl"
-}
