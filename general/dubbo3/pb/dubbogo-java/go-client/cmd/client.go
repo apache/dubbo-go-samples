@@ -20,7 +20,6 @@ package main
 import (
 	"context"
 	"fmt"
-
 	"time"
 )
 
@@ -38,11 +37,10 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-java/go-client/pkg"
 	pb "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-java/protobuf"
 )
 
-var grpcGreeterImpl = new(pkg.GreeterProvider)
+var grpcGreeterImpl = new(pb.GreeterClientImpl)
 
 func init() {
 	config.SetConsumerService(grpcGreeterImpl)
@@ -58,10 +56,12 @@ func main() {
 		Name: "laurence",
 	}
 
+	reply := &pb.User{}
+
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
 
-	reply, err := grpcGreeterImpl.SayHello(ctx, req)
+	err := grpcGreeterImpl.SayHello(ctx, req, reply)
 	if err != nil {
 		panic(err)
 	}
