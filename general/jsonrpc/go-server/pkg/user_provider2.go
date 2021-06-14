@@ -1,4 +1,4 @@
-package main
+package pkg
 
 import (
 	"context"
@@ -16,13 +16,13 @@ import (
 )
 
 func init() {
-	config.SetProviderService(new(UserProvider1))
+	config.SetProviderService(new(UserProvider2))
 }
 
-type UserProvider1 struct {
+type UserProvider2 struct {
 }
 
-func (u *UserProvider1) getUser(userID string) (*User, error) {
+func (u *UserProvider2) getUser(userID string) (*User, error) {
 	if user, ok := userMap[userID]; ok {
 		return &user, nil
 	}
@@ -30,7 +30,7 @@ func (u *UserProvider1) getUser(userID string) (*User, error) {
 	return nil, fmt.Errorf("invalid user id:%s", userID)
 }
 
-func (u *UserProvider1) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider2) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
 	var (
 		err  error
 		user *User
@@ -45,7 +45,7 @@ func (u *UserProvider1) GetUser(ctx context.Context, req []interface{}, rsp *Use
 	return err
 }
 
-func (u *UserProvider1) GetUser0(id string, name string) (User, error) {
+func (u *UserProvider2) GetUser0(id string, name string) (User, error) {
 	var err error
 
 	gxlog.CInfo("id:%s, name:%s", id, name)
@@ -59,7 +59,7 @@ func (u *UserProvider1) GetUser0(id string, name string) (User, error) {
 	return *user, err
 }
 
-func (u *UserProvider1) GetUser2(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider2) GetUser2(ctx context.Context, req []interface{}, rsp *User) error {
 	var err error
 
 	gxlog.CInfo("req:%#v", req)
@@ -68,20 +68,30 @@ func (u *UserProvider1) GetUser2(ctx context.Context, req []interface{}, rsp *Us
 	return err
 }
 
-func (u *UserProvider1) GetUser3() error {
+func (u *UserProvider2) GetUser3() error {
 	return nil
 }
 
-func (u *UserProvider1) GetUsers(req []interface{}) ([]User, error) {
-	return []User{}, nil
+func (u *UserProvider2) GetUsers(req []interface{}) ([]User, error) {
+	var err error
+
+	gxlog.CInfo("req:%s", req)
+	t := req[0].([]interface{})
+	user, err := u.getUser(t[0].(string))
+	if err != nil {
+		return nil, err
+	}
+	gxlog.CInfo("user:%v", user)
+
+	return []User{*user}, err
 }
 
-func (s *UserProvider1) MethodMapper() map[string]string {
+func (s *UserProvider2) MethodMapper() map[string]string {
 	return map[string]string{
 		"GetUser2": "getUser",
 	}
 }
 
-func (u *UserProvider1) Reference() string {
-	return "UserProvider1"
+func (u *UserProvider2) Reference() string {
+	return "UserProvider2"
 }

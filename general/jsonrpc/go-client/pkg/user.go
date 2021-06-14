@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package main
+package pkg
 
 import (
 	"context"
@@ -27,17 +27,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 )
 
-var (
-	userProvider  = new(UserProvider)
-	userProvider1 = new(UserProvider1)
-	userProvider2 = new(UserProvider2)
-)
 
-func init() {
-	config.SetConsumerService(userProvider)
-	config.SetConsumerService(userProvider1)
-	config.SetConsumerService(userProvider2)
-}
 
 type JsonRPCUser struct {
 	ID   string `json:"id"`
