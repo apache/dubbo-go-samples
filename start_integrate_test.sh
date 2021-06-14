@@ -50,6 +50,7 @@ array+=("registry/etcd/go-server")
 
 # registry/servicediscovery/zookeeper
 array+=("registry/servicediscovery/zookeeper/go-server")
+array+=("registry/servicediscovery/nacos/go-server")
 
 
 

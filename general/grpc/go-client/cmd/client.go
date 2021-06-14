@@ -35,7 +35,7 @@ import (
 	"github.com/dubbogo/gost/log"
 )
 
-import(
+import (
 	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )
 
