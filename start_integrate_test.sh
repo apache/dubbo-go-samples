@@ -35,8 +35,12 @@ array+=("filter/sentinel/go-server")
 
 # general
 array+=("general/dubbo/go-server")
+
 array+=("general/dubbo3/hessian2/go-server")
 array+=("general/grpc/go-server")
+array+=("general/dubbo3/codec-extension/go-server")
+array+=("general/dubbo3/msgpack/go-server")
+
 
 array+=("generic/go-server")
 
@@ -59,6 +63,8 @@ array+=("registry/nacos/go-server")
 
 # registry/servicediscovery/zookeeper
 array+=("registry/servicediscovery/zookeeper/go-server")
+array+=("registry/servicediscovery/nacos/go-server")
+
 
 # router
 array+=("router/uniform-router/file/go-server")

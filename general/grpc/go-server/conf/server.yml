@@ -17,7 +17,7 @@ registries:
 
 # service config
 services:
-  "GrpcGreeterImpl":
+  "greeterImpl":
     registry: "zk"
     protocol: "grpc"
     interface: "org.apache.dubbo.GreeterGrpc$IGreeter"

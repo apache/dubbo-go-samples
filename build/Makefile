@@ -89,6 +89,12 @@ config:
 	@-test -f $(PROJECT_DIR)/conf/virtual_service.yml && cat $(PROJECT_DIR)/conf/virtual_service.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/virtual_service.yml && echo "  > $(OUT_DIR)/conf/virtual_service.yml"
 	@-test -f $(PROJECT_DIR)/conf/dest_rule.yml && cat $(PROJECT_DIR)/conf/dest_rule.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/dest_rule.yml && echo "  > $(OUT_DIR)/conf/dest_rule.yml"
 
+## docker-health-check: check services health on docker
+.PHONY: docker-health-check
+docker-health-check:
+	$(info   >  run docker health check with $(PROJECT_DIR)/docker/docker-health-check.sh)
+	@-test -f $(PROJECT_DIR)/docker/docker-health-check.sh && bash -f $(PROJECT_DIR)/docker/docker-health-check.sh
+
 ## docker-up: Shutdown dependency services on docker
 .PHONY: docker-up
 docker-up:
@@ -115,6 +121,12 @@ start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
+
+## start: print application log (for server)
+.PHONY: print-server-log
+print-server-log:
+	$(info   >  print server log with $(LOG_FILE))
+	@-cat $(LOG_FILE)
 
 ## run: Run the application (for client)
 .PHONY: run
