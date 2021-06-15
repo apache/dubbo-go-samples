@@ -58,7 +58,7 @@ func TestStreamSayHello(t *testing.T){
 	r, err := greeterProvider.SayHelloStream(ctx)
 	assert.Nil(t, err)
 
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 2; i++ {
 		err := r.Send(&req)
 		assert.Nil(t, err)
 	}
@@ -69,6 +69,9 @@ func TestStreamSayHello(t *testing.T){
 	assert.Equal(t, "hello laurence",rspUser.Name)
 	assert.Equal(t, "123456789",rspUser.Id)
 	assert.Equal(t, int32(18),rspUser.Age)
+
+	err = r.Send(&req)
+	assert.Nil(t, err)
 
 	err = r.RecvMsg(rspUser)
 	assert.Nil(t, err)
@@ -106,7 +109,7 @@ func TestGRPCClientStreamSayHello(t *testing.T){
 	}
 	clientStream, err := c.SayHelloStream(context.Background())
 	assert.Nil(t, err)
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 2; i++ {
 		err = clientStream.Send(req)
 		assert.Nil(t, err)
 	}
@@ -117,6 +120,9 @@ func TestGRPCClientStreamSayHello(t *testing.T){
 	assert.Equal(t, "hello grpc laurence",rspUser.Name)
 	assert.Equal(t, "123456789",rspUser.Id)
 	assert.Equal(t, int32(18),rspUser.Age)
+
+	err = clientStream.Send(req)
+	assert.Nil(t, err)
 
 	err = clientStream.RecvMsg(rspUser)
 	assert.Nil(t, err)
