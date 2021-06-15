@@ -27,8 +27,8 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"dubbo.apache.org/dubbo-go/v3/config"
+	hessian "github.com/apache/dubbo-go-hessian2"
 
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
@@ -40,10 +40,10 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
-var userProvider = new(UserProvider)
+var userProviderB = new(UserProviderGroupB)
 
 func TestMain(m *testing.M) {
-	config.SetConsumerService(userProvider)
+	config.SetConsumerService(userProviderB)
 	hessian.RegisterPOJO(&User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
@@ -58,12 +58,12 @@ type User struct {
 	Time time.Time
 }
 
-type UserProvider struct {
+type UserProviderGroupB struct {
 	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
 }
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
+func (u *UserProviderGroupB) Reference() string {
+	return "UserProviderGroupB"
 }
 
 func (User) JavaClassName() string {

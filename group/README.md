@@ -31,3 +31,6 @@ references:
     group: "GroupA"
     # ...
 ```
+
+### 3. How to run the sample
+dubbo-go checks if all servers under consumer references are alive, so needs to start all types of group servers under consumer references
