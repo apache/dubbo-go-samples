@@ -31,3 +31,6 @@ references:
     group: "GroupA"
     # ...
 ```
+
+### 3. 使用说明
+dubbo-go 会检查消费者 references 下的所有服务器是否存活，需要启动消费者 references 下所有类型的 group 服务器
