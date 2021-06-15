@@ -33,14 +33,18 @@ array+=("filter/custom/go-server")
 array+=("filter/tpslimit/go-server")
 array+=("filter/sentinel/go-server")
 
-# general
+# general-dubbo
 array+=("general/dubbo/go-server")
 
-array+=("general/dubbo3/hessian2/go-server")
+# general-grpc
 array+=("general/grpc/go-server")
-array+=("general/dubbo3/codec-extension/go-server")
-array+=("general/dubbo3/msgpack/go-server")
 
+# general-dubbo3(triple)
+array+=("general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server")
+array+=("general/dubbo3/pb/dubbogo-java/go-server")
+array+=("general/dubbo3/hessian2/go-server")
+array+=("general/dubbo3/msgpack/go-server")
+array+=("general/dubbo3/codec-extension/go-server")
 
 array+=("generic/go-server")
 
