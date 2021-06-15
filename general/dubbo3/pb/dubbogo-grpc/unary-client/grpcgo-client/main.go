@@ -23,7 +23,7 @@ import (
 )
 
 import (
-	"golang.org/x/net/context"
+	"github.com/dubbogo/net/context"
 	"google.golang.org/grpc"
 )
 
