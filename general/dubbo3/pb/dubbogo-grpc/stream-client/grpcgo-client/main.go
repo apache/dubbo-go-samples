@@ -22,7 +22,7 @@ import (
 	"log"
 )
 import (
-	"golang.org/x/net/context"
+	"github.com/dubbogo/net/context"
 	"google.golang.org/grpc"
 )
 
@@ -50,7 +50,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 2; i++ {
 		clientStream.Send(BigDataReq)
 	}
 	user1, err := clientStream.Recv()
@@ -58,6 +58,8 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("get 1 received user = %+v\n", user1)
+
+	clientStream.Send(BigDataReq)
 
 	user2, err := clientStream.Recv()
 	if err != nil {

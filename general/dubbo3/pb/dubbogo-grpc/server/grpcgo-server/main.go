@@ -24,7 +24,7 @@ import (
 )
 
 import (
-	"golang.org/x/net/context"
+	"github.com/dubbogo/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -51,17 +51,17 @@ func (s *GreeterProvider) SayHelloStream(svr pb.Greeter_SayHelloStreamServer) er
 		return err
 	}
 	fmt.Printf("grpc GreeterProvider recv 2 user, name = %s\n", c2.Name)
-	c3, err := svr.Recv()
-	if err != nil {
-		return err
-	}
-	fmt.Printf("grpc GreeterProvider recv 3 user, name = %s\n", c3.Name)
 
 	svr.Send(&pb.User{
 		Name: "hello " + c.Name,
 		Age:  18,
 		Id:   "123456789",
 	})
+	c3, err := svr.Recv()
+	if err != nil {
+		return err
+	}
+	fmt.Printf("grpc GreeterProvider recv 3 user, name = %s\n", c3.Name)
 	svr.Send(&pb.User{
 		Name: "hello " + c2.Name,
 		Age:  19,
