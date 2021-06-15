@@ -86,6 +86,14 @@ config:
 	@-test -f $(PROJECT_DIR)/conf/server.yml && cat $(PROJECT_DIR)/conf/server.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/server.yml && echo "  > $(OUT_DIR)/conf/server.yml"
 	@-test -f $(PROJECT_DIR)/conf/client.yml && cat $(PROJECT_DIR)/conf/client.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/client.yml && echo "  > $(OUT_DIR)/conf/client.yml"
 	@-test -f $(PROJECT_DIR)/conf/router_config.yml && cat $(PROJECT_DIR)/conf/router_config.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/router_config.yml && echo "  > $(OUT_DIR)/conf/router_config.yml"
+	@-test -f $(PROJECT_DIR)/conf/virtual_service.yml && cat $(PROJECT_DIR)/conf/virtual_service.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/virtual_service.yml && echo "  > $(OUT_DIR)/conf/virtual_service.yml"
+	@-test -f $(PROJECT_DIR)/conf/dest_rule.yml && cat $(PROJECT_DIR)/conf/dest_rule.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/dest_rule.yml && echo "  > $(OUT_DIR)/conf/dest_rule.yml"
+
+## docker-health-check: check services health on docker
+.PHONY: docker-health-check
+docker-health-check:
+	$(info   >  run docker health check with $(PROJECT_DIR)/docker/docker-health-check.sh)
+	@-test -f $(PROJECT_DIR)/docker/docker-health-check.sh && bash -f $(PROJECT_DIR)/docker/docker-health-check.sh
 
 ## docker-up: Shutdown dependency services on docker
 .PHONY: docker-up
@@ -114,10 +122,18 @@ start: build
 	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
 
+## start: print application log (for server)
+.PHONY: print-server-log
+print-server-log:
+	$(info   >  print server log with $(LOG_FILE))
+	@-cat $(LOG_FILE)
+
 ## run: Run the application (for client)
 .PHONY: run
 run: export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
 run: export CONF_ROUTER_FILE_PATH ?= $(OUT_DIR)/conf/router_config.yml
+run: export CONF_DEST_RULE_FILE_PATH ?= $(OUT_DIR)/conf/dest_rule.yml
+run: export CONF_VIRTUAL_SERVICE_FILE_PATH ?= $(OUT_DIR)/conf/virtual_service.yml
 run: build
 	$(info   >  Running application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) 2>&1 | tee $(LOG_FILE)
@@ -133,6 +149,8 @@ stop:
 .PHONY: integration
 integration: export CONF_CONSUMER_FILE_PATH ?= $(OUT_DIR)/conf/client.yml
 integration: export CONF_ROUTER_FILE_PATH ?= $(OUT_DIR)/conf/router_config.yml
+integration: export CONF_DEST_RULE_FILE_PATH ?= $(OUT_DIR)/conf/dest_rule.yml
+integration: export CONF_VIRTUAL_SERVICE_FILE_PATH ?= $(OUT_DIR)/conf/virtual_service.yml
 integration:
 	$(info   >  Running integration test for application $(PROJECT_NAME))
 	@go clean -testcache

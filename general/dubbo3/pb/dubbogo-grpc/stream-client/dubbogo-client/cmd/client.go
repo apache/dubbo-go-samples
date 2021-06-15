@@ -66,7 +66,7 @@ func testSayHello() {
 		panic(err)
 	}
 
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 2; i++ {
 		if err := r.Send(&req); err != nil {
 			logger.Errorf("Send SayHelloStream num %d request error = %v\n", i+1, err)
 			return
@@ -79,6 +79,10 @@ func testSayHello() {
 		return
 	}
 	logger.Infof("Receive 1 user = %+v\n", rspUser)
+	if err := r.Send(&req); err != nil {
+		logger.Errorf("Send SayHelloStream num %d request error = %v\n", 3, err)
+		return
+	}
 	rspUser2 := &dubbo3pb.User{}
 	if err := r.RecvMsg(rspUser2); err != nil {
 		logger.Errorf("Receive 2 SayHelloStream response user error = %v\n", err)

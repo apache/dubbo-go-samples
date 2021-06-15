@@ -32,7 +32,7 @@ docker run -e DUBBO_IP_TO_REGISTRY=127.0.0.1  -p 20000:20000  --link zkserver:zk
 
 - 首先开启了zookeeper docker，用于注册服务
 
-- 之后需要设置t ip_to_registry 环境变量.  \
+- 之后需要设置 DUBBO_IP_TO_REGISTRY 环境变量.  \
 
   docker桥接网络模型需要明确指定主机ip用于网络通信。Dubbo框架在运行参数中提供了两个系统属性，能够指定Ip和port进行注册，然后其他服务通过注册好的信息访问当前服务。
 

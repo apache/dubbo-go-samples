@@ -28,7 +28,7 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser func(ctx context.Context, req *User, rsp *User) error
 }
 
 func (u *UserProvider) Reference() string {
@@ -36,5 +36,5 @@ func (u *UserProvider) Reference() string {
 }
 
 func (User) JavaClassName() string {
-	return "com.apache.dubbo.sample.basic.User"
+	return "org.apache.dubbo.User"
 }
