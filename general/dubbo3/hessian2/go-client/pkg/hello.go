@@ -36,5 +36,5 @@ func (u *UserProvider) Reference() string {
 }
 
 func (User) JavaClassName() string {
-	return "com.apache.dubbo.sample.basic.User"
+	return "org.apache.dubbo.User"
 }
