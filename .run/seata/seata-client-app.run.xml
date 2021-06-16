@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="seata-client-app" type="GoApplicationRunConfiguration" factoryName="Go Application" singleton="false">
+  <configuration default="false" name="seata-client-app" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="seata" singleton="false">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
