@@ -12,14 +12,14 @@ application:
   environment : "dev"
 
 registries :
-  "demoZk":
-    protocol: "zookeeper"
+  "nacos":
+    protocol: "nacos"
     timeout	: "3s"
-    address: "127.0.0.1:2181"
+    address: "127.0.0.1:8848"
 
 services:
   "ProductSvc":
-    registry: "demoZk"
+    registry: "nacos"
     protocol : "dubbo"
     # 相当于dubbo.xml中的interface
     interface : "com.dubbogo.seata.ProductSvc"

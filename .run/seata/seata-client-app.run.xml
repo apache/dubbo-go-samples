@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="seata-client-app" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="seata" singleton="false">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/seata/client/profiles/dev/log.yml" />
+      <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/seata/client/profiles/dev/client.yml" />
+      <env name="SEATA_CONF_FILE" value="$PROJECT_DIR$/seata/client/profiles/dev/seata.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/seata/client/app" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/seata/client/app/client.go" />
+    <method v="2" />
+  </configuration>
+</component>

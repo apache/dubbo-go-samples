@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  # mysql
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    privileged: true  # 授权
+    command: --default-authentication-plugin=mysql_native_password # 指定使用插件
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456' # root用户密码
+  # seata
+  seata:
+    image: seataio/seata-server:latest
+    container_name: seata
+    hostname: seata-server
+    ports:
+      - 8091:8091
+    environment:
+      - SEATA_PORT=8091
+    expose:
+      - 8091
+  # nacos
+  nacos:
+    image: nacos/nacos-server:2.0.0
+    container_name: nacos
+    network_mode: host
+    ports:
+      - 8848:8848
+    environment:
+      - MODE=standalone #启动模式是独立模式
