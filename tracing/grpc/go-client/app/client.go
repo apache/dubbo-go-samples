@@ -70,13 +70,13 @@ func main() {
 	config.Load()
 	time.Sleep(time.Second)
 
-	span, _ := opentracing.StartSpanFromContext(context.Background(), "Test-JAEGER-Client-Service")
+	span, ctx := opentracing.StartSpanFromContext(context.Background(), "Test-JAEGER-Client-Service")
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	reply := &HelloReply{}
 	req := &HelloRequest{
 		Name: "xujianhai",
 	}
-	err = grpcGreeterImpl.SayHello(context.TODO(), req, reply)
+	err = grpcGreeterImpl.SayHello(ctx, req, reply)
 	if err != nil {
 		panic(err)
 	}
