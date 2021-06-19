@@ -18,7 +18,7 @@ application:
   module : "dubbogo say-hello client"
   version : "0.0.1"
   owner : "ZX"
-  environment : "dev"
+  environment : "test"
 
 registries :
   "demoZk":
