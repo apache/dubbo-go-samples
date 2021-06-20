@@ -22,12 +22,13 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/seata/filter"
-	dao2 "github.com/apache/dubbo-go-samples/seata/order-svc/app/dao"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
 )
 
 import (
-	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
+	"github.com/apache/dubbo-go-samples/seata/filter"
+	dao2 "github.com/apache/dubbo-go-samples/seata/order-svc/app/dao"
 )
 
 type OrderSvc struct {
@@ -35,7 +36,7 @@ type OrderSvc struct {
 }
 
 func (svc *OrderSvc) CreateSo(ctx context.Context, reqs []*dao2.SoMaster) (*dao2.CreateSoResult, error) {
-	attach := ctx.Value("attachment").(map[string]interface{})
+	attach := ctx.Value(constant.AttachmentKey).(map[string]interface{})
 	val := attach[filter.SEATA_XID]
 	xid := val.(string)
 
