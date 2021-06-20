@@ -19,16 +19,16 @@ package main
 
 import (
 	"context"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/seata/filter"
 	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
-)
-
-import (
-	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
 )
 
 type ProductSvc struct {

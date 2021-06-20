@@ -19,21 +19,20 @@ package svc
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	"github.com/apache/dubbo-go-samples/seata/filter"
-
 	"errors"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/seata/order-svc/app/dao"
-	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
+	"github.com/transaction-wg/seata-golang/pkg/client/tm"
 )
 
 import (
-	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
-	"github.com/transaction-wg/seata-golang/pkg/client/tm"
+	"github.com/apache/dubbo-go-samples/seata/filter"
+	"github.com/apache/dubbo-go-samples/seata/order-svc/app/dao"
+	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
 )
 
 type OrderSvc struct {
