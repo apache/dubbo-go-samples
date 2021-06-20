@@ -19,6 +19,7 @@ package svc
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	"github.com/apache/dubbo-go-samples/seata/filter"
 
@@ -102,7 +103,7 @@ func (svc *Svc) CreateSo(ctx context.Context, rollback bool) ([]uint64, error) {
 	var allocateInventoryResult = &dao2.AllocateInventoryResult{}
 
 	// 通过 attachment 传递 xid
-	err1 := orderSvc.CreateSo(context.WithValue(ctx, "attachment", map[string]string{
+	err1 := orderSvc.CreateSo(context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{
 		filter.SEATA_XID: rootContext.GetXID(),
 	}), soMasters, createSoResult)
 	if err1 != nil {
@@ -110,7 +111,7 @@ func (svc *Svc) CreateSo(ctx context.Context, rollback bool) ([]uint64, error) {
 	}
 
 	// 通过 attachment 传递 xid
-	err2 := productSvc.AllocateInventory(context.WithValue(ctx, "attachment", map[string]string{
+	err2 := productSvc.AllocateInventory(context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{
 		filter.SEATA_XID: rootContext.GetXID(),
 	}), reqs, allocateInventoryResult)
 	if err2 != nil {

@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 )
 
 import (
@@ -35,7 +36,7 @@ type ProductSvc struct {
 }
 
 func (svc *ProductSvc) AllocateInventory(ctx context.Context, reqs []*dao2.AllocateInventoryReq) (*dao2.AllocateInventoryResult, error) {
-	attach := ctx.Value("attachment").(map[string]interface{})
+	attach := ctx.Value(constant.AttachmentKey).(map[string]interface{})
 	val := attach[filter.SEATA_XID]
 	xid := val.(string)
 
