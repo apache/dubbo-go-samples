@@ -1,0 +1,34 @@
+# dubbo client yaml configure file
+
+check: true
+# client
+request_timeout : "3s"
+# connect timeout
+connect_timeout : "3s"
+
+# application config
+application:
+  organization : "dubbo.io"
+  name  : "UserInfoServer"
+  module : "dubbogo user-info client"
+  version : "0.0.1"
+  environment : "dev"
+
+registries :
+  "demoZk":
+    protocol: "zookeeper"
+    timeout	: "3s"
+    address: "127.0.0.1:2181"
+    username: ""
+    password: ""
+
+references:
+  "UserProvider":
+    # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册
+    registry: "demoZk"
+    protocol : "jsonrpc"
+    interface : "org.apache.dubbo.UserProvider"
+    cluster: "failover"
+    methods :
+    - name: "GetUser"
+      retries: 3

@@ -47,7 +47,7 @@ array+=("general/dubbo3/codec-extension/go-server")
 # general-grpc
 array+=("general/grpc/go-server")
 
-array+=("generic/go-server")
+array+=("generic/dubbo/go-server")
 
 # group
 array+=("group/go-server-group-a")
