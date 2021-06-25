@@ -4,10 +4,10 @@
     <working_directory value="$PROJECT_DIR$" />
     <envs>
       <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/general/dubbo/go-client/conf/client.yml" />
-      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/general/general/dubbo/go-client/conf/log.yml" />
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/general/dubbo/go-client/conf/log.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/general/grpc/unary/go-client/app/client.go" />
+    <filePath value="$PROJECT_DIR$/general/dubbo/go-client/cmd/client.go" />
     <package value="github.com/apache/dubbo-go-samples/general/dubbo/go-client/cmd" />
     <directory value="$PROJECT_DIR$" />
     <method v="2" />
