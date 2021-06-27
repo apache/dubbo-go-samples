@@ -39,6 +39,10 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
+import (
+	_ "github.com/apache/dubbo-go-samples/general/jsonrpc/go-server/pkg"
+)
+
 var (
 	survivalTimeout = int(3e9)
 )
