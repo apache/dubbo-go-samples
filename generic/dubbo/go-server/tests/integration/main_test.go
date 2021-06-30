@@ -44,7 +44,7 @@ var referenceConfig = config.ReferenceConfig{
 	Cluster:       "failover",
 	Registry:      "demoZk",
 	Protocol:      dubbo.DUBBO,
-	Generic:       "true",
+	Generic:       true,
 }
 
 func TestMain(m *testing.M) {
