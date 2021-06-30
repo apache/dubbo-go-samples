@@ -15,7 +15,7 @@ var (
         Cluster:       "failover",
         Registry:      "demoZk",
         Protocol:      dubbo.DUBBO,
-        Generic:       "true",
+        Generic:       true,
     }
 )
 
