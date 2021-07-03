@@ -26,17 +26,12 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/config_center/zookeeper"
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/zookeeper/go-server/pkg"
-)
-
-import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/config_center/zookeeper"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/dynamic"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/zookeeper"
@@ -46,6 +41,11 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	hessian "github.com/apache/dubbo-go-hessian2"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/zookeeper/go-server/pkg"
 )
 
 var (
