@@ -69,7 +69,7 @@ func (u *UserProvider1) GetUsers(req []interface{}) ([]User, error) {
 	return []User{}, nil
 }
 
-func (u *UserProvider1) GetUser1(req []interface{}) (*User, error) {
+func (u *UserProvider1) GetUser2(req []interface{}) (*User, error) {
 	err := perrors.New("test error")
 	return nil, err
 }

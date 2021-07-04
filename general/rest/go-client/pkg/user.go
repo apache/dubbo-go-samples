@@ -95,3 +95,15 @@ type UserProvider2 struct {
 func (u *UserProvider2) Reference() string {
 	return "UserProvider2"
 }
+
+func (UserProvider) JavaClassName() string {
+	return "com.ikurento.UserProvider"
+}
+
+func (UserProvider1) JavaClassName() string {
+	return "com.ikurento.UserProvider"
+}
+
+func (UserProvider2) JavaClassName() string {
+	return "com.ikurento.UserProvider"
+}

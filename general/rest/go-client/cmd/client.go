@@ -92,7 +92,7 @@ func initSignal() {
 
 func test() {
 
-	gxlog.CInfo("\n\n\nstart to test rest")
+	gxlog.CInfo("\n\n\nstart to test rest1")
 	user := &pkg.User{}
 	err := pkg.UserProviderVar.GetUser(context.TODO(), []interface{}{"A003"}, user)
 	if err != nil {
@@ -122,7 +122,7 @@ func test() {
 	gxlog.CInfo("succ!")
 
 	gxlog.CInfo("\n\n\nstart to test rest illegal method")
-	err = pkg.UserProviderVar.GetUser1(context.TODO(), []interface{}{"A003"}, user)
+	err = pkg.UserProviderVar.GetUser2(context.TODO(), []interface{}{"A003"}, user)
 	if err == nil {
 		panic("err is nil")
 	}
@@ -133,7 +133,7 @@ func test1() {
 
 	time.Sleep(3e9)
 
-	gxlog.CInfo("\n\n\nstart to test rest")
+	gxlog.CInfo("\n\n\nstart to test rest2")
 	user := &pkg.User{}
 	err := pkg.UserProvider1Var.GetUser(context.TODO(), []interface{}{"A003"}, user)
 	if err != nil {
@@ -163,7 +163,7 @@ func test1() {
 	gxlog.CInfo("succ!")
 
 	gxlog.CInfo("\n\n\nstart to test rest illegal method")
-	err = pkg.UserProvider1Var.GetUser1(context.TODO(), []interface{}{"A003"}, user)
+	err = pkg.UserProvider1Var.GetUser2(context.TODO(), []interface{}{"A003"}, user)
 	if err == nil {
 		panic("err is nil")
 	}
@@ -172,7 +172,7 @@ func test1() {
 
 func test2() {
 
-	gxlog.CInfo("\n\n\nstart to test rest")
+	gxlog.CInfo("\n\n\nstart to test rest3")
 	user := &pkg.User{}
 	err := pkg.UserProvider2Var.GetUser(context.TODO(), []interface{}{"A003"}, user)
 	if err != nil {
@@ -202,9 +202,10 @@ func test2() {
 	gxlog.CInfo("succ!")
 
 	gxlog.CInfo("\n\n\nstart to test rest illegal method")
-	err = pkg.UserProvider2Var.GetUser1(context.TODO(), []interface{}{"A003"}, user)
+	err = pkg.UserProvider2Var.GetUser2(context.TODO(), []interface{}{"A003"}, user)
 	if err == nil {
 		panic("err is nil")
 	}
 	gxlog.CInfo("error: %v", err)
 }
+

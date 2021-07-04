@@ -37,6 +37,7 @@ array+=("filter/sentinel/go-server")
 # general-dubbo
 array+=("general/dubbo/go-server")
 
+
 # general-dubbo3(triple)
 array+=("general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server")
 array+=("general/dubbo3/pb/dubbogo-java/go-server")
@@ -46,6 +47,13 @@ array+=("general/dubbo3/codec-extension/go-server")
 
 # general-grpc
 array+=("general/grpc/go-server")
+
+#general-json
+array+=("general/jsonrpc/go-server")
+
+#general-rest
+array+=("general/rest/go-server")
+
 
 array+=("generic/go-server")
 

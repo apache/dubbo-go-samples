@@ -26,6 +26,10 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/general/jsonrpc/go-server/pkg"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
@@ -39,19 +43,24 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
-import (
-	_ "github.com/apache/dubbo-go-samples/general/jsonrpc/go-server/pkg"
-)
-
 var (
 	survivalTimeout = int(3e9)
 )
+
+var (
+	userProvider = new(pkg.UserProvider)
+	userProvider1 = new(pkg.UserProvider1)
+	userProvider2 = new(pkg.UserProvider2)
+)
+
 
 // they are necessary:
 // 		export CONF_PROVIDER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
-
+	config.SetProviderService(userProvider)
+	config.SetProviderService(userProvider1)
+	config.SetProviderService(userProvider2)
 	config.Load()
 
 	initSignal()
