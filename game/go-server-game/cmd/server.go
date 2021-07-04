@@ -18,7 +18,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	// _ "dubbo.apache.org/dubbo-go/v3/metadata/remote/impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
 	_ "github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
