@@ -23,6 +23,9 @@ array=("async/go-server")
 # attachment
 array+=("attachment/go-server")
 
+# chain
+array+=("chain")
+
 # config-api
 array+=("config-api/go-server")
 
@@ -65,6 +68,9 @@ array+=("helloworld/go-server")
 # metric
 array+=("metric/go-server")
 
+# multi-zone
+array+=("multi-zone")
+
 # registry
 #array+=("registry/etcd/go-server")
 #array+=("registry/nacos/go-server")
@@ -87,12 +93,9 @@ array+=("version/go-server-v2")
 
 for((i=0;i<${#array[*]};i++))
 do
-	./integrate_test.sh ${array[i]}
+	./integrate_test.sh "${array[i]}"
 	result=$?
 	if [ $result -gt 0 ]; then
-    exit $result
+        exit $result
 	fi
 done
-
-# chain
-# multi-zone
