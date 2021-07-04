@@ -85,3 +85,7 @@ func (s *UserProvider1) MethodMapper() map[string]string {
 func (u *UserProvider1) Reference() string {
 	return "UserProvider1"
 }
+
+func (UserProvider1) JavaClassName() string {
+	return "com.ikurento.user.UserProvider"
+}

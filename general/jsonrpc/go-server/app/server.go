@@ -26,6 +26,7 @@ import (
 )
 
 import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go/common/logger"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
@@ -43,11 +44,19 @@ var (
 	survivalTimeout = int(3e9)
 )
 
+func init() {
+	config.SetProviderService(new(UserProvider))
+	config.SetProviderService(new(UserProvider1))
+	config.SetProviderService(new(UserProvider2))
+}
+
 // they are necessary:
 // 		export CONF_PROVIDER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
-
+	hessian.RegisterPOJO(&UserProvider{})
+	hessian.RegisterPOJO(&UserProvider1{})
+	hessian.RegisterPOJO(&UserProvider2{})
 	config.Load()
 
 	initSignal()

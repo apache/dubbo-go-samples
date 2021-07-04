@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,29 +17,50 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
 	"fmt"
+	"os"
+	"testing"
 	"time"
 )
 
 import (
+	hessian "github.com/apache/dubbo-go-hessian2"
+	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "github.com/apache/dubbo-go/protocol/jsonrpc"
+	_ "github.com/apache/dubbo-go/registry/protocol"
+	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
 var (
-	userProvider  = new(UserProvider)
+	userProvider = new(UserProvider)
 	userProvider1 = new(UserProvider1)
 	userProvider2 = new(UserProvider2)
 )
 
-func init() {
+
+func TestMain(m *testing.M) {
+
 	config.SetConsumerService(userProvider)
 	config.SetConsumerService(userProvider1)
 	config.SetConsumerService(userProvider2)
+	hessian.RegisterPOJO(&UserProvider{})
+	hessian.RegisterPOJO(&UserProvider1{})
+	hessian.RegisterPOJO(&UserProvider2{})
+
+	config.Load()
+	time.Sleep(3 * time.Second)
+
+	os.Exit(m.Run())
 }
+
 
 type JsonRPCUser struct {
 	ID   string `json:"id"`
