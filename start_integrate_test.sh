@@ -48,7 +48,7 @@ array+=("general/dubbo3/codec-extension/go-server")
 # general-grpc
 array+=("general/grpc/go-server")
 
-#general-json
+#general-jsonrpc
 array+=("general/jsonrpc/go-server")
 
 #general-rest
