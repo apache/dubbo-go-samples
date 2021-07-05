@@ -54,7 +54,6 @@ func init() {
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 // need to setup environment variable "CONF_ROUTER_FILE_PATH" to "conf/router_config.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
