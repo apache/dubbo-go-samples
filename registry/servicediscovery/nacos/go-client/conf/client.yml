@@ -9,7 +9,7 @@ connect_timeout: "3s"
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoConsumer"
+  name: "UserInfoTest"
   module: "dubbo-go user-info client"
   version: "0.0.1"
   environment: "dev"
@@ -20,7 +20,7 @@ registries:
     protocol: "service-discovery"
     params:
       service_discovery: "nacos1"
-      name_mapping: "dynamic"
+      name_mapping: "in-memory"
       metadata: "default"
 
 remote:
@@ -36,15 +36,13 @@ service_discovery:
   nacos1:
     protocol: "nacos"
     remote_ref: "nacos"
-
-config_center:
-  protocol: "nacos"
-  address: "127.0.0.1:8848"
+    group: "dubbo"
 
 # reference config
 references:
   "UserProvider":
     registry: "demoServiceDiscovery"
+    provided_by: "UserInfoServer"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"

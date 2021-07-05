@@ -56,7 +56,7 @@ func main() {
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	err := userProvider.GetUser(context.TODO(), &pkg.User{Name: "laurence"} ,user)
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)

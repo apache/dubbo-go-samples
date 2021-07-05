@@ -38,6 +38,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/config_center/zookeeper"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
@@ -69,16 +70,18 @@ func main() {
 	config.Load()
 	time.Sleep(time.Second)
 
+	span, ctx := opentracing.StartSpanFromContext(context.Background(), "Test-JAEGER-Client-Service")
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	reply := &HelloReply{}
 	req := &HelloRequest{
 		Name: "xujianhai",
 	}
-	err = grpcGreeterImpl.SayHello(context.TODO(), req, reply)
+	err = grpcGreeterImpl.SayHello(ctx, req, reply)
 	if err != nil {
 		panic(err)
 	}
 	gxlog.CInfo("client response result: %v\n", reply)
+	span.Finish()
 	initSignal()
 }
 

@@ -15,7 +15,7 @@
 #  limitations under the License.
 
 if [ -z "$1" ]; then
-  echo 'Provide test directory please, like : ./integrate_test.sh $(pwd)/helloworld/go-server .'
+  echo "Provide test directory please, like : ./integrate_test.sh $(pwd)/helloworld/go-server ."
   exit
 fi
 
@@ -23,11 +23,20 @@ P_DIR=$(pwd)/$1
 
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile docker-up
 
+# check docker health
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile docker-health-check
+
 # start server
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile start
 # start integration
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile integration
 result=$?
+
+# if fail print server log
+if [ $result != 0 ];then
+  make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile print-server-log
+fi
+
 # stop server
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) BASE_DIR=$P_DIR/dist -f build/Makefile clean
 

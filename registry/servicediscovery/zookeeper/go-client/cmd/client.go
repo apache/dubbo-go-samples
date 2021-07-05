@@ -31,7 +31,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/zookeeper"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remote/remote_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remoting"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"

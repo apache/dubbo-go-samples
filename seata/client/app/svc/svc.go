@@ -19,20 +19,20 @@ package svc
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	"github.com/apache/dubbo-go-samples/seata/filter"
-
 	"errors"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/seata/order-svc/app/dao"
-	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
+	"github.com/transaction-wg/seata-golang/pkg/client/tm"
 )
 
 import (
-	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
-	"github.com/transaction-wg/seata-golang/pkg/client/tm"
+	"github.com/apache/dubbo-go-samples/seata/filter"
+	"github.com/apache/dubbo-go-samples/seata/order-svc/app/dao"
+	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
 )
 
 type OrderSvc struct {
@@ -102,7 +102,7 @@ func (svc *Svc) CreateSo(ctx context.Context, rollback bool) ([]uint64, error) {
 	var allocateInventoryResult = &dao2.AllocateInventoryResult{}
 
 	// 通过 attachment 传递 xid
-	err1 := orderSvc.CreateSo(context.WithValue(ctx, "attachment", map[string]string{
+	err1 := orderSvc.CreateSo(context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{
 		filter.SEATA_XID: rootContext.GetXID(),
 	}), soMasters, createSoResult)
 	if err1 != nil {
@@ -110,7 +110,7 @@ func (svc *Svc) CreateSo(ctx context.Context, rollback bool) ([]uint64, error) {
 	}
 
 	// 通过 attachment 传递 xid
-	err2 := productSvc.AllocateInventory(context.WithValue(ctx, "attachment", map[string]string{
+	err2 := productSvc.AllocateInventory(context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{
 		filter.SEATA_XID: rootContext.GetXID(),
 	}), reqs, allocateInventoryResult)
 	if err2 != nil {

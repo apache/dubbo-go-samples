@@ -25,7 +25,7 @@ registries:
 
 # reference config
 references:
-  "GreeterProvider":
+  "greeterImpl":
     registry: "demoZk"
     protocol: "tri"
     interface: "com.apache.dubbo.sample.basic.IGreeter"

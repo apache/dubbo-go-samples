@@ -30,8 +30,4 @@ service_discovery:
   nacos1:
     protocol: "nacos"
     remote_ref: "nacos"
-
-config_center:
-  protocol: "nacos"
-  address: "127.0.0.1:8848"
-
+    group: "dubbo"

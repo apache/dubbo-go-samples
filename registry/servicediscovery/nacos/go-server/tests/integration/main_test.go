@@ -20,22 +20,20 @@
 package integration
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/config_center/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/dynamic"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/remote/impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remoting"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (

@@ -16,7 +16,7 @@ ifeq ($(UNAME), Linux)
 endif
 
 $(PROTOC_GEN_GO):
-	go get -u dubbo.apache.org/dubbo-go/v3/protocol/dubbo3/protoc-gen-dubbo3@3.0
+	go get -u github.com/apache/dubbo-go/protocol/dubbo3/protoc-gen-dubbo3@3.0
 
 helloworld.pb.go: helloworld.proto | $(PROTOC_GEN_GO) $(PROTOC)
 	protoc -I . helloworld.proto --dubbo3_out=plugins=grpc+dubbo:.

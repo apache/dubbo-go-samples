@@ -52,17 +52,18 @@ func (s *GreeterProvider) SayHelloStream(svr dubbo3.Greeter_SayHelloStreamServer
 		return err
 	}
 	logger.Infof("Dubbo-go3 GreeterProvider recv 2 user, name = %s\n", c2.Name)
-	c3, err := svr.Recv()
-	if err != nil {
-		return err
-	}
-	logger.Infof("Dubbo-go3 GreeterProvider recv 3 user, name = %s\n", c3.Name)
 
 	svr.Send(&dubbo3.User{
 		Name: "hello " + c.Name,
 		Age:  18,
 		Id:   "123456789",
 	})
+	c3, err := svr.Recv()
+	if err != nil {
+		return err
+	}
+	logger.Infof("Dubbo-go3 GreeterProvider recv 3 user, name = %s\n", c3.Name)
+
 	svr.Send(&dubbo3.User{
 		Name: "hello " + c2.Name,
 		Age:  19,
@@ -76,8 +77,4 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *dubbo3.HelloRequest)
 	fmt.Println("get triple header tri-req-id = ", ctx.Value(tripleConstant.TripleCtxKey(tripleConstant.TripleRequestID)))
 	fmt.Println("get triple header tri-service-version = ", ctx.Value(tripleConstant.TripleCtxKey(tripleConstant.TripleServiceVersion)))
 	return &dubbo3.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
-
-func (g *GreeterProvider) Reference() string {
-	return "greeterImpl"
 }

@@ -18,7 +18,7 @@ application:
   module : "dubbogo say-hello client"
   version : "0.0.1"
   owner : "ZX"
-  environment : "dev"
+  environment : "test"
 
 registries :
   "demoZk":
@@ -61,3 +61,5 @@ protocol_conf:
       wait_timeout: "1s"
       max_msg_len: 10240
       session_name: "client"
+
+filter: "tracing"
