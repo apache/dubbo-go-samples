@@ -1,7 +1,7 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-20210618063649-ffb278cb0f53
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210705181411-e43af85126fd
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
 	github.com/apache/dubbo-go-hessian2 v1.9.2
@@ -25,8 +25,6 @@ require (
 	google.golang.org/protobuf v1.26.0
 )
 
-replace (
-	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
-)
+replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
 go 1.13
