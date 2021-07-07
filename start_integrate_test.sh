@@ -14,11 +14,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# tracing integrate test
-array=("tracing/dubbo/go-server")
-
 # async
-array+=("async/go-server")
+array=("async/go-server")
 array+=("attachment/go-server")
 array+=("config-api/go-server")
 # config center
@@ -78,6 +75,7 @@ array+=("registry/servicediscovery/nacos/go-server")
 # the test of router logic would be fixed later
 array+=("router/uniform-router/file/go-server")
 array+=("router/uniform-router/file/go-server2")
+
 
 for((i=0;i<${#array[*]};i++))
 do
