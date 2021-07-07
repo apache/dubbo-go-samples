@@ -26,6 +26,15 @@ import (
 )
 
 import (
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/opentracing/opentracing-go"
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
@@ -34,18 +43,7 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-server/pkg"
-
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
 var (

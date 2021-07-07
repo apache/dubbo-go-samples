@@ -20,7 +20,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-client/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -28,6 +27,15 @@ import (
 )
 
 import (
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/dubbogo/gost/log"
 	"github.com/opentracing/opentracing-go"
@@ -37,21 +45,11 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-client/pkg"
 )
 
 var (
-	userProvider        = new(pkg.UserProvider)
+	userProvider        = &pkg.UserProvider{}
 	survivalTimeout int = 10e9
 )
 
