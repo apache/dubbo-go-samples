@@ -18,6 +18,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -27,6 +28,7 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/dubbogo/gost/log"
 	"github.com/opentracing/opentracing-go"
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
 	"github.com/openzipkin/zipkin-go"
@@ -35,12 +37,11 @@ import (
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-server/pkg"
 
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
@@ -49,25 +50,34 @@ import (
 )
 
 var (
-	survivalTimeout = int(3e9)
+	survivalTimeout int = 10e9
 )
 
 // they are necessary:
-// 		export CONF_PROVIDER_FILE_PATH="xxx"
+// 		export CONF_CONSUMER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
-
-	hessian.RegisterPOJO(&pkg.User{})
+	hessian.RegisterPOJO(&User{})
 	config.Load()
 
 	initZipkin()
+	gxlog.CInfo("\n\n\nstart to test dubbo")
+	user := &User{}
+	span, ctx := opentracing.StartSpanFromContext(context.Background(), "Test-Client-Service")
+	err := userProvider.GetUser(ctx, []interface{}{"A001"}, user)
+	span.Finish()
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("response result: %v\n", user)
 	initSignal()
 }
 
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
+		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
 		logger.Infof("get signal %s", sig.String())
@@ -81,7 +91,7 @@ func initSignal() {
 			})
 
 			// The program exits normally or timeout forcibly exits.
-			fmt.Println("provider app exit now...")
+			fmt.Println("app exit now...")
 			return
 		}
 	}
