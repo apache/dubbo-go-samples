@@ -31,3 +31,7 @@ coverage.txt
 .classpath
 .project
 .settings/
+
+# java build
+general/dubbo3/pb/dubbogo-java/java-client/build/
+general/dubbo3/pb/dubbogo-java/java-server/build/
