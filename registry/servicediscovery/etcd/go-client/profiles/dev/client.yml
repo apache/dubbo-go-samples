@@ -23,20 +23,20 @@ registries:
       name_mapping: "in-memory"
       metadata: "default"
 
-remote:
-  etcd:
-    address: "127.0.0.1:8848"
-    timeout: "5s"
-
 metadata_report:
-  protocol: "etcd"
+  protocol: "etcdv3"
   remote_ref: "etcd"
 
 service_discovery:
   etcdv3:
-    protocol: "etcd"
+    protocol: "etcdv3"
     remote_ref: "etcd"
     group: "dubbo"
+
+remote:
+  etcd:
+    address: "127.0.0.1:2379"
+    timeout: "5s"
 
 # reference config
 references:

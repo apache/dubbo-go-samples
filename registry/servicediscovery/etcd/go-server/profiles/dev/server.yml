@@ -19,17 +19,17 @@ registries:
       metadata: "default"
 
 metadata_report:
-  protocol: "etcd"
+  protocol: "etcdv3"
   remote_ref: "etcd"
 
 service_discovery:
-  etcd:
-    protocol: "etcd"
+  etcdv3:
+    protocol: "etcdv3"
     remote_ref: "etcd"
     group: "dubbo"
 
 remote:
-  etcdv3:
+  etcd:
     address: "127.0.0.1:2379"
     timeout: "5s"
 
