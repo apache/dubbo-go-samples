@@ -20,21 +20,17 @@
 package integration
 
 import (
-	"github.com/apache/dubbo-go-samples/general/rest/go-client/pkg"
-	"testing"
-)
-
-import (
 	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
+	"testing"
 	"time"
 )
 
 import (
-	"github.com/dubbogo/gost/log"
+	"github.com/apache/dubbo-go-samples/general/rest/go-client/pkg"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -20,26 +20,23 @@
 package integration
 
 import (
-	"github.com/apache/dubbo-go-samples/general/jsonrpc/go-client/pkg"
-	"testing"
-)
-
-import (
 	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+	"testing"
 )
 
 import (
 	"github.com/dubbogo/gost/log"
 	"github.com/stretchr/testify/assert"
+	"github.com/apache/dubbo-go-samples/general/jsonrpc/go-client/pkg"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/common/logger"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/jsonrpc"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
