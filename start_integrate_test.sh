@@ -51,6 +51,7 @@ array+=("general/grpc/go-server")
 #general-jsonrpc
 array+=("general/jsonrpc/go-server")
 
+
 #general-rest
 array+=("general/rest/go-server")
 
