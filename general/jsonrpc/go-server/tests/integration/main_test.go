@@ -38,17 +38,17 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
 var (
-	userProvider = new(pkg.UserProvider)
+	userProvider  = new(pkg.UserProvider)
 	userProvider1 = new(pkg.UserProvider1)
 	userProvider2 = new(pkg.UserProvider2)
-	)
+)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
@@ -60,7 +60,6 @@ func TestMain(m *testing.M) {
 
 	os.Exit(m.Run())
 }
-
 
 type JsonRPCUser struct {
 	ID   string `json:"id"`
