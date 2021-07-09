@@ -25,11 +25,13 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"testing"
 	"time"
 	"testing"
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/general/jsonrpc/go-client/pkg"
 	"github.com/dubbogo/gost/log"
 	"github.com/stretchr/testify/assert"
 	"github.com/apache/dubbo-go-samples/general/jsonrpc/go-client/pkg"

@@ -8,7 +8,7 @@ connect_timeout : "3s"
 
 # application config
 application:
-  organization : "org.appache.dubbo"
+  organization : "org.appache"
   name  : "BDTService"
   module : "dubbogo user-info client"
   version : "0.0.1"
