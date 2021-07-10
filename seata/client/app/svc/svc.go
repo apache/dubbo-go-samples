@@ -20,7 +20,6 @@ package svc
 import (
 	"context"
 	"errors"
-	"time"
 )
 
 import (
@@ -82,7 +81,6 @@ func (svc *Svc) CreateSo(ctx context.Context, rollback bool) ([]uint64, error) {
 			SoAmt:                430.5,
 			Status:               10,
 			AppId:                "dk-order",
-			OrderDate:			  time.Now(),
 			SoItems: []*dao.SoItem{
 				{
 					ProductSysNo:  1,
