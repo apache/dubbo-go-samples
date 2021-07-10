@@ -20,11 +20,13 @@ package svc
 import (
 	"context"
 	"errors"
+	"time"
 )
 
 import (
 	"github.com/apache/dubbo-go/common/constant"
 	"github.com/apache/dubbo-go/config"
+
 	context2 "github.com/transaction-wg/seata-golang/pkg/client/context"
 	"github.com/transaction-wg/seata-golang/pkg/client/tm"
 )
@@ -80,6 +82,7 @@ func (svc *Svc) CreateSo(ctx context.Context, rollback bool) ([]uint64, error) {
 			SoAmt:                430.5,
 			Status:               10,
 			AppId:                "dk-order",
+			OrderDate:			  time.Now(),
 			SoItems: []*dao.SoItem{
 				{
 					ProductSysNo:  1,
