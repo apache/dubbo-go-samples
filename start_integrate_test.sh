@@ -57,7 +57,7 @@ array+=("metric/go-server")
 # registry
 array=("registry/etcd/go-server") # M1 ignore
 array+=("registry/nacos/go-server")
-array+=("registry/servicediscovery/consul/go-server") # M1 ignore
+#array+=("registry/servicediscovery/consul/go-server") # M1 ignore & Bug
 array+=("registry/servicediscovery/etcd/go-server") # M1 ignore
 array+=("registry/servicediscovery/file/go-server")
 array+=("registry/servicediscovery/nacos/go-server")
