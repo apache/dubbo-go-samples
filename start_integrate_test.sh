@@ -14,25 +14,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# multi-registry
-array+=("multi-registry/go-server")
 
-# async
-array=("async/go-server")
-
-# attachment
-array+=("attachment/go-server")
-
-# chain
-array+=("chain")
-
-# config-api
-array+=("config-api/go-server")
-
-# config center
-array+=("configcenter/apollo/go-server")
-array+=("configcenter/nacos/go-server")
-array+=("configcenter/zookeeper/go-server")
+# Attention! when runing on Apple M1, pls start nacos&zk server on your computer first, and comment samples with # M1 ignore.
 
 # context
 array+=("context/go-server")
@@ -46,14 +29,14 @@ array+=("filter/tpslimit/go-server")
 array+=("filter/sentinel/go-server")
 
 # game
-#array+=("game/go-server-game")
-#array+=("game/go-server-gate")
+#array+=("game/go-server-game") # Bug
+#array+=("game/go-server-gate") # Bug
 
 # general
 array+=("general/dubbo/go-server")
 array+=("general/grpc/go-server")
-#array+=("general/jsonrpc/go-server")
-#array+=("general/rest/go-server")
+#array+=("general/jsonrpc/go-server") # Unsupported
+#array+=("general/rest/go-server") # Unsupported
 
 # generic
 array+=("generic/go-server")
@@ -69,23 +52,23 @@ array+=("helloworld/go-server")
 array+=("metric/go-server")
 
 # multi-zone
-array+=("multi-zone")
+#array+=("multi-zone") # Unsupported
 
 # registry
-#array+=("registry/etcd/go-server")
-#array+=("registry/nacos/go-server")
-#array+=("registry/servicediscovery/consul/go-server")
-#array+=("registry/servicediscovery/etcd/go-server")
-#array+=("registry/servicediscovery/file/go-server")
-#array+=("registry/servicediscovery/nacos/go-server")
+array=("registry/etcd/go-server") # M1 ignore
+array+=("registry/nacos/go-server")
+#array+=("registry/servicediscovery/consul/go-server") # M1 ignore & Bug
+array+=("registry/servicediscovery/etcd/go-server") # M1 ignore
+array+=("registry/servicediscovery/file/go-server")
+array+=("registry/servicediscovery/nacos/go-server")
 array+=("registry/servicediscovery/zookeeper/go-server")
 
 # router
-#array+=("router/condition/go-server")
-#array+=("router/tag/go-server")
+#array+=("router/condition/go-server") # Bug
+#array+=("router/tag/go-server") # Bug
 
 # tls
-#array+=("tls/go-server")
+#array+=("tls/go-server") # Bug
 
 # version
 array+=("version/go-server-v1")
