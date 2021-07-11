@@ -21,9 +21,15 @@ package integration
 
 import (
 	"context"
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-	"github.com/stretchr/testify/assert"
 	"testing"
+)
+
+import (
+	"github.com/stretchr/testify/assert"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )
 
 func TestGreeter(t *testing.T) {

@@ -20,11 +20,11 @@ package pkg
 import (
 	"context"
 )
-import (
-	"github.com/dubbogo/gost/log"
-)
+
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	"github.com/dubbogo/gost/log"
 )
 
 func init() {

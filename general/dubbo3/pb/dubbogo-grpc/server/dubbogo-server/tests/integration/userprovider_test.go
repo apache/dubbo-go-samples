@@ -23,14 +23,18 @@ import (
 	"context"
 	"testing"
 )
+
 import (
-	"github.com/stretchr/testify/assert"
-	"google.golang.org/grpc"
 	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
+
+	"github.com/stretchr/testify/assert"
+
+	"google.golang.org/grpc"
 )
+
 import (
-	grpcpb   "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/tests/integration/grpc_test_proto"
 	dubbo3pb "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/protobuf/dubbo3"
+	grpcpb   "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/tests/integration/grpc_test_proto"
 )
 
 func TestSayHello(t *testing.T) {

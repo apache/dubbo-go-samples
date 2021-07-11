@@ -2,6 +2,9 @@ package codec
 
 import (
 	"encoding/json"
+)
+
+import (
 	triCommon "github.com/dubbogo/triple/pkg/common"
 )
 

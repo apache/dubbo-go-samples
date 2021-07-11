@@ -32,6 +32,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+
 	"github.com/dubbogo/gost/log"
 )
 

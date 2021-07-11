@@ -19,7 +19,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/apache/dubbo-go-samples/general/grpc/go-server/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -36,6 +35,10 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/general/grpc/go-server/pkg"
 )
 
 var (
