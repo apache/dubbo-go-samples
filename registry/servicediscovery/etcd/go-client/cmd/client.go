@@ -25,12 +25,6 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/dubbogo/gost/log"
-)
-
-import (
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/etcd/go-client/pkg"
-
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
@@ -44,6 +38,12 @@ import (
 	_ "github.com/apache/dubbo-go/registry/etcdv3"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/servicediscovery"
+
+	"github.com/dubbogo/gost/log"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/etcd/go-client/pkg"
 )
 
 var userProvider = new(pkg.UserProvider)

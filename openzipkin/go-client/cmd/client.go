@@ -19,14 +19,14 @@ package main
 
 import (
 	"context"
-	"contrib.go.opencensus.io/exporter/prometheus"
-	"go.opencensus.io/stats/view"
 	"math/rand"
 	"os"
 	"time"
 )
 
 import (
+	"contrib.go.opencensus.io/exporter/prometheus"
+
 	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
@@ -36,12 +36,17 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+
 	"github.com/dubbogo/gost/log"
-	// tracing zipkin & prometheus
+
 	"github.com/opentracing/opentracing-go"
+
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
+
 	"github.com/openzipkin/zipkin-go"
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
+
+	"go.opencensus.io/stats/view"
 )
 
 import (

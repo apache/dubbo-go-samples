@@ -37,7 +37,7 @@ import (
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-import(
+import (
 	"github.com/apache/dubbo-go-samples/general/grpc/go-server/pkg"
 )
 

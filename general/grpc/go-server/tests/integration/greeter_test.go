@@ -24,7 +24,7 @@ import (
 	"testing"
 )
 
-import(
+import (
 	"github.com/stretchr/testify/assert"
 )
 

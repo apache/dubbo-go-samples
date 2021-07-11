@@ -20,29 +20,26 @@
 package integration
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"context"
+	"os"
+	"testing"
+	"time"
+)
 
+import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	//_ "github.com/apache/dubbo-go/metadata/mapping/dynamic"
 	_ "github.com/apache/dubbo-go/metadata/mapping/memory"
 	_ "github.com/apache/dubbo-go/metadata/report/zookeeper"
-	//_ "github.com/apache/dubbo-go/metadata/service/remote"
 	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/servicediscovery"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
-)
-
-import (
-	"context"
-	"os"
-	"testing"
-	"time"
 )
 
 var userProvider = new(UserProvider)

@@ -22,7 +22,6 @@ import (
 	"fmt"
 )
 
-
 type GreeterProvider struct {
 	*GreeterProviderBase
 }
