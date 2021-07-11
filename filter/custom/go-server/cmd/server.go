@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"os/signal"
 	"syscall"
 	"time"
 )
