@@ -19,8 +19,14 @@ package pkg
 
 import (
 	"context"
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
+)
+
+import (
 	"google.golang.org/grpc"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )
 
 type GrpcGreeterImpl struct {

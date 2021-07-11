@@ -1,8 +1,11 @@
 package gate
 
 import (
-    "context"
-    "github.com/apache/dubbo-go-samples/game/pkg/pojo"
+	"context"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
 type BasketballService struct {

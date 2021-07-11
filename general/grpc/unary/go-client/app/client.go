@@ -31,6 +31,7 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/grpc"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+
 	gxlog "github.com/dubbogo/gost/log"
 )
 

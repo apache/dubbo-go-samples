@@ -20,11 +20,11 @@
 package integration
 
 import (
-	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 import (
-	"testing"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestChinese(t *testing.T) {

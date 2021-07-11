@@ -21,9 +21,12 @@ package integration
 
 import (
 	"context"
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-	"google.golang.org/grpc"
+	"os"
+	"testing"
+	"time"
+)
 
+import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
@@ -33,12 +36,12 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/grpc"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+
+	"google.golang.org/grpc"
 )
 
 import (
-	"os"
-	"testing"
-	"time"
+	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )
 
 var grpcGreeterImpl = new(GrpcGreeterImpl)
