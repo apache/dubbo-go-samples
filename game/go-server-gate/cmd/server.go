@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"os/signal"
 	"syscall"
 	"time"
 )

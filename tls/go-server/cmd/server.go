@@ -20,8 +20,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"os"
-	"os/signal"
 	"os/signal"
 	"path/filepath"
 	"syscall"
