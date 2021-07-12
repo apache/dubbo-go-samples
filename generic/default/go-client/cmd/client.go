@@ -27,6 +27,7 @@ import (
 )
 
 import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/dubbogo/gost/log"
 )
 
@@ -99,7 +100,7 @@ func callGetUser() {
 		[]interface{}{
 			"GetUser",
 			[]string{"java.lang.String"},
-			[]interface{}{"A003"},
+			[]hessian.Object{"A003"},
 		},
 	)
 	if err != nil {
@@ -116,10 +117,10 @@ func callQueryUser() {
 		[]interface{}{
 			"queryUser",
 			[]string{"org.apache.dubbo.User"},
-			[]interface{}{map[string]interface{}{
-				"iD": "3213",
+			[]hessian.Object{map[string]hessian.Object{
+				"iD":   "3213",
 				"name": "panty",
-				"age": 25,
+				"age":  25,
 				"time": time.Now(),
 			}},
 		},

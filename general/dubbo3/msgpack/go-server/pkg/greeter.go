@@ -33,7 +33,7 @@ type User struct {
 type UserProvider struct {
 }
 
-func (u UserProvider) GetUser(ctx context.Context,user *User) (*User, error) {
+func (u UserProvider) GetUser(ctx context.Context, user *User) (*User, error) {
 	gxlog.CInfo("req:%#v", user)
 	rsp := User{"12345", "Hello " + user.Name, 18}
 	gxlog.CInfo("rsp:%#v", rsp)

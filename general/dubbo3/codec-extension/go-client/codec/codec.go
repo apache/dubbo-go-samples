@@ -8,7 +8,6 @@ import (
 	triCommon "github.com/dubbogo/triple/pkg/common"
 )
 
-
 func init() {
 	triCommon.SetTripleCodec("json", NewJSONCodec)
 }

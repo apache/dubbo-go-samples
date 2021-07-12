@@ -15,7 +15,7 @@ var (
         Cluster:       "failover",
         Registry:      "demoZk",
         Protocol:      dubbo.DUBBO,
-        Generic:       true,
+        Generic:       "true",
     }
 )
 
@@ -33,7 +33,20 @@ func main() {
     		//参数类型数组
     		[]string{"org.apache.dubbo.User"},
     		//参数数组
-    		[]interface{}{user},
+    		// user = &User{
+    		//  ID: "3213",
+    		//  Name: "panty",
+    		//  Age: 25,
+    		//  Time: time.Now()
+    		// } 
+    		[]interface{}{
+    			map[string]interface{}{
+                    "iD": "3213",
+                    "name": "panty",
+                    "age": 25,
+                    "time": time.Now(),
+    			},
+    		},
     	},
     )
 }
