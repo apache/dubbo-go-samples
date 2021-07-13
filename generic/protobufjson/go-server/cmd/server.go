@@ -26,8 +26,7 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/generic/default/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/generic/protobufjson/go-server/pkg"
 )
 
 import (
@@ -42,13 +41,16 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
+func init() {
+	config.SetProviderService(new(pkg.UserProvider))
+}
+
 var (
 	survivalTimeout = int(3e9)
 )
 
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 
 	initSignal()

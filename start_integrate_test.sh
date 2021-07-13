@@ -47,7 +47,9 @@ array+=("general/dubbo3/codec-extension/go-server")
 # general-grpc
 array+=("general/grpc/go-server")
 
+# generic invocation
 array+=("generic/default/go-server")
+array+=("generic/protobufjson/go-server")
 
 # group
 array+=("group/go-server-group-a")
