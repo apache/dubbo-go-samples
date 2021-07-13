@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,86 +17,37 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
+	"testing"
 )
-
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
 	"github.com/dubbogo/gost/log"
-
 	"github.com/opentracing/opentracing-go"
-
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
-
 	"github.com/openzipkin/zipkin-go"
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
+	"github.com/stretchr/testify/assert"
+
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 )
 
-var (
-	survivalTimeout int = 10e9
-)
-
-// they are necessary:
-// 		export CONF_CONSUMER_FILE_PATH="xxx"
-// 		export APP_LOG_CONF_FILE="xxx"
-func main() {
-	hessian.RegisterPOJO(&User{})
-	config.Load()
-
+func TestGetUser(t *testing.T) {
 	initZipkin()
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &User{}
 	span, ctx := opentracing.StartSpanFromContext(context.Background(), "Test-Client-Service")
 	err := userProvider.GetUser(ctx, []interface{}{"A001"}, user)
 	span.Finish()
-	if err != nil {
-		panic(err)
-	}
+	assert.Nil(t, err)
+
 	gxlog.CInfo("response result: %v\n", user)
-	initSignal()
-}
-
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
-		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(time.Duration(survivalTimeout), func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
-
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("app exit now...")
-			return
-		}
-	}
+	//assert.Equal(t, "A001", user.Id)
+	assert.Equal(t, "Alex Stocks", user.Name)
+	assert.Equal(t, int32(18), user.Age)
+	assert.NotNil(t, user.Time)
 }
 
 func initZipkin() {

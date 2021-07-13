@@ -18,6 +18,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -31,40 +32,62 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/config_center/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/dynamic"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remote"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/jsonrpc"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	"github.com/dubbogo/gost/log"
+
+	"github.com/opentracing/opentracing-go"
+
+	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
+
+	"github.com/openzipkin/zipkin-go"
+	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/nacos/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-client/pkg"
 )
 
 var (
-	survivalTimeout = int(3e9)
+	userProvider        = &pkg.UserProvider{}
+	survivalTimeout int = 10e9
 )
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
+func init() {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&pkg.User{})
+}
+
+// they are necessary:
+// 		export CONF_CONSUMER_FILE_PATH="xxx"
+// 		export APP_LOG_CONF_FILE="xxx"
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 
+	initZipkin()
+	gxlog.CInfo("\n\n\nstart to test dubbo")
+	user := &pkg.User{}
+	span, ctx := opentracing.StartSpanFromContext(context.Background(), "Test-Client-Service")
+	err := userProvider.GetUser(ctx, []interface{}{"A001"}, user)
+	span.Finish()
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("response result: %v\n", user)
 	initSignal()
 }
 
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
+		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
 		logger.Infof("get signal %s", sig.String())
@@ -78,8 +101,31 @@ func initSignal() {
 			})
 
 			// The program exits normally or timeout forcibly exits.
-			fmt.Println("provider app exit now...")
+			fmt.Println("app exit now...")
 			return
 		}
 	}
+}
+
+func initZipkin() {
+	// set up a span reporter
+	reporter := zipkinhttp.NewReporter("http://localhost:9411/api/v2/spans")
+
+	// create our local service endpoint
+	endpoint, err := zipkin.NewEndpoint("myService", "myservice.mydomain.com:80")
+	if err != nil {
+		logger.Errorf("unable to create local endpoint: %+v\n", err)
+	}
+
+	// initialize our tracer
+	nativeTracer, err := zipkin.NewTracer(reporter, zipkin.WithLocalEndpoint(endpoint))
+	if err != nil {
+		logger.Errorf("unable to create tracer: %+v\n", err)
+	}
+
+	// use zipkin-go-opentracing to wrap our tracer
+	tracer := zipkinot.Wrap(nativeTracer)
+
+	// optionally set as Global OpenTracing tracer instance
+	opentracing.SetGlobalTracer(tracer)
 }

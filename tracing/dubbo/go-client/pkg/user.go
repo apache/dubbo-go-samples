@@ -15,28 +15,12 @@
  * limitations under the License.
  */
 
-package main
+package pkg
 
 import (
 	"context"
 	"time"
 )
-
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
-
-	"github.com/opentracing/opentracing-go"
-)
-
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
 
 type User struct {
 	ID   string
@@ -46,22 +30,13 @@ type User struct {
 }
 
 type UserProvider struct {
-}
-
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
-	span, ctx := opentracing.StartSpanFromContext(ctx, "User-Server-Span")
-	time.Sleep(100 * time.Millisecond)
-	span.Finish()
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
 }
 
 func (u *UserProvider) Reference() string {
 	return "UserProvider"
 }
 
-func (u User) JavaClassName() string {
+func (User) JavaClassName() string {
 	return "com.ikurento.user.User"
 }

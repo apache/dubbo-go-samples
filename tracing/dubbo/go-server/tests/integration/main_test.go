@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,12 +17,17 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
 	"os"
+	"testing"
 	"time"
+)
+
+import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
@@ -28,49 +35,43 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/config_center/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/dynamic"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/nacos"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/zookeeper"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remote"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/nacos/go-client/pkg"
-)
+var userProvider = new(UserProvider)
 
-var userProvider = new(pkg.UserProvider)
-
-func init() {
+func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
+	hessian.RegisterPOJO(&User{})
+	config.Load()
+	time.Sleep(3 * time.Second)
+
+	os.Exit(m.Run())
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-func main() {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
-	time.Sleep(8 * time.Second)
+type User struct {
+	Id   string
+	Name string
+	Age  int32
+	Time time.Time
+}
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	for i := 0; i < 123; i++ {
-		user := &pkg.User{}
-		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-		if err != nil {
-			gxlog.CError("error: %v\n", err)
-			os.Exit(1)
-			return
-		}
-		gxlog.CInfo("response result: %v\n", user)
-		time.Sleep(1 * time.Second)
-	}
+type UserProvider struct {
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
+}
+
+func (User) JavaClassName() string {
+	return "com.ikurento.user.User"
 }

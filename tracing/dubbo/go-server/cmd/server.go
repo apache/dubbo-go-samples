@@ -46,6 +46,10 @@ import (
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
 )
 
+import (
+	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-server/pkg"
+)
+
 var (
 	survivalTimeout = int(3e9)
 )
@@ -55,7 +59,7 @@ var (
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
 
-	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 
 	initZipkin()
