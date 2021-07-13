@@ -23,10 +23,6 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/chain/frontend/pkg"
-)
-
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
@@ -36,6 +32,10 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/chain/frontend/pkg"
 )
 
 func main() {

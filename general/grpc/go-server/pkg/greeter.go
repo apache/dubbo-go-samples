@@ -20,6 +20,9 @@ package pkg
 import (
 	"context"
 	"fmt"
+)
+
+import (
 	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )
 

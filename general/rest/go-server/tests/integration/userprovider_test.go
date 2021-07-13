@@ -25,11 +25,11 @@ import (
 )
 
 import (
-	. "github.com/apache/dubbo-go-samples/general/rest/go-server/pkg"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
-	"github.com/stretchr/testify/assert"
+	. "github.com/apache/dubbo-go-samples/general/rest/go-server/pkg"
 )
 
 func TestGetUser(t *testing.T) {
