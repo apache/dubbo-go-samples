@@ -6,6 +6,11 @@ request_timeout: "3s"
 # connect timeout
 connect_timeout: "3s"
 
+# config center config
+config_center:
+  protocol: "nacos"
+  address: "127.0.0.1:8848"
+
 # application config
 application:
   organization: "dubbo.io"
@@ -42,7 +47,6 @@ service_discovery:
 references:
   "UserProvider":
     registry: "demoServiceDiscovery"
-    provided_by: "UserInfoServer"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
