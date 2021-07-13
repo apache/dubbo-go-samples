@@ -1,5 +1,10 @@
 # dubbo server yaml configure file
 
+# config center config
+config_center:
+  protocol: "nacos"
+  address: "127.0.0.1:8848"
+
 # application config
 application:
   organization: "dubbo.io"
