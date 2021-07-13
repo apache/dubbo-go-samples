@@ -1,10 +1,12 @@
 package integration
 
 import (
-    "context"
-    "testing"
+	"context"
+	"testing"
+)
 
-    "github.com/stretchr/testify/assert"
+import (
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSend(t *testing.T) {

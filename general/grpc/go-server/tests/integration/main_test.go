@@ -20,6 +20,12 @@
 package integration
 
 import (
+	"os"
+	"testing"
+	"time"
+)
+
+import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
@@ -31,11 +37,6 @@ import (
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-import (
-	"os"
-	"testing"
-	"time"
-)
 import (
 	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
 )

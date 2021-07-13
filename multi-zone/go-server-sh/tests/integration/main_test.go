@@ -39,8 +39,6 @@ import (
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-
-
 var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {

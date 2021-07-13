@@ -22,11 +22,9 @@ import (
 )
 
 import (
-	"google.golang.org/grpc"
-)
-
-import (
 	"github.com/apache/dubbo-go/config"
+
+	"google.golang.org/grpc"
 )
 
 var grpcGreeterImpl = new(GrpcGreeterImpl)

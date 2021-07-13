@@ -7,11 +7,10 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log"
-)
-
-import (
 	"github.com/apache/dubbo-go/config"
+
+	"github.com/dubbogo/gost/log"
+
 	perrors "github.com/pkg/errors"
 )
 
