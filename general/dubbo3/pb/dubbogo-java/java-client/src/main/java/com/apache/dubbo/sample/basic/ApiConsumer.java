@@ -31,8 +31,6 @@ public class ApiConsumer {
         ReferenceConfig<IGreeter> ref = new ReferenceConfig<>();
         ref.setInterface(IGreeter.class);
         ref.setCheck(false);
-        ref.setInterface(IGreeter.class);
-        ref.setCheck(false);
         ref.setProtocol(CommonConstants.TRIPLE);
         ref.setLazy(true);
         ref.setTimeout(100000);
