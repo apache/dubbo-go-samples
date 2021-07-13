@@ -13,10 +13,10 @@ cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqCl
 cloud.google.com/go/pubsub v1.0.1/go.mod h1:R0Gpsv3s54REJCy4fxDixWD93lHJMoZTyQ2kNxGRt3I=
 cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiyrjsg+URw=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-20210616063255-fc7191759069 h1:kV5/cbsj3tK+0DD7cw0/l4k4+xkJjupPsWQF/nkMgaw=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-20210616063255-fc7191759069/go.mod h1:2l+IXuSuJvEk2g/ze1la8t1sX+yJH220aHo6JJVriM8=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-20210618063649-ffb278cb0f53 h1:O5cV9vTAzLdO2zCWM3P/9EgzyvHOZt255MJ5BIYlWOM=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-20210618063649-ffb278cb0f53/go.mod h1:2l+IXuSuJvEk2g/ze1la8t1sX+yJH220aHo6JJVriM8=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210705181411-e43af85126fd h1:osLG5U8sKqWKyQnw4hIsQZSBKThYkRKWZ4BcCAA737A=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210705181411-e43af85126fd/go.mod h1:2l+IXuSuJvEk2g/ze1la8t1sX+yJH220aHo6JJVriM8=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210708063655-af290429dee4 h1:JRGjw66CguqaOeYigLauTdccWqnvy7U3OYqAHzXYmlw=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210708063655-af290429dee4/go.mod h1:2l+IXuSuJvEk2g/ze1la8t1sX+yJH220aHo6JJVriM8=
 github.com/Azure/azure-sdk-for-go v40.3.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
 github.com/Azure/go-autorest/autorest v0.9.0/go.mod h1:xyHB1BMZT0cuDHU7I0+g046+BFDTQ8rEZB0s4Yfa6bI=
 github.com/Azure/go-autorest/autorest v0.9.3/go.mod h1:GsRuLYvwzLjjjRoWEIyMUaYq8GNUx2nRB378IPt/1p0=

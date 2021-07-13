@@ -1,4 +1,8 @@
 # dubbo server yaml configure file
+# config center config
+config_center:
+  protocol: "zookeeper"
+  address: "127.0.0.1:2181"
 
 # application config
 application:
