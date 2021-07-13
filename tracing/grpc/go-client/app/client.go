@@ -27,12 +27,6 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log"
-	opentracing "github.com/opentracing/opentracing-go"
-	jaegercfg "github.com/uber/jaeger-client-go/config"
-)
-
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"
@@ -43,6 +37,12 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/grpc"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+
+	"github.com/dubbogo/gost/log"
+
+	opentracing "github.com/opentracing/opentracing-go"
+
+	jaegercfg "github.com/uber/jaeger-client-go/config"
 )
 
 var (

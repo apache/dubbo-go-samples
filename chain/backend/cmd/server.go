@@ -26,10 +26,6 @@ import (
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/chain/backend/pkg"
-)
-
-import (
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"
@@ -40,6 +36,10 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+)
+
+import (
+	_ "github.com/apache/dubbo-go-samples/chain/backend/pkg"
 )
 
 var (

@@ -1,29 +1,29 @@
 package main
 
 import (
-    "os"
-    "os/signal"
-    "syscall"
-    "time"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+)
 
-    "github.com/apache/dubbo-go/common/logger"
-    "github.com/apache/dubbo-go/config"
-    hessian "github.com/apache/dubbo-go-hessian2"
+import (
+	hessian "github.com/apache/dubbo-go-hessian2"
+	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	"github.com/apache/dubbo-go/common/logger"
+	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
+	"github.com/apache/dubbo-go/config"
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
+	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/registry/protocol"
+	_ "github.com/apache/dubbo-go/registry/zookeeper"
+)
 
-    _ "github.com/apache/dubbo-go/protocol/dubbo"
-    _ "github.com/apache/dubbo-go/registry/protocol"
-
-    _ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-    _ "github.com/apache/dubbo-go/filter/filter_impl"
-
-    _ "github.com/apache/dubbo-go/cluster/cluster_impl"
-    _ "github.com/apache/dubbo-go/cluster/loadbalance"
-    // _ "github.com/apache/dubbo-go/metadata/service/remote"
-    _ "github.com/apache/dubbo-go/metadata/service/inmemory"
-    _ "github.com/apache/dubbo-go/registry/zookeeper"
-
-    "github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
-    "github.com/apache/dubbo-go-samples/game/pkg/pojo"
+import (
+	"github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
+	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
 func init() {

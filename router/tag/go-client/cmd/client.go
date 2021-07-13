@@ -41,6 +41,7 @@ import (
 	_ "github.com/apache/dubbo-go/registry/directory"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+
 	gxlog "github.com/dubbogo/gost/log"
 )
 

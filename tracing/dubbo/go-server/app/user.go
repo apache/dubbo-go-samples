@@ -23,13 +23,12 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log"
-	"github.com/opentracing/opentracing-go"
-)
-
-import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go/config"
+
+	"github.com/dubbogo/gost/log"
+
+	"github.com/opentracing/opentracing-go"
 )
 
 func init() {

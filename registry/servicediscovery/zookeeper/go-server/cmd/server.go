@@ -27,8 +27,6 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/zookeeper/go-server/pkg"
-
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"
@@ -43,6 +41,10 @@ import (
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/servicediscovery"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/zookeeper/go-server/pkg"
 )
 
 var (
