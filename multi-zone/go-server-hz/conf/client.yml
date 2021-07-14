@@ -6,47 +6,29 @@ request_timeout: "3s"
 # connect timeout
 connect_timeout: "3s"
 
-# config center config
-config_center:
-  protocol: "nacos"
-  address: "127.0.0.1:8848"
-
 # application config
 application:
   organization: "dubbo.io"
-  name: "UserInfoTest"
+  name: "UserInfoClient"
   module: "dubbo-go user-info client"
   version: "0.0.1"
   environment: "dev"
 
 # registry config
 registries:
-  "demoServiceDiscovery":
-    protocol: "service-discovery"
-    params:
-      service_discovery: "nacos1"
-      name_mapping: "in-memory"
-      metadata: "default"
-
-remote:
-  nacos:
-    address: "127.0.0.1:8848"
-    timeout: "5s"
-
-metadata_report:
-  protocol: "nacos"
-  remote_ref: "nacos"
-
-service_discovery:
-  nacos1:
-    protocol: "nacos"
-    remote_ref: "nacos"
-    group: "dubbo"
+  "demoZk":
+    protocol: "zookeeper"
+    timeout: "3s"
+    address: "127.0.0.1:2183"
+    username: ""
+    password: ""
+    zone: hangzhou
+    weight: 50
 
 # reference config
 references:
   "UserProvider":
-    registry: "demoServiceDiscovery"
+    registry: "demoZk"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"

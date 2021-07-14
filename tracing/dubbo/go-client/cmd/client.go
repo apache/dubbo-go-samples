@@ -27,6 +27,15 @@ import (
 )
 
 import (
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/dubbogo/gost/log"
 	"github.com/opentracing/opentracing-go"
@@ -36,33 +45,29 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-client/pkg"
 )
 
 var (
+	userProvider        = &pkg.UserProvider{}
 	survivalTimeout int = 10e9
 )
+
+func init() {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&pkg.User{})
+}
 
 // they are necessary:
 // 		export CONF_CONSUMER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
-	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 
 	initZipkin()
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &User{}
+	user := &pkg.User{}
 	span, ctx := opentracing.StartSpanFromContext(context.Background(), "Test-Client-Service")
 	err := userProvider.GetUser(ctx, []interface{}{"A001"}, user)
 	span.Finish()
