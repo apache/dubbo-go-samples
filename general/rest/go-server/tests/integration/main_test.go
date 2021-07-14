@@ -29,7 +29,6 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/general/rest/go-client/pkg"
 )
 
 import (
@@ -39,31 +38,31 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/rest"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
 var (
-	userProvider = new(pkg.UserProvider)
-	userProvider1 = new(pkg.UserProvider1)
-	userProvider2 = new(pkg.UserProvider2)
-	)
+	userProvider  = new(UserProvider)
+	userProvider1 = new(UserProvider1)
+	userProvider2 = new(UserProvider2)
+)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	config.SetConsumerService(userProvider1)
 	config.SetConsumerService(userProvider2)
-	hessian.RegisterPOJO(&pkg.UserProvider{})
+	hessian.RegisterPOJO(&UserProvider{})
+	hessian.RegisterPOJO(&UserProvider1{})
+	hessian.RegisterPOJO(&UserProvider2{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }
 
-
-type JsonRPCUser struct {
+type User struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	Age  int64  `json:"age"`
@@ -71,7 +70,7 @@ type JsonRPCUser struct {
 	Sex  string `json:"sex"`
 }
 
-func (u JsonRPCUser) String() string {
+func (u User) String() string {
 	return fmt.Sprintf(
 		"User{ID:%s, Name:%s, Age:%d, Time:%s, Sex:%s}",
 		u.ID, u.Name, u.Age, time.Unix(u.Time, 0).Format("2006-01-02 15:04:05.99999"), u.Sex,
@@ -79,43 +78,55 @@ func (u JsonRPCUser) String() string {
 }
 
 type UserProvider struct {
-	GetUsers func(req []interface{}) ([]JsonRPCUser, error)
-	GetUser  func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
-	GetUser0 func(id string, name string) (JsonRPCUser, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error `dubbo:"getUser"`
+	GetUsers func(req []interface{}) ([]User, error)
+	GetUser  func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser0 func(id string, name string) (User, error)
+	GetUser1 func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser2 func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
 }
 
 func (u *UserProvider) Reference() string {
-	return "com.ikurento.UserProvider"
+	return "UserProvider"
 }
 
 type UserProvider1 struct {
-	GetUsers func(req []interface{}) ([]JsonRPCUser, error)
-	GetUser  func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
-	GetUser0 func(id string, name string) (JsonRPCUser, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error `dubbo:"getUser"`
+	GetUsers func(req []interface{}) ([]User, error)
+	GetUser  func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser0 func(id string, name string) (User, error)
+	GetUser1 func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser2 func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
 }
 
 func (u *UserProvider1) Reference() string {
-	return "com.ikurento.UserProvider1"
+	return "UserProvider1"
 }
 
 type UserProvider2 struct {
-	GetUsers func(req []interface{}) ([]JsonRPCUser, error)
-	GetUser  func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
-	GetUser0 func(id string, name string) (JsonRPCUser, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error `dubbo:"getUser"`
+	GetUsers func(req []interface{}) ([]User, error)
+	GetUser  func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser0 func(id string, name string) (User, error)
+	GetUser1 func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser2 func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
 }
 
 func (u *UserProvider2) Reference() string {
-	return "com.ikurento.UserProvider2"
+	return "UserProvider2"
+}
+
+func (UserProvider) JavaClassName() string {
+	return "UserProvider"
+}
+
+func (UserProvider1) JavaClassName() string {
+	return "UserProvider1"
+}
+
+func (UserProvider2) JavaClassName() string {
+	return "UserProvider2"
 }

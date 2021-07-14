@@ -21,35 +21,28 @@ package integration
 
 import (
 	"context"
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
 	"testing"
 	"time"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/rest/go-client/pkg"
+	"github.com/dubbogo/gost/log"
 	"github.com/stretchr/testify/assert"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/rest"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
-var 	survivalTimeout int = 10e9
 
-func TestUserProvider1(t *testing.T) {
+var survivalTimeout int = 10e9
 
-	gxlog.CInfo("\n\ntest")
+func TestUserProvider(t *testing.T) {
 
 	time.Sleep(3e9)
 	gxlog.CInfo("test Userprovider")
@@ -61,7 +54,14 @@ func TestUserProvider1(t *testing.T) {
 
 }
 
-func checkGetUser(user *pkg.User,err error,t *testing.T){
+func checkGetUserNil(user *User, err error, t *testing.T) {
+	assert.NotNil(t, err)
+	assert.Equal(t, "", user.ID)
+	assert.Equal(t, "", user.Name)
+	assert.Equal(t, int64(0), user.Age)
+	assert.NotNil(t, user.Time)
+}
+func checkGetUser(user *User, err error, t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "113", user.ID)
 	assert.Equal(t, "Moorse中文", user.Name)
@@ -69,28 +69,30 @@ func checkGetUser(user *pkg.User,err error,t *testing.T){
 	assert.NotNil(t, user.Time)
 }
 
-func checkGetUser0(user *pkg.User,err error,t *testing.T){
+func checkGetUsers(user *[]User, err error, t *testing.T) {
+	if len(*user) != 0 {
+		assert.Nil(t, err)
+		assert.Equal(t, "002", (*user)[0].ID)
+		assert.Equal(t, "Lily", (*user)[0].Name)
+		assert.Equal(t, int64(20), (*user)[0].Age)
+		assert.NotNil(t, (*user)[0].Time)
+		if len(*user) == 2 {
+			assert.Nil(t, err)
+			assert.Equal(t, "113", (*user)[1].ID)
+			assert.Equal(t, "Moorse", (*user)[1].Name)
+			assert.Equal(t, int64(30), (*user)[1].Age)
+			assert.NotNil(t, (*user)[1].Time)
+		}
+	}
+
+}
+
+func checkGetUser3(err error, t *testing.T) {
 	assert.Nil(t, err)
-	assert.Equal(t, "002", user.ID)
-	assert.Equal(t, "Lily", user.Name)
-	assert.Equal(t, int64(20), user.Age)
-	assert.NotNil(t, user.Time)
-}
-func checkGetUser01(user *pkg.User,err error,t *testing.T){
-	assert.NotNil(t, err)
-	assert.Equal(t, "", user.ID)
-	assert.Equal(t, "", user.Name)
-	assert.Equal(t, int64(0), user.Age)
-	assert.NotNil(t, user.Time)
-}
-
-
-func checkGetUser3(err error,t *testing.T){
-	assert.Nil(t, err)
 
 }
 
-func checkGetUser1(user *pkg.User,err error,t *testing.T){
+func checkGetUser1(user *User, err error, t *testing.T) {
 	assert.NotNil(t, err)
 	assert.Equal(t, "1", user.ID)
 	assert.Equal(t, "", user.Name)
@@ -98,100 +100,70 @@ func checkGetUser1(user *pkg.User,err error,t *testing.T){
 	assert.NotNil(t, user.Time)
 }
 
-func checkGetUser2(user *pkg.User,err error,t *testing.T){
+func checkGetUser2(user *User, err error, t *testing.T) {
 	assert.NotNil(t, err)
 	assert.Equal(t, "", user.ID)
 	assert.Equal(t, "", user.Name)
 	assert.Equal(t, int64(0), user.Age)
-	assert.Equal(t, int64(0),user.Time)
-}
-
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
-		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-		// reload()
-		default:
-			time.AfterFunc(time.Duration(survivalTimeout), func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
-
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("app exit now...")
-			return
-		}
-	}
+	assert.Equal(t, int64(0), user.Time)
 }
 
 func test(t *testing.T) {
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &pkg.User{}
+	gxlog.CInfo("\n\n\nstart to test rest")
+	user := &User{}
 	err := userProvider.GetUser(context.TODO(), []interface{}{"A003"}, user)
-	checkGetUser(user,err,t)
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser0")
-	ret, err := userProvider.GetUser0("A003", "Moorse",30)
-	checkGetUser01(ret,err,t)
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUsers")
-	ret1, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
-	for _,ret := range ret1{
-		checkGetUser0(&ret,err,t)
-	}
-	user = &pkg.User{}
+	checkGetUser(user, err, t)
+	gxlog.CInfo("\n\n\nstart to test rest - GetUser0")
+	ret, err := userProvider.GetUser0("A003", "Moorse")
+	checkGetUserNil(&ret, err, t)
+	gxlog.CInfo("\n\n\nstart to test rest - GetUsers")
+	ret1, err := userProvider.GetUsers([]interface{}{&User{ID: "A002"}})
+	checkGetUsers(&ret1, err, t)
+	user = &User{}
 	err = userProvider.GetUser2(context.TODO(), []interface{}{1}, user)
-	checkGetUser2(user,err,t)
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser3")
+	checkGetUser2(user, err, t)
+	gxlog.CInfo("\n\n\nstart to test rest - GetUser3")
 	err = userProvider.GetUser3()
-	checkGetUser3(err,t)
+	checkGetUser3(err, t)
 }
 
 func test1(t *testing.T) {
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &pkg.User{}
+	gxlog.CInfo("\n\n\nstart to test1 rest")
+	user := &User{}
 	err := userProvider1.GetUser(context.TODO(), []interface{}{"A003"}, user)
-	checkGetUser(user,err,t)
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser0")
-	ret, err := userProvider1.GetUser0("A003", "Moorse",30)
-	checkGetUser01(&ret,err,t)
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUsers")
-	ret1, err := userProvider1.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
-	for _,ret := range ret1{
-		checkGetUser0(&ret,err,t)
-	}
-	user = &pkg.User{}
+	checkGetUser(user, err, t)
+	gxlog.CInfo("\n\n\nstart to test1 rest - GetUser0")
+	ret, err := userProvider1.GetUser0("A003", "Moorse")
+	checkGetUserNil(&ret, err, t)
+	gxlog.CInfo("\n\n\nstart to test1 rest - GetUsers")
+	ret1, err := userProvider.GetUsers([]interface{}{&User{ID: "A002"}})
+	checkGetUsers(&ret1, err, t)
+	user = &User{}
 	err = userProvider1.GetUser2(context.TODO(), []interface{}{1}, user)
-	checkGetUser2(user,err,t)
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser3")
+	checkGetUser2(user, err, t)
+	gxlog.CInfo("\n\n\nstart to test1 rest - GetUser3")
 	err = userProvider1.GetUser3()
-	checkGetUser3(err,t)
+	checkGetUser3(err, t)
 }
 
 func test2(t *testing.T) {
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &pkg.User{}
+	gxlog.CInfo("\n\n\nstart to test2 rest")
+	user := &User{}
 	err := userProvider2.GetUser(context.TODO(), []interface{}{"A003"}, user)
-	checkGetUser(user,err,t)
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser0")
-	ret, err := userProvider2.GetUser0("A003", "Moorse",30)
-	checkGetUser01(&ret,err,t)
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUsers")
-	ret1, err := userProvider2.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
-	for _,ret := range ret1{
-		checkGetUser0(&ret,err,t)
-	}
-	user = &pkg.User{}
+	checkGetUser(user, err, t)
+	gxlog.CInfo("\n\n\nstart to test2 rest - GetUser0")
+	ret, err := userProvider2.GetUser0("A003", "Moorse")
+	checkGetUserNil(&ret, err, t)
+	gxlog.CInfo("\n\n\nstart to test2 rest - GetUsers")
+	ret1, err := userProvider.GetUsers([]interface{}{&User{ID: "A002"}})
+	checkGetUsers(&ret1, err, t)
+	user = &User{}
 	err = userProvider2.GetUser2(context.TODO(), []interface{}{1}, user)
-	checkGetUser2(user,err,t)
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser3")
+	checkGetUser2(user, err, t)
+	gxlog.CInfo("\n\n\nstart to test2 rest - GetUser3")
 	err = userProvider2.GetUser3()
-	checkGetUser3(err,t)
+	checkGetUser3(err, t)
 }

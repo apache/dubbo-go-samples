@@ -1,0 +1,108 @@
+# dubbo client yaml configure file
+
+check: true
+# client
+request_timeout : "3s"
+# connect timeout
+connect_timeout : "3s"
+
+# application config
+application:
+  organization: "dubbo.io"
+  name: "UserInfoServer"
+  module: "dubbo-go user-info server"
+  version: "0.0.1"
+  environment: "dev"
+
+# registry config
+registries:
+  "demoZk":
+    protocol: "zookeeper"
+    timeout: "3s"
+    address: "127.0.0.1:2181"
+
+references:
+  "UserProvider":
+    registry: "demoZk"
+    protocol : "rest"
+    interface : "UserProvider"
+    cluster: "failover"
+    rest_path: "/UserProvider"
+    methods:
+      - name: "GetUser"
+        rest_path: "/GetUser"
+        rest_method: "GET"
+        rest_query_params: "0:id"
+      - name: "GetUser0"
+        rest_path: "/GetUser0/{id}"
+        rest_method: "POST"
+        rest_query_params: "1:name,2:age"
+        rest_path_params: "0:id"
+      - name: "GetUser3"
+        rest_path: "/GetUser3"
+        rest_method: "GET"
+      - name: "GetUsers"
+        rest_path: "/GetUsers"
+        rest_method: "POST"
+        rest_body: 0
+      - name: "GetUser1"
+        rest_path: "/GetUser1"
+        rest_method: "GET"
+
+  "UserProvider1":
+    registry: "demoZk"
+    protocol: "rest"
+    version : "2.0"
+    interface: "UserProvider1"
+    cluster: "failover"
+    rest_path: "/UserProvider1"
+    methods:
+      - name: "GetUser"
+        rest_path: "/GetUser"
+        rest_method: "GET"
+        rest_query_params: "0:id"
+      - name: "GetUser0"
+        rest_path: "/GetUser0/{id}"
+        rest_method: "POST"
+        rest_query_params: "1:name,2:age"
+        rest_path_params: "0:id"
+      - name: "GetUser3"
+        rest_path: "/GetUser3"
+        rest_method: "GET"
+      - name: "GetUsers"
+        rest_path: "/GetUsers"
+        rest_method: "POST"
+        rest_body: 0
+      - name: "GetUser1"
+        rest_path: "/GetUser1"
+        rest_method: "GET"
+
+  "UserProvider2":
+    registry: "demoZk"
+    protocol: "rest"
+    version : "2.0"
+    group: "as"
+    interface: "UserProvider2"
+    rest_path: "/UserProvider2"
+    methods:
+      - name: "GetUser"
+        rest_path: "/GetUser"
+        rest_method: "GET"
+        rest_query_params: "0:id"
+      - name: "GetUser0"
+        rest_path: "/GetUser0/{id}"
+        rest_method: "POST"
+        rest_query_params: "1:name,2:age"
+        rest_path_params: "0:id"
+        rest_produces: "application/json;charset=utf-8"
+        rest_consumes: "application/json;charset=utf-8,*/*"
+      - name: "GetUser3"
+        rest_path: "/GetUser3"
+        rest_method: "GET"
+      - name: "GetUsers"
+        rest_path: "/GetUsers"
+        rest_method: "POST"
+        rest_body: 0
+      - name: "GetUser1"
+        rest_path: "/GetUser1"
+        rest_method: "GET"

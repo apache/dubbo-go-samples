@@ -2,7 +2,7 @@
 
 # application config
 application:
-  organization : "org.appache."
+  organization : "org.appache"
   name : "BDTService"
   module : "dubbogo user-info server"
   version : "0.0.1"
@@ -16,12 +16,7 @@ registries :
     address: "127.0.0.1:2181"
     username: ""
     password: ""
-  "shanghaizk":
-    protocol: "zookeeper"
-    timeout	: "3s"
-    address: "127.0.0.1:2182"
-    username: ""
-    password: ""
+
 
 
 services:
@@ -30,7 +25,7 @@ services:
     registry: "hangzhouzk"
     protocol : "jsonrpc"
     # 相当于dubbo.xml中的interface
-    interface : "com.ikurento.UserProvider"
+    interface : "UserProvider"
     loadbalance: "random"
     warmup: "100"
     cluster: "failover"
@@ -41,7 +36,7 @@ services:
   "UserProvider1":
     registry: "hangzhouzk"
     protocol: "jsonrpc"
-    interface: "com.ikurento.UserProvider"
+    interface: "UserProvider1"
     loadbalance: "random"
     version: "2.0"
     warmup: "100"
@@ -53,7 +48,7 @@ services:
   "UserProvider2":
     registry: "hangzhouzk"
     protocol: "jsonrpc"
-    interface: "com.ikurento.UserProvider"
+    interface: "UserProvider2"
     loadbalance: "random"
     version: "2.0"
     group: "as"

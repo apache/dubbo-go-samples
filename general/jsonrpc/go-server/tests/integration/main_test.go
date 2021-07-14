@@ -29,9 +29,7 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/general/jsonrpc/go-client/pkg"
 )
-
 import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
@@ -39,22 +37,24 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/jsonrpc"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
 var (
-	userProvider  = new(pkg.UserProvider)
-	userProvider1 = new(pkg.UserProvider1)
-	userProvider2 = new(pkg.UserProvider2)
+	userProvider  = new(UserProvider)
+	userProvider1 = new(UserProvider1)
+	userProvider2 = new(UserProvider2)
 )
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	config.SetConsumerService(userProvider1)
 	config.SetConsumerService(userProvider2)
-	hessian.RegisterPOJO(&pkg.UserProvider{})
+	hessian.RegisterPOJO(&UserProvider{})
+	hessian.RegisterPOJO(&UserProvider1{})
+	hessian.RegisterPOJO(&UserProvider2{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
@@ -87,7 +87,7 @@ type UserProvider struct {
 }
 
 func (u *UserProvider) Reference() string {
-	return "com.ikurento.UserProvider"
+	return "UserProvider"
 }
 
 type UserProvider1 struct {
@@ -101,7 +101,7 @@ type UserProvider1 struct {
 }
 
 func (u *UserProvider1) Reference() string {
-	return "com.ikurento.UserProvider1"
+	return "UserProvider1"
 }
 
 type UserProvider2 struct {
@@ -115,5 +115,16 @@ type UserProvider2 struct {
 }
 
 func (u *UserProvider2) Reference() string {
-	return "com.ikurento.UserProvider2"
+	return "UserProvider2"
+}
+
+func (UserProvider) JavaClassName() string {
+	return "UserProvider"
+}
+
+func (UserProvider1) JavaClassName() string {
+	return "UserProvider1"
+}
+func (UserProvider2) JavaClassName() string {
+	return "UserProvider2"
 }

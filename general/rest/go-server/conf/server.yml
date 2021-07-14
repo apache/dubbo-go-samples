@@ -19,7 +19,7 @@ services:
   "UserProvider":
     registry: "demoZk"
     protocol : "rest"
-    interface : "org.apache.dubbo.UserProvider"
+    interface : "UserProvider"
     loadbalance: "random"
     warmup: "100"
     cluster: "failover"
@@ -50,7 +50,7 @@ services:
   "UserProvider1":
     registry: "demoZk"
     protocol : "rest"
-    interface: "org.apache.dubbo.UserProvider"
+    interface: "UserProvider1"
     loadbalance: "random"
     version: "2.0"
     warmup: "100"
@@ -82,7 +82,7 @@ services:
   "UserProvider2":
     registry: "demoZk"
     protocol: "rest"
-    interface: "org.apache.dubbo.UserProvider"
+    interface: "UserProvider2"
     loadbalance: "random"
     version: "2.0"
     group: "as"
