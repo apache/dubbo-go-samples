@@ -5,7 +5,7 @@ require (
 	github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5 // indirect
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
-	github.com/apache/dubbo-go v1.5.7-rc1
+	github.com/apache/dubbo-go v1.5.7-rc1-tmp.0.20210705022741-5520fa1783c9
 	github.com/apache/dubbo-go-hessian2 v1.9.2
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/docker/go-connections v0.4.0 // indirect
@@ -25,6 +25,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.9.0
 	github.com/stretchr/testify v1.7.0
+	github.com/tinylib/msgp v1.1.0 // indirect
 	github.com/transaction-wg/seata-golang v0.2.1-alpha
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect

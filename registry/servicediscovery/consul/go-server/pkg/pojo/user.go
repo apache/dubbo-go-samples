@@ -24,9 +24,7 @@ import (
 
 import (
 	"github.com/apache/dubbo-go/config"
-)
 
-import (
 	gxlog "github.com/dubbogo/gost/log"
 )
 
