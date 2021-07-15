@@ -35,8 +35,8 @@ array+=("filter/sentinel/go-server")
 # general
 array+=("general/dubbo/go-server")
 array+=("general/grpc/go-server")
-#array+=("general/jsonrpc/go-server") # Unsupported
-#array+=("general/rest/go-server") # Unsupported
+array+=("general/jsonrpc/go-server")
+array+=("general/rest/go-server")
 
 # generic
 array+=("generic/go-server")
