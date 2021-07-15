@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package com.ikurento.user;
+package main
 
-public enum  Gender {
-    MAN,
-    WOMAN
-}
+var (
+	Version = "2.7.5"
+)

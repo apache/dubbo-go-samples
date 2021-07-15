@@ -15,32 +15,8 @@
  * limitations under the License.
  */
 
-package com.ikurento.user;
+package main
 
-import java.util.List;
-import java.util.Map;
-
-public interface UserProvider {
-
-    boolean isLimit(Gender gender, String name);
-
-    User GetUser(String userId); // the first alpha is Upper case to compatible with golang.
-
-    List<User> GetUsers(List<String> userIdList);
-
-    User GetUser0(String userId, String name);
-
-    void GetUser3();
-
-    Map<String, User> GetUserMap(List<String> userIdList);
-
-    User getUser(int usercode);
-
-    User queryUser(User user);
-
-    Map<String, User> queryAll();
-
-    int Calc(int a,int b);
-
-    Response<Integer> Sum(int a, int b);
-}
+var (
+	Version = "2.7.5"
+)
