@@ -42,7 +42,7 @@ import (
 )
 
 var (
-	userProvider  = new(pkg.UserProvider)
+	userProvider = new(pkg.UserProvider)
 )
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
