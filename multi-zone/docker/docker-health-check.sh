@@ -14,3 +14,5 @@ while [ "$res" != "$passCode" ];do
   curl 127.0.0.1:2183
   res=$?
 done
+
+sleep 5
