@@ -17,7 +17,9 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 var (
 	Version = "2.7.7"

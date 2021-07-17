@@ -21,12 +21,17 @@ package integration
 
 import (
 	"context"
-	"github.com/apache/dubbo-go-hessian2/java_exception"
-	"github.com/apache/dubbo-go-samples/general/dubbo/go-server/pkg"
 	"testing"
 )
+
 import (
+	"github.com/apache/dubbo-go-hessian2/java_exception"
+
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/general/dubbo/go-server/pkg"
 )
 
 func TestGetUserA000(t *testing.T) {

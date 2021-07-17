@@ -21,12 +21,17 @@ package integration
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	"github.com/apache/dubbo-go-samples/multi-zone/go-client/pkg"
 	"testing"
 )
+
 import (
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
+
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/multi-zone/go-client/pkg"
 )
 
 func TestGetUser(t *testing.T) {

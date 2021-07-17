@@ -2,6 +2,9 @@ package pkg
 
 import (
 	"context"
+)
+
+import (
 	"github.com/apache/dubbo-go-samples/game/pkg/consumer/game"
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )

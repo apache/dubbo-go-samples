@@ -35,9 +35,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-)
 
-import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 

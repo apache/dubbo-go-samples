@@ -26,21 +26,21 @@ import (
 )
 
 import (
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/rest"
 	"dubbo.apache.org/dubbo-go/v3/protocol/rest/server/server_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	"github.com/dubbogo/gost/log"
-	"github.com/emicklei/go-restful/v3"
-
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+
+	"github.com/dubbogo/gost/log"
+
+	"github.com/emicklei/go-restful/v3"
 )
 
 import (

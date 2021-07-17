@@ -20,11 +20,12 @@ package pkg
 import (
 	"context"
 	"fmt"
-	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
+
+	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (

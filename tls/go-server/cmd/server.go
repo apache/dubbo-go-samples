@@ -36,7 +36,9 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+
 	getty "github.com/apache/dubbo-getty"
+
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
@@ -44,7 +46,6 @@ import (
 	"github.com/apache/dubbo-go-samples/tls/go-server/pkg"
 )
 
-// survival time
 var (
 	survivalTimeout = int(3e9)
 )

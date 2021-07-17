@@ -2,8 +2,13 @@ package pkg
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
+)
 
+import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+)
+
+import (
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 

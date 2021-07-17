@@ -20,23 +20,26 @@
 package integration
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	"github.com/apache/dubbo-go-samples/multi-zone/go-client/pkg"
+	"os"
+	"testing"
+	"time"
+)
 
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
-	"os"
-	"testing"
-	"time"
+	"github.com/apache/dubbo-go-samples/multi-zone/go-client/pkg"
 )
 
 var userProvider = new(pkg.UserProvider)
