@@ -20,6 +20,8 @@ P_DIR="$1"
 # start zookeeper
 make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/dist -f build/Makefile docker-up
 
+make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/dist -f build/Makefile docker-health-check
+
 # start server
 make PROJECT_DIR="$P_DIR"/go-server-hz PROJECT_NAME="$(basename "$P_DIR"/go-server-hz)" BASE_DIR="$P_DIR"/go-server-hz/dist -f build/Makefile start
 make PROJECT_DIR="$P_DIR"/go-server-sh PROJECT_NAME="$(basename "$P_DIR"/go-server-sh)" BASE_DIR="$P_DIR"/go-server-sh/dist -f build/Makefile start
