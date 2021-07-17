@@ -8,8 +8,8 @@
     </envs>
     <kind value="PACKAGE" />
     <filePath value="$PROJECT_DIR$" />
-    <package value="github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/unary-client/dubbogo-client/cmd" />
-    <directory value="github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/cmd" />
+    <package value="github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/unary-client/dubbogo-client/cmd/client.go" />
+    <directory value="github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/unary-client/dubbogo-client/cmd" />
     <method v="2" />
   </configuration>
 </component>

@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="triple-codec-extension-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="triple">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/general/dubbo3/codec-extension/go-server/conf/log.yml" />
+      <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/general/dubbo3/codec-extension/go-server/conf/server.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <filePath value="$PROJECT_DIR$" />
+    <package value="github.com/apache/dubbo-go-samples/general/dubbo3/codec-extension/go-server/cmd/server.go" />
+    <directory value="github.com/apache/dubbo-go-samples/general/dubbo3/codec-extension/go-server/cmd" />
+    <method v="2" />
+  </configuration>
+</component>
