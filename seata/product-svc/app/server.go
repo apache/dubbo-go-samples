@@ -27,24 +27,22 @@ import (
 )
 
 import (
-	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
-)
-
-import (
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	"github.com/transaction-wg/seata-golang/pkg/client"
 	"github.com/transaction-wg/seata-golang/pkg/client/at/exec"
 	config2 "github.com/transaction-wg/seata-golang/pkg/client/config"
+)
 
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+import (
+	dao2 "github.com/apache/dubbo-go-samples/seata/product-svc/app/dao"
 )
 
 const (
