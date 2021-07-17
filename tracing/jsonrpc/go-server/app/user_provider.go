@@ -8,12 +8,12 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log"
-	"github.com/opentracing/opentracing-go"
-)
-
-import (
 	"dubbo.apache.org/dubbo-go/v3/config"
+
+	"github.com/dubbogo/gost/log"
+
+	"github.com/opentracing/opentracing-go"
+
 	perrors "github.com/pkg/errors"
 )
 

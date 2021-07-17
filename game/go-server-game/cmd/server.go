@@ -5,22 +5,22 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+)
 
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	"dubbo.apache.org/dubbo-go/v3/config"
-
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	// _ "dubbo.apache.org/dubbo-go/v3/metadata/remote/impl"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+)
 
+import (
 	_ "github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
 )
 
