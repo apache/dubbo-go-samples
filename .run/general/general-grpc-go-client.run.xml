@@ -4,7 +4,7 @@
     <working_directory value="$PROJECT_DIR$" />
     <envs>
       <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/general/grpc/go-client/conf/client.yml" />
-      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/general/grpc/go-client/conf/conf/log.yml" />
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/general/grpc/go-client/conf/log.yml" />
     </envs>
     <kind value="PACKAGE" />
     <filePath value="$PROJECT_DIR$/general/grpc/go-client/cmd/client.go" />
