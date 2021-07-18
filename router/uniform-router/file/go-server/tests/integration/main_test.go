@@ -20,8 +20,13 @@
 package integration
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"context"
+	"os"
+	"testing"
+	"time"
+)
 
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/cluster/router/v3router"
@@ -32,13 +37,8 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-)
 
-import (
-	"context"
-	"os"
-	"testing"
-	"time"
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 var userProvider = new(UserProvider)

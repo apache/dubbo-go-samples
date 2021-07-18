@@ -20,15 +20,11 @@ package main
 import (
 	"context"
 	"fmt"
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-)
-
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/dubbogo/gost/log"
 )
 
 import (
@@ -41,6 +37,8 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+
+	"github.com/dubbogo/gost/log"
 )
 
 var (

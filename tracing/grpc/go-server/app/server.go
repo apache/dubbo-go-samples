@@ -38,6 +38,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
 	opentracing "github.com/opentracing/opentracing-go"
+
 	jaegercfg "github.com/uber/jaeger-client-go/config"
 )
 

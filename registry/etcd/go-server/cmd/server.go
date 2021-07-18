@@ -26,9 +26,6 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/registry/etcd/go-server/pkg"
-
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
@@ -38,6 +35,12 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/etcdv3"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/registry/etcd/go-server/pkg"
 )
 
 var (

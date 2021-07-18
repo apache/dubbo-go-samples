@@ -2,6 +2,9 @@ package gate
 
 import (
 	"context"
+)
+
+import (
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 

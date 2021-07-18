@@ -36,6 +36,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+
 	_ "github.com/dubbogo/triple/pkg/triple"
 )
 

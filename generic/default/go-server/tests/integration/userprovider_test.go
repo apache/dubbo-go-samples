@@ -21,13 +21,16 @@ package integration
 
 import (
 	"context"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
+
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
+
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetUser(t *testing.T) {

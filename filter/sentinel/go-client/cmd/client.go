@@ -31,10 +31,13 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+
 	"github.com/alibaba/sentinel-golang/api"
 	sentinelConf "github.com/alibaba/sentinel-golang/core/config"
 	"github.com/alibaba/sentinel-golang/core/flow"
+
 	hessian "github.com/apache/dubbo-go-hessian2"
+
 	"github.com/dubbogo/gost/log"
 )
 

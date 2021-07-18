@@ -23,12 +23,11 @@ import (
 	"context"
 	"testing"
 )
+
 import (
 	"github.com/stretchr/testify/assert"
 )
 
-// in order to make sure direct-invoking is enabled, check if references -> UserProvider -> url is specified
-// in conf/client.yaml
 func TestGetUser(t *testing.T) {
 	user := &User{}
 	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)

@@ -26,11 +26,6 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/nacos/go-server/pkg"
-)
-
-import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
@@ -46,6 +41,12 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/registry/servicediscovery/nacos/go-server/pkg"
 )
 
 var (
