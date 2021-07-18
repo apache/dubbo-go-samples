@@ -34,7 +34,7 @@ cd ./default/go-client/cmd \
   && go run client.go
 ```
 
-### Protobuf Json
+### Protobuf Json (暂时禁用)
 
 Protobuf Json的例子放在`protobufjson`文件夹中。首先需要根据proto文件生成结构体定义。（注：`user.pb.go`已经生成，这是为了CI的集成测试使用的，但是我们仍然强烈建议你自己生成一次。）
 

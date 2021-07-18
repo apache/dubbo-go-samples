@@ -34,7 +34,7 @@ cd ./default/go-client/cmd \
   && go run client.go
 ```
 
-### Protobuf Json
+### Protobuf Json (Disabled)
 
 The case for Protobuf Json is at `protobufjson` directory. The first step is to generate struct definitions with proto file.  (The `user.pb.go` is generated for integrated tests, but we highly recommend you generate by yourself.)
 
