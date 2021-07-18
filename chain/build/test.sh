@@ -24,6 +24,7 @@ make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/
 
 # start server
 make PROJECT_DIR="$P_DIR"/backend PROJECT_NAME="$(basename "$P_DIR"/backend)" BASE_DIR="$P_DIR"/backend/dist -f build/Makefile start
+sleep 10
 make PROJECT_DIR="$P_DIR"/middle PROJECT_NAME="$(basename "$P_DIR"/middle)" CONF_CONSUMER_FILE_PATH="$P_DIR"/middle/conf/client.yml BASE_DIR="$P_DIR"/middle/dist -f build/Makefile start
 
 # start integration testing
