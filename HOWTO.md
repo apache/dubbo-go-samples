@@ -6,17 +6,24 @@ There are three ways to run dubbo-go samples:
 2. Quick start in IDE (**Recommended**): In ".run" subdirectory a couple of GoLand run configuration files are provided so that user can run each sample with just one click.
 3. Manually config and run in IDE: For completeness purpose, a step-by-step instruction is also provided so that user can understand how to configure and run or debug a sample in IDE. 
 
-### 1. Quick start with makefile
+## 1. Quick start with makefile
 
 *Prerequisite: docker environment is required*
 
 Here we use "attachment" as an example:
 
-1. **Start register server (e.g. zookeeper)**
+1. **Get the root path of dubbo-go-samples**
+
+   ```bash
+   cd <PATH OF dubbo-go-samples>
+   export DUBBO_GO_SAMPLES_ROOT_PATH=$(pwd)
+   ```
+
+2. **Start register server (e.g. zookeeper)**
    
    ```bash
-   cd attachment/server
-   make -f ../../build/Makefile docker-up 
+   cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-server
+   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile docker-up 
    ```
    
    Once the following messages outputs, the zookeeper server is ready.
@@ -30,15 +37,14 @@ Here we use "attachment" as an example:
    To shut it down, simple run
    
    ```bash
-   cd attachment/server
-   make -f ../../build/Makefile docker-down
+   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile docker-down
    ```
    
-2. **Start server**
+3. **Start server**
    
     ```bash
-    cd attachment/server
-    make -f ../../build/Makefile start
+    cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-server
+    make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile start
     ```
    
    Once the following messages outputs, the server is ready.
@@ -51,11 +57,11 @@ Here we use "attachment" as an example:
 
    The output of `go-server` can be found from 'dist/darwin_amd64/release/go-server.log'.
    
-3. **Run client**
+4. **Run client**
    
     ```bash
-   cd attachment/client
-   make -f ../../build/Makefile run 
+   cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-client
+   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile run 
    ```
 
    Once the following messages outputs, the `go-client` calls the `go-server` successfully.
@@ -69,12 +75,12 @@ Here we use "attachment" as an example:
    response result: &{A001 Alex Stocks 18 2020-10-27 14:51:37.52 +0800 CST}
    ```
    
-3. **Integration test**
+5. **Integration test**
    dubbo-go-samples is designed to serve the purposes of not only the showcases of how to use apache/dubbo-go but also the integration-test for apache/dubbo-go. To run integration test for `go-server`, run the following commands:
 
    ```bash
-   cd attachment/server
-   make -f ../../build/Makefile integration
+   cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-server
+   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile integration
    ```
 
    Once the following messages outputs, the integration tests pass.
@@ -87,15 +93,15 @@ Here we use "attachment" as an example:
    ok      github.com/apache/dubbo-go-samples/attachment/go-server/tests/integration   3.603s
    ```
    
-4. **Shutdown and cleanup**
+6. **Shutdown and cleanup**
    ```bash
-   cd attachment/server
-   make -f ../../build/Makefile clean docker-down
+   cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-server
+   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile clean docker-down
    ```
 
 *The following two ways are all relevant to IDE. Intellij GoLand is discussed here as an example.*
 
-### 2. Quick start in IDE
+## 2. Quick start in IDE
 
 Once open this project in GoLand, a list of pre-configured configures for both server and client can be found from "Run Configuration" pop up menu, for example: "helloworld-go-server" and "helloworld-go-client". 
 
@@ -103,7 +109,7 @@ Once open this project in GoLand, a list of pre-configured configures for both s
 
 Feel free to pick one among them to run instantly. Of course a service register server is required otherwise the samples cannot run successfully. You may consider to either manually boot up the required register server, or use the provided "docker-compose.yml" to boot it in docker environment, from the following [section](#3-manually-run-in-ide) where you can find more details.
 
-### 3. Manually run in IDE
+## 3. Manually run in IDE
 
 After open dubbo-go-samples in GoLand, follow the steps below to run/debug this
 example:
