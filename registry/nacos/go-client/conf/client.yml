@@ -31,6 +31,7 @@ references:
     methods:
       - name: "GetUser"
         retries: 3
+        timeout: 10s
 
 # protocol config
 protocol_conf:
