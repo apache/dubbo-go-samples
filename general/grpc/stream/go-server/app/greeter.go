@@ -97,7 +97,3 @@ func (g *GreeterProvider) SayHelloServerStream(req *HelloRequest, server Greeter
 	}
 	return nil
 }
-
-func (g *GreeterProvider) Reference() string {
-	return "GrpcGreeterImpl"
-}

@@ -29,6 +29,7 @@ import (
 
 import (
 	getty "github.com/apache/dubbo-getty"
+
 	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"

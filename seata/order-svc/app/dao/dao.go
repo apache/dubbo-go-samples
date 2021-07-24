@@ -18,15 +18,14 @@
 package dao
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"time"
 )
 
 import (
-	"github.com/bwmarrin/snowflake"
-)
+	hessian "github.com/apache/dubbo-go-hessian2"
 
-import (
+	"github.com/bwmarrin/snowflake"
+
 	"github.com/transaction-wg/seata-golang/pkg/client/at/exec"
 	"github.com/transaction-wg/seata-golang/pkg/client/context"
 )

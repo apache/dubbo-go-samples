@@ -31,14 +31,11 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/grpc"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+
 	gxlog "github.com/dubbogo/gost/log"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-)
-
-var grpcGreeterImpl = new(GrpcGreeterImpl)
+var grpcGreeterImpl = new(GreeterClientImpl)
 
 func init() {
 	config.SetConsumerService(grpcGreeterImpl)
@@ -50,8 +47,8 @@ func main() {
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	reply := &protobuf.HelloReply{}
-	req := &protobuf.HelloRequest{
+	reply := &HelloReply{}
+	req := &HelloRequest{
 		Name: "xujianhai",
 	}
 	err := grpcGreeterImpl.SayHello(context.TODO(), req, reply)

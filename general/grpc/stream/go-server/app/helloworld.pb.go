@@ -6,10 +6,6 @@ package main
 import (
 	context "context"
 	fmt "fmt"
-	proto "github.com/golang/protobuf/proto"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -17,9 +13,15 @@ import (
 	"github.com/apache/dubbo-go/protocol"
 	dgrpc "github.com/apache/dubbo-go/protocol/grpc"
 	"github.com/apache/dubbo-go/protocol/invocation"
+
+	proto "github.com/golang/protobuf/proto"
+
+	grpc "google.golang.org/grpc"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
-// Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
@@ -411,6 +413,10 @@ func (s *GreeterProviderBase) SetProxyImpl(impl protocol.Invoker) {
 
 func (s *GreeterProviderBase) GetProxyImpl() protocol.Invoker {
 	return s.proxyImpl
+}
+
+func (c *GreeterProviderBase) Reference() string {
+	return "greeterImpl"
 }
 
 func _DUBBO_Greeter_SayHelloTwoSidesStream_Handler(srv interface{}, stream grpc.ServerStream) error {

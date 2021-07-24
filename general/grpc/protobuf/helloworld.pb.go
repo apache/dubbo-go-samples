@@ -6,10 +6,6 @@ package protobuf
 import (
 	context "context"
 	fmt "fmt"
-	proto "github.com/golang/protobuf/proto"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -17,9 +13,14 @@ import (
 	"github.com/apache/dubbo-go/protocol"
 	dgrpc "github.com/apache/dubbo-go/protocol/grpc"
 	"github.com/apache/dubbo-go/protocol/invocation"
+
+	proto "github.com/golang/protobuf/proto"
+
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
-// Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
@@ -243,6 +244,10 @@ func (s *GreeterProviderBase) GetProxyImpl() protocol.Invoker {
 	return s.proxyImpl
 }
 
+func (c *GreeterProviderBase) Reference() string {
+	return "greeterImpl"
+}
+
 func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
@@ -253,7 +258,7 @@ func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec f
 	args = append(args, in)
 	invo := invocation.NewRPCInvocation("SayHello", args, nil)
 	if interceptor == nil {
-		result := base.GetProxyImpl().Invoke(context.Background(), invo)
+		result := base.GetProxyImpl().Invoke(ctx, invo)
 		return result.Result(), result.Error()
 	}
 	info := &grpc.UnaryServerInfo{
@@ -261,7 +266,7 @@ func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/protobuf.Greeter/SayHello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		result := base.GetProxyImpl().Invoke(context.Background(), invo)
+		result := base.GetProxyImpl().Invoke(ctx, invo)
 		return result.Result(), result.Error()
 	}
 	return interceptor(ctx, in, info, handler)

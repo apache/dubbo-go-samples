@@ -15,29 +15,36 @@
  * limitations under the License.
  */
 
-package main
-
+package pkg
 
 import (
 	"context"
+	"time"
 )
 
-import (
-	"google.golang.org/grpc"
-)
-
-import (
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-)
-
-type GrpcGreeterImpl struct {
-	SayHello func(ctx context.Context, in *protobuf.HelloRequest, out *protobuf.HelloReply) error
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
 }
 
-func (u *GrpcGreeterImpl) Reference() string {
-	return "GrpcGreeterImpl"
+type UserProviderA struct {
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
 }
 
-func (u *GrpcGreeterImpl) GetDubboStub(cc *grpc.ClientConn) protobuf.GreeterClient {
-	return protobuf.NewGreeterClient(cc)
+func (u *UserProviderA) Reference() string {
+	return "UserProviderA"
+}
+
+type UserProviderB struct {
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+}
+
+func (u *UserProviderB) Reference() string {
+	return "UserProviderB"
+}
+
+func (User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
