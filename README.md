@@ -5,7 +5,7 @@
 ## What It Contains
 
 * async: An async example.
-* attachment: An attachment example, to show how to use attachment to pass user data from the client to the server.  
+* attachment: An attachment example, to show how to use attachment to pass user data from the client to the server.
 * chain: Show an example of calling chain
 * config-api: Use API to config Dubbo-go
 * configcenter: Uses of different config centers, including zookeeper, apollo and nacos at present.
@@ -33,11 +33,11 @@
 
 ## How To Run
 
-Pls. refer [How To Run](HOWTO.md) for the instructions.
+Pls refer [How To Run](HOWTO.md) for the instructions.
 
 ## How to contribute
 
 If you want to add more samples, pls. read on:
-1. Create new sub directory and give it an appropriate name for your new sample. Pls. follow the layout of the existing sample if you are not sure how to organize your code.
-2. Make sure your sample work as expected before submit PR, and make sure GitHub CI passes after PR is submitted. Pls. refer to the existing sample on how to test the sample.   
-3. Pls. provide README.md to explain your samples.
+1. Create new sub directory and give it an appropriate name for your new sample. Pls follow the layout of the existing sample if you are not sure how to organize your code.
+2. Make sure your sample work as expected before submit PR, and make sure GitHub CI passes after PR is submitted. Pls refer to the existing sample on how to test the sample.
+3. Pls provide README.md to explain your samples.
