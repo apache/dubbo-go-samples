@@ -10,7 +10,7 @@ Output file settings
 lumberjackConfig:
   # The name of the log file
   filename: "logs.log"
-  # The maximum size of each log file length, the default is 100M
+  # The maximum size of each log file length whose unit is MiB. The default value is 100MiB.
   maxSize: 1
   # Maximum number of days to keep logs (only keep the logs of the most recent days)
   maxAge: 3

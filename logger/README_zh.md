@@ -10,7 +10,7 @@
 lumberjackConfig:
   # 写日志的文件名称
   filename: "logs.log"
-  # 每个日志文件长度的最大大小，默认100M
+  # 每个日志文件长度的最大大小，单位是 MiB。默认100MiB
   maxSize: 1
   # 日志保留的最大天数(只保留最近多少天的日志)
   maxAge: 3
