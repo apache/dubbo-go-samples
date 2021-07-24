@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,36 +17,23 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
 )
 
 import (
-	"google.golang.org/grpc"
+	"github.com/stretchr/testify/assert"
 )
 
-import (
-	"github.com/apache/dubbo-go/config"
-)
-
-var grpcGreeterImpl = new(GrpcGreeterImpl)
-
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
-}
-
-type GrpcGreeterImpl struct {
-	SayHelloTwoSidesStream func(ctx context.Context) (Greeter_SayHelloTwoSidesStreamClient, error)
-	SayHelloClientStream   func(ctx context.Context) (Greeter_SayHelloClientStreamClient, error)
-	SayHelloServerStream   func(ctx context.Context, request *HelloRequest) (Greeter_SayHelloServerStreamClient, error)
-}
-
-func (u *GrpcGreeterImpl) Reference() string {
-	return "GrpcGreeterImpl"
-}
-
-func (u *GrpcGreeterImpl) GetDubboStub(cc *grpc.ClientConn) GreeterClient {
-	return NewGreeterClient(cc)
+func TestGetUser(t *testing.T) {
+	user := &User{}
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	assert.Nil(t, err)
+	assert.Equal(t, "A001", user.ID)
+	assert.Equal(t, "Alex Stocks In Group B", user.Name)
+	assert.Equal(t, int32(18), user.Age)
+	assert.NotNil(t, user.Time)
 }

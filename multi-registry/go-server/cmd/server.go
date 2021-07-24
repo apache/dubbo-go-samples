@@ -27,7 +27,6 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
 	"github.com/apache/dubbo-go/common/logger"

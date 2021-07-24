@@ -1,42 +1,40 @@
 # dubbo client yaml configure file
 
-
 check: true
 # client
-request_timeout : "3s"
+request_timeout: "3s"
 # connect timeout
-connect_timeout : "3s"
+connect_timeout: "3s"
 
 # application config
 application:
-  organization : "ikurento.com"
-  name  : "BDTService"
-  module : "dubbogo say-hello client"
-  version : "0.0.1"
-  owner : "ZX"
-  environment : "dev"
+  organization: "dubbo.io"
+  name: "GreeterGrpcTest"
+  module: "dubbo-go greeter grpc client"
+  version: "0.0.1"
+  environment: "dev"
 
-registries :
-  "zk":
+# registry config
+registries:
+  "demoZk":
     protocol: "zookeeper"
-    timeout	: "3s"
+    timeout: "3s"
     address: "127.0.0.1:2181"
     username: ""
     password: ""
 
-
+# reference config
 references:
-  "GrpcGreeterImpl":
-    # 可以指定多个registry，使用逗号隔开;不指定默认向所有注册中心注册
-    registry: "zk"
-    protocol : "grpc"
-    interface : "io.grpc.examples.helloworld.GreeterGrpc$IGreeter"
+  "greeterImpl":
+    registry: "demoZk"
+    protocol: "grpc"
+    interface: "org.apache.dubbo.GreeterGrpc$IGreeter"
     cluster: "failover"
-    methods :
-    - name: "SayHello"
-      retries: 3
+    methods:
+      - name: "SayHello"
+        retries: 3
 
-
+# protocol config
 protocol_conf:
   grpc:
     reconnect_interval: 0

@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,22 +17,23 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-	"google.golang.org/grpc"
+	"testing"
 )
 
-type GrpcGreeterImpl struct {
-	SayHello func(ctx context.Context, in *protobuf.HelloRequest, out *protobuf.HelloReply) error
-}
+import (
+	"github.com/stretchr/testify/assert"
+)
 
-func (u *GrpcGreeterImpl) Reference() string {
-	return "GrpcGreeterImpl"
-}
-
-func (u *GrpcGreeterImpl) GetDubboStub(cc *grpc.ClientConn) protobuf.GreeterClient {
-	return protobuf.NewGreeterClient(cc)
+func TestGetUser(t *testing.T) {
+	user := &User{}
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	assert.Nil(t, err)
+	assert.Equal(t, "A001", user.ID)
+	assert.Equal(t, "Alex Stocks In Group A", user.Name)
+	assert.Equal(t, int32(18), user.Age)
+	assert.NotNil(t, user.Time)
 }

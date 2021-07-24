@@ -25,13 +25,12 @@ import (
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/dubbogo/gost/log"
-	perrors "github.com/pkg/errors"
-)
-
-import (
 	"github.com/apache/dubbo-go-hessian2/java_exception"
 	"github.com/apache/dubbo-go/config"
+
+	"github.com/dubbogo/gost/log"
+
+	perrors "github.com/pkg/errors"
 )
 
 func init() {

@@ -33,6 +33,7 @@ import (
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
+
 	"github.com/dubbogo/gost/log"
 )
 
@@ -40,7 +41,6 @@ import (
 	"github.com/apache/dubbo-go-samples/multi-zone/go-client/pkg"
 )
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	userProvider := new(pkg.UserProvider)

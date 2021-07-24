@@ -1,10 +1,15 @@
 package pkg
 
 import (
-    "context"
-    "github.com/apache/dubbo-go/common/logger"
+	"context"
+)
 
-    "github.com/apache/dubbo-go-samples/game/pkg/pojo"
+import (
+	"github.com/apache/dubbo-go/common/logger"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
 type BasketballService struct{}
