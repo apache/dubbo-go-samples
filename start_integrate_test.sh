@@ -55,7 +55,7 @@ array+=("metric/go-server")
 #array+=("multi-zone") # Unsupported
 
 # registry
-array=("registry/etcd/go-server") # M1 ignore
+array+=("registry/etcd/go-server") # M1 ignore
 array+=("registry/nacos/go-server")
 #array+=("registry/servicediscovery/consul/go-server") # M1 ignore & Bug
 array+=("registry/servicediscovery/etcd/go-server") # M1 ignore
