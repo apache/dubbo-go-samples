@@ -20,11 +20,11 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/game/pkg/consumer/game"
+	"github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
-var gameProvider = new(game.BasketballService)
+var gameProvider = new(pkg.BasketballService)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(gameProvider)
