@@ -76,10 +76,9 @@ array+=("registry/servicediscovery/nacos/go-server")
 array+=("registry/servicediscovery/zookeeper/go-server")
 
 # router
-#array+=("router/condition/go-server") # Bug
-#array+=("router/tag/go-server") # Bug
+#array+=("router/condition/go-server") # unsupported
+#array+=("router/tag/go-server") # unsupported
 
-# tls, this sample's certs root is set to ../../../certs, so when running locally, it may be illegal
 array+=("tls/go-server")
 
 # version

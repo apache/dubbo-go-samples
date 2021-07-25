@@ -9,6 +9,6 @@ routerRules:
     key: demo-provider
     tags:
       - name: beijing
-        addresses: [192.168.1.1, 192.168.31.149 ] # $HOST_IP]
+        addresses: [192.168.1.1, $HOST_IP]
       - name: shenzhen
         addresses: [192.168.1.3, 192.168.1.4]
