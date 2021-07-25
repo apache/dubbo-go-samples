@@ -94,5 +94,3 @@ do
         exit $result
 	fi
 done
-
-#config-api attachement direct config-center
