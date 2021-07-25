@@ -47,8 +47,8 @@ var userProvider = new(UserProvider)
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
-	clientKeyPath, _ := filepath.Abs("../certs/ca.key")
-	caPemPath, _ := filepath.Abs("../certs/ca.pem")
+	clientKeyPath, _ := filepath.Abs("../../../certs/ca.key")
+	caPemPath, _ := filepath.Abs("../../../certs/ca.pem")
 	config.SetSslEnabled(true)
 	config.SetClientTlsConfigBuilder(&getty.ClientTlsConfigBuilder{
 		ClientPrivateKeyPath:          clientKeyPath,

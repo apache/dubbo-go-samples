@@ -79,8 +79,8 @@ array+=("registry/servicediscovery/zookeeper/go-server")
 #array+=("router/condition/go-server") # Bug
 #array+=("router/tag/go-server") # Bug
 
-# tls
-array+=("tls/go-server") # Bug
+# tls, this sample's certs root is set to ../../../certs, so when running locally, it may be illegal
+array+=("tls/go-server")
 
 # version
 array+=("version/go-server-v1")
