@@ -7,6 +7,7 @@ import (
 )
 
 import (
+	hessian "github.com/apache/dubbo-go-hessian2"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
@@ -16,16 +17,14 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/game/pkg/consumer/game"
+	"github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
-var gameProvider = new(game.BasketballService)
+var gameProvider = new(pkg.BasketballService)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(gameProvider)

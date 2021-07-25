@@ -5,24 +5,37 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-)
 
-import (
+	hessian "github.com/apache/dubbo-go-hessian2"
+
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
+
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
+
 	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
+
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	"github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
+	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
-import (
-	_ "github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
-)
+func init() {
+	config.SetProviderService(new(pkg.BasketballService))
+
+	config.SetConsumerService(pkg.GateBasketball)
+
+	hessian.RegisterPOJO(&pojo.Result{})
+}
 
 func main() {
 	config.Load()
