@@ -29,8 +29,8 @@ array+=("filter/tpslimit/go-server")
 array+=("filter/sentinel/go-server")
 
 # game
-#array+=("game/go-server-game") # Bug
-#array+=("game/go-server-gate") # Bug
+array+=("game/go-server-game")
+array+=("game/go-server-gate")
 
 # general
 array+=("general/dubbo/go-server")
@@ -55,7 +55,7 @@ array+=("metric/go-server")
 #array+=("multi-zone") # Unsupported
 
 # registry
-array=("registry/etcd/go-server") # M1 ignore
+array+=("registry/etcd/go-server") # M1 ignore
 array+=("registry/nacos/go-server")
 #array+=("registry/servicediscovery/consul/go-server") # M1 ignore & Bug
 array+=("registry/servicediscovery/etcd/go-server") # M1 ignore
