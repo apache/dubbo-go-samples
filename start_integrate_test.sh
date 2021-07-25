@@ -60,11 +60,11 @@ array+=("helloworld/go-server")
 array+=("metric/go-server")
 
 # multi-registry
-array+=("multi-registry/go-server") # Unsupported
+array+=("multi-registry/go-server")
 
 # multi-zone
-array+=("multi-zone/go-server-hz") # Unsupported
-array+=("multi-zone/go-server-sh") # Unsupported
+array+=("multi-zone/go-server-hz")
+array+=("multi-zone/go-server-sh")
 
 # registry
 array+=("registry/etcd/go-server") # M1 ignore

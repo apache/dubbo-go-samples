@@ -15,28 +15,47 @@
  * limitations under the License.
  */
 
-package main
+package pkg
 
 import (
 	"context"
+	"time"
 )
 
 import (
-	"google.golang.org/grpc"
+	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/apache/dubbo-go/config"
+
+	"github.com/dubbogo/gost/log"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
-)
-
-type GrpcGreeterImpl struct {
-	SayHello func(ctx context.Context, in *protobuf.HelloRequest, out *protobuf.HelloReply) error
+func init() {
+	config.SetProviderService(new(UserProvider))
+	// ------for hessian2------
+	hessian.RegisterPOJO(&User{})
 }
 
-func (u *GrpcGreeterImpl) Reference() string {
-	return "GrpcGreeterImpl"
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
 }
 
-func (u *GrpcGreeterImpl) GetDubboStub(cc *grpc.ClientConn) protobuf.GreeterClient {
-	return protobuf.NewGreeterClient(cc)
+type UserProvider struct {
+}
+
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+	gxlog.CInfo("req:%#v", req)
+	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	gxlog.CInfo("rsp:%#v", rsp)
+	return &rsp, nil
+}
+
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
+}
+
+func (u User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
