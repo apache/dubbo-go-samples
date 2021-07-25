@@ -17,6 +17,14 @@
 
 # Attention! when runing on Apple M1, pls start nacos&zk server on your computer first, and comment samples with # M1 ignore.
 
+# config-api
+array=("config-api/go-server")
+
+# config-center
+array+=("configcenter/apollo/go-server")
+array+=("configcenter/zookeeper/go-server")
+array+=("configcenter/nacos/go-server")
+
 # context
 array+=("context/go-server")
 
@@ -35,8 +43,8 @@ array+=("filter/sentinel/go-server")
 # general
 array+=("general/dubbo/go-server")
 array+=("general/grpc/go-server")
-#array+=("general/jsonrpc/go-server") # Unsupported
-#array+=("general/rest/go-server") # Unsupported
+array+=("general/jsonrpc/go-server")
+array+=("general/rest/go-server")
 
 # generic
 array+=("generic/go-server")
@@ -51,11 +59,15 @@ array+=("helloworld/go-server")
 # metric
 array+=("metric/go-server")
 
+# multi-registry
+array+=("multi-registry/go-server") # Unsupported
+
 # multi-zone
-#array+=("multi-zone") # Unsupported
+array+=("multi-zone/go-server-hz") # Unsupported
+array+=("multi-zone/go-server-sh") # Unsupported
 
 # registry
-array=("registry/etcd/go-server") # M1 ignore
+array+=("registry/etcd/go-server") # M1 ignore
 array+=("registry/nacos/go-server")
 #array+=("registry/servicediscovery/consul/go-server") # M1 ignore & Bug
 array+=("registry/servicediscovery/etcd/go-server") # M1 ignore
@@ -68,7 +80,7 @@ array+=("registry/servicediscovery/zookeeper/go-server")
 #array+=("router/tag/go-server") # Bug
 
 # tls
-#array+=("tls/go-server") # Bug
+array+=("tls/go-server") # Bug
 
 # version
 array+=("version/go-server-v1")
@@ -82,3 +94,5 @@ do
         exit $result
 	fi
 done
+
+#config-api attachement direct config-center

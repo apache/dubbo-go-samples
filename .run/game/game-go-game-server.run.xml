@@ -8,9 +8,9 @@
       <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/game/go-server-game/conf/client.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/game/go-server-game/cmd/server.go" />
     <package value="github.com/apache/dubbo-go-samples/game/go-server-game/cmd" />
     <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/game/go-server-game/cmd/server.go" />
     <method v="2" />
   </configuration>
 </component>
