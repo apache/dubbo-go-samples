@@ -7,8 +7,8 @@
       <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/tracing/dubbo/go-server/profiles/dev/log.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/tracing/dubbo/go-server/app/server.go" />
-    <package value="github.com/apache/dubbo-go-samples/tracing/dubbo/go-server/app" />
+    <filePath value="$PROJECT_DIR$/tracing/dubbo/go-server/cmd/server.go" />
+    <package value="github.com/apache/dubbo-go-samples/tracing/dubbo/go-server/cmd" />
     <directory value="$PROJECT_DIR$" />
     <method v="2" />
   </configuration>
