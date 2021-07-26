@@ -37,11 +37,9 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
-	"github.com/dubbogo/gost/log"
-)
+	hessian "github.com/apache/dubbo-go-hessian2"
 
-import (
-	"github.com/apache/dubbo-go-samples/generic/go-client/pkg"
+	"github.com/dubbogo/gost/log"
 )
 
 var (
@@ -51,7 +49,7 @@ var (
 		Cluster:       "failover",
 		Registry:      "demoZk",
 		Protocol:      dubbo.DUBBO,
-		Generic:       true,
+		Generic:       "true",
 	}
 )
 
@@ -101,7 +99,7 @@ func callGetUser() {
 		[]interface{}{
 			"GetUser",
 			[]string{"java.lang.String"},
-			[]interface{}{"A003"},
+			[]hessian.Object{"A003"},
 		},
 	)
 	if err != nil {
@@ -113,18 +111,24 @@ func callGetUser() {
 }
 func callQueryUser() {
 	gxlog.CInfo("\n\n\nstart to generic invoke")
-	user := pkg.User{
-		ID:   "3213",
-		Name: "panty",
-		Age:  25,
-		Time: time.Now(),
-	}
 	resp, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"queryUser",
 			[]string{"org.apache.dubbo.User"},
-			[]interface{}{user},
+			// the map represents a User object:
+			// &User {
+			// 		ID: "3213",
+			// 		Name: "panty",
+			// 		Age: 25,
+			// 		Time: time.Now(),
+			// }
+			[]hessian.Object{map[string]hessian.Object{
+				"iD":   "3213",
+				"name": "panty",
+				"age":  25,
+				"time": time.Now(),
+			}},
 		},
 	)
 	if err != nil {

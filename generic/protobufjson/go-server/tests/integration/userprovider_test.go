@@ -21,14 +21,12 @@ package integration
 
 import (
 	"context"
+	"github.com/stretchr/testify/assert"
 	"testing"
-	"time"
 )
-
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
-
-	"github.com/stretchr/testify/assert"
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 func TestGetUser(t *testing.T) {
@@ -36,39 +34,11 @@ func TestGetUser(t *testing.T) {
 		context.TODO(),
 		[]interface{}{
 			"GetUser",
-			[]string{"java.lang.String"},
-			[]interface{}{"A003"},
+			[]string{},
+			[]hessian.Object{"{\"id\":1}"},
 		},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
-	resp := o.(map[interface{}]interface{})
-	assert.Equal(t, "Alex Stocks", resp["name"])
-	assert.Equal(t, int32(18), resp["age"])
-	assert.Equal(t, "A001", resp["iD"])
-}
-
-func TestQueryUser(t *testing.T) {
-	user := User{
-		ID:   "3213",
-		Name: "panty",
-		Age:  25,
-		Time: time.Now(),
-	}
-
-	o, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
-		context.TODO(),
-		[]interface{}{
-			"queryUser",
-			[]string{"org.apache.dubbo.User"},
-			[]interface{}{user},
-		},
-	)
-
-	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
-	resp := o.(map[interface{}]interface{})
-	assert.Equal(t, "panty", resp["name"])
-	assert.Equal(t, int32(25), resp["age"])
-	assert.Equal(t, "3213", resp["iD"])
+	resp := o.(string)
+	assert.Equal(t, `{"name":"XavierNiu","age":"20"}`, resp)
 }
