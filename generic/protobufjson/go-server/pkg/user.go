@@ -32,7 +32,7 @@ func (u *UserProvider) GetUser(ctx context.Context, user *UserRequestType) (*Use
 	gxlog.CInfo("req:%#v", int(user.GetId()))
 	rsp := &UserResponseType{
 		Name: "XavierNiu",
-		Age: 20,
+		Age:  20,
 	}
 	gxlog.CInfo("rsp:%#v", rsp)
 	return rsp, nil

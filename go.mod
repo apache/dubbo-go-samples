@@ -1,12 +1,12 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210711035734-103aa72faee6
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210725154253-9aeb7ff3c612
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
 	github.com/apache/dubbo-go-hessian2 v1.9.2
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/dubbogo/gost v1.11.13
+	github.com/dubbogo/gost v1.11.14
 	github.com/dubbogo/net v0.0.3
 	github.com/dubbogo/triple v1.0.1
 	github.com/emicklei/go-restful/v3 v3.4.0
