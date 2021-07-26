@@ -20,6 +20,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -79,8 +80,8 @@ func main() {
 	d := &orderDao.Dao{
 		DB: sqlDB,
 	}
-	svc := &OrderSvc{
-		dao: d,
+	svc := &pkg.OrderSvc{
+		Dao: d,
 	}
 	config.SetProviderService(svc)
 

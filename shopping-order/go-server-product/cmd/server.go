@@ -20,6 +20,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/apache/dubbo-go-samples/shopping-order/go-server-product/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -81,8 +82,8 @@ func main() {
 		DB: sqlDB,
 	}
 
-	svc := &ProductSvc{
-		dao: d,
+	svc := &pkg.ProductSvc{
+		Dao: d,
 	}
 	config.SetProviderService(svc)
 
