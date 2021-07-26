@@ -17,10 +17,10 @@
 
 package org.apache.dubbo;
 
-import com.alibaba.dubbo.config.ApplicationConfig;
-import com.alibaba.dubbo.config.ReferenceConfig;
-import com.alibaba.dubbo.config.RegistryConfig;
-import com.alibaba.dubbo.rpc.service.GenericService;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.rpc.service.GenericService;
 
 public class Consumer {
     public static void main(String[] args) {
@@ -34,7 +34,7 @@ public class Consumer {
          registryConfig.setAddress("zookeeper://127.0.0.1:2181");
          reference.setRegistry(registryConfig);
          reference.setGeneric(true);
-         reference.setInterface("com.ikurento.user.UserProvider");
+         reference.setInterface("org.apache.dubbo.UserProvider");
          GenericService genericService = reference.get();
          Object[] parameterArgs = new Object[]{"A003"};
          Object result = genericService.$invoke("GetUser", null , parameterArgs);

@@ -18,8 +18,10 @@
 package main
 
 import (
-	"context"
+	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -38,35 +40,40 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/helloworld/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/generic/default/go-server/pkg"
 )
 
-var userProvider = new(pkg.UserProvider)
+var (
+	survivalTimeout = int(3e9)
+)
 
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
-
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
+	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
-	time.Sleep(3 * time.Second)
 
-	for i := 0; i < 1000000; i++ {
-		test()
-	}
-
+	initSignal()
 }
 
-func test() {
-	logger.Info("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		logger.Infof("error: %v\n", err)
-		os.Exit(1)
-		return
+func initSignal() {
+	signals := make(chan os.Signal, 1)
+	// It is not possible to block SIGKILL or syscall.SIGSTOP
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	for {
+		sig := <-signals
+		logger.Infof("get signal %s", sig.String())
+		switch sig {
+		case syscall.SIGHUP:
+			// reload()
+		default:
+			time.AfterFunc(time.Duration(survivalTimeout), func() {
+				logger.Warnf("app exit now by force...")
+				os.Exit(1)
+			})
+
+			// The program exits normally or timeout forcibly exits.
+			fmt.Println("provider app exit now...")
+			return
+		}
 	}
-	logger.Infof("response result: %v\n", user)
 }

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package org.apache.dubbo.generic.protobufjson.user;
+
+option go_package = "./;pkg";
+
+message UserRequestType {
+  int64 id = 1;
+}
+
+message UserResponseType {
+  string name = 1;
+  int64 age = 2;
+}

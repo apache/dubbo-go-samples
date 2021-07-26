@@ -20,12 +20,6 @@
 package integration
 
 import (
-	"os"
-	"testing"
-	"time"
-)
-
-import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
@@ -37,13 +31,19 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
+import (
+	"os"
+	"testing"
+	"time"
+)
+
 var appName = "UserConsumerTest"
 var referenceConfig = config.ReferenceConfig{
 	InterfaceName: "org.apache.dubbo.UserProvider",
 	Cluster:       "failover",
 	Registry:      "demoZk",
 	Protocol:      dubbo.DUBBO,
-	Generic:       true,
+	Generic:       "protobuf-json",
 }
 
 func TestMain(m *testing.M) {
@@ -52,15 +52,4 @@ func TestMain(m *testing.M) {
 	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
 }

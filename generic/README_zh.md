@@ -1,41 +1,64 @@
-# 泛化调用实例
+# 泛化调用
 
-### 1. 介绍
+泛化接口调用方式主要用于客户端没有 API 接口及模型类元的情况，参数及返回值中的所有 POJO 均用 Map 表示，通常用于框架集成，比如：实现一个通用的服务测试框架，可通过`GenericService`调用所有服务实现。更多信息请参与文档。
 
-泛化接口调用方式主要用于客户端没有 API 接口及模型类元的情况，参数及返回值中的所有 POJO 均用 Map 表示，通常用于框架集成，比如：实现一个通用的服务测试框架，可通过`GenericService`调用所有服务实现。
+## 开始
 
-### 2. 代码示例
+你需要提供提供者（provider）和消费者（consumer）的配置文件信息，在这个例子中，使用`default`文件夹作为示例。
 
-```go
-var ( 
-    //appName是RPCService的唯一标识 
-    appName         = "UserConsumer"
-    referenceConfig = config.ReferenceConfig{
-        InterfaceName: "org.apache.dubbo.UserProvider",
-        Cluster:       "failover",
-        Registry:      "demoZk",
-        Protocol:      dubbo.DUBBO,
-        Generic:       true,
-    }
-)
+```shell
+export CONF_PROVIDER_FILE_PATH="$(pwd)/default/go-server/conf/server.yml"
+export CONF_CONSUMER_FILE_PATH="$(pwd)/default/go-client/conf/client.yml"
+```
 
-func init() {
-    referenceConfig.GenericLoad(appName)
-    time.Sleep(3 * time.Second)
-}
+ZooKeeper也是必须的，你可以使用docker-compose启动它。
 
-func main() {
-    resp, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
-    	context.TODO(),
-    	[]interface{}{
-    		//方法名
-    		"queryUser",
-    		//参数类型数组
-    		[]string{"org.apache.dubbo.User"},
-    		//参数数组
-    		[]interface{}{user},
-    	},
-    )
-}
+```shell
+cd ./default/go-server/docker \
+  && docker-compose up -d
+```
 
+### Map：默认方式
+
+Map的例子放在`default`文件夹中。通过下面的代码启动提供者。
+
+```shell
+cd ./default/go-server/cmd \
+  && go run server.go
+```
+
+运行消费者来发起泛化调用。
+
+```shell
+cd ./default/go-client/cmd \
+  && go run client.go
+```
+
+### Protobuf Json (暂时禁用)
+
+Protobuf Json的例子放在`protobufjson`文件夹中。首先需要根据proto文件生成结构体定义。（注：`user.pb.go`已经生成，这是为了CI的集成测试使用的，但是我们仍然强烈建议你自己生成一次。）
+
+```shell
+cd ./protobufjson \
+  && protoc --go_out=. user.proto
+```
+
+拷贝`user.pb.go`文件到提供者文件夹。
+
+```shell
+mv ./protobufjson/user.pb.go ./protobufjson/go-server/pkg
+```
+
+通过下面的代码启动提供者。
+
+```shell
+cd ./protobufjson/go-server/cmd \
+  && go run server.go
+```
+
+运行消费者来发起泛化调用。
+
+```shell
+cd ./protobufjson/go-client/cmd \
+  && go run client.go
 ```
