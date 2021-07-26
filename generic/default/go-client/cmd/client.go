@@ -116,6 +116,13 @@ func callQueryUser() {
 		[]interface{}{
 			"queryUser",
 			[]string{"org.apache.dubbo.User"},
+			// the map represents a User object:
+			// &User {
+			// 		ID: "3213",
+			// 		Name: "panty",
+			// 		Age: 25,
+			// 		Time: time.Now(),
+			// }
 			[]hessian.Object{map[string]hessian.Object{
 				"iD":   "3213",
 				"name": "panty",

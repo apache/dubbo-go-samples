@@ -99,6 +99,7 @@ func callGetUser() {
 		[]interface{}{
 			"GetUser",
 			[]string{},
+			// "{\"id\":1}" is a JSON string that represents an UserRequestType object shown in the below:
 			// &UserRequestType{
 			// 		Id: 1
 			// }
