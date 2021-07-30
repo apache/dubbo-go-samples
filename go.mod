@@ -8,7 +8,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dubbogo/gost v1.11.14
 	github.com/dubbogo/net v0.0.3
-	github.com/dubbogo/triple v1.0.1
+	github.com/dubbogo/triple v1.0.2
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0

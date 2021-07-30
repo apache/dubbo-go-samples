@@ -34,6 +34,7 @@ func init() {
 	config.SetProviderService(new(UserProvider))
 	// ------for hessian2------
 	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&UserResponse{})
 }
 
 type User struct {
@@ -41,6 +42,10 @@ type User struct {
 	Name string
 	Age  int32
 	Time time.Time
+}
+
+type UserResponse struct {
+	Users []*User
 }
 
 type UserProvider struct {
@@ -60,6 +65,12 @@ func (u *UserProvider) QueryUser(ctx context.Context, user *User) (*User, error)
 	return &rsp, nil
 }
 
+func (u *UserProvider) QueryUsers(_ context.Context, users []*User) (*UserResponse, error) {
+	return &UserResponse{
+		Users: users,
+	}, nil
+}
+
 func (u *UserProvider) MethodMapper() map[string]string {
 	return map[string]string{
 		"QueryUser": "queryUser",
@@ -70,6 +81,10 @@ func (u *UserProvider) Reference() string {
 	return "UserProvider"
 }
 
-func (u User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
+}
+
+func (u *UserResponse) JavaClassName() string {
+	return "org.apache.dubbo.UserResponse"
 }

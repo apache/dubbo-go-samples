@@ -72,3 +72,41 @@ func TestQueryUser(t *testing.T) {
 	assert.Equal(t, int32(25), resp["age"])
 	assert.Equal(t, "3213", resp["iD"])
 }
+
+func TestQueryUsers(t *testing.T) {
+	o, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
+		context.TODO(),
+		[]interface{}{
+			"QueryUsers",
+			[]string{"java.lang.Array"},
+			[]hessian.Object{
+				[]hessian.Object{
+					map[string]hessian.Object{
+						"iD":   "3213",
+						"name": "panty",
+						"age":  25,
+						"time": time.Now(),
+					},
+					map[string]hessian.Object{
+						"iD":   "3212",
+						"name": "XavierNiu",
+						"age":  24,
+						"time": time.Now().Add(4),
+					},
+				},
+			},
+		},
+	)
+
+	assert.Nil(t, err)
+	resp, ok := o.(map[interface{}]interface{})
+	assert.True(t, ok)
+	users, ok := o["users"].([]interface{})
+	assert.True(t, ok)
+	assert.Equal(t, "panty", users[0].(map[string]interface{})["name"])
+	assert.Equal(t, int32(25), users[0].(map[string]interface{})["age"])
+	assert.Equal(t, "3213", users[0].(map[string]interface{})["iD"])
+	assert.Equal(t, "XavierNiu", users[1].(map[string]interface{})["name"])
+	assert.Equal(t, int32(24), users[1].(map[string]interface{})["age"])
+	assert.Equal(t, "3212", users[1].(map[string]interface{})["iD"])
+}

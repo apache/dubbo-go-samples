@@ -65,6 +65,8 @@ func main() {
 	callGetUser()
 	gxlog.CInfo("\n\ncall queryUser")
 	callQueryUser()
+	gxlog.CInfo("\n\ncall queryUsers")
+	callQueryUsers()
 	initSignal()
 }
 
@@ -136,5 +138,35 @@ func callQueryUser() {
 	}
 	gxlog.CInfo("res: %+v\n", resp)
 	gxlog.CInfo("success!")
+}
 
+func callQueryUsers() {
+	resp, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
+		context.TODO(),
+		[]interface{}{
+			"QueryUsers",
+			[]string{"java.lang.Array"},
+			[]hessian.Object{
+				[]hessian.Object{
+					map[string]hessian.Object{
+						"iD":   "3213",
+						"name": "panty",
+						"age":  25,
+						"time": time.Now(),
+					},
+					map[string]hessian.Object{
+						"iD":   "3212",
+						"name": "XavierNiu",
+						"age":  24,
+						"time": time.Now().Add(4),
+					},
+				},
+			},
+		},
+	)
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("res: %+v\n", resp)
+	gxlog.CInfo("success!")
 }
