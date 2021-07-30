@@ -20,7 +20,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -46,6 +45,7 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg"
 	orderDao "github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg/dao"
 )
 
