@@ -50,20 +50,26 @@ import (
 
 var (
 	survivalTimeout int = 10e9
-	userProvider = new(pkg.UserProvider)
+	userProvider        = new(pkg.UserProvider)
 )
 
-func init(){
+func init() {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&pkg.User{})
-	clientKeyPath, _ := filepath.Abs("../certs/ca.key")
-	caPemPath, _ := filepath.Abs("../certs/ca.pem")
+	clientKeyPath, _ := filepath.Abs("tls/certs/ca.key")
+	caPemPath, _ := filepath.Abs("tls/certs/ca.pem")
+	if tlsCertRoot := os.Getenv("TLS_CERTS_ROOT"); tlsCertRoot != "" {
+		clientKeyPath = filepath.Join(tlsCertRoot, "ca.key")
+		caPemPath = filepath.Join(tlsCertRoot, "ca.pem")
+	}
+
 	config.SetSslEnabled(true)
 	config.SetClientTlsConfigBuilder(&getty.ClientTlsConfigBuilder{
 		ClientPrivateKeyPath:          clientKeyPath,
 		ClientTrustCertCollectionPath: caPemPath,
 	})
 }
+
 // they are necessary:
 // 		export CONF_CONSUMER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
@@ -73,7 +79,7 @@ func main() {
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &pkg.User{}
-	for i := 0;i < 10 ;i ++{
+	for i := 0; i < 10; i++ {
 		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 		if err != nil {
 			panic(err)

@@ -46,13 +46,20 @@ import (
 )
 
 var (
-	survivalTimeout = 	int(3e9)
+	survivalTimeout = int(3e9)
 )
 
-func init(){
-	serverPemPath, _ := filepath.Abs("../certs/server.pem")
-	serverKeyPath, _ := filepath.Abs("../certs/server.key")
-	caPemPath, _ := filepath.Abs("../certs/ca.pem")
+func init() {
+	serverPemPath, _ := filepath.Abs("tls/certs/server.pem")
+	serverKeyPath, _ := filepath.Abs("tls/certs/server.key")
+	caPemPath, _ := filepath.Abs("tls/certs/ca.pem")
+
+	if tlsCertRoot := os.Getenv("TLS_CERTS_ROOT"); tlsCertRoot != "" {
+		serverPemPath = filepath.Join(tlsCertRoot, "server.pem")
+		serverKeyPath = filepath.Join(tlsCertRoot, "server.key")
+		caPemPath = filepath.Join(tlsCertRoot, "ca.pem")
+	}
+
 	config.SetSslEnabled(true)
 	config.SetServerTlsConfigBuilder(&getty.ServerTlsConfigBuilder{
 		ServerKeyCertChainPath:        serverPemPath,
@@ -65,7 +72,7 @@ func init(){
 	they are necessary:
 		export CONF_PROVIDER_FILE_PATH="xx"
 		export APP_LOG_CONF_FILE="xx"
- */
+*/
 func main() {
 	config.SetProviderService(new(pkg.UserProvider))
 	// serializing at run time
