@@ -45,6 +45,7 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg"
 	orderDao "github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg/dao"
 )
 
@@ -79,8 +80,8 @@ func main() {
 	d := &orderDao.Dao{
 		DB: sqlDB,
 	}
-	svc := &OrderSvc{
-		dao: d,
+	svc := &pkg.OrderSvc{
+		Dao: d,
 	}
 	config.SetProviderService(svc)
 

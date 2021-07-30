@@ -21,7 +21,7 @@ references:
     protocol: "dubbo"
     interface: "org.apache.dubbo.OrderSvc"
     cluster: "failover"
-    url: "dubbo://go-server-order:20000"
+    url: "dubbo://127.0.0.1:20000"
     methods:
       - name: "CreateSo"
         retries: 3
@@ -30,7 +30,7 @@ references:
     protocol: "dubbo"
     interface: "org.apache.dubbo.ProductSvc"
     cluster: "failover"
-    url: "dubbo://go-server-product:20001"
+    url: "dubbo://127.0.0.1:20001"
     methods:
       - name: "AllocateInventory"
         retries: 3
