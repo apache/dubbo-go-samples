@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="nacos-servicediscovery-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="service-discovery">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/registry/servicediscovery/nacos/go-client/conf/log.yml" />
+      <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/registry/servicediscovery/nacos/go-client/conf/client.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/registry/servicediscovery/nacos/go-client/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/attachment/go-client/cmd/client.go" />
+    <method v="2" />
+  </configuration>
+</component>

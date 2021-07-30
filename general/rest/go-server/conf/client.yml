@@ -1,0 +1,35 @@
+# dubbo client yaml configure file
+
+check: true
+# client
+request_timeout : "3s"
+# connect timeout
+connect_timeout : "3s"
+
+# application config
+application:
+  organization: "dubbo.io"
+  name: "UserInfoServer"
+  module: "dubbo-go user-info server"
+  version: "0.0.1"
+  environment: "dev"
+
+# registry config
+registries:
+  "demoZk":
+    protocol: "zookeeper"
+    timeout: "3s"
+    address: "127.0.0.1:2181"
+
+references:
+  "UserProvider":
+    registry: "demoZk"
+    protocol : "rest"
+    interface : "org.apache.dubbo.UserProvider"
+    cluster: "failover"
+    rest_path: "/UserProvider"
+    methods:
+      - name: "GetUser"
+        rest_path: "/GetUser"
+        rest_method: "GET"
+        rest_query_params: "0:id"
