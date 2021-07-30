@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package main
+package pkg
 
 import (
 	"context"
@@ -29,27 +29,26 @@ import (
 
 import (
 	"github.com/apache/dubbo-go-samples/shopping-order/go-server-common/filter"
-	orderDao "github.com/apache/dubbo-go-samples/shopping-order/go-server-order/pkg/dao"
+	productDao "github.com/apache/dubbo-go-samples/shopping-order/go-server-product/pkg/dao"
 )
 
-type OrderSvc struct {
-	dao *orderDao.Dao
+type ProductSvc struct {
+	Dao *productDao.Dao
 }
 
-func (svc *OrderSvc) CreateSo(ctx context.Context, reqs []*orderDao.SoMaster) (*orderDao.CreateSoResult, error) {
+func (svc *ProductSvc) AllocateInventory(ctx context.Context, reqs []*productDao.AllocateInventoryReq) (*productDao.AllocateInventoryResult, error) {
 	attach := ctx.Value(constant.AttachmentKey).(map[string]interface{})
 	val := attach[filter.SEATA_XID]
 	xid := val.(string)
 	// set transaction xid
-	soIds, err := svc.dao.CreateSO(
+	err := svc.Dao.AllocateInventory(
 		context.WithValue(context.Background(), mysql.XID, xid), reqs)
-
 	if err == nil {
-		return &orderDao.CreateSoResult{soIds}, nil
+		return &productDao.AllocateInventoryResult{true}, nil
 	}
-	return &orderDao.CreateSoResult{soIds}, err
+	return &productDao.AllocateInventoryResult{false}, err
 }
 
-func (svc *OrderSvc) Reference() string {
-	return "OrderSvc"
+func (svc *ProductSvc) Reference() string {
+	return "ProductSvc"
 }

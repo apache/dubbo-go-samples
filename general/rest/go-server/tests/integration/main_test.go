@@ -21,9 +21,9 @@ package integration
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
-	"fmt"
 	"time"
 )
 
