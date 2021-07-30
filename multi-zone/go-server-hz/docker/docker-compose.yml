@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  hangzouZk:
+    image: zookeeper
+    ports:
+      - 2183:2181
+    restart: on-failure
+  shanghaiZk:
+    image: zookeeper
+    ports:
+      - 2182:2181
+    restart: on-failure

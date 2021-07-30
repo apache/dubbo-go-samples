@@ -27,11 +27,11 @@ import (
 var gateProvider = new(pkg.BasketballService)
 
 func TestMain(m *testing.M) {
-    config.SetConsumerService(gateProvider)
+	config.SetConsumerService(gateProvider)
 
-    hessian.RegisterPOJO(&pojo.Result{})
-    config.Load()
-    time.Sleep(3 * time.Second)
+	hessian.RegisterPOJO(&pojo.Result{})
+	config.Load()
+	time.Sleep(3 * time.Second)
 
-    os.Exit(m.Run())
+	os.Exit(m.Run())
 }

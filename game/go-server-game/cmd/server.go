@@ -27,38 +27,38 @@ import (
 )
 
 func init() {
-    config.SetProviderService(new(pkg.BasketballService))
+	config.SetProviderService(new(pkg.BasketballService))
 
-    config.SetConsumerService(pkg.GateBasketball)
+	config.SetConsumerService(pkg.GateBasketball)
 
-    hessian.RegisterPOJO(&pojo.Result{})
+	hessian.RegisterPOJO(&pojo.Result{})
 }
 
 func main() {
-    config.Load()
+	config.Load()
 
-    initSignal()
+	initSignal()
 }
 
 func initSignal() {
-    signals := make(chan os.Signal, 1)
+	signals := make(chan os.Signal, 1)
 
-    signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
-    for {
-        sig := <-signals
-        logger.Infof("get signal %#s", sig.String())
-        switch sig {
-        case syscall.SIGHUP:
-            logger.Infof("app need reload")
-        default:
-            time.AfterFunc(time.Duration(time.Second*5), func() {
-                logger.Warnf("app exit now by force...")
-                os.Exit(1)
-            })
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	for {
+		sig := <-signals
+		logger.Infof("get signal %#s", sig.String())
+		switch sig {
+		case syscall.SIGHUP:
+			logger.Infof("app need reload")
+		default:
+			time.AfterFunc(time.Duration(time.Second*5), func() {
+				logger.Warnf("app exit now by force...")
+				os.Exit(1)
+			})
 
-            // The program exits normally or timeout forcibly exits.
-            logger.Warnf("app exit now...")
-            return
-        }
-    }
+			// The program exits normally or timeout forcibly exits.
+			logger.Warnf("app exit now...")
+			return
+		}
+	}
 }

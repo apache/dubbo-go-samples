@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="etcd-servicediscovery-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="service-discovery">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/registry/servicediscovery/etcd/go-server/conf/server.yml" />
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/registry/servicediscovery/etcd/go-server/conf/log.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/registry/servicediscovery/etcd/go-server/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/attachment/go-server/cmd/server.go" />
+    <method v="2" />
+  </configuration>
+</component>
