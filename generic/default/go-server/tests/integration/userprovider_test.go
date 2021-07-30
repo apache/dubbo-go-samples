@@ -99,7 +99,7 @@ func TestQueryUsers(t *testing.T) {
 	)
 
 	assert.Nil(t, err)
-	resp, ok := o.(map[interface{}]interface{})
+	resp, ok := o.(map[string]interface{})
 	assert.True(t, ok)
 	users, ok := o["users"].([]interface{})
 	assert.True(t, ok)
