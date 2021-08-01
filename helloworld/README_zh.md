@@ -1,135 +1,21 @@
-## Hello World 实例
+# Helloworld for Dubbo-go 3.0
 
-### 配置
+pb 定义以及 go 客户端、服务端启动，可以参考 [dubbogo-grpc](../dubbogo-grpc/README_zh.md)
 
-注册中心配置
+## 使用方法
 
-```yaml
-# registry config
-registries:
-  "demoZk":
-    protocol: "zookeeper"
-    timeout: "3s"
-    address: "127.0.0.1:2181"
+1. 启动服务端
 
-```
+使用 goland 启动 triple/gojava-go-server
 
-服务提供者配置
+或者
 
-```yaml
-# service config
-services:
-  # Reference ID
-  "UserProvider":
-    registry: "demoZk"
-    protocol: "dubbo"
-    interface: "org.apache.dubbo.UserProvider"
-    cluster: "failover"
-    methods:
-      - name: "GetUser"
-        retries: 1
-```
+在 java-server 文件夹下执行 `sh run.sh` 启动 java server
 
-服务消费者配置
+2. 启动客户端
 
-```yaml
-# reference config
-references:
-  # Reference ID
-  "UserProvider":
-    registry: "demoZk"
-    protocol: "dubbo"
-    interface: "org.apache.dubbo.UserProvider"
-    cluster: "failover"
-    methods:
-      - name: "GetUser"
-        retries: 3
-```
+使用 goland 启动 triple/gojava-go-client
 
-### 代码示例
+或者
 
-生产者示例
-
-```go
-// init 
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
-
-// define dto
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-// implement POJO interface for hessian2
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
-// service define
-type UserProvider struct {
-}
-
-// interface define
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	//biz code...
-}
-
-// implement RPCService interface
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-```
-
-消费者示例
-
-```go
-var userProvider = new(pkg.UserProvider)
-
-// init 
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
-
-// define dto
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-// implement POJO interface for hessian2
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
-// service define
-type UserProvider struct {
-    GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-}
-
-// implement RPCService interface
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func main() {
-    //dubbogo init
-    config.Load()
-    time.Sleep(3 * time.Second)
-    
-    user := &pkg.User{}
-    err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-    if err != nil {
-        //...
-    }
-    gxlog.CInfo("response result: %v\n", user)
-}
-```
+在 java-client 文件夹下执行 `sh run.sh` 启动 java client

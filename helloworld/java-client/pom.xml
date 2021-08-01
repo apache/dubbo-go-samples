@@ -1,230 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+  ~  Licensed to the Apache Software Foundation (ASF) under one or more
+  ~  contributor license agreements.  See the NOTICE file distributed with
+  ~  this work for additional information regarding copyright ownership.
+  ~  The ASF licenses this file to You under the Apache License, Version 2.0
+  ~  (the "License"); you may not use this file except in compliance with
+  ~  the License.  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
 
-       http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
--->
-
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.ikurento</groupId>
-    <artifactId>user-info-client</artifactId>
-    <packaging>jar</packaging>
-    <version>0.2.0</version>
-    <description>The demo consumer module of dubbo project</description>
+    <groupId>com.apache.dubbogo</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <artifactId>dubbo-samples-triple-client</artifactId>
 
     <properties>
-        <skip_maven_deploy>false</skip_maven_deploy>
-
-        <dubbo-jsonrpc-version>1.0.1</dubbo-jsonrpc-version>
-        <dubbo-version>2.6.5</dubbo-version>
+        <source.level>1.8</source.level>
+        <target.level>1.8</target.level>
+        <dubbo.version>3.0.0</dubbo.version>
+        <junit.version>4.12</junit.version>
+        <spring-test.version>4.3.16.RELEASE</spring-test.version>
+        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+        <maven-failsafe-plugin.version>2.21.0</maven-failsafe-plugin.version>
+        <spring-boot.version>1.5.13.RELEASE</spring-boot.version>
+        <grpc.version>1.19.0</grpc.version>
+        <protoc.version>3.7.1</protoc.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>dubbo-dependencies-bom</artifactId>
-                <version>${dubbo-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
-            <groupId>com.qianmi</groupId>
-            <artifactId>dubbo-rpc-jsonrpc</artifactId>
-            <version>${dubbo-jsonrpc-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
+            <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
-            <version>${dubbo-version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <version>${dubbo.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-framework</artifactId>
-            <version>2.12.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.20.0-GA</version>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.14.0</version>
         </dependency>
         <dependency>
-            <groupId>org.jboss.netty</groupId>
-            <artifactId>netty</artifactId>
-            <version>3.2.5.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-core</artifactId>
-            <version>1.1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.grizzly</groupId>
-            <artifactId>grizzly-core</artifactId>
-            <version>2.1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.7</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.56</version>
-        </dependency>
-        <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.4.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.bsf</groupId>
-            <artifactId>bsf-api</artifactId>
-            <version>3.1</version>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-dependencies-zookeeper</artifactId>
+            <version>${dubbo.version}</version>
+            <type>pom</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.zookeeper</groupId>
+                    <artifactId>zookeeper</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
-            <version>3.4.14</version>
+            <version>3.4.8</version>
         </dependency>
         <dependency>
-            <groupId>com.github.sgroschupf</groupId>
-            <artifactId>zkclient</artifactId>
-            <version>0.1</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.netflix.curator</groupId>
-            <artifactId>curator-framework</artifactId>
-            <version>1.1.16</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring-test.version}</version>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>com.googlecode.xmemcached</groupId>
-            <artifactId>xmemcached</artifactId>
-            <version>1.3.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-simple</artifactId>
-            <version>2.6.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http</artifactId>
-            <version>2.6.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.thrift</groupId>
-            <artifactId>libthrift</artifactId>
-            <version>0.12.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.caucho</groupId>
-            <artifactId>hessian</artifactId>
-            <version>4.0.7</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty</artifactId>
-            <version>6.1.26</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>2.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.0.0.GA</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>4.2.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.cache</groupId>
-            <artifactId>cache-api</artifactId>
-            <version>0.4</version>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>1.12.3</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <!-- For jdk 11 above JavaEE annotation -->
+        <profile>
+            <id>javax.annotation</id>
+            <activation>
+                <jdk>[1.11,)</jdk>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>javax.annotation</groupId>
+                    <artifactId>javax.annotation-api</artifactId>
+                    <version>1.3.2</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
     <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.1</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.6.1</version>
+                <configuration>
+                    <protocArtifact>com.google.protobuf:protoc:3.17.3:exe:${os.detected.classifier}</protocArtifact>
+                    <pluginId>triple-java</pluginId>
+                    <outputDirectory>build/generated/source/proto/main/java</outputDirectory>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>unpack</id>
-                        <phase>package</phase>
                         <goals>
-                            <goal>unpack</goal>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
                         </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.alibaba</groupId>
-                                    <artifactId>dubbo</artifactId>
-                                    <version>${dubbo-version}</version>
-                                    <outputDirectory>${project.build.directory}/dubbo</outputDirectory>
-                                    <includes>META-INF/assembly/**</includes>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    <source>${source.level}</source>
+                    <target>${target.level}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>add-source</goal>
                         </goals>
+                        <configuration>
+                            <sources>
+                                <source>build/generated/source/proto/main/java</source>
+                            </sources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
 </project>

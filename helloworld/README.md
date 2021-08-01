@@ -1,135 +1,22 @@
-## Hello World Example
+# Helloworld for Dubbo-go 3.0
 
-### Configuration
+For pb definition and go client and server startup, please refer to [dubbogo-grpc](../dubbogo-grpc/README.md)
 
-registy config
+## Instructions
 
-```yaml
-# registry config
-registries:
-  "demoZk":
-    protocol: "zookeeper"
-    timeout: "3s"
-    address: "127.0.0.1:2181"
+1. Start the server
 
-```
+Use goland to start triple/gojava-go-server
 
-provider config
+or
 
-```yaml
-# service config
-services:
-  # Reference ID
-  "UserProvider":
-    registry: "demoZk"
-    protocol: "dubbo"
-    interface: "org.apache.dubbo.UserProvider"
-    cluster: "failover"
-    methods:
-      - name: "GetUser"
-        retries: 1
-```
+Execute `sh run.sh` in the java-server folder to start the java server
 
-consumer config
+2. Start the client
 
-```yaml
-# reference config
-references:
-  # Reference ID
-  "UserProvider":
-    registry: "demoZk"
-    protocol: "dubbo"
-    interface: "org.apache.dubbo.UserProvider"
-    cluster: "failover"
-    methods:
-      - name: "GetUser"
-        retries: 3
-```
+Use goland to start triple/gojava-go-client
 
-### Code
+or
 
-provider
+Execute `sh run.sh` under the java-client folder to start the java client
 
-```go
-// init 
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
-
-// define dto
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-// implement POJO interface for hessian2
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
-// service define
-type UserProvider struct {
-}
-
-// interface define
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	//biz code...
-}
-
-// implement RPCService interface
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-```
-
-consumer
-
-```go
-var userProvider = new(pkg.UserProvider)
-
-// init 
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
-
-// define dto
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-// implement POJO interface for hessian2
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
-// service define
-type UserProvider struct {
-    GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-}
-
-// implement RPCService interface
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func main() {
-    //dubbogo init
-    config.Load()
-    time.Sleep(3 * time.Second)
-    
-    user := &pkg.User{}
-    err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-    if err != nil {
-        //...
-    }
-    gxlog.CInfo("response result: %v\n", user)
-}
-```
