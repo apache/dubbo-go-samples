@@ -22,6 +22,12 @@ import (
 	"time"
 )
 
+import "github.com/apache/dubbo-go-hessian2"
+
+func init() {
+	hessian.RegisterPOJO(new(User))
+}
+
 type User struct {
 	ID   string
 	Name string

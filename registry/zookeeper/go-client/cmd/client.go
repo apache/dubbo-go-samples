@@ -33,8 +33,6 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
-	hessian "github.com/apache/dubbo-go-hessian2"
-
 	gxlog "github.com/dubbogo/gost/log"
 )
 
@@ -46,12 +44,15 @@ var userProvider = new(pkg.UserProvider)
 
 func init() {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
+
 }
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	config.Load()
+	path := "./registry/zookeeper/go-client/conf/application.yml"
+	if err := config.Load(config.WithPath(path)); err != nil {
+		panic(err)
+	}
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
