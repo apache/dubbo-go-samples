@@ -19,6 +19,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/apache/dubbo-go-samples/registry/zookeeper/go-server/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -35,12 +36,6 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-)
-
-import (
-	"github.com/apache/dubbo-go-samples/registry/zookeeper/go-server/pkg"
 )
 
 var (
@@ -49,9 +44,13 @@ var (
 
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
 	config.SetProviderService(new(pkg.UserProvider))
-	config.Load()
+
+	path := "./registry/zookeeper/go-server/conf/server.yml"
+
+	if err := config.Load(config.WithPath(path)); err != nil {
+		panic(err)
+	}
 
 	initSignal()
 }
