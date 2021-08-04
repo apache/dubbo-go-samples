@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="registry-zookeeper-go-client" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/registry/zookeeper/go-client/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/registry/zookeeper/go-client/cmd/client.go" />
+    <method v="2" />
+  </configuration>
+</component>
