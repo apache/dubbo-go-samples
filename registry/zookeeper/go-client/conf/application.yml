@@ -7,18 +7,14 @@ dubbo:
     dubbo:
       name: dubbo
       port: 20000
-  provider:
-    register: true
-    registry: zk
-    services:
+  consumer:
+    check: false
+    references:
       UserProvider:
         registry: zk
         protocol: dubbo
         interface: org.apache.dubbo.UserService
-        loadbalance: random
-        warmup: 100
         cluster: failover
         methods:
           - name: GetUser
-            retries: 1
-            loadbalance: random
+            retries: 3

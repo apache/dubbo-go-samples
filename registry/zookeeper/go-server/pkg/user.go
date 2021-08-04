@@ -19,12 +19,17 @@ package pkg
 
 import (
 	"context"
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"time"
 )
 
 import (
 	"github.com/dubbogo/gost/log"
 )
+
+func init() {
+	hessian.RegisterPOJO(new(User))
+}
 
 type User struct {
 	ID   string
