@@ -1,14 +1,14 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210725154253-9aeb7ff3c612
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210802041831-0376b53e5514
 	github.com/alibaba/sentinel-golang v1.0.2
 	github.com/apache/dubbo-getty v1.4.3
 	github.com/apache/dubbo-go-hessian2 v1.9.2
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dubbogo/gost v1.11.14
 	github.com/dubbogo/net v0.0.3
-	github.com/dubbogo/triple v1.0.1
+	github.com/dubbogo/triple v1.0.2
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
@@ -26,4 +26,5 @@ require (
 
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
+replace dubbo.apache.org/dubbo-go/v3 => ../dubbo-go
 go 1.13

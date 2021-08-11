@@ -1,0 +1,29 @@
+dubbo:
+  application:
+    metadata-type: remote
+  # deprecated
+  config-center:
+    protocol: zookeeper
+    address: 127.0.0.1:2181
+    group: dubbo
+  metadata-report:
+    protocol: zookeeper
+    address: 127.0.0.1:2181
+  registries:
+    "demoZK":
+      protocol: service-discovery
+      timeout: 3s
+      address: 127.0.0.1:2181
+      metadata-report: true
+      registry-type: service
+  protocols:
+    "triple":
+      name: tri
+      port: 20000
+  provider:
+    registry:
+      - demoZK
+    services:
+      "greeterImpl":
+        protocol: triple
+        interface: protobuf.Greeter # must be compatible with grpc or dubbo-java
