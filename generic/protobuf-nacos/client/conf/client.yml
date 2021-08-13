@@ -1,0 +1,23 @@
+# dubbo-go3 client yaml configure file
+# application config (not necessary)
+application:
+  organization: "dubbo.io"
+  name: "greeterImpl"
+  module: "dubbo-go3.0 client"
+  version: "0.0.1"
+  environment: "dev"
+
+# registry config
+registries:
+  "demoZk":
+    protocol: "nacos"
+    timeout: "3s"
+    address: "console.nacos.io:80"
+
+# reference config
+references:
+  "greeterImpl":
+    registry: "demoZk"
+    protocol: "tri"
+    interface: "protobuf.Greeter"
+    url: tri://localhost:20001
