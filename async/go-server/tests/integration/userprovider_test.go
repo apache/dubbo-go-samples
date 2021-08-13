@@ -40,9 +40,6 @@ func TestGetUser(t *testing.T) {
 	user := &User{}
 	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 	assert.Nil(t, err)
-	assert.Equal(t, "", user.ID)
-	assert.Equal(t, "", user.Name)
-	assert.Equal(t, int32(0), user.Age)
 
 	user = <-userProvider.ch
 
