@@ -73,9 +73,9 @@ func (u *UserProvider) QueryUsers(_ context.Context, users []*User) (*UserRespon
 
 func (u *UserProvider) GetOneUser(_ context.Context) (*User, error) {
 	return &User{
-		ID: "1000",
+		ID:   "1000",
 		Name: "xavierniu",
-		Age: 24,
+		Age:  24,
 		Time: time.Now(),
 	}, nil
 }
