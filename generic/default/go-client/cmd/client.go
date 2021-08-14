@@ -180,7 +180,7 @@ func callGetOneUser() {
 		context.TODO(),
 		[]interface{}{
 			"GetOneUser",
-			[]string{"org.apache.dubbo.User"},
+			[]hessian.Object{},
 			[]hessian.Object{},
 		},
 	)
