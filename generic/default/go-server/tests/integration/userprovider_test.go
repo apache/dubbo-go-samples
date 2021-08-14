@@ -116,7 +116,7 @@ func TestGetOneUser(t *testing.T) {
 		context.TODO(),
 		[]interface{}{
 			"GetOneUser",
-			[]string{"org.apache.dubbo.User"},
+			[]string{},
 			[]hessian.Object{},
 		},
 	)
