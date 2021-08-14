@@ -67,6 +67,9 @@ func main() {
 	callQueryUser()
 	gxlog.CInfo("\n\ncall queryUsers")
 	callQueryUsers()
+	gxlog.CInfo("\n\ncall callGetOneUser")
+	callGetOneUser()
+
 	initSignal()
 }
 
@@ -162,6 +165,23 @@ func callQueryUsers() {
 					},
 				},
 			},
+		},
+	)
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("res: %+v\n", resp)
+	gxlog.CInfo("success!")
+}
+
+func callGetOneUser() {
+	gxlog.CInfo("\n\n\nstart to generic invoke")
+	resp, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
+		context.TODO(),
+		[]interface{}{
+			"GetOneUser",
+			[]string{"org.apache.dubbo.User"},
+			[]hessian.Object{},
 		},
 	)
 	if err != nil {

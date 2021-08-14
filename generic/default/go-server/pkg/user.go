@@ -71,6 +71,15 @@ func (u *UserProvider) QueryUsers(_ context.Context, users []*User) (*UserRespon
 	}, nil
 }
 
+func (u *UserProvider) GetOneUser(_ context.Context) (*User, error) {
+	return &User{
+		ID: "1000",
+		Name: "xavierniu",
+		Age: 24,
+		Time: time.Now(),
+	}, nil
+}
+
 func (u *UserProvider) MethodMapper() map[string]string {
 	return map[string]string{
 		"QueryUser": "queryUser",
