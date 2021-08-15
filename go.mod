@@ -26,5 +26,6 @@ require (
 
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
-replace dubbo.apache.org/dubbo-go/v3 => ../dubbo-go
+replace dubbo.apache.org/dubbo-go/v3 => ../config-enhance/dubbo-go
+
 go 1.13

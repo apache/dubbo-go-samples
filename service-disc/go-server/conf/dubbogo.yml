@@ -1,6 +1,6 @@
 dubbo:
   application:
-    metadata-type: remote
+    metadata-type: local
   # deprecated
   config-center:
     protocol: zookeeper
@@ -11,11 +11,11 @@ dubbo:
     address: 127.0.0.1:2181
   registries:
     "demoZK":
-      protocol: service-discovery
+      protocol: zookeeper
       timeout: 3s
       address: 127.0.0.1:2181
       metadata-report: true
-      registry-type: service
+      registry-type: service # if service -> service-discovery protocol, else registry protocol
   protocols:
     "triple":
       name: tri
