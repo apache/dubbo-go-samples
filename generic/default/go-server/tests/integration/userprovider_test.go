@@ -110,3 +110,21 @@ func TestQueryUsers(t *testing.T) {
 	assert.Equal(t, int32(24), users[1].(map[interface{}]interface{})["age"])
 	assert.Equal(t, "3212", users[1].(map[interface{}]interface{})["iD"])
 }
+
+func TestGetOneUser(t *testing.T) {
+	o, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
+		context.TODO(),
+		[]interface{}{
+			"GetOneUser",
+			[]hessian.Object{},
+			[]hessian.Object{},
+		},
+	)
+
+	assert.Nil(t, err)
+	resp, ok := o.(map[interface{}]interface{})
+	assert.True(t, ok)
+	assert.Equal(t, "xavierniu", resp["name"])
+	assert.Equal(t, int32(24), resp["age"])
+	assert.Equal(t, "1000", resp["iD"])
+}
