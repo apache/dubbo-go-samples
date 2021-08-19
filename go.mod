@@ -6,7 +6,7 @@ require (
 	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210730014023-92df41cfde97
 	github.com/HdrHistogram/hdrhistogram-go v1.1.0 // indirect
 	github.com/alibaba/sentinel-golang v1.0.2
-	github.com/apache/dubbo-getty v1.4.3
+	github.com/apache/dubbo-getty v1.4.5
 	github.com/apache/dubbo-go-hessian2 v1.9.2
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dubbogo/gost v1.11.14
