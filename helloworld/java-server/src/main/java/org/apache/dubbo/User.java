@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 public class User implements Serializable  {
 
-    private String id;
+    private String ID;
 
     private String name;
 
@@ -34,24 +34,24 @@ public class User implements Serializable  {
     }
 
     public User(String id, String name, int age) {
-        this.id = id;
+        this.ID = id;
         this.name = name;
         this.age = age;
     }
 
     public User(String id, String name, int age, Date time) {
-        this.id = id;
+        this.ID = id;
         this.name = name;
         this.age = age;
         this.time = time;
     }
 
-    public String getId() {
-        return id;
+    public String getID() {
+        return ID;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getName() {
@@ -78,9 +78,13 @@ public class User implements Serializable  {
         this.time = time;
     }
 
-
-
+    @Override
     public String toString() {
-        return "User{id:" + id + ", name:" + name + ", age:" + age + ", time:" + time +"}";
+        return "User{" +
+                "ID='" + ID + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", time=" + time +
+                '}';
     }
 }
