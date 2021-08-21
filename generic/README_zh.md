@@ -36,17 +36,17 @@ cd ./default/go-client/cmd \
 
 ### Protobuf Json (暂时禁用)
 
-Protobuf Json的例子放在`protobufjson`文件夹中。首先需要根据proto文件生成结构体定义。（注：`user.pb.go`已经生成，这是为了CI的集成测试使用的，但是我们仍然强烈建议你自己生成一次。）
+Protobuf Json的例子放在`protobufjson`文件夹中。首先需要根据proto文件生成结构体定义。（注：`user.api.go`已经生成，这是为了CI的集成测试使用的，但是我们仍然强烈建议你自己生成一次。）
 
 ```shell
 cd ./protobufjson \
   && protoc --go_out=. user.proto
 ```
 
-拷贝`user.pb.go`文件到提供者文件夹。
+拷贝`user.api.go`文件到提供者文件夹。
 
 ```shell
-mv ./protobufjson/user.pb.go ./protobufjson/go-server/pkg
+mv ./protobufjson/user.api.go ./protobufjson/go-server/pkg
 ```
 
 通过下面的代码启动提供者。

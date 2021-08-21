@@ -1,6 +1,6 @@
 # Triple protocol Hessian2 (Hessian+PB) serialization scheme
 
-Triple-go supports Pb serialization and Hessian serialization. After Hessian serialization, pb serialization is performed again by nesting the following pb:
+Triple-go supports Pb serialization and Hessian serialization. After Hessian serialization, api serialization is performed again by nesting the following api:
 https://github.com/dubbogo/triple/blob/master/internal/codec/proto/triple_wrapper.proto
 
 ## Serialization scheme selection

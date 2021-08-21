@@ -8,7 +8,7 @@
 
 ## Triple 服务启动
 
-### pb 生成
+### api 生成
 1. 首先编写 proto 文件
   
 ```protobuf
@@ -43,7 +43,7 @@ message User {
 ```shell
 go get -u dubbo.apache.org/dubbo-go/v3/protocol/dubbo3/protoc-gen-dubbo3@3.0
 ```
-4. 生成 pb 文件
+4. 生成 api 文件
 ```shell
     protoc -I . helloworld.proto --dubbo3_out=plugins=grpc+dubbo:.
 ```
@@ -63,7 +63,7 @@ import (
 )
 
 import (
-	dubbo3 "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/protobuf/dubbo3"
+	dubbo3 "github.com/apache/dubbo-go-samples/general/dubbo3/api/dubbogo-grpc/protobuf/dubbo3"
 )
 
 type GreeterProvider struct {
@@ -132,10 +132,10 @@ services:
     interface: "protobuf.Greeter" # 和grpc生成的的接口名一致，如下
 ```
 
-Grpc pb 文件的接口名可见为 protobuf.Greeter, 是用户根据需要定义的。
+Grpc api 文件的接口名可见为 protobuf.Greeter, 是用户根据需要定义的。
 triple-go 要想和 grpc 打通，一定要和 grpc 的接口名一致，并正确配置在 yaml 文件中。
 
-protobuf/grpc/helloworld.pb.go:
+protobuf/grpc/helloworld.api.go:
 ```go
 func (c *greeterClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
@@ -158,7 +158,7 @@ triple/triple-server
 Consumer 结构已经在pb文件中实现好,可直接引入
 ```go
 import (
-    dubbo3pb "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/protobuf/dubbo3"
+    dubbo3pb "github.com/apache/dubbo-go-samples/general/dubbo3/api/dubbogo-grpc/protobuf/dubbo3"
 )
 
 // 直接引入GreeterClientImpl 结构，可以进入该结构，查看Reference为“greeterImpl”

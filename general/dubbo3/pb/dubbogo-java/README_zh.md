@@ -1,6 +1,6 @@
 # dubbo-java互通
 
-pb 定义以及 go 客户端、服务端启动，可以参考 [dubbogo-grpc](../dubbogo-grpc/README_zh.md)
+api 定义以及 go 客户端、服务端启动，可以参考 [dubbogo-grpc](../dubbogo-grpc/README_zh.md)
 
 ## 使用方法
 

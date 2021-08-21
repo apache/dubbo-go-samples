@@ -6,9 +6,9 @@ require (
 	github.com/apache/dubbo-getty v1.4.3
 	github.com/apache/dubbo-go-hessian2 v1.9.2
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/dubbogo/gost v1.11.14
+	github.com/dubbogo/gost v1.11.16
 	github.com/dubbogo/net v0.0.3
-	github.com/dubbogo/triple v1.0.1
+	github.com/dubbogo/triple v1.0.5
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
@@ -20,12 +20,14 @@ require (
 	github.com/transaction-wg/seata-golang v0.2.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
+	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
 	google.golang.org/grpc v1.38.0
-	google.golang.org/protobuf v1.26.0
+	google.golang.org/protobuf v1.27.1
 )
 
 replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
 // replace dubbo.apache.org/dubbo-go/v3 => /Users/docker/code/github/go/dubbo-go
+replace dubbo.apache.org/dubbo-go/v3 => ../dubbo-go
 
 go 1.13

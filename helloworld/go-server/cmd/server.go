@@ -18,22 +18,30 @@
 package main
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	"context"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/helloworld/go-server/pkg"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
-// deprecated: need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
-// config.Load(config.Path("..."))
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
+
+type GreeterProvider struct {
+	api.GreeterProviderBase
+}
+
+func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
+	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
+	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
+}
+
 func main() {
-	config.SetProviderService(pkg.NewGreeterProvider())
+	config.SetProviderService(&GreeterProvider{})
 	config.Load()
 	select {}
 }

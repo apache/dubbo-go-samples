@@ -1,6 +1,6 @@
 # Helloworld for Dubbo-go 3.0
 
-For pb definition and go client and server startup, please refer to [dubbogo-grpc](../dubbogo-grpc/README.md)
+For api definition and go client and server startup, please refer to [dubbogo-grpc](../dubbogo-grpc/README.md)
 
 ## Instructions
 

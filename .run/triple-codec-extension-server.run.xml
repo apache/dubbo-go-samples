@@ -9,7 +9,7 @@
     <kind value="PACKAGE" />
     <filePath value="$PROJECT_DIR$" />
     <package value="github.com/apache/dubbo-go-samples/general/dubbo3/codec-extension/go-server/cmd" />
-    <directory value="github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/cmd" />
+    <directory value="github.com/apache/dubbo-go-samples/general/dubbo3/api/dubbogo-grpc/server/dubbogo-server/cmd" />
     <method v="2" />
   </configuration>
 </component>
