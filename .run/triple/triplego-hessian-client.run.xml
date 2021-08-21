@@ -7,9 +7,9 @@
       <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/general/dubbo3/hessian2/go-client/conf/client.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/general/dubbo3/hessian2/go-client/cmd/client.go" />
-    <package value="github.com/apache/dubbo-go-samples/general/dubbo3/hessian2/go-client/cmd" />
+    <package value="github.com/apache/dubbo-go-samples/rpc/dubbo3/hessian2/go-client/cmd" />
     <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/general/dubbo3/hessian2/go-client/cmd/client.go" />
     <method v="2" />
   </configuration>
 </component>

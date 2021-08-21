@@ -7,9 +7,9 @@
       <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/general/dubbo3/hessian2/go-server/conf/server.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/general/dubbo3/hessian2/go-server/cmd/server.go" />
-    <package value="github.com/apache/dubbo-go-samples/general/dubbo3/hessian2/go-server/cmd" />
+    <package value="github.com/apache/dubbo-go-samples/rpc/dubbo3/hessian2/go-server/cmd" />
     <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/general/dubbo3/hessian2/go-server/cmd/server.go" />
     <method v="2" />
   </configuration>
 </component>
