@@ -7,9 +7,9 @@
       <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/general/dubbo3/msgpack/go-server/conf/server.yml" />
     </envs>
     <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/rpc/dubbo3/msgpack/go-server/cmd" />
+    <directory value="github.com/apache/dubbo-go-samples/general/dubbo3/api/dubbogo-grpc/server/dubbogo-server/cmd" />
     <filePath value="$PROJECT_DIR$" />
-    <package value="github.com/apache/dubbo-go-samples/general/dubbo3/msgpack/go-server/cmd" />
-    <directory value="github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/cmd" />
     <method v="2" />
   </configuration>
 </component>

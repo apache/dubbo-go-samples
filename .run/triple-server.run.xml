@@ -3,9 +3,9 @@
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <kind value="PACKAGE" />
-    <package value="github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/cmd" />
+    <package value="github.com/apache/dubbo-go-samples/rpc/dubbo3/api/dubbogo-grpc/server/dubbogo-server/cmd" />
     <directory value="$PROJECT_DIR$" />
-    <filePath value="$PROJECT_DIR$/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/cmd/server.go" />
+    <filePath value="$PROJECT_DIR$/general/dubbo3/api/dubbogo-grpc/server/dubbogo-server/cmd/server.go" />
     <method v="2" />
   </configuration>
 </component>

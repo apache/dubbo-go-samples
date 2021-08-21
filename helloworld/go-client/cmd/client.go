@@ -19,50 +19,37 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/helloworld/protobuf"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-var grpcGreeterImpl = new(pb.GreeterClientImpl)
+var grpcGreeterImpl = new(api.GreeterClientImpl)
 
 func init() {
 	config.SetConsumerService(grpcGreeterImpl)
 }
 
-// deprecated: need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-// or config.Load(config.Path("..."))
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
 func main() {
 	config.Load()
 	time.Sleep(3 * time.Second)
 
-	fmt.Println("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
+	logger.Info("start to test dubbo")
+	req := &api.HelloRequest{
 		Name: "laurence",
 	}
-
-	reply := &pb.User{}
-
-	ctx := context.Background()
-	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
-
-	err := grpcGreeterImpl.SayHello(ctx, req, reply)
-	if err != nil {
-		panic(err)
+	reply := &api.User{}
+	if err := grpcGreeterImpl.SayHello(context.Background(), req, reply); err != nil {
+		logger.Error(err)
 	}
-	fmt.Printf("client response result: %v\n", reply)
+	logger.Infof("client response result: %v\n", reply)
 }
