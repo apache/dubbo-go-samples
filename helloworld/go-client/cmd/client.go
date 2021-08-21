@@ -48,7 +48,7 @@ func main() {
 		Name: "laurence",
 	}
 	reply := &api.User{}
-	if err := grpcGreeterImpl.SayHello(context.Background(), req, reply);err != nil {
+	if err := grpcGreeterImpl.SayHello(context.Background(), req, reply); err != nil {
 		logger.Error(err)
 	}
 	logger.Infof("client response result: %v\n", reply)

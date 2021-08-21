@@ -18,8 +18,8 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"github.com/apache/dubbo-go-samples/registry/zookeeper/go-server/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -27,26 +27,32 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/api"
 )
 
 var (
 	survivalTimeout = int(3e9)
 )
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
-func main() {
-	config.SetProviderService(new(pkg.UserProvider))
+type GreeterProvider struct {
+	api.GreeterProviderBase
+}
 
-	path := "./registry/zookeeper/go-server/conf/server.yml"
+func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
+	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
+	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
+}
+
+func main() {
+	config.SetProviderService(&GreeterProvider{})
+
+	path := "./registry/zookeeper/go-server/conf/dubbogo.yml"
 
 	if err := config.Load(config.WithPath(path)); err != nil {
 		panic(err)
