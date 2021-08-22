@@ -25,6 +25,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
@@ -36,6 +37,7 @@ type GreeterProvider struct {
 }
 
 func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
+	logger.Infof("get triple user attachment = %s", ctx.Value(tripleConstant.CtxAttachmentKey))
 	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
 	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
