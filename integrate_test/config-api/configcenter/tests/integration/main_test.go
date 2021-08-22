@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,33 +17,36 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
+	"os"
+	"testing"
+	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 )
 
-type GreeterProvider struct {
-	api.GreeterProviderBase
-}
+var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
-
-func main() {
-	config.SetProviderService(&GreeterProvider{})
+func TestMain(m *testing.M) {
+	config.SetConsumerService(greeterProvider)
 	config.Load()
-	select {}
+	time.Sleep(3 * time.Second)
+
+	os.Exit(m.Run())
 }

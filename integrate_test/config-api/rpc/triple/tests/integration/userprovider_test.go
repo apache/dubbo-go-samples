@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,33 +17,35 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 )
 
-type GreeterProvider struct {
-	api.GreeterProviderBase
-}
+func TestSayHello(t *testing.T) {
+	req := &dubbo3pb.HelloRequest{
+		Name: "laurence",
+	}
 
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
+	reply := &dubbo3pb.User{}
 
-func main() {
-	config.SetProviderService(&GreeterProvider{})
-	config.Load()
-	select {}
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
+
+	err := greeterProvider.SayHello(ctx, req, reply)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "Hello laurence", reply.Name)
+	assert.Equal(t, "12345", reply.Id)
+	assert.Equal(t, int32(21), reply.Age)
 }

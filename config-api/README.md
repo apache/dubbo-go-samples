@@ -1,65 +1,18 @@
-# config by api
+## 配置API
 
-### 1. Usage
-provider side\
-go-server/cmd/server.go
-```go
-// run these codes in init function
-// and you need not add config env_vairable before run
-    providerConfig := config.NewProviderConfig(
-            config.WithProviderAppConfig(config.NewDefaultApplicationConfig()),
-            config.WithProviderProtocol("dubbo", "dubbo", "20000"),// protocol and port
-            config.WithProviderRegistry("demoZk", config.NewDefaultRegistryConfig("zookeeper")), // registry config
-            config.WithProviderServices("UserProvider", config.NewServiceConfigByAPI(
-                config.WithServiceRegistry("demoZk"), // registry key, equal to upper line
-                config.WithServiceProtocol("dubbo"), // export protocol 
-                config.WithServiceInterface("org.apache.dubbo.UserProvider"), // interface id
-                config.WithServiceLoadBalance("random"), // lb 
-                config.WithServiceWarmUpTime("100"),
-                config.WithServiceCluster("failover"),
-                config.WithServiceMethod("GetUser", "1", "random"),
-            )),
-        )
-	config.SetProviderConfig(*providerConfig) // set to providerConfig ptr
-```
+配置API旨在支持用户通过API的形式来使用dubbo-go框架，而无需定义配置文件。
+配置API具有更高的灵活性，可以在代码中动态地写入配置条目，从而启动框架服务，或者生成自己需要使用的实例。例如注册中心、配置中心等模块。
 
-consumer side\
-go-client/cmd/client.go
-```go
-consumerConfig := config.NewConsumerConfig(
-		config.WithConsumerAppConfig(config.NewDefaultApplicationConfig()), // default app config
-		config.WithConsumerConnTimeout(time.Second*3), // timeout
-		config.WithConsumerRequestTimeout(time.Second*3), // timeout
-		config.WithConsumerRegistryConfig("demoZk", config.NewDefaultRegistryConfig("zookeeper")), // registry config
-		config.WithConsumerReferenceConfig("UserProvider", config.NewReferenceConfigByAPI( // set refer config
-			config.WithReferenceRegistry("demoZk"), // registry key
-			config.WithReferenceProtocol("dubbo"), // protocol 
-			config.WithReferenceInterface("org.apache.dubbo.UserProvider"),// interface name
-			config.WithReferenceMethod("GetUser", "3", "random"), // method and lb
-			config.WithReferenceCluster("failover"),
-		)),
-	)
-	config.SetConsumerConfig(*consumerConfig) // set to global consumerConfig ptr before main function run
-```
-### 2. Attention
-- default registry support\
-Now we support the api way to create provider/consumer global configure.
+### 目录结构
 
-default registry code as showed above:\
-we support default ip and port for them
-```go
-config.NewDefaultRegistryConfig("nacos")
-config.NewDefaultRegistryConfig("consul")
-config.NewDefaultRegistryConfig("zookeeper")
-```
+-configcenter/
 
-- default app config support\
-set app-relevant config by default
-```
-config.NewDefaultApplicationConfig()
-```
-- need improve\
-Now, api config is only support to create config by api, it also needs to set specific config field after read from yaml file by api.\
-There maybe future-change in config/consumer_config.go  config/provider_config.go to export more api.
+使用配置API，从远程配置中心读取框架启动配置，详情见 [README](./rpc/README.md)
 
-Pls. refer to [HOWTO.md](../HOWTO.md) under the root directory to run this sample.
+- rpc/
+
+使用配置API启动provider端和consumer端，发起调用
+
+- subModule/
+
+使用配置API 获取框架特定组件的实例

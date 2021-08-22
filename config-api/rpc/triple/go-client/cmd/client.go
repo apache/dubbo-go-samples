@@ -32,15 +32,33 @@ import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
-var grpcGreeterImpl = new(api.GreeterClientImpl)
+var tripleGreeterImpl = new(api.GreeterClientImpl)
 
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
-}
-
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
+// There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	config.Load()
+	config.SetConsumerService(tripleGreeterImpl)
+
+	referenceConfig := config.NewReferenceConfig(
+		config.WithReferenceInterface("com.apache.dubbo.sample.basic.IGreeter"),
+		config.WithReferenceProtocolName("tri"),
+		config.WithReferenceRegistry("zkRegistryKey"),
+	)
+
+	consumerConfig := config.NewConsumerConfig(
+		config.WithConsumerReferenceConfig("greeterImpl", referenceConfig),
+	)
+
+	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")
+
+	rootConfig := config.NewRootConfig(
+		config.WithRootRegistryConfig("zkRegistryKey", registryConfig),
+		config.WithRootConsumerConfig(consumerConfig),
+	)
+
+	if err := rootConfig.Init(); err != nil {
+		panic(err)
+	}
+
 	time.Sleep(3 * time.Second)
 
 	logger.Info("start to test dubbo")
@@ -48,7 +66,7 @@ func main() {
 		Name: "laurence",
 	}
 	reply := &api.User{}
-	if err := grpcGreeterImpl.SayHello(context.Background(), req, reply); err != nil {
+	if err := tripleGreeterImpl.SayHello(context.Background(), req, reply); err != nil {
 		logger.Error(err)
 	}
 	logger.Infof("client response result: %v\n", reply)
