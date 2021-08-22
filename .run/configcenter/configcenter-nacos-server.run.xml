@@ -1,12 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="configcenter-nacos-server" type="GoApplicationRunConfiguration" factoryName="Go Application">
+  <configuration default="false" name="configcenter-nacos-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-configcenter">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
-    <kind value="PACKAGE" />
     <envs>
-      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/configcenter/nacos/go-server/conf/conf/log.yml" />
-      <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/configcenter/nacos/go-server/conf/server.yml" />
+      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/configcenter/nacos/go-server/conf/dubbogo.yml" />
     </envs>
+    <kind value="PACKAGE" />
     <package value="github.com/apache/dubbo-go-samples/configcenter/nacos/go-server/cmd" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$/configcenter/nacos/go-server/cmd/server.go" />

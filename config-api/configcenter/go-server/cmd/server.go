@@ -19,11 +19,11 @@ package main
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/config"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
@@ -40,8 +40,21 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
 
+// There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
 	config.SetProviderService(&GreeterProvider{})
-	config.Load()
+	centerConfig := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("nacos"),
+		config.WithConfigCenterAddress("localhost:8848"),
+		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-server"),
+	)
+
+	rootConfig := config.NewRootConfig(
+		config.WithRootCenterConfig(centerConfig),
+	)
+
+	if err := rootConfig.Init(); err != nil {
+		panic(err)
+	}
 	select {}
 }

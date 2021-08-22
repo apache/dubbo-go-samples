@@ -14,6 +14,8 @@ cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiy
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210821071019-8cb93935d529 h1:bIIKczliDGFh9ZHVwOr5NPZKvbAF5XLNeHRDc2/ifsA=
 dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210821071019-8cb93935d529/go.mod h1:EE3h5Dj/YxLm4hDnMsJ3MI50jHqZ3HJqE6IkdUKg4wc=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210822082425-1bfface3303e h1:TnZXDmootOlIL+DZZkS7opNDwbFG2gT+Z9YeSLwKXy0=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210822082425-1bfface3303e/go.mod h1:quHg7AMGZichyo/h2msHsjregY4oL0lEJlljPbpwgs0=
 github.com/Azure/go-autorest/autorest v0.9.0/go.mod h1:xyHB1BMZT0cuDHU7I0+g046+BFDTQ8rEZB0s4Yfa6bI=
 github.com/Azure/go-autorest/autorest/adal v0.5.0/go.mod h1:8Z9fGy2MpX0PvDjB1pEgQTmVqjGhiHBW7RJJEciWzS0=
 github.com/Azure/go-autorest/autorest/date v0.1.0/go.mod h1:plvfp3oPSKwf2DNjlBjWF/7vwR+cUD/ELuzDCXwHUVA=
@@ -33,6 +35,7 @@ github.com/PuerkitoBio/purell v1.0.0/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbt
 github.com/PuerkitoBio/urlesc v0.0.0-20160726150825-5bd2802263f2/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
 github.com/RoaringBitmap/roaring v0.7.1 h1:HkcLv8q/kwGJnhEWe+vinu+04DGDdQ7nVivMhNhxP2g=
 github.com/RoaringBitmap/roaring v0.7.1/go.mod h1:jdT9ykXwHFNdJbEtxePexlFYH9LXucApeS0/+/g+p1I=
+github.com/RoaringBitmap/roaring v0.9.4/go.mod h1:icnadbWcNyfEHlYdr+tDlOTih1Bf/h+rzPpv4sbomAA=
 github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWXgklEdEo=
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
 github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d h1:G0m3OIz70MZUWq3EgK3CesDbo8upS2Vm9/P3FtgI+Jk=
@@ -153,6 +156,8 @@ github.com/dubbogo/net v0.0.3/go.mod h1:B6/ka3g8VzcyrmdCH4VkHP1K0aHeI37FmclS+TCw
 github.com/dubbogo/triple v1.0.1/go.mod h1:O6vQD2XLCWugzAk0P27HTW4+Uhkd8sjaQn0BZijdGzU=
 github.com/dubbogo/triple v1.0.5 h1:bDASS3u0ILC+KaUmWaDDuZ7/pVZcljyO/1TkwXMvcsM=
 github.com/dubbogo/triple v1.0.5/go.mod h1:tCl0mV54+V8Br9z71sFbS1IQUG41QKZUrW6FGaLheM0=
+github.com/dubbogo/triple v1.0.6-0.20210822081945-0b88cc0d10df h1:YSfvAnU0ebwLqWnD+5HTTsFhqA+aE4Si2c10zBsUW7c=
+github.com/dubbogo/triple v1.0.6-0.20210822081945-0b88cc0d10df/go.mod h1:tCl0mV54+V8Br9z71sFbS1IQUG41QKZUrW6FGaLheM0=
 github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/dustin/go-humanize v1.0.0 h1:VSnTsYCnlFHaM2/igO1h6X3HA71jcobQuxemgkq4zYo=
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
