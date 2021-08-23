@@ -18,63 +18,31 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
+	"context"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/config_center/apollo"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/configcenter/apollo/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-var (
-	survivalTimeout = int(3e9)
-)
-
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
-func main() {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
-
-	initSignal()
+type GreeterProvider struct {
+	api.GreeterProviderBase
 }
 
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(time.Duration(survivalTimeout), func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
+func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
+	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
 
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("provider app exit now...")
-			return
-		}
-	}
+	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
+}
+
+func main() {
+	config.SetProviderService(&GreeterProvider{})
+	config.Load()
+	select {}
 }

@@ -34,7 +34,7 @@ import (
 
 import (
 	dubbo3pb "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/protobuf/dubbo3"
-	grpcpb   "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/tests/integration/grpc_test_proto"
+	grpcpb "github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/tests/integration/grpc_test_proto"
 )
 
 func TestSayHello(t *testing.T) {
@@ -51,8 +51,7 @@ func TestSayHello(t *testing.T) {
 	assert.Equal(t, int32(21), user.Age)
 }
 
-
-func TestStreamSayHello(t *testing.T){
+func TestStreamSayHello(t *testing.T) {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, tripleConstant.TripleCtxKey(tripleConstant.TripleRequestID), "triple-request-id-demo")
 	req := dubbo3pb.HelloRequest{
@@ -70,18 +69,18 @@ func TestStreamSayHello(t *testing.T){
 	rspUser := &dubbo3pb.User{}
 	err = r.RecvMsg(rspUser)
 	assert.Nil(t, err)
-	assert.Equal(t, "hello laurence",rspUser.Name)
-	assert.Equal(t, "123456789",rspUser.Id)
-	assert.Equal(t, int32(18),rspUser.Age)
+	assert.Equal(t, "hello laurence", rspUser.Name)
+	assert.Equal(t, "123456789", rspUser.Id)
+	assert.Equal(t, int32(18), rspUser.Age)
 
 	err = r.Send(&req)
 	assert.Nil(t, err)
 
 	err = r.RecvMsg(rspUser)
 	assert.Nil(t, err)
-	assert.Equal(t, "hello laurence",rspUser.Name)
-	assert.Equal(t, "123456789",rspUser.Id)
-	assert.Equal(t, int32(19),rspUser.Age)
+	assert.Equal(t, "hello laurence", rspUser.Name)
+	assert.Equal(t, "123456789", rspUser.Id)
+	assert.Equal(t, int32(19), rspUser.Age)
 }
 
 func TestGRPCClientHello(t *testing.T) {
@@ -102,7 +101,7 @@ func TestGRPCClientHello(t *testing.T) {
 	assert.Equal(t, int32(21), rsp.Age)
 }
 
-func TestGRPCClientStreamSayHello(t *testing.T){
+func TestGRPCClientStreamSayHello(t *testing.T) {
 	conn, err := grpc.Dial("127.0.0.1:20001", grpc.WithInsecure())
 	assert.Nil(t, err)
 	defer conn.Close()
@@ -121,18 +120,16 @@ func TestGRPCClientStreamSayHello(t *testing.T){
 	rspUser := &grpcpb.User{}
 	err = clientStream.RecvMsg(rspUser)
 	assert.Nil(t, err)
-	assert.Equal(t, "hello grpc laurence",rspUser.Name)
-	assert.Equal(t, "123456789",rspUser.Id)
-	assert.Equal(t, int32(18),rspUser.Age)
+	assert.Equal(t, "hello grpc laurence", rspUser.Name)
+	assert.Equal(t, "123456789", rspUser.Id)
+	assert.Equal(t, int32(18), rspUser.Age)
 
 	err = clientStream.Send(req)
 	assert.Nil(t, err)
 
 	err = clientStream.RecvMsg(rspUser)
 	assert.Nil(t, err)
-	assert.Equal(t, "hello grpc laurence",rspUser.Name)
-	assert.Equal(t, "123456789",rspUser.Id)
-	assert.Equal(t, int32(19),rspUser.Age)
+	assert.Equal(t, "hello grpc laurence", rspUser.Name)
+	assert.Equal(t, "123456789", rspUser.Id)
+	assert.Equal(t, int32(19), rspUser.Age)
 }
-
-
