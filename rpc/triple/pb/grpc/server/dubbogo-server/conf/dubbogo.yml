@@ -1,0 +1,15 @@
+dubbo:
+  registries:
+    zk:
+      timeout: 3s
+      address: zookeeper://127.0.0.1:2181
+    protocols:
+      triple:
+        name: tri
+        port: 20000
+    provider:
+      registry: zk
+      services:
+        greeterImpl:
+          protocol: triple
+          interface: org.apache.dubbo.Greeter

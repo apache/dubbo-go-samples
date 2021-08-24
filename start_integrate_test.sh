@@ -45,7 +45,7 @@ array+=("game/go-server-gate")
 # general-dubbo
 array+=("general/dubbo/go-server")
 
-# general-dubbo3(triple)
+# general-triple(triple)
 array+=("general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server")
 array+=("general/dubbo3/pb/dubbogo-java/go-server")
 array+=("general/dubbo3/hessian2/go-server")
