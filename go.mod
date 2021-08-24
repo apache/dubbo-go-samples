@@ -23,18 +23,17 @@ require (
 	github.com/miekg/dns v1.1.27 // indirect
 	github.com/mitchellh/hashstructure v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.2.0
-	github.com/opentrx/mysql v1.0.0-pre // indirect
+	github.com/opentrx/mysql v1.0.0-pre
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.2.2
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.9.0
 	github.com/stretchr/testify v1.7.0
-	github.com/tinylib/msgp v1.1.0 // indirect
 	github.com/transaction-wg/seata-golang v0.2.1-alpha
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	google.golang.org/grpc v1.36.0
-	google.golang.org/grpc/examples v0.0.0-20210322221411-d26af8e39165 // indirect
+	google.golang.org/protobuf v1.25.0 // indirect
 )
 
 replace (

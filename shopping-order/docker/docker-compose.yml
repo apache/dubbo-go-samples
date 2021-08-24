@@ -1,0 +1,59 @@
+version: "3"
+services:
+  seata:
+    image: seataio/seata-server:latest
+    container_name: seata
+    ports:
+      - "8091:8091"
+#    volumes:
+#      - ./seata/registry.conf:/seata-server/resources/registry.conf
+#      - ./seata/file.conf:/seata-server/resources/file.conf
+    environment:
+      - SEATA_PORT=8091
+#      - STORE_MODE=db
+    depends_on:
+      - nacos
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    command: --default-authentication-plugin=mysql_native_password --default-time-zone='+08:00'
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+      - ./mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+    ports:
+      - "3306:3306"
+
+  nacos:
+    image: nacos/nacos-server:latest
+    container_name: nacos
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+    volumes:
+      - ./logs:/home/nacos/logs
+      - ./nacos/custom.properties:/home/nacos/init.d/custom.properties
+    ports:
+      - "8848:8848"
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/prometheus-standalone.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9091:9090"
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    volumes:
+      - ./grafana/prometheus.yml:/etc/grafana/provisioning/datasources/prometheus.yml
+#      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/default.yml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./logs:/var/log/grafana
+    ports:
+      - 3000:3000
