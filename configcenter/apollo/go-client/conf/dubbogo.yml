@@ -4,4 +4,4 @@ dubbo:
     address: "localhost:8080"
     app-id: "demo_server"
     cluster: "default"
-    namespace: "demo-provider-config"
+    namespace: "demo-client-config"
