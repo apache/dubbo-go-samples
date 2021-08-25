@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="api-config-center-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-config-api" singleton="true">
+  <configuration default="false" name="api-triple-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-config-api">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <kind value="PACKAGE" />
-    <package value="github.com/apache/dubbo-go-samples/config-api/configcenter/go-client/cmd" />
+    <package value="github.com/apache/dubbo-go-samples/config-api/rpc/triple/go-client/cmd" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$/config-api/go-client/cmd/client.go" />
     <method v="2" />

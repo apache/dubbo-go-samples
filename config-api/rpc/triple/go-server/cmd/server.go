@@ -40,8 +40,34 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
 
+// There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
 	config.SetProviderService(&GreeterProvider{})
-	config.Load()
+
+	serviceConfig := config.NewServiceConfig(
+		config.WithServiceInterface("com.apache.dubbo.sample.basic.IGreeter"),
+		config.WithServiceProtocolKeys("tripleKey"),
+	)
+
+	protocolConfig := config.NewProtocolConfig(
+		config.WithProtocolName("tri"),
+		config.WithProtocolPort("20000"),
+	)
+
+	providerConfig := config.NewProviderConfig(
+		config.WithProviderRegistryKeys("zk"),
+		config.WithProviderService("greeterImpl", serviceConfig),
+	)
+
+	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")
+
+	rootConfig := config.NewRootConfig(
+		config.WithRootProviderConfig(providerConfig),
+		config.WithRootRegistryConfig("zk", registryConfig),
+		config.WithRootProtocolConfig("tripleKey", protocolConfig),
+	)
+	if err := rootConfig.Init(); err != nil {
+		panic(err)
+	}
 	select {}
 }

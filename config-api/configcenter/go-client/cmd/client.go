@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"time"
 )
 
 import (
@@ -31,17 +32,35 @@ import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
-type GreeterProvider struct {
-	api.GreeterProviderBase
-}
+var grpcGreeterImpl = new(api.GreeterClientImpl)
 
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
-
+// There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	config.SetProviderService(&GreeterProvider{})
-	config.Load()
-	select {}
+	config.SetConsumerService(grpcGreeterImpl)
+
+	centerConfig := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("nacos"),
+		config.WithConfigCenterAddress("localhost:8848"),
+		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-client"),
+	)
+
+	rootConfig := config.NewRootConfig(
+		config.WithRootCenterConfig(centerConfig),
+	)
+
+	if err := rootConfig.Init(); err != nil {
+		panic(err)
+	}
+
+	time.Sleep(3 * time.Second)
+
+	logger.Info("start to test dubbo")
+	req := &api.HelloRequest{
+		Name: "laurence",
+	}
+	reply := &api.User{}
+	if err := grpcGreeterImpl.SayHello(context.Background(), req, reply); err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client response result: %v\n", reply)
 }
