@@ -25,6 +25,9 @@ require (
 	google.golang.org/protobuf v1.27.1
 )
 
-replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
+replace (
+	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
+	dubbo.apache.org/dubbo-go/v3 => ../dubbo-go
+)
 
 go 1.13

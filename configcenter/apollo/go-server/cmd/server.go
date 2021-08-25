@@ -43,6 +43,9 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 
 func main() {
 	config.SetProviderService(&GreeterProvider{})
-	config.Load()
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
 	select {}
 }
