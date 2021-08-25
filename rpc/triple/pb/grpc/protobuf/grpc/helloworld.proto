@@ -16,15 +16,9 @@
  */
 syntax = "proto3";
 
-option go_package = "protobuf/triple";
-package protobuf;
+package org.apache.dubbo.grpc;
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (User) {}
-  rpc SayHelloStream (stream HelloRequest) returns (stream User) {}
-}
+option go_package = "./;grpc";
 
 // The request message containing the user's name.
 message HelloRequest {
@@ -36,4 +30,11 @@ message User {
   string name = 1;
   string id = 2;
   int32 age = 3;
+}
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (User) {}
+  rpc SayHelloStream (stream HelloRequest) returns (stream User) {}
 }

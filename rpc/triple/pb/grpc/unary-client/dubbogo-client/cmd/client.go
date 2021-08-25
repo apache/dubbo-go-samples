@@ -38,7 +38,7 @@ import (
 )
 
 import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/general/triple/pb/grpc/protobuf/triple"
+	dubbo3pb "github.com/apache/dubbo-go-samples/rpc/triple/pb/grpc/protobuf/triple"
 )
 
 var greeterProvider = new(dubbo3pb.GreeterClientImpl)

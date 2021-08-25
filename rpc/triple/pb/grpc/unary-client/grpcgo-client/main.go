@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/general/triple/pb/grpc/protobuf/grpc"
+	pb "github.com/apache/dubbo-go-samples/rpc/triple/pb/grpc/protobuf/grpc"
 )
 
 const (

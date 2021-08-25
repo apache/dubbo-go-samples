@@ -16,7 +16,10 @@
  */
 
 syntax = "proto3";
+
 package org.apache.dubbo;
+
+option go_package = "./;triple";
 
 // The greeting service definition.
 service Greeter {

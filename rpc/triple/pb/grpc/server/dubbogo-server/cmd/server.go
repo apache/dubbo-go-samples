@@ -41,7 +41,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/pkg"
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb/grpc/server/dubbogo-server/pkg"
 )
 
 var (
@@ -51,7 +51,9 @@ var (
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
 	config.SetProviderService(pkg.NewGreeterProvider())
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(fmt.Sprintf("cannot load config: %v", err))
+	}
 	initSignal()
 }
 
