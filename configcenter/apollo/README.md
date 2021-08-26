@@ -4,6 +4,7 @@
 
 ### go-server start
 1. Create new apollo server namespace for yaml format
+
 2. Add provider config content 
 ```yaml
 dubbo:
@@ -27,11 +28,14 @@ dubbo:
         protocol: "triple"
         interface: "com.apache.dubbo.sample.basic.IGreeter" # must be compatible with grpc or dubbo-java
 ```
+
 3. Start provider server
 
 ### go-client start
 1. Create new apollo client namespace for yaml format
+
 2. Add client config content
+
 ```yaml
 dubbo:
   registries:
@@ -47,6 +51,7 @@ dubbo:
         protocol: "tri"
         interface: "com.apache.dubbo.sample.basic.IGreeter" # must be compatible with grpc or dubbo-java
 ```
+
 3. Start provider server
 
 

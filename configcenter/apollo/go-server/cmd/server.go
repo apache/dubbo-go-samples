@@ -19,6 +19,11 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 import (
@@ -29,6 +34,10 @@ import (
 
 import (
 	"github.com/apache/dubbo-go-samples/api"
+)
+
+var (
+	survivalTimeout = int(3e9)
 )
 
 type GreeterProvider struct {
@@ -47,5 +56,28 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	select {}
+	initSignal()
+}
+
+func initSignal() {
+	signals := make(chan os.Signal, 1)
+	// It is not possible to block SIGKILL or syscall.SIGSTOP
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	for {
+		sig := <-signals
+		logger.Infof("get signal %s", sig.String())
+		switch sig {
+		case syscall.SIGHUP:
+			// reload()
+		default:
+			time.AfterFunc(time.Duration(survivalTimeout), func() {
+				logger.Warnf("app exit now by force...")
+				os.Exit(1)
+			})
+
+			// The program exits normally or timeout forcibly exits.
+			fmt.Println("provider app exit now...")
+			return
+		}
+	}
 }
