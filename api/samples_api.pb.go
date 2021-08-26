@@ -6,10 +6,6 @@ package api
 import (
 	context "context"
 	fmt "fmt"
-	proto "github.com/golang/protobuf/proto"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -17,8 +13,15 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	dgrpc "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
 	"dubbo.apache.org/dubbo-go/v3/protocol/invocation"
+
 	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 	dubbo3 "github.com/dubbogo/triple/pkg/triple"
+
+	proto "github.com/golang/protobuf/proto"
+
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -171,7 +174,7 @@ func (c *greeterDubbo3Client) SayHello(ctx context.Context, in *HelloRequest, op
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type GreeterClientImpl struct {
 	// Sends a greeting
-	SayHello func(ctx context.Context, in *HelloRequest, out *User) error
+	SayHello func(ctx context.Context, in *HelloRequest) (*User, error)
 }
 
 func (c *GreeterClientImpl) Reference() string {
