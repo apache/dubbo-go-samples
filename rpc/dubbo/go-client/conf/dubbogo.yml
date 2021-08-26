@@ -1,37 +1,23 @@
 # dubbo client yaml configure file
 
+dubbo:
+  registries:
+    "demoZK":
+      protocol: "zookeeper"
+      timeout: "3s"
+      address: "127.0.0.1:2181"
+  consumer:
+    registry:
+      - demoZK
+    references:
+      "UserProvider":
+        protocol: "dubbo"
+        interface: "org.apache.dubbo.UserProvider"
+
 check: true
-# client
 request_timeout: "3s"
-# connect timeout
 connect_timeout: "3s"
 
-# application config
-application:
-  organization: "dubbo.io"
-  name: "UserInfoConsumer"
-  module: "dubbo-go user-info client"
-  version: "0.0.1"
-  environment: "dev"
-
-# registry config
-registries:
-  "demoZk":
-    protocol: "zookeeper"
-    timeout: "3s"
-    address: "127.0.0.1:2181"
-    username: ""
-    password: ""
-
-# reference config
-references:
-  "UserProvider":
-    registry: "demoZk"
-    protocol: "dubbo"
-    interface: "org.apache.dubbo.UserProvider"
-    cluster: "failover"
-
-# protocol config
 protocol_conf:
   dubbo:
     reconnect_interval: 0
