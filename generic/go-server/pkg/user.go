@@ -59,6 +59,15 @@ func (u *UserProvider) QueryUser(ctx context.Context, user *User) (*User, error)
 	return &rsp, nil
 }
 
+func (u *UserProvider) GetAllUsers(ctx context.Context) ([]*User, error) {
+	rsp := []*User{
+		{"A001", "Alex Stocks", 18, time.Now()},
+		{"A002", "Alchemy Lee", 12, time.Now()},
+	}
+	gxlog.CInfo("rsp:%#v", rsp)
+	return rsp, nil
+}
+
 func (u *UserProvider) MethodMapper() map[string]string {
 	return map[string]string{
 		"QueryUser": "queryUser",
