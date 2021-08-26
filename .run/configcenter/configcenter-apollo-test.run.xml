@@ -4,8 +4,7 @@
     <working_directory value="$PROJECT_DIR$/configcenter/apollo" />
     <useCustomBuildTags value="true" />
     <envs>
-      <env name="CONF_CONSUMER_FILE_PATH" value="go-server/conf/client.yml" />
-      <env name="APP_LOG_CONF_FILE" value="go-server/conf/log.yml" />
+      <env name="CONF_CONSUMER_FILE_PATH" value="go-server/conf/dubbogo.yml" />
     </envs>
     <framework value="gotest" />
     <kind value="PACKAGE" />
