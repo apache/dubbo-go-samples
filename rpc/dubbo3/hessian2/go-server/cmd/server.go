@@ -26,22 +26,11 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	_ "github.com/dubbogo/triple/pkg/triple"
-)
-
-import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/hessian2/go-server/pkg"
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 var (
@@ -49,12 +38,18 @@ var (
 )
 
 func init() {
-	config.SetProviderService(new(pkg.UserProvider))
+	// ------for hessian2------
+	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&ComplexData{})
+	config.SetProviderService(new(UserProvider))
+	config.SetProviderService(new(ComplexProvider))
 }
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/rpc/dubbo3/hessian2/go-server/conf/dubbogo.yml
 func main() {
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	initSignal()
 }
 

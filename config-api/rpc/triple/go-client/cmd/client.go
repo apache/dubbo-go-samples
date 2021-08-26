@@ -65,8 +65,8 @@ func main() {
 	req := &api.HelloRequest{
 		Name: "laurence",
 	}
-	reply := &api.User{}
-	if err := tripleGreeterImpl.SayHello(context.Background(), req, reply); err != nil {
+	reply, err := tripleGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
 		logger.Error(err)
 	}
 	logger.Infof("client response result: %v\n", reply)

@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	pkg2 "github.com/apache/dubbo-go-samples/context/dubbo/go-client/pkg"
 	"os"
 	"time"
 )
@@ -38,6 +37,10 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 
 	"github.com/dubbogo/gost/log"
+)
+
+import (
+	pkg2 "github.com/apache/dubbo-go-samples/context/dubbo/go-client/pkg"
 )
 
 var userProvider = new(pkg2.UserProvider)
