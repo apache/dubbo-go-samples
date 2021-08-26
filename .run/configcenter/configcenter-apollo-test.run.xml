@@ -1,14 +1,14 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="configcenter-apollo-test" type="GoTestRunConfiguration" factoryName="Go Test">
+  <configuration default="false" name="configcenter-apollo-test" type="GoTestRunConfiguration" factoryName="Go Test" >
     <module name="dubbo-go-samples" />
-    <working_directory value="$PROJECT_DIR$/configcenter/apollo" />
+    <working_directory value="$PROJECT_DIR$/integrate_test/configcenter/apollo" />
     <useCustomBuildTags value="true" />
     <envs>
-      <env name="CONF_CONSUMER_FILE_PATH" value="go-server/conf/dubbogo.yml" />
+      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/configcenter/apollo/go-server/conf/dubbogo.yml" />
     </envs>
     <framework value="gotest" />
     <kind value="PACKAGE" />
-    <package value="github.com/apache/dubbo-go-samples/configcenter/apollo/go-server/tests/integration" />
+    <package value="github.com/apache/dubbo-go-samples/integrate_test/configcenter/apollo/tests/integration" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$" />
     <method v="2" />

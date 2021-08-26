@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="configcenter-apollo-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-configcenter" singleton="true">
         <module name="dubbo-go-samples" />
-        <working_directory value="$PROJECT_DIR$" />
+        <working_directory value="$PROJECT_DIR$/configcenter/apollo/go-client" />
         <envs>
             <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/configcenter/apollo/go-client/conf/dubbogo.yml" />
         </envs>
