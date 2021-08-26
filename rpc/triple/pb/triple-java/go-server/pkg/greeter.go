@@ -26,7 +26,7 @@ import (
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/general/triple/pb/triple-java/protobuf"
+	pb "github.com/apache/dubbo-go-samples/rpc/triple/pb/triple-java/protobuf"
 )
 
 type GreeterProvider struct {
