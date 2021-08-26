@@ -24,24 +24,24 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	"github.com/dubbogo/gost/log"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/msgpack/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-var userProvider = new(pkg.UserProvider)
+type UserProvider struct {
+	GetUser func(ctx context.Context, req *api.User) (rsp *api.User, err error)
+}
+
+func (u *UserProvider) Reference() string {
+	return "greeterImpl"
+}
+
+var userProvider = new(UserProvider)
 
 func init() {
 	config.SetConsumerService(userProvider)
@@ -53,8 +53,7 @@ func main() {
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), &pkg.User{Name: "laurence"}, user)
+	user, err := userProvider.GetUser(context.TODO(), &api.User{Name: "laurence"})
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
