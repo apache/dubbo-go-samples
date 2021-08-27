@@ -1,0 +1,16 @@
+dubbo:
+  registries:
+    zk:
+      address: zookeeper://127.0.0.1:2181
+  protocols:
+    triple:
+      name: tri
+      port: 20001
+  provider:
+    registry: zk
+    services:
+      # you may refer to `Reference()` method defined at `protobuf/triple/helloworld.pb.go`
+      greeterImpl:
+        protocol: triple
+        # interface is for registry
+        interface: com.apache.dubbo.sample.basic.IGreeter

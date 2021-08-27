@@ -62,7 +62,7 @@ func main() {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
 
-	err := grpcGreeterImpl.SayHello(ctx, req, reply)
+	reply, err := grpcGreeterImpl.SayHello(ctx, req)
 	if err != nil {
 		panic(err)
 	}

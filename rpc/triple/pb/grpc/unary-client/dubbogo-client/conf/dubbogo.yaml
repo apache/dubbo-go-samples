@@ -1,7 +1,6 @@
 dubbo:
   registries:
     zk:
-      timeout: 3s
       address: zookeeper://127.0.0.1:2181
   consumer:
     registry: zk
