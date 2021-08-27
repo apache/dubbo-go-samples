@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  hangzhouzk:
+    container_name: hangzhouzk
+    image: zookeeper
+    ports:
+      - 2181:2181
+    restart: on-failure
+  shanghaizk:
+    container_name: shanghaizk
+    image: zookeeper
+    ports:
+      - 2182:2181
+    restart: on-failure
+

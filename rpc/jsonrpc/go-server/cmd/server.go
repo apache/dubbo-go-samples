@@ -38,18 +38,19 @@ import (
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/general/jsonrpc/go-server/pkg"
+	_ "github.com/apache/dubbo-go-samples/rpc/jsonrpc/go-server/pkg"
 )
 
 var (
 	survivalTimeout = int(3e9)
 )
 
-// they are necessary:
-// 		export CONF_PROVIDER_FILE_PATH="xxx"
-// 		export APP_LOG_CONF_FILE="xxx"
+// Do some checking before the system starts up:
+// 1. env config
+// 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
 
+	// load dubbo runtime context
 	config.Load()
 
 	initSignal()

@@ -27,21 +27,23 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	//_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	//_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	//_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/jsonrpc"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	//_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	//_ "dubbo.apache.org/dubbo-go/v3/protocol/jsonrpc"
+	//_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	//_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	"github.com/dubbogo/gost/log"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/jsonrpc/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/rpc/jsonrpc/go-client/pkg"
 )
 
 var (
@@ -57,19 +59,19 @@ func init() {
 	config.SetConsumerService(userProvider2)
 }
 
-// they are necessary:
-// 		export CONF_CONSUMER_FILE_PATH="xxx"
-// 		export APP_LOG_CONF_FILE="xxx"
+// Do some checking before the system starts up:
+// 1. env config
+// 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
 
 	config.Load()
 
 	gxlog.CInfo("\n\ntest")
 	test()
-	gxlog.CInfo("\n\ntest1")
-	test1()
-	gxlog.CInfo("\n\ntest2")
-	test2()
+	//gxlog.CInfo("\n\ntest1")
+	//test1()
+	//gxlog.CInfo("\n\ntest2")
+	//test2()
 
 	initSignal()
 }
@@ -110,8 +112,11 @@ func test() {
 	time.Sleep(3e9)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &pkg.JsonRPCUser{}
-	err = userProvider.GetUser(context.TODO(), []interface{}{"A003"}, user)
+	userReq := &pkg.JsonRPCUser{
+		ID: "A003",
+	}
+
+	user, err := userProvider.GetUser(context.TODO(), userReq)
 	if err != nil {
 		panic(err)
 	}
@@ -125,19 +130,30 @@ func test() {
 	gxlog.CInfo("response result: %v", ret)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUsers")
-	ret1, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
+
+	users := []pkg.JsonRPCUser{
+		{
+			ID: "A002",
+		},
+		{
+			ID: "A003",
+		},
+	}
+	ret1, err := userProvider.GetUsers(users)
 	if err != nil {
 		panic(err)
 	}
 	gxlog.CInfo("response result: %v", ret1)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc - getUser")
-	user = &pkg.JsonRPCUser{}
-	err = userProvider.GetUser2(context.TODO(), []interface{}{1}, user)
+	userReq2 := &pkg.JsonRPCUser{
+		ID: "113",
+	}
+	rep2, err := userProvider.GetUser2(context.TODO(), userReq2)
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", user)
+	gxlog.CInfo("response result: %v", rep2)
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser3")
 	err = userProvider.GetUser3()
@@ -147,11 +163,14 @@ func test() {
 	gxlog.CInfo("succ!")
 
 	gxlog.CInfo("\n\n\nstart to test jsonrpc illegal method")
-	err = userProvider.GetUser1(context.TODO(), []interface{}{"A003"}, user)
+	userReq3 := &pkg.JsonRPCUser{
+		ID: "A003",
+	}
+	rep3, err := userProvider.GetUser1(context.TODO(), userReq3)
 	if err == nil {
 		panic("err is nil")
 	}
-	gxlog.CInfo("error: %v", err)
+	gxlog.CInfo("response result: %v", rep3)
 }
 
 func test1() {
