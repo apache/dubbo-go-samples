@@ -109,6 +109,10 @@ public class UserProviderAnotherImpl implements UserProvider {
         return userList;
     }
 
+    public Integer GetGender(Integer gender) {
+        return gender != null && gender == 1 ? 1 : 0;
+    }
+
     // @Override
     public User getUser(int userCode) {
         logger.info("input userCode = " + userCode);
