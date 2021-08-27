@@ -37,6 +37,7 @@ import (
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/dubbogo/gost/log"
 )
 
@@ -66,6 +67,8 @@ func main() {
 	callGetUser()
 	gxlog.CInfo("\n\ncall queryUser")
 	callQueryUser()
+	gxlog.CInfo("\n\ncall getAllUsers")
+	callGetAllUsers()
 	initSignal()
 }
 
@@ -100,7 +103,7 @@ func callGetUser() {
 		[]interface{}{
 			"GetUser",
 			[]string{"java.lang.String"},
-			[]interface{}{"A003"},
+			[]hessian.Object{"A003"},
 		},
 	)
 	if err != nil {
@@ -110,6 +113,7 @@ func callGetUser() {
 	gxlog.CInfo("success!")
 
 }
+
 func callQueryUser() {
 	gxlog.CInfo("\n\n\nstart to generic invoke")
 	user := pkg.User{
@@ -123,7 +127,25 @@ func callQueryUser() {
 		[]interface{}{
 			"queryUser",
 			[]string{"org.apache.dubbo.User"},
-			[]interface{}{user},
+			[]hessian.Object{user},
+		},
+	)
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("res: %+v\n", resp)
+	gxlog.CInfo("success!")
+
+}
+
+func callGetAllUsers() {
+	gxlog.CInfo("\n\n\nstart to generic invoke")
+	resp, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
+		context.TODO(),
+		[]interface{}{
+			"GetAllUsers",
+			[]hessian.Object{},
+			[]hessian.Object{},
 		},
 	)
 	if err != nil {
