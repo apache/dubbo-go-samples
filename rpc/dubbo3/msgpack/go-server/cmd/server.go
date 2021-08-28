@@ -18,6 +18,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -26,30 +27,40 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	_ "github.com/dubbogo/triple/pkg/triple"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/msgpack/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/api"
 )
+
+type UserProvider struct {
+}
+
+func (u UserProvider) GetUser(ctx context.Context, user *api.User) (*api.User, error) {
+	gxlog.CInfo("req:%#v", user)
+	rsp := api.User{
+		Name:                 "12345",
+		Id:                   "Hello " + user.Name,
+		Age:                  18,
+	}
+	gxlog.CInfo("rsp:%#v", rsp)
+	return &rsp, nil
+}
+
+func (u UserProvider) Reference() string {
+	return "greeterImpl"
+}
 
 var (
 	survivalTimeout = int(3 * time.Second)
 )
 
 func init() {
-	config.SetProviderService(new(pkg.UserProvider))
+	config.SetProviderService(new(UserProvider))
 }
 
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
