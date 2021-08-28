@@ -4,12 +4,12 @@
     <working_directory value="$PROJECT_DIR$" />
     <envs>
       <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/registry/nacos/go-server/conf/log.yml" />
-      <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/registry/nacos/go-server/conf/server.yml" />
+      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/registry/nacos/go-server/conf/dubbogo.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/general/registry/nacos/go-server/cmd/server.go" />
     <package value="github.com/apache/dubbo-go-samples/registry/nacos/go-server/cmd" />
     <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/general/registry/nacos/go-server/cmd/server.go" />
     <method v="2" />
   </configuration>
 </component>
