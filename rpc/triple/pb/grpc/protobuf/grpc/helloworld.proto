@@ -16,7 +16,7 @@
  */
 syntax = "proto3";
 
-package org.apache.dubbo.grpc;
+package org.apache.dubbo;
 
 option go_package = "./;grpc";
 
