@@ -50,8 +50,8 @@ func main() {
 	req := &api.HelloRequest{
 		Name: "laurence",
 	}
-	reply := &api.User{}
-	if err := grpcGreeterImpl.SayHello(context.Background(), req, reply); err != nil {
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
 		logger.Error(err)
 	}
 	logger.Infof("client response result: %v\n", reply)

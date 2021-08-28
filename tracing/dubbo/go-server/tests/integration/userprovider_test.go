@@ -23,15 +23,20 @@ import (
 	"context"
 	"testing"
 )
+
 import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+
 	"github.com/dubbogo/gost/log"
+
 	"github.com/opentracing/opentracing-go"
+
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
+
 	"github.com/openzipkin/zipkin-go"
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
-	"github.com/stretchr/testify/assert"
 
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetUser(t *testing.T) {
