@@ -1,15 +1,14 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="configcenter-apollo-client" type="GoApplicationRunConfiguration" factoryName="Go Application" singleton="false">
-    <module name="dubbo-go-samples" />
-    <working_directory value="$PROJECT_DIR$" />
-    <envs>
-        <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/configcenter/apollo/go-client/conf/log.yml" />
-        <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/configcenter/apollo/go-client/conf/client.yml" />
-    </envs>
-    <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/configcenter/apollo/go-client/cmd/client.go" />
-    <package value="github.com/apache/dubbo-go-samples/configcenter/apollo/go-client/cmd" />
-    <directory value="$PROJECT_DIR$" />
-    <method v="2" />
-  </configuration>
+    <configuration default="false" name="configcenter-apollo-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-configcenter" singleton="true">
+        <module name="dubbo-go-samples" />
+        <working_directory value="$PROJECT_DIR$/configcenter/apollo/go-client" />
+        <envs>
+            <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/configcenter/apollo/go-client/conf/dubbogo.yml" />
+        </envs>
+        <kind value="PACKAGE" />
+        <package value="github.com/apache/dubbo-go-samples/configcenter/apollo/go-client/cmd" />
+        <directory value="$PROJECT_DIR$" />
+        <filePath value="$PROJECT_DIR$/configcenter/apollo/go-client/cmd/client.go" />
+        <method v="2" />
+    </configuration>
 </component>
