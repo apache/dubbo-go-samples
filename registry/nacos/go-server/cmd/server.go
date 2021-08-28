@@ -18,6 +18,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -35,15 +36,46 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-)
 
-import (
-	_ "github.com/apache/dubbo-go-samples/registry/nacos/go-server/pkg"
+	hessian "github.com/apache/dubbo-go-hessian2"
+
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 var (
 	survivalTimeout = int(3e9)
 )
+
+func init() {
+	config.SetProviderService(&UserProvider{})
+	// ------for hessian2------
+	hessian.RegisterPOJO(&User{})
+}
+
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
+}
+
+type UserProvider struct {
+}
+
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+	gxlog.CInfo("req:%#v", req)
+	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	gxlog.CInfo("rsp:%#v", rsp)
+	return &rsp, nil
+}
+
+func (u *UserProvider) Reference() string {
+	return "userProvider"
+}
+
+func (u User) JavaClassName() string {
+	return "org.apache.dubbo.User"
+}
 
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {

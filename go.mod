@@ -28,6 +28,8 @@ require (
 	k8s.io/kube-openapi v0.0.0-20191107075043-30be4d16710a // indirect
 )
 
-replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
+replace (
+	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
+)
 
 go 1.13
