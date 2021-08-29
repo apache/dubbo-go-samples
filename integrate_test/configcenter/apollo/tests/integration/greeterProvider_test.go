@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,32 +17,35 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
+	"testing"
 )
 
 import (
-	"github.com/dubbogo/gost/log"
+	"github.com/stretchr/testify/assert"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-}
+import (
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
+)
 
-type UserProvider struct {
-}
+func TestSayHello(t *testing.T) {
+	req := &dubbo3pb.HelloRequest{
+		Name: "laurence",
+	}
 
-func (u UserProvider) GetUser(ctx context.Context, user *User) (*User, error) {
-	gxlog.CInfo("req:%#v", user)
-	rsp := User{"12345", "Hello " + user.Name, 18}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
-}
+	reply := &dubbo3pb.User{}
 
-func (u UserProvider) Reference() string {
-	return "UserProvider"
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
+
+	err := greeterProvider.SayHello(ctx, req, reply)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "Hello laurence", reply.Name)
+	assert.Equal(t, "12345", reply.Id)
+	assert.Equal(t, int32(21), reply.Age)
 }
