@@ -38,9 +38,9 @@ func init() {
 	config.SetConsumerService(grpcGreeterImpl)
 }
 
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yaml if needed
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml if needed
 func main() {
-	path := "./registry/zookeeper/go-client/conf/dubbogo.yaml"
+	path := "./registry/zookeeper/go-client/conf/dubbogo.yml"
 	if err := config.Load(config.WithPath(path)); err != nil {
 		panic(err)
 	}

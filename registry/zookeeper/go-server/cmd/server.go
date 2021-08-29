@@ -52,7 +52,7 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 func main() {
 	config.SetProviderService(&GreeterProvider{})
 
-	path := "./registry/zookeeper/go-server/conf/dubbogo.yaml"
+	path := "./registry/zookeeper/go-server/conf/dubbogo.yml"
 
 	if err := config.Load(config.WithPath(path)); err != nil {
 		panic(err)

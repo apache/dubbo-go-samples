@@ -38,7 +38,7 @@ func init() {
 	config.SetConsumerService(grpcGreeterImpl)
 }
 
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yaml
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
 func main() {
 	config.Load()
 	time.Sleep(3 * time.Second)
