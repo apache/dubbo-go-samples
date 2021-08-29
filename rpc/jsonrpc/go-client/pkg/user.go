@@ -34,16 +34,16 @@ type JsonRPCUser struct {
 func (u JsonRPCUser) String() string {
 	return fmt.Sprintf(
 		"User{ID:%s, Name:%s, Age:%d, Time:%s, Sex:%s}",
-		u.ID, u.Name, u.Age, time.Unix(u.Time, 0).Format("2006-01-02 15:04:05.99999"), u.Sex,
+		u.ID, u.Name, u.Age, time.Unix(int64(u.Time), 0).Format("2006-01-02 15:04:05.99999"), u.Sex,
 	)
 }
 
 type UserProvider struct {
-	GetUsers func(req []JsonRPCUser) ([]JsonRPCUser, error)
-	GetUser  func(ctx context.Context, req *JsonRPCUser) (JsonRPCUser, error)
+	GetUsers func(req []interface{}) ([]JsonRPCUser, error)
+	GetUser  func(ctx context.Context, req []interface{}) (JsonRPCUser, error)
 	GetUser0 func(id string, name string) (JsonRPCUser, error)
-	GetUser1 func(ctx context.Context, req *JsonRPCUser) (JsonRPCUser, error)
-	GetUser2 func(ctx context.Context, req *JsonRPCUser) (JsonRPCUser, error) `dubbo:"getUser"`
+	GetUser1 func(ctx context.Context, req []interface{}) (JsonRPCUser, error)
+	GetUser2 func(ctx context.Context, req []interface{}) (JsonRPCUser, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
@@ -54,12 +54,12 @@ func (u *UserProvider) Reference() string {
 
 type UserProvider1 struct {
 	GetUsers func(req []interface{}) ([]JsonRPCUser, error)
-	GetUser  func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
+	GetUser  func(ctx context.Context, req []interface{}) (JsonRPCUser, error)
 	GetUser0 func(id string, name string) (JsonRPCUser, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error `dubbo:"getUser"`
+	GetUser1 func(ctx context.Context, req []interface{}) (JsonRPCUser, error)
+	GetUser2 func(ctx context.Context, req []interface{}) (JsonRPCUser, error) `dubbo:"getUser"`
 	GetUser3 func() error
-	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
+	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
 
 func (u *UserProvider1) Reference() string {
@@ -68,12 +68,12 @@ func (u *UserProvider1) Reference() string {
 
 type UserProvider2 struct {
 	GetUsers func(req []interface{}) ([]JsonRPCUser, error)
-	GetUser  func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
+	GetUser  func(ctx context.Context, req []interface{}) (JsonRPCUser, error)
 	GetUser0 func(id string, name string) (JsonRPCUser, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *JsonRPCUser) error `dubbo:"getUser"`
+	GetUser1 func(ctx context.Context, req []interface{}) (JsonRPCUser, error)
+	GetUser2 func(ctx context.Context, req []interface{}) (JsonRPCUser, error) `dubbo:"getUser"`
 	GetUser3 func() error
-	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
+	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
 
 func (u *UserProvider2) Reference() string {

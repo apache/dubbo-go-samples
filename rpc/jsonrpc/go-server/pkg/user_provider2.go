@@ -1,3 +1,19 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package pkg
 
 import (
@@ -29,7 +45,7 @@ func (u *UserProvider2) getUser(userID string) (*User, error) {
 	return nil, fmt.Errorf("invalid user id:%s", userID)
 }
 
-func (u *UserProvider2) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider2) GetUser(ctx context.Context, req []interface{}) (*User, error) {
 	var (
 		err  error
 		user *User
@@ -38,10 +54,9 @@ func (u *UserProvider2) GetUser(ctx context.Context, req []interface{}, rsp *Use
 	gxlog.CInfo("req:%#v", req)
 	user, err = u.getUser(req[0].(string))
 	if err == nil {
-		*rsp = *user
-		gxlog.CInfo("rsp:%#v", rsp)
+		gxlog.CInfo("rsp:%#v", user)
 	}
-	return err
+	return user, err
 }
 
 func (u *UserProvider2) GetUser0(id string, name string) (User, error) {
@@ -58,13 +73,15 @@ func (u *UserProvider2) GetUser0(id string, name string) (User, error) {
 	return *user, err
 }
 
-func (u *UserProvider2) GetUser2(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider2) GetUser2(ctx context.Context, req []interface{}) (*User, error) {
 	var err error
 
 	gxlog.CInfo("req:%#v", req)
-	rsp.ID = strconv.FormatFloat(req[0].(float64), 'f', 0, 64)
-	rsp.Sex = Gender(MAN).String()
-	return err
+	rsp := &User{
+		ID: strconv.FormatFloat(req[0].(float64), 'f', 0, 64),
+		Sex: Gender(MAN).String(),
+	}
+	return rsp, err
 }
 
 func (u *UserProvider2) GetUser3() error {

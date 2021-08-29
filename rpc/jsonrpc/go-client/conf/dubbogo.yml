@@ -19,6 +19,7 @@ dubbo:
       username: ""
       password: ""
   consumer:
+    request-timeout: 900e9
 #    registry:
 #      - hangzhouzk
     references:
@@ -28,18 +29,20 @@ dubbo:
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
         cluster: "failover"
+        timeout: 99999999999999
         methods:
           - name: "GetUser"
-            retries: 3
+            retries: 1
       "UserProvider1":
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         version: "2.0"
         interface: "com.ikurento.user.UserProvider"
         cluster: "failover"
+        timeout: 99999999999999
         methods:
           - name: "GetUser"
-            retries: 3
+            retries: 1
       "UserProvider2":
         registry: "hangzhouzk"
         protocol: "jsonrpc"
@@ -47,6 +50,7 @@ dubbo:
         group: "as"
         interface: "com.ikurento.user.UserProvider"
         cluster: "failover"
+        timeout: 99999999999999
         methods:
           - name: "GetUser"
-            retries: 3
+            retries: 1
