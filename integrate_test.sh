@@ -20,32 +20,32 @@ if [ -z "$1" ]; then
 fi
 
 P_DIR=$(pwd)/$1
-
 if [ -f "$P_DIR"/build/test.sh ]; then
     "$P_DIR"/build/test.sh "$P_DIR"
     result=$?
     exit $((result))
 fi
 
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/dist -f build/Makefile docker-up
+make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$(pwd)/integrate_test/$1" -f build/Makefile docker-up
 
 # check docker health
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/dist -f build/Makefile docker-health-check
+make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$(pwd)/integrate_test/$1" -f build/Makefile docker-health-check
 
 # start server
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/dist -f build/Makefile start
+make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$(pwd)/integrate_test/$1" -f build/Makefile start
+
 # start integration
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/dist -f build/Makefile integration
+make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$(pwd)/integrate_test/$1" -f build/Makefile integration
 result=$?
 
 # if fail print server log
 if [ $result != 0 ];then
-  make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/dist -f build/Makefile print-server-log
+  make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$(pwd)/integrate_test/$1" -f build/Makefile print-server-log
 fi
 
 # stop server
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/dist -f build/Makefile clean
+make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$(pwd)/integrate_test/$1" -f build/Makefile clean
 
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" BASE_DIR="$P_DIR"/dist -f build/Makefile docker-down
+make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$(pwd)/integrate_test/$1" -f build/Makefile docker-down
 
 exit $((result))

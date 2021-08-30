@@ -15,79 +15,80 @@
 #  limitations under the License.
 
 # tracing integrate test
-array=("tracing/dubbo/go-server")
-
-# async
-array+=("async/go-server")
-array+=("attachment/go-server")
-array+=("config-api/go-server")
-array+=("chain")
-# config center
-array+=("configcenter/apollo/go-server")
-array+=("configcenter/nacos/go-server")
-array+=("configcenter/zookeeper/go-server")
-
-# context
-array+=("context/go-server")
-
-# direct
-array+=("direct/go-server")
-
-# filter
-array+=("filter/custom/go-server")
-array+=("filter/tpslimit/go-server")
-array+=("filter/sentinel/go-server")
-
-# game
-array+=("game/go-server-game")
-array+=("game/go-server-gate")
-
-# general-dubbo
-array+=("general/dubbo/go-server")
-
-# general-dubbo3(triple)
-array+=("general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server")
-array+=("general/dubbo3/pb/dubbogo-java/go-server")
-array+=("general/dubbo3/hessian2/go-server")
-array+=("general/dubbo3/msgpack/go-server")
-array+=("general/dubbo3/codec-extension/go-server")
-
-# general-grpc
-array+=("general/grpc/go-server")
-
-# generic invocation
-array+=("generic/default/go-server")
-#array+=("generic/protobufjson/go-server")
-
-# group
-array+=("group/go-server-group-a")
-array+=("group/go-server-group-b")
-
-# hello world
-array+=("helloworld/go-server")
-
-# metric
-array+=("metric/go-server")
-
-# multi-registry
-array+=("multi-registry/go-server")
-
-# multi-zone
-array+=("multi-zone")
-
-# registry
-array+=("registry/zookeeper/go-server")
-array+=("registry/etcd/go-server")
-array+=("registry/nacos/go-server")
-
-# registry/servicediscovery (app level serivce discovery)
-array+=("registry/servicediscovery/zookeeper/go-server")
-array+=("registry/servicediscovery/nacos/go-server")
-
-# router integrate test can only confirm the program build success,
-# the test of router logic would be fixed later
-array+=("router/uniform-router/file/go-server")
-array+=("router/uniform-router/file/go-server2")
+#array=("tracing/dubbo/go-server")
+#
+## async
+#array+=("async/go-server")
+#array+=("attachment/go-server")
+#array+=("config-api/go-server")
+#array+=("chain")
+## config center
+#array+=("configcenter/apollo/go-server")
+#array+=("configcenter/nacos/go-server")
+#array+=("configcenter/zookeeper/go-server")
+#
+## context
+#array+=("context/go-server")
+#
+## direct
+#array+=("direct/go-server")
+#
+## filter
+#array+=("filter/custom/go-server")
+#array+=("filter/tpslimit/go-server")
+#array+=("filter/sentinel/go-server")
+#
+## game
+#array+=("game/go-server-game")
+#array+=("game/go-server-gate")
+#
+## general-dubbo
+#array+=("general/dubbo/go-server")
+#
+## general-dubbo3(triple)
+#array+=("general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server")
+#array+=("general/dubbo3/pb/dubbogo-java/go-server")
+#array+=("general/dubbo3/hessian2/go-server")
+#array+=("general/dubbo3/msgpack/go-server")
+#array+=("general/dubbo3/codec-extension/go-server")
+#
+## general-grpc
+#array+=("general/grpc/go-server")
+#
+## generic invocation
+#array+=("generic/default/go-server")
+##array+=("generic/protobufjson/go-server")
+#
+## group
+#array+=("group/go-server-group-a")
+#array+=("group/go-server-group-b")
+#
+## hello world
+#array+=("helloworld/go-server")
+#
+## metric
+#array+=("metric/go-server")
+#
+## multi-registry
+#array+=("multi-registry/go-server")
+#
+## multi-zone
+#array+=("multi-zone")
+#
+## registry
+#array+=("registry/zookeeper/go-server")
+#array+=("registry/etcd/go-server")
+#array+=("registry/nacos/go-server")
+#
+## registry/servicediscovery (app level serivce discovery)
+#array+=("registry/servicediscovery/zookeeper/go-server")
+#array+=("registry/servicediscovery/nacos/go-server")
+#
+## router integrate test can only confirm the program build success,
+## the test of router logic would be fixed later
+#array+=("router/uniform-router/file/go-server")
+#array+=("router/uniform-router/file/go-server2")
+array+=("helloworld")
 
 for((i=0;i<${#array[*]};i++))
 do

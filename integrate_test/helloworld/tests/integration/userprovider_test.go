@@ -42,7 +42,7 @@ func TestSayHello(t *testing.T) {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
 
-	err := greeterProvider.SayHello(ctx, req, reply)
+	reply, err := greeterProvider.SayHello(ctx, req)
 
 	assert.Nil(t, err)
 	assert.Equal(t, "Hello laurence", reply.Name)
