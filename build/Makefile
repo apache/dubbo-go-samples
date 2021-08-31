@@ -17,10 +17,6 @@ PROJECT_NAME = $(shell basename "$(PWD)")
 PID = /tmp/.$(PROJECT_NAME).pid
 PROJECT_DIR=$(shell pwd)
 BASE_DIR := $(PROJECT_DIR)/go-server/dist
-$(info > $(PROJECT_NAME))
-$(info > $(PROJECT_DIR))
-$(info > $(BASE_DIR))
-
 
 SOURCES = $(wildcard $(PROJECT_DIR)/go-server/cmd/*.go)
 
@@ -72,26 +68,12 @@ help: $(realpath $(firstword $(MAKEFILE_LIST)))
 
 ## build: Build application's binaries
 .PHONY: build
-build: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) config
+build: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 
 .PHONY: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME):
-	$(info   >  Buiding application binary: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) :  $(PROJECT_NAME))
-	$(info > $(DUBBO_GO_CONFIG_PATH))
+	$(info   >  Buiding application binary: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME))
 	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(GCFLAGS) -ldflags=$(LDFLAGS) -i -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
-
-
-## config: Setup config files
-.PHONY: config
-config:
-	$(info   >  Setting up config files)
-#	@mkdir -p $(OUT_DIR)/conf
-#	@-test -f $(PROJECT_DIR)/conf/log.yml && cat $(PROJECT_DIR)/conf/log.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/log.yml && echo "  > $(OUT_DIR)/conf/log.yml"
-#	@-test -f $(PROJECT_DIR)/conf/server.yml && cat $(PROJECT_DIR)/conf/server.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/server.yml && echo "  > $(OUT_DIR)/conf/server.yml"
-#	@-test -f $(PROJECT_DIR)/conf/client.yml && cat $(PROJECT_DIR)/conf/client.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/client.yml && echo "  > $(OUT_DIR)/conf/client.yml"
-#	@-test -f $(PROJECT_DIR)/conf/router_config.yml && cat $(PROJECT_DIR)/conf/router_config.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/router_config.yml && echo "  > $(OUT_DIR)/conf/router_config.yml"
-#	@-test -f $(PROJECT_DIR)/conf/virtual_service.yml && cat $(PROJECT_DIR)/conf/virtual_service.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/virtual_service.yml && echo "  > $(OUT_DIR)/conf/virtual_service.yml"
-#	@-test -f $(PROJECT_DIR)/conf/dest_rule.yml && cat $(PROJECT_DIR)/conf/dest_rule.yml | sed "s#\$$HOST_IP#$(DOCKER_HOST_IP)#g" > $(OUT_DIR)/conf/dest_rule.yml && echo "  > $(OUT_DIR)/conf/dest_rule.yml"
 
 ## docker-health-check: check services health on docker
 .PHONY: docker-health-check
@@ -120,11 +102,9 @@ clean: stop
 
 ## start: Start the application (for server)
 .PHONY: start
-#start: export CONF_PROVIDER_FILE_PATH ?= $(OUT_DIR)/conf/server.yml
 start: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-server/conf/dubbogo.yml
 start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
-	$(info > Config $(DUBBO_GO_CONFIG_PATH) )
 	@ls $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
@@ -152,6 +132,6 @@ stop:
 .PHONY: integration
 integration: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-client/conf/dubbogo.yml
 integration:
-	$(info   >  Running integration test for application $(INTEGRATE_DIR)  $(DUBBO_GO_CONFIG_PATH))
+	$(info   >  Running integration test for application $(INTEGRATE_DIR))
 	@go clean -testcache
 	@go test -tags integration -v $(INTEGRATE_DIR)/tests/integration/...
