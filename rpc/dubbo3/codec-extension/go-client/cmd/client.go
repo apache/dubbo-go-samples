@@ -39,17 +39,14 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req *User, req2 *User, name string) (*User, error)
+	GetUser func(context.Context, *User, *User, string) (*User, error)
 }
 
 var userProvider = new(UserProvider)
 
-func init() {
-	config.SetConsumerService(userProvider)
-}
-
 // export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/dubbo3/codec-extension/go-client/conf/dubbogo.yml
 func main() {
+	config.SetConsumerService(userProvider)
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
