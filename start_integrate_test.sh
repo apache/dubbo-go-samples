@@ -88,7 +88,9 @@
 ## the test of router logic would be fixed later
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
-array+=("helloworld")
+#array=("helloworld")
+#array+=("direct")
+array+=("config-api/rpc/triple")
 
 for((i=0;i<${#array[*]};i++))
 do

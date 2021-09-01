@@ -15,28 +15,31 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
-	"time"
+	"testing"
+)
+import (
+	"github.com/stretchr/testify/assert"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-}
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
+func TestSayHello(t *testing.T) {
+	req := &api.HelloRequest{
+		Name: "laurence",
+	}
 
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	ctx := context.Background()
+	reply, err := greeterProvider.SayHello(ctx, req)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "Hello laurence", reply.Name)
+	assert.Equal(t, "12345", reply.Id)
+	assert.Equal(t, int32(21), reply.Age)
 }

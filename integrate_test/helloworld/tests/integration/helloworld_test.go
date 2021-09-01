@@ -15,48 +15,34 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
-	"time"
+	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
+	"github.com/stretchr/testify/assert"
 )
 
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
-}
+import (
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
+)
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
+func TestSayHello(t *testing.T) {
+	req := &dubbo3pb.HelloRequest{
+		Name: "laurence",
+	}
 
-type UserProvider struct {
-}
+	reply := &dubbo3pb.User{}
 
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
-}
+	ctx := context.Background()
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
+	reply, err := greeterProvider.SayHello(ctx, req)
 
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	assert.Nil(t, err)
+	assert.Equal(t, "Hello laurence", reply.Name)
+	assert.Equal(t, "12345", reply.Id)
+	assert.Equal(t, int32(21), reply.Age)
 }
