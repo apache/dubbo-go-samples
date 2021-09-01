@@ -19,47 +19,44 @@ package main
 
 import (
 	"context"
-	"os"
 	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	"github.com/dubbogo/gost/log"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/general/dubbo3/codec-extension/go-client/codec"
-	"github.com/apache/dubbo-go-samples/general/dubbo3/codec-extension/go-client/pkg"
+	_ "github.com/apache/dubbo-go-samples/rpc/dubbo3/codec-extension/codec"
 )
 
-var userProvider = new(pkg.UserProvider)
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+}
+
+type UserProvider struct {
+	GetUser func(ctx context.Context, req *User, req2 *User, name string) (*User, error)
+}
+
+var userProvider = new(UserProvider)
 
 func init() {
 	config.SetConsumerService(userProvider)
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/dubbo3/codec-extension/go-client/conf/dubbogo.yml
 func main() {
-	config.Load()
-	time.Sleep(3 * time.Second)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), &pkg.User{Name: "laurence"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+	if err := config.Load(); err != nil {
+		panic(err)
 	}
-	gxlog.CInfo("response result: %v\n", user)
+	time.Sleep(3 * time.Second)
+	user, err := userProvider.GetUser(context.TODO(), &User{Name: "laurence"}, &User{Name: "laurence2"}, "testName")
+	if err != nil {
+		panic(err)
+	}
+	logger.Infof("response result: %v\n", user)
 }

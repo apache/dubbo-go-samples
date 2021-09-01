@@ -52,11 +52,10 @@ func main() {
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	reply := &protobuf.HelloReply{}
 	req := &protobuf.HelloRequest{
 		Name: "xujianhai",
 	}
-	err := grpcGreeterImpl.SayHello(context.TODO(), req, reply)
+	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
 	if err != nil {
 		panic(err)
 	}

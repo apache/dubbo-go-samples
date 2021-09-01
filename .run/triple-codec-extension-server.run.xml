@@ -3,8 +3,7 @@
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
-      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/general/dubbo3/codec-extension/go-server/conf/log.yml" />
-      <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/general/dubbo3/codec-extension/go-server/conf/server.yml" />
+      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/rpc/dubbo3/codec-extension/go-server/conf/dubbogo.yml" />
     </envs>
     <kind value="PACKAGE" />
     <package value="github.com/apache/dubbo-go-samples/rpc/dubbo3/codec-extension/go-server/cmd" />
