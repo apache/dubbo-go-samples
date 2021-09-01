@@ -29,7 +29,6 @@ dubbo:
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
         cluster: "failover"
-        timeout: 99999999999999
         methods:
           - name: "GetUser"
             retries: 1
@@ -39,7 +38,6 @@ dubbo:
         version: "2.0"
         interface: "com.ikurento.user.UserProvider"
         cluster: "failover"
-        timeout: 99999999999999
         methods:
           - name: "GetUser"
             retries: 1
