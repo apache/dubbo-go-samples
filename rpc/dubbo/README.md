@@ -11,7 +11,7 @@ Use goland to start rpc-dubbo-go-server
 
 or
 
-Execute `rpc/dubbo/java-server/2.6/src/main/java/org/apache/dubbo/Provider#main()` in the java-server folder to start the java server
+Execute `sh run.sh` in the java-server folder to start the java server
 
 3. Start the client
 
@@ -19,5 +19,5 @@ Use goland to start rpc-dubbo-go-client
 
 or
 
-Execute `rpc/dubbo/java-client/2.6/src/main/java/org/apache/dubbo/Consumer#main()` under the java-client folder to start the java client
+Execute `sh run.sh` under the java-client folder to start the java client
 

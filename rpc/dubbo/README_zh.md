@@ -11,7 +11,7 @@ api 定义以及 go 客户端、服务端启动，可以参考 [dubbo-go 3.0 快
 
 或者
 
-在 java-server 文件夹下执行 `rpc/dubbo/java-server/2.6/src/main/java/org/apache/dubbo/Provider#main()` 启动 java server
+在 java-server 文件夹下执行 `sh run.sh` 启动 java server
 
 3. 启动客户端
 
@@ -19,4 +19,4 @@ api 定义以及 go 客户端、服务端启动，可以参考 [dubbo-go 3.0 快
 
 或者
 
-在 java-client 文件夹下执行 `rpc/dubbo/java-client/2.6/src/main/java/org/apache/dubbo/Consumer#main()` 启动 java client
+在 java-client 文件夹下执行 `sh run.sh` 启动 java client
