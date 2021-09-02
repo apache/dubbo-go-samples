@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -37,12 +35,7 @@ func TestSayHello(t *testing.T) {
 		Name: "laurence",
 	}
 
-	reply := &dubbo3pb.User{}
-
-	ctx := context.Background()
-	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
-
-	err := greeterProvider.SayHello(ctx, req, reply)
+	reply, err := greeterProvider.SayHello(context.Background(), req)
 
 	assert.Nil(t, err)
 	assert.Equal(t, "Hello laurence", reply.Name)

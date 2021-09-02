@@ -37,7 +37,7 @@ var grpcGreeterImpl = new(api.GreeterClientImpl)
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
 func main() {
 	config.SetConsumerService(grpcGreeterImpl)
-	if err := config.Load(); err != nil{
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
 	time.Sleep(3 * time.Second)

@@ -88,9 +88,13 @@
 ## the test of router logic would be fixed later
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
-#array=("helloworld")
-#array+=("direct")
+
+array=("helloworld")
+array+=("direct")
 array+=("config-api/rpc/triple")
+array+=("registry/zookeeper")
+array+=("rpc/dubbo3/codec-extension")
+array+=("rpc/dubbo3/hessian2")
 
 for((i=0;i<${#array[*]};i++))
 do

@@ -44,7 +44,7 @@ func (u *UserProvider) GetUser(ctx context.Context, req *User, req2 *User, name 
 	logger.Infof("req:%#v", req)
 	logger.Infof("req2:%#v", req2)
 	logger.Infof("name%#v", name)
-	rsp := User{"12345", "Hello " + req.Name + req2.Name, 18}
+	rsp := User{"12345", req.Name + req2.Name, 18}
 	logger.Infof("rsp:%#v", rsp)
 	return &rsp, nil
 }

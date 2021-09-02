@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -54,7 +52,7 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req *User, rsp *User) error
+	GetUser func(ctx context.Context, req *User, req2 *User, name string) (*User, error)
 }
 
 func (u *UserProvider) Reference() string {

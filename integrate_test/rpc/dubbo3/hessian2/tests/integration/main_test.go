@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -47,7 +45,6 @@ func TestMain(m *testing.M) {
 	hessian.RegisterPOJO(&User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
-
 	os.Exit(m.Run())
 }
 
@@ -58,13 +55,9 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, usr *User, rsp *User) error
+	GetUser func(ctx context.Context, usr *User) (*User, error)
 }
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+func (u *User) JavaClassName() string {
+	return "com.apache.dubbo.sample.basic.User"
 }

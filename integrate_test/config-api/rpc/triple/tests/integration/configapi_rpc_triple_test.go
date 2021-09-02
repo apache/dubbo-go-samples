@@ -29,7 +29,6 @@ import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
-
 func TestSayHello(t *testing.T) {
 	req := &api.HelloRequest{
 		Name: "laurence",

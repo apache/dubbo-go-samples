@@ -43,7 +43,7 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-server/conf/dubbogo.yml
 func main() {
 	config.SetProviderService(&GreeterProvider{})
-	if err := config.Load(); err != nil{
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
 	select {}

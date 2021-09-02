@@ -1,8 +1,8 @@
 dubbo:
   registries:
     registryKey:
-      protocol: etcd
-      address: "127.0.0.1:2379"
+      protocol: zookeeper
+      address: 127.0.0.1:2181
   protocols:
     tripleKey:
       name: tri
