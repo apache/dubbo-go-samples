@@ -23,7 +23,7 @@ type UserProvider struct {
 
 func (u *UserProvider) GetUser(ctx context.Context, usr *User) (*User, error) {
 	gxlog.CInfo("req:%#v", usr)
-	rsp := User{"12345", "" + usr.Name, 18}
+	rsp := User{"12345", "Hello " + usr.Name, 18}
 	gxlog.CInfo("rsp:%#v", rsp)
 	return &rsp, nil
 }

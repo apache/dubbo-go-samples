@@ -31,7 +31,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/dubbo/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/rpc/dubbo/go-server/pkg"
 )
 
 func TestGetUserA000(t *testing.T) {

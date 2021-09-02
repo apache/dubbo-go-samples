@@ -19,51 +19,36 @@ package main
 
 import (
 	"context"
-	"os"
 	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/direct/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-var userProvider = new(pkg.UserProvider)
+var grpcGreeterImpl = new(api.GreeterClientImpl)
 
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
-
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-// in order to make sure direct-invoking is enabled, check if references -> UserProvider -> url is specified
-// in conf/client.yaml
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
+	config.SetConsumerService(grpcGreeterImpl)
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	time.Sleep(3 * time.Second)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+	logger.Info("start to test dubbo")
+	req := &api.HelloRequest{
+		Name: "laurence",
 	}
-	gxlog.CInfo("response result: %v\n", user)
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client response result: %v\n", reply)
 }

@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,31 +20,43 @@ package integration
 import (
 	"os"
 	"testing"
-	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/api"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-var greeterProvider = new(dubbo3pb.GreeterClientImpl)
+var greeterProvider = new(api.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(greeterProvider)
-	config.Load()
-	time.Sleep(3 * time.Second)
+
+	referenceConfig := config.NewReferenceConfig(
+		config.WithReferenceInterface("com.apache.dubbo.sample.basic.IGreeter"),
+		config.WithReferenceProtocolName("tri"),
+		config.WithReferenceRegistry("zkRegistryKey"),
+	)
+
+	consumerConfig := config.NewConsumerConfig(
+		config.WithConsumerReferenceConfig("greeterImpl", referenceConfig),
+	)
+
+	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")
+
+	rootConfig := config.NewRootConfig(
+		config.WithRootRegistryConfig("zkRegistryKey", registryConfig),
+		config.WithRootConsumerConfig(consumerConfig),
+	)
+
+	if err := rootConfig.Init(); err != nil {
+		panic(err)
+	}
 
 	os.Exit(m.Run())
+
 }

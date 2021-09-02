@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,8 +27,7 @@ import (
 )
 
 func TestGetUser(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	user, err := userProvider.GetUser(context.TODO(), &User{ID: "A001"})
 	assert.Nil(t, err)
 	assert.Equal(t, "A001", user.ID)
 	assert.Equal(t, "Alex Stocks", user.Name)
