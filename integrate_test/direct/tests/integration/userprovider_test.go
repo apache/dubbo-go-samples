@@ -15,45 +15,34 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/rpc/dubbo3/codec-extension/codec"
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-}
-
-type UserProvider struct {
-}
-
-func (u *UserProvider) GetUser(ctx context.Context, req *User, req2 *User, name string) (*User, error) {
-	logger.Infof("req:%#v", req)
-	logger.Infof("req2:%#v", req2)
-	logger.Infof("name%#v", name)
-	rsp := User{"12345", req.Name + req2.Name, 18}
-	logger.Infof("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/dubbo3/codec-extension/go-server/conf/dubbogo.yml
-func main() {
-	config.SetProviderService(&UserProvider{})
-	if err := config.Load(); err != nil {
-		panic(err)
+func TestSayHello(t *testing.T) {
+	req := &dubbo3pb.HelloRequest{
+		Name: "laurence",
 	}
-	select {}
+
+	reply := &dubbo3pb.User{}
+
+	ctx := context.Background()
+
+	reply, err := greeterProvider.SayHello(ctx, req)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "Hello laurence", reply.Name)
+	assert.Equal(t, "12345", reply.Id)
+	assert.Equal(t, int32(21), reply.Age)
 }

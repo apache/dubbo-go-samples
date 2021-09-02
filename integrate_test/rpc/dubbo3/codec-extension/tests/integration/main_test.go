@@ -15,21 +15,35 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"os"
+	"testing"
+	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 )
 
-import (
-	_ "github.com/apache/dubbo-go-samples/rpc/dubbo3/codec-extension/codec"
-)
+var userProvider = new(UserProvider)
+
+func TestMain(m *testing.M) {
+	config.SetConsumerService(userProvider)
+	config.Load()
+	time.Sleep(3 * time.Second)
+	os.Exit(m.Run())
+}
 
 type User struct {
 	ID   string
@@ -38,22 +52,9 @@ type User struct {
 }
 
 type UserProvider struct {
+	GetUser func(ctx context.Context, req *User, req2 *User, name string) (*User, error)
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req *User, req2 *User, name string) (*User, error) {
-	logger.Infof("req:%#v", req)
-	logger.Infof("req2:%#v", req2)
-	logger.Infof("name%#v", name)
-	rsp := User{"12345", req.Name + req2.Name, 18}
-	logger.Infof("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/dubbo3/codec-extension/go-server/conf/dubbogo.yml
-func main() {
-	config.SetProviderService(&UserProvider{})
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
-	select {}
+func (u *UserProvider) Reference() string {
+	return "UserProvider"
 }
