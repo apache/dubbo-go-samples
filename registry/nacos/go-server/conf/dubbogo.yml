@@ -11,19 +11,19 @@ dubbo:
       # 在 params 中定义当前使用的协议特有的网络配置
       # 如该 sample 配置的是 dubbo 协议（底层使用 getty 通信库）
       params:
-        session_number: 700
-        session_timeout: 180s
-        compress_encoding: false
-        tcp_no_delay: true
-        tcp_keep_alive: true
-        keep_alive_period: 120s
-        tcp_r_buf_size: 262144
-        tcp_w_buf_size: 65536
-        tcp_read_timeout: 10s
-        tcp_write_timeout: 5s
-        wait_timeout: 1s
-        max_msg_len: 1024000
-        session_name: server
+        session-number: 700
+        session-timeout: 180s
+        compress-encoding: false
+        tcp-no-delay: true
+        tcp-keep-alive: true
+        keep-alive-period: 120s
+        tcp-r-buf-size: 262144
+        tcp-w-buf-size: 65536
+        tcp-read-timeout: 10s
+        tcp-write-timeout: 5s
+        wait-timeout: 1s
+        max-msg-len: 1024000
+        session-name: server
   provider:
     registry:
       - demoNacos
