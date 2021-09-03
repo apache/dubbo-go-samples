@@ -63,7 +63,7 @@ func test() {
 
 	logger.Info("\n\n\nstart to test dubbo")
 	user := &pkg.User{}
-	err = userProvider.GetUser(context.TODO(), []interface{}{"A003"}, user)
+	user, err = userProvider.GetUser(context.TODO(), []interface{}{"A003"})
 	if err != nil {
 		panic(err)
 	}
@@ -94,7 +94,7 @@ func test() {
 	logger.Info("\n\n\nstart to test dubbo - getUser")
 	user = &pkg.User{}
 	var i int32 = 1
-	err = userProvider.GetUser2(context.TODO(), []interface{}{i}, user)
+	user, err = userProvider.GetUser2(context.TODO(), []interface{}{i})
 	if err != nil {
 		panic(err)
 	}
@@ -102,29 +102,22 @@ func test() {
 
 	logger.Info("\n\n\nstart to test dubbo - getUser - overload")
 	user = &pkg.User{}
-	err = userProvider.GetUser2(context.TODO(), []interface{}{i, "overload"}, user)
+	user, err = userProvider.GetUser2(context.TODO(), []interface{}{i, "overload"})
 	if err != nil {
 		panic(err)
 	}
 	logger.Info("response result: %v", user)
 
-	logger.Info("\n\n\nstart to test dubbo - GetUser3")
-	err = userProvider.GetUser3()
-	if err != nil {
-		panic(err)
-	}
-	logger.Info("succ!")
-
 	logger.Info("\n\n\nstart to test dubbo - getErr")
 	user = &pkg.User{}
-	err = userProvider.GetErr(context.TODO(), []interface{}{"A003"}, user)
+	user, err = userProvider.GetErr(context.TODO(), []interface{}{"A003"})
 	if err == nil {
 		panic("err is nil")
 	}
 	logger.Info("getErr - error: %v", err)
 
 	logger.Info("\n\n\nstart to test dubbo illegal method")
-	err = userProvider.GetUser1(context.TODO(), []interface{}{"A003"}, user)
+	user, err = userProvider.GetUser1(context.TODO(), []interface{}{"A003"})
 	if err == nil {
 		panic("err is nil")
 	}
