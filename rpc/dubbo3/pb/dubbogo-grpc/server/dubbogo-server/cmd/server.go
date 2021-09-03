@@ -41,7 +41,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/pkg"
+	"github.com/apache/dubbo-go-samples/rpc/dubbo3/pb/dubbogo-grpc/server/dubbogo-server/pkg"
 )
 
 var (

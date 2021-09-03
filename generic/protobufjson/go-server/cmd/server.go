@@ -26,10 +26,6 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/generic/protobufjson/go-server/pkg"
-)
-
-import (
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
@@ -39,6 +35,10 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/generic/protobufjson/go-server/pkg"
 )
 
 func init() {

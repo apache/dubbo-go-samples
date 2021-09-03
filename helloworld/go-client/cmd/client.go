@@ -34,21 +34,20 @@ import (
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)
 
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
-}
-
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
 func main() {
-	config.Load()
+	config.SetConsumerService(grpcGreeterImpl)
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	time.Sleep(3 * time.Second)
 
 	logger.Info("start to test dubbo")
 	req := &api.HelloRequest{
 		Name: "laurence",
 	}
-	reply := &api.User{}
-	if err := grpcGreeterImpl.SayHello(context.Background(), req, reply); err != nil {
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
 		logger.Error(err)
 	}
 	logger.Infof("client response result: %v\n", reply)

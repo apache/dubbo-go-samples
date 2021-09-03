@@ -19,50 +19,158 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
 	"github.com/dubbogo/gost/log"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/hessian2/go-client/pkg"
-)
-
-var userProvider = new(pkg.UserProvider)
+var userProvider = new(UserProvider)
+var complexProvider = new(ComplexProvider)
 
 func init() {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
+	config.SetConsumerService(complexProvider)
+	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&ComplexData{})
 }
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), &pkg.User{Name: "laurence"}, user)
+	testNormalService()
+
+	testComplexService()
+}
+
+func testNormalService() {
+	user, err := userProvider.GetUser(context.TODO(), &User{Name: "laurence"})
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
 		return
 	}
 	gxlog.CInfo("response result: %v\n", user)
+}
+
+func testComplexService() {
+	// test with normal data
+
+	//test without rsp and request
+	err := complexProvider.InvokeWithEmptyReq(context.TODO())
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+
+	// test without response
+	err = complexProvider.InvokeWithSingleString(context.TODO(), "request string")
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+
+	err = complexProvider.InvokeWithStringList(context.TODO(), []string{"myfirststring", "mysecondstring"})
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+
+	err = complexProvider.InvokeWithMultiString(context.TODO(), "first string", "secondString", "third str")
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+
+	// test without request
+	rsp, err := complexProvider.InvokeWithEmptyReqStringRsp(context.TODO())
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+	gxlog.CInfo("get InvokeWithEmptyReqStringRsp rsp = %+v", rsp)
+
+	// complex data
+	stringIntMapData := make(map[string]int)
+	stringIntMapData["test1"] = 1
+	stringIntMapData["test2"] = 2
+
+	stringStringMapData := make(map[string]string)
+	stringStringMapData["test1"] = "1"
+	stringStringMapData["test2"] = "2"
+
+	stringUserMapData := make(map[string]User)
+	stringUserMapData["test1"] = User{Name: "1"}
+	stringUserMapData["test2"] = User{Name: "2"}
+
+	stringUintMapData := make(map[string]uint32)
+	stringUintMapData["test1"] = 1
+	stringUintMapData["test2"] = 2
+
+	stringUserPtrMapData := make(map[string]*User)
+	stringUserPtrMapData["test1"] = &User{Name: "1"}
+	stringUserPtrMapData["test2"] = &User{Name: "2"}
+
+	intStringMapData := make(map[int]string)
+	intStringMapData[1] = "1"
+	intStringMapData[2] = "2"
+
+	data, _ := json.Marshal(User{Name: "myJson", Age: 19, Id: "jsonID"})
+
+	cplexData := &ComplexData{
+		BooleanData: true,
+		StringData:  "testString",
+		//UIntData: 8,
+		UInt8Data:  8,
+		UInt16Data: 16,
+		UInt32Data: 32,
+		UInt64Data: 64,
+		Int8Data:   8,
+		Int16Data:  16,
+		Int32Data:  32,
+		Int64Data:  64,
+		IntData:    8,
+		//StringIntMapData: stringIntMapData,
+		StringStringMapData: stringStringMapData,
+		//StringUserDefinedMapData:stringUserMapData,
+		//StringUIntMapData: stringUintMapData,
+		StringUserDefinedPtrMapData: stringUserPtrMapData,
+		//IntStringMapData: intStringMapData,
+		UserDefinedData:         User{Name: "myuser", Age: 18, Id: "testid"},
+		UserDefinedDataPtr:      &User{Name: "myuserPtr", Age: 18, Id: "testid"},
+		ByteData:                data,
+		ArrayListData:           []string{"string1", "string2", "string3"},
+		ArrayUserDefinedData:    []User{{Name: "name1", Id: "id1", Age: 19}, {Name: "name1", Id: "id1", Age: 19}, {Name: "name1", Id: "id1", Age: 19}},
+		ArrayUserDefinedPtrData: []*User{{Name: "name1", Id: "id1", Age: 19}, {Name: "name1", Id: "id1", Age: 19}, {Name: "name1", Id: "id1", Age: 19}},
+	}
+
+	cplxRsp, err := complexProvider.InvokeWithComplexReqComplexRspPtr(context.TODO(), cplexData)
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+	gxlog.CInfo("get InvokeWithComplexReqComplexRspPtr rsp = %+v", cplxRsp)
+
+	intRsp, err := complexProvider.InvokeWithMultiBasicData(context.TODO(), "reqstr", []byte{1, 2, 4}, 32, true)
+	if err != nil {
+		panic(err)
+	}
+	gxlog.CInfo("get InvokeWithMultiBasicData rsp = %d", intRsp)
 }

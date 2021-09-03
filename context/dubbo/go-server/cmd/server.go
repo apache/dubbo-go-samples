@@ -19,7 +19,6 @@ package main
 
 import (
 	"fmt"
-	pkg2 "github.com/apache/dubbo-go-samples/context/dubbo/go-server/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -38,6 +37,10 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+)
+
+import (
+	pkg2 "github.com/apache/dubbo-go-samples/context/dubbo/go-server/pkg"
 )
 
 var (

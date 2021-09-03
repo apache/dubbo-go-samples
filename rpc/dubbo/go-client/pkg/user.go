@@ -88,9 +88,13 @@ func (User) JavaClassName() string {
 }
 
 type UserProvider struct {
-	GetUsers  func(req []interface{}) ([]interface{}, error)
-	GetErr    func(ctx context.Context, req []interface{}, rsp *User) error
-	GetUser   func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUsers func(req []interface{}) ([]interface{}, error)
+	GetErr   func(ctx context.Context, req []interface{}, rsp *User) error
+
+	GetUserOld func(ctx context.Context, req []interface{}, rsp *User) error
+
+	GetUserNew func(ctx context.Context, req1, req2 *User) (*User, error)
+
 	GetUser0  func(id string, name string) (User, error)
 	GetUser1  func(ctx context.Context, req []interface{}, rsp *User) error
 	GetUser2  func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
