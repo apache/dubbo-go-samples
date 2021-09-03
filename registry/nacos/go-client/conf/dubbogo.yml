@@ -20,7 +20,7 @@ dubbo:
         compress-encoding: false
         tcp-no-delay: true
         tcp-keep-alive: true
-        keep-alive-period: "120s"
+        keep-alive-period: 120s
         tcp-r-buf-size: 262144
         tcp-w-buf-size: 65536
         tcp-read-timeout: 1s

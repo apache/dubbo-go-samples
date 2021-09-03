@@ -33,7 +33,7 @@ import (
 )
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}) (rsp *User, err error)
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
 }
 
 func (u *UserProvider) Reference() string {
@@ -60,7 +60,7 @@ func main() {
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A001"})
+	user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex001"})
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
