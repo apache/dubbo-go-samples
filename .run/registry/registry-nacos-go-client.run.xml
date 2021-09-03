@@ -4,7 +4,7 @@
     <working_directory value="$PROJECT_DIR$" />
     <envs>
       <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/registry/nacos/go-client/conf/dubbogo.yml" />
-      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/general/registry/nacos/go-client/conf/log.yml" />
+      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/registry/nacos/go-client/conf/log.yml" />
     </envs>
     <kind value="PACKAGE" />
     <package value="github.com/apache/dubbo-go-samples/registry/nacos/go-client/cmd" />
