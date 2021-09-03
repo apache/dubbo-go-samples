@@ -89,12 +89,17 @@
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
 
+# helloworld
 array=("helloworld")
+# direct
 array+=("direct")
+# config-api
 array+=("config-api/rpc/triple")
+# registry
 array+=("registry/zookeeper")
-array+=("rpc/dubbo3/codec-extension")
-array+=("rpc/dubbo3/hessian2")
+# rpc
+array+=("rpc/triple/codec-extension")
+array+=("rpc/triple/hessian2")
 
 for((i=0;i<${#array[*]};i++))
 do
