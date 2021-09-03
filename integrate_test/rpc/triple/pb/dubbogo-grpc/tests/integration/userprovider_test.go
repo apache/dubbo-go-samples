@@ -31,12 +31,9 @@ import (
 )
 
 import (
-	grpcpb "github.com/apache/dubbo-go-samples/integrate_test/rpc/dubbo3/pb/dubbogo-grpc/tests/integration/grpc_test_proto"
+	grpcpb "github.com/apache/dubbo-go-samples/integrate_test/rpc/triple/pb/dubbogo-grpc/tests/integration/grpc_test_proto"
 	triplepb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/triple"
-	serverpkg "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/server/dubbogo-server/pkg"
 )
-
-var greeterProvider = serverpkg.NewGreeterProvider()
 
 func TestSayHello(t *testing.T) {
 	ctx := context.Background()
@@ -58,7 +55,7 @@ func TestStreamSayHello(t *testing.T) {
 		Name: "laurence",
 	}
 
-	err := greeterProvider.SayHelloStream(ctx)
+	r, err := greeterProvider.SayHelloStream(ctx)
 	assert.Nil(t, err)
 
 	for i := 0; i < 2; i++ {

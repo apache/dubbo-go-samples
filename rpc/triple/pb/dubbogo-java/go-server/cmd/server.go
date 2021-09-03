@@ -41,14 +41,14 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/dubbo3/pb/dubbogo-java/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-java/go-server/pkg"
 )
 
 var (
 	survivalTimeout = int(3 * time.Second)
 )
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
+// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-java/go-server/conf/dubbogo.yml
 func main() {
 	config.SetProviderService(pkg.NewGreeterProvider())
 	config.Load()

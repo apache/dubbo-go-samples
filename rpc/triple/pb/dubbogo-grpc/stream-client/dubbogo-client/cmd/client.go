@@ -45,7 +45,7 @@ func init() {
 	config.SetConsumerService(greeterProvider)
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-grpc/stream-client/dubbogo-client/conf/dubbogo.yml
 func main() {
 	config.Load()
 	time.Sleep(time.Second * 3)

@@ -16,8 +16,9 @@
  */
 syntax = "proto3";
 
+package org.apache.dubbo;
+
 option go_package = "./;grpc";
-package protobuf;
 
 // The greeting service definition.
 service Greeter {
