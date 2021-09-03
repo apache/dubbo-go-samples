@@ -17,8 +17,6 @@
 
 package com.apache.dubbo.sample.basic;
 
-import org.apache.dubbo.sample.hello.Helloworld;
-
 public interface IGreeter {
     /**
      * <pre>

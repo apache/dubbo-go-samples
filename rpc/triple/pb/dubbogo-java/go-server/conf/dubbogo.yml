@@ -9,7 +9,7 @@ dubbo:
   provider:
     registry: zk
     services:
-      # you may refer to `Reference()` method defined at `protobuf/triple/helloworld.pb.go`
+      # you may refer to `Reference()` method defined at `protobuf/helloworld.pb.go`
       greeterImpl:
         protocol: triple
         # interface is for registry

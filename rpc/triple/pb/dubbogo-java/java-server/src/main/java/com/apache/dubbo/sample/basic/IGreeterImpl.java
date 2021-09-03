@@ -17,15 +17,12 @@
 
 package com.apache.dubbo.sample.basic;
 
+public class IGreeterImpl implements IGreeter {
 
-import org.apache.dubbo.sample.hello.Helloworld.User;
-import org.apache.dubbo.sample.hello.Helloworld.HelloRequest;
-
-public class IGreeter1Impl implements IGreeter {
     @Override
-    public User sayHello(HelloRequest request) {
+    public Helloworld.User sayHello(Helloworld.HelloRequest request) {
         System.out.println("receiv: " + request);
-        User usr = User.newBuilder()
+        Helloworld.User usr = Helloworld.User.newBuilder()
                 .setName("hello " + request.getName())
                 .setAge(18)
                 .setId("12345").build();
