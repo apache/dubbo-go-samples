@@ -96,6 +96,8 @@ array+=("registry/zookeeper")
 array+=("rpc/dubbo3/codec-extension")
 array+=("rpc/dubbo3/hessian2")
 array+=("registry/nacos")
+array+=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
 
 for((i=0;i<${#array[*]};i++))
 do
