@@ -35,6 +35,7 @@ import (
 var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
+	time.Sleep(time.Second*20)
 	dynamicConfig, err := config.NewConfigCenterConfig(
 		config.WithConfigCenterProtocol("zookeeper"),
 		config.WithConfigCenterAddress("127.0.0.1:2181")).GetDynamicConfiguration()
