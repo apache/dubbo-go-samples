@@ -44,7 +44,7 @@ func TestMain(m *testing.M) {
 	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-client", "dubbo", `## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default
 dubbo:
   registries:
-    "demoZK":
+    demoZK:
       protocol: zookeeper
       timeout: 3s
       address: 127.0.0.1:2181
