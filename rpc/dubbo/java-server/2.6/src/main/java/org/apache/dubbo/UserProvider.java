@@ -28,6 +28,8 @@ public interface UserProvider {
 
     List<User> GetUsers(List<String> userIdList);
 
+    Integer GetGender(Integer gender);
+
     void GetUser3();
 
     User GetUser0(String userId, String name);

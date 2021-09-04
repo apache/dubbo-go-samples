@@ -23,18 +23,10 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
 )
 
 import (
@@ -45,7 +37,7 @@ var (
 	userProvider = new(pkg.UserProvider)
 )
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
 	hessian.RegisterJavaEnum(pkg.Gender(pkg.MAN))
 	hessian.RegisterJavaEnum(pkg.Gender(pkg.WOMAN))
@@ -57,84 +49,77 @@ func main() {
 
 	time.Sleep(6 * time.Second)
 
-	gxlog.CInfo("\n\ntest")
+	logger.Info("\n\ntest")
 	test()
 }
 
 func test() {
-	gxlog.CInfo("\n\n\necho")
+	logger.Info("\n\n\necho")
 	res, err := userProvider.Echo(context.TODO(), "OK")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("res: %v\n", res)
+	logger.Info("res: %v\n", res)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
+	logger.Info("\n\n\nstart to test dubbo")
 	user := &pkg.User{}
-	err = userProvider.GetUser(context.TODO(), []interface{}{"A003"}, user)
+	user, err = userProvider.GetUser(context.TODO(), []interface{}{"A003"})
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", user)
+	logger.Info("response result: %v", user)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo - enum")
+	logger.Info("\n\n\nstart to test dubbo - enum")
 	gender, err := userProvider.GetGender(1)
 	if err != nil {
-		gxlog.CInfo("error: %v", err)
+		logger.Info("error: %v", err)
 	} else {
-		gxlog.CInfo("response result: %v", gender)
+		logger.Info("response result: %v", gender)
 	}
 
-	gxlog.CInfo("\n\n\nstart to test dubbo - GetUser0")
+	logger.Info("\n\n\nstart to test dubbo - GetUser0")
 	ret, err := userProvider.GetUser0("A003", "Moorse")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", ret)
+	logger.Info("response result: %v", ret)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo - GetUsers")
+	logger.Info("\n\n\nstart to test dubbo - GetUsers")
 	ret1, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", ret1)
+	logger.Info("response result: %v", ret1)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo - getUser")
+	logger.Info("\n\n\nstart to test dubbo - getUser")
 	user = &pkg.User{}
 	var i int32 = 1
-	err = userProvider.GetUser2(context.TODO(), []interface{}{i}, user)
+	user, err = userProvider.GetUser2(context.TODO(), []interface{}{i})
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", user)
+	logger.Info("response result: %v", user)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo - getUser - overload")
+	logger.Info("\n\n\nstart to test dubbo - getUser - overload")
 	user = &pkg.User{}
-	err = userProvider.GetUser2(context.TODO(), []interface{}{i, "overload"}, user)
+	user, err = userProvider.GetUser2(context.TODO(), []interface{}{i, "overload"})
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", user)
+	logger.Info("response result: %v", user)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo - GetUser3")
-	err = userProvider.GetUser3()
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("succ!")
-
-	gxlog.CInfo("\n\n\nstart to test dubbo - getErr")
+	logger.Info("\n\n\nstart to test dubbo - getErr")
 	user = &pkg.User{}
-	err = userProvider.GetErr(context.TODO(), []interface{}{"A003"}, user)
+	user, err = userProvider.GetErr(context.TODO(), []interface{}{"A003"})
 	if err == nil {
 		panic("err is nil")
 	}
-	gxlog.CInfo("getErr - error: %v", err)
+	logger.Info("getErr - error: %v", err)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo illegal method")
-	err = userProvider.GetUser1(context.TODO(), []interface{}{"A003"}, user)
+	logger.Info("\n\n\nstart to test dubbo illegal method")
+	user, err = userProvider.GetUser1(context.TODO(), []interface{}{"A003"})
 	if err == nil {
 		panic("err is nil")
 	}
-	gxlog.CInfo("error: %v", err)
+	logger.Info("error: %v", err)
 }
