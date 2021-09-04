@@ -39,30 +39,45 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
+	dynamicConfig, err := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("zookeeper"),
+		config.WithConfigCenterAddress("127.0.0.1:2181")).GetDynamicConfiguration()
+	if err != nil {
+		panic(err)
+	}
+	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-server", "dubbogo", `# set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-server', namespace is default
+dubbo:
+  registries:
+    demoZK:
+      protocol: nacos
+      timeout: 3s
+      address: 127.0.0.1:8848
+  protocols:
+    triple:
+      name: tri
+      port: 20000
+  provider:
+    registry:
+      - demoZK
+    services:
+      greeterImpl:
+        protocol: triple
+        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`); err != nil {
+		panic(err)
+	}
+
 	config.SetProviderService(&GreeterProvider{})
-
-	serviceConfig := config.NewServiceConfig(
-		config.WithServiceInterface("com.apache.dubbo.sample.basic.IGreeter"),
-		config.WithServiceProtocolKeys("tripleKey"),
+	centerConfig := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("zookeeper"),
+		config.WithConfigCenterAddress("127.0.0.1:2181"),
+		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-zookeeper-server"),
+		config.WithConfigCenterGroup("dubbogo"),
 	)
-
-	protocolConfig := config.NewProtocolConfig(
-		config.WithProtocolName("tri"),
-		config.WithProtocolPort("20000"),
-	)
-
-	providerConfig := config.NewProviderConfig(
-		config.WithProviderRegistryKeys("zk"),
-		config.WithProviderService("greeterImpl", serviceConfig),
-	)
-
-	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")
 
 	rootConfig := config.NewRootConfig(
-		config.WithRootProviderConfig(providerConfig),
-		config.WithRootRegistryConfig("zk", registryConfig),
-		config.WithRootProtocolConfig("tripleKey", protocolConfig),
+		config.WithRootCenterConfig(centerConfig),
 	)
+
 	if err := rootConfig.Init(); err != nil {
 		panic(err)
 	}

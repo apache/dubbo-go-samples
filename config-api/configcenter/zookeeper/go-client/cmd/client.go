@@ -26,9 +26,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
-
-import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
@@ -36,12 +33,36 @@ var grpcGreeterImpl = new(api.GreeterClientImpl)
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
+	dynamicConfig, err := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("zookeeper"),
+		config.WithConfigCenterAddress("127.0.0.1:2181")).GetDynamicConfiguration()
+	if err != nil {
+		panic(err)
+	}
+	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-client', namespace is default
+dubbo:
+  registries:
+    demoZK:
+      protocol: nacos
+      timeout: 3s
+      address: 127.0.0.1:8848
+  consumer:
+    registry:
+      - demoZK
+    references:
+      greeterImpl:
+        protocol: tri
+        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`); err != nil {
+		panic(err)
+	}
+
 	config.SetConsumerService(grpcGreeterImpl)
 
 	centerConfig := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("nacos"),
-		config.WithConfigCenterAddress("localhost:8848"),
-		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-client"),
+		config.WithConfigCenterProtocol("zookeeper"),
+		config.WithConfigCenterAddress("localhost:2181"),
+		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-zookeeper-client"),
+		config.WithConfigCenterGroup("dubbogo"),
 	)
 
 	rootConfig := config.NewRootConfig(

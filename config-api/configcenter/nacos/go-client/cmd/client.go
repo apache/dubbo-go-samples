@@ -29,27 +29,43 @@ import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
-var tripleGreeterImpl = new(api.GreeterClientImpl)
+var grpcGreeterImpl = new(api.GreeterClientImpl)
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	config.SetConsumerService(tripleGreeterImpl)
+	dynamicConfig, err := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("nacos"),
+		config.WithConfigCenterAddress("127.0.0.1:8848")).GetDynamicConfiguration()
+	if err != nil {
+		panic(err)
+	}
+	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-client", "dubbo", `## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default
+dubbo:
+  registries:
+    demoZK:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  consumer:
+    registry:
+      - demoZK
+    references:
+      greeterImpl:
+        protocol: tri
+        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`); err != nil {
+		panic(err)
+	}
 
-	referenceConfig := config.NewReferenceConfig(
-		config.WithReferenceInterface("com.apache.dubbo.sample.basic.IGreeter"),
-		config.WithReferenceProtocolName("tri"),
-		config.WithReferenceRegistry("zkRegistryKey"),
+	config.SetConsumerService(grpcGreeterImpl)
+
+	centerConfig := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("nacos"),
+		config.WithConfigCenterAddress("localhost:8848"),
+		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-client"),
 	)
-
-	consumerConfig := config.NewConsumerConfig(
-		config.WithConsumerReferenceConfig("greeterImpl", referenceConfig),
-	)
-
-	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")
 
 	rootConfig := config.NewRootConfig(
-		config.WithRootRegistryConfig("zkRegistryKey", registryConfig),
-		config.WithRootConsumerConfig(consumerConfig),
+		config.WithRootCenterConfig(centerConfig),
 	)
 
 	if err := rootConfig.Init(); err != nil {
@@ -62,7 +78,7 @@ func main() {
 	req := &api.HelloRequest{
 		Name: "laurence",
 	}
-	reply, err := tripleGreeterImpl.SayHello(context.Background(), req)
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
 	if err != nil {
 		logger.Error(err)
 	}

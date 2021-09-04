@@ -25,9 +25,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
-
-import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
@@ -42,10 +39,37 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
+	dynamicConfig, err := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("nacos"),
+		config.WithConfigCenterAddress("127.0.0.1:8848")).GetDynamicConfiguration()
+	if err != nil {
+		panic(err)
+	}
+	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-server", "dubbo", `# set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-server', namespace is default
+dubbo:
+  registries:
+    demoZK:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  protocols:
+    triple:
+      name: tri
+      port: 20000
+  provider:
+    registry:
+      - demoZK
+    services:
+      greeterImpl:
+        protocol: triple
+        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`); err != nil {
+		panic(err)
+	}
+
 	config.SetProviderService(&GreeterProvider{})
 	centerConfig := config.NewConfigCenterConfig(
 		config.WithConfigCenterProtocol("nacos"),
-		config.WithConfigCenterAddress("localhost:8848"),
+		config.WithConfigCenterAddress("127.0.0.1:8848"),
 		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-server"),
 	)
 
