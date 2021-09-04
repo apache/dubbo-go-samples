@@ -89,15 +89,15 @@ func (User) JavaClassName() string {
 
 type UserProvider struct {
 	GetUsers func(req []interface{}) ([]interface{}, error)
-	GetErr   func(ctx context.Context, req []interface{}, rsp *User) error
+	GetErr   func(ctx context.Context, req []interface{}) (*User, error)
 
-	GetUserOld func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser func(ctx context.Context, req []interface{}) (*User, error)
 
 	GetUserNew func(ctx context.Context, req1, req2 *User) (*User, error)
 
 	GetUser0  func(id string, name string) (User, error)
-	GetUser1  func(ctx context.Context, req []interface{}, rsp *User) error
-	GetUser2  func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
+	GetUser1  func(ctx context.Context, req []interface{}) (*User, error)
+	GetUser2  func(ctx context.Context, req []interface{}) (*User, error) `dubbo:"getUser"`
 	GetUser3  func() error
 	GetGender func(i int32) (Gender, error)
 	Echo      func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
@@ -109,11 +109,11 @@ func (u *UserProvider) Reference() string {
 
 type UserProvider1 struct {
 	GetUsers func(req []interface{}) ([]interface{}, error)
-	GetErr   func(ctx context.Context, req []interface{}, rsp *User) error
-	GetUser  func(ctx context.Context, req []interface{}, rsp *User) error
+	GetErr   func(ctx context.Context, req []interface{}) (*User, error)
+	GetUser  func(ctx context.Context, req []interface{}) (*User, error)
 	GetUser0 func(id string, name string) (User, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *User) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
+	GetUser1 func(ctx context.Context, req []interface{}) (*User, error)
+	GetUser2 func(ctx context.Context, req []interface{}) (*User, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
 }
@@ -124,11 +124,11 @@ func (u *UserProvider1) Reference() string {
 
 type UserProvider2 struct {
 	GetUsers func(req []interface{}) ([]interface{}, error)
-	GetErr   func(ctx context.Context, req []interface{}, rsp *User) error
-	GetUser  func(ctx context.Context, req []interface{}, rsp *User) error
+	GetErr   func(ctx context.Context, req []interface{}) (*User, error)
+	GetUser  func(ctx context.Context, req []interface{}) (*User, error)
 	GetUser0 func(id string, name string) (User, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *User) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
+	GetUser1 func(ctx context.Context, req []interface{}) (*User, error)
+	GetUser2 func(ctx context.Context, req []interface{}) (*User, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
 }

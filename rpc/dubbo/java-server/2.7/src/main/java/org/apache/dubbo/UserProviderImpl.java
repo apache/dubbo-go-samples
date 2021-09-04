@@ -112,4 +112,8 @@ public class UserProviderImpl implements UserProvider {
      public Response<Integer> Sum(int a,int b) {
         return Response.ok(a+b);
     }
+
+    public Integer GetGender(Integer gender) {
+        return gender != null && gender == 1 ? 1 : 0;
+    }
 }

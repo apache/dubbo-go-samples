@@ -49,7 +49,7 @@ func (u *UserProvider) getUser(userID string) (*User, error) {
 	return nil, fmt.Errorf("invalid user id:%s", userID)
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
 	var (
 		err  error
 		user *User
@@ -58,10 +58,9 @@ func (u *UserProvider) GetUser(ctx context.Context, req []interface{}, rsp *User
 	gxlog.CInfo("req:%#v", req)
 	user, err = u.getUser(req[0].(string))
 	if err == nil {
-		*rsp = *user
-		gxlog.CInfo("rsp:%#v", rsp)
+		gxlog.CInfo("rsp:%#v", user)
 	}
-	return err
+	return user, err
 }
 
 func (u *UserProvider) GetUser0(id string, name string) (User, error) {
@@ -78,20 +77,21 @@ func (u *UserProvider) GetUser0(id string, name string) (User, error) {
 	return *user, err
 }
 
-func (u *UserProvider) GetUser2(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider) GetUser2(ctx context.Context, req []interface{}) (*User, error) {
 	var err error
 
 	gxlog.CInfo("req:%#v", req)
-	rsp.ID = strconv.Itoa(int(req[0].(int32)))
-	return err
+	user := &User{}
+	user.ID = strconv.Itoa(int(req[0].(int32)))
+	return user, err
 }
 
 func (u *UserProvider) GetUser3() error {
 	return nil
 }
 
-func (u *UserProvider) GetErr(ctx context.Context, req []interface{}, rsp *User) error {
-	return java_exception.NewThrowable("exception")
+func (u *UserProvider) GetErr(ctx context.Context, req []interface{}) (*User, error) {
+	return nil, java_exception.NewThrowable("exception")
 }
 
 func (u *UserProvider) GetUsers(req []interface{}) ([]interface{}, error) {
