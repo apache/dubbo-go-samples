@@ -20,6 +20,7 @@ package integration
 import (
 	"context"
 	"testing"
+	"time"
 )
 
 import (
@@ -31,6 +32,7 @@ import (
 )
 
 func TestSayHello(t *testing.T) {
+	time.Sleep(time.Second*5)
 	req := &dubbo3pb.HelloRequest{
 		Name: "laurence",
 	}
