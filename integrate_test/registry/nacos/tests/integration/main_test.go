@@ -39,7 +39,7 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var userProvider = new(UserProvider)
+var userProvider = &UserProvider{}
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
@@ -58,11 +58,11 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
 }
 
 func (u *UserProvider) Reference() string {
-	return "UserProvider"
+	return "userProvider"
 }
 
 func (User) JavaClassName() string {
