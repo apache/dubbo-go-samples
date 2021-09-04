@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"time"
 )
 
 import (
@@ -27,6 +28,25 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"github.com/apache/dubbo-go-samples/api"
 )
+
+const configCenterZKServerConfig =  `# set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-server', namespace is default
+dubbo:
+  registries:
+    demoZK:
+      protocol: nacos
+      timeout: 3s
+      address: 127.0.0.1:8848
+  protocols:
+    triple:
+      name: tri
+      port: 20000
+  provider:
+    registry:
+      - demoZK
+    services:
+      greeterImpl:
+        protocol: triple
+        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 type GreeterProvider struct {
 	api.GreeterProviderBase
@@ -45,26 +65,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-server", "dubbogo", `# set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-server', namespace is default
-dubbo:
-  registries:
-    demoZK:
-      protocol: nacos
-      timeout: 3s
-      address: 127.0.0.1:8848
-  protocols:
-    triple:
-      name: tri
-      port: 20000
-  provider:
-    registry:
-      - demoZK
-    services:
-      greeterImpl:
-        protocol: triple
-        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`); err != nil {
+	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-server", "dubbogo",configCenterZKServerConfig); err != nil {
 		panic(err)
 	}
+
+	time.Sleep(time.Second*10)
 
 	config.SetProviderService(&GreeterProvider{})
 	centerConfig := config.NewConfigCenterConfig(

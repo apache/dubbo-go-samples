@@ -32,17 +32,7 @@ import (
 	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 )
 
-var greeterProvider = new(dubbo3pb.GreeterClientImpl)
-
-func TestMain(m *testing.M) {
-	time.Sleep(time.Second*20)
-	dynamicConfig, err := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("nacos"),
-		config.WithConfigCenterAddress("127.0.0.1:8848")).GetDynamicConfiguration()
-	if err != nil {
-		panic(err)
-	}
-	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-client", "dubbo", `## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default
+const configCenterNacosTestClientConfig = `## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default
 dubbo:
   registries:
     demoZK:
@@ -55,11 +45,25 @@ dubbo:
     references:
       greeterImpl:
         protocol: tri
-        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`); err != nil {
+        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
+
+var greeterProvider = new(dubbo3pb.GreeterClientImpl)
+
+func TestMain(m *testing.M) {
+	time.Sleep(time.Second * 20)
+	dynamicConfig, err := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("nacos"),
+		config.WithConfigCenterAddress("127.0.0.1:8848")).GetDynamicConfiguration()
+	if err != nil {
+		panic(err)
+	}
+	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-client", "dubbo", configCenterNacosTestClientConfig); err != nil {
 		panic(err)
 	}
 
 	config.SetConsumerService(greeterProvider)
+
+	time.Sleep(time.Second*20)
 
 	centerConfig := config.NewConfigCenterConfig(
 		config.WithConfigCenterProtocol("nacos"),
