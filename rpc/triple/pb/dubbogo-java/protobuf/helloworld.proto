@@ -16,7 +16,7 @@
  */
 
 syntax = "proto3";
-package com.apache.dubbo.sample.basic.IGreeter;
+package org.apache.dubbo.demo;
 
 option go_package = "./;protobuf";
 

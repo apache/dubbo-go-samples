@@ -15,10 +15,7 @@
  *  limitations under the License.
  */
 
-package com.apache.dubbo.sample.basic;
-
-
-import org.apache.dubbo.sample.hello.Helloworld;
+package org.apache.dubbo.demo;
 
 public interface IGreeter {
     /**
@@ -26,6 +23,6 @@ public interface IGreeter {
      *  Sends a greeting
      * </pre>
      */
-    Helloworld.User sayHello(Helloworld.HelloRequest request);
+    HelloWorld.User sayHello(HelloWorld.HelloRequest request);
 
 }

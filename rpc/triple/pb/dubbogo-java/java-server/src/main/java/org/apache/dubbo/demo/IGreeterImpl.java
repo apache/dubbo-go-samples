@@ -15,14 +15,13 @@
  *  limitations under the License.
  */
 
-package com.apache.dubbo.sample.basic;
+package org.apache.dubbo.demo;
 
 public class IGreeterImpl implements IGreeter {
-
     @Override
-    public Helloworld.User sayHello(Helloworld.HelloRequest request) {
+    public HelloWorld.User sayHello(HelloWorld.HelloRequest request) {
         System.out.println("receiv: " + request);
-        Helloworld.User usr = Helloworld.User.newBuilder()
+        HelloWorld.User usr = HelloWorld.User.newBuilder()
                 .setName("hello " + request.getName())
                 .setAge(18)
                 .setId("12345").build();

@@ -15,13 +15,12 @@
  *  limitations under the License.
  */
 
-package com.apache.dubbo.sample.basic;
+package org.apache.dubbo.demo;
 
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
-import org.apache.dubbo.sample.hello.Helloworld;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -39,9 +38,9 @@ public class ApiConsumer {
         final IGreeter iGreeter = ref.get();
 
         System.out.println("dubbo ref started");
-        Helloworld.HelloRequest req = Helloworld.HelloRequest.newBuilder().setName("laurence").build();
+        HelloWorld.HelloRequest req = HelloWorld.HelloRequest.newBuilder().setName("laurence").build();
         try {
-            final Helloworld.User reply = iGreeter.sayHello(req);
+            final HelloWorld.User reply = iGreeter.sayHello(req);
             TimeUnit.SECONDS.sleep(1);
             System.out.println("Reply:" + reply);
         } catch (Throwable t) {

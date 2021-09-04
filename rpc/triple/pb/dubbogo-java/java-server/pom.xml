@@ -29,7 +29,7 @@
     <properties>
         <source.level>1.8</source.level>
         <target.level>1.8</target.level>
-        <dubbo.version>3.0.0</dubbo.version>
+        <dubbo.version>3.0.2</dubbo.version>
         <junit.version>4.12</junit.version>
         <spring-test.version>4.3.16.RELEASE</spring-test.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
@@ -106,7 +106,6 @@
     </profiles>
 
     <build>
-        <defaultGoal>package</defaultGoal>
         <extensions>
             <extension>
                 <groupId>kr.motd.maven</groupId>
@@ -114,7 +113,6 @@
                 <version>1.6.1</version>
             </extension>
         </extensions>
-
         <plugins>
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>

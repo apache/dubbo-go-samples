@@ -10,9 +10,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 syntax = "proto3";
-package org.apache.dubbo.demo;
 
 option java_package = "org.apache.dubbo.demo";
+
+package org.apache.dubbo.demo;
 
 // The request message containing the user's name.
 message HelloRequest {
