@@ -1,24 +1,12 @@
-# Triple-go (Dubbo-go3.0) example
+# Triple Samples
 
-Triple-go is a network protocol library released in version 3.0 based on the existing Dubbo service management capabilities.
+Triple-go is a network protocol library released in version 3.0 based on the existing Dubbo service management capabilities. You may refer to [dubbogo/triple](https://github.com/dubbogo/triple) for more details.
 
-## Triple protocol introduction and source code:
+## Contents
 
-https://github.com/dubbogo/triple
-
-
-## Triple-go provides capabilities:
--Intercommunication with Grpc, supporting normal calls and streaming calls
-
-[Example](./api/dubbogo-grpc/README.md)
-
--Intercommunication with Triple-java, currently the java side supports ordinary calls
-
-[Example](./api/dubbogo-java/README.md)
-
-
--Support Pb serialization and Hessian serialization. After Hessian serialization, it can be serialized again by nesting the following api:
-https://github.com/dubbogo/triple/blob/master/internal/codec/proto/triple_wrapper.proto
-
-[Example](./hessian2/README.md)
-
+- [codec-extension](./codec-extension): TODO: ~~code-extension~~
+- [hessian2](./hessian2): TODO: ~~hessian2 introduction~~
+- [msgpack](./msgpack): TODO: ~~msgpack introduction~~
+- [pb](./pb): Triple samples using ProtoBuf(PB) serialization
+    - [dubbogo-grpc](./pb/dubbogo-grpc): Samples for communication between Dubbo-go using triple protocol and original gRPC(triple-go <-> grpc).
+    - [dubbogo-java](./pb/dubbogo-java): Samples for communication between Dubbo-go and Dubbo-java using Triple protocol(triple-go <-> triple-java).

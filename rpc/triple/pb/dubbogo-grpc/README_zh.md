@@ -1,187 +1,56 @@
-# Triple-Grpc 互通示例
+# dubbogo-grpc
 
-## 示例结构
+## Contents
 
-在本示例中，我们针对 triple 和 grpc ，分别提供了 proto 协议、服务端、普通 RPC 客户端、流式调用而客户端。
+- protobuf: 使用 proto 文件的结构体定义
+- server
+- stream-client: 使用流式调用的客户端
+- unary-client: 使用普通调用的客户端
 
-可以交叉使用任一组客户端和服务端，实现 RPC 调用。 
+请注意，到目前为止，Triple还不支持服务器流式RPC和客户端流式RPC。
 
-## Triple 服务启动
+我们测试的组合包括:
 
-### api 生成
-1. 首先编写 proto 文件
-  
-```protobuf
-syntax = "proto3";
+- [x] grpcgo-client(stream) -> dubbogo-server
+- [x] grpcgo-client(unary) -> dubbogo-server
+- [x] dubbogo-client(stream) -> dubbogo-server
+- [x] dubbogo-client(unary) -> dubbogo-server
 
-option go_package = "protobuf/triple";
-package protobuf;
+## 运行
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (User) {}
-  rpc SayHelloStream (stream HelloRequest) returns (stream User) {}
-}
+### 服务端
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
+1. 编辑你自己的 proto 文件，请参考 [helloworld.proto](./protobuf/triple/helloworld.proto)。
+2. 安装 `protoc` 工具，请参考 [ProtoBuf 文档](https://developers.google.com/protocol-buffers/docs/gotutorial)。
+3. 安装 `protoc-gen-dubbo3`，用于生成适用于 triple 的 stub。
 
-// The response message containing the greetings
-message User {
-  string name = 1;
-  string id = 2;
-  int32 age = 3;
-}
-```
-
-2. 安装 protoc cli 工具
-   
-3. 安装 protoc-gen-dubbo3（用于生成适配于triple的stub）
 ```shell
-go get -u dubbo.apache.org/dubbo-go/v3/protocol/triple/protoc-gen-triple@3.0
+go get -u github.com/dubbogo/tools/cmd/protoc-gen-triple
 ```
-4. 生成 api 文件
+
+4. 编译 proto 文件。
+
 ```shell
-    protoc -I . helloworld.proto --dubbo3_out=plugins=grpc+dubbo:.
+protoc -I . helloworld.proto --triple_out=plugins=triple:.
 ```
 
-### 服务端启动
-1. Provider 结构定义
+5. 编辑服务端配置文件，请参考 [dubbogo.yml](./server/dubbogo-server/conf/dubbogo.yml)。
+6. 启动服务端。
+
+### 客户端
+
+请注意，普通调用的 RPC 和流式 RPC 的启动过程是相同的。
+
+1. 注册 RPC 服务。
+
 ```go
-package pkg
-
-import (
-	"context"
-	"fmt"
-)
-
-import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
-)
-
-import (
-	dubbo3 "github.com/apache/dubbo-go-samples/rpc/triple/api/dubbogo-grpc/protobuf/triple"
-)
-
-type GreeterProvider struct {
-	// 引入dubbo3 provider base
-	*dubbo3.GreeterProviderBase
-}
-
-func NewGreeterProvider() *GreeterProvider {
-	return &GreeterProvider{// 使用生成的pb中的实例初始化base
-		GreeterProviderBase: &dubbo3.GreeterProviderBase{},
-	}
-}
-
-// SayHelloStream 提供流式RPC调用的函数
-func (s *GreeterProvider) SayHelloStream(svr dubbo3.Greeter_SayHelloStreamServer) error {
-	c, err := svr.Recv()
-	if err != nil {
-		return err
-	}
-	logger.Infof("Dubbo-go3 GreeterProvider recv 1 user, name = %s\n", c.Name)
-	c2, err := svr.Recv()
-	if err != nil {
-		return err
-	}
-	logger.Infof("Dubbo-go3 GreeterProvider recv 2 user, name = %s\n", c2.Name)
-	c3, err := svr.Recv()
-	if err != nil {
-		return err
-	}
-	logger.Infof("Dubbo-go3 GreeterProvider recv 3 user, name = %s\n", c3.Name)
-
-	svr.Send(&dubbo3.User{
-		Name: "hello " + c.Name,
-		Age:  18,
-		Id:   "123456789",
-	})
-	svr.Send(&dubbo3.User{
-		Name: "hello " + c2.Name,
-		Age:  19,
-		Id:   "123456789",
-	})
-	return nil
-}
-
-// SayHello 提供普通rpc调用的服务函数
-func (s *GreeterProvider) SayHello(ctx context.Context, in *dubbo3.HelloRequest) (*dubbo3.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n" + in.Name)
-	fmt.Println("get triple header tri-req-id = ", ctx.Value("tri-req-id"))
-	fmt.Println("get triple header tri-service-version = ", ctx.Value("tri-service-version"))
-	return &dubbo3.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
-
-// Reference 需要和config中Reference key 对应
-func (g *GreeterProvider) Reference() string {
-	return "GreeterProvider"
-}
-```
-2. 配置文件
-server/dubbogo-server/conf/server.yml
-```yaml
-# service config
-services:
-  "GreeterProvider":
-    registry: "demoZK"
-    protocol: "tri" # 使用triple协议
-    interface: "protobuf.Greeter" # 和grpc生成的的接口名一致，如下
-```
-
-Grpc api 文件的接口名可见为 protobuf.Greeter, 是用户根据需要定义的。
-triple-go 要想和 grpc 打通，一定要和 grpc 的接口名一致，并正确配置在 yaml 文件中。
-
-protobuf/grpc/helloworld.api.go:
-```go
-func (c *greeterClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*User, error) {
-	out := new(User)
-	err := c.cc.Invoke(ctx, "/protobuf.Greeter/SayHello", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-```
-
-3. 启动服务端
-
-goland 运行
-triple/triple-server
-
-## 客户端（以普通rpc调用为例， 流式RPC同理）
-
-1. Consumer 端结构定义
-Consumer 结构已经在pb文件中实现好,可直接引入
-```go
-import (
-    dubbo3pb "github.com/apache/dubbo-go-samples/general/triple/api/dubbogo-grpc/protobuf/triple"
-)
-
-// 直接引入GreeterClientImpl 结构，可以进入该结构，查看Reference为“greeterImpl”
-var greeterProvider = new(dubbo3pb.GreeterClientImpl)
-
+// Directly introduce the GreeterClientImpl structure, you can enter the structure, and see the Reference as "greeterImpl"
+var greeterProvider = new(triplepb.GreeterClientImpl)
 func init() {
     config.SetConsumerService(greeterProvider)
 }
 ```
 
-配置文件中定义好对应 reference key
-```yaml
-# reference config
-references:
-  "greeterImpl":
-    registry: "demoZk"
-    protocol: "tri"
-    interface: "protobuf.Greeter"
-    url: tri://localhost:20001
-```
+2. 编辑客户端配置文件，请参考 [dubbogo.yml](./stream-client/dubbogo-client/conf/dubbogo.yml)。
 
-2. 启动客户端
-
-goland 运行
-triple/triple-unary-client
-
+3. 启动客户端。
