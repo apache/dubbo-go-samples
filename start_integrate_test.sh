@@ -90,7 +90,7 @@
 #array+=("router/uniform-router/file/go-server2")
 
 # unclassified
-DOCKER_DIR=$(pwd)/integrate_test/docker
+DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 
 array=("helloworld")
 array+=("direct")
