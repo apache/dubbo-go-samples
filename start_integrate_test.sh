@@ -45,12 +45,12 @@
 ## general-dubbo
 #array+=("general/dubbo/go-server")
 #
-## general-dubbo3(triple)
-#array+=("general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server")
-#array+=("general/dubbo3/pb/dubbogo-java/go-server")
-#array+=("general/dubbo3/hessian2/go-server")
-#array+=("general/dubbo3/msgpack/go-server")
-#array+=("general/dubbo3/codec-extension/go-server")
+## general-triple(triple)
+#array+=("general/triple/pb/dubbogo-grpc/server/dubbogo-server")
+#array+=("general/triple/pb/dubbogo-java/go-server")
+#array+=("general/triple/hessian2/go-server")
+#array+=("general/triple/msgpack/go-server")
+#array+=("general/triple/codec-extension/go-server")
 #
 ## general-grpc
 #array+=("general/grpc/go-server")
