@@ -89,7 +89,9 @@
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
 
-array=("helloworld")
+array=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
+array+=("helloworld")
 array+=("direct")
 array+=("config-api/rpc/triple")
 array+=("registry/zookeeper")
