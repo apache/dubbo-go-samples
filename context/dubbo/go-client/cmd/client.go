@@ -24,50 +24,49 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
 	"github.com/dubbogo/gost/log"
 )
 
-import (
-	pkg2 "github.com/apache/dubbo-go-samples/context/dubbo/go-client/pkg"
-)
+type UserProvider struct {
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
+}
 
-var userProvider = new(pkg2.UserProvider)
+func (u *UserProvider) Reference() string {
+	return "userProvider"
+}
 
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg2.ContextContent{})
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
+}
+
+func (*User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg2.ContextContent{})
-	config.Load()
+	var userProvider = &UserProvider{}
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&User{})
+	config.Load(config.WithPath("C:\\Users\\cachen\\tencent_workspase\\dubbo-go-samples\\context\\dubbo\\go-client\\conf\\dubbogo.yml"))
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	rspContent := &pkg2.ContextContent{}
-	atta := make(map[string]interface{})
-	atta["string-value"] = "string-demo"
-	atta["int-value"] = 1231242
-	atta["user-defined-value"] = pkg2.ContextContent{InterfaceName: "test.interface.name"}
-	reqContext := context.WithValue(context.Background(), constant.DubboCtxKey("attachment"), atta)
-	err := userProvider.GetContext(reqContext, []interface{}{"A001"}, rspContent)
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "name", "Alex001")
+	user, err := userProvider.GetUser(ctx, &User{Name: "Alex001"})
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
 		return
 	}
-	gxlog.CInfo("response result: %+v\n", rspContent)
+	gxlog.CInfo("response result: %v\n", user)
 }
