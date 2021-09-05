@@ -39,7 +39,9 @@ const (
 )
 
 // GreeterProvider is used as provider
-type GreeterProvider struct{}
+type GreeterProvider struct{
+	pb.UnimplementedGreeterServer
+}
 
 func (s *GreeterProvider) SayHelloStream(svr pb.Greeter_SayHelloStreamServer) error {
 	c, err := svr.Recv()
