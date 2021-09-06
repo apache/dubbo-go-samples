@@ -31,7 +31,7 @@ import (
 )
 
 import (
-	grpcpb "github.com/apache/dubbo-go-samples/integrate_test/rpc/triple/pb/dubbogo-grpc/tests/integration/grpc_test_proto"
+	grpcpb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/grpc"
 	triplepb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/triple"
 )
 
@@ -82,7 +82,7 @@ func TestStreamSayHello(t *testing.T) {
 
 func TestGRPCClientHello(t *testing.T) {
 	// Set up a connection to the client.
-	conn, err := grpc.Dial("127.0.0.1:20001", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:20000", grpc.WithInsecure())
 	assert.Nil(t, err)
 	defer conn.Close()
 	c := grpcpb.NewGreeterClient(conn)
@@ -99,7 +99,7 @@ func TestGRPCClientHello(t *testing.T) {
 }
 
 func TestGRPCClientStreamSayHello(t *testing.T) {
-	conn, err := grpc.Dial("127.0.0.1:20001", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:20000", grpc.WithInsecure())
 	assert.Nil(t, err)
 	defer conn.Close()
 	c := grpcpb.NewGreeterClient(conn)
