@@ -19,7 +19,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/dubbogo-server/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -32,6 +31,10 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	_ "github.com/dubbogo/triple/pkg/triple"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/dubbogo-server/pkg"
 )
 
 var (
