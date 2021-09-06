@@ -36,14 +36,16 @@ import (
 )
 
 import (
-	triplepb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/triple"
+	triplepb "github.com/apache/dubbo-go-samples/api"
 )
 
 var greeterProvider = new(triplepb.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(greeterProvider)
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())

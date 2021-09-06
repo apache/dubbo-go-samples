@@ -31,8 +31,8 @@ import (
 )
 
 import (
+	triplepb "github.com/apache/dubbo-go-samples/api"
 	grpcpb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/grpc"
-	triplepb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/triple"
 )
 
 func TestSayHello(t *testing.T) {
