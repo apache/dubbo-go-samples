@@ -40,7 +40,7 @@ func init() {
 	config.SetConsumerService(greeterProvider)
 }
 
-// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-grpc/stream-client/dubbogo-client/conf/dubbogo.yml
+// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-grpc/stream-client/go-client/conf/dubbogo.yml
 func main() {
 	if err := config.Load(); err != nil {
 		panic(err)

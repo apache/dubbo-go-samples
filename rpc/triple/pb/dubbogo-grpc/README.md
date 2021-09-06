@@ -33,7 +33,7 @@ go get -u github.com/dubbogo/tools/cmd/protoc-gen-triple
 protoc -I . helloworld.proto --triple_out=plugins=triple:.
 ```
 
-5. Edit the configuration for server, please refer to [dubbogo.yml](dubbogo-server/conf/dubbogo.yml).
+5. Edit the configuration for server, please refer to [dubbogo.yml](go-server/conf/dubbogo.yml).
 6. Launch the server.
 
 ### Client
@@ -50,6 +50,6 @@ func init() {
 }
 ```
 
-2. Edit the configuration for client, please refer to [dubbogo.yml](dubbogo-client/conf/dubbogo.yml)
+2. Edit the configuration for client, please refer to [dubbogo.yml](go-client/conf/dubbogo.yml)
 
 3. Launch the client.
