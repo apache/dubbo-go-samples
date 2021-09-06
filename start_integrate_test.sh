@@ -100,7 +100,7 @@ array=("helloworld")
 ## rpc
 #array+=("rpc/triple/codec-extension")
 #array+=("rpc/triple/hessian2")
-array+=("rpc/triple/pb/dubbogo-grpc/dubbogo-server")
+array+=("rpc/triple/pb/dubbogo-grpc")
 
 for((i=0;i<${#array[*]};i++))
 do
