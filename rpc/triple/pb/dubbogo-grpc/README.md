@@ -3,18 +3,17 @@
 ## Contents
 
 - protobuf: proto files for grpc and triple respectively;
-- server
-- stream-client: clients using bidirectional streaming RPC
-- unary-client: clients using unary RPC
+- dubbogo-server
+- dubbogo-client
+- grpcgo-server
+- grpcgo-client
 
 Please note that neither server streaming RPC nor client streaming RPC are not supported by Triple so far.
 
 What combination we tested are:
 
-- [x] grpcgo-client(stream) -> dubbogo-server
-- [x] grpcgo-client(unary) -> dubbogo-server
-- [x] dubbogo-client(stream) -> dubbogo-server
-- [x] dubbogo-client(unary) -> dubbogo-server
+- [x] grpcgo-client -> dubbogo-server
+- [x] dubbogo-client -> dubbogo-server
 
 ## Getting Started
 
@@ -34,7 +33,7 @@ go get -u github.com/dubbogo/tools/cmd/protoc-gen-triple
 protoc -I . helloworld.proto --triple_out=plugins=triple:.
 ```
 
-5. Edit the configuration for server, please refer to [dubbogo.yml](./server/dubbogo-server/conf/dubbogo.yml).
+5. Edit the configuration for server, please refer to [dubbogo.yml](dubbogo-server/conf/dubbogo.yml).
 6. Launch the server.
 
 ### Client
@@ -51,6 +50,6 @@ func init() {
 }
 ```
 
-2. Edit the configuration for client, please refer to [dubbogo.yml](./stream-client/dubbogo-client/conf/dubbogo.yml)
+2. Edit the configuration for client, please refer to [dubbogo.yml](dubbogo-client/conf/dubbogo.yml)
 
 3. Launch the client.

@@ -8,8 +8,6 @@ import (
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -17,6 +15,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	dgrpc "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
 	"dubbo.apache.org/dubbo-go/v3/protocol/invocation"
+	"github.com/dubbogo/triple/pkg/common"
 	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 	dubbo3 "github.com/dubbogo/triple/pkg/triple"
 )
@@ -158,18 +157,14 @@ type greeterDubbo3Client struct {
 func NewGreeterDubbo3Client(cc *dubbo3.TripleConn) GreeterClient {
 	return &greeterDubbo3Client{cc}
 }
-func (c *greeterDubbo3Client) SayHello(ctx context.Context, in *HelloRequest, opt ...grpc.CallOption) (*User, error) {
+func (c *greeterDubbo3Client) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*User, common.ErrorWithAttachment) {
 	out := new(User)
 	interfaceKey := ctx.Value(tripleConstant.InterfaceKey).(string)
-	err := c.cc.Invoke(ctx, "/"+interfaceKey+"/SayHello", in, out)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	return out, c.cc.Invoke(ctx, "/"+interfaceKey+"/SayHello", in, out)
 }
-func (c *greeterDubbo3Client) SayHelloStream(ctx context.Context, opt ...grpc.CallOption) (Greeter_SayHelloStreamClient, error) {
+func (c *greeterDubbo3Client) SayHelloStream(ctx context.Context, opts ...grpc.CallOption) (Greeter_SayHelloStreamClient, error) {
 	interfaceKey := ctx.Value(tripleConstant.InterfaceKey).(string)
-	stream, err := c.cc.NewStream(ctx, "/"+interfaceKey+"/SayHelloStream", opt...)
+	stream, err := c.cc.NewStream(ctx, "/"+interfaceKey+"/SayHelloStream", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -180,132 +175,36 @@ func (c *greeterDubbo3Client) SayHelloStream(ctx context.Context, opt ...grpc.Ca
 // GreeterClientImpl is the client API for Greeter service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type GreeterClient interface {
+	// Sends a greeting
+	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*User, common.ErrorWithAttachment)
+	SayHelloStream(ctx context.Context, opts ...grpc.CallOption) (Greeter_SayHelloStreamClient, error)
+}
+
 type GreeterClientImpl struct {
 	// Sends a greeting
 	SayHello       func(ctx context.Context, in *HelloRequest) (*User, error)
 	SayHelloStream func(ctx context.Context) (Greeter_SayHelloStreamClient, error)
 }
 
-func (c *GreeterClientImpl) Reference() string {
-	return "greeterImpl"
+type Greeter_SayHelloClient interface {
+	CloseAndRecv() (*User, error)
+	grpc.ClientStream
 }
 
-func (c *GreeterClientImpl) GetDubboStub(cc *dubbo3.TripleConn) GreeterClient {
-	return NewGreeterDubbo3Client(cc)
+type greeterSayHelloClient struct {
+	grpc.ClientStream
 }
 
-type GreeterProviderBase struct {
-	proxyImpl protocol.Invoker
-}
-
-func (s *GreeterProviderBase) SetProxyImpl(impl protocol.Invoker) {
-	s.proxyImpl = impl
-}
-
-func (s *GreeterProviderBase) GetProxyImpl() protocol.Invoker {
-	return s.proxyImpl
-}
-
-func (c *GreeterProviderBase) Reference() string {
-	return "greeterImpl"
-}
-
-func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloRequest)
-	if err := dec(in); err != nil {
+func (x *greeterSayHelloClient) CloseAndRecv() (*User, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	base := srv.(dgrpc.Dubbo3GrpcService)
-	args := []interface{}{}
-	args = append(args, in)
-	invo := invocation.NewRPCInvocation("SayHello", args, nil)
-	if interceptor == nil {
-		result := base.GetProxyImpl().Invoke(ctx, invo)
-		return result.Result(), result.Error()
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/protobuf.Greeter/SayHello",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		result := base.GetProxyImpl().Invoke(context.Background(), invo)
-		return result.Result(), result.Error()
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DUBBO_Greeter_SayHelloStream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	_, ok := srv.(dgrpc.Dubbo3GrpcService)
-	invo := invocation.NewRPCInvocation("SayHelloStream", nil, nil)
-	if !ok {
-		fmt.Println(invo)
-	}
-	return srv.(GreeterServer).SayHelloStream(&greeterSayHelloStreamServer{stream})
-}
-
-func (s *GreeterProviderBase) ServiceDesc() *grpc.ServiceDesc {
-	return &grpc.ServiceDesc{
-		ServiceName: "protobuf.Greeter",
-		HandlerType: (*GreeterServer)(nil),
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "SayHello",
-				Handler:    _DUBBO_Greeter_SayHello_Handler,
-			},
-		},
-		Streams: []grpc.StreamDesc{
-			{
-				StreamName:    "SayHelloStream",
-				Handler:       _DUBBO_Greeter_SayHelloStream_Handler,
-				ServerStreams: true,
-				ClientStreams: true,
-			},
-		},
-		Metadata: "helloworld.proto",
-	}
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// GreeterClient is the client API for Greeter service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type GreeterClient interface {
-	// Sends a greeting
-	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*User, error)
-	SayHelloStream(ctx context.Context, opts ...grpc.CallOption) (Greeter_SayHelloStreamClient, error)
-}
-
-type greeterClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewGreeterClient(cc grpc.ClientConnInterface) GreeterClient {
-	return &greeterClient{cc}
-}
-
-func (c *greeterClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*User, error) {
-	out := new(User)
-	err := c.cc.Invoke(ctx, "/protobuf.Greeter/SayHello", in, out, opts...)
-	if err != nil {
+	m := new(User)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
-	return out, nil
-}
-
-func (c *greeterClient) SayHelloStream(ctx context.Context, opts ...grpc.CallOption) (Greeter_SayHelloStreamClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Greeter_serviceDesc.Streams[0], "/protobuf.Greeter/SayHelloStream", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &greeterSayHelloStreamClient{stream}
-	return x, nil
+	return m, nil
 }
 
 type Greeter_SayHelloStreamClient interface {
@@ -330,6 +229,14 @@ func (x *greeterSayHelloStreamClient) Recv() (*User, error) {
 	return m, nil
 }
 
+func (c *GreeterClientImpl) Reference() string {
+	return "greeterImpl"
+}
+
+func (c *GreeterClientImpl) GetDubboStub(cc *dubbo3.TripleConn) GreeterClient {
+	return NewGreeterDubbo3Client(cc)
+}
+
 // GreeterServer is the server API for Greeter service.
 type GreeterServer interface {
 	// Sends a greeting
@@ -337,40 +244,53 @@ type GreeterServer interface {
 	SayHelloStream(Greeter_SayHelloStreamServer) error
 }
 
-// UnimplementedGreeterServer can be embedded to have forward compatible implementations.
-type UnimplementedGreeterServer struct {
+type GreeterProviderBase struct {
+	proxyImpl protocol.Invoker
 }
 
-func (*UnimplementedGreeterServer) SayHello(ctx context.Context, req *HelloRequest) (*User, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
-}
-func (*UnimplementedGreeterServer) SayHelloStream(srv Greeter_SayHelloStreamServer) error {
-	return status.Errorf(codes.Unimplemented, "method SayHelloStream not implemented")
+func (s *GreeterProviderBase) SetProxyImpl(impl protocol.Invoker) {
+	s.proxyImpl = impl
 }
 
-func RegisterGreeterServer(s *grpc.Server, srv GreeterServer) {
-	s.RegisterService(&_Greeter_serviceDesc, srv)
+func (s *GreeterProviderBase) GetProxyImpl() protocol.Invoker {
+	return s.proxyImpl
 }
 
-func _Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func (c *GreeterProviderBase) Reference() string {
+	return "greeterImpl"
+}
+
+func _Triple_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
+	base := srv.(dgrpc.Dubbo3GrpcService)
+	args := []interface{}{}
+	args = append(args, in)
+	invo := invocation.NewRPCInvocation("SayHello", args, nil)
 	if interceptor == nil {
-		return srv.(GreeterServer).SayHello(ctx, in)
+		result := base.GetProxyImpl().Invoke(ctx, invo)
+		return result, result.Error()
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
 		FullMethod: "/protobuf.Greeter/SayHello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GreeterServer).SayHello(ctx, req.(*HelloRequest))
+		result := base.GetProxyImpl().Invoke(context.Background(), invo)
+		return result.Result(), result.Error()
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Greeter_SayHelloStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _Triple_Greeter_SayHelloStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	_, ok := srv.(dgrpc.Dubbo3GrpcService)
+	invo := invocation.NewRPCInvocation("SayHelloStream", nil, nil)
+	if !ok {
+		fmt.Println(invo)
+		return nil
+	}
 	return srv.(GreeterServer).SayHelloStream(&greeterSayHelloStreamServer{stream})
 }
 
@@ -396,22 +316,24 @@ func (x *greeterSayHelloStreamServer) Recv() (*HelloRequest, error) {
 	return m, nil
 }
 
-var _Greeter_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "protobuf.Greeter",
-	HandlerType: (*GreeterServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "SayHello",
-			Handler:    _Greeter_SayHello_Handler,
+func (s *GreeterProviderBase) ServiceDesc() *grpc.ServiceDesc {
+	return &grpc.ServiceDesc{
+		ServiceName: "protobuf.Greeter",
+		HandlerType: (*GreeterServer)(nil),
+		Methods: []grpc.MethodDesc{
+			{
+				MethodName: "SayHello",
+				Handler:    _Triple_Greeter_SayHello_Handler,
+			},
 		},
-	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "SayHelloStream",
-			Handler:       _Greeter_SayHelloStream_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
+		Streams: []grpc.StreamDesc{
+			{
+				StreamName:    "SayHelloStream",
+				Handler:       _Triple_Greeter_SayHelloStream_Handler,
+				ServerStreams: true,
+				ClientStreams: true,
+			},
 		},
-	},
-	Metadata: "helloworld.proto",
+		Metadata: "helloworld.proto",
+	}
 }

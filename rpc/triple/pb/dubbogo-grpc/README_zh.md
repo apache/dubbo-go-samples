@@ -34,7 +34,7 @@ go get -u github.com/dubbogo/tools/cmd/protoc-gen-triple
 protoc -I . helloworld.proto --triple_out=plugins=triple:.
 ```
 
-5. 编辑服务端配置文件，请参考 [dubbogo.yml](./server/dubbogo-server/conf/dubbogo.yml)。
+5. 编辑服务端配置文件，请参考 [dubbogo.yml](dubbogo-server/conf/dubbogo.yml)。
 6. 启动服务端。
 
 ### 客户端
@@ -51,6 +51,6 @@ func init() {
 }
 ```
 
-2. 编辑客户端配置文件，请参考 [dubbogo.yml](./stream-client/dubbogo-client/conf/dubbogo.yml)。
+2. 编辑客户端配置文件，请参考 [dubbogo.yml](dubbogo-client/conf/dubbogo.yml)。
 
 3. 启动客户端。

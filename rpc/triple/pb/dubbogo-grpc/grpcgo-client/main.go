@@ -42,18 +42,31 @@ func main() {
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
-	defer conn.Close()
+
 	c := pb.NewGreeterClient(conn)
 
-	BigDataReq := &pb.HelloRequest{
-		Name: "Laurence",
-	}
+	defer func() {
+		_ = conn.Close()
+	}()
+
+	stream(c)
+	unary(c)
+}
+
+func stream(c pb.GreeterClient) {
+	fmt.Printf(">>>>> gRPC-go client is about to call SayHelloStream\n")
+
 	clientStream, err := c.SayHelloStream(context.Background())
 	if err != nil {
 		panic(err)
 	}
+
+	BigDataReq := &pb.HelloRequest{
+		Name: "Laurence",
+	}
+
 	for i := 0; i < 2; i++ {
-		clientStream.Send(BigDataReq)
+		_ = clientStream.Send(BigDataReq)
 	}
 	user1, err := clientStream.Recv()
 	if err != nil {
@@ -61,11 +74,25 @@ func main() {
 	}
 	fmt.Printf("get 1 received user = %+v\n", user1)
 
-	clientStream.Send(BigDataReq)
+	_ = clientStream.Send(BigDataReq)
 
 	user2, err := clientStream.Recv()
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("get 2 received user = %+v\n", user2)
+}
+
+func unary(c pb.GreeterClient) {
+	fmt.Printf(">>>>> gRPC-go client is about to call SayHello\n")
+
+	req := &pb.HelloRequest{
+		Name: "laurence",
+	}
+	ctx := context.Background()
+	rsp, err := c.SayHello(ctx, req)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("get received user = %+v\n", rsp)
 }
