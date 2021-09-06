@@ -1,5 +1,7 @@
 version: '3'
 
+# services config in one docker-compose file for integrate test
+# integrate test will start up services and samples test will depend on those containers
 services:
   zookeeper:
     image: zookeeper
