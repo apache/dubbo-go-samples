@@ -102,6 +102,9 @@ array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
 
+array+=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
+
 for((i=0;i<${#array[*]};i++))
 do
 	./integrate_test.sh "${array[i]}"

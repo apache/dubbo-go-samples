@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,33 +18,31 @@
 package integration
 
 import (
-	"os"
+	"context"
 	"testing"
-	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
 	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 )
 
-var greeterProvider = new(dubbo3pb.GreeterClientImpl)
+func TestSayHello(t *testing.T) {
+	req := &dubbo3pb.HelloRequest{
+		Name: "laurence",
+	}
 
-func TestMain(m *testing.M) {
-	config.SetConsumerService(greeterProvider)
-	config.Load()
-	time.Sleep(3 * time.Second)
+	reply := &dubbo3pb.User{}
 
-	os.Exit(m.Run())
+	ctx := context.Background()
+
+	reply, err := greeterProvider.SayHello(ctx, req)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "Hello laurence", reply.Name)
+	assert.Equal(t, "12345", reply.Id)
+	assert.Equal(t, int32(21), reply.Age)
 }
