@@ -27,15 +27,9 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
@@ -62,7 +56,7 @@ type User struct {
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+func (u *UserProvider) GetUser(ctx context.Context, req *User) (*User, error) {
 	gxlog.CInfo("req:%#v", req)
 	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
 	gxlog.CInfo("rsp:%#v", rsp)

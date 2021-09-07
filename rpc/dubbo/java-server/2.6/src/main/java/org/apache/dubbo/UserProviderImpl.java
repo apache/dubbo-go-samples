@@ -67,6 +67,10 @@ public class UserProviderImpl implements UserProvider {
         return userList;
     }
 
+    public Integer GetGender(Integer gender) {
+        return gender != null && gender == 1 ? 1 : 0;
+    }
+
     public void GetUser3() {
         LOG.info("this is GetUser3 of impl");
     }

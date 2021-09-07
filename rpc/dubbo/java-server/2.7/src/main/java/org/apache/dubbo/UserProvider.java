@@ -40,6 +40,8 @@ public interface UserProvider {
 
     User getUser(int usercode, String name);
 
+    Integer GetGender(Integer gender);
+
     User queryUser(User user);
 
     Map<String, User> queryAll();

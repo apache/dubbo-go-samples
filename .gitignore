@@ -7,8 +7,8 @@
 *.DS_Store
 
 dist/
-logs/
 *.log
+logs/
 # Test binary, build with `go test -c`
 *.test
 
