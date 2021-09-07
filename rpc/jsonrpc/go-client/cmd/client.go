@@ -102,7 +102,10 @@ func test() {
 	time.Sleep(3e9)
 
 	logger.Info("\n\n\nstart to test jsonrpc")
-	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A003"})
+
+	user, err := userProvider.GetUser(context.TODO(), "A003")
+
+
 	if err != nil {
 		panic(err)
 	}
@@ -116,6 +119,7 @@ func test() {
 	logger.Info("response result: %v", ret)
 
 	logger.Info("\n\n\nstart to test jsonrpc - GetUsers")
+
 	ret1, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
 	if err != nil {
 		panic(err)
@@ -123,7 +127,7 @@ func test() {
 	logger.Info("response result: %v", ret1)
 
 	logger.Info("\n\n\nstart to test jsonrpc - getUser")
-	rep2, err := userProvider.GetUser2(context.TODO(), []interface{}{1})
+	rep2, err := userProvider.GetUser2(context.TODO(), "1")
 	if err != nil {
 		panic(err)
 	}
@@ -137,7 +141,7 @@ func test() {
 	logger.Info("succ!")
 
 	logger.Info("\n\n\nstart to test jsonrpc illegal method")
-	rep3, err := userProvider.GetUser1(context.TODO(), []interface{}{"A003"})
+	rep3, err := userProvider.GetUser1(context.TODO(), "A003")
 	if err == nil {
 		panic("err is nil")
 	}
@@ -156,7 +160,7 @@ func test1() {
 	time.Sleep(3e9)
 
 	logger.Info("\n\n\nstart to test jsonrpc")
-	user, err := userProvider1.GetUser(context.TODO(), []interface{}{"A003"})
+	user, err := userProvider1.GetUser(context.TODO(), "A003")
 	if err != nil {
 		panic(err)
 	}
@@ -169,15 +173,8 @@ func test1() {
 	}
 	logger.Info("response result: %v", ret)
 
-	logger.Info("\n\n\nstart to test jsonrpc - GetUsers")
-	ret1, err := userProvider1.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
-	if err != nil {
-		panic(err)
-	}
-	logger.Info("response result: %v", ret1)
-
 	logger.Info("\n\n\nstart to test jsonrpc - getUser")
-	user, err = userProvider1.GetUser2(context.TODO(), []interface{}{1})
+	user, err = userProvider1.GetUser2(context.TODO(), "1")
 	if err != nil {
 		panic(err)
 	}
@@ -191,7 +188,7 @@ func test1() {
 	logger.Info("succ!")
 
 	logger.Info("\n\n\nstart to test jsonrpc illegal method")
-	user, err = userProvider1.GetUser1(context.TODO(), []interface{}{"A003"})
+	user, err = userProvider1.GetUser1(context.TODO(), "A003")
 	if err == nil {
 		panic("err is nil")
 	}
@@ -210,7 +207,7 @@ func test2() {
 	time.Sleep(3e9)
 
 	logger.Info("\n\n\nstart to test jsonrpc")
-	user, err := userProvider2.GetUser(context.TODO(), []interface{}{"A003"})
+	user, err := userProvider2.GetUser(context.TODO(), "A003")
 	if err != nil {
 		panic(err)
 	}
@@ -223,15 +220,8 @@ func test2() {
 	}
 	logger.Info("response result: %v", ret)
 
-	logger.Info("\n\n\nstart to test jsonrpc - GetUsers")
-	ret1, err := userProvider2.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
-	if err != nil {
-		panic(err)
-	}
-	logger.Info("response result: %v", ret1)
-
 	logger.Info("\n\n\nstart to test jsonrpc - getUser")
-	user, err = userProvider2.GetUser2(context.TODO(), []interface{}{1})
+	user, err = userProvider2.GetUser2(context.TODO(), "1")
 	if err != nil {
 		panic(err)
 	}
@@ -245,7 +235,7 @@ func test2() {
 	logger.Info("succ!")
 
 	logger.Info("\n\n\nstart to test jsonrpc illegal method")
-	user, err = userProvider2.GetUser1(context.TODO(), []interface{}{"A003"})
+	user, err = userProvider2.GetUser1(context.TODO(), "A003")
 	if err == nil {
 		panic("err is nil")
 	}

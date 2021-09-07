@@ -44,7 +44,6 @@ var (
 // 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
 
-	// load dubbo runtime context
 	config.Load()
 
 	initSignal()
