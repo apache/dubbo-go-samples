@@ -28,7 +28,7 @@
 #array+=("configcenter/zookeeper/go-server")
 #
 ## context
-#array+=("context/go-server")
+array+=("context/dubbo/go-server")
 #
 ## direct
 #array+=("direct/go-server")

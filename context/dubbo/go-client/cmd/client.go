@@ -20,34 +20,36 @@ package main
 import (
 	"context"
 	"os"
-	"time"
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
 	hessian "github.com/apache/dubbo-go-hessian2"
-
 	"github.com/dubbogo/gost/log"
 )
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
+	GetContext func(ctx context.Context, req []interface{}) (rsp *ContextContent, err error)
 }
 
 func (u *UserProvider) Reference() string {
 	return "userProvider"
 }
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
+type ContextContent struct {
+	Path              string
+	InterfaceName     string
+	DubboVersion      string
+	LocalAddr         string
+	RemoteAddr        string
+	UserDefinedStrVal string
+	CtxStrVal         string
+	CtxIntVal         int64
 }
 
-func (*User) JavaClassName() string {
+func (*ContextContent) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
 
@@ -55,18 +57,20 @@ func (*User) JavaClassName() string {
 func main() {
 	var userProvider = &UserProvider{}
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
-	config.Load(config.WithPath("C:\\Users\\cachen\\tencent_workspase\\dubbo-go-samples\\context\\dubbo\\go-client\\conf\\dubbogo.yml"))
-	time.Sleep(3 * time.Second)
-
+	hessian.RegisterPOJO(&ContextContent{})
+	config.Load()
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	ctx := context.Background()
-	ctx = context.WithValue(ctx, "name", "Alex001")
-	user, err := userProvider.GetUser(ctx, &User{Name: "Alex001"})
+
+	atta := make(map[string]interface{})
+	atta["string-value"] = "string-demo"
+	atta["int-value"] = 1231242
+	atta["user-defined-value"] = ContextContent{InterfaceName: "test.interface.name"}
+	reqContext := context.WithValue(context.Background(), constant.DubboCtxKey("attachment"), atta)
+	rspContent, err := userProvider.GetContext(reqContext, []interface{}{"A001"})
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
 		return
 	}
-	gxlog.CInfo("response result: %v\n", user)
+	gxlog.CInfo("response result: %v\n", rspContent)
 }
