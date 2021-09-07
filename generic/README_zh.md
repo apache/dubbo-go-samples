@@ -22,6 +22,10 @@
    2. java
 
       在goland启动generic-dubbo-java-server
+      
+      或
+
+      在 java-server 文件夹下执行 `sh run.sh` 启动 java server
 
 3. 启动客户端运行消费者发启泛化调用
 
@@ -32,3 +36,7 @@
    2. java
 
       在goland启动generic-dubbo-java-client
+
+      或
+
+      在 java-client 文件夹下执行 `sh run.sh` 启动 java client

@@ -22,6 +22,10 @@ Generic invocation is mainly used when the client does not have API interface or
    2. java
 
       Use goland to start generic-dubbo-java-server
+      
+      or
+
+      Execute `sh run.sh` in the java-server folder to start the java server
 
 3. Start the client to run consumers to initiate generic invocation.
 
@@ -32,3 +36,7 @@ Generic invocation is mainly used when the client does not have API interface or
    2. java
 
       Use goland to start generic-dubbo-java-client
+   
+      or
+
+      Execute `sh run.sh` in the java-client folder to start the java client
