@@ -90,6 +90,8 @@
 #array+=("router/uniform-router/file/go-server2")
 
 # unclassified
+DOCKER_DIR=$(pwd)/integrate_test/dockercompose
+
 array=("helloworld")
 array+=("direct")
 # config-api
@@ -104,11 +106,15 @@ array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
 
+docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
+
 for((i=0;i<${#array[*]};i++))
 do
 	./integrate_test.sh "${array[i]}"
 	result=$?
 	if [ $result -gt 0 ]; then
+	      docker-compose -f $DOCKER_DIR/docker-compose.yml down
         exit $result
 	fi
 done
+docker-compose -f $DOCKER_DIR/docker-compose.yml down
