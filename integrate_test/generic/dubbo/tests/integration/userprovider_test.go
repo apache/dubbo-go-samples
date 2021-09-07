@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -22,22 +20,21 @@ package integration
 import (
 	"context"
 	"testing"
-	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/config/generic"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetUser(t *testing.T) {
-	o, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
+func TestGetUser1(t *testing.T) {
+	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
-			"GetUser",
+			"GetUser1",
 			[]string{"java.lang.String"},
 			[]hessian.Object{"A003"},
 		},
@@ -45,30 +42,30 @@ func TestGetUser(t *testing.T) {
 	assert.Nil(t, err)
 	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
 	resp := o.(map[interface{}]interface{})
-	assert.Equal(t, "Alex Stocks", resp["name"])
-	assert.Equal(t, int32(18), resp["age"])
-	assert.Equal(t, "A001", resp["iD"])
+	assert.Equal(t, "Joe", resp["name"])
+	assert.Equal(t, int32(48), resp["age"])
+	assert.Equal(t, "A003", resp["iD"])
 }
 
-func TestQueryUser(t *testing.T) {
-	o, err := referenceConfig.GetRPCService().(*config.GenericService).Invoke(
-		context.TODO(),
-		[]interface{}{
-			"queryUser",
-			[]string{"org.apache.dubbo.User"},
-			[]hessian.Object{map[string]hessian.Object{
-				"iD":   "3213",
-				"name": "panty",
-				"age":  25,
-				"time": time.Now(),
-			}},
-		},
-	)
-
-	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
-	resp := o.(map[interface{}]interface{})
-	assert.Equal(t, "panty", resp["name"])
-	assert.Equal(t, int32(25), resp["age"])
-	assert.Equal(t, "3213", resp["iD"])
-}
+//func TestQueryUser(t *testing.T) {
+//	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+//		context.TODO(),
+//		[]interface{}{
+//			"queryUser",
+//			[]string{"org.apache.dubbo.User"},
+//			[]hessian.Object{map[string]hessian.Object{
+//				"iD":   "3213",
+//				"name": "panty",
+//				"age":  25,
+//				"time": time.Now(),
+//			}},
+//		},
+//	)
+//
+//	assert.Nil(t, err)
+//	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+//	resp := o.(map[interface{}]interface{})
+//	assert.Equal(t, "panty", resp["name"])
+//	assert.Equal(t, int32(25), resp["age"])
+//	assert.Equal(t, "3213", resp["iD"])
+//}
