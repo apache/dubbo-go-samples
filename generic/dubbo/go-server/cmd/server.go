@@ -30,7 +30,7 @@ import (
 )
 
 import (
-	pkg "github.com/apache/dubbo-go-samples/integrate_test/generic/dubbo/pkg"
+	pkg "github.com/apache/dubbo-go-samples/generic/dubbo/go-server/pkg"
 )
 
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/generic/default/go-server/conf/dubbogo.yml
