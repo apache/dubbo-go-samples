@@ -31,7 +31,7 @@ import (
 )
 
 type UserProvider struct {
-	GetContext func(ctx context.Context, req []interface{}) (rsp *ContextContent, err error)
+	GetContext func(ctx context.Context, req *ContextContent) (rsp *ContextContent, err error)
 }
 
 func (u *UserProvider) Reference() string {
@@ -66,11 +66,11 @@ func main() {
 	atta["int-value"] = 1231242
 	atta["user-defined-value"] = ContextContent{InterfaceName: "test.interface.name"}
 	reqContext := context.WithValue(context.Background(), constant.DubboCtxKey("attachment"), atta)
-	rspContent, err := userProvider.GetContext(reqContext, []interface{}{"A001"})
+	rspContent, err := userProvider.GetContext(reqContext, &ContextContent{CtxStrVal: "A001"})
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)
 		return
 	}
-	gxlog.CInfo("response result: %v\n", rspContent)
+	gxlog.CInfo("response result: %+v\n", rspContent)
 }

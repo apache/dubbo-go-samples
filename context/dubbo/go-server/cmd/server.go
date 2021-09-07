@@ -60,7 +60,7 @@ type ContextContent struct {
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetContext(ctx context.Context, req []interface{}) (*ContextContent, error) {
+func (u *UserProvider) GetContext(ctx context.Context, req *ContextContent) (*ContextContent, error) {
 	gxlog.CInfo("req:%#v", req)
 	ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]interface{})
 	userDefinedval := ctxAtta["user-defined-value"].(*ContextContent)
