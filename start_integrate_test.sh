@@ -94,6 +94,8 @@ array=("helloworld")
 array+=("direct")
 # config-api
 array+=("config-api/rpc/triple")
+array+=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
@@ -101,9 +103,6 @@ array+=("registry/nacos")
 array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
-
-array+=("config-api/configcenter/nacos")
-array+=("config-api/configcenter/zookeeper")
 
 for((i=0;i<${#array[*]};i++))
 do

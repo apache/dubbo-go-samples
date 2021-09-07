@@ -5,8 +5,8 @@ Triple-go is a network protocol library released in version 3.0 based on the exi
 ## Contents
 
 - [codec-extension](./codec-extension): TODO: ~~code-extension~~
-- [hessian2](./hessian2): TODO: ~~hessian2 introduction~~
+- [hessian2](./hessian2): A Triple sample using hessian2 serialization.
 - [msgpack](./msgpack): TODO: ~~msgpack introduction~~
-- [pb](./pb): Triple samples using ProtoBuf(PB) serialization
+- [pb](./pb): Triple samples using ProtoBuf(PB) serialization.
     - [dubbogo-grpc](./pb/dubbogo-grpc): Samples for communication between Dubbo-go using triple protocol and original gRPC(triple-go <-> grpc).
     - [dubbogo-java](./pb/dubbogo-java): Samples for communication between Dubbo-go and Dubbo-java using Triple protocol(triple-go <-> triple-java).

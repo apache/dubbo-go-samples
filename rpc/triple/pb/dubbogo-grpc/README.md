@@ -3,14 +3,14 @@
 ## Contents
 
 - protobuf: proto files for grpc and triple respectively;
-- dubbogo-server
-- dubbogo-client
-- grpcgo-server
-- grpcgo-client
+- go-server: Dubbo-go server
+- go-client: Dubbo-go client
+- grpc-server: gRPC server
+- grpc-client: gRPC client
 
 Please note that neither server streaming RPC nor client streaming RPC are not supported by Triple so far.
 
-What combination we tested are:
+What combinations we tested are:
 
 - [x] grpcgo-client -> dubbogo-server
 - [x] dubbogo-client -> dubbogo-server
@@ -19,7 +19,7 @@ What combination we tested are:
 
 ### Server
 
-1. Edit your own proto file, please refer to [helloworld.proto](./protobuf/triple/helloworld.proto).
+1. Edit your own proto file, please refer to [samples_api.proto](/api/samples_api.proto).
 2. Install `protoc` tool, please refer to [ProtoBuf documentation](https://developers.google.com/protocol-buffers/docs/gotutorial).
 3. Install `protoc-gen-dubbo3` which is used to generate a stub suitable for triple.
 
