@@ -28,7 +28,7 @@ dubbo:
       - hangzhouzk
       - shanghaizk
     services:
-      "UserProvider":
+      "com.ikurento.user.UserProvider":
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
@@ -39,7 +39,7 @@ dubbo:
           - name: "GetUser"
             retries: 1
             loadbalance: "random"
-      "UserProvider1":
+      "com.ikurento.user.UserProvider1":
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
@@ -51,7 +51,7 @@ dubbo:
           - name: "GetUser"
             retries: 1
             loadbalance: "random"
-      "UserProvider2":
+      "com.ikurento.user.UserProvider2":
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"

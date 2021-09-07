@@ -18,8 +18,9 @@ dubbo:
       address: "127.0.0.1:2182"
       username: ""
       password: ""
+  consumer:
     references:
-      "UserProvider":
+      "com.ikurento.user.UserProvider":
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
@@ -27,7 +28,7 @@ dubbo:
         methods:
           - name: "GetUser"
             retries: 1
-      "UserProvider1":
+      "com.ikurento.user.UserProvider1":
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         version: "2.0"
@@ -36,7 +37,7 @@ dubbo:
         methods:
           - name: "GetUser"
             retries: 1
-      "UserProvider2":
+      "com.ikurento.user.UserProvider2":
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         version: "2.0"

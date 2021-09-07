@@ -49,7 +49,7 @@ type UserProvider struct {
 }
 
 func (u *UserProvider) Reference() string {
-	return "UserProvider"
+	return "com.ikurento.user.UserProvider"
 }
 
 type UserProvider1 struct {
@@ -63,7 +63,7 @@ type UserProvider1 struct {
 }
 
 func (u *UserProvider1) Reference() string {
-	return "UserProvider1"
+	return "com.ikurento.user.UserProvider1"
 }
 
 type UserProvider2 struct {
@@ -77,5 +77,5 @@ type UserProvider2 struct {
 }
 
 func (u *UserProvider2) Reference() string {
-	return "UserProvider2"
+	return "com.ikurento.user.UserProvider2"
 }
