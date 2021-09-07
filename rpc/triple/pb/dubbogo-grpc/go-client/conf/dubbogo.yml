@@ -7,4 +7,4 @@ dubbo:
     references:
       greeterImpl:
         protocol: tri
-        interface: org.apache.dubbo.Greeter
+        interface: org.apache.dubbo.demo.Greeter

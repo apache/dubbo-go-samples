@@ -100,6 +100,7 @@ array+=("registry/nacos")
 # rpc
 array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
+array+=("rpc/triple/pb/dubbogo-grpc")
 
 for((i=0;i<${#array[*]};i++))
 do

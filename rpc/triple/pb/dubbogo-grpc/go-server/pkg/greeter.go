@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	triplepb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/triple"
+	triplepb "github.com/apache/dubbo-go-samples/api"
 )
 
 type GreeterProvider struct {

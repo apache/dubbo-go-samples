@@ -31,7 +31,7 @@ import (
 )
 
 import (
-	triplepb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/triple"
+	triplepb "github.com/apache/dubbo-go-samples/api"
 )
 
 var greeterProvider = new(triplepb.GreeterClientImpl)
@@ -40,17 +40,60 @@ func init() {
 	config.SetConsumerService(greeterProvider)
 }
 
-// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-grpc/unary-client/dubbogo-client/conf/dubbogo.yml
+// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-grpc/stream-client/go-client/conf/dubbogo.yml
 func main() {
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
 	time.Sleep(time.Second * 3)
 
-	testSayHello()
+	stream()
+	unary()
 }
 
-func testSayHello() {
+func stream() {
+	logger.Infof(">>>>> Dubbo-go client is about to call to SayHelloStream")
+
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "tri-req-id", "triple-request-id-demo")
+
+	req := triplepb.HelloRequest{
+		Name: "laurence",
+	}
+
+	r, err := greeterProvider.SayHelloStream(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < 2; i++ {
+		if err := r.Send(&req); err != nil {
+			logger.Errorf("Send SayHelloStream num %d request error = %v\n", i+1, err)
+			return
+		}
+	}
+
+	rspUser := &triplepb.User{}
+	if err := r.RecvMsg(rspUser); err != nil {
+		logger.Errorf("Receive 1 SayHelloStream response user error = %v\n", err)
+		return
+	}
+	logger.Infof("Receive 1 user = %+v\n", rspUser)
+	if err := r.Send(&req); err != nil {
+		logger.Errorf("Send SayHelloStream num %d request error = %v\n", 3, err)
+		return
+	}
+	rspUser2 := &triplepb.User{}
+	if err := r.RecvMsg(rspUser2); err != nil {
+		logger.Errorf("Receive 2 SayHelloStream response user error = %v\n", err)
+		return
+	}
+	logger.Infof("Receive 2 user = %+v\n", rspUser2)
+}
+
+func unary() {
+	logger.Infof(">>>>> Dubbo-go client is about to call to SayHello")
+
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, tripleConstant.TripleCtxKey(tripleConstant.TripleRequestID), "triple-request-id-demo")
 

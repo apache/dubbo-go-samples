@@ -13,4 +13,4 @@ dubbo:
       greeterImpl:
         protocol: triple
         # interface is for registry
-        interface: org.apache.dubbo.Greeter
+        interface: org.apache.dubbo.demo.Greeter
