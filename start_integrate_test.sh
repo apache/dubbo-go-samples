@@ -94,6 +94,8 @@ array=("helloworld")
 array+=("direct")
 # config-api
 array+=("config-api/rpc/triple")
+array+=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")

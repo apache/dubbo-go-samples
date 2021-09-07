@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"time"
 )
 
 import (
@@ -31,22 +32,41 @@ import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
-type GreeterProvider struct {
-	api.GreeterProviderBase
-}
+const configCenterNacosClientConfig = `## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default
+dubbo:
+  registries:
+    demoZK:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  consumer:
+    registry:
+      - demoZK
+    references:
+      greeterImpl:
+        protocol: tri
+        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
+var grpcGreeterImpl = new(api.GreeterClientImpl)
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	config.SetProviderService(&GreeterProvider{})
+	dynamicConfig, err := config.NewConfigCenterConfig(
+		config.WithConfigCenterProtocol("nacos"),
+		config.WithConfigCenterAddress("127.0.0.1:8848")).GetDynamicConfiguration()
+	if err != nil {
+		panic(err)
+	}
+	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-client", "dubbo", configCenterNacosClientConfig); err != nil {
+		panic(err)
+	}
+
+	config.SetConsumerService(grpcGreeterImpl)
+
 	centerConfig := config.NewConfigCenterConfig(
 		config.WithConfigCenterProtocol("nacos"),
 		config.WithConfigCenterAddress("localhost:8848"),
-		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-server"),
+		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-client"),
 	)
 
 	rootConfig := config.NewRootConfig(
@@ -56,5 +76,16 @@ func main() {
 	if err := rootConfig.Init(); err != nil {
 		panic(err)
 	}
-	select {}
+
+	time.Sleep(3 * time.Second)
+
+	logger.Info("start to test dubbo")
+	req := &api.HelloRequest{
+		Name: "laurence",
+	}
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client response result: %v\n", reply)
 }
