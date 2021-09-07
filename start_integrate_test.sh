@@ -45,12 +45,12 @@
 ## general-dubbo
 #array+=("general/dubbo/go-server")
 #
-## general-dubbo3(triple)
-#array+=("general/dubbo3/pb/dubbogo-grpc/server/dubbogo-server")
-#array+=("general/dubbo3/pb/dubbogo-java/go-server")
-#array+=("general/dubbo3/hessian2/go-server")
-#array+=("general/dubbo3/msgpack/go-server")
-#array+=("general/dubbo3/codec-extension/go-server")
+## general-triple(triple)
+#array+=("general/triple/pb/dubbogo-grpc/server/dubbogo-server")
+#array+=("general/triple/pb/dubbogo-java/go-server")
+#array+=("general/triple/hessian2/go-server")
+#array+=("general/triple/msgpack/go-server")
+#array+=("general/triple/codec-extension/go-server")
 #
 ## general-grpc
 #array+=("general/grpc/go-server")
@@ -89,15 +89,21 @@
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
 
-array=("config-api/configcenter/nacos")
-array+=("config-api/configcenter/zookeeper")
-array+=("helloworld")
+# unclassified
+array=("helloworld")
 array+=("direct")
+# config-api
 array+=("config-api/rpc/triple")
+# registry
 array+=("registry/zookeeper")
-array+=("rpc/dubbo3/codec-extension")
-array+=("rpc/dubbo3/hessian2")
 array+=("registry/nacos")
+# rpc
+array+=("rpc/triple/codec-extension")
+array+=("rpc/triple/hessian2")
+array+=("rpc/triple/pb/dubbogo-grpc")
+
+array+=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
 
 for((i=0;i<${#array[*]};i++))
 do
