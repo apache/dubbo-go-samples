@@ -59,15 +59,17 @@ public class UserProviderImpl implements UserProvider {
         return new User(String.valueOf(userCode), name, 18);
     }
 
-    public User GetOneUser() { return new User("1000", "xavierniu", 24); }
+    public User GetOneUser() {
+        return new User("1000", "xavierniu", 24);
+    }
 
     public List<User> GetUsers(List<String> userIdList) {
         Iterator it = userIdList.iterator();
         List<User> userList = new ArrayList<User>();
         LOG.warn("@userIdList size:" + userIdList.size());
 
-        while(it.hasNext()) {
-            String id = (String)(it.next());
+        while (it.hasNext()) {
+            String id = (String) (it.next());
             LOG.info("GetUsers(@uid:" + id + ")");
             if (userMap.containsKey(id)) {
                 userList.add(userMap.get(id));
@@ -83,8 +85,8 @@ public class UserProviderImpl implements UserProvider {
         Map<String, User> map = new HashMap<String, User>();
         LOG.warn("@userIdList size:" + userIdList.size());
 
-        while(it.hasNext()) {
-            String id = (String)(it.next());
+        while (it.hasNext()) {
+            String id = (String) (it.next());
             LOG.info("GetUsers(@uid:" + id + ")");
             if (userMap.containsKey(id)) {
                 map.put(id, userMap.get(id));
@@ -103,7 +105,7 @@ public class UserProviderImpl implements UserProvider {
     public List<User> queryUsers(ArrayList<User> userObjectList) {
         LOG.info("input com.dubbogo.userList = " + userObjectList);
         List<User> userList = new ArrayList<User>();
-        for(User user : userObjectList){
+        for (User user : userObjectList) {
             userList.add(new User(user.getId(), "get:" + user.getName(), user.getAge() + 18));
         }
 
@@ -123,11 +125,11 @@ public class UserProviderImpl implements UserProvider {
         throw new Exception("exception");
     }
 
-    public int Calc(int a,int b) {
+    public int Calc(int a, int b) {
         return a + b + 100;
     }
 
-    public Response<Integer> Sum(int a,int b) {
-        return Response.ok(a+b);
+    public Response<Integer> Sum(int a, int b) {
+        return Response.ok(a + b);
     }
 }

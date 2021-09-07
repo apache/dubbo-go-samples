@@ -17,7 +17,7 @@
 
 package org.apache.dubbo;
 
-public enum  Gender {
+public enum Gender {
     MAN,
     WOMAN
 }

@@ -22,6 +22,7 @@ import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
+
 import java.util.concurrent.CountDownLatch;
 
 public class ApiProvider {

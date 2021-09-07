@@ -36,19 +36,19 @@ public class ApiConsumer {
 
     private static GenericService genericService;
 
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         initConfig();
 
-         callGetUser();
+        callGetUser();
         callGetOneUser();
         callGetUsers();
         callGetUsersMap();
         callQueryUser();
         callQueryUsers();
-         callQueryAll();
-     }
+        callQueryAll();
+    }
 
-     private static void initConfig(){
+    private static void initConfig() {
         logger.info("\n\n\nstart to init config\n\n\n");
         ApplicationConfig applicationConfig = new ApplicationConfig();
         ReferenceConfig<GenericService> reference = new ReferenceConfig<GenericService>();
@@ -60,35 +60,35 @@ public class ApiConsumer {
         reference.setGeneric(true);
         reference.setInterface("org.apache.dubbo.UserProvider");
         genericService = reference.get();
-     }
+    }
 
-     private static void callGetUser(){
-         logger.info("\n\n\nCall GetUser");
-         logger.info("Start to generic invoke");
-         Object result;
+    private static void callGetUser() {
+        logger.info("\n\n\nCall GetUser");
+        logger.info("Start to generic invoke");
+        Object result;
 
-        result = genericService.$invoke("GetUser1", new String[]{"java.lang.String"} , new Object[]{"A003"});
-         logger.info("\n\n\n" + "GetUser1(String userId) " + "res: " + result + "\n\n\n");
+        result = genericService.$invoke("GetUser1", new String[]{"java.lang.String"}, new Object[]{"A003"});
+        logger.info("\n\n\n" + "GetUser1(String userId) " + "res: " + result + "\n\n\n");
 
-         result = genericService.$invoke("GetUser2", new String[]{"java.lang.String", "java.lang.String"} , new Object[]{"A003", "lily"});
-         logger.info("\n\n\n" + "GetUser2(String userId, String name) " + "res: " + result + "\n\n\n");
+        result = genericService.$invoke("GetUser2", new String[]{"java.lang.String", "java.lang.String"}, new Object[]{"A003", "lily"});
+        logger.info("\n\n\n" + "GetUser2(String userId, String name) " + "res: " + result + "\n\n\n");
 
-         result = genericService.$invoke("GetUser3", new String[]{"int"} , new Object[]{1});
-         logger.info("\n\n\n" + "GetUser3(int userCode) " + "res: " + result + "\n\n\n");
+        result = genericService.$invoke("GetUser3", new String[]{"int"}, new Object[]{1});
+        logger.info("\n\n\n" + "GetUser3(int userCode) " + "res: " + result + "\n\n\n");
 
-         result = genericService.$invoke("GetUser4", new String[]{"int", "java.lang.String"} , new Object[]{1, "zhangsan"});
-         logger.info("\n\n\n" + "GetUser4(int userCode, String name) " + "res: " + result + "\n\n\n");
-     }
+        result = genericService.$invoke("GetUser4", new String[]{"int", "java.lang.String"}, new Object[]{1, "zhangsan"});
+        logger.info("\n\n\n" + "GetUser4(int userCode, String name) " + "res: " + result + "\n\n\n");
+    }
 
-    private static void callGetOneUser(){
+    private static void callGetOneUser() {
         logger.info("\n\n\nCall GetOneUser");
         logger.info("Start to generic invoke");
 
-        Object result = genericService.$invoke("GetOneUser", new String[]{} , new Object[]{});
+        Object result = genericService.$invoke("GetOneUser", new String[]{}, new Object[]{});
         logger.info("\n\n\n" + "GetOneUser() " + "res: " + result + "\n\n\n");
     }
 
-    private static void callGetUsers(){
+    private static void callGetUsers() {
         logger.info("\n\n\nCall GetUsers");
         logger.info("Start to generic invoke");
 
@@ -102,7 +102,7 @@ public class ApiConsumer {
         logger.info("\n\n\n" + "GetUsers(List<String> userIdList) " + "res: " + result + "\n\n\n");
     }
 
-    private static void callGetUsersMap(){
+    private static void callGetUsersMap() {
         logger.info("\n\n\nCall GetUsersMap");
         logger.info("Start to generic invoke");
         Object result;
@@ -117,21 +117,21 @@ public class ApiConsumer {
         logger.info("\n\n\n" + "GetUserMap(List<String> userIdList) " + "res: " + result + "\n\n\n");
     }
 
-     private static void callQueryUser(){
-         logger.info("\n\n\nCall QueryUser");
-         logger.info("Start to generic invoke");
+    private static void callQueryUser() {
+        logger.info("\n\n\nCall QueryUser");
+        logger.info("Start to generic invoke");
 
         User user = new User();
         user.setName("Patrick");
         user.setId("id");
         user.setAge(10);
-        Object result = genericService.$invoke("queryUser", new String[]{"org.apache.dubbo.User"} , new Object[]{user});
-         logger.info("\n\n\n" + "queryUser(User user) " + "res: " + result + "\n\n\n");
-     }
+        Object result = genericService.$invoke("queryUser", new String[]{"org.apache.dubbo.User"}, new Object[]{user});
+        logger.info("\n\n\n" + "queryUser(User user) " + "res: " + result + "\n\n\n");
+    }
 
-     private static void callQueryUsers(){
-         logger.info("\n\n\nCall QueryUsers");
-         logger.info("Start to generic invoke");
+    private static void callQueryUsers() {
+        logger.info("\n\n\nCall QueryUsers");
+        logger.info("Start to generic invoke");
 
         ArrayList<Map> userArr = new ArrayList<>();
         Map<Object, Object> userMap1 = new HashMap<>();
@@ -145,15 +145,15 @@ public class ApiConsumer {
         userArr.add(userMap1);
         userArr.add(userMap2);
 
-        Object result = genericService.$invoke("queryUsers", new String[]{"java.util.ArrayList"} , new Object[]{userArr});
-         logger.info("\n\n\n" + "queryUsers(ArrayList<User> userList) " + "res: " + result + "\n\n\n");
-     }
+        Object result = genericService.$invoke("queryUsers", new String[]{"java.util.ArrayList"}, new Object[]{userArr});
+        logger.info("\n\n\n" + "queryUsers(ArrayList<User> userList) " + "res: " + result + "\n\n\n");
+    }
 
-    private static void callQueryAll(){
+    private static void callQueryAll() {
         logger.info("\n\n\nCall queryAll");
         logger.info("Start to generic invoke");
 
-        Object result = genericService.$invoke("queryAll", new String[]{} , new Object[]{});
+        Object result = genericService.$invoke("queryAll", new String[]{}, new Object[]{});
         logger.info("\n\n\n" + "queryAll() " + "res: " + result + "\n\n\n");
     }
 }
