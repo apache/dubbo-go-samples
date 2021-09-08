@@ -105,6 +105,7 @@ array+=("registry/nacos")
 array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
+array+=("rpc/grpc")
 ## generic
 array+=("generic/default")
 
