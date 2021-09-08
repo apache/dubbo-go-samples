@@ -44,7 +44,7 @@ import (
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/general/rest/go-server/pkg"
+	_ "github.com/apache/dubbo-go-samples/rpc/rest/go-server/pkg"
 )
 
 var (
