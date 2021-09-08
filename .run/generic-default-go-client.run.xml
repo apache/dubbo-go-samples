@@ -7,7 +7,7 @@
     </envs>
     <kind value="PACKAGE" />
     <package value="github.com/apache/dubbo-go-samples/generic/default/go-client/cmd" />
-    <directory value="$PROJECT_DIR$" />
+    <directory value="$PROJECT_DIR$/generic/default/go-client/cmd" />
     <filePath value="$PROJECT_DIR$/generic/default/go-client/cmd/client.go" />
     <method v="2" />
   </configuration>
