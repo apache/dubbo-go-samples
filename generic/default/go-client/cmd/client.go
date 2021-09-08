@@ -68,12 +68,12 @@ func init() {
 	_ = rootConfig.Init()
 	_ = referenceConfig.Init(rootConfig)
 	referenceConfig.GenericLoad(appName)
-
-	hessian.RegisterPOJO(&pkg.User{})
 }
 
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/generic/default/go-client/conf/dubbogo.yml
 func main() {
+	hessian.RegisterPOJO(&pkg.User{})
+
 	callGetUser()
 	//callGetOneUser()
 	callGetUsers()
