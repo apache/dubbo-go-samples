@@ -1,16 +1,16 @@
 dubbo:
   registries:
     zk:
-      protocol: "zookeeper"
-      timeout: "3s"
-      address: "127.0.0.1:2181"
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
   protocols:
     dubbo:
-      name: "dubbo"
-      port: "20000"
+      name: dubbo
+      port: 20000
   provider:
-    registry: "zk"
+    registry: zk
     services:
       UserProvider:
-        protocol: "dubbo"
-        interface: "org.apache.dubbo.UserProvider"
+        protocol: dubbo
+        interface: org.apache.dubbo.UserProvider

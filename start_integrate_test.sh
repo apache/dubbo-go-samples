@@ -93,20 +93,18 @@
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 
 array=("helloworld")
-##array+=("direct")
-### config-api
-##array+=("config-api/rpc/triple")
-##array+=("config-api/configcenter/nacos")
-##array+=("config-api/configcenter/zookeeper")
-### registry
-##array+=("registry/zookeeper")
-##array+=("registry/nacos")
-### rpc
-#array+=("rpc/triple/codec-extension")
-#array+=("rpc/triple/hessian2")
-#array+=("rpc/triple/pb/dubbogo-grpc")
-## generic
-#array=("generic/dubbo")
+array+=("direct")
+# config-api
+array+=("config-api/rpc/triple")
+array+=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
+# registry
+array+=("registry/zookeeper")
+array+=("registry/nacos")
+# rpc
+array+=("rpc/triple/codec-extension")
+array+=("rpc/triple/hessian2")
+array+=("rpc/triple/pb/dubbogo-grpc")
 
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
 

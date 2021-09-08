@@ -18,15 +18,19 @@
 package main
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"fmt"
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+)
+
+import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
@@ -39,7 +43,6 @@ func main() {
 	config.SetProviderService(&pkg.User{})
 	config.Load()
 	initSignal()
-	select {}
 }
 
 func initSignal() {
