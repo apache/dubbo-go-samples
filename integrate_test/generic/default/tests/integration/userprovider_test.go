@@ -135,7 +135,7 @@ func TestGetUsers(t *testing.T) {
 	)
 	assert.Nil(t, err)
 	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
-	resp := o.(map[interface{}]interface{})
+	//resp := o.(map[interface{}]interface{})
 	//assert.Equal(t, "other-zhangsan", resp[0].(*pkg.User).Name)
 	//assert.Equal(t, "other-lisi", resp[1].(*pkg.User).Name)
 	//assert.Equal(t, "other-lily", resp[2].(*pkg.User).Name)
