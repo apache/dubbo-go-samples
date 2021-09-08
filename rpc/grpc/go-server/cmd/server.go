@@ -18,6 +18,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -26,29 +27,36 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/grpc/go-server/pkg"
+	pb "github.com/apache/dubbo-go-samples/rpc/grpc/protobuf"
 )
 
 var (
 	survivalTimeout = int(3 * time.Second)
 )
 
+
+type GreeterProvider struct {
+	pb.GreeterProviderBase
+}
+
+func (g *GreeterProvider) SayHello(ctx context.Context, req *pb.HelloRequest) (reply *pb.HelloReply, err error) {
+	fmt.Printf("req: %v", req)
+	return &pb.HelloReply{Message: "this is message from reply"}, nil
+}
+
+
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
-	config.SetProviderService(pkg.NewGreeterProvider())
-	config.Load()
+	config.SetProviderService(&GreeterProvider{})
+	if err := config.Load(); err != nil{
+		panic(err)
+	}
 	initSignal()
 }
 
