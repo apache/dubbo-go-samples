@@ -18,6 +18,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -26,30 +27,68 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	hessian "github.com/apache/dubbo-go-hessian2"
-)
 
-import (
-	pkg2 "github.com/apache/dubbo-go-samples/context/dubbo/go-server/pkg"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 var (
 	survivalTimeout = int(3e9)
 )
 
+func init() {
+	config.SetProviderService(&UserProvider{})
+	// ------for hessian2------
+	hessian.RegisterPOJO(&ContextContent{})
+}
+
+type ContextContent struct {
+	Path              string
+	InterfaceName     string
+	DubboVersion      string
+	LocalAddr         string
+	RemoteAddr        string
+	UserDefinedStrVal string
+	CtxStrVal         string
+	CtxIntVal         int64
+}
+
+type UserProvider struct {
+}
+
+func (u *UserProvider) GetContext(ctx context.Context, req *ContextContent) (*ContextContent, error) {
+	gxlog.CInfo("req:%#v", req)
+	ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]interface{})
+	userDefinedval := ctxAtta["user-defined-value"].(*ContextContent)
+	gxlog.CInfo("get user defined struct:%#v", userDefinedval)
+	rsp := ContextContent{
+		Path:              ctxAtta["path"].(string),
+		InterfaceName:     ctxAtta["interface"].(string),
+		DubboVersion:      ctxAtta["dubbo"].(string),
+		LocalAddr:         ctxAtta["local-addr"].(string),
+		RemoteAddr:        ctxAtta["remote-addr"].(string),
+		UserDefinedStrVal: userDefinedval.InterfaceName,
+		CtxIntVal:         ctxAtta["int-value"].(int64),
+		CtxStrVal:         ctxAtta["string-value"].(string),
+	}
+	gxlog.CInfo("rsp:%#v", rsp)
+	return &rsp, nil
+}
+
+func (u *UserProvider) Reference() string {
+	return "userProvider"
+}
+
+func (u ContextContent) JavaClassName() string {
+	return "org.apache.dubbo.User"
+}
+
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg2.ContextContent{})
 	config.Load()
 
 	initSignal()
