@@ -21,6 +21,7 @@
 * tls: 在 Dubbo-go 中使用 TLS
 * tracing: 链路追踪
 * game: 游戏服务例子
+* rpc/dubbo: dubbo协议通信
 
 ## 如何运行
 

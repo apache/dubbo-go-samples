@@ -35,8 +35,7 @@ import (
 )
 
 func TestGetUserA000(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A000"}, user)
+	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A000"})
 	assert.Nil(t, err)
 	assert.Equal(t, "0", user.ID)
 	assert.Equal(t, "Alex Stocks", user.Name)
@@ -46,8 +45,7 @@ func TestGetUserA000(t *testing.T) {
 }
 
 func TestGetUserA001(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A001"})
 	assert.Nil(t, err)
 	assert.Equal(t, "001", user.ID)
 	assert.Equal(t, "ZhangSheng", user.Name)
@@ -57,8 +55,7 @@ func TestGetUserA001(t *testing.T) {
 }
 
 func TestGetUserA002(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A002"}, user)
+	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A002"})
 	assert.Nil(t, err)
 	assert.Equal(t, "002", user.ID)
 	assert.Equal(t, "Lily", user.Name)
@@ -68,8 +65,7 @@ func TestGetUserA002(t *testing.T) {
 }
 
 func TestGetUserA003(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A003"}, user)
+	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A003"})
 	assert.Nil(t, err)
 	assert.Equal(t, "113", user.ID)
 	assert.Equal(t, "Moorse", user.Name)
@@ -88,20 +84,13 @@ func TestGetUser0(t *testing.T) {
 }
 
 func TestGetUser2(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetUser2(context.TODO(), []interface{}{int32(64)}, user)
+	user, err := userProvider.GetUser2(context.TODO(), []interface{}{int32(64)})
 	assert.Nil(t, err)
 	assert.Equal(t, "64", user.ID)
 }
 
-func TestGetUser3(t *testing.T) {
-	err := userProvider.GetUser3()
-	assert.Nil(t, err)
-}
-
 func TestGetErr(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetErr(context.TODO(), []interface{}{"A003"}, user)
+	_, err := userProvider.GetErr(context.TODO(), []interface{}{"A003"})
 	assert.IsType(t, &java_exception.Throwable{}, err)
 }
 

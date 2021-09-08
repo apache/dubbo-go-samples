@@ -108,6 +108,8 @@ array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
+# dubbo
+array+=("rpc/dubbo")
 
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose

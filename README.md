@@ -21,6 +21,7 @@
 * tls: Use TLS in Dubbo-go application
 * tracing: tracing example
 * game: game service example
+* rpc/dubbo: dubbo protocol communication
 
 ## How To Run
 
