@@ -20,6 +20,7 @@ package integration
 import (
 	"context"
 	"testing"
+	"time"
 )
 
 import (
@@ -47,25 +48,76 @@ func TestGetUser1(t *testing.T) {
 	assert.Equal(t, "A003", resp["iD"])
 }
 
-//func TestQueryUser(t *testing.T) {
-//	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
-//		context.TODO(),
-//		[]interface{}{
-//			"queryUser",
-//			[]string{"org.apache.dubbo.User"},
-//			[]hessian.Object{map[string]hessian.Object{
-//				"iD":   "3213",
-//				"name": "panty",
-//				"age":  25,
-//				"time": time.Now(),
-//			}},
-//		},
-//	)
-//
-//	assert.Nil(t, err)
-//	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
-//	resp := o.(map[interface{}]interface{})
-//	assert.Equal(t, "panty", resp["name"])
-//	assert.Equal(t, int32(25), resp["age"])
-//	assert.Equal(t, "3213", resp["iD"])
-//}
+func TestGetUser2(t *testing.T) {
+	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		[]interface{}{
+			"GetUser2",
+			[]string{"java.lang.String", "java.lang.String"},
+			[]hessian.Object{"A003", "lily"},
+		},
+	)
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp := o.(map[interface{}]interface{})
+	assert.Equal(t, "lily", resp["name"])
+	assert.Equal(t, int32(48), resp["age"])
+	assert.Equal(t, "A003", resp["iD"])
+}
+
+func TestGetUser3(t *testing.T) {
+	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		[]interface{}{
+			"GetUser3",
+			[]string{"int"},
+			[]hessian.Object{1},
+		},
+	)
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp := o.(map[interface{}]interface{})
+	assert.Equal(t, "Alex Stocks", resp["name"])
+	assert.Equal(t, int32(18), resp["age"])
+	assert.Equal(t, "1", resp["iD"])
+}
+
+func TestGetUser4(t *testing.T) {
+	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		[]interface{}{
+			"GetUser4",
+			[]string{"int", "java.lang.String"},
+			[]hessian.Object{1, "zhangsan"},
+		},
+	)
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp := o.(map[interface{}]interface{})
+	assert.Equal(t, "zhangsan", resp["name"])
+	assert.Equal(t, int32(18), resp["age"])
+	assert.Equal(t, "1", resp["iD"])
+}
+
+func TestQueryUser(t *testing.T) {
+	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		[]interface{}{
+			"queryUser",
+			[]string{"org.apache.dubbo.User"},
+			[]hessian.Object{map[string]hessian.Object{
+				"iD":   "3213",
+				"name": "panty",
+				"age":  25,
+				"time": time.Now(),
+			}},
+		},
+	)
+
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp := o.(map[interface{}]interface{})
+	assert.Equal(t, "panty", resp["name"])
+	assert.Equal(t, int32(25), resp["age"])
+	assert.Equal(t, "3213", resp["iD"])
+}
