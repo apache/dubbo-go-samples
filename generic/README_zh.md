@@ -33,7 +33,7 @@ func main() {
     		//参数类型数组
     		[]string{"org.apache.dubbo.User"},
     		//参数数组
-    		[]interface{}{user},
+    		[]hessian.Object{user},
     	},
     )
 }
