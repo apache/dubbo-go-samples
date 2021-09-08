@@ -20,50 +20,53 @@ package main
 import (
 	"context"
 	"os"
-	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	hessian "github.com/apache/dubbo-go-hessian2"
-
 	"github.com/dubbogo/gost/log"
 )
 
-import (
-	pkg2 "github.com/apache/dubbo-go-samples/context/dubbo/go-client/pkg"
-)
+type UserProvider struct {
+	GetContext func(ctx context.Context, req *ContextContent) (rsp *ContextContent, err error)
+}
 
-var userProvider = new(pkg2.UserProvider)
+func (u *UserProvider) Reference() string {
+	return "userProvider"
+}
 
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg2.ContextContent{})
+type ContextContent struct {
+	Path              string
+	InterfaceName     string
+	DubboVersion      string
+	LocalAddr         string
+	RemoteAddr        string
+	UserDefinedStrVal string
+	CtxStrVal         string
+	CtxIntVal         int64
+}
+
+func (*ContextContent) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg2.ContextContent{})
+	var userProvider = &UserProvider{}
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&ContextContent{})
 	config.Load()
-	time.Sleep(3 * time.Second)
-
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	rspContent := &pkg2.ContextContent{}
+
 	atta := make(map[string]interface{})
 	atta["string-value"] = "string-demo"
 	atta["int-value"] = 1231242
-	atta["user-defined-value"] = pkg2.ContextContent{InterfaceName: "test.interface.name"}
+	atta["user-defined-value"] = ContextContent{InterfaceName: "test.interface.name"}
 	reqContext := context.WithValue(context.Background(), constant.DubboCtxKey("attachment"), atta)
-	err := userProvider.GetContext(reqContext, []interface{}{"A001"}, rspContent)
+	rspContent, err := userProvider.GetContext(reqContext, &ContextContent{CtxStrVal: "A001"})
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)

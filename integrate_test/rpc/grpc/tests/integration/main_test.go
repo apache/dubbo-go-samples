@@ -15,18 +15,17 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
+	"os"
+	"testing"
 	"time"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/dubbogo/gost/log"
 )
 
 import (
@@ -35,22 +34,10 @@ import (
 
 var grpcGreeterImpl = new(pb.GreeterClientImpl)
 
-func init() {
+func TestMain(m *testing.M) {
 	config.SetConsumerService(grpcGreeterImpl)
-}
-
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-func main() {
 	config.Load()
 	time.Sleep(3 * time.Second)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
-		Name: "xujianhai",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("client response result: %v\n", reply)
+	os.Exit(m.Run())
 }

@@ -49,11 +49,11 @@ func main() {
 	req := &api.HelloRequest{
 		Name: "laurence",
 	}
-	reply := &api.User{}
 	ctx := context.Background()
 	// set user defined context attachment
 	ctx = context.WithValue(ctx, tripleConstant.CtxAttachmentKey, "user-defined-value")
-	if err := grpcGreeterImpl.SayHello(ctx, req, reply); err != nil {
+	reply, err := grpcGreeterImpl.SayHello(ctx, req)
+	if err != nil {
 		logger.Error(err)
 	}
 	logger.Infof("client response result: %v\n", reply)

@@ -6,21 +6,19 @@ package protobuf
 import (
 	context "context"
 	fmt "fmt"
+	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
-	dgrpc "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
 	"dubbo.apache.org/dubbo-go/v3/protocol/invocation"
-
-	proto "github.com/golang/protobuf/proto"
-
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
+// Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
@@ -221,15 +219,21 @@ var _Greeter_serviceDesc = grpc.ServiceDesc{
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type GreeterClientImpl struct {
 	// Sends a greeting
-	SayHello func(ctx context.Context, in *HelloRequest, out *HelloReply) error
-}
-
-func (c *GreeterClientImpl) Reference() string {
-	return "greeterImpl"
+	SayHello func(ctx context.Context, in *HelloRequest) (HelloReply, error)
 }
 
 func (c *GreeterClientImpl) GetDubboStub(cc *grpc.ClientConn) GreeterClient {
 	return NewGreeterClient(cc)
+}
+
+// DubboGrpcService is gRPC service
+type DubboGrpcService interface {
+	// SetProxyImpl sets proxy.
+	SetProxyImpl(impl protocol.Invoker)
+	// GetProxyImpl gets proxy.
+	GetProxyImpl() protocol.Invoker
+	// ServiceDesc gets an RPC service's specification.
+	ServiceDesc() *grpc.ServiceDesc
 }
 
 type GreeterProviderBase struct {
@@ -244,16 +248,12 @@ func (s *GreeterProviderBase) GetProxyImpl() protocol.Invoker {
 	return s.proxyImpl
 }
 
-func (c *GreeterProviderBase) Reference() string {
-	return "greeterImpl"
-}
-
 func _DUBBO_Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
-	base := srv.(dgrpc.DubboGrpcService)
+	base := srv.(DubboGrpcService)
 	args := []interface{}{}
 	args = append(args, in)
 	invo := invocation.NewRPCInvocation("SayHello", args, nil)

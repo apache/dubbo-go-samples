@@ -28,7 +28,7 @@
 #array+=("configcenter/zookeeper/go-server")
 #
 ## context
-#array+=("context/go-server")
+array+=("context/dubbo/go-server")
 #
 ## direct
 #array+=("direct/go-server")
@@ -89,10 +89,12 @@
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
 
-# unclassified
-DOCKER_DIR=$(pwd)/integrate_test/dockercompose
+# config api
+array=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
 
-array=("helloworld")
+# unclassified
+array+=("helloworld")
 array+=("direct")
 # config-api
 array+=("config-api/rpc/triple")
@@ -106,11 +108,11 @@ array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
-## generic
-array+=("generic/default")
 
+
+DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
-
+bash -f $DOCKER_DIR/docker-health-check.sh
 for((i=0;i<${#array[*]};i++))
 do
 	./integrate_test.sh "${array[i]}"
