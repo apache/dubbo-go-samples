@@ -89,23 +89,37 @@ array+=("context/dubbo/go-server")
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
 
+# config api
+array=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
+
 # unclassified
-array=("helloworld")
+array+=("helloworld")
 array+=("direct")
 # config-api
 array+=("config-api/rpc/triple")
+array+=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
 # rpc
 array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
+array+=("rpc/triple/pb/dubbogo-grpc")
+array+=("rpc/grpc")
 
+
+DOCKER_DIR=$(pwd)/integrate_test/dockercompose
+docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
+bash -f $DOCKER_DIR/docker-health-check.sh
 for((i=0;i<${#array[*]};i++))
 do
 	./integrate_test.sh "${array[i]}"
 	result=$?
 	if [ $result -gt 0 ]; then
+	      docker-compose -f $DOCKER_DIR/docker-compose.yml down
         exit $result
 	fi
 done
+docker-compose -f $DOCKER_DIR/docker-compose.yml down

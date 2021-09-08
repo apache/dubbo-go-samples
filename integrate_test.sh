@@ -28,13 +28,13 @@ fi
 
 INTEGRATE_DIR=$(pwd)/integrate_test/$1
 
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile docker-up
-
-# check docker health
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile docker-health-check
+# waiting for port release
+sleep 5
 
 # start server
 make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile start
+# waiting for registry
+sleep 5
 
 # start integration
 make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile integration
@@ -47,7 +47,5 @@ fi
 
 # stop server
 make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile clean
-
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile docker-down
 
 exit $((result))

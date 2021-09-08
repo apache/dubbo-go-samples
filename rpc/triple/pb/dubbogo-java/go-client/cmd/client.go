@@ -31,7 +31,7 @@ import (
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-java/protobuf"
+	pb "github.com/apache/dubbo-go-samples/api"
 )
 
 var grpcGreeterImpl = new(pb.GreeterClientImpl)

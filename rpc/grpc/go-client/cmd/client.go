@@ -23,24 +23,17 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	"github.com/dubbogo/gost/log"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/general/grpc/protobuf"
+	pb "github.com/apache/dubbo-go-samples/rpc/grpc/protobuf"
 )
 
-var grpcGreeterImpl = new(protobuf.GreeterClientImpl)
+var grpcGreeterImpl = new(pb.GreeterClientImpl)
 
 func init() {
 	config.SetConsumerService(grpcGreeterImpl)
@@ -52,7 +45,7 @@ func main() {
 	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &protobuf.HelloRequest{
+	req := &pb.HelloRequest{
 		Name: "xujianhai",
 	}
 	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
