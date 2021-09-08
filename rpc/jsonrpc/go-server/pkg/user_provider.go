@@ -112,9 +112,6 @@ func (s *UserProvider) MethodMapper() map[string]string {
 	}
 }
 
-//func (u *UserProvider) Reference() string {
-//	return "UserProvider"
-//}
 func (u *UserProvider) Reference() string {
 	return "com.ikurento.user.UserProvider"
 }

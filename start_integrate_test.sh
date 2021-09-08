@@ -105,6 +105,7 @@ array+=("registry/nacos")
 array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
+array+=("rpc/jsonrpc")
 
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
 
