@@ -2,7 +2,7 @@
 
 Generic invocation is mainly used when the client does not have API interface or model class, all POJOs in parameters and return values are represented by map or other generic data structures. Commonly used for framework integration such as: implementing a common service testing framework, all service implementations can be invoked via `GenericService`. For more information please visit our documentation.
 
-## Dubbo Protocol
+## Getting Started
 
 ### Instructions
 

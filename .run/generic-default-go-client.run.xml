@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="generic-dubbo-go-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-generic">
+  <configuration default="false" name="generic-default-go-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-generic">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
-      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/generic/dubbo/go-client/conf/dubbogo.yml" />
+      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/generic/default/go-client/conf/dubbogo.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <package value="github.com/apache/dubbo-go-samples/generic/dubbo/go-client/cmd" />
+    <package value="github.com/apache/dubbo-go-samples/generic/default/go-client/cmd" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$/generic/default/go-client/cmd/client.go" />
     <method v="2" />

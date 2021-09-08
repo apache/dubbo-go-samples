@@ -42,7 +42,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/generic/dubbo/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/generic/default/go-client/pkg"
 )
 
 var (
