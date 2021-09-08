@@ -37,6 +37,7 @@ import (
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/dubbogo/gost/log"
 )
 
@@ -100,7 +101,7 @@ func callGetUser() {
 		[]interface{}{
 			"GetUser",
 			[]string{"java.lang.String"},
-			[]interface{}{"A003"},
+			[]hessian.Object{"A003"},
 		},
 	)
 	if err != nil {
@@ -123,7 +124,7 @@ func callQueryUser() {
 		[]interface{}{
 			"queryUser",
 			[]string{"org.apache.dubbo.User"},
-			[]interface{}{user},
+			[]hessian.Object{user},
 		},
 	)
 	if err != nil {
