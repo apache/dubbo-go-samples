@@ -122,9 +122,9 @@ public class ApiConsumer {
         logger.info("Start to generic invoke");
 
         User user = new User();
-        user.setName("Patrick");
-        user.setId("id");
-        user.setAge(10);
+        user.setName("panty");
+        user.setId("3213");
+        user.setAge(25);
         Object result = genericService.$invoke("queryUser", new String[]{"org.apache.dubbo.User"}, new Object[]{user});
         logger.info("\n\n\n" + "queryUser(User user) " + "res: " + result + "\n\n\n");
     }
@@ -135,13 +135,13 @@ public class ApiConsumer {
 
         ArrayList<Map> userArr = new ArrayList<>();
         Map<Object, Object> userMap1 = new HashMap<>();
-        userMap1.put("id", "A001");
-        userMap1.put("name", "Patrick");
-        userMap1.put("age", 10);
+        userMap1.put("id", "3212");
+        userMap1.put("name", "XavierNiu");
+        userMap1.put("age", 24);
         Map<Object, Object> userMap2 = new HashMap<>();
-        userMap2.put("id", "A002");
-        userMap2.put("name", "xavier-niu");
-        userMap2.put("age", 24);
+        userMap2.put("id", "3213");
+        userMap2.put("name", "zhangsan");
+        userMap2.put("age", 21);
         userArr.add(userMap1);
         userArr.add(userMap2);
 

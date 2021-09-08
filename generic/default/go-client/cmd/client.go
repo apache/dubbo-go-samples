@@ -280,9 +280,9 @@ func callQueryUsers() {
 						"class": "org.apache.dubbo.User",
 					},
 					map[string]hessian.Object{
-						"iD":    "3212",
-						"name":  "XavierNiu",
-						"age":   24,
+						"iD":    "3213",
+						"name":  "zhangsan",
+						"age":   21,
 						"time":  time.Now().Add(4),
 						"class": "org.apache.dubbo.User",
 					},
