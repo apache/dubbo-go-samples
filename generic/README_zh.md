@@ -17,11 +17,11 @@
 
    1. go
 
-      使用 goland 启动 generic-dubbo-go-server
+      使用 goland 启动 generic-default-go-server
 
    2. java
 
-      在goland启动generic-dubbo-java-server
+      在goland启动generic-default-java-server
       
       或
 
@@ -31,11 +31,11 @@
 
    1. go
 
-      使用 goland 启动 generic-dubbo-go-client
+      使用 goland 启动 generic-default-go-client
 
    2. java
 
-      在goland启动generic-dubbo-java-client
+      在goland启动generic-default-java-client
 
       或
 

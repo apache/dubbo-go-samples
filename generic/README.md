@@ -17,11 +17,11 @@ Generic invocation is mainly used when the client does not have API interface or
 
    1. go
 
-      Use goland to start generic-dubbo-go-server
+      Use goland to start generic-default-go-server
 
    2. java
 
-      Use goland to start generic-dubbo-java-server
+      Use goland to start generic-default-java-server
       
       or
 
@@ -31,11 +31,11 @@ Generic invocation is mainly used when the client does not have API interface or
 
    1. go
 
-      Use goland to start generic-dubbo-go-client
+      Use goland to start generic-default-go-client
 
    2. java
 
-      Use goland to start generic-dubbo-java-client
+      Use goland to start generic-default-java-client
    
       or
 
