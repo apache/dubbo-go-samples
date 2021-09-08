@@ -17,6 +17,13 @@
 
 package org.apache.dubbo;
 
+import java.util.concurrent.CountDownLatch;
+
+import org.apache.dubbo.common.constants.CommonConstants;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ProtocolConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.ServiceConfig;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Provider {
@@ -29,6 +36,19 @@ public class Provider {
     public static void main(String[] args) throws Exception {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo.provider.xml"});
         context.start();
+        startComplexService();
         System.in.read(); // press any key to exit
+    }
+
+    public static void startComplexService() throws InterruptedException {
+        ServiceConfig<ComplexProvider> service = new ServiceConfig<>();
+        service.setInterface(ComplexProvider.class);
+        service.setRef(new ComplexProviderImpl());
+        service.setProtocol(new ProtocolConfig(CommonConstants.DUBBO_PROTOCOL, 20001));
+        service.setApplication(new ApplicationConfig("demo-provider"));
+        service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
+        service.export();
+        System.out.println("dubbo service started");
+        new CountDownLatch(1).await();
     }
 }
