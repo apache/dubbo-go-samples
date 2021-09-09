@@ -91,6 +91,8 @@ array+=("context/dubbo/go-server")
 
 # config api
 array=("config-api/configcenter/nacos")
+# generic
+array+=("generic/default")
 array+=("config-api/configcenter/zookeeper")
 
 # unclassified
