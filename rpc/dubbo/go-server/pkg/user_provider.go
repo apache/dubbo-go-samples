@@ -49,14 +49,14 @@ func (u *UserProvider) getUser(userID string) (*User, error) {
 	return nil, fmt.Errorf("invalid user id:%s", userID)
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+func (u *UserProvider) GetUser(ctx context.Context, req *User) (*User, error) {
 	var (
 		err  error
 		user *User
 	)
 
 	gxlog.CInfo("req:%#v", req)
-	user, err = u.getUser(req[0].(string))
+	user, err = u.getUser(req.ID)
 	if err == nil {
 		gxlog.CInfo("rsp:%#v", user)
 	}
@@ -77,12 +77,12 @@ func (u *UserProvider) GetUser0(id string, name string) (User, error) {
 	return *user, err
 }
 
-func (u *UserProvider) GetUser2(ctx context.Context, req []interface{}) (*User, error) {
+func (u *UserProvider) GetUser2(ctx context.Context, req int32) (*User, error) {
 	var err error
 
 	gxlog.CInfo("req:%#v", req)
 	user := &User{}
-	user.ID = strconv.Itoa(int(req[0].(int32)))
+	user.ID = strconv.Itoa(int(req))
 	return user, err
 }
 
@@ -90,27 +90,26 @@ func (u *UserProvider) GetUser3() error {
 	return nil
 }
 
-func (u *UserProvider) GetErr(ctx context.Context, req []interface{}) (*User, error) {
+func (u *UserProvider) GetErr(ctx context.Context, req *User) (*User, error) {
 	return nil, java_exception.NewThrowable("exception")
 }
 
-func (u *UserProvider) GetUsers(req []interface{}) ([]interface{}, error) {
+func (u *UserProvider) GetUsers(req []string) ([]*User, error) {
 	var err error
 
 	gxlog.CInfo("req:%s", req)
-	t := req[0].([]interface{})
-	user, err := u.getUser(t[0].(string))
+	user, err := u.getUser(req[0])
 	if err != nil {
 		return nil, err
 	}
 	gxlog.CInfo("user:%v", user)
-	user1, err := u.getUser(t[1].(string))
+	user1, err := u.getUser(req[1])
 	if err != nil {
 		return nil, err
 	}
 	gxlog.CInfo("user1:%v", user1)
 
-	return []interface{}{user, user1}, err
+	return []*User{user, user1}, err
 }
 
 func (s *UserProvider) GetGender(i int32) (hessian.JavaEnum, error) {
