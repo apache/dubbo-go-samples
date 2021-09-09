@@ -9,7 +9,7 @@
 * configcenter: 使用不同的配置中心，目前支持三种：zookeeper、apollo、和 nacos
 * direct: 直连模式
 * filter: 使用和扩展不同的 filter，目前包含了 custom_filter 和 tpslimit
-* general: 通用例子，展示 zookeeper 注册中心的使用以及不同的配置项
+* rpc: dubbo下展示dubbo协议通信调用
 * generic: 泛化调用
 * helloworld: 入门例子
 * multi_registry: 多注册
@@ -21,7 +21,6 @@
 * tls: 在 Dubbo-go 中使用 TLS
 * tracing: 链路追踪
 * game: 游戏服务例子
-* rpc/dubbo: dubbo协议通信
 
 ## 如何运行
 
