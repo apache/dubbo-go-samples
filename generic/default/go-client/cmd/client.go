@@ -38,6 +38,8 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
+	tpconst "github.com/dubbogo/triple/pkg/common/constant"
+
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
@@ -46,73 +48,35 @@ import (
 )
 
 var (
-	appName         = "dubbo.io"
-	referenceConfig config.ReferenceConfig
+	appName       = "dubbo.io"
+	dubboRefConf       config.ReferenceConfig
+	tripleRefConf config.ReferenceConfig
 )
-
-func init() {
-	registryConfig := &config.RegistryConfig{
-		Protocol: "zookeeper",
-		Address:  "127.0.0.1:2181",
-	}
-
-	referenceConfig = config.ReferenceConfig{
-		InterfaceName: "org.apache.dubbo.UserProvider",
-		Cluster:       "failover",
-		Registry:      []string{"zk"},
-		Protocol:      dubbo.DUBBO,
-		Generic:       "true",
-	}
-
-	rootConfig := config.NewRootConfig(config.WithRootRegistryConfig("zk", registryConfig))
-	_ = rootConfig.Init()
-	_ = referenceConfig.Init(rootConfig)
-	referenceConfig.GenericLoad(appName)
-}
 
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/generic/default/go-client/conf/dubbogo.yml
 func main() {
+	// register POJOs
 	hessian.RegisterPOJO(&pkg.User{})
 
-	callGetUser()
-	//callGetOneUser()
-	callGetUsers()
-	callGetUsersMap()
-	callQueryUser()
-	callQueryUsers()
-	//callQueryAll()
+	dubboRefConf = newRefConf("org.apache.dubbo.samples.UserProvider", dubbo.DUBBO)
+	tripleRefConf = newRefConf("org.apache.dubbo.samples.UserProviderTriple", tpconst.TRIPLE)
+
+	// generic invocation samples with default generalization, dubbo protocol and hessian serialization
+	callGetUser(dubboRefConf)
+	//callGetOneUser(dubboRefConf)
+	callGetUsers(dubboRefConf)
+	callGetUsersMap(dubboRefConf)
+	callQueryUser(dubboRefConf)
+	callQueryUsers(dubboRefConf)
+	//callQueryAll(dubboRefConf)
+
+	// generic invocation samples with default generalization, triple protocol and hessian serialization
 
 	initSignal()
 }
 
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
-		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(10*time.Second, func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
-
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("app exit now...")
-			return
-		}
-	}
-}
-
-func callGetUser() {
-	logger.Infof("Call GetUser")
-	logger.Infof("Start to generic invoke")
-	resp, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+func callGetUser(refConf config.ReferenceConfig) {
+	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUser1",
@@ -123,9 +87,9 @@ func callGetUser() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nGetUser1(userId string) res: %+v\n", resp)
+	logger.Infof("GetUser1(userId string) res: %+v", resp)
 
-	resp, err = referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	resp, err = refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUser2",
@@ -136,9 +100,9 @@ func callGetUser() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nGetUser2(userId string, name string) res: %+v\n", resp)
+	logger.Infof("GetUser2(userId string, name string) res: %+v", resp)
 
-	resp, err = referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	resp, err = refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUser3",
@@ -149,9 +113,9 @@ func callGetUser() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nGetUser3(userCode int) res: %+v\n", resp)
+	logger.Infof("GetUser3(userCode int) res: %+v", resp)
 
-	resp, err = referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	resp, err = refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUser4",
@@ -162,15 +126,11 @@ func callGetUser() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nGetUser4(userCode int, name string) res: %+v\n", resp)
-
-	logger.Infof("success!")
+	logger.Infof("GetUser4(userCode int, name string) res: %+v", resp)
 }
 
-func callGetOneUser() {
-	logger.Infof("Call GetOneUser")
-	logger.Infof("Start to generic invoke")
-	resp, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+func callGetOneUser(refConf config.ReferenceConfig) {
+	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetOneUser",
@@ -183,14 +143,11 @@ func callGetOneUser() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nGetOneUser() res: %+v\n", resp)
-	logger.Infof("success!")
+	logger.Infof("GetOneUser() res: %+v", resp)
 }
 
-func callGetUsers() {
-	logger.Infof("Call GetUsers")
-	logger.Infof("Start to generic invoke")
-	resp, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+func callGetUsers(refConf config.ReferenceConfig) {
+	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUsers",
@@ -205,14 +162,11 @@ func callGetUsers() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nGetUsers1(userIdList []*string) res: %+v\n", resp)
-	logger.Infof("success!")
+	logger.Infof("GetUsers1(userIdList []*string) res: %+v", resp)
 }
 
-func callGetUsersMap() {
-	logger.Infof("Call GetUsersMap")
-	logger.Infof("Start to generic invoke")
-	resp, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+func callGetUsersMap(refConf config.ReferenceConfig) {
+	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUsersMap",
@@ -227,14 +181,11 @@ func callGetUsersMap() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nGetUserMap(userIdList []*string) res: %+v\n", resp)
-	logger.Infof("success!")
+	logger.Infof("GetUserMap(userIdList []*string) res: %+v", resp)
 }
 
-func callQueryUser() {
-	logger.Infof("Call QueryUser")
-	logger.Infof("Start to generic invoke")
-	resp, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+func callQueryUser(refConf config.ReferenceConfig) {
+	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"queryUser",
@@ -258,14 +209,11 @@ func callQueryUser() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nqueryUser(user *User) res: %+v\n", resp)
-	logger.Infof("success!")
+	logger.Infof("queryUser(user *User) res: %+v", resp)
 }
 
-func callQueryUsers() {
-	logger.Infof("Call QueryUsers")
-	logger.Infof("Start to generic invoke")
-	var resp, err = referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+func callQueryUsers(refConf config.ReferenceConfig) {
+	var resp, err = refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"queryUsers",
@@ -293,14 +241,11 @@ func callQueryUsers() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nqueryUsers(users []*User) res: %+v\n", resp)
-	logger.Infof("success!")
+	logger.Infof("queryUsers(users []*User) res: %+v", resp)
 }
 
-func callQueryAll() {
-	logger.Infof("Call queryAll")
-	logger.Infof("Start to generic invoke")
-	resp, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+func callQueryAll(refConf config.ReferenceConfig) {
+	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"queryAll",
@@ -313,6 +258,51 @@ func callQueryAll() {
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("\n\nqueryAll() res: %+v\n", resp)
-	logger.Infof("success!")
+	logger.Infof("queryAll() res: %+v", resp)
+}
+
+func newRefConf(iface, protocol string) config.ReferenceConfig {
+	registryConfig := &config.RegistryConfig{
+		Protocol: "zookeeper",
+		Address:  "127.0.0.1:2181",
+	}
+
+	refConf := config.ReferenceConfig{
+		InterfaceName: iface,
+		Cluster:       "failover",
+		Registry:      []string{"zk"},
+		Protocol:      protocol,
+		Generic:       "true",
+	}
+
+	rootConfig := config.NewRootConfig(config.WithRootRegistryConfig("zk", registryConfig))
+	_ = rootConfig.Init()
+	_ = refConf.Init(rootConfig)
+	refConf.GenericLoad(appName)
+
+	return refConf
+}
+
+func initSignal() {
+	signals := make(chan os.Signal, 1)
+	// It is not possible to block SIGKILL or syscall.SIGSTOP
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
+		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	for {
+		sig := <-signals
+		logger.Infof("get signal %s", sig.String())
+		switch sig {
+		case syscall.SIGHUP:
+			// reload()
+		default:
+			time.AfterFunc(10*time.Second, func() {
+				logger.Warnf("app exit now by force...")
+				os.Exit(1)
+			})
+
+			// The program exits normally or timeout forcibly exits.
+			fmt.Println("app exit now...")
+			return
+		}
+	}
 }

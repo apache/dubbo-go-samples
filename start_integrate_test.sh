@@ -89,22 +89,22 @@ array+=("context/dubbo/go-server")
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
 
-# config api
-array=("config-api/configcenter/nacos")
-# generic
-array+=("generic/default")
-array+=("config-api/configcenter/zookeeper")
-
 # unclassified
-array+=("helloworld")
+array=("helloworld")
 array+=("direct")
+
 # config-api
 array+=("config-api/rpc/triple")
 array+=("config-api/configcenter/nacos")
 array+=("config-api/configcenter/zookeeper")
+
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
+
+# generic
+array+=("generic/default")
+
 # rpc
 array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
