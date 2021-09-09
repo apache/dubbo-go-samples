@@ -26,6 +26,9 @@ ifeq ($(GO_OS), darwin)
     GO_OS = mac
 endif
 
+# shell
+SHELL = /bin/bash
+
 # license
 GO_LICENSE_CHECKER_DIR = license-header-checker-$(GO_OS)
 GO_LICENSE_CHECKER = $(GO_PATH)/bin/license-header-checker
