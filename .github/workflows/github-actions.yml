@@ -62,17 +62,11 @@ jobs:
       - name: Install go ci lint
         run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.41.1
 
-      - name: Run Linter
-        run: golangci-lint run --timeout=10m -v
+#      - name: Run Linter
+#        run: golangci-lint run --timeout=10m -v
 
       - name: License
-        run: |
-          GO_LICENSE_CHECKER_DIR = license-header-checker-$(GO_OS)
-          GO_LICENSE_CHECKER = $(GO_PATH)/bin/license-header-checker
-          LICENSE_DIR = /tmp/tools/license
-          $(GO_LICENSE_CHECKER) -version || (wget https://github.com/lsm-dev/license-header-checker/releases/download/v1.2.0/$(GO_LICENSE_CHECKER_DIR).zip -O $(GO_LICENSE_CHECKER_DIR).zip && unzip -o $(GO_LICENSE_CHECKER_DIR).zip && mkdir -p $(GO_PATH)/bin/ && cp $(GO_LICENSE_CHECKER_DIR)/64bit/license-header-checker $(GO_PATH)/bin/)
-          ls /tmp/tools/license/license.txt || wget -P $(LICENSE_DIR) https://github.com/dubbogo/resources/raw/master/tools/license/license.txt
-          $(GO_LICENSE_CHECKER) -v -a -r -i vendor $(LICENSE_DIR)/license.txt . go && [[ -z `git status -s` ]]
+        run: make -f build/Makefile license
 
       - name: Integration Test
         run: |
