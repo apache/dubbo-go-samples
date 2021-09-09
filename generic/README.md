@@ -36,7 +36,7 @@ func main() {
     		//parameter type
     		[]string{"org.apache.dubbo.User"},
     		//parameter array
-    		[]interface{}{user},
+    		[]hessian.Object{user},
     	},
     )
 }

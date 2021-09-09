@@ -28,6 +28,7 @@ import (
 import (
 	"github.com/apache/dubbo-go/config"
 
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -37,7 +38,7 @@ func TestGetUser(t *testing.T) {
 		[]interface{}{
 			"GetUser",
 			[]string{"java.lang.String"},
-			[]interface{}{"A003"},
+			[]hessian.Object{"A003"},
 		},
 	)
 
@@ -62,7 +63,7 @@ func TestQueryUser(t *testing.T) {
 		[]interface{}{
 			"queryUser",
 			[]string{"org.apache.dubbo.User"},
-			[]interface{}{user},
+			[]hessian.Object{user},
 		},
 	)
 
