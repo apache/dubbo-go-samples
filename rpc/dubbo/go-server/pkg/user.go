@@ -79,7 +79,7 @@ type (
 
 var (
 	DefaultUser = User{
-		ID: "0", Name: "Alex Stocks", Age: 31,
+		ID: "000", Name: "Alex Stocks", Age: 31,
 		Sex: Gender(MAN),
 	}
 
@@ -87,10 +87,10 @@ var (
 )
 
 func init() {
-	userMap["A000"] = DefaultUser
-	userMap["A001"] = User{ID: "001", Name: "ZhangSheng", Age: 18, Sex: Gender(MAN)}
-	userMap["A002"] = User{ID: "002", Name: "Lily", Age: 20, Sex: Gender(WOMAN)}
-	userMap["A003"] = User{ID: "113", Name: "Moorse", Age: 30, Sex: Gender(WOMAN)}
+	userMap["000"] = DefaultUser
+	userMap["001"] = User{ID: "001", Name: "ZhangSheng", Age: 18, Sex: Gender(MAN)}
+	userMap["002"] = User{ID: "002", Name: "Lily", Age: 20, Sex: Gender(WOMAN)}
+	userMap["003"] = User{ID: "113", Name: "Moorse", Age: 30, Sex: Gender(WOMAN)}
 	for k, v := range userMap {
 		v.Time = time.Now()
 		userMap[k] = v
