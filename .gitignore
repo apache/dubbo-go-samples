@@ -36,3 +36,7 @@ coverage.txt
 # java build
 general/dubbo3/api/dubbogo-java/java-client/build/
 general/dubbo3/api/dubbogo-java/java-server/build/
+
+# license header
+/license-header-checker-linux/
+/license-header-checker-linux.zip
