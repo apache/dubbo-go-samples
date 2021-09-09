@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -35,9 +33,11 @@ import (
 )
 
 func TestGetUserA000(t *testing.T) {
-	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A000"})
+	reqUser := &User{}
+	reqUser.ID = "000"
+	user, err := userProvider.GetUser(context.TODO(), reqUser)
 	assert.Nil(t, err)
-	assert.Equal(t, "0", user.ID)
+	assert.Equal(t, "000", user.ID)
 	assert.Equal(t, "Alex Stocks", user.Name)
 	assert.Equal(t, int32(31), user.Age)
 	assert.Equal(t, Gender(pkg.MAN), user.Sex)
@@ -45,7 +45,9 @@ func TestGetUserA000(t *testing.T) {
 }
 
 func TestGetUserA001(t *testing.T) {
-	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A001"})
+	reqUser := &User{}
+	reqUser.ID = "001"
+	user, err := userProvider.GetUser(context.TODO(), reqUser)
 	assert.Nil(t, err)
 	assert.Equal(t, "001", user.ID)
 	assert.Equal(t, "ZhangSheng", user.Name)
@@ -55,7 +57,9 @@ func TestGetUserA001(t *testing.T) {
 }
 
 func TestGetUserA002(t *testing.T) {
-	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A002"})
+	reqUser := &User{}
+	reqUser.ID = "002"
+	user, err := userProvider.GetUser(context.TODO(), reqUser)
 	assert.Nil(t, err)
 	assert.Equal(t, "002", user.ID)
 	assert.Equal(t, "Lily", user.Name)
@@ -65,7 +69,9 @@ func TestGetUserA002(t *testing.T) {
 }
 
 func TestGetUserA003(t *testing.T) {
-	user, err := userProvider.GetUser(context.TODO(), []interface{}{"A003"})
+	reqUser := &User{}
+	reqUser.ID = "003"
+	user, err := userProvider.GetUser(context.TODO(), reqUser)
 	assert.Nil(t, err)
 	assert.Equal(t, "113", user.ID)
 	assert.Equal(t, "Moorse", user.Name)
@@ -75,30 +81,33 @@ func TestGetUserA003(t *testing.T) {
 }
 
 func TestGetUser0(t *testing.T) {
-	user, err := userProvider.GetUser0("A003", "Moorse")
+	user, err := userProvider.GetUser0("003", "Moorse")
 	assert.Nil(t, err)
 	assert.NotNil(t, user)
 
-	user, err = userProvider.GetUser0("A003", "MOORSE")
+	user, err = userProvider.GetUser0("003", "MOORSE")
 	assert.NotNil(t, err)
 }
 
 func TestGetUser2(t *testing.T) {
-	user, err := userProvider.GetUser2(context.TODO(), []interface{}{int32(64)})
+	user, err := userProvider.GetUser2(context.TODO(), int32(64))
 	assert.Nil(t, err)
 	assert.Equal(t, "64", user.ID)
 }
 
 func TestGetErr(t *testing.T) {
-	_, err := userProvider.GetErr(context.TODO(), []interface{}{"A003"})
+	reqUser := &User{}
+	reqUser.ID = "003"
+	_, err := userProvider.GetErr(context.TODO(), reqUser)
 	assert.IsType(t, &java_exception.Throwable{}, err)
 }
 
 func TestGetUsers(t *testing.T) {
-	users, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
+	reqUsers := []string{"002", "003"}
+	users, err := userProvider.GetUsers(reqUsers)
 	assert.Nil(t, err)
-	assert.Equal(t, "Lily", users[0].(*User).Name)
-	assert.Equal(t, "Moorse", users[1].(*User).Name)
+	assert.Equal(t, "Lily", users[0].Name)
+	assert.Equal(t, "Moorse", users[1].Name)
 }
 
 func TestGetGender(t *testing.T) {
