@@ -31,9 +31,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-import (
-	pkg "github.com/apache/dubbo-go-samples/generic/default/go-server/pkg"
-)
+//import (
+//	pkg "github.com/apache/dubbo-go-samples/generic/default/go-server/pkg"
+//)
 
 func TestGetUser1(t *testing.T) {
 	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
