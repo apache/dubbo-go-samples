@@ -89,7 +89,7 @@ array+=("context/dubbo/go-server")
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
 
-# unclassified
+# ungrouped
 array=("helloworld")
 array+=("direct")
 
@@ -110,7 +110,6 @@ array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
-# dubbo
 array+=("rpc/dubbo")
 
 
