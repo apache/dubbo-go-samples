@@ -31,12 +31,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-//import (
-//	pkg "github.com/apache/dubbo-go-samples/generic/default/go-server/pkg"
-//)
-
 func TestGetUser1(t *testing.T) {
-	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUser1",
@@ -53,7 +49,7 @@ func TestGetUser1(t *testing.T) {
 }
 
 func TestGetUser2(t *testing.T) {
-	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUser2",
@@ -70,7 +66,7 @@ func TestGetUser2(t *testing.T) {
 }
 
 func TestGetUser3(t *testing.T) {
-	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUser3",
@@ -87,7 +83,7 @@ func TestGetUser3(t *testing.T) {
 }
 
 func TestGetUser4(t *testing.T) {
-	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUser4",
@@ -104,7 +100,7 @@ func TestGetUser4(t *testing.T) {
 }
 
 func TestGetOneUser(t *testing.T) {
-	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetOneUser",
@@ -121,7 +117,7 @@ func TestGetOneUser(t *testing.T) {
 }
 
 func TestGetUsers(t *testing.T) {
-	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"GetUsers",
@@ -143,7 +139,7 @@ func TestGetUsers(t *testing.T) {
 }
 
 func TestQueryUser(t *testing.T) {
-	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		[]interface{}{
 			"queryUser",

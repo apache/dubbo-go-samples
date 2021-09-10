@@ -19,4 +19,5 @@ dubbo:
         interface: org.apache.dubbo.samples.UserProvider
       UserProviderTriple:
         protocol: triple
+        serialization: hessian2
         interface: org.apache.dubbo.samples.UserProviderTriple

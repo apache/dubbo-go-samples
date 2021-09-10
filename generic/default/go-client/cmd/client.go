@@ -38,8 +38,6 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
-	tpconst "github.com/dubbogo/triple/pkg/common/constant"
-
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
@@ -48,9 +46,7 @@ import (
 )
 
 var (
-	appName       = "dubbo.io"
-	dubboRefConf  config.ReferenceConfig
-	tripleRefConf config.ReferenceConfig
+	appName = "dubbo.io"
 )
 
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/generic/default/go-client/conf/dubbogo.yml
@@ -58,10 +54,9 @@ func main() {
 	// register POJOs
 	hessian.RegisterPOJO(&pkg.User{})
 
-	dubboRefConf = newRefConf("org.apache.dubbo.samples.UserProvider", dubbo.DUBBO)
-	tripleRefConf = newRefConf("org.apache.dubbo.samples.UserProviderTriple", tpconst.TRIPLE)
+	// generic invocation samples using hessian serialization on Dubbo protocol
+	dubboRefConf := newRefConf("org.apache.dubbo.samples.UserProvider", dubbo.DUBBO)
 
-	// generic invocation samples with default generalization, dubbo protocol and hessian serialization
 	callGetUser(dubboRefConf)
 	//callGetOneUser(dubboRefConf)
 	callGetUsers(dubboRefConf)
@@ -70,7 +65,8 @@ func main() {
 	callQueryUsers(dubboRefConf)
 	//callQueryAll(dubboRefConf)
 
-	// generic invocation samples with default generalization, triple protocol and hessian serialization
+	// generic invocation samples using hessian serialization on Triple protocol
+	//tripleRefConf := newRefConf("org.apache.dubbo.samples.UserProviderTriple", tpconst.TRIPLE)
 
 	initSignal()
 }
