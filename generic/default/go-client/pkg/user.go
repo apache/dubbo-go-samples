@@ -28,6 +28,6 @@ type User struct {
 	Time time.Time
 }
 
-func (u*User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
