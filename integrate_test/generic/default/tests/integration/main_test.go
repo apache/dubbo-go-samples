@@ -41,34 +41,37 @@ import (
 )
 
 var (
-	appName         = "dubbo.io"
-	referenceConfig config.ReferenceConfig
+	appName      = "dubbo.io"
+	dubboRefConf config.ReferenceConfig
+	//tripleRefConf config.ReferenceConfig
 )
 
-func init() {
+func TestMain(m *testing.M) {
+	hessian.RegisterPOJO(&pkg.User{})
+
+	dubboRefConf = newRefConf("org.apache.dubbo.samples.UserProvider", dubbo.DUBBO)
+
+	os.Exit(m.Run())
+}
+
+func newRefConf(iface, protocol string) config.ReferenceConfig {
 	registryConfig := &config.RegistryConfig{
 		Protocol: "zookeeper",
 		Address:  "127.0.0.1:2181",
 	}
 
-	referenceConfig = config.ReferenceConfig{
-		InterfaceName: "org.apache.dubbo.UserProvider",
+	refConf := config.ReferenceConfig{
+		InterfaceName: iface,
 		Cluster:       "failover",
 		Registry:      []string{"zk"},
-		Protocol:      dubbo.DUBBO,
+		Protocol:      protocol,
 		Generic:       "true",
 	}
 
 	rootConfig := config.NewRootConfig(config.WithRootRegistryConfig("zk", registryConfig))
 	_ = rootConfig.Init()
-	_ = referenceConfig.Init(rootConfig)
-	referenceConfig.GenericLoad(appName)
-}
+	_ = refConf.Init(rootConfig)
+	refConf.GenericLoad(appName)
 
-func TestMain(m *testing.M) {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.SetProviderService(&pkg.User{})
-	config.Load()
-
-	os.Exit(m.Run())
+	return refConf
 }

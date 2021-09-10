@@ -86,17 +86,12 @@
 #array+=("router/uniform-router/file/go-server")
 #array+=("router/uniform-router/file/go-server2")
 
+# ungrouped
+array=("helloworld")
+array+=("direct")
+
 # context
 array+=("context/dubbo")
-
-# generic
-array+=("generic/default")
-
-# helloworld
-array+=("helloworld")
-
-# direct
-array+=("direct")
 
 # config-api
 array+=("config-api/rpc/triple")
@@ -106,6 +101,9 @@ array+=("config-api/configcenter/zookeeper")
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
+
+# generic
+array+=("generic/default")
 
 # rpc
 array+=("rpc/dubbo")

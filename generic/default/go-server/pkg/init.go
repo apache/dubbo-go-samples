@@ -18,23 +18,15 @@
 package pkg
 
 import (
-	"time"
+	"dubbo.apache.org/dubbo-go/v3/config"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var userMap = map[string]*User{
-	"001": {"001", "other-zhangsan", 23, time.Date(1998, 1, 2, 3, 4, 5, 0, time.Local)},
-	"002": {"002", "other-lisi", 25, time.Date(1996, 1, 2, 3, 4, 5, 0, time.Local)},
-	"003": {"003", "other-lily", 28, time.Date(1993, 1, 2, 3, 4, 5, 0, time.Local)},
-	"004": {"004", "other-lisa", 36, time.Date(1985, 1, 2, 3, 4, 5, 0, time.Local)},
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+func init() {
+	config.SetProviderService(new(UserProvider))
+	config.SetProviderService(new(UserProviderTriple))
+	// ------for hessian2------
+	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&UserResponse{})
 }
