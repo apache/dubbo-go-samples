@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-import(
+import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 )
 
-type UserProviderTriple struct {}
+type UserProviderTriple struct{}
 
 func (u *UserProviderTriple) GetUser1(_ context.Context, userID string) (*User, error) {
 	logger.Infof("req:%#v", userID)

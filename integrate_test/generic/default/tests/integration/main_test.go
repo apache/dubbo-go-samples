@@ -41,7 +41,7 @@ import (
 )
 
 var (
-	appName         = "dubbo.io"
+	appName      = "dubbo.io"
 	dubboRefConf config.ReferenceConfig
 	//tripleRefConf config.ReferenceConfig
 )
