@@ -48,10 +48,10 @@ func TestTest(t *testing.T) {
 	assert.Equal(t, int64(30), user0.Age)
 	assert.Equal(t, "MAN", user0.Sex)
 
-	users, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
-	assert.Nil(t, err)
-	assert.Equal(t, "Lily", users[0].Name)
-	assert.Equal(t, int64(20), users[0].Age)
-	assert.Equal(t, "WOMAN", users[0].Sex)
+	//users, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
+	//assert.Nil(t, err)
+	//assert.Equal(t, "Lily", users[0].Name)
+	//assert.Equal(t, int64(20), users[0].Age)
+	//assert.Equal(t, "WOMAN", users[0].Sex)
 
 }
