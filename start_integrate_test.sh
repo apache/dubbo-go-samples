@@ -26,92 +26,93 @@
 #array+=("configcenter/apollo/go-server")
 #array+=("configcenter/nacos/go-server")
 #array+=("configcenter/zookeeper/go-server")
-##
-### context
-#array+=("context/dubbo/go-server")
-##
-### direct
-##array+=("direct/go-server")
-##
-### filter
-##array+=("filter/custom/go-server")
-##array+=("filter/tpslimit/go-server")
-##array+=("filter/sentinel/go-server")
-##
-### game
-##array+=("game/go-server-game")
-##array+=("game/go-server-gate")
-##
-### general-dubbo
-##array+=("general/dubbo/go-server")
-##
-### general-triple(triple)
-##array+=("general/triple/pb/dubbogo-grpc/server/dubbogo-server")
-##array+=("general/triple/pb/dubbogo-java/go-server")
-##array+=("general/triple/hessian2/go-server")
-##array+=("general/triple/msgpack/go-server")
-##array+=("general/triple/codec-extension/go-server")
-##
-### general-grpc
-##array+=("general/grpc/go-server")
-##
-### generic invocation
-##array+=("generic/default/go-server")
-###array+=("generic/protobufjson/go-server")
-##
-### group
-##array+=("group/go-server-group-a")
-##array+=("group/go-server-group-b")
-##
-### hello world
-##array+=("helloworld/go-server")
-##
-### metric
-##array+=("metric/go-server")
-##
-### multi-registry
-##array+=("multi-registry/go-server")
-##
-### multi-zone
-##array+=("multi-zone")
-##
-### registry
-##array+=("registry/zookeeper/go-server")
-##array+=("registry/etcd/go-server")
-##array+=("registry/nacos/go-server")
-##
-### registry/servicediscovery (app level serivce discovery)
-##array+=("registry/servicediscovery/zookeeper/go-server")
-##array+=("registry/servicediscovery/nacos/go-server")
-##
-### router integrate test can only confirm the program build success,
-### the test of router logic would be fixed later
-##array+=("router/uniform-router/file/go-server")
-##array+=("router/uniform-router/file/go-server2")
+
+## direct
+#array+=("direct/go-server")
 #
-## config api
-#array=("config-api/configcenter/nacos")
-## generic
-#array+=("generic/default")
-#array+=("config-api/configcenter/zookeeper")
+## filter
+#array+=("filter/custom/go-server")
+#array+=("filter/tpslimit/go-server")
+#array+=("filter/sentinel/go-server")
 #
-## unclassified
-#array+=("helloworld")
-#array+=("direct")
-# config-api
-#array+=("config-api/rpc/triple")
-#array+=("config-api/configcenter/nacos")
-#array+=("config-api/configcenter/zookeeper")
+## game
+#array+=("game/go-server-game")
+#array+=("game/go-server-gate")
+#
+## general-dubbo
+#array+=("general/dubbo/go-server")
+#
+## general-triple(triple)
+#array+=("general/triple/pb/dubbogo-grpc/server/dubbogo-server")
+#array+=("general/triple/pb/dubbogo-java/go-server")
+#array+=("general/triple/hessian2/go-server")
+#array+=("general/triple/msgpack/go-server")
+#array+=("general/triple/codec-extension/go-server")
+#
+## general-grpc
+#array+=("general/grpc/go-server")
+#
+## generic invocation
+#array+=("generic/default/go-server")
+##array+=("generic/protobufjson/go-server")
+#
+## group
+#array+=("group/go-server-group-a")
+#array+=("group/go-server-group-b")
+#
+## hello world
+#array+=("helloworld/go-server")
+#
+## metric
+#array+=("metric/go-server")
+#
+## multi-registry
+#array+=("multi-registry/go-server")
+#
+## multi-zone
+#array+=("multi-zone")
+#
 ## registry
-#array+=("registry/zookeeper")
+#array+=("registry/zookeeper/go-server")
+#array+=("registry/etcd/go-server")
+#array+=("registry/nacos/go-server")
+#
+## registry/servicediscovery (app level serivce discovery)
+#array+=("registry/servicediscovery/zookeeper/go-server")
+#array+=("registry/servicediscovery/nacos/go-server")
+#
+## router integrate test can only confirm the program build success,
+## the test of router logic would be fixed later
+#array+=("router/uniform-router/file/go-server")
+#array+=("router/uniform-router/file/go-server2")
+
+# context
+array+=("context/dubbo/go-server")
+
+# generic
+array+=("generic/default")
+
+# helloworld
+array+=("helloworld")
+
+# direct
+array+=("direct")
+
+# config-api
+array+=("config-api/rpc/triple")
+array+=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
+
+# registry
+array+=("registry/zookeeper")
 array+=("registry/nacos")
+
 # rpc
+array+=("rpc/dubbo")
 array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
-# dubbo
-array+=("rpc/dubbo")
 
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
