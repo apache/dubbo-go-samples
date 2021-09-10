@@ -87,7 +87,7 @@
 #array+=("router/uniform-router/file/go-server2")
 
 # context
-array+=("context/dubbo/go-server")
+array+=("context/dubbo")
 
 # generic
 array+=("generic/default")
