@@ -39,7 +39,7 @@ const (
 )
 
 // GreeterProvider is used as provider
-type GreeterProvider struct{
+type GreeterProvider struct {
 	pb.UnimplementedGreeterServer
 }
 

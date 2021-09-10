@@ -2,25 +2,28 @@
 
 dubbo:
   registries:
-    "demoZK":
-      protocol: "zookeeper"
-      timeout: "3s"
-      address: "127.0.0.1:2181"
+    demoZK:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
   protocols:
-    "dubbo":
-      name: "dubbo"
+    dubbo:
+      name: dubbo
       port: 20000
   provider:
     registry:
       - demoZK
     services:
-      "UserProvider":
-        protocol: "dubbo"
-        interface: "org.apache.dubbo.UserProvider"
-        loadbalance: "random"
-        warmup: "100"
-        cluster: "failover"
+      UserProvider:
+        protocol: dubbo
+        interface: org.apache.dubbo.UserProvider
+        loadbalance: random
+        warmup: 100
+        cluster: failover
         methods:
-          - name: "GetUser"
+          - name: GetUser
             retries: 1
-            loadbalance: "random"
+            loadbalance: random
+      ComplexProvider:
+        protocol: dubbo
+        interface: org.apache.dubbo.ComplexProvider

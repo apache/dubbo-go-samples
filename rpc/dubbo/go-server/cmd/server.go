@@ -48,6 +48,8 @@ func main() {
 	hessian.RegisterJavaEnum(pkg.Gender(pkg.MAN))
 	hessian.RegisterJavaEnum(pkg.Gender(pkg.WOMAN))
 	hessian.RegisterPOJO(&pkg.User{})
+	config.SetProviderService(&pkg.UserProvider{})
+	config.SetProviderService(&pkg.ComplexProvider{})
 	// ------------
 
 	config.Load()
