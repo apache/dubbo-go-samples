@@ -19,14 +19,14 @@ type GreeterProvider struct {
 	api.GreeterProviderBase
 }
 
-func main()  {
+func main() {
 	config.SetProviderService(&GreeterProvider{})
 	config.Load()
-	ctx, _ := context.WithTimeout(context.Background(), time.Second * 3)
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*3)
 	logger.SetLoggerLevel("warn")
 	for {
 		select {
-		case <- ctx.Done():
+		case <-ctx.Done():
 			return
 		default:
 			logger.Info("hello dubbogo this is info log")
