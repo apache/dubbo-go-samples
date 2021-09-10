@@ -83,7 +83,7 @@ func (u User) String() string {
 	)
 }
 
-func (User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
 
@@ -102,37 +102,3 @@ type UserProvider struct {
 	GetGender func(i int32) (Gender, error)
 	Echo      func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
 }
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-//type UserProvider1 struct {
-//	GetUsers func(req []interface{}) ([]interface{}, error)
-//	GetErr   func(ctx context.Context, req []interface{}) (*User, error)
-//	GetUser  func(ctx context.Context, req []interface{}) (*User, error)
-//	GetUser0 func(id string, name string) (User, error)
-//	GetUser1 func(ctx context.Context, req []interface{}) (*User, error)
-//	GetUser2 func(ctx context.Context, req []interface{}) (*User, error) `dubbo:"getUser"`
-//	GetUser3 func() error
-//	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
-//}
-//
-//func (u *UserProvider1) Reference() string {
-//	return "UserProvider1"
-//}
-//
-//type UserProvider2 struct {
-//	GetUsers func(req []interface{}) ([]interface{}, error)
-//	GetErr   func(ctx context.Context, req []interface{}) (*User, error)
-//	GetUser  func(ctx context.Context, req []interface{}) (*User, error)
-//	GetUser0 func(id string, name string) (User, error)
-//	GetUser1 func(ctx context.Context, req []interface{}) (*User, error)
-//	GetUser2 func(ctx context.Context, req []interface{}) (*User, error) `dubbo:"getUser"`
-//	GetUser3 func() error
-//	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
-//}
-//
-//func (u *UserProvider2) Reference() string {
-//	return "UserProvider2"
-//}

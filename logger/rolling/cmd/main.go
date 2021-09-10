@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package pkg
+package main
 
 import (
 	"context"
@@ -23,40 +23,31 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
+
+type GreeterProvider struct {
+	api.GreeterProviderBase
 }
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-type UserProvider struct {
-}
-
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+func main() {
+	config.SetProviderService(&GreeterProvider{})
+	config.Load()
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*20)
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		default:
+			logger.Info("hello dubbogo this is info log")
+			logger.Debug("hello dubbogo this is debug log")
+			logger.Warn("hello dubbogo this is warn log")
+		}
+	}
 }

@@ -26,10 +26,7 @@
 #array+=("configcenter/apollo/go-server")
 #array+=("configcenter/nacos/go-server")
 #array+=("configcenter/zookeeper/go-server")
-#
-## context
-array+=("context/dubbo/go-server")
-#
+
 ## direct
 #array+=("direct/go-server")
 #
@@ -93,6 +90,9 @@ array+=("context/dubbo/go-server")
 array=("helloworld")
 array+=("direct")
 
+# context
+array+=("context/dubbo")
+
 # config-api
 array+=("config-api/rpc/triple")
 array+=("config-api/configcenter/nacos")
@@ -106,11 +106,11 @@ array+=("registry/nacos")
 array+=("generic/default")
 
 # rpc
+array+=("rpc/dubbo")
 array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
-array+=("rpc/dubbo")
 
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
