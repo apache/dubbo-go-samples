@@ -34,10 +34,6 @@ type UserProvider struct {
 	GetContext func(ctx context.Context, req *ContextContent) (rsp *ContextContent, err error)
 }
 
-func (u *UserProvider) Reference() string {
-	return "userProvider"
-}
-
 type ContextContent struct {
 	Path              string
 	InterfaceName     string

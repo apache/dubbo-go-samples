@@ -28,6 +28,6 @@ dubbo:
     registry:
       - demoNacos
     services:
-      userProvider:
+      UserProvider:
         protocol: dubbo
         interface: org.apache.dubbo.UserProvider

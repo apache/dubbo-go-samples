@@ -56,7 +56,7 @@ func main() {
 
 	providerConfig := config.NewProviderConfig(
 		config.WithProviderRegistryKeys("zk"),
-		config.WithProviderService("greeterImpl", serviceConfig),
+		config.WithProviderService("GreeterProvider", serviceConfig),
 	)
 
 	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")

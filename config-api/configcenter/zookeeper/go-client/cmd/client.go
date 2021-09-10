@@ -43,7 +43,7 @@ dubbo:
     registry:
       - demoZK
     references:
-      greeterImpl:
+      GreeterClientImpl:
         protocol: tri
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 

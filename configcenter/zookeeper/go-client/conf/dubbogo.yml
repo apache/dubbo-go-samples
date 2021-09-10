@@ -1,10 +1,10 @@
 dubbo:
   config-center:
-    protocol: nacos
-    address: 127.0.0.1:8848
-    data-id: "dubbo-go-samples-configcenter-nacos-client"
+    protocol: zookeeper
+    address: 127.0.0.1:2181
+    data-id: "dubbo-go-samples-configcenter-zookeeper-client"
 
-## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default
+## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-zookeeper-client', namespace is default
 #dubbo:
 #  registries:
 #    demoZK:
