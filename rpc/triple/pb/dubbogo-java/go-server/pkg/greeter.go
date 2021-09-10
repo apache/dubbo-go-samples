@@ -30,13 +30,7 @@ import (
 )
 
 type GreeterProvider struct {
-	*pb.GreeterProviderBase
-}
-
-func NewGreeterProvider() *GreeterProvider {
-	return &GreeterProvider{
-		GreeterProviderBase: &pb.GreeterProviderBase{},
-	}
+	pb.GreeterProviderBase
 }
 
 func (s *GreeterProvider) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.User, error) {

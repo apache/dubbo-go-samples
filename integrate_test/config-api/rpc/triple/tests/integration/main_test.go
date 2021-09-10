@@ -43,7 +43,7 @@ func TestMain(m *testing.M) {
 	)
 
 	consumerConfig := config.NewConsumerConfig(
-		config.WithConsumerReferenceConfig("greeterImpl", referenceConfig),
+		config.WithConsumerReferenceConfig("GreeterClientImpl", referenceConfig),
 	)
 
 	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")

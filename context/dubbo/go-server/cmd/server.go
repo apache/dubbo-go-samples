@@ -60,8 +60,7 @@ type ContextContent struct {
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetContext(ctx context.Context, req *ContextContent) (*ContextContent, error) {
-	gxlog.CInfo("req:%#v", req)
+func (u *UserProvider) GetContext(ctx context.Context) (*ContextContent, error) {
 	ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]interface{})
 	userDefinedval := ctxAtta["user-defined-value"].(*ContextContent)
 	gxlog.CInfo("get user defined struct:%#v", userDefinedval)
@@ -79,17 +78,14 @@ func (u *UserProvider) GetContext(ctx context.Context, req *ContextContent) (*Co
 	return &rsp, nil
 }
 
-func (u *UserProvider) Reference() string {
-	return "userProvider"
-}
-
 func (u ContextContent) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	return "org.apache.dubbo.ContextContent"
 }
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	initSignal()
 }

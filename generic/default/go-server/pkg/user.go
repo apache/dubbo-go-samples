@@ -161,10 +161,6 @@ func (u *UserProvider) MethodMapper() map[string]string {
 	}
 }
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
 func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }

@@ -63,17 +63,15 @@ func (u *UserProvider) GetUser(ctx context.Context, req *User) (*User, error) {
 	return &rsp, nil
 }
 
-func (u *UserProvider) Reference() string {
-	return "userProvider"
-}
-
 func (u User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
 
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	initSignal()
 }

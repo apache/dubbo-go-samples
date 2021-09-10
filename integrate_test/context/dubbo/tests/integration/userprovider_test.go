@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -41,7 +39,7 @@ func TestGetUser(t *testing.T) {
 	reqContext := context.WithValue(context.Background(), constant.DubboCtxKey("attachment"), atta)
 
 	// invoke with reqContext
-	err := userProvider.GetContext(reqContext, []interface{}{"A001"}, rspContext)
+	rspContext, err := userProvider.GetContext(reqContext)
 
 	// assert dubbo-go fields
 	assert.Nil(t, err)
