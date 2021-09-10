@@ -27,17 +27,9 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/jsonrpc"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	"github.com/dubbogo/gost/log"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
@@ -57,18 +49,18 @@ func init() {
 	config.SetConsumerService(userProvider2)
 }
 
-// they are necessary:
-// 		export CONF_CONSUMER_FILE_PATH="xxx"
-// 		export APP_LOG_CONF_FILE="xxx"
+// Do some checking before the system starts up:
+// 1. env config
+// 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
 
 	config.Load()
 
-	gxlog.CInfo("\n\ntest")
+	logger.Info("\n\ntest")
 	test()
-	gxlog.CInfo("\n\ntest1")
+	logger.Info("\n\ntest1")
 	test1()
-	gxlog.CInfo("\n\ntest2")
+	logger.Info("\n\ntest2")
 	test2()
 
 	initSignal()
@@ -99,169 +91,152 @@ func initSignal() {
 }
 
 func test() {
-	gxlog.CInfo("\n\n\necho")
+	logger.Info("\n\n\necho")
 	res, err := userProvider.Echo(context.TODO(), "OK")
 	if err != nil {
-		gxlog.CInfo("echo - error: %v", err)
+		logger.Info("echo - error: %v", err)
 	} else {
-		gxlog.CInfo("res: %v", res)
+		logger.Info("res: %v", res)
 	}
 
 	time.Sleep(3e9)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &pkg.JsonRPCUser{}
-	err = userProvider.GetUser(context.TODO(), []interface{}{"A003"}, user)
+	logger.Info("\n\n\nstart to test jsonrpc")
+
+	user, err := userProvider.GetUser(context.TODO(), "A003")
+
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", user)
+	logger.Info("response result: %v", user)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser0")
+	logger.Info("\n\n\nstart to test jsonrpc - GetUser0")
 	ret, err := userProvider.GetUser0("A003", "Moorse")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", ret)
+	logger.Info("response result: %v", ret)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUsers")
+	logger.Info("\n\n\nstart to test jsonrpc - GetUsers")
+
 	ret1, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", ret1)
+	logger.Info("response result: %v", ret1)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - getUser")
-	user = &pkg.JsonRPCUser{}
-	err = userProvider.GetUser2(context.TODO(), []interface{}{1}, user)
+	logger.Info("\n\n\nstart to test jsonrpc - getUser")
+	rep2, err := userProvider.GetUser2(context.TODO(), "1")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", user)
+	logger.Info("response result: %v", rep2)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser3")
+	logger.Info("\n\n\nstart to test jsonrpc - GetUser3")
 	err = userProvider.GetUser3()
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("succ!")
+	logger.Info("succ!")
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc illegal method")
-	err = userProvider.GetUser1(context.TODO(), []interface{}{"A003"}, user)
+	logger.Info("\n\n\nstart to test jsonrpc illegal method")
+	rep3, err := userProvider.GetUser1(context.TODO(), "A003")
 	if err == nil {
 		panic("err is nil")
 	}
-	gxlog.CInfo("error: %v", err)
+	logger.Info("response result: %v", rep3)
 }
 
 func test1() {
-	gxlog.CInfo("\n\n\necho")
+	logger.Info("\n\n\necho")
 	res, err := userProvider1.Echo(context.TODO(), "OK")
 	if err != nil {
-		gxlog.CInfo("echo - error: %v", err)
+		logger.Info("echo - error: %v", err)
 	} else {
-		gxlog.CInfo("res: %v", res)
+		logger.Info("res: %v", res)
 	}
 
 	time.Sleep(3e9)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &pkg.JsonRPCUser{}
-	err = userProvider1.GetUser(context.TODO(), []interface{}{"A003"}, user)
+	logger.Info("\n\n\nstart to test jsonrpc")
+	user, err := userProvider1.GetUser(context.TODO(), "A003")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", user)
+	logger.Info("response result: %v", user)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser0")
+	logger.Info("\n\n\nstart to test jsonrpc - GetUser0")
 	ret, err := userProvider1.GetUser0("A003", "Moorse")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", ret)
+	logger.Info("response result: %v", ret)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUsers")
-	ret1, err := userProvider1.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
+	logger.Info("\n\n\nstart to test jsonrpc - getUser")
+	user, err = userProvider1.GetUser2(context.TODO(), "1")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", ret1)
+	logger.Info("response result: %v", user)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - getUser")
-	user = &pkg.JsonRPCUser{}
-	err = userProvider1.GetUser2(context.TODO(), []interface{}{1}, user)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", user)
-
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser3")
+	logger.Info("\n\n\nstart to test jsonrpc - GetUser3")
 	err = userProvider1.GetUser3()
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("succ!")
+	logger.Info("succ!")
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc illegal method")
-	err = userProvider1.GetUser1(context.TODO(), []interface{}{"A003"}, user)
+	logger.Info("\n\n\nstart to test jsonrpc illegal method")
+	user, err = userProvider1.GetUser1(context.TODO(), "A003")
 	if err == nil {
 		panic("err is nil")
 	}
-	gxlog.CInfo("error: %v", err)
+	logger.Info("error: %v", err)
 }
 
 func test2() {
-	gxlog.CInfo("\n\n\necho")
+	logger.Info("\n\n\necho")
 	res, err := userProvider2.Echo(context.TODO(), "OK")
 	if err != nil {
-		gxlog.CInfo("echo - error: %v", err)
+		logger.Info("echo - error: %v", err)
 	} else {
-		gxlog.CInfo("res: %v", res)
+		logger.Info("res: %v", res)
 	}
 
 	time.Sleep(3e9)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc")
-	user := &pkg.JsonRPCUser{}
-	err = userProvider2.GetUser(context.TODO(), []interface{}{"A003"}, user)
+	logger.Info("\n\n\nstart to test jsonrpc")
+	user, err := userProvider2.GetUser(context.TODO(), "A003")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", user)
+	logger.Info("response result: %v", user)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser0")
+	logger.Info("\n\n\nstart to test jsonrpc - GetUser0")
 	ret, err := userProvider2.GetUser0("A003", "Moorse")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", ret)
+	logger.Info("response result: %v", ret)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUsers")
-	ret1, err := userProvider2.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
+	logger.Info("\n\n\nstart to test jsonrpc - getUser")
+	user, err = userProvider2.GetUser2(context.TODO(), "1")
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v", ret1)
+	logger.Info("response result: %v", user)
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - getUser")
-	user = &pkg.JsonRPCUser{}
-	err = userProvider2.GetUser2(context.TODO(), []interface{}{1}, user)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("response result: %v", user)
-
-	gxlog.CInfo("\n\n\nstart to test jsonrpc - GetUser3")
+	logger.Info("\n\n\nstart to test jsonrpc - GetUser3")
 	err = userProvider2.GetUser3()
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("succ!")
+	logger.Info("succ!")
 
-	gxlog.CInfo("\n\n\nstart to test jsonrpc illegal method")
-	err = userProvider2.GetUser1(context.TODO(), []interface{}{"A003"}, user)
+	logger.Info("\n\n\nstart to test jsonrpc illegal method")
+	user, err = userProvider2.GetUser1(context.TODO(), "A003")
 	if err == nil {
 		panic("err is nil")
 	}
-	gxlog.CInfo("error: %v", err)
+	logger.Info("error: %v", err)
 }

@@ -51,7 +51,6 @@ type (
 var (
 	DefaultUser = User{
 		ID: "0", Name: "Alex Stocks", Age: 31,
-		// Birth: int(time.Date(1985, time.November, 10, 23, 0, 0, 0, time.UTC).Unix()),
 		Birth: int(time.Date(1985, 11, 24, 15, 15, 0, 0, time.Local).Unix()),
 		sex:   Gender(MAN),
 	}
