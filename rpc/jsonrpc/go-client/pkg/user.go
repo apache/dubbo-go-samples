@@ -39,11 +39,11 @@ func (u JsonRPCUser) String() string {
 }
 
 type UserProvider struct {
-	GetUsers func(ids []interface{}) ([]JsonRPCUser, error)
-	GetUser  func(ctx context.Context, id string) (JsonRPCUser, error)
-	GetUser0 func(id string, name string) (JsonRPCUser, error)
-	GetUser1 func(ctx context.Context, id string) (JsonRPCUser, error)
-	GetUser2 func(ctx context.Context, id string) (JsonRPCUser, error) `dubbo:"getUser"`
+	GetUsers func(ids []interface{}) ([]*JsonRPCUser, error)
+	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
+	GetUser0 func(id string, name string) (*JsonRPCUser, error)
+	GetUser1 func(ctx context.Context, id string) (*JsonRPCUser, error)
+	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
@@ -53,11 +53,11 @@ func (u *UserProvider) Reference() string {
 }
 
 type UserProvider1 struct {
-	GetUsers func(ids []interface{}) ([]JsonRPCUser, error)
-	GetUser  func(ctx context.Context, id string) (JsonRPCUser, error)
-	GetUser0 func(id string, name string) (JsonRPCUser, error)
-	GetUser1 func(ctx context.Context, id string) (JsonRPCUser, error)
-	GetUser2 func(ctx context.Context, id string) (JsonRPCUser, error) `dubbo:"getUser"`
+	GetUsers func(ids []interface{}) ([]*JsonRPCUser, error)
+	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
+	GetUser0 func(id string, name string) (*JsonRPCUser, error)
+	GetUser1 func(ctx context.Context, id string) (*JsonRPCUser, error)
+	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
@@ -67,11 +67,11 @@ func (u *UserProvider1) Reference() string {
 }
 
 type UserProvider2 struct {
-	GetUsers func(ids []interface{}) ([]JsonRPCUser, error)
-	GetUser  func(ctx context.Context, id string) (JsonRPCUser, error)
-	GetUser0 func(id string, name string) (JsonRPCUser, error)
-	GetUser1 func(ctx context.Context, id string) (JsonRPCUser, error)
-	GetUser2 func(ctx context.Context, id string) (JsonRPCUser, error) `dubbo:"getUser"`
+	GetUsers func(ids []interface{}) ([]*JsonRPCUser, error)
+	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
+	GetUser0 func(id string, name string) (*JsonRPCUser, error)
+	GetUser1 func(ctx context.Context, id string) (*JsonRPCUser, error)
+	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }

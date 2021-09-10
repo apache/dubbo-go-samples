@@ -87,7 +87,7 @@ func (u *UserProvider) GetUser3() error {
 	return nil
 }
 
-func (u *UserProvider) GetUsers(req []interface{}) ([]User, error) {
+func (u *UserProvider) GetUsers(req []interface{}) ([]*User, error) {
 	var err error
 
 	gxlog.CInfo("userIDs:%s", req)
@@ -103,7 +103,7 @@ func (u *UserProvider) GetUsers(req []interface{}) ([]User, error) {
 	}
 	gxlog.CInfo("user1:%v", user1)
 
-	return []User{*user, *user1}, err
+	return []*User{user, user1}, err
 }
 
 func (s *UserProvider) MethodMapper() map[string]string {

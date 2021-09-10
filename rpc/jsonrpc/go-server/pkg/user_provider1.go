@@ -87,8 +87,8 @@ func (u *UserProvider1) GetUser3() error {
 	return nil
 }
 
-func (u *UserProvider1) GetUsers(req []interface{}) ([]User, error) {
-	return []User{}, nil
+func (u *UserProvider1) GetUsers(req []interface{}) ([]*User, error) {
+	return []*User{}, nil
 }
 
 func (s *UserProvider1) MethodMapper() map[string]string {
