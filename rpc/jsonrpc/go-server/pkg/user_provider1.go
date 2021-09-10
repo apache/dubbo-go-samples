@@ -14,13 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pkg
 
 import (
 	"context"
 	"fmt"
-	"strconv"
 )
 
 import (
@@ -46,26 +44,25 @@ func (u *UserProvider1) getUser(userID string) (*User, error) {
 	return nil, fmt.Errorf("invalid user id:%s", userID)
 }
 
-func (u *UserProvider1) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider1) GetUser(ctx context.Context, userID string) (*User, error) {
 	var (
 		err  error
 		user *User
 	)
 
-	gxlog.CInfo("req:%#v", req)
-	user, err = u.getUser(req[0].(string))
+	gxlog.CInfo("userID:%#v", userID)
+	user, err = u.getUser(userID)
 	if err == nil {
-		*rsp = *user
-		gxlog.CInfo("rsp:%#v", rsp)
+		gxlog.CInfo("rsp:%#v", user)
 	}
-	return err
+	return user, err
 }
 
-func (u *UserProvider1) GetUser0(id string, name string) (User, error) {
+func (u *UserProvider1) GetUser0(userID string, name string) (User, error) {
 	var err error
 
-	gxlog.CInfo("id:%s, name:%s", id, name)
-	user, err := u.getUser(id)
+	gxlog.CInfo("userID:%s, name:%s", userID, name)
+	user, err := u.getUser(userID)
 	if err != nil {
 		return User{}, err
 	}
@@ -75,13 +72,15 @@ func (u *UserProvider1) GetUser0(id string, name string) (User, error) {
 	return *user, err
 }
 
-func (u *UserProvider1) GetUser2(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider1) GetUser2(ctx context.Context, userID string) (*User, error) {
 	var err error
 
-	gxlog.CInfo("req:%#v", req)
-	rsp.ID = strconv.FormatFloat(req[0].(float64), 'f', 0, 64)
-	rsp.Sex = Gender(MAN).String()
-	return err
+	gxlog.CInfo("userID:%#v", userID)
+	rsp := &User{
+		ID: userID,
+		Sex: Gender(MAN).String(),
+	}
+	return rsp, err
 }
 
 func (u *UserProvider1) GetUser3() error {
@@ -99,5 +98,5 @@ func (s *UserProvider1) MethodMapper() map[string]string {
 }
 
 func (u *UserProvider1) Reference() string {
-	return "UserProvider1"
+	return "com.ikurento.user.UserProvider1"
 }

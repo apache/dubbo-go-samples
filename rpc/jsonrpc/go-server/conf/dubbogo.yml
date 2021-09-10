@@ -1,0 +1,66 @@
+dubbo:
+  application:
+    organization: "dubbo.apache.org"
+    name: "UserInfoServer"
+    module: "dubbo-go user-info server"
+    version: "0.0.1"
+    environment: "dev"
+  registries:
+    "hangzhouzk":
+      protocol: "zookeeper"
+      timeout: "3s"
+      address: "127.0.0.1:2181"
+      username: ""
+      password: ""
+    "shanghaizk":
+      protocol: "zookeeper"
+      timeout: "3s"
+      address: "127.0.0.1:2182"
+      username: ""
+      password: ""
+  protocols:
+    "jsonrpc":
+      name: "jsonrpc"
+      ip: "127.0.0.1"
+      port: 20001
+  provider:
+    registry:
+      - hangzhouzk
+      - shanghaizk
+    services:
+      "com.ikurento.user.UserProvider":
+        registry: "hangzhouzk"
+        protocol: "jsonrpc"
+        interface: "com.ikurento.user.UserProvider"
+        loadbalance: "random"
+        warmup: "100"
+        cluster: "failover"
+        methods:
+          - name: "GetUser"
+            retries: 1
+            loadbalance: "random"
+      "com.ikurento.user.UserProvider1":
+        registry: "hangzhouzk"
+        protocol: "jsonrpc"
+        interface: "com.ikurento.user.UserProvider"
+        loadbalance: "random"
+        version: "2.0"
+        warmup: "100"
+        cluster: "failover"
+        methods:
+          - name: "GetUser"
+            retries: 1
+            loadbalance: "random"
+      "com.ikurento.user.UserProvider2":
+        registry: "hangzhouzk"
+        protocol: "jsonrpc"
+        interface: "com.ikurento.user.UserProvider"
+        loadbalance: "random"
+        version: "2.0"
+        group: "as"
+        warmup: "100"
+        cluster: "failover"
+        methods:
+          - name: "GetUser"
+            retries: 1
+            loadbalance: "random"

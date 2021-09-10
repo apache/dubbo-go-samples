@@ -112,6 +112,7 @@ array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
 # dubbo
 array+=("rpc/dubbo")
+array+=("rpc/jsonrpc")
 
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
