@@ -2,7 +2,7 @@
 
 The samples demonstrate how to configure dubbo-go logger using lumberjack
 
-### Ccontents
+### Contents
 
 * default: print to the console by default
 * level:   set the isolation level of the log
