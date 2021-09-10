@@ -31,7 +31,7 @@ import (
 )
 
 type UserProvider struct {
-	GetContext func(ctx context.Context, req *ContextContent) (rsp *ContextContent, err error)
+	GetContext func(ctx context.Context) (rsp *ContextContent, err error)
 }
 
 type ContextContent struct {
@@ -45,8 +45,8 @@ type ContextContent struct {
 	CtxIntVal         int64
 }
 
-func (*ContextContent) JavaClassName() string {
-	return "org.apache.dubbo.User"
+func (c *ContextContent) JavaClassName() string {
+	return "org.apache.dubbo.ContextContent"
 }
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
@@ -62,7 +62,7 @@ func main() {
 	atta["int-value"] = 1231242
 	atta["user-defined-value"] = ContextContent{InterfaceName: "test.interface.name"}
 	reqContext := context.WithValue(context.Background(), constant.DubboCtxKey("attachment"), atta)
-	rspContent, err := userProvider.GetContext(reqContext, &ContextContent{CtxStrVal: "A001"})
+	rspContent, err := userProvider.GetContext(reqContext)
 	if err != nil {
 		gxlog.CError("error: %v\n", err)
 		os.Exit(1)

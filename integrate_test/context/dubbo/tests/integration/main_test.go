@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -63,13 +61,9 @@ type ContextContent struct {
 }
 
 type UserProvider struct {
-	GetContext func(ctx context.Context, req []interface{}, rsp *ContextContent) error
+	GetContext func(ctx context.Context) (*ContextContent, error)
 }
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (ContextContent) JavaClassName() string {
+func (c *ContextContent) JavaClassName() string {
 	return "org.apache.dubbo.ContextContent"
 }
