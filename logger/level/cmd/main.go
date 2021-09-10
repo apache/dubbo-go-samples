@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,23 +15,41 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
 	"context"
-	"testing"
+	"time"
 )
 
 import (
-	"github.com/stretchr/testify/assert"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
-func TestGetUser(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	assert.Nil(t, err)
-	assert.Equal(t, "A001", user.ID)
-	assert.Equal(t, "Alex Stocks", user.Name)
-	assert.Equal(t, int32(18), user.Age)
-	assert.NotNil(t, user.Time)
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
+
+type GreeterProvider struct {
+	api.GreeterProviderBase
+}
+
+func main() {
+	config.SetProviderService(&GreeterProvider{})
+	config.Load()
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*3)
+	logger.SetLoggerLevel("warn")
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		default:
+			logger.Info("hello dubbogo this is info log")
+			logger.Debug("hello dubbogo this is debug log")
+			logger.Warn("hello dubbogo this is warn log")
+			time.Sleep(time.Second * 1)
+		}
+	}
 }
