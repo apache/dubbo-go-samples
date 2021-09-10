@@ -32,6 +32,6 @@ dubbo:
     registry:
       - demoZK
     references:
-      userProvider:
+      UserProvider:
         protocol: dubbo
         interface: org.apache.dubbo.UserProvider

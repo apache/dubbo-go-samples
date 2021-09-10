@@ -47,7 +47,7 @@ dubbo:
     registry:
       - demoZK
     services:
-      greeterImpl:
+      GreeterProvider:
         protocol: triple
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 

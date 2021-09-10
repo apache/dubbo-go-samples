@@ -45,7 +45,7 @@ func main() {
 	)
 
 	consumerConfig := config.NewConsumerConfig(
-		config.WithConsumerReferenceConfig("greeterImpl", referenceConfig),
+		config.WithConsumerReferenceConfig("GreeterClientImpl", referenceConfig),
 	)
 
 	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")

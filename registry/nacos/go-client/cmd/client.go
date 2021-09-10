@@ -36,10 +36,6 @@ type UserProvider struct {
 	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
 }
 
-func (u *UserProvider) Reference() string {
-	return "userProvider"
-}
-
 type User struct {
 	ID   string
 	Name string
@@ -47,7 +43,7 @@ type User struct {
 	Time time.Time
 }
 
-func (*User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
 
