@@ -15,36 +15,8 @@
  * limitations under the License.
  */
 
-package pkg
+package org.apache.dubbo;
 
-import (
-	"context"
-	"fmt"
-	"time"
-)
-
-type User struct {
-	Id   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-func (u User) String() string {
-	return fmt.Sprintf(
-		"User{ID:%s, Name:%s, Age:%d, Time:%s}",
-		u.Id, u.Name, u.Age, u.Time,
-	)
-}
-
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}) (*User, error)
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
+public interface UserProvider {
+    User GetUser(String userId);
 }

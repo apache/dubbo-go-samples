@@ -15,36 +15,16 @@
  * limitations under the License.
  */
 
-package pkg
+package org.apache.dubbo;
 
-import (
-	"context"
-	"fmt"
-	"time"
-)
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 
-type User struct {
-	Id   string
-	Name string
-	Age  int32
-	Time time.Time
-}
+public class UserProviderImpl implements UserProvider {
+    private static final Logger LOG = LoggerFactory.getLogger("UserProviderImpl"); //Output to user-server.log
 
-func (u User) String() string {
-	return fmt.Sprintf(
-		"User{ID:%s, Name:%s, Age:%d, Time:%s}",
-		u.Id, u.Name, u.Age, u.Time,
-	)
-}
-
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}) (*User, error)
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
+    public User GetUser(String userId) {
+        LOG.info("param: " + userId);
+        return new User(userId, "zhangsan-dubbojava", 18);
+    }
 }

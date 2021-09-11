@@ -15,36 +15,21 @@
  * limitations under the License.
  */
 
-package pkg
+package org.apache.dubbo;
 
-import (
-	"context"
-	"fmt"
-	"time"
-)
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-type User struct {
-	Id   string
-	Name string
-	Age  int32
-	Time time.Time
-}
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-func (u User) String() string {
-	return fmt.Sprintf(
-		"User{ID:%s, Name:%s, Age:%d, Time:%s}",
-		u.Id, u.Name, u.Age, u.Time,
-	)
-}
+public class Consumer {
 
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}) (*User, error)
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo.consumer.xml"});
+        UserProvider userProvider = (UserProvider) context.getBean("userProvider");
+        User user1 = userProvider.GetUser("A003");
+        System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
+                " UserInfo, ID:" + user1.getId() + ", name:" + user1.getName()
+                + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
+    }
 }

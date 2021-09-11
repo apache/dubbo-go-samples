@@ -15,36 +15,20 @@
  * limitations under the License.
  */
 
-package pkg
+package org.apache.dubbo;
 
-import (
-	"context"
-	"fmt"
-	"time"
-)
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-type User struct {
-	Id   string
-	Name string
-	Age  int32
-	Time time.Time
-}
+public class Provider {
 
-func (u User) String() string {
-	return fmt.Sprintf(
-		"User{ID:%s, Name:%s, Age:%d, Time:%s}",
-		u.Id, u.Name, u.Age, u.Time,
-	)
-}
-
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}) (*User, error)
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
+    /**
+     * To get ipv6 address to work, add
+     * System.setProperty("java.net.preferIPv6Addresses", "true");
+     * before running your application.
+     */
+    public static void main(String[] args) throws Exception {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo.provider.xml"});
+        context.start();
+        System.in.read(); // press any key to exit
+    }
 }
