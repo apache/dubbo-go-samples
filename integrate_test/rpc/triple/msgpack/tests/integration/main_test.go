@@ -25,15 +25,12 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/api"
 )
 
 var userProvider = new(UserProvider)
@@ -45,16 +42,10 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-}
-
 type UserProvider struct {
-	GetUser func(ctx context.Context, req *User, rsp *User) error
+	GetUser func(ctx context.Context, req *api.User) (rsp *api.User, err error)
 }
 
 func (u *UserProvider) Reference() string {
-	return "UserProvider"
+	return "greeterImpl"
 }
