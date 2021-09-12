@@ -4,13 +4,10 @@ api 定义以及 go 客户端、服务端启动，可以参考 [dubbo-go 3.0 快
 
 ## 使用方法
 1. 启动 `docker/docker-compose.yml` 文件里的 `zookeeper` 服务
-2. 启动 server 端，golang 和 java 的 server 启动方式分别如下：
+2. 启动 server 端：
    1. 找到 go-server 文件夹，运行 cmd 包下的 `main` 函数，启动 golang server
-   2. 找到 java-server 文件夹，执行 `sh run.sh` 启动 java server
-
-3. 启动 client 端，golang和java的启动方式分别如下：
+3. 启动 client 端：
    1. 找到 go-client 文件夹，运行 cmd 包下的 `main` 函数，启动 golang client
-   2. 找到 java-client 文件夹，执行 `sh run.sh` 启动 java client
 4. 测试 ziplink步骤：
    1. 启动 `docker/docker-compose.yml` 文件里的 `zipkin` 服务
    2. 启用`go-server`和`go-client` 里的`main` 函数的 `initZipkin()`语句，并注释 `initJaeger()` 语句
