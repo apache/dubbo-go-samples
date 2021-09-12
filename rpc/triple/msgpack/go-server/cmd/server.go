@@ -44,8 +44,8 @@ type UserProvider struct {
 func (u UserProvider) GetUser(ctx context.Context, user *api.User) (*api.User, error) {
 	gxlog.CInfo("req:%#v", user)
 	rsp := api.User{
-		Id: "12345",
-		Name:   "Hello " + user.Name,
+		Id:   "12345",
+		Name: "Hello " + user.Name,
 		Age:  18,
 	}
 	gxlog.CInfo("rsp:%#v", rsp)
