@@ -109,6 +109,7 @@ array+=("generic/default")
 array+=("rpc/dubbo")
 array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
+array+=("rpc/triple/msgpack")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
 
