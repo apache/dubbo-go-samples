@@ -1,14 +1,14 @@
 # RPC Dubbo for Dubbo-go 3.0
 
-For api definition and go client and server startup, please refer to [dubbo-go 3.0 quickstart](https://dubbogo.github.io/zh-cn/docs/user/quickstart/3.0/quickstart.html)
+If u wanna know how to startup the client/server and the definition of APIs, please refer to [dubbo-go 3.0 quickstart](https://dubbogo.github.io/zh-cn/docs/user/quickstart/3.0/quickstart.html)
 
 ## Instructions
 1. Start `zookeeper` service in `docker/docker-compose.yml` file
-2. Start the server side.The server startup methods of golang and java are as follows:
+2. Start the server side. The server startup methods of golang and java are as follows:
    1. Find the go-server folder, run the `main` function under the cmd package, and start the golang server
    2. Find the java-server folder and execute `sh run.sh` to start the java server
 
-3. Start the client side.The client startup methods of golang and java are as follows:
+3. Start the client side. The client startup methods of golang and java are as follows:
    1. Find the go-client folder, run the `main` function under the cmd package, and start the golang client
    2. Find the java-client folder and execute `sh run.sh` to start the java client
 4. Steps to test ziplink:
