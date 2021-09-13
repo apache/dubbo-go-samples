@@ -52,10 +52,6 @@ func (u UserProvider) GetUser(ctx context.Context, user *api.User) (*api.User, e
 	return &rsp, nil
 }
 
-func (u UserProvider) Reference() string {
-	return "greeterImpl"
-}
-
 var (
 	survivalTimeout = int(3 * time.Second)
 )

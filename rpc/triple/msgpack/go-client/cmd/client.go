@@ -38,10 +38,6 @@ type UserProvider struct {
 	GetUser func(ctx context.Context, req *api.User) (rsp *api.User, err error)
 }
 
-func (u *UserProvider) Reference() string {
-	return "greeterImpl"
-}
-
 var userProvider = new(UserProvider)
 
 func init() {
