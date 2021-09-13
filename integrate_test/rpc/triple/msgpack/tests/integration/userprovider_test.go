@@ -15,46 +15,25 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
-	"os"
-	"time"
+	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	gxlog "github.com/dubbogo/gost/log"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *api.User) (rsp *api.User, err error)
-}
-
-var userProvider = new(UserProvider)
-
-func init() {
-	config.SetConsumerService(userProvider)
-}
-
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-func main() {
-	config.Load()
-	time.Sleep(3 * time.Second)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
+func TestGetUser(t *testing.T) {
 	user, err := userProvider.GetUser(context.TODO(), &api.User{Name: "laurence"})
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+	assert.Nil(t, err)
+	assert.Equal(t, "12345", user.Id)
+	assert.Equal(t, "Hello laurence", user.Name)
+	assert.Equal(t, int32(18), user.Age)
 }
