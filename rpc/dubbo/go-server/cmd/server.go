@@ -31,7 +31,9 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/rpc/dubbo/go-server/pkg"
 )
 
