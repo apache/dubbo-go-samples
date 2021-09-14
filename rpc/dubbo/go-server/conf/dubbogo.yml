@@ -27,3 +27,6 @@ dubbo:
       ComplexProvider:
         protocol: dubbo
         interface: org.apache.dubbo.ComplexProvider
+      WrapperArrayClassProvider:
+        protocol: dubbo
+        interface: org.apache.dubbo.WrapperArrayClassProvider

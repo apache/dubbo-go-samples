@@ -31,9 +31,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
-)
 
-import (
 	"github.com/apache/dubbo-go-samples/rpc/dubbo/go-server/pkg"
 )
 
@@ -50,6 +48,7 @@ func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.SetProviderService(&pkg.UserProvider{})
 	config.SetProviderService(&pkg.ComplexProvider{})
+	config.SetProviderService(&pkg.WrapperArrayClassProvider{})
 	// ------------
 
 	config.Load()
