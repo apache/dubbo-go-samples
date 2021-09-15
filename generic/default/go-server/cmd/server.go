@@ -41,7 +41,9 @@ import (
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.SetProviderService(&pkg.User{})
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	initSignal()
 }
 
