@@ -49,7 +49,7 @@ func (u *WrapperArrayClassProvider) InvokeWithJavaBooleanArray(ctx context.Conte
 func (u *WrapperArrayClassProvider) InvokeWithJavaShortArray(ctx context.Context, ba *hessian.ShortArray) (*hessian.ShortArray, error) {
 	logger.Info("InvokeWithJavaShortArray:", ba.Values)
 
-	newV := []int32{1, 2, 3}
+	newV := []int16{1, 2, 1000}
 	ba.Values = newV
 	return ba, nil
 }
@@ -57,7 +57,7 @@ func (u *WrapperArrayClassProvider) InvokeWithJavaShortArray(ctx context.Context
 func (u *WrapperArrayClassProvider) InvokeWithJavaByteArray(ctx context.Context, ia *hessian.ByteArray) (*hessian.ByteArray, error) {
 	logger.Info("InvokeWithJavaByteArray:", ia.Values)
 
-	newV := []int32{1, 2, 3}
+	newV := []uint8{1, 2, 200}
 	ia.Values = newV
 	return ia, nil
 }

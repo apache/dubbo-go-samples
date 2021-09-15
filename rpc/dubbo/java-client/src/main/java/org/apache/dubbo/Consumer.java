@@ -46,7 +46,7 @@ public class Consumer {
         start();
         startComplexConsumerService();
         // TODO when upgrade hessian version, remember to delete this comment
-//        startWrapperArrayClassService();
+       startWrapperArrayClassService();
     }
 
     // Start the entry function for consumer (Specified in the configuration file)
