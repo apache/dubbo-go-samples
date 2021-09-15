@@ -31,6 +31,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+import (
+	"github.com/apache/dubbo-go-samples/generic/default/go-client/pkg"
+)
+
 func TestGetUser1(t *testing.T) {
 	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
@@ -41,6 +45,19 @@ func TestGetUser1(t *testing.T) {
 	assert.Nil(t, err)
 	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
 	resp := o.(map[interface{}]interface{})
+	assert.Equal(t, "Joe", resp["name"])
+	assert.Equal(t, int32(48), resp["age"])
+	assert.Equal(t, "A003", resp["iD"])
+
+	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		"GetUser1",
+		[]string{"java.lang.String"},
+		[]hessian.Object{"A003"},
+	)
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp = o.(map[interface{}]interface{})
 	assert.Equal(t, "Joe", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
 	assert.Equal(t, "A003", resp["iD"])
@@ -59,6 +76,19 @@ func TestGetUser2(t *testing.T) {
 	assert.Equal(t, "lily", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
 	assert.Equal(t, "A003", resp["iD"])
+
+	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		"GetUser2",
+		[]string{"java.lang.String", "java.lang.String"},
+		[]hessian.Object{"A003", "lily"},
+	)
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp = o.(map[interface{}]interface{})
+	assert.Equal(t, "lily", resp["name"])
+	assert.Equal(t, int32(48), resp["age"])
+	assert.Equal(t, "A003", resp["iD"])
 }
 
 func TestGetUser3(t *testing.T) {
@@ -74,6 +104,19 @@ func TestGetUser3(t *testing.T) {
 	assert.Equal(t, "Alex Stocks", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
 	assert.Equal(t, "1", resp["iD"])
+
+	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		"GetUser3",
+		[]string{"int"},
+		[]hessian.Object{1},
+	)
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp = o.(map[interface{}]interface{})
+	assert.Equal(t, "Alex Stocks", resp["name"])
+	assert.Equal(t, int32(18), resp["age"])
+	assert.Equal(t, "1", resp["iD"])
 }
 
 func TestGetUser4(t *testing.T) {
@@ -86,6 +129,19 @@ func TestGetUser4(t *testing.T) {
 	assert.Nil(t, err)
 	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
 	resp := o.(map[interface{}]interface{})
+	assert.Equal(t, "zhangsan", resp["name"])
+	assert.Equal(t, int32(18), resp["age"])
+	assert.Equal(t, "1", resp["iD"])
+
+	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		"GetUser4",
+		[]string{"int", "java.lang.String"},
+		[]hessian.Object{1, "zhangsan"},
+	)
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp = o.(map[interface{}]interface{})
 	assert.Equal(t, "zhangsan", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
 	assert.Equal(t, "1", resp["iD"])
@@ -105,6 +161,8 @@ func TestGetUser4(t *testing.T) {
 //	assert.Equal(t, "xavierniu", resp["name"])
 //	assert.Equal(t, int32(24), resp["age"])
 //	assert.Equal(t, "1000", resp["iD"])
+//
+// TODO: Triple protocol test is required.
 //}
 
 func TestGetUsers(t *testing.T) {
@@ -120,11 +178,29 @@ func TestGetUsers(t *testing.T) {
 	)
 	assert.Nil(t, err)
 	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
-	//resp := o.(map[interface{}]interface{})
-	//assert.Equal(t, "other-zhangsan", resp[0].(*pkg.User).Name)
-	//assert.Equal(t, "other-lisi", resp[1].(*pkg.User).Name)
-	//assert.Equal(t, "other-lily", resp[2].(*pkg.User).Name)
-	//assert.Equal(t, "other-lisa", resp[3].(*pkg.User).Name)
+	resp := o.(map[interface{}]interface{})
+	assert.Equal(t, "other-zhangsan", resp[0].(*pkg.User).Name)
+	assert.Equal(t, "other-lisi", resp[1].(*pkg.User).Name)
+	assert.Equal(t, "other-lily", resp[2].(*pkg.User).Name)
+	assert.Equal(t, "other-lisa", resp[3].(*pkg.User).Name)
+
+	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		"GetUsers",
+		[]string{"java.util.List"},
+		[]hessian.Object{
+			[]hessian.Object{
+				"001", "002", "003", "004",
+			},
+		},
+	)
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp = o.(map[interface{}]interface{})
+	assert.Equal(t, "other-zhangsan", resp[0].(*pkg.User).Name)
+	assert.Equal(t, "other-lisi", resp[1].(*pkg.User).Name)
+	assert.Equal(t, "other-lily", resp[2].(*pkg.User).Name)
+	assert.Equal(t, "other-lisa", resp[3].(*pkg.User).Name)
 }
 
 func TestQueryUser(t *testing.T) {
@@ -146,49 +222,92 @@ func TestQueryUser(t *testing.T) {
 	assert.Equal(t, "panty", resp["name"])
 	assert.Equal(t, int32(25), resp["age"])
 	assert.Equal(t, "3213", resp["iD"])
+
+	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		"queryUser",
+		[]string{"org.apache.dubbo.User"},
+		[]hessian.Object{map[string]hessian.Object{
+			"iD":   "3213",
+			"name": "panty",
+			"age":  25,
+			"time": time.Now(),
+		}},
+	)
+
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp = o.(map[interface{}]interface{})
+	assert.Equal(t, "panty", resp["name"])
+	assert.Equal(t, int32(25), resp["age"])
+	assert.Equal(t, "3213", resp["iD"])
 }
 
-//
-//func TestQueryUsers(t *testing.T) {
-//	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
-//		context.TODO(),
-//		[]interface{}{
-//			"queryUsers",
-//			[]string{"org.apache.dubbo.User"},
-//			[]hessian.Object{
-//				map[string]hessian.Object{
-//					"id":    "3212",
-//					"name":  "XavierNiu",
-//					"age":   24,
-//					"time":  time.Now().Add(4),
-//					"class": "org.apache.dubbo.User",
-//				},
-//				map[string]hessian.Object{
-//					"iD":    "3213",
-//					"name":  "zhangsan",
-//					"age":   21,
-//					"time":  time.Now().Add(4),
-//					"class": "org.apache.dubbo.User",
-//				},
-//			},
-//		},
-//	)
-//
-//	assert.Nil(t, err)
-//	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
-//	resp := o.(map[interface{}]interface{})
-//	assert.Equal(t, "XavierNiu", resp[0].(*pkg.User).Name)
-//	assert.Equal(t, "zhangsan", resp[1].(*pkg.User).Name)
-//}
-//
+func TestQueryUsers(t *testing.T) {
+	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		"queryUsers",
+		[]string{"org.apache.dubbo.User"},
+		[]hessian.Object{
+			map[string]hessian.Object{
+				"id":    "3212",
+				"name":  "XavierNiu",
+				"age":   24,
+				"time":  time.Now().Add(4),
+				"class": "org.apache.dubbo.User",
+			},
+			map[string]hessian.Object{
+				"iD":    "3213",
+				"name":  "zhangsan",
+				"age":   21,
+				"time":  time.Now().Add(4),
+				"class": "org.apache.dubbo.User",
+			},
+		},
+	)
+
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp := o.(map[interface{}]interface{})
+	assert.Equal(t, "XavierNiu", resp[0].(*pkg.User).Name)
+	assert.Equal(t, "zhangsan", resp[1].(*pkg.User).Name)
+
+	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
+		context.TODO(),
+		"queryUsers",
+		[]string{"org.apache.dubbo.User"},
+		[]hessian.Object{
+			map[string]hessian.Object{
+				"id":    "3212",
+				"name":  "XavierNiu",
+				"age":   24,
+				"time":  time.Now().Add(4),
+				"class": "org.apache.dubbo.User",
+			},
+			map[string]hessian.Object{
+				"iD":    "3213",
+				"name":  "zhangsan",
+				"age":   21,
+				"time":  time.Now().Add(4),
+				"class": "org.apache.dubbo.User",
+			},
+		},
+	)
+
+	assert.Nil(t, err)
+	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	resp = o.(map[interface{}]interface{})
+	assert.Equal(t, "XavierNiu", resp[0].(*pkg.User).Name)
+	assert.Equal(t, "zhangsan", resp[1].(*pkg.User).Name)
+}
+
+// TODO: Waiting for hessian-go bugfix
 //func TestQueryAll(t *testing.T) {
-//	o, err := referenceConfig.GetRPCService().(*generic.GenericService).Invoke(
+//	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 //		context.TODO(),
-//		[]interface{}{
 //			"queryAll",
 //			[]hessian.Object{},
 //			[]hessian.Object{},
-//		},
 //	)
 //
 //	assert.Nil(t, err)
