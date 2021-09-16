@@ -19,35 +19,26 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	"dubbo.apache.org/dubbo-go/v3/config/generic"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	tpconst "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/generic/default/go-client/pkg"
 )
 
-var (
-	appName = "dubbo.io"
-)
+const appName = "dubbo.io"
 
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/generic/default/go-client/conf/dubbogo.yml
 func main() {
@@ -66,9 +57,15 @@ func main() {
 	//callQueryAll(dubboRefConf)
 
 	// generic invocation samples using hessian serialization on Triple protocol
-	//tripleRefConf := newRefConf("org.apache.dubbo.samples.UserProviderTriple", tpconst.TRIPLE)
+	tripleRefConf := newRefConf("org.apache.dubbo.samples.UserProviderTriple", tpconst.TRIPLE)
+	callGetUser(tripleRefConf)
+	//callGetOneUser(tripleRefConf)
+	callGetUsers(tripleRefConf)
+	callGetUsersMap(tripleRefConf)
+	callQueryUser(tripleRefConf)
+	callQueryUsers(tripleRefConf)
+	//callQueryAll(tripleRefConf)
 
-	initSignal()
 }
 
 func callGetUser(refConf config.ReferenceConfig) {
@@ -257,28 +254,4 @@ func newRefConf(iface, protocol string) config.ReferenceConfig {
 	refConf.GenericLoad(appName)
 
 	return refConf
-}
-
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
-		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(10*time.Second, func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
-
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("app exit now...")
-			return
-		}
-	}
 }
