@@ -20,9 +20,13 @@ package pkg
 import (
 	"context"
 	"fmt"
-	gxlog "github.com/dubbogo/gost/log"
-	"github.com/opentracing/opentracing-go"
 	"time"
+)
+
+import (
+	gxlog "github.com/dubbogo/gost/log"
+
+	"github.com/opentracing/opentracing-go"
 )
 
 type (
