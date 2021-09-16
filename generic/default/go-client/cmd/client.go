@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 	"time"
 )
 
@@ -28,9 +27,11 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	"dubbo.apache.org/dubbo-go/v3/config/generic"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	tpconst "github.com/dubbogo/triple/pkg/common/constant"
+	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	tpconst "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (

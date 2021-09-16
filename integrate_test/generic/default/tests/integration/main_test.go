@@ -18,7 +18,6 @@
 package integration
 
 import (
-	tpconst "github.com/dubbogo/triple/pkg/common/constant"
 	"os"
 	"testing"
 )
@@ -29,6 +28,8 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	tpconst "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
