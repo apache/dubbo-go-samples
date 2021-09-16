@@ -19,13 +19,6 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/opentracing/opentracing-go"
-	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
-	"github.com/openzipkin/zipkin-go"
-	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
-	"github.com/uber/jaeger-client-go"
-	jaegerConfig "github.com/uber/jaeger-client-go/config"
 	"os"
 	"os/signal"
 	"syscall"
@@ -36,10 +29,18 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
 
-import (
 	"github.com/apache/dubbo-go-samples/tracing/jsonrpc/go-server/pkg"
+
+	"github.com/opentracing/opentracing-go"
+
+	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
+
+	"github.com/openzipkin/zipkin-go"
+	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
+
+	"github.com/uber/jaeger-client-go"
+	jaegerConfig "github.com/uber/jaeger-client-go/config"
 )
 
 var (
