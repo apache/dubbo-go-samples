@@ -31,10 +31,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/generic/default/go-client/pkg"
-)
-
 func TestGetUser1(t *testing.T) {
 	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
@@ -179,10 +175,10 @@ func TestGetUsers(t *testing.T) {
 	assert.Nil(t, err)
 	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
 	resp := o.(map[interface{}]interface{})
-	assert.Equal(t, "other-zhangsan", resp[0].(*pkg.User).Name)
-	assert.Equal(t, "other-lisi", resp[1].(*pkg.User).Name)
-	assert.Equal(t, "other-lily", resp[2].(*pkg.User).Name)
-	assert.Equal(t, "other-lisa", resp[3].(*pkg.User).Name)
+	assert.Equal(t, "other-zhangsan", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "other-lisi", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "other-lily", resp["users"].([]interface{})[2].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "other-lisa", resp["users"].([]interface{})[3].(map[interface{}]interface{})["name"])
 
 	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
@@ -197,10 +193,10 @@ func TestGetUsers(t *testing.T) {
 	assert.Nil(t, err)
 	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
 	resp = o.(map[interface{}]interface{})
-	assert.Equal(t, "other-zhangsan", resp[0].(*pkg.User).Name)
-	assert.Equal(t, "other-lisi", resp[1].(*pkg.User).Name)
-	assert.Equal(t, "other-lily", resp[2].(*pkg.User).Name)
-	assert.Equal(t, "other-lisa", resp[3].(*pkg.User).Name)
+	assert.Equal(t, "other-zhangsan", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "other-lisi", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "other-lily", resp["users"].([]interface{})[2].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "other-lisa", resp["users"].([]interface{})[3].(map[interface{}]interface{})["name"])
 }
 
 func TestQueryUser(t *testing.T) {
@@ -247,58 +243,62 @@ func TestQueryUsers(t *testing.T) {
 	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		"queryUsers",
-		[]string{"org.apache.dubbo.User"},
+		[]string{"java.util.List"},
 		[]hessian.Object{
-			map[string]hessian.Object{
-				"id":    "3212",
-				"name":  "XavierNiu",
-				"age":   24,
-				"time":  time.Now().Add(4),
-				"class": "org.apache.dubbo.User",
-			},
-			map[string]hessian.Object{
-				"iD":    "3213",
-				"name":  "zhangsan",
-				"age":   21,
-				"time":  time.Now().Add(4),
-				"class": "org.apache.dubbo.User",
+			[]hessian.Object{
+				map[string]hessian.Object{
+					"id":    "3212",
+					"name":  "XavierNiu",
+					"age":   24,
+					"time":  time.Now(),
+					"class": "org.apache.dubbo.User",
+				},
+				map[string]hessian.Object{
+					"iD":    "3213",
+					"name":  "zhangsan",
+					"age":   21,
+					"time":  time.Now(),
+					"class": "org.apache.dubbo.User",
+				},
 			},
 		},
 	)
 
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
-	resp := o.(map[interface{}]interface{})
-	assert.Equal(t, "XavierNiu", resp[0].(*pkg.User).Name)
-	assert.Equal(t, "zhangsan", resp[1].(*pkg.User).Name)
+	resp, ok := o.(map[interface{}]interface{})
+	assert.True(t, ok)
+	assert.Equal(t, "XavierNiu", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "zhangsan", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
 
 	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		"queryUsers",
 		[]string{"org.apache.dubbo.User"},
 		[]hessian.Object{
-			map[string]hessian.Object{
-				"id":    "3212",
-				"name":  "XavierNiu",
-				"age":   24,
-				"time":  time.Now().Add(4),
-				"class": "org.apache.dubbo.User",
-			},
-			map[string]hessian.Object{
-				"iD":    "3213",
-				"name":  "zhangsan",
-				"age":   21,
-				"time":  time.Now().Add(4),
-				"class": "org.apache.dubbo.User",
+			[]hessian.Object{
+				map[string]hessian.Object{
+					"id":    "3212",
+					"name":  "XavierNiu",
+					"age":   24,
+					"time":  time.Now(),
+					"class": "org.apache.dubbo.User",
+				},
+				map[string]hessian.Object{
+					"iD":    "3213",
+					"name":  "zhangsan",
+					"age":   21,
+					"time":  time.Now(),
+					"class": "org.apache.dubbo.User",
+				},
 			},
 		},
 	)
 
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
-	resp = o.(map[interface{}]interface{})
-	assert.Equal(t, "XavierNiu", resp[0].(*pkg.User).Name)
-	assert.Equal(t, "zhangsan", resp[1].(*pkg.User).Name)
+	resp, ok = o.(map[interface{}]interface{})
+	assert.True(t, ok)
+	assert.Equal(t, "XavierNiu", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "zhangsan", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
 }
 
 // TODO: Waiting for hessian-go bugfix
