@@ -13,9 +13,8 @@ cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqCl
 cloud.google.com/go/pubsub v1.0.1/go.mod h1:R0Gpsv3s54REJCy4fxDixWD93lHJMoZTyQ2kNxGRt3I=
 cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiyrjsg+URw=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210904062533-3e0412eab250/go.mod h1:qzYPQolHmB+cfNhO0fUGTCWbBRdEnvyssdF8zNIiPLQ=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210908031551-f556336c4ba6 h1:MBTQ7ewBVgG3ey+w9JQRk26Adp2oD4fDl5lTk6oseFI=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210908031551-f556336c4ba6/go.mod h1:qzYPQolHmB+cfNhO0fUGTCWbBRdEnvyssdF8zNIiPLQ=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210915060211-8d727d630e0e h1:+aGq6bibw4z9OTQi5yqga5XN+Ekm6Ma8IjgZqrbD2YY=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20210915060211-8d727d630e0e/go.mod h1:qzYPQolHmB+cfNhO0fUGTCWbBRdEnvyssdF8zNIiPLQ=
 github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78/go.mod h1:LmzpDX56iTiv29bbRTIsUNlaFfuhWRQBWjQdVyAevI8=
 github.com/Azure/go-autorest/autorest v0.9.0/go.mod h1:xyHB1BMZT0cuDHU7I0+g046+BFDTQ8rEZB0s4Yfa6bI=
 github.com/Azure/go-autorest/autorest/adal v0.5.0/go.mod h1:8Z9fGy2MpX0PvDjB1pEgQTmVqjGhiHBW7RJJEciWzS0=
@@ -174,8 +173,6 @@ github.com/dubbogo/gost v1.11.16/go.mod h1:vIcP9rqz2KsXHPjsAwIUtfJIJjppQLQDcYaZT
 github.com/dubbogo/jsonparser v1.0.1/go.mod h1:tYAtpctvSP/tWw4MeelsowSPgXQRVHHWbqL6ynps8jU=
 github.com/dubbogo/net v0.0.4 h1:Rn9aMPZwOiRE22YhtxmDEE3H0Q3cfVRNhuEjNMelJ/8=
 github.com/dubbogo/net v0.0.4/go.mod h1:1CGOnM7X3he+qgGNqjeADuE5vKZQx/eMSeUkpU3ujIc=
-github.com/dubbogo/tools v0.0.0-20210910024954-b35a4f78e184 h1:aTP8To5PMUDCV6uNzUPwkJ2S23m/KMpBdF7XtOxcNJI=
-github.com/dubbogo/tools v0.0.0-20210910024954-b35a4f78e184/go.mod h1:4khZ5JiSe4cYdLLYkxoOTW+Ccsffw7ic6TnAqHWpSyo=
 github.com/dubbogo/triple v1.0.6-0.20210904050749-5721796f3fd6 h1:ZrCFQ/a0rgK5EBF9FiiSYvCmtC2sLzOoFAbqBVmsA94=
 github.com/dubbogo/triple v1.0.6-0.20210904050749-5721796f3fd6/go.mod h1:KbfU/uZDv+fJEqXYK3qI8m1iuBQ309QxiC0tvTf2pog=
 github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
