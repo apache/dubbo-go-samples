@@ -1,6 +1,6 @@
 # Generic Invocation
 
-Generic invocation ensures RPC could be passed properly even if one of clients has no information about interface, that is converting POJO to a generic type, like dictionary, string etc. It is often used for testing and gateways.
+Generic invocation ensures the RPC could be passed properly even if one of clients has no information about interface, because generic invocation converts the POJO to a generic type, like dictionary, string, etc. It is often used for testing and gateways. Please visit our documentation for more details.
 
 ## Getting Started
 
@@ -27,11 +27,11 @@ cd ./default/go-server/docker \
 ```
 ### Server
 
-There are two ways to launch a Dubbo-Go server: using GoLand OR using command line tool.
+There are two ways to launch a Dubbo-Go server: using GoLand or using command line tool.
 
 Using GoLand. Please select `v3config-generic/generic-default-go-server` from Configurations at top-right corner, and then click Run button.
 
-Using command line tool. `$ProjectRootDir` is the root directory of the dubbo-go-samples project.
+Using command line tool. The `$ProjectRootDir` is the root directory of the dubbo-go-samples project.
 
 ```shell
 cd $ProjectRootDir/generic/default/go-server/cmd \
@@ -40,11 +40,11 @@ cd $ProjectRootDir/generic/default/go-server/cmd \
 
 ### Client
 
-There are two ways to launch a Dubbo-Go client: using GoLand OR using command line tool.
+There are two ways to launch a Dubbo-Go client: using GoLand or using command line tool.
 
 Using GoLand. Please select `v3config-generic/generic-default-go-client` from Configurations at top-right corner, and then click Run button.
 
-Using command line tool. `$ProjectRootDir` is the root directory of the dubbo-go-samples project.
+Using command line tool. The `$ProjectRootDir` is the root directory of the dubbo-go-samples project.
 
 ```shell
 cd $ProjectRootDir/generic/default/go-client/cmd \
