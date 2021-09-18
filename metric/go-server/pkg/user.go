@@ -59,10 +59,6 @@ func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, e
 	return &rsp, nil
 }
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
 func (u User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }

@@ -1,0 +1,34 @@
+dubbo:
+  filter: "metrics"
+  application:
+    organization: "dubbo.io"
+    name: "metric_dubbo_server"
+    module: "dubbo-go user-info server"
+    version: "0.0.1"
+    environment: "dev"
+  metrics:
+    reporters:
+      - "prometheus"
+  registries:
+    demoZK:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  protocols:
+    triple:
+      name: tri
+      port: 20000
+#  protocols:
+#    "dubbo":
+#      name: "dubbo"
+#      port: 20000
+  provider:
+    filter: "metrics"
+    registry:
+      - demoZK
+    services:
+      UserProvider:
+        registry: "demoZk"
+#        protocol: "dubbo"
+        protocol: triple
+        interface: "org.apache.dubbo.UserProvider"
