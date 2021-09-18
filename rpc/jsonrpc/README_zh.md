@@ -1,24 +1,27 @@
-# JsonRPC 示例
+# JSON-RPC 示例
 
 ## 背景
+
 Dubbo3 提供了 Triple(Dubbo3)、Dubbo2 协议，这是 Dubbo 框架的原生协议。
 除此之外，Dubbo3 也对众多第三方协议进行了集成，并将它们纳入 Dubbo 的编程与服务治理体系，
-包括 gRPC、Thrift、JsonRPC、Hessian2、REST 等。以下重点介绍 JsonRPC 协议示例。
+包括 gRPC、Thrift、**JSON-RPC**、Hessian2、REST 等。以下重点介绍 **JSON-RPC** 协议示例。
 
 ## 如何启动
 
 - 启动注册中心
-- 启动 go-server、go-client 查看 **JsonRPC** 效果
-- 启动 java-server、java-client 查看 **JsonRPC** 效果
+- 启动 go-server、go-client 查看 **JSON-RPC** 效果
+- 启动 java-server、java-client 查看 **JSON-RPC** 效果
 
 ### 启动注册中心
 
 启动项目提供注册中心
+
 ```shell
 docker-compose -f go-server/docker/docker-compose.yml up -d
 ```
 
 关闭注册中心
+
 ```shell
 docker-compose -f go-server/docker/docker-compose.yml dowm
 ```

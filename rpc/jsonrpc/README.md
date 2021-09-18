@@ -1,15 +1,16 @@
-# JsonRPC Example
+# JSON-RPC Example
 
 ## Backend
+
 Dubbo3 provides Triple(Dubbo3), Dubbo2 protocols, which are native to the Dubbo framework.
 In addition, Dubbo3 also integrates a number of third-party protocols into Dubbo's programming and service governance architecture,
-Including gRPC, Thrift, **JsonRPC**, Hessian2, and REST. The following describes the **JsonRPC** protocol example.
+Including gRPC, Thrift, **JSON-RPC**, Hessian2, and REST. The following describes the **JSON-RPC** protocol example.
 
 ## Start
 
 - Start the registry
-- Start go-server and go-client, practice with **JsonRPC**  
-- Start java-server and java-client, practice with **JsonRPC**
+- Start go-server and go-client, practice with **JSON-RPC**  
+- Start java-server and java-client, practice with **JSON-RPC**
 
 ### Start the registry
 

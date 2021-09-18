@@ -12,12 +12,6 @@ dubbo:
       address: "127.0.0.1:2181"
       username: ""
       password: ""
-    "shanghaizk":
-      protocol: "zookeeper"
-      timeout: "3s"
-      address: "127.0.0.1:2182"
-      username: ""
-      password: ""
   protocols:
     "jsonrpc":
       name: "jsonrpc"
@@ -26,9 +20,8 @@ dubbo:
   provider:
     registry:
       - hangzhouzk
-      - shanghaizk
     services:
-      "com.ikurento.user.UserProvider":
+      UserProvider:
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
@@ -39,7 +32,7 @@ dubbo:
           - name: "GetUser"
             retries: 1
             loadbalance: "random"
-      "com.ikurento.user.UserProvider1":
+      UserProvider1:
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
@@ -51,7 +44,7 @@ dubbo:
           - name: "GetUser"
             retries: 1
             loadbalance: "random"
-      "com.ikurento.user.UserProvider2":
+      UserProvider2:
         registry: "hangzhouzk"
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
