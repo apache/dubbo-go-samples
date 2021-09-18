@@ -52,7 +52,7 @@ var (
 )
 
 // they are necessary:
-// 		export CONF_PROVIDER_FILE_PATH="xxx"
+// 		export DUBBO_GO_CONFIG_PATH=/Users/phil/Meituan/galaxyspace/dubbo-go-samples/rpc/jsonrpc/go-server/conf/dubbogo.yml
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
 	server_impl.AddGoRestfulServerFilter(func(request *restful.Request, response *restful.Response, chain *restful.FilterChain) {

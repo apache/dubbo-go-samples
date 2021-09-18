@@ -89,7 +89,3 @@ func (u *UserProvider1) GetUser1(req []interface{}) (*User, error) {
 	err := perrors.New("test error")
 	return nil, err
 }
-
-func (u *UserProvider1) Reference() string {
-	return "UserProvider1"
-}
