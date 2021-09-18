@@ -24,19 +24,9 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/memory"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/etcd"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remote"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/etcdv3"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
@@ -54,7 +44,7 @@ func init() {
 	hessian.RegisterPOJO(&pkg.User{})
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+// export DUBBO_GO_CONFIG_PATH= $PATH_TO_SAMPLES/registry/servicediscovery/go-client/conf/dubbogo.yml
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
@@ -62,8 +52,7 @@ func main() {
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	for i := 0; i < 123; i++ {
-		user := &pkg.User{}
-		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+		user, err := userProvider.GetUser(context.TODO(), []interface{}{"A001"})
 		if err != nil {
 			gxlog.CError("error: %v\n", err)
 			os.Exit(1)
