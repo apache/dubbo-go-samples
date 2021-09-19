@@ -1,42 +1,52 @@
 # Generic Invocation
 
-Generic invocation is mainly used when the client does not have API interface or model class, all POJOs in parameters and return values are represented by map or other generic data structures. Commonly used for framework integration such as: implementing a common service testing framework, all service implementations can be invoked via `GenericService`. For more information please visit our documentation.
+Generic invocation ensures the RPC could be passed properly even if one of clients has no information about interface, because generic invocation converts the POJO to a generic type, like dictionary, string, etc. It is often used for testing and gateways. Please visit our documentation for more details.
 
 ## Getting Started
 
-### Instructions
+The samples of generic invocation are parted by the way of generalization：
 
-1. Start zookeeper
+- default：uses MapGeneralizer which converts POJOs to maps
 
-   ```shell
-   cd ./default/go-server/docker \
-     && docker-compose up -d
-   ```
+Each sample contains 4 subfolders：
 
-2. Start the server to run provider.
+- go-server：Dubbo-Go v3 server sample
+- go-client：Dubbo-Go v3 client sample
+- java-client：Dubbo v3 server sample
+- java-server：Dubbo v3 client sample
 
-   1. go
+Providing java samples is convenient to test interoperability between Dubbo and Dubbo-Go.
 
-      Use goland to start generic-default-go-server
+### Registry
 
-   2. java
+This sample uses ZooKeeper as the registry. In fact, etcd and Nacos are supported as well. Executing the following command, a ZooKeeper instance will be launched. Please note that docker and docker-compose **SHOULD** be installed before.
 
-      Use goland to start generic-default-java-server
-      
-      or
+```shell
+cd ./default/go-server/docker \
+  && docker-compose up -d
+```
+### Server
 
-      Execute `sh run.sh` in the java-server folder to start the java server
+There are two ways to launch a Dubbo-Go server: using GoLand or using command line tool.
 
-3. Start the client to run consumers to initiate generic invocation.
+Using GoLand. Please select `v3config-generic/generic-default-go-server` from Configurations at top-right corner, and then click Run button.
 
-   1. go
+Using command line tool. The `$ProjectRootDir` is the root directory of the dubbo-go-samples project.
 
-      Use goland to start generic-default-go-client
+```shell
+cd $ProjectRootDir/generic/default/go-server/cmd \
+  && go run server.go
+```
 
-   2. java
+### Client
 
-      Use goland to start generic-default-java-client
-   
-      or
+There are two ways to launch a Dubbo-Go client: using GoLand or using command line tool.
 
-      Execute `sh run.sh` in the java-client folder to start the java client
+Using GoLand. Please select `v3config-generic/generic-default-go-client` from Configurations at top-right corner, and then click Run button.
+
+Using command line tool. The `$ProjectRootDir` is the root directory of the dubbo-go-samples project.
+
+```shell
+cd $ProjectRootDir/generic/default/go-client/cmd \
+  && go run client.go
+```
