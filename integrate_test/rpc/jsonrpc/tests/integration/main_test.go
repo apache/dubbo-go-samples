@@ -33,9 +33,9 @@ import (
 )
 
 var (
-	userProvider  = new(pkg.UserProvider)
-	userProvider1 = new(pkg.UserProvider1)
-	userProvider2 = new(pkg.UserProvider2)
+	userProvider  = &pkg.UserProvider{}
+	userProvider1 = &pkg.UserProvider1{}
+	userProvider2 = &pkg.UserProvider2{}
 )
 
 func init() {

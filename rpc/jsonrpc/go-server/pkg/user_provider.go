@@ -30,7 +30,7 @@ import (
 )
 
 func init() {
-	config.SetProviderService(new(UserProvider))
+	config.SetProviderService(&UserProvider{})
 }
 
 type UserProvider struct {
