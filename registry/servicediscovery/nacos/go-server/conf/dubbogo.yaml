@@ -1,0 +1,40 @@
+dubbo:
+  application:
+    metadata-type: remote
+
+  config-center:
+    protocol: "zookeeper"
+    address: "127.0.0.1:52181"
+
+  registries:
+    demoSD:
+      protocol: "nacos"
+      address: "127.0.0.1:8848"
+      registry-type: "service"
+      params:
+        service_discovery: "nacosSD"
+        name_mapping: "in-memory"
+        metadata: "default"
+
+  metadata-report:
+    protocol: "nacos"
+    address: "127.0.0.1:8848"
+    timeout: "10s"
+
+  service-discovery:
+    "nacosSD":
+      protocol: "nacos"
+
+  provider:
+    registry:
+      - demoSD
+    services:
+      "UserProvider":
+        registry: "demoSD"
+        provided_by: "dubbo.io"
+        protocol: "dubbo"
+        interface: "org.apache.dubbo.UserProvider"
+        cluster: "failover"
+        methods:
+          - name: "GetUser"
+            retries: 3

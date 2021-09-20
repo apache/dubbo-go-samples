@@ -31,7 +31,7 @@ import (
 )
 
 func init() {
-	config.SetProviderService(new(UserProvider))
+	config.SetProviderService(&UserProvider{})
 	// ------for hessian2------
 	hessian.RegisterPOJO(&User{})
 }
