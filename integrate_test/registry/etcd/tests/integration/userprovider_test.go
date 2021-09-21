@@ -28,9 +28,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+import (
+	"github.com/apache/dubbo-go-samples/registry/etcd/go-client/pkg"
+)
+
 func TestGetUser(t *testing.T) {
-	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	user := &pkg.User{ID: "A001"}
+	user, err := userProvider.GetUser(context.TODO(), user)
 	assert.Nil(t, err)
 	assert.Equal(t, "A001", user.ID)
 	assert.Equal(t, "Alex Stocks", user.Name)

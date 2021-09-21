@@ -20,51 +20,32 @@
 package integration
 
 import (
-	"context"
 	"os"
 	"testing"
 	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	_ "dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/etcdv3"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var userProvider = new(UserProvider)
+import (
+	"github.com/apache/dubbo-go-samples/registry/etcd/go-client/pkg"
+)
+
+var (
+	userProvider = &pkg.UserProvider{}
+)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
+	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
 	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
 }

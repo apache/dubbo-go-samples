@@ -101,6 +101,7 @@ array+=("config-api/configcenter/zookeeper")
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
+array+=("registry/etcd")
 
 # generic
 array+=("generic/default")

@@ -10,23 +10,13 @@ dubbo:
       protocol: "etcdv3"
       timeout: "3s"
       address: "127.0.0.1:2379"
-      username: ""
-      password: ""
-#  protocols:
-#    triple:
-#      name: tri
-#      port: 20000
   protocols:
     dubbo:
       name: "dubbo"
       port: 20000
   consumer:
     references:
-      "UserProvider":
+      UserProvider:
         registry: "etcd"
         protocol: "dubbo"
         interface: "org.apache.dubbo.UserProvider"
-        cluster: "failover"
-        methods:
-          - name: "GetUser"
-            retries: 3
