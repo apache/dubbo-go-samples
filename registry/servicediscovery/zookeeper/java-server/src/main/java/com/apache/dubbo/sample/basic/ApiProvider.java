@@ -18,41 +18,27 @@
 package com.apache.dubbo.sample.basic;
 
 import org.apache.dubbo.common.constants.CommonConstants;
+import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.MetadataReportConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
-import java.util.concurrent.CountDownLatch;
 import com.apache.dubbo.sample.basic.IGreeter;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.apache.dubbo.config.bootstrap.DubboBootstrap;
-
 
 public class ApiProvider {
-//     public static void main(String[] args) throws InterruptedException {
-//         ServiceConfig<IGreeter> service = new ServiceConfig<>();
-//         service.setInterface(IGreeter.class);
-//         service.setRef(new IGreeter1Impl());
-//         service.setProtocol(new ProtocolConfig(CommonConstants.TRIPLE, 50051));
-//         service.set
-//         service.setApplication(new ApplicationConfig("demo-provider"));
-//         service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
-//         service.export();
-//         System.out.println("dubbo service started");
-//         new CountDownLatch(1).await();
-//     }
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         ServiceConfig<IGreeter> service = new ServiceConfig<>();
         service.setInterface(IGreeter.class);
         service.setRef(new IGreeter1Impl());
 
+        ApplicationConfig applicationConfig = new ApplicationConfig("demo-provider");
+        applicationConfig.setProtocol(CommonConstants.TRIPLE);
+
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
-        bootstrap.application(new ApplicationConfig("demo-provider"))
+        bootstrap.application(applicationConfig)
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
                 .protocol(new ProtocolConfig(CommonConstants.TRIPLE, 50051))
-                .metadataReport(new MetadataReportConfig("zookeeper://127.0.0.1:2181"))
                 .service(service)
                 .start()
                 .await();
