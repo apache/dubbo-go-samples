@@ -1,3 +1,5 @@
+// +build integration
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,49 +17,27 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
-	"os"
-	"time"
+	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	hessian "github.com/apache/dubbo-go-hessian2"
-	gxlog "github.com/dubbogo/gost/log"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/registry/etcd/go-client/pkg"
 )
 
-var userProvider = new(pkg.UserProvider)
-
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
-
-// Do some checking before the system starts up:
-// 1. env config
-// 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
-func main() {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{
-		ID: "A001",
-	}
+func TestGetUser(t *testing.T) {
+	user := &pkg.User{ID: "A001"}
 	user, err := userProvider.GetUser(context.TODO(), user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+	assert.Nil(t, err)
+	assert.Equal(t, "A001", user.ID)
+	assert.Equal(t, "Alex Stocks", user.Name)
+	assert.Equal(t, int32(18), user.Age)
+	assert.NotNil(t, user.Time)
 }
