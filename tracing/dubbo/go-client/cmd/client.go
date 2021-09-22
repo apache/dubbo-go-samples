@@ -54,7 +54,7 @@ var (
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.SetConsumerService(userProvider)
-	config.Load(config.WithPath("./tracing/dubbo/go-client/conf/dubbogo.yml"))
+	config.Load()
 	// initJaeger() and initZipkin() can only use one at the same time
 	//initJaeger()
 	initZipkin()
