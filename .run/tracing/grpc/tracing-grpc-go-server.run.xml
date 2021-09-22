@@ -6,7 +6,7 @@
       <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/tracing/grpc/go-server/conf/dubbogo.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/tracing/grpc/go-server/app/client.go" />
+    <filePath value="$PROJECT_DIR$/tracing/grpc/go-server/app/server.go" />
     <package value="github.com/apache/dubbo-go-samples/tracing/grpc/go-server/app" />
     <directory value="$PROJECT_DIR$" />
     <method v="2" />
