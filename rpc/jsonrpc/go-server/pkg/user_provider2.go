@@ -14,13 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pkg
 
 import (
 	"context"
 	"fmt"
-	"strconv"
 )
 
 import (
@@ -32,7 +30,7 @@ import (
 )
 
 func init() {
-	config.SetProviderService(new(UserProvider2))
+	config.SetProviderService(&UserProvider2{})
 }
 
 type UserProvider2 struct {
@@ -46,26 +44,25 @@ func (u *UserProvider2) getUser(userID string) (*User, error) {
 	return nil, fmt.Errorf("invalid user id:%s", userID)
 }
 
-func (u *UserProvider2) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider2) GetUser(ctx context.Context, userID string) (*User, error) {
 	var (
 		err  error
 		user *User
 	)
 
-	gxlog.CInfo("req:%#v", req)
-	user, err = u.getUser(req[0].(string))
+	gxlog.CInfo("userID:%#v", userID)
+	user, err = u.getUser(userID)
 	if err == nil {
-		*rsp = *user
-		gxlog.CInfo("rsp:%#v", rsp)
+		gxlog.CInfo("rsp:%#v", user)
 	}
-	return err
+	return user, err
 }
 
-func (u *UserProvider2) GetUser0(id string, name string) (User, error) {
+func (u *UserProvider2) GetUser0(userID string, name string) (User, error) {
 	var err error
 
-	gxlog.CInfo("id:%s, name:%s", id, name)
-	user, err := u.getUser(id)
+	gxlog.CInfo("userID:%s, name:%s", userID, name)
+	user, err := u.getUser(userID)
 	if err != nil {
 		return User{}, err
 	}
@@ -75,23 +72,25 @@ func (u *UserProvider2) GetUser0(id string, name string) (User, error) {
 	return *user, err
 }
 
-func (u *UserProvider2) GetUser2(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider2) GetUser2(ctx context.Context, userID string) (*User, error) {
 	var err error
 
-	gxlog.CInfo("req:%#v", req)
-	rsp.ID = strconv.FormatFloat(req[0].(float64), 'f', 0, 64)
-	rsp.Sex = Gender(MAN).String()
-	return err
+	gxlog.CInfo("userID:%#v", userID)
+	rsp := &User{
+		ID:  userID,
+		Sex: Gender(MAN).String(),
+	}
+	return rsp, err
 }
 
 func (u *UserProvider2) GetUser3() error {
 	return nil
 }
 
-func (u *UserProvider2) GetUsers(req []interface{}) ([]User, error) {
+func (u *UserProvider2) GetUsers(req []interface{}) ([]*User, error) {
 	var err error
 
-	gxlog.CInfo("req:%s", req)
+	gxlog.CInfo("userIDs:%s", req)
 	t := req[0].([]interface{})
 	user, err := u.getUser(t[0].(string))
 	if err != nil {
@@ -99,15 +98,11 @@ func (u *UserProvider2) GetUsers(req []interface{}) ([]User, error) {
 	}
 	gxlog.CInfo("user:%v", user)
 
-	return []User{*user}, err
+	return []*User{user}, err
 }
 
 func (s *UserProvider2) MethodMapper() map[string]string {
 	return map[string]string{
 		"GetUser2": "getUser",
 	}
-}
-
-func (u *UserProvider2) Reference() string {
-	return "UserProvider2"
 }
