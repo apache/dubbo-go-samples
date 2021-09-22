@@ -6,8 +6,8 @@
       <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/tracing/dubbo/go-client/conf/dubbogo.yml" />
     </envs>
     <kind value="PACKAGE" />
-    <filePath value="$PROJECT_DIR$/tracing/dubbo/go-client/app/client.go" />
-    <package value="github.com/apache/dubbo-go-samples/tracing/dubbo/go-client/app" />
+    <filePath value="$PROJECT_DIR$/tracing/dubbo/go-client/cmd/client.go" />
+    <package value="github.com/apache/dubbo-go-samples/tracing/dubbo/go-client/cmd" />
     <directory value="$PROJECT_DIR$" />
     <method v="2" />
   </configuration>
