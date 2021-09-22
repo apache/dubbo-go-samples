@@ -31,13 +31,13 @@ services:
       - 9411:9411
     depends_on:
       - storage
-      
+
   storage:
     image: openzipkin/zipkin-mysql
     container_name: mysql
     ports:
       - 3307:3306
-   
+
 
 networks:
   jaeger-example: 

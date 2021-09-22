@@ -62,7 +62,7 @@ func (g *GreeterProvider) SayHello(ctx context.Context, req *pb.HelloRequest) (r
 
 func main() {
 	config.SetProviderService(&GreeterProvider{})
-	if err := config.Load(config.WithPath("./tracing/grpc/go-server/conf/dubbogo.yml")); err != nil {
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
 	initSignal()

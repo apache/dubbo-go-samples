@@ -14,47 +14,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package main
+package integration
 
 import (
-	"context"
 	"os"
+	"testing"
 	"time"
 )
 
 import (
+	_ "dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
+	"github.com/apache/dubbo-go-samples/rpc/jsonrpc/go-client/pkg"
 )
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *api.User) (rsp *api.User, err error)
-}
-
-var userProvider = new(UserProvider)
+var (
+	userProvider  = &pkg.UserProvider{}
+	userProvider1 = &pkg.UserProvider1{}
+	userProvider2 = &pkg.UserProvider2{}
+)
 
 func init() {
 	config.SetConsumerService(userProvider)
+	config.SetConsumerService(userProvider1)
+	config.SetConsumerService(userProvider2)
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-func main() {
+func TestMain(m *testing.M) {
+
 	config.Load()
+
 	time.Sleep(3 * time.Second)
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user, err := userProvider.GetUser(context.TODO(), &api.User{Name: "laurence"})
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+	os.Exit(m.Run())
 }

@@ -55,7 +55,7 @@ func init() {
 }
 
 func main() {
-	config.Load(config.WithPath("./tracing/grpc/go-client/conf/dubbogo.yml"))
+	config.Load()
 	// initJaeger() and initZipkin() can only use one at the same time
 	initJaeger()
 	//initZipkin()

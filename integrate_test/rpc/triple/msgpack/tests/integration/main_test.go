@@ -15,46 +15,33 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
 	"os"
+	"testing"
 	"time"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *api.User) (rsp *api.User, err error)
-}
-
 var userProvider = new(UserProvider)
 
-func init() {
+func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-}
-
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
-func main() {
 	config.Load()
 	time.Sleep(3 * time.Second)
+	os.Exit(m.Run())
+}
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user, err := userProvider.GetUser(context.TODO(), &api.User{Name: "laurence"})
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+type UserProvider struct {
+	GetUser func(ctx context.Context, req *api.User) (rsp *api.User, err error)
 }
