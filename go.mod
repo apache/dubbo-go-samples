@@ -8,7 +8,6 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dubbogo/gost v1.11.16
 	github.com/dubbogo/net v0.0.4
-	github.com/dubbogo/tools v0.0.0-20210910024954-b35a4f78e184 // indirect
 	github.com/dubbogo/triple v1.0.6-0.20210904050749-5721796f3fd6
 	github.com/emicklei/go-restful/v3 v3.5.2
 	github.com/golang/protobuf v1.5.2

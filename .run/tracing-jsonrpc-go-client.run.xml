@@ -3,8 +3,7 @@
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
-      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/tracing/jsonrpc/go-client/profiles/dev/log.yml" />
-      <env name="CONF_CONSUMER_FILE_PATH" value="$PROJECT_DIR$/tracing/jsonrpc/go-client/profiles/dev/client.yml" />
+      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/tracing/jsonrpc/go-client/conf/dubbogo.yml" />
     </envs>
     <kind value="PACKAGE" />
     <filePath value="$PROJECT_DIR$/tracing/jsonrpc/go-client/app/client.go" />

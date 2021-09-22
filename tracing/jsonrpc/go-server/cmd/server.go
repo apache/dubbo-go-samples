@@ -49,11 +49,11 @@ var (
 
 func main() {
 	config.SetProviderService(new(pkg.UserProvider))
-	config.Load(config.WithPath("./tracing/jsonrpc/go-server/conf/dubbogo.yml"))
-	initSignal()
+	config.Load()
 	// initJaeger() and initZipkin() can only use one at the same time
 	initJaeger()
 	//initZipkin()
+	initSignal()
 }
 
 func initSignal() {
