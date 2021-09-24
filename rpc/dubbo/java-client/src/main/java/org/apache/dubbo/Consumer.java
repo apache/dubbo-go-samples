@@ -19,6 +19,7 @@ package org.apache.dubbo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,8 @@ public class Consumer {
 
         start();
         startComplexConsumerService();
+        // TODO when upgrade hessian version, remember to delete this comment
+       startWrapperArrayClassService();
     }
 
     // Start the entry function for consumer (Specified in the configuration file)
@@ -276,5 +279,26 @@ public class Consumer {
 
         int rsp = complexProvider.InvokeWithMultiBasicData("str",new byte[]{1, 3, 4,6,7}, 32, true);
         System.out.println("get multi basic rsp = "+  rsp);
+    }
+
+    public static void startWrapperArrayClassService() {
+        ReferenceConfig<WrapperArrayClassProvider> ref = new ReferenceConfig<>();
+        ref.setInterface(WrapperArrayClassProvider.class);
+        ref.setCheck(false);
+        ref.setProtocol(CommonConstants.DUBBO_PROTOCOL);
+        ref.setLazy(true);
+        ref.setTimeout(100000);
+        ref.setApplication(new ApplicationConfig("demo-consumer"));
+
+        ref.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
+        final WrapperArrayClassProvider wrapperArrayClassProvider = ref.get();
+        System.out.println("---InvokeWithJavaByteArray:" + Arrays.toString(wrapperArrayClassProvider.InvokeWithJavaByteArray(new Byte[]{10, 100})));
+        System.out.println("---InvokeWithJavaCharacterArray" + Arrays.toString(wrapperArrayClassProvider.InvokeWithJavaCharacterArray(new Character[]{'a', 'b', 'c'})));
+        System.out.println("---InvokeWithJavaShortArray" + Arrays.toString(wrapperArrayClassProvider.InvokeWithJavaShortArray(new Short[]{1, 2, 3})));
+        System.out.println("---InvokeWithJavaIntegerArray" + Arrays.toString(wrapperArrayClassProvider.InvokeWithJavaIntegerArray(new Integer[]{4, 5, 6})));
+        System.out.println("---InvokeWithJavaLongArray" + Arrays.toString(wrapperArrayClassProvider.InvokeWithJavaLongArray(new Long[]{7L, 8L, 9000000000000L})));
+        System.out.println("---InvokeWithJavaFloatArray" + Arrays.toString(wrapperArrayClassProvider.InvokeWithJavaFloatArray(new Float[]{1.2f, 2.3f, 3.0f})));
+        System.out.println("---InvokeWithJavaDoubleArray" + Arrays.toString(wrapperArrayClassProvider.InvokeWithJavaDoubleArray(new Double[]{4.0, 5.1, 6.0})));
+        System.out.println("---InvokeWithJavaBooleanArray" + Arrays.toString(wrapperArrayClassProvider.InvokeWithJavaBooleanArray(new Boolean[]{true, false, true})));
     }
 }
