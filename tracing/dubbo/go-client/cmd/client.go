@@ -27,19 +27,13 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
-	"github.com/dubbogo/gost/log"
+	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-client/pkg"
 
 	"github.com/opentracing/opentracing-go"
 
@@ -47,39 +41,30 @@ import (
 
 	"github.com/openzipkin/zipkin-go"
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
-)
 
-import (
-	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-client/pkg"
+	"github.com/uber/jaeger-client-go"
+	jaegerConfig "github.com/uber/jaeger-client-go/config"
 )
 
 var (
-	userProvider        = &pkg.UserProvider{}
 	survivalTimeout int = 10e9
+	userProvider        = new(pkg.UserProvider)
 )
 
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
-
-// they are necessary:
-// 		export CONF_CONSUMER_FILE_PATH="xxx"
-// 		export APP_LOG_CONF_FILE="xxx"
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
+	config.SetConsumerService(userProvider)
 	config.Load()
-
+	// initJaeger() and initZipkin() can only use one at the same time
+	//initJaeger()
 	initZipkin()
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	span, ctx := opentracing.StartSpanFromContext(context.Background(), "Test-Client-Service")
-	err := userProvider.GetUser(ctx, []interface{}{"A001"}, user)
+	span, ctx := opentracing.StartSpanFromContext(context.Background(), "Dubbogo-Client-Service")
+	user, err := userProvider.GetUser(ctx, []interface{}{"A003"})
 	span.Finish()
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("response result: %v\n", user)
+	logger.Info("response result: %v", user)
 	initSignal()
 }
 
@@ -99,7 +84,6 @@ func initSignal() {
 				logger.Warnf("app exit now by force...")
 				os.Exit(1)
 			})
-
 			// The program exits normally or timeout forcibly exits.
 			fmt.Println("app exit now...")
 			return
@@ -107,25 +91,36 @@ func initSignal() {
 	}
 }
 
-func initZipkin() {
-	// set up a span reporter
-	reporter := zipkinhttp.NewReporter("http://localhost:9411/api/v2/spans")
+func initJaeger() {
+	cfg := jaegerConfig.Configuration{
+		ServiceName: "dobbugoJaegerTracingService",
+		Sampler: &jaegerConfig.SamplerConfig{
+			Type:  jaeger.SamplerTypeRemote,
+			Param: 1,
+		},
+		Reporter: &jaegerConfig.ReporterConfig{
+			LocalAgentHostPort:  "127.0.0.1:6831",
+			LogSpans:            true,
+			BufferFlushInterval: 5 * time.Second,
+		},
+	}
+	nativeTracer, _, err := cfg.NewTracer(jaegerConfig.Logger(jaeger.StdLogger))
+	if err != nil {
+		logger.Errorf("unable to create jaeger tracer: %+v\n", err)
+	}
+	opentracing.SetGlobalTracer(nativeTracer)
+}
 
-	// create our local service endpoint
-	endpoint, err := zipkin.NewEndpoint("myService", "myservice.mydomain.com:80")
+func initZipkin() {
+	reporter := zipkinhttp.NewReporter("http://localhost:9411/api/v2/spans")
+	endpoint, err := zipkin.NewEndpoint("dobbugoZipkinTracingService", "myservice.mydomain.com:80")
 	if err != nil {
 		logger.Errorf("unable to create local endpoint: %+v\n", err)
 	}
-
-	// initialize our tracer
 	nativeTracer, err := zipkin.NewTracer(reporter, zipkin.WithLocalEndpoint(endpoint))
 	if err != nil {
 		logger.Errorf("unable to create tracer: %+v\n", err)
 	}
-
-	// use zipkin-go-opentracing to wrap our tracer
 	tracer := zipkinot.Wrap(nativeTracer)
-
-	// optionally set as Global OpenTracing tracer instance
 	opentracing.SetGlobalTracer(tracer)
 }

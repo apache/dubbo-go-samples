@@ -19,49 +19,47 @@ package pkg
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
+	gxlog "github.com/dubbogo/gost/log"
 
 	"github.com/opentracing/opentracing-go"
 )
 
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
+type (
+	User struct {
+		Id   string
+		Name string
+		Age  int32
+		Time time.Time
+	}
+)
+
+func (u User) String() string {
+	return fmt.Sprintf(
+		"User{ID:%s, Name:%s, Age:%d, Time:%s}",
+		u.Id, u.Name, u.Age, u.Time,
+	)
 }
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
+func (u User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
 
 type UserProvider struct {
 }
 
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
 	span, ctx := opentracing.StartSpanFromContext(ctx, "User-Server-Span")
-	time.Sleep(100 * time.Millisecond)
+	gxlog.CInfo("req:%#v", req)
+	user := &User{Id: "001", Name: "zhangsan-dubbogo", Age: 18, Time: time.Now()}
 	span.Finish()
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
+	return user, nil
 }
 
 func (u *UserProvider) Reference() string {
 	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
-	return "com.ikurento.user.User"
 }
