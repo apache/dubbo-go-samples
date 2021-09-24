@@ -38,23 +38,22 @@ type GreeterProvider struct {
 }
 
 type customLogger struct {
-
 }
 
 func (c *customLogger) Info(args ...interface{}) {
-	fmt.Printf("\033[1;32;40m%s\033[0m\n",args)
+	fmt.Printf("\033[1;32;40m%s\033[0m\n", args)
 }
 
 func (c *customLogger) Warn(args ...interface{}) {
-	fmt.Printf("\033[1;33;40m%s\033[0m\n",args)
+	fmt.Printf("\033[1;33;40m%s\033[0m\n", args)
 }
 
 func (c *customLogger) Error(args ...interface{}) {
-	fmt.Printf("\033[1;31;40m%s\033[0m\n",args)
+	fmt.Printf("\033[1;31;40m%s\033[0m\n", args)
 }
 
 func (c *customLogger) Debug(args ...interface{}) {
-	fmt.Printf("\033[1;34;40m%s\033[0m\n",args)
+	fmt.Printf("\033[1;34;40m%s\033[0m\n", args)
 }
 
 func (c *customLogger) Infof(fmts string, args ...interface{}) {
