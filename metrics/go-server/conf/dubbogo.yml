@@ -1,16 +1,11 @@
 dubbo:
-  registries:
-    demoZK:
-      protocol: nacos
-      timeout: 3s
-      address: dubbogo-nacos:8848
+  application:
+    name: metrics-k8s-demo-app-name
   protocols:
     triple:
       name: tri
       port: 20000
   provider:
-    registry:
-      - demoZK
     services:
       GreeterProvider:
         protocol: triple

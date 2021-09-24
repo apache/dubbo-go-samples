@@ -15,28 +15,40 @@
  * limitations under the License.
  */
 
-package pkg
+package main
 
 import (
 	"context"
 	"time"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
+import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-}
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
+var grpcGreeterImpl = new(api.GreeterClientImpl)
 
-func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
+func main() {
+	config.SetConsumerService(grpcGreeterImpl)
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
+	time.Sleep(3 * time.Second)
+
+	logger.Info("start to test dubbo")
+	req := &api.HelloRequest{
+		Name: "laurence",
+	}
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client response result: %v\n", reply)
 }
