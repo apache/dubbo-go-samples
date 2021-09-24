@@ -30,8 +30,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	pb "github.com/apache/dubbo-go-samples/tracing/grpc/protobuf"
-
 	"github.com/dubbogo/gost/log"
 
 	"github.com/opentracing/opentracing-go"
@@ -43,6 +41,10 @@ import (
 
 	"github.com/uber/jaeger-client-go"
 	jaegerConfig "github.com/uber/jaeger-client-go/config"
+)
+
+import (
+	pb "github.com/apache/dubbo-go-samples/tracing/grpc/protobuf"
 )
 
 var (

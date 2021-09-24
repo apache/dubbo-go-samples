@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="logger-rolling" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+  <configuration default="false" name="logger-rolling" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="logger" nameIsGenerated="true">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="configcenter-nacos-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-configcenter" singleton="true">
+  <configuration default="false" name="configcenter-nacos-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="configcenter" singleton="true">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
