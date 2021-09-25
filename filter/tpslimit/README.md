@@ -17,13 +17,13 @@ func init() {
 	/*
 	 * register your implementation and them using it like:
 	 *
-	 * "UserProvider":
-	 *   registry: "hangzhouzk"
-	 *   protocol : "dubbo"
-	 *   interface : "com.ikurento.user.UserProvider"
+	 * UserProvider:
+	 *   registry: hangzhouzk
+	 *   protocol : dubbo
+	 *   interface : com.ikurento.user.UserProvider
 	 *   ... # other configuration
-	 *   tps.limiter: "method-service" # the name of limiter
-	 *   tps.limit.strategy: "RandomLimitStrategy"
+	 *   tps.limiter: method-service # the name of limiter
+	 *   tps.limit.strategy: RandomLimitStrategy
 	 */
 	extension.SetTpsLimitStrategy("RandomLimitStrategy", &RandomTpsLimitStrategyCreator{})
 }
@@ -62,15 +62,15 @@ Implement the interface "filter.RejectedExecutionHandler" to customize the retur
 func init() {
 	/*
 	 * register your custom implementation into filter.
-	 * "DefaultValueHandler" is the name used in configure file, like server.yml:
-	 * "UserProvider":
-	 *   registry: "hangzhouzk"
-	 *   protocol : "dubbo"
-	 *   interface : "com.ikurento.user.UserProvider"
+	 * DefaultValueHandler is the name used in configure file, like server.yml:
+	 * UserProvider:
+	 *   registry: hangzhouzk
+	 *   protocol : dubbo
+	 *   interface : com.ikurento.user.UserProvider
 	 *   ... # other configuration
-	 *   tps.limiter: "method-service",
+	 *   tps.limiter: method-service,
 	 *
-	 *   tps.limit.rejected.handler: "DefaultValueHandler",
+	 *   tps.limit.rejected.handler: DefaultValueHandler,
 	 * So when the invocation is over the tps limitation, it will return the default value.
 	 * This is a common use case.
 	 */
@@ -143,13 +143,13 @@ Enable tpslimit filter in provider's configuration file like below:
 ```yaml
 # service config
 services:
-  "UserProvider":
-    registry: "demoZk"
-    protocol: "dubbo"
-    interface: "org.apache.dubbo.UserProvider"
-    tps.limiter: "method-service"
-    tps.limit.strategy: "RandomLimitStrategy"
-    tps.limit.rejected.handler: "DefaultValueHandler"
+  UserProvider:
+    registry: demoZk
+    protocol: dubbo
+    interface: org.apache.dubbo.UserProvider
+    tps.limiter: method-service
+    tps.limit.strategy: RandomLimitStrategy
+    tps.limit.rejected.handler: DefaultValueHandler
     tps.limit.interval: 5000
     tps.limit.rate: 300
 ```
