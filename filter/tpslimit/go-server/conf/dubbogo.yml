@@ -1,0 +1,29 @@
+# dubbo server yaml configure file
+
+
+dubbo:
+  registries:
+    demoZK:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  protocols:
+    dubbo:
+      name: dubbo
+      port: 20000
+  provider:
+    registry:
+      - demoZK
+    services:
+      UserProvider:
+        protocol: dubbo
+        interface: org.apache.dubbo.UserProvider
+        loadbalance: random
+        warmup: 100
+        cluster: failover
+        tps.limiter: method-service
+        tps.limit.strategy: RandomLimitStrategy
+        tps.limit.rejected.handler: DefaultValueHandler
+        tps.limit.interval: 5000
+        tps.limit.rate: 300
+        
