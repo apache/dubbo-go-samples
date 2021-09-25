@@ -79,15 +79,17 @@ logger:
 自定义 logger 需要实现 logger 包中的 logger 接口
 ```go
 type Logger interface {
-	Info(args ...interface{})
-	Warn(args ...interface{})
-	Error(args ...interface{})
-	Debug(args ...interface{})
+    Info(args ...interface{})
+    Warn(args ...interface{})
+    Error(args ...interface{})
+    Debug(args ...interface{})
+    Fatal(args ...interface{})
 
-	Infof(fmt string, args ...interface{})
-	Warnf(fmt string, args ...interface{})
-	Errorf(fmt string, args ...interface{})
-	Debugf(fmt string, args ...interface{})
+    Infof(fmt string, args ...interface{})
+    Warnf(fmt string, args ...interface{})
+    Errorf(fmt string, args ...interface{})
+    Debugf(fmt string, args ...interface{})
+    Fatalf(fmt string, args ...interface{})
 }
 ```
 然后调用 SetLogger 方法设置 logger
