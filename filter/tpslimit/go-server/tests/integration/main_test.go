@@ -45,8 +45,11 @@ var userProvider = new(UserProvider)
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
+	//config.Load()
+	config.Load(config.WithPath("/Users/sanyue/Code/unity/dubbo-go-samples2/filter/tpslimit/go-server/conf/dubbogo.yml"))
+	config.Load(config.WithPath("/Users/sanyue/Code/unity/dubbo-go-samples2/filter/tpslimit/go-client/conf/dubbogo.yml"))
+
+	//time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }
@@ -59,11 +62,7 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
+	GetUser func(ctx context.Context, req []interface{}) (*User, error)
 }
 
 func (User) JavaClassName() string {

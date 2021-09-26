@@ -48,7 +48,7 @@ func main() {
 
 	logger.Infof("\n\n\nstart to test dubbo")
 	for i := 0; i < 50; i++ {
-		user, err := userProvider.GetUser(context.TODO(), []interface{}{"A001"})
+		user, err := userProvider.GetUser(context.TODO(), []string{"A001"})
 		if err != nil {
 			logger.Infof("error: %v\n", err)
 		}

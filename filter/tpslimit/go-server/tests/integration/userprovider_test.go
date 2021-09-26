@@ -35,7 +35,7 @@ func TestGetUser(t *testing.T) {
 
 	// loop 50 times to make sure rejection happens
 	for i := 0; i < 50; i++ {
-		if err = userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user); err != nil {
+		if user, err = userProvider.GetUser(context.TODO(), []interface{}{"A001"}); err != nil {
 			break
 		}
 
