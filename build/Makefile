@@ -35,7 +35,6 @@ GO_LICENSE_CHECKER = $(GO_PATH)/bin/license-header-checker
 LICENSE_DIR = /tmp/tools/license
 
 export GO111MODULE ?= on
-export GOPROXY ?= https://goproxy.cn,direct
 export GOSUMDB ?= sum.golang.org
 export GOARCH ?= amd64
 
