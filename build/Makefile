@@ -22,7 +22,7 @@ BASE_DIR := $(PROJECT_DIR)/dist
 SOURCES = $(wildcard $(PROJECT_DIR)/cmd/*.go)
 
 export GO111MODULE ?= on
-export GOPROXY ?= https://goproxy.io,direct
+#export GOPROXY ?= https://goproxy.io,direct
 export GOSUMDB ?= sum.golang.org
 export GOARCH ?= amd64
 
