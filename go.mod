@@ -5,7 +5,7 @@ require (
 	github.com/apache/dubbo-go-hessian2 v1.9.4-0.20210917102639-74a8ece5f3cb
 	github.com/dubbogo/gost v1.11.16
 	github.com/dubbogo/net v0.0.4
-	github.com/dubbogo/triple v1.0.6-0.20210904050749-5721796f3fd6
+	github.com/dubbogo/triple v1.0.6-0.20210909153707-3620c8d2d97c
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
@@ -18,7 +18,5 @@ require (
 	google.golang.org/grpc v1.38.0
 	google.golang.org/protobuf v1.27.1
 )
-
-replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.8.0
 
 go 1.13

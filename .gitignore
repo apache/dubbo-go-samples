@@ -26,6 +26,7 @@ vendor/
 
 logs/
 .vscode/
+cache/
 coverage.txt
 
 # maven
