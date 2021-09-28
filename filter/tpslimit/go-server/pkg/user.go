@@ -23,7 +23,7 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 )
 
 type User struct {
@@ -37,9 +37,9 @@ type UserProvider struct {
 }
 
 func (u *UserProvider) GetUser(ctx context.Context, req []string) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
+	logger.Infof("req:%#v", req)
 	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
-	gxlog.CInfo("rsp:%#v", rsp)
+	logger.Infof("rsp:%#v", rsp)
 	return &rsp, nil
 }
 

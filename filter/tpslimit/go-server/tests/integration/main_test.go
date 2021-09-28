@@ -27,15 +27,8 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
@@ -45,11 +38,9 @@ var userProvider = new(UserProvider)
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
-	//config.Load()
-	config.Load(config.WithPath("/Users/sanyue/Code/unity/dubbo-go-samples2/filter/tpslimit/go-server/conf/dubbogo.yml"))
-	config.Load(config.WithPath("/Users/sanyue/Code/unity/dubbo-go-samples2/filter/tpslimit/go-client/conf/dubbogo.yml"))
+	config.Load()
 
-	//time.Sleep(3 * time.Second)
+	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }
