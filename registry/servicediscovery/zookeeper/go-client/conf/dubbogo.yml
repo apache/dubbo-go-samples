@@ -1,7 +1,4 @@
 dubbo:
-  config-center:
-    protocol: "zookeeper"
-    address: "127.0.0.1:2181"
   registries:
     "demoZK":
       protocol: "zookeeper"
