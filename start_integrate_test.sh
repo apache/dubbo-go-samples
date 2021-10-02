@@ -14,6 +14,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+# game
+array+=("game/go-server-game")
+array+=("game/go-server-gate")
+
 # helloworld
 array=("helloworld")
 
@@ -44,10 +48,6 @@ array+=("rpc/triple/msgpack")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
-
-# game
-array+=("game/go-server-game")
-array+=("game/go-server-gate")
 
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
