@@ -243,12 +243,14 @@ func newRefConf(iface, protocol string) config.ReferenceConfig {
 	refConf := config.ReferenceConfig{
 		InterfaceName: iface,
 		Cluster:       "failover",
-		Registry:      []string{"zk"},
+		Registries:    []string{"zk"},
 		Protocol:      protocol,
 		Generic:       "true",
 	}
 
-	rootConfig := config.NewRootConfig(config.WithRootRegistryConfig("zk", registryConfig))
+	rootConfig := config.NewRootConfigBuilder().
+		AddRegistry("zk", registryConfig).
+		Build()
 	_ = rootConfig.Init()
 	_ = refConf.Init(rootConfig)
 	refConf.GenericLoad(appName)

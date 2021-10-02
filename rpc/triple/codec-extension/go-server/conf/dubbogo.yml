@@ -8,7 +8,7 @@ dubbo:
       name: tri
       port: 20000
   provider:
-    registry:
+    registries:
       - registryKey
     services:
       UserProvider:

@@ -42,7 +42,7 @@ func (User) JavaClassName() string {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}) (*User, error)
+	GetUser func(ctx context.Context, req *User) (*User, error)
 }
 
 func (u *UserProvider) Reference() string {
