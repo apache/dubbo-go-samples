@@ -17,32 +17,31 @@ Triple is  dubbo3.0 network protocol. You can refer to [dubbogo/triple](https://
 
 ```yaml
 dubbo:
-	protocols: # dubbogo framework network protocol configuration
-		myProtocol: # user defined protocol Key
-			name: tri # protocol name, suppporting: tri/dubbo/grpc/jsonrpc
-			port: 20000 # port to export service
-			
-	provider: 
-		services: 
-			MyProvider: # service provider type name 
-			 protocol: myProtocol # user defined protocol key，as above myProtocol defined
-			 interface: org.apache.dubbogo.MyProvider # user defined interface name
-		#  serialization: hessian2 # serialization that can be choosed：pb/hessian2/custome
-		#	 pb serialization by default
+  protocols: # dubbogo framework network protocol configuration
+    myProtocol: # user defined protocol Key
+      name: tri # protocol name, suppporting: tri/dubbo/grpc/jsonrpc
+      port: 20000 # port to export service
 
+  provider: 
+    services: 
+      MyProvider: # service provider type name 
+        protocol: myProtocol # user defined protocol key，as above myProtocol defined
+        interface: org.apache.dubbogo.MyProvider # user defined interface name
+      # serialization: hessian2 # serialization that can be choosed：pb/hessian2/custome
+      # pb serialization by default
 ```
 
 - Client
 
 ```yml
 dubbo:
-  consumer:
-    references:
-      ClientImpl: # client struct type name
-        protocol: tri # protocol name，supporting: tri/dubbo/grpc/jsonrpc，compatiable with server
-        interface: org.apache.dubbo.demo.Greeter # user defined interface name
-		 #  serialization: hessian2 # serialization that can be choosed：pb/hessian2/custome
-		 #	 pb serialization by default
+consumer:
+  references:
+    ClientImpl: # client struct type name
+      protocol: tri # protocol name，supporting: tri/dubbo/grpc/jsonrpc，compatiable with server
+      interface: org.apache.dubbo.demo.Greeter # user defined interface name
+    # serialization: hessian2 # serialization that can be choosed：pb/hessian2/custome
+    # pb serialization by default
 ```
 
 ## How to run

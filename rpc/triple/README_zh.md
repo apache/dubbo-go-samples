@@ -17,19 +17,17 @@ Triple-go 3.0 版本的网络协议库。获取更多信息请查看 [dubbogo/tr
 
 ```yaml
 dubbo:
-	protocols: # 框架协议配置
-		myProtocol: # 自定义一个协议 Key
-			name: tri # 协议名，支持tri/dubbo/grpc/jsonrpc
-			port: 20000 # 暴露端口
-			
-	provider: 
-		services: 
-			MyProvider: # 服务提供者结构类名
-			 protocol: myProtocol # 自定义的协议 Key，与上方 myProtocol 对应
-			 interface: org.apache.dubbogo.MyProvider # 用户自定义的接口名
-		#  serialization: hessian2 可选字段，可以指定序列化类型：pb/hessian2/自定义
-		#	 默认使用 pb 序列化
-
+  protocols: # 框架协议配置
+    myProtocol: # 自定义一个协议 Key
+      name: tri # 协议名，支持tri/dubbo/grpc/jsonrpc
+      port: 20000 # 暴露端口
+  provider: 
+    services:
+      MyProvider: # 服务提供者结构类名
+        protocol: myProtocol # 自定义的协议 Key，与上方 myProtocol 对应
+        interface: org.apache.dubbogo.MyProvider # 用户自定义的接口名
+      # serialization: hessian2 可选字段，可以指定序列化类型：pb/hessian2/自定义
+      # 默认使用 pb 序列化
 ```
 
 - 客户端
@@ -41,8 +39,8 @@ dubbo:
       ClientImpl: # 客户端结构类名
         protocol: tri # 协议名，支持tri/dubbo/grpc/jsonrpc，需与服务端对应
         interface: org.apache.dubbo.demo.Greeter # 用户自定义的接口名
-     #  serialization: hessian2 可选字段，可以指定序列化类型：pb/hessian2/自定义
-		 #	默认使用 pb 序列化，需要与服务端对应
+      # serialization: hessian2 可选字段，可以指定序列化类型：pb/hessian2/自定义
+      # 默认使用 pb 序列化，需要与服务端对应
 ```
 
 ## 运行示例：
