@@ -34,7 +34,7 @@ import (
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
-var gameProvider = new(game.BasketballService)
+var gameProvider = game.BasketballService{}
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(gameProvider)

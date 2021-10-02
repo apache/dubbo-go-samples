@@ -33,7 +33,7 @@ import (
 
 type BasketballService struct{}
 
-var userMap = make(map[string]*pojo.Info, 0)
+var userMap = make(map[string]*pojo.Info)
 
 func (p *BasketballService) Login(ctx context.Context, uid string) (*pojo.Result, error) {
 	logger.Infof("message: %#v", uid)
