@@ -5,6 +5,6 @@ dubbo:
   consumer:
     registry: zk
     references:
-      greeterImpl:
+      GreeterClientImpl:
         protocol: tri
         interface: org.apache.dubbo.demo.IGreeter
