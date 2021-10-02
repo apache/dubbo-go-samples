@@ -30,8 +30,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	"github.com/apache/dubbo-go-samples/tracing/jsonrpc/go-server/pkg"
-
 	"github.com/opentracing/opentracing-go"
 
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
@@ -41,6 +39,10 @@ import (
 
 	"github.com/uber/jaeger-client-go"
 	jaegerConfig "github.com/uber/jaeger-client-go/config"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/tracing/jsonrpc/go-server/pkg"
 )
 
 var (

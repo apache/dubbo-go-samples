@@ -30,8 +30,7 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}) (*User, error)
-	Ch      chan *User
+	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
 }
 
 func (u *UserProvider) Reference() string {

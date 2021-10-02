@@ -32,8 +32,6 @@ import (
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
-	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-server/pkg"
-
 	"github.com/opentracing/opentracing-go"
 
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
@@ -43,6 +41,10 @@ import (
 
 	"github.com/uber/jaeger-client-go"
 	jaegerConfig "github.com/uber/jaeger-client-go/config"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/tracing/dubbo/go-server/pkg"
 )
 
 var (
