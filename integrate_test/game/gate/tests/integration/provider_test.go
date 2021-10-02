@@ -15,29 +15,23 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/game/pkg/consumer/game"
-	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
+	"github.com/stretchr/testify/assert"
 )
 
-var GameBasketball = new(game.BasketballService)
-
-// just easy for demo test
-
-func Login(ctx context.Context, data string) (*pojo.Result, error) {
-	return GameBasketball.Login(ctx, data)
-}
-
-func Score(ctx context.Context, uid, score string) (*pojo.Result, error) {
-	return GameBasketball.Score(ctx, uid, score)
-}
-
-func Rank(ctx context.Context, uid string) (*pojo.Result, error) {
-	return GameBasketball.Rank(ctx, uid)
+func TestSend(t *testing.T) {
+	res, err := gateProvider.Send(context.TODO(), "A001", "hello")
+	assert.Nil(t, err)
+	assert.NotNil(t, res)
+	assert.Equal(t, int32(0), res.Code)
+	assert.NotNil(t, res.Data)
+	assert.Equal(t, "A001", res.Data["to"])
+	assert.Equal(t, "hello", res.Data["message"])
 }

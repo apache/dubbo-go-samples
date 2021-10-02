@@ -15,29 +15,33 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
+	"os"
+	"testing"
+	"time"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/game/pkg/consumer/game"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	hessian "github.com/apache/dubbo-go-hessian2"
+)
+
+import (
+	gate "github.com/apache/dubbo-go-samples/game/go-server-gate/cmd"
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
-var GameBasketball = new(game.BasketballService)
+var gateProvider = new(gate.BasketballService)
 
-// just easy for demo test
+func TestMain(m *testing.M) {
+	config.SetConsumerService(gateProvider)
 
-func Login(ctx context.Context, data string) (*pojo.Result, error) {
-	return GameBasketball.Login(ctx, data)
-}
+	hessian.RegisterPOJO(&pojo.Result{})
+	config.Load()
+	time.Sleep(3 * time.Second)
 
-func Score(ctx context.Context, uid, score string) (*pojo.Result, error) {
-	return GameBasketball.Score(ctx, uid, score)
-}
-
-func Rank(ctx context.Context, uid string) (*pojo.Result, error) {
-	return GameBasketball.Rank(ctx, uid)
+	os.Exit(m.Run())
 }

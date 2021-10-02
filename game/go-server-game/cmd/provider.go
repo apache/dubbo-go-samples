@@ -22,7 +22,7 @@ func (p *BasketballService) Login(ctx context.Context, uid string) (*pojo.Result
 	logger.Infof("message: %#v", uid)
 	var (
 		info *pojo.Info
-		ok bool
+		ok   bool
 	)
 
 	// auto reply the same message
@@ -39,14 +39,14 @@ func (p *BasketballService) Login(ctx context.Context, uid string) (*pojo.Result
 		info.Name = uid
 		userMap[uid] = info
 	}
-	return &pojo.Result{Code: 0, Msg: info.Name + ", your score is " + strconv.Itoa(info.Score) , Data: map[string]interface{}{"to": uid, "score": info.Score}}, nil
+	return &pojo.Result{Code: 0, Msg: info.Name + ", your score is " + strconv.Itoa(info.Score), Data: map[string]interface{}{"to": uid, "score": info.Score}}, nil
 }
 
-func (p *BasketballService) Score (ctx context.Context, uid, score string) (*pojo.Result, error) {
+func (p *BasketballService) Score(ctx context.Context, uid, score string) (*pojo.Result, error) {
 	logger.Infof("message: %#v, %#v", uid, score)
 	var (
 		info = &pojo.Info{}
-		ok bool
+		ok   bool
 	)
 
 	// auto reply the same message
@@ -75,11 +75,11 @@ func (p *BasketballService) Score (ctx context.Context, uid, score string) (*poj
 	return &pojo.Result{Code: 0, Msg: "进球成功", Data: map[string]interface{}{"to": uid, "score": info.Score}}, nil
 }
 
-func (p *BasketballService) Rank (ctx context.Context, uid string) (*pojo.Result, error) {
+func (p *BasketballService) Rank(ctx context.Context, uid string) (*pojo.Result, error) {
 	var (
 		rank = 1
-		info  *pojo.Info
-		ok bool
+		info *pojo.Info
+		ok   bool
 	)
 
 	// auto reply the same message
@@ -98,7 +98,7 @@ func (p *BasketballService) Rank (ctx context.Context, uid string) (*pojo.Result
 
 	for _, v := range userMap {
 		if v.Score > info.Score {
-			rank ++
+			rank++
 		}
 	}
 

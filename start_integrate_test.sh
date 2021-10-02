@@ -45,6 +45,10 @@ array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
 
+# game
+array+=("game/go-server-game")
+array+=("game/go-server-gate")
+
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
