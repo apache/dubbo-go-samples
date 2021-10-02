@@ -11,7 +11,7 @@ https://github.com/dubbogo/triple/blob/master/internal/codec/proto/triple_wrappe
 # service config
 services:
   "UserProvider":
-    registry: "demoZK"
+    registries: "demoZK"
     protocol: "tri" # tri is dubbo-go3.0 protocol
     serialization: "hessian2" # hessian2 is serialization type
     interface: "org.apache.dubbo.UserProvider"
