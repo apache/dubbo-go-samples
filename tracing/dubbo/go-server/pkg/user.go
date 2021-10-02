@@ -52,14 +52,10 @@ func (u User) JavaClassName() string {
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
+func (u *UserProvider) GetUser(ctx context.Context, req *User) (*User, error) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "User-Server-Span")
 	gxlog.CInfo("req:%#v", req)
 	user := &User{Id: "001", Name: "zhangsan-dubbogo", Age: 18, Time: time.Now()}
 	span.Finish()
 	return user, nil
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
 }

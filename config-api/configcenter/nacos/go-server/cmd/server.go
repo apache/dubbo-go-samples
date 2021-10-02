@@ -44,7 +44,7 @@ dubbo:
       name: tri
       port: 20000
   provider:
-    registry:
+    registries:
       - demoZK
     services:
       GreeterProvider:
@@ -62,27 +62,28 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	dynamicConfig, err := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("nacos"),
-		config.WithConfigCenterAddress("127.0.0.1:8848")).GetDynamicConfiguration()
+	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
+		SetProtocol("nacos").
+		SetAddress("127.0.0.1:8848").
+		Build().GetDynamicConfiguration()
+
 	if err != nil {
 		panic(err)
 	}
+
 	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-server", "dubbo", configCenterNacosServerConfig); err != nil {
 		panic(err)
 	}
 	time.Sleep(time.Second * 10)
 
 	config.SetProviderService(&GreeterProvider{})
-	centerConfig := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("nacos"),
-		config.WithConfigCenterAddress("127.0.0.1:8848"),
-		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-server"),
-	)
 
-	rootConfig := config.NewRootConfig(
-		config.WithRootCenterConfig(centerConfig),
-	)
+	rootConfig := config.NewRootConfigBuilder().
+		SetConfigCenter(config.NewConfigCenterConfigBuilder().
+			SetProtocol("nacos").SetAddress("127.0.0.1:8848").
+			SetDataID("dubbo-go-samples-configcenter-nacos-server").
+			Build()).
+		Build()
 
 	if err := rootConfig.Init(); err != nil {
 		panic(err)

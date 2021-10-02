@@ -12,8 +12,6 @@
 * rpc: dubbo directory display dubbo protocol communication
 * generic: A generic invocation example
 * helloworld: A 101 example
-* multi_registry: A multi-registry example
-* registry: uses of different registres, including kubernetes, nacos, etcd and service-discovery
 * router: router examples, including condition and tag
 * seata: A seata example
 * shop: Shop sample

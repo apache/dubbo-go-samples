@@ -7,9 +7,12 @@ dubbo:
       timeout: "3s"
       address: "127.0.0.1:2181"
   consumer:
-    registry:
+    registries:
       - demoZK
     references:
       "UserProvider":
         protocol: "dubbo"
         interface: "org.apache.dubbo.UserProvider"
+  logger:
+    zap-config:
+      level: info

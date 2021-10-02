@@ -7,7 +7,7 @@ dubbo:
       name: tri
       port: 20001
   provider:
-    registry: zk
+    registries: zk
     services:
       GreeterProvider:
         protocol: triple
