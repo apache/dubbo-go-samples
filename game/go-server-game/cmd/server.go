@@ -18,7 +18,6 @@
 package main
 
 import (
-	"github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
 	"os"
 	"os/signal"
 	"syscall"
@@ -33,6 +32,7 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 

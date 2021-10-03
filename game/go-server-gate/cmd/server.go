@@ -20,7 +20,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"github.com/apache/dubbo-go-samples/game/go-server-gate/pkg"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -38,6 +37,7 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/game/go-server-gate/pkg"
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
