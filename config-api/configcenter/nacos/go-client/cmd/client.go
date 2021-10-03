@@ -44,7 +44,7 @@ dubbo:
       - demoZK
     references:
       GreeterClientImpl:
-        protocol: tri
+        protocolIDs: tri
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)

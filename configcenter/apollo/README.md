@@ -24,11 +24,11 @@ dubbo:
       name: "tri"
       port: 20000
   provider:
-    registries:
+    registryIDs:
       - demoZK
     services:
       "greeterImpl":
-        protocol: "triple"
+        protocolIDs: "triple"
         interface: "com.apache.dubbo.sample.basic.IGreeter" # must be compatible with grpc or dubbo-java
 ```
 
@@ -48,7 +48,7 @@ dubbo:
       timeout: "3s"
       address: "127.0.0.1:2181"
   consumer:
-    registries:
+    registryIDs:
       - demoZK
     references:
       "greeterImpl":

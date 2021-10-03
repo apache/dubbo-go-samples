@@ -25,13 +25,13 @@ array+=("context/dubbo")
 
 # config-api
 array+=("config-api/rpc/triple")
-array+=("config-api/configcenter/nacos")
-array+=("config-api/configcenter/zookeeper")
+#array+=("config-api/configcenter/nacos")
+#array+=("config-api/configcenter/zookeeper")
 
 # registry
 array+=("registry/zookeeper")
-array+=("registry/nacos")
-array+=("registry/etcd")
+#array+=("registry/nacos")
+#array+=("registry/etcd")
 
 # generic
 array+=("generic/default")

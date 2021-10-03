@@ -12,5 +12,5 @@ dubbo:
       - demoZK
     references:
       UserProvider:
-        protocol: dubbo
+        protocolIDs: dubbo
         interface: org.apache.dubbo.UserProvider

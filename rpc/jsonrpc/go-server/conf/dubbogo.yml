@@ -22,8 +22,8 @@ dubbo:
       - hangzhouzk
     services:
       UserProvider:
-        registries: "hangzhouzk"
-        protocol: "jsonrpc"
+        registryIDs: "hangzhouzk"
+        protocolIDs: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
         loadbalance: "random"
         warmup: "100"

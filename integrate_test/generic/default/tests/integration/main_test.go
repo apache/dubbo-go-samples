@@ -61,7 +61,7 @@ func newRefConf(iface, protocol string) config.ReferenceConfig {
 	refConf := config.ReferenceConfig{
 		InterfaceName: iface,
 		Cluster:       "failover",
-		Registries:    []string{"zk"},
+		RegistryIDs:   []string{"zk"},
 		Protocol:      protocol,
 		Generic:       "true",
 	}
