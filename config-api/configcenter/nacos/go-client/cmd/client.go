@@ -40,11 +40,11 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:2181
   consumer:
-    registries:
+    registryIDs:
       - demoZK
     references:
       GreeterClientImpl:
-        protocolIDs: tri
+        protocol: tri
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)

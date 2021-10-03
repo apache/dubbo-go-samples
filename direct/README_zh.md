@@ -116,7 +116,7 @@ application:
 references:
   "UserProvider":
     registryIDs: "demoZk"
-    protocolIDs: "dubbo"
+    protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
     # this is necessary to enable direct-invoking.

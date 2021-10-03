@@ -44,7 +44,7 @@ dubbo:
       name: tri
       port: 20000
   provider:
-    registries:
+    registryIDs:
       - demoZK
     services:
       GreeterProvider:

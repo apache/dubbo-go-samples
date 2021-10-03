@@ -8,9 +8,9 @@ dubbo:
       address: 127.0.0.1:2181
   consumer:
     filter: tracing
-    registries:
+    registryIDs:
       - demoZK
     references:
       UserProvider:
-        protocolIDs: dubbo
+        protocol: dubbo
         interface: org.apache.dubbo.UserProvider
