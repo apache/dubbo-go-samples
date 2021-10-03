@@ -7,6 +7,7 @@
 * default:  默认打印到控制台
 * level:    设置日志的隔离级别
 * rolling:  输出到文件
+* custom: 自定义 logger
 
 #### 默认配置
 
@@ -72,4 +73,26 @@ logger:
       compress: false
       # zap 配置可默认不填
     zapConfig:
+```
+
+#### 自定义 logger
+自定义 logger 需要实现 logger 包中的 logger 接口
+```go
+type Logger interface {
+    Info(args ...interface{})
+    Warn(args ...interface{})
+    Error(args ...interface{})
+    Debug(args ...interface{})
+    Fatal(args ...interface{})
+
+    Infof(fmt string, args ...interface{})
+    Warnf(fmt string, args ...interface{})
+    Errorf(fmt string, args ...interface{})
+    Debugf(fmt string, args ...interface{})
+    Fatalf(fmt string, args ...interface{})
+}
+```
+然后调用 SetLogger 方法设置 logger
+```go
+logger.SetLogger(&customLogger{})
 ```
