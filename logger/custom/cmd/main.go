@@ -63,23 +63,23 @@ func (c *customLogger) Fatal(args ...interface{}) {
 }
 
 func (c *customLogger) Infof(fmts string, args ...interface{}) {
-	fmt.Printf("\033[1;32;40m%s\033[0m\n", fmt.Sprintf(fmts, args))
+	fmt.Printf("\033[1;32;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 }
 
 func (c *customLogger) Warnf(fmts string, args ...interface{}) {
-	fmt.Printf("\033[1;33;40m%s\033[0m\n", fmt.Sprintf(fmts, args))
+	fmt.Printf("\033[1;33;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 }
 
 func (c *customLogger) Errorf(fmts string, args ...interface{}) {
-	fmt.Printf("\033[1;31;40m%s\033[0m\n", fmt.Sprintf(fmts, args))
+	fmt.Printf("\033[1;31;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 }
 
 func (c *customLogger) Debugf(fmts string, args ...interface{}) {
-	fmt.Printf("\033[1;34;40m%s\033[0m\n", fmt.Sprintf(fmts, args))
+	fmt.Printf("\033[1;34;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 }
 
 func (c *customLogger) Fatalf(fmts string, args ...interface{}) {
-	fmt.Printf("\033[1;31;40m%s\033[0m\n", fmt.Sprintf(fmts, args))
+	fmt.Printf("\033[1;31;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 	os.Exit(1)
 }
 
@@ -87,7 +87,8 @@ func main() {
 	config.SetProviderService(&GreeterProvider{})
 	config.Load()
 	logger.SetLogger(&customLogger{})
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*3)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	defer cancel()
 	for {
 		select {
 		case <-ctx.Done():

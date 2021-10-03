@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"github.com/apache/dubbo-go-samples/game/go-server-gate/pkg"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -41,9 +42,9 @@ import (
 )
 
 func init() {
-	config.SetProviderService(new(BasketballService))
+	config.SetProviderService(new(pkg.BasketballService))
 
-	config.SetConsumerService(GameBasketball)
+	config.SetConsumerService(pkg.GameBasketball)
 
 	hessian.RegisterPOJO(&pojo.Result{})
 }
@@ -82,7 +83,7 @@ func initSignal() {
 func startHttp() {
 
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		res, err := Login(context.TODO(), r.URL.Query().Get("name"))
+		res, err := pkg.Login(context.TODO(), r.URL.Query().Get("name"))
 		if err != nil {
 			responseWithOrigin(w, r, 200, []byte(err.Error()))
 			return
@@ -103,7 +104,7 @@ func startHttp() {
 		}
 		var info pojo.Info
 		json.Unmarshal(reqBody, &info)
-		res, err := Score(context.TODO(), info.Name, strconv.Itoa(info.Score))
+		res, err := pkg.Score(context.TODO(), info.Name, strconv.Itoa(info.Score))
 		if err != nil {
 			responseWithOrigin(w, r, 200, []byte(err.Error()))
 			return
@@ -118,7 +119,7 @@ func startHttp() {
 	})
 
 	http.HandleFunc("/rank", func(w http.ResponseWriter, r *http.Request) {
-		res, err := Rank(context.TODO(), r.URL.Query().Get("name"))
+		res, err := pkg.Rank(context.TODO(), r.URL.Query().Get("name"))
 		if err != nil {
 			responseWithOrigin(w, r, 200, []byte(err.Error()))
 			return
