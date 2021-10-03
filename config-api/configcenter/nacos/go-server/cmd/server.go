@@ -48,7 +48,7 @@ dubbo:
       - demoZK
     services:
       GreeterProvider:
-        protocol: triple
+        protocolIDs: triple
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 type GreeterProvider struct {
