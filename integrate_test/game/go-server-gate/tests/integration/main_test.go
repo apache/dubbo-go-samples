@@ -30,11 +30,11 @@ import (
 )
 
 import (
-	gate "github.com/apache/dubbo-go-samples/game/go-server-gate/cmd"
+	"github.com/apache/dubbo-go-samples/game/go-server-gate/pkg"
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
-var gateProvider = gate.BasketballService{}
+var gateProvider = pkg.BasketballService{}
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(gateProvider)

@@ -32,13 +32,14 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
 func init() {
-	config.SetProviderService(new(BasketballService))
+	config.SetProviderService(new(pkg.BasketballService))
 
-	config.SetConsumerService(GateBasketball)
+	config.SetConsumerService(pkg.GateBasketball)
 
 	hessian.RegisterPOJO(&pojo.Result{})
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package main
+package pkg
 
 import "github.com/apache/dubbo-go-samples/game/pkg/consumer/gate"
 
