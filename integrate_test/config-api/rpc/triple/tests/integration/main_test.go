@@ -37,7 +37,7 @@ func TestMain(m *testing.M) {
 	config.SetConsumerService(greeterProvider)
 	rootConfig := config.NewRootConfigBuilder().
 		SetConsumer(config.NewConsumerConfigBuilder().
-			SetRegistries("zkRegistryKey").
+			SetRegistryIDs("zkRegistryKey").
 			AddReference("GreeterClientImpl", config.NewReferenceConfigBuilder().
 				SetInterface("com.apache.dubbo.sample.basic.IGreeter").
 				SetProtocol("tri").

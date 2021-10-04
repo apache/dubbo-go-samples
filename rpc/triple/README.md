@@ -25,7 +25,7 @@ dubbo:
   provider: 
     services: 
       MyProvider: # service provider type name 
-        protocol: myProtocol # user defined protocol key，as above myProtocol defined
+        protocolIDs: myProtocol # user defined protocol key，as above myProtocol defined
         interface: org.apache.dubbogo.MyProvider # user defined interface name
       # serialization: hessian2 # serialization that can be choosed：pb/hessian2/custome
       # pb serialization by default

@@ -46,10 +46,10 @@ func main() {
 
 	rootConfig := config.NewRootConfigBuilder().
 		SetProvider(config.NewProviderConfigBuilder().
-			SetRegistries("zk").
+			SetRegistryIDs("zk").
 			AddService("GreeterProvider", config.NewServiceConfigBuilder().
 				SetInterface("com.apache.dubbo.sample.basic.IGreeter").
-				SetProtocols("tripleKey").
+				SetProtocolIDs("tripleKey").
 				Build()).
 			Build()).
 		AddRegistry("zk", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).

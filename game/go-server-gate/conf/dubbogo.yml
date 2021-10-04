@@ -5,14 +5,14 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:2181
   consumer:
-    registry:
+    registryIDs:
       - demoZK
     references:
       gameConsumer.basketballService:
         protocol: dubbo
         interface: org.apache.dubbo.game.basketballService
         cluster: "failover"
-        registry:
+        registryIDs:
           - demoZK
         methods:
           - name: "Online"
@@ -22,7 +22,7 @@ dubbo:
           - name: "Message"
             retries: 0
   provider:
-    registry:
+    registryIDs:
       - demoZK
     services:
       gateProvider.basketballService:

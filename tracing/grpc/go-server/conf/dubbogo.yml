@@ -12,7 +12,7 @@ dubbo:
       port: 20000
   provider:
     filter: tracing
-    registries:
+    registryIDs:
       - demoZK
     services:
       GreeterProvider:
