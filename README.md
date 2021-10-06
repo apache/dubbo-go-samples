@@ -9,11 +9,9 @@
 * configcenter: uses of different config centers, including zookeeper, apollo and nacos at present.
 * direct: A direct invocation example.
 * filter: Some examples of different filter, including custom_filter and tpslimit
-* general: A general example
+* rpc: dubbo directory display dubbo protocol communication
 * generic: A generic invocation example
 * helloworld: A 101 example
-* multi_registry: A multi-registry example
-* registry: uses of different registres, including kubernetes, nacos, etcd and service-discovery
 * router: router examples, including condition and tag
 * seata: A seata example
 * shop: Shop sample

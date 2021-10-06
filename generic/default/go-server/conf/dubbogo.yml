@@ -1,0 +1,23 @@
+dubbo:
+  registries:
+    zk:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  protocols:
+    dubbo:
+      name: dubbo
+      port: 20000
+    triple:
+      name: tri
+      port: 20001
+  provider:
+    registryIDs: zk
+    services:
+      UserProvider:
+        protocolIDs: dubbo
+        interface: org.apache.dubbo.samples.UserProvider
+      UserProviderTriple:
+        protocolIDs: triple
+        serialization: hessian2
+        interface: org.apache.dubbo.samples.UserProviderTriple

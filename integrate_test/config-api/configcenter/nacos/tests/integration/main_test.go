@@ -40,22 +40,24 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:2181
   consumer:
-    registry:
+    registries:
       - demoZK
     references:
-      greeterImpl:
+      GreeterClientImpl:
         protocol: tri
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
-	dynamicConfig, err := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("nacos"),
-		config.WithConfigCenterAddress("127.0.0.1:8848")).GetDynamicConfiguration()
+	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
+		SetProtocol("nacos").
+		SetAddress("127.0.0.1:8848").
+		Build().GetDynamicConfiguration()
 	if err != nil {
 		panic(err)
 	}
+
 	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-client", "dubbo", configCenterNacosTestClientConfig); err != nil {
 		panic(err)
 	}
@@ -64,16 +66,12 @@ func TestMain(m *testing.M) {
 
 	time.Sleep(time.Second * 20)
 
-	centerConfig := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("nacos"),
-		config.WithConfigCenterAddress("127.0.0.1:8848"),
-		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-client"),
-		config.WithConfigCenterGroup("dubbo"),
-	)
-
-	rootConfig := config.NewRootConfig(
-		config.WithRootCenterConfig(centerConfig),
-	)
+	rootConfig := config.NewRootConfigBuilder().
+		SetConfigCenter(config.NewConfigCenterConfigBuilder().
+			SetProtocol("nacos").SetAddress("127.0.0.1:8848").
+			SetDataID("dubbo-go-samples-configcenter-nacos-client").
+			Build()).
+		Build()
 
 	if err := rootConfig.Init(); err != nil {
 		panic(err)

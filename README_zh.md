@@ -1,26 +1,18 @@
-# Dubbo Golang 示例
+# Dubbo Go 示例仓库
 
 ![CI](https://github.com/apache/dubbo-go-samples/workflows/CI/badge.svg)
 
 ## 本工程包含的示例
 
-* async: 异步调用
-* attachment: 如何通过 attachment 把用户数据从调用方传递给服务方
-* configcenter: 使用不同的配置中心，目前支持三种：zookeeper、apollo、和 nacos
-* direct: 直连模式
-* filter: 使用和扩展不同的 filter，目前包含了 custom_filter 和 tpslimit
-* general: 通用例子，展示 zookeeper 注册中心的使用以及不同的配置项
+* config-api: 无需配置文件，使用 API 的方式启动服务、构造组件和使用。
+* configcenter: 使用不同的配置中心，目前支持：zookeeper、apollo、和 nacos
+* context: 如何通过 go context  把用户数据 attachment 从调用方传递给服务方
+* direct: 直连模式，无需注册中心，直连服务提供者
+* rpc: 使用 Dubbogo 框架启动 rpc 服务，发起调用
 * generic: 泛化调用
 * helloworld: 入门例子
-* multi_registry: 多注册
-* registry: 展示与不同注册中心的对接，包含了 nacos、etcd、kubernetes 和 servicediscovery
-* router: 展示了 dubbo3 统一路由规则的使用，包括基于文件路由配置和k8s环境下的动态路由配置
-* seata: 展示了与 seata 的对接
-* shop: 一个在线商店的小例子
-* tengine: 基于淘宝 Tengine 与 Dubbo-go 调用例子
-* tls: 在 Dubbo-go 中使用 TLS
-* tracing: 链路追踪
-* game: 游戏服务例子
+* registry: 展示与不同注册中心的对接，包含了 nacos、etcd 和 zookeeper。
+* tracing: 链路追踪例子，支持
 
 ## 如何运行
 

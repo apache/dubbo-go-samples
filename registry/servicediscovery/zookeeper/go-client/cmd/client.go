@@ -32,7 +32,7 @@ import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
-var grpcGreeterImpl = new(api.GreeterClientImpl)
+var grpcGreeterImpl = &api.GreeterClientImpl{}
 
 func init() {
 	config.SetConsumerService(grpcGreeterImpl)
@@ -40,7 +40,9 @@ func init() {
 
 // export DUBBO_GO_CONFIG_PATH = PATH_TO_SAMPLES/registry/servicediscovery/zookeeper/go-client/conf/dubbogo.yml
 func main() {
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	time.Sleep(3 * time.Second)
 
 	logger.Info("start to test dubbo")

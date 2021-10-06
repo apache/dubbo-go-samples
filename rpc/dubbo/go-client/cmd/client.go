@@ -35,7 +35,7 @@ import (
 )
 
 var (
-	userProvider = new(pkg.UserProvider)
+	userProvider = &pkg.UserProvider{}
 )
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
@@ -50,77 +50,71 @@ func main() {
 
 	time.Sleep(6 * time.Second)
 
-	logger.Info("\n\ntest")
+	logger.Infof("\n\ntest")
 	test()
 }
 
 func test() {
-	logger.Info("\n\n\necho")
+	logger.Infof("\n\n\necho")
 	res, err := userProvider.Echo(context.TODO(), "OK")
 	if err != nil {
 		panic(err)
 	}
-	logger.Info("res: %v\n", res)
+	logger.Infof("res: %v\n", res)
 
-	logger.Info("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	user, err = userProvider.GetUser(context.TODO(), []interface{}{"A003"})
+	logger.Infof("\n\n\nstart to test dubbo")
+	reqUser := &pkg.User{}
+	reqUser.ID = "003"
+	user, err := userProvider.GetUser(context.TODO(), reqUser)
 	if err != nil {
 		panic(err)
 	}
-	logger.Info("response result: %v", user)
+	logger.Infof("response result: %v", user)
 
-	logger.Info("\n\n\nstart to test dubbo - enum")
+	logger.Infof("\n\n\nstart to test dubbo - enum")
 	gender, err := userProvider.GetGender(1)
 	if err != nil {
-		logger.Info("error: %v", err)
+		logger.Infof("error: %v", err)
 	} else {
-		logger.Info("response result: %v", gender)
+		logger.Infof("response result: %v", gender)
 	}
 
-	logger.Info("\n\n\nstart to test dubbo - GetUser0")
-	ret, err := userProvider.GetUser0("A003", "Moorse")
+	logger.Infof("\n\n\nstart to test dubbo - GetUser0")
+	ret, err := userProvider.GetUser0("003", "Moorse")
 	if err != nil {
 		panic(err)
 	}
-	logger.Info("response result: %v", ret)
+	logger.Infof("response result: %v", ret)
 
-	logger.Info("\n\n\nstart to test dubbo - GetUsers")
-	ret1, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
+	logger.Infof("\n\n\nstart to test dubbo - GetUsers")
+	ret1, err := userProvider.GetUsers([]string{"002", "003"})
 	if err != nil {
 		panic(err)
 	}
-	logger.Info("response result: %v", ret1)
+	logger.Infof("response result: %v", ret1)
 
-	logger.Info("\n\n\nstart to test dubbo - getUser")
+	logger.Infof("\n\n\nstart to test dubbo - getUser")
 	user = &pkg.User{}
 	var i int32 = 1
-	user, err = userProvider.GetUser2(context.TODO(), []interface{}{i})
+	user, err = userProvider.GetUser2(context.TODO(), i)
 	if err != nil {
 		panic(err)
 	}
-	logger.Info("response result: %v", user)
+	logger.Infof("response result: %v", user)
 
-	logger.Info("\n\n\nstart to test dubbo - getUser - overload")
-	user = &pkg.User{}
-	user, err = userProvider.GetUser2(context.TODO(), []interface{}{i, "overload"})
-	if err != nil {
-		panic(err)
-	}
-	logger.Info("response result: %v", user)
-
-	logger.Info("\n\n\nstart to test dubbo - getErr")
-	user = &pkg.User{}
-	user, err = userProvider.GetErr(context.TODO(), []interface{}{"A003"})
+	logger.Infof("\n\n\nstart to test dubbo - getErr")
+	reqUser.ID = "003"
+	user, err = userProvider.GetErr(context.TODO(), reqUser)
 	if err == nil {
 		panic("err is nil")
 	}
-	logger.Info("getErr - error: %v", err)
+	logger.Infof("getErr - error: %v", err)
 
-	logger.Info("\n\n\nstart to test dubbo illegal method")
-	user, err = userProvider.GetUser1(context.TODO(), []interface{}{"A003"})
+	logger.Infof("\n\n\nstart to test dubbo illegal method")
+	reqUser.ID = "003"
+	user, err = userProvider.GetUser1(context.TODO(), reqUser)
 	if err == nil {
 		panic("err is nil")
 	}
-	logger.Info("error: %v", err)
+	logger.Infof("error: %v", err)
 }

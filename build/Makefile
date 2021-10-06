@@ -19,9 +19,22 @@ PROJECT_DIR=$(shell pwd)
 BASE_DIR := $(PROJECT_DIR)/go-server/dist
 
 SOURCES = $(wildcard $(PROJECT_DIR)/go-server/cmd/*.go)
+GO = go
+GO_PATH = $(shell $(GO) env GOPATH)
+GO_OS = $(shell $(GO) env GOOS)
+ifeq ($(GO_OS), darwin)
+    GO_OS = mac
+endif
+
+# shell
+SHELL = /bin/bash
+
+# license
+GO_LICENSE_CHECKER_DIR = license-header-checker-$(GO_OS)
+GO_LICENSE_CHECKER = $(GO_PATH)/bin/license-header-checker
+LICENSE_DIR = /tmp/tools/license
 
 export GO111MODULE ?= on
-export GOPROXY ?= https://goproxy.io,direct
 export GOSUMDB ?= sum.golang.org
 export GOARCH ?= amd64
 
@@ -56,6 +69,14 @@ OUT_DIR := $(BASE_DIR)/$(GOOS)_$(GOARCH)/$(BUILD_TYPE)
 LOG_FILE := $(OUT_DIR)/$(PROJECT_NAME).log
 
 export APP_LOG_CONF_FILE ?= $(OUT_DIR)/conf/log.yml
+
+.PHONY: license
+license:
+	rm -rf coverage.txt
+	rm -rf license-header-checker*
+	$(GO_LICENSE_CHECKER) -version || (wget https://github.com/lsm-dev/license-header-checker/releases/download/v1.2.0/$(GO_LICENSE_CHECKER_DIR).zip -O $(GO_LICENSE_CHECKER_DIR).zip && unzip -o $(GO_LICENSE_CHECKER_DIR).zip && mkdir -p $(GO_PATH)/bin/ && cp $(GO_LICENSE_CHECKER_DIR)/64bit/license-header-checker $(GO_PATH)/bin/)
+	ls /tmp/tools/license/license.txt || wget -P $(LICENSE_DIR) https://github.com/dubbogo/resources/raw/master/tools/license/license.txt
+	$(GO_LICENSE_CHECKER) -v -a -r -i vendor $(LICENSE_DIR)/license.txt . go && [[ -z `git status -s` ]]
 
 .PHONY: all
 all: help

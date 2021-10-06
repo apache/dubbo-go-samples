@@ -29,9 +29,9 @@ dubbo:
         max-msg-len: 1024000
         session-name: client
   consumer:
-    registry:
+    registryIDs:
       - demoNacos
     references:
-      userProvider:
+      UserProvider:
         protocol: dubbo
         interface: org.apache.dubbo.UserProvider

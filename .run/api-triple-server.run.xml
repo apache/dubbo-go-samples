@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="api-triple-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-config-api">
+  <configuration default="false" name="api-triple-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="config-api">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <kind value="PACKAGE" />

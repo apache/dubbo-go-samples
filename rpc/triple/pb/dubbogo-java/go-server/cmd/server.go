@@ -43,7 +43,7 @@ var (
 
 // export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-java/go-server/conf/dubbogo.yml
 func main() {
-	config.SetProviderService(pkg.NewGreeterProvider())
+	config.SetProviderService(&pkg.GreeterProvider{})
 	if err := config.Load(); err != nil {
 		panic(err)
 	}

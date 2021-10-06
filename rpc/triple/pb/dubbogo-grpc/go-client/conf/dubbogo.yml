@@ -3,8 +3,8 @@ dubbo:
     zk:
       address: zookeeper://127.0.0.1:2181
   consumer:
-    registry: zk
+    registryIDs: zk
     references:
-      greeterImpl:
+      GreeterClientImpl:
         protocol: tri
         interface: org.apache.dubbo.demo.Greeter

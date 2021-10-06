@@ -35,23 +35,16 @@ var greeterProvider = new(api.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(greeterProvider)
-
-	referenceConfig := config.NewReferenceConfig(
-		config.WithReferenceInterface("com.apache.dubbo.sample.basic.IGreeter"),
-		config.WithReferenceProtocolName("tri"),
-		config.WithReferenceRegistry("zkRegistryKey"),
-	)
-
-	consumerConfig := config.NewConsumerConfig(
-		config.WithConsumerReferenceConfig("greeterImpl", referenceConfig),
-	)
-
-	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")
-
-	rootConfig := config.NewRootConfig(
-		config.WithRootRegistryConfig("zkRegistryKey", registryConfig),
-		config.WithRootConsumerConfig(consumerConfig),
-	)
+	rootConfig := config.NewRootConfigBuilder().
+		SetConsumer(config.NewConsumerConfigBuilder().
+			SetRegistryIDs("zkRegistryKey").
+			AddReference("GreeterClientImpl", config.NewReferenceConfigBuilder().
+				SetInterface("com.apache.dubbo.sample.basic.IGreeter").
+				SetProtocol("tri").
+				Build()).
+			Build()).
+		AddRegistry("zkRegistryKey", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).
+		Build()
 
 	if err := rootConfig.Init(); err != nil {
 		panic(err)

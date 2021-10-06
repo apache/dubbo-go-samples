@@ -40,22 +40,24 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:8848
   consumer:
-    registry:
+    registries:
       - demoZK
     references:
-      greeterImpl:
+      GreeterClientImpl:
         protocol: tri
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
-	dynamicConfig, err := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("zookeeper"),
-		config.WithConfigCenterAddress("127.0.0.1:2181")).GetDynamicConfiguration()
+	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
+		SetProtocol("zookeeper").
+		SetAddress("127.0.0.1:2181").
+		Build().GetDynamicConfiguration()
 	if err != nil {
 		panic(err)
 	}
+
 	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", configCenterZKTestClientConfig); err != nil {
 		panic(err)
 	}
@@ -63,16 +65,13 @@ func TestMain(m *testing.M) {
 	config.SetConsumerService(greeterProvider)
 	time.Sleep(time.Second * 20)
 
-	centerConfig := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("zookeeper"),
-		config.WithConfigCenterAddress("127.0.0.1:2181"),
-		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-zookeeper-client"),
-		config.WithConfigCenterGroup("dubbogo"),
-	)
-
-	rootConfig := config.NewRootConfig(
-		config.WithRootCenterConfig(centerConfig),
-	)
+	rootConfig := config.NewRootConfigBuilder().
+		SetConfigCenter(config.NewConfigCenterConfigBuilder().
+			SetProtocol("zookeeper").SetAddress("127.0.0.1:2181").
+			SetDataID("dubbo-go-samples-configcenter-zookeeper-client").
+			SetGroup("dubbogo").
+			Build()).
+		Build()
 
 	if err := rootConfig.Init(); err != nil {
 		panic(err)

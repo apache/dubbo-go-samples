@@ -7,10 +7,9 @@ dubbo:
       name: tri
       port: 20001
   provider:
-    registry: zk
+    registryIDs: zk
     services:
-      # you may refer to `Reference()` method defined at `protobuf/helloworld.pb.go`
-      greeterImpl:
-        protocol: triple
+      GreeterProvider:
+        protocolIDs: triple
         # interface is for registry
         interface: org.apache.dubbo.demo.IGreeter

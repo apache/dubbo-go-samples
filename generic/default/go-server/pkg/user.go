@@ -18,22 +18,14 @@
 package pkg
 
 import (
-	"context"
 	"time"
 )
 
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
-)
-
-func init() {
-	config.SetProviderService(new(UserProvider))
-	// ------for hessian2------
-	hessian.RegisterPOJO(&User{})
+var userMap = map[string]*User{
+	"001": {"001", "other-zhangsan", 23, time.Date(1998, 1, 2, 3, 4, 5, 0, time.Local)},
+	"002": {"002", "other-lisi", 25, time.Date(1996, 1, 2, 3, 4, 5, 0, time.Local)},
+	"003": {"003", "other-lily", 28, time.Date(1993, 1, 2, 3, 4, 5, 0, time.Local)},
+	"004": {"004", "other-lisa", 36, time.Date(1985, 1, 2, 3, 4, 5, 0, time.Local)},
 }
 
 type User struct {
@@ -43,33 +35,6 @@ type User struct {
 	Time time.Time
 }
 
-type UserProvider struct {
-}
-
-func (u *UserProvider) GetUser(ctx context.Context, userID string) (*User, error) {
-	gxlog.CInfo("req:%#v", userID)
-	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
-	gxlog.CInfo("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-func (u *UserProvider) QueryUser(ctx context.Context, user *User) (*User, error) {
-	gxlog.CInfo("req1:%#v", user)
-	rsp := User{user.ID, user.Name, user.Age, time.Now()}
-	gxlog.CInfo("rsp1:%#v", rsp)
-	return &rsp, nil
-}
-
-func (u *UserProvider) MethodMapper() map[string]string {
-	return map[string]string{
-		"QueryUser": "queryUser",
-	}
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
-
-func (u User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }

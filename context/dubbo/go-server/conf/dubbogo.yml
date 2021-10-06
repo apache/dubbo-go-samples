@@ -25,9 +25,9 @@ dubbo:
         max-msg-len: 1024000
         session-name: server
   provider:
-    registry:
+    registryIDs:
       - demoZK
     services:
-      userProvider:
+      UserProvider:
         protocol: dubbo
         interface: org.apache.dubbo.UserProvider

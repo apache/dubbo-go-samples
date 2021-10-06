@@ -1,16 +1,16 @@
 dubbo:
   registries:
-    "demoZK":
-      protocol: "zookeeper"
-      address: "127.0.0.1:2181"
-      registry-type: "service"
+    demoZK:
+      protocol: zookeeper
+      address: 127.0.0.1:2181
+      registry-type: service
   metadata-report:
-    protocol: "zookeeper"
-    address: "127.0.0.1:2181"
+    protocol: zookeeper
+    address: 127.0.0.1:2181
   consumer:
-    registry:
+    registryIDs:
       - demoZK
     references:
-      "greeterImpl":
-        protocol: "tri"
-        interface: "com.apache.dubbo.sample.basic.IGreeter" # must be compatible with grpc or dubbo-java
+      GreeterClientImpl:
+        protocol: tri
+        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java

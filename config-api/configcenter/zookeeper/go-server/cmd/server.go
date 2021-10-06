@@ -44,11 +44,11 @@ dubbo:
       name: tri
       port: 20000
   provider:
-    registry:
+    registryIDs:
       - demoZK
     services:
-      greeterImpl:
-        protocol: triple
+      GreeterProvider:
+        protocolIDs: triple
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 type GreeterProvider struct {
@@ -62,9 +62,10 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	dynamicConfig, err := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("zookeeper"),
-		config.WithConfigCenterAddress("127.0.0.1:2181")).GetDynamicConfiguration()
+	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
+		SetProtocol("zookeeper").
+		SetAddress("127.0.0.1:2181").
+		Build().GetDynamicConfiguration()
 	if err != nil {
 		panic(err)
 	}
@@ -75,16 +76,14 @@ func main() {
 	time.Sleep(time.Second * 10)
 
 	config.SetProviderService(&GreeterProvider{})
-	centerConfig := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("zookeeper"),
-		config.WithConfigCenterAddress("127.0.0.1:2181"),
-		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-zookeeper-server"),
-		config.WithConfigCenterGroup("dubbogo"),
-	)
 
-	rootConfig := config.NewRootConfig(
-		config.WithRootCenterConfig(centerConfig),
-	)
+	rootConfig := config.NewRootConfigBuilder().
+		SetConfigCenter(config.NewConfigCenterConfigBuilder().
+			SetProtocol("zookeeper").SetAddress("127.0.0.1:2181").
+			SetDataID("dubbo-go-samples-configcenter-zookeeper-server").
+			SetGroup("dubbogo").
+			Build()).
+		Build()
 
 	if err := rootConfig.Init(); err != nil {
 		panic(err)
