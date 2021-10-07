@@ -62,5 +62,6 @@ func main() {
 	if err := rootConfig.Init(); err != nil {
 		panic(err)
 	}
+	rootConfig.Start()
 	select {}
 }

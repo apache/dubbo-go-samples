@@ -36,6 +36,8 @@ array+=("config-api/configcenter/zookeeper")
 array+=("registry/zookeeper")
 array+=("registry/nacos")
 array+=("registry/etcd")
+array+=("registry/servicediscovery/zookeeper")
+array+=("registry/servicediscovery/nacos")
 
 # generic
 array+=("generic/default")
