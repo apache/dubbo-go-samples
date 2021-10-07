@@ -9,7 +9,7 @@ dubbo:
       name: "tri"
       port: 20000
   provider:
-    registry:
+    registries:
       - demoZK
     services:
       "UserProvider":

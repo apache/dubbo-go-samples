@@ -19,7 +19,7 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"os"
 	"time"
 )
 
@@ -34,14 +34,13 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	"github.com/dubbogo/gost/log"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/filter/custom/go-client/pkg"
 )
-
-
-
 
 var userProvider = new(pkg.UserProvider)
 
@@ -50,19 +49,19 @@ func init() {
 	hessian.RegisterPOJO(&pkg.User{})
 }
 
+// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	err := config.Load()
-	if err != nil {
-		panic(err)
-	}
+	hessian.RegisterPOJO(&pkg.User{})
+	config.Load()
 	time.Sleep(3 * time.Second)
 
-	logger.Infof("\n\n\nstart to test dubbo")
-	for i := 0; i < 50; i++ {
-		user, err := userProvider.GetUser(context.TODO(), []interface{}{"A001"})
-		if err != nil {
-			logger.Infof("error: %v\n", err)
-		}
-		logger.Infof("response: %v\n", user)
+	gxlog.CInfo("\n\n\nstart to test dubbo")
+	user := &pkg.User{}
+	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	if err != nil {
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
 	}
+	gxlog.CInfo("response result: %v\n", user)
 }

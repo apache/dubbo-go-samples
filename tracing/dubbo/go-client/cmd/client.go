@@ -61,7 +61,9 @@ func main() {
 	//initJaeger()
 	initZipkin()
 	span, ctx := opentracing.StartSpanFromContext(context.Background(), "Dubbogo-Client-Service")
-	user, err := userProvider.GetUser(ctx, []interface{}{"A003"})
+	user, err := userProvider.GetUser(ctx, &pkg.User{
+		Name: "laurence",
+	})
 	span.Finish()
 	if err != nil {
 		panic(err)

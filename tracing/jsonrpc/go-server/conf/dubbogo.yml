@@ -13,7 +13,7 @@ dubbo:
       port: 20001
   provider:
     filter: tracing
-    registry:
+    registries:
       - demoZK
     services:
       UserProvider:

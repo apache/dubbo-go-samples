@@ -25,7 +25,7 @@ dubbo:
       name: "tri"
       port: 20000
   provider:
-    registry:
+    registries:
       - demoZK
     services:
       "greeterImpl":
@@ -49,7 +49,7 @@ dubbo:
       timeout: "3s"
       address: "127.0.0.1:2181"
   consumer:
-    registry:
+    registries:
       - demoZK
     references:
       "greeterImpl":

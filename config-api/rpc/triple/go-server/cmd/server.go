@@ -44,28 +44,21 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 func main() {
 	config.SetProviderService(&GreeterProvider{})
 
-	serviceConfig := config.NewServiceConfig(
-		config.WithServiceInterface("com.apache.dubbo.sample.basic.IGreeter"),
-		config.WithServiceProtocolKeys("tripleKey"),
-	)
+	rootConfig := config.NewRootConfigBuilder().
+		SetProvider(config.NewProviderConfigBuilder().
+			SetRegistries("zk").
+			AddService("GreeterProvider", config.NewServiceConfigBuilder().
+				SetInterface("com.apache.dubbo.sample.basic.IGreeter").
+				SetProtocols("tripleKey").
+				Build()).
+			Build()).
+		AddRegistry("zk", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).
+		AddProtocol("tripleKey", config.NewProtocolConfigBuilder().
+			SetName("tri").
+			SetPort("20000").
+			Build()).
+		Build()
 
-	protocolConfig := config.NewProtocolConfig(
-		config.WithProtocolName("tri"),
-		config.WithProtocolPort("20000"),
-	)
-
-	providerConfig := config.NewProviderConfig(
-		config.WithProviderRegistryKeys("zk"),
-		config.WithProviderService("GreeterProvider", serviceConfig),
-	)
-
-	registryConfig := config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")
-
-	rootConfig := config.NewRootConfig(
-		config.WithRootProviderConfig(providerConfig),
-		config.WithRootRegistryConfig("zk", registryConfig),
-		config.WithRootProtocolConfig("tripleKey", protocolConfig),
-	)
 	if err := rootConfig.Init(); err != nil {
 		panic(err)
 	}
