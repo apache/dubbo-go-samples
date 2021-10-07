@@ -10,10 +10,10 @@ The samples of generic invocation are parted by the way of generalization：
 
 Each sample contains 4 subfolders：
 
-- go-server：Dubbo-Go v3 server sample
-- go-client：Dubbo-Go v3 client sample
-- java-client：Dubbo v3 server sample
-- java-server：Dubbo v3 client sample
+- go-server：Dubbo-Go server sample
+- go-client：Dubbo-Go client sample
+- java-client：Dubbo server sample
+- java-server：Dubbo client sample
 
 Providing java samples is convenient to test interoperability between Dubbo and Dubbo-Go.
 

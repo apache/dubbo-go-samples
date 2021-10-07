@@ -25,7 +25,7 @@ dubbo:
         max-msg-len: 1024000
         session-name: server
   provider:
-    registry:
+    registries:
       - demoNacos
     services:
       UserProvider:

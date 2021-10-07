@@ -10,10 +10,10 @@
 
 在每种泛化调用的例子中，又包含四种文件：
 
-- go-server：Dubbo-Go v3 server 例子
-- go-client：Dubbo-Go v3 client 例子
-- java-client：Dubbo v3 server 例子
-- java-server：Dubbo v3 client 例子
+- go-server：Dubbo-Go server 例子
+- go-client：Dubbo-Go client 例子
+- java-client：Dubbo server 例子
+- java-server：Dubbo client 例子
 
 Dubbo Java 例子可以方便测试与 Dubbo-Go 的互通性，可以启动 java server 或 go client，或者 go server 和 java client 进行测试。
 

@@ -39,7 +39,8 @@ type GreeterProvider struct {
 func main() {
 	config.SetProviderService(&GreeterProvider{})
 	config.Load()
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*20)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
+	defer cancel()
 	for {
 		select {
 		case <-ctx.Done():

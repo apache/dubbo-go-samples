@@ -15,7 +15,7 @@ dubbo:
       name: "dubbo"
       port: 20000
   provider:
-    registry:
+    registries:
       - etcd
     services:
       UserProvider:
