@@ -1,7 +1,7 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211004121654-0b8429731b79
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211007054845-07e6f4405545
 	github.com/apache/dubbo-go-hessian2 v1.9.4-0.20210917102639-74a8ece5f3cb
 	github.com/dubbogo/gost v1.11.17
 	github.com/dubbogo/net v0.0.4
@@ -20,5 +20,3 @@ require (
 )
 
 go 1.13
-
-replace dubbo.apache.org/dubbo-go/v3 => github.com/LaurenceLiZhixin/dubbo-go/v3 v3.0.0-20211006125508-2bd7786cc828
