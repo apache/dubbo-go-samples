@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="service-discovery-nacos-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="service-discovery">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="DUBBO_GO_CONFIG_PATH" value="registry/servicediscovery/nacos/go-server/conf/dubbogo.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/registry/servicediscovery/nacos/go-server/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/registry/servicediscovery/zookeeper/go-server/cmd/server.go" />
+    <method v="2" />
+  </configuration>
+</component>

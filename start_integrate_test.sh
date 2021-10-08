@@ -14,6 +14,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+# game
+array+=("game/go-server-game")
+array+=("game/go-server-gate")
+
 # helloworld
 array=("helloworld")
 
@@ -32,6 +36,8 @@ array+=("config-api/configcenter/zookeeper")
 array+=("registry/zookeeper")
 array+=("registry/nacos")
 array+=("registry/etcd")
+array+=("registry/servicediscovery/zookeeper")
+array+=("registry/servicediscovery/nacos")
 
 # generic
 array+=("generic/default")
