@@ -35,7 +35,7 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var userProvider = new(UserProvider)
+var userProvider = &UserProvider{}
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
