@@ -30,7 +30,7 @@ import (
 
 func TestGetUser(t *testing.T) {
 	user := &User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	user, err := userProvider.GetUser(context.TODO(), "A001")
 	assert.Nil(t, err)
 	assert.Equal(t, "A001", user.ID)
 	assert.Equal(t, "ALEX STOCKS", user.Name)

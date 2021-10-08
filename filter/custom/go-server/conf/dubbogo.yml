@@ -9,7 +9,7 @@ dubbo:
       name: dubbo
       port: 20000
   provider:
-    registry:
+    registryIDs:
       - demoZK
     services:
       UserProvider:
