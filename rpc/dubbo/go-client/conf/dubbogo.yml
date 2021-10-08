@@ -7,7 +7,7 @@ dubbo:
       timeout: "3s"
       address: "127.0.0.1:2181"
   consumer:
-    registries:
+    registryIDs:
       - demoZK
     references:
       "UserProvider":

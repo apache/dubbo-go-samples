@@ -23,15 +23,15 @@ import (
 	"testing"
 	"time"
 )
+
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
-import (
+
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var userProvider = &UserProvider{}
+var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)

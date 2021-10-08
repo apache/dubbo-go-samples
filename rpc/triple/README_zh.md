@@ -24,7 +24,7 @@ dubbo:
   provider: 
     services:
       MyProvider: # 服务提供者结构类名
-        protocol: myProtocol # 自定义的协议 Key，与上方 myProtocol 对应
+        protocolIDs: myProtocol # 自定义的协议 Key，与上方 myProtocol 对应
         interface: org.apache.dubbogo.MyProvider # 用户自定义的接口名
       # serialization: hessian2 可选字段，可以指定序列化类型：pb/hessian2/自定义
       # 默认使用 pb 序列化

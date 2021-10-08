@@ -33,7 +33,7 @@ Direct example code description:
 ```yaml
 services:
   "UserProvider":
-    registries: "demoZk"
+    registryIDs: "demoZk"
     protocol : "dubbo"
     interface : "org.apache.dubbo.UserProvider"
     loadbalance: "random"
@@ -112,7 +112,7 @@ application:
   environment: "dev"
 references:
   "UserProvider":
-    registries: "demoZk"
+    registryIDs: "demoZk"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
