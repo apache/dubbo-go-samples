@@ -40,7 +40,7 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:8848
   consumer:
-    registry:
+    registryIDs:
       - demoZK
     references:
       GreeterClientImpl:
@@ -51,28 +51,23 @@ var grpcGreeterImpl = new(api.GreeterClientImpl)
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	dynamicConfig, err := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("zookeeper"),
-		config.WithConfigCenterAddress("127.0.0.1:2181")).GetDynamicConfiguration()
-	if err != nil {
-		panic(err)
-	}
+	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
+		SetProtocol("zookeeper").
+		SetAddress("127.0.0.1:2181").
+		Build().GetDynamicConfiguration()
+
 	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", configCenterZKClientConfig); err != nil {
 		panic(err)
 	}
 
 	config.SetConsumerService(grpcGreeterImpl)
 
-	centerConfig := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("zookeeper"),
-		config.WithConfigCenterAddress("localhost:2181"),
-		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-zookeeper-client"),
-		config.WithConfigCenterGroup("dubbogo"),
-	)
-
-	rootConfig := config.NewRootConfig(
-		config.WithRootCenterConfig(centerConfig),
-	)
+	rootConfig := config.NewRootConfigBuilder().
+		SetConfigCenter(config.NewConfigCenterConfigBuilder().
+			SetProtocol("nacos").SetAddress("127.0.0.1:2182").
+			SetDataID("dubbo-go-samples-configcenter-zookeeper-client").
+			Build()).
+		Build()
 
 	if err := rootConfig.Init(); err != nil {
 		panic(err)

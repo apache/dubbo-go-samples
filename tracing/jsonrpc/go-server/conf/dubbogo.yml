@@ -13,11 +13,11 @@ dubbo:
       port: 20001
   provider:
     filter: tracing
-    registry:
+    registryIDs:
       - demoZK
     services:
       UserProvider:
-        protocol: jsonrpc
+        protocolIDs: jsonrpc
         interface: org.apache.dubbo.UserProvider
         cluster: failover
         

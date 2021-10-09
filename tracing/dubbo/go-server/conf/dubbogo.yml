@@ -12,11 +12,11 @@ dubbo:
       port: 20000
   provider:
     filter: tracing
-    registry:
+    registryIDs:
       - demoZK
     services:
       UserProvider:
-        protocol: dubbo
+        protocolIDs: dubbo
         interface: org.apache.dubbo.UserProvider
         loadbalance: random
         warmup: 100

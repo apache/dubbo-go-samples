@@ -12,12 +12,12 @@ dubbo:
       name: tri
       port: 20001
   provider:
-    registry: zk
+    registryIDs: zk
     services:
       UserProvider:
-        protocol: dubbo
+        protocolIDs: dubbo
         interface: org.apache.dubbo.samples.UserProvider
       UserProviderTriple:
-        protocol: triple
+        protocolIDs: triple
         serialization: hessian2
         interface: org.apache.dubbo.samples.UserProviderTriple

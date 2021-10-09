@@ -32,8 +32,6 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
-
-	gxlog "github.com/dubbogo/gost/log"
 )
 
 var (
@@ -57,13 +55,13 @@ type UserProvider struct {
 }
 
 func (u *UserProvider) GetUser(ctx context.Context, req *User) (*User, error) {
-	gxlog.CInfo("req:%#v", req)
+	logger.Infof("req:%#v", req)
 	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
-	gxlog.CInfo("rsp:%#v", rsp)
+	logger.Infof("rsp:%#v", rsp)
 	return &rsp, nil
 }
 
-func (u User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
 

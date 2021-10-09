@@ -21,7 +21,7 @@ dubbo:
   consumer:
     references:
       "com.ikurento.user.UserProvider":
-        registry: "hangzhouzk"
+        registryIDs: "hangzhouzk"
         protocol: "jsonrpc"
         interface: "com.ikurento.user.UserProvider"
         cluster: "failover"
@@ -29,7 +29,7 @@ dubbo:
           - name: "GetUser"
             retries: 1
       "com.ikurento.user.UserProvider1":
-        registry: "hangzhouzk"
+        registryIDs: "hangzhouzk"
         protocol: "jsonrpc"
         version: "2.0"
         interface: "com.ikurento.user.UserProvider"
@@ -38,7 +38,7 @@ dubbo:
           - name: "GetUser"
             retries: 1
       "com.ikurento.user.UserProvider2":
-        registry: "hangzhouzk"
+        registryIDs: "hangzhouzk"
         protocol: "jsonrpc"
         version: "2.0"
         group: "as"
@@ -47,3 +47,6 @@ dubbo:
         methods:
           - name: "GetUser"
             retries: 1
+  logger:
+    zap-config:
+      level: info

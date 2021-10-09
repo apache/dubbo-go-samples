@@ -52,9 +52,11 @@ var (
 )
 
 func main() {
-	config.SetProviderService(new(pkg.UserProvider))
+	config.SetProviderService(&pkg.UserProvider{})
 	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	initSignal()
 	// initJaeger() and initZipkin() can only use one at the same time
 	//initJaeger()

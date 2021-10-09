@@ -7,6 +7,7 @@ The samples demonstrate how to configure dubbo-go logger using lumberjack
 * default: print to the console by default
 * level:   set the isolation level of the log
 * rolling: output to file
+* custom: set custom logger
 
 #### print to the console by default
 
@@ -69,4 +70,31 @@ lumberjackConfig:
   localTime: true
   # Whether to compress the log file, the compression method is gzip
   compress: false
+```
+
+#### coustom logger
+
+Custom logger needs to implement the logger interface in the logger package
+
+```go
+type Logger interface {
+    Info(args ...interface{})
+    Warn(args ...interface{})
+    Error(args ...interface{})
+    Debug(args ...interface{})
+    Fatal(args ...interface{})
+
+    Infof(fmt string, args ...interface{})
+    Warnf(fmt string, args ...interface{})
+    Errorf(fmt string, args ...interface{})
+    Debugf(fmt string, args ...interface{})
+    Fatalf(fmt string, args ...interface{})
+}
+```
+
+Then call SetLogger method to set logger
+
+
+```go
+logger.SetLogger(&customLogger{})
 ```
