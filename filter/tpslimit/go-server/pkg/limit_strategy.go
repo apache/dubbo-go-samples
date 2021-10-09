@@ -32,13 +32,13 @@ func init() {
 	/*
 	 * register your implementation and them using it like:
 	 *
-	 * "UserProvider":
-	 *   registry: "hangzhouzk"
-	 *   protocol : "dubbo"
-	 *   interface : "com.ikurento.user.UserProvider"
+	 * UserProvider:
+	 *   registry: hangzhouzk
+	 *   protocol : dubbo
+	 *   interface : com.ikurento.user.UserProvider
 	 *   ... # other configuration
-	 *   tps.limiter: "method-service" # the name of limiter
-	 *   tps.limit.strategy: "RandomLimitStrategy"
+	 *   tps.limiter: method-service # the name of limiter
+	 *   tps.limit.strategy: RandomLimitStrategy
 	 */
 	extension.SetTpsLimitStrategy("RandomLimitStrategy", &RandomTpsLimitStrategyCreator{})
 }

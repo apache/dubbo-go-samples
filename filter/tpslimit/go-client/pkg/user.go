@@ -34,6 +34,6 @@ type UserProvider struct {
 	Ch      chan *User
 }
 
-func (User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
