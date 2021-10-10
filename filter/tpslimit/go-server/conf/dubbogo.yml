@@ -18,12 +18,12 @@ dubbo:
       UserProvider:
         protocol: dubbo
         interface: org.apache.dubbo.UserProvider
-        loadbalance: random
-        warmup: 100
         cluster: failover
-        tps.limiter: method-service
-        tps.limit.strategy: RandomLimitStrategy
+        loadbalance: random # load balancing strategy, such as random, roundrobin, leastactive or consistenthash.
+        warmup: 100  # Warmup period, in seconds
+        tps.limiter: method-service # the Limiter that judge if the TPS overs the threshold, such as method-service or default
+        tps.limit.strategy: RandomLimitStrategy # the name of limit strategy, such as RandomLimitStrategy, FixedWindowTpsLimitStrategy, SlidingWindowTpsLimitStrategy or ThreadSafeFixedWindowTpsLimitStrategy
         tps.limit.rejected.handler: DefaultValueHandler
-        tps.limit.interval: 5000
-        tps.limit.rate: 300
+        tps.limit.interval: 5000 # the time unit is ms
+        tps.limit.rate: 300 # the max value in the interval. <0 means that the service will not be limited.
         
