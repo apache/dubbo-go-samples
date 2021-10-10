@@ -2,7 +2,7 @@
 
 ### Background
 
-Dubbo-go has a builtin filter for limiting TPS purpose - "tpslimit". It can be enabled by configuring on the provider side, furthermore, user can customize the TPS limit strategy and the return value after the request is rejected.
+Dubbo-go has a built in filter for limiting TPS purpose - "tpslimit". It can be enabled by configuring on the provider side, furthermore, user can customize the TPS limit strategy and the return value after the request is rejected.
 
 ### Example
 

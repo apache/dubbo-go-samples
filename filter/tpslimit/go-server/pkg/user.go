@@ -36,7 +36,7 @@ type User struct {
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req []string) (*User, error) {
+func (u *UserProvider) GetUser(ctx context.Context, req string) (*User, error) {
 	logger.Infof("req:%#v", req)
 	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
 	logger.Infof("rsp:%#v", rsp)

@@ -30,8 +30,7 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []string) (*User, error)
-	Ch      chan *User
+	GetUser func(ctx context.Context, req string) (*User, error)
 }
 
 func (u *User) JavaClassName() string {

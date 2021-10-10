@@ -28,11 +28,13 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/filter/tpslimit/go-client/pkg"
 )
 
-var userProvider = new(pkg.UserProvider)
+var userProvider = &pkg.UserProvider{}
 
 func init() {
 	config.SetConsumerService(userProvider)
@@ -48,7 +50,7 @@ func main() {
 
 	logger.Infof("\n\n\nstart to test dubbo")
 	for i := 0; i < 50; i++ {
-		user, err := userProvider.GetUser(context.TODO(), []string{"A001"})
+		user, err := userProvider.GetUser(context.TODO(), "A001")
 		if err != nil {
 			logger.Infof("error: %v\n", err)
 		}
