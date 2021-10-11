@@ -3,7 +3,7 @@
 dubbo:
   registries:
     demoZK:
-      protocol: zookeeper
+      protocolIDs: zookeeper
       timeout: 3s
       address: 127.0.0.1:2181
   consumer:
@@ -14,5 +14,5 @@ dubbo:
       - demoZK
     references:
       UserProvider:
-        protocol: dubbo
+        protocolIDs: dubbo
         interface: org.apache.dubbo.UserProvider
