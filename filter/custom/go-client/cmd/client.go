@@ -26,11 +26,10 @@ import (
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	gxlog "github.com/dubbogo/gost/log"
-)
 
-import (
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
@@ -44,7 +43,6 @@ func init() {
 	hessian.RegisterPOJO(&pkg.User{})
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
