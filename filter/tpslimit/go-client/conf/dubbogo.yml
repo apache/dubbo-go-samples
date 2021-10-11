@@ -14,5 +14,6 @@ dubbo:
       - demoZK
     references:
       UserProvider:
+        retries: 0
         protocol: dubbo
         interface: org.apache.dubbo.UserProvider

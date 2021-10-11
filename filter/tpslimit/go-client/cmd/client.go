@@ -46,14 +46,19 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	time.Sleep(3 * time.Second)
 
+	var successCount, failCount int64
 	logger.Infof("\n\n\nstart to test dubbo")
-	for i := 0; i < 50; i++ {
+	for i := 0; i < 60; i++ {
+		time.Sleep(200 * time.Millisecond)
 		user, err := userProvider.GetUser(context.TODO(), "A001")
 		if err != nil {
+			failCount++
 			logger.Infof("error: %v\n", err)
+		} else {
+			successCount++
 		}
 		logger.Infof("response: %v\n", user)
 	}
+	logger.Infof("failCount=%v, failCount=%v\n", successCount, failCount)
 }
