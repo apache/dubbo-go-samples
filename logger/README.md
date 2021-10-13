@@ -57,7 +57,7 @@ logger.SetLoggerLevel("warn")
 Add the lumberjackConfig item under the logger option in the configuration file
 
 ```yaml
-lumberjackConfig:
+lumberjack-config:
   # The name of the log file
   filename: "logs.log"
   # The maximum size of each log file length whose unit is MiB. The default value is 100MiB.
