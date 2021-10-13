@@ -16,7 +16,7 @@ If you don't add a logger to the configuration file, the configuration log will 
 zap log format and level settings
 ```yaml
     logger:
-    zapConfig:
+    zap-config:
       level: "debug"
       development: false
       disableCaller: false
