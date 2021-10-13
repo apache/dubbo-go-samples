@@ -16,7 +16,7 @@ If you don't add a logger to the configuration file, the configuration log will 
 zap log format and level settings
 ```yaml
     logger:
-    zapConfig:
+    zap-config:
       level: "debug"
       development: false
       disableCaller: false
@@ -57,7 +57,7 @@ logger.SetLoggerLevel("warn")
 Add the lumberjackConfig item under the logger option in the configuration file
 
 ```yaml
-lumberjackConfig:
+lumberjack-config:
   # The name of the log file
   filename: "logs.log"
   # The maximum size of each log file length whose unit is MiB. The default value is 100MiB.
