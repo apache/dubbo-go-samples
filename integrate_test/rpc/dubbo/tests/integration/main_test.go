@@ -41,7 +41,6 @@ func TestMain(m *testing.M) {
 	hessian.RegisterJavaEnum(Gender(WOMAN))
 	hessian.RegisterPOJO(&User{})
 	config.Load()
-	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }

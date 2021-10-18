@@ -20,41 +20,24 @@
 package integration
 
 import (
-	"context"
 	"os"
 	"testing"
-	"time"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var userProvider = &UserProvider{}
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
+
+var userProvider = &api.GreeterClientImpl{}
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
 	config.Load()
-	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req string) (*User, error)
-}
-
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
 }

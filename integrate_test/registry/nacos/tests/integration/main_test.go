@@ -23,7 +23,6 @@ import (
 	"context"
 	"os"
 	"testing"
-	"time"
 )
 
 import (
@@ -39,7 +38,6 @@ func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
 	config.Load()
-	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }

@@ -28,12 +28,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
+
 func TestGetUser(t *testing.T) {
-	user := &User{}
-	user, err := userProvider.GetUser(context.TODO(), "A001")
+	user, err := userProvider.SayHello(context.TODO(), &api.HelloRequest{Name: "JasonDeng"})
 	assert.Nil(t, err)
-	assert.Equal(t, "A001", user.ID)
-	assert.Equal(t, "ALEX STOCKS", user.Name)
-	assert.Equal(t, int32(28), user.Age)
-	assert.NotNil(t, user.Time)
+	assert.Equal(t, "12345", user.Id)
+	assert.Equal(t, "Hello Jason", user.Name)
+	assert.Equal(t, int32(23), user.Age)
 }

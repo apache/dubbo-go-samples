@@ -21,7 +21,6 @@ import (
 	"context"
 	"os"
 	"testing"
-	"time"
 )
 
 import (
@@ -37,7 +36,6 @@ func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
 	config.Load()
-	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }
@@ -46,7 +44,6 @@ type User struct {
 	ID   string
 	Name string
 	Age  int32
-	Time time.Time
 }
 
 type UserProvider struct {

@@ -19,26 +19,22 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/filter/custom/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-var userProvider = &pkg.UserProvider{}
+var userProvider = &api.GreeterClientImpl{}
 
 func init() {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
 }
 
 func main() {
@@ -47,18 +43,10 @@ func main() {
 		panic(err)
 	}
 
-	var successCount, failCount int64
-	logger.Infof("\n\n\nstart to test dubbo")
-	for i := 0; i < 60; i++ {
-		time.Sleep(200 * time.Millisecond)
-		user, err := userProvider.GetUser(context.TODO(), "A001")
-		if err != nil {
-			failCount++
-			logger.Infof("error: %v\n", err)
-		} else {
-			successCount++
-		}
-		logger.Infof("response: %v\n", user)
+	logger.Infof("\n\n\nstart to test")
+	user, err := userProvider.SayHello(context.TODO(), &api.HelloRequest{Name: "Jasondeng"})
+	if err != nil {
+		panic(err)
 	}
-	logger.Infof("failCount=%v, failCount=%v\n", successCount, failCount)
+	logger.Infof("get user = %+v", user)
 }
