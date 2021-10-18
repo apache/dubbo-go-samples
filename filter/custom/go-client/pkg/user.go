@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,32 +15,12 @@
  * limitations under the License.
  */
 
-package integration
+package pkg
 
 import (
 	"context"
-	"os"
-	"testing"
 	"time"
 )
-
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-)
-
-var userProvider = &UserProvider{}
-
-func TestMain(m *testing.M) {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
-
-	os.Exit(m.Run())
-}
 
 type User struct {
 	ID   string
@@ -52,7 +30,7 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
+	GetUser func(ctx context.Context, req string) (*User, error)
 }
 
 func (u *User) JavaClassName() string {

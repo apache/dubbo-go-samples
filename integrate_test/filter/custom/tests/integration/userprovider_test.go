@@ -21,40 +21,19 @@ package integration
 
 import (
 	"context"
-	"os"
 	"testing"
-	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/stretchr/testify/assert"
 )
 
-var userProvider = &UserProvider{}
-
-func TestMain(m *testing.M) {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
-
-	os.Exit(m.Run())
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
-
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+func TestGetUser(t *testing.T) {
+	user := &User{}
+	user, err := userProvider.GetUser(context.TODO(), "A001")
+	assert.Nil(t, err)
+	assert.Equal(t, "A001", user.ID)
+	assert.Equal(t, "ALEX STOCKS", user.Name)
+	assert.Equal(t, int32(28), user.Age)
+	assert.NotNil(t, user.Time)
 }

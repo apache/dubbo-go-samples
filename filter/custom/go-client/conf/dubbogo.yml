@@ -1,0 +1,18 @@
+# dubbo client yaml configure file
+
+dubbo:
+  registries:
+    demoZK:
+      protocolIDs: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  consumer:
+    check: true
+    request_timeout: 3s
+    connect_timeout: 3s
+    registryIDs:
+      - demoZK
+    references:
+      UserProvider:
+        protocolIDs: dubbo
+        interface: org.apache.dubbo.UserProvider

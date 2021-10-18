@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,44 +15,50 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
 	"context"
-	"os"
-	"testing"
 	"time"
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var userProvider = &UserProvider{}
+import (
+	"github.com/apache/dubbo-go-samples/filter/custom/go-client/pkg"
+)
 
-func TestMain(m *testing.M) {
+var userProvider = &pkg.UserProvider{}
+
+func init() {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
-
-	os.Exit(m.Run())
+	hessian.RegisterPOJO(&pkg.User{})
 }
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
+func main() {
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
-
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	var successCount, failCount int64
+	logger.Infof("\n\n\nstart to test dubbo")
+	for i := 0; i < 60; i++ {
+		time.Sleep(200 * time.Millisecond)
+		user, err := userProvider.GetUser(context.TODO(), "A001")
+		if err != nil {
+			failCount++
+			logger.Infof("error: %v\n", err)
+		} else {
+			successCount++
+		}
+		logger.Infof("response: %v\n", user)
+	}
+	logger.Infof("failCount=%v, failCount=%v\n", successCount, failCount)
 }
