@@ -19,11 +19,11 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"time"
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
