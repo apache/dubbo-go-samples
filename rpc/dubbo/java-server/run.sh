@@ -1,2 +1,1 @@
-mvn clean install -DSkipTests
-mvn -e exec:java -Dexec.mainClass="java.org.apache.dubbo.Provider"
+mvn -e clean compile exec:java -Dexec.mainClass="org.apache.dubbo.Provider"
