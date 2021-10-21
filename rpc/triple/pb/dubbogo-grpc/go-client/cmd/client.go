@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -45,7 +44,6 @@ func main() {
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
-	time.Sleep(time.Second * 3)
 
 	stream()
 	unary()

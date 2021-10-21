@@ -20,7 +20,6 @@ package integration
 import (
 	"os"
 	"testing"
-	"time"
 )
 
 import (
@@ -37,7 +36,6 @@ var greeterProvider = &dubbo3pb.GreeterClientImpl{}
 func TestMain(m *testing.M) {
 	config.SetConsumerService(greeterProvider)
 	config.Load()
-	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }

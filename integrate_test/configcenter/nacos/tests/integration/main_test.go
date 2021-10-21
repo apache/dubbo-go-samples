@@ -37,7 +37,6 @@ func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
 	config.Load()
-	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }

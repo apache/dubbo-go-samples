@@ -53,7 +53,6 @@ func main() {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
 	config.Load()
-	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex001"})
