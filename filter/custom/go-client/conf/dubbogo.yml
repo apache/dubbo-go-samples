@@ -3,16 +3,17 @@
 dubbo:
   registries:
     demoZK:
-      protocolIDs: zookeeper
+      protocol: zookeeper
       timeout: 3s
       address: 127.0.0.1:2181
   consumer:
+    filter: myClientFilter
     check: true
     request_timeout: 3s
     connect_timeout: 3s
     registryIDs:
       - demoZK
     references:
-      UserProvider:
-        protocolIDs: dubbo
+      GreeterClientImpl:
+        protocol: tri
         interface: org.apache.dubbo.UserProvider

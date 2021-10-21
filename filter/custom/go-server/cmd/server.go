@@ -15,24 +15,36 @@
  * limitations under the License.
  */
 
-package pkg
+package main
 
 import (
 	"context"
-	"time"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
+import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
+
+type GreeterProvider struct {
+	api.GreeterProviderBase
 }
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req string) (*User, error)
+func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
+	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
+	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
 
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-server/conf/dubbogo.yml
+func main() {
+	config.SetProviderService(&GreeterProvider{})
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
+	select {}
 }

@@ -5,15 +5,16 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:2181
   protocols:
-    dubbo:
-      name: dubbo
+    tripleProtocol:
+      name: tri
       port: 20000
   provider:
     registryIDs:
       - demoZK
     services:
-      UserProvider:
-        protocolIDs: dubbo
+      GreeterProvider:
+        filter: myServerFilter
+        protocolIDs: tripleProtocol
         interface: org.apache.dubbo.UserProvider
         loadbalance: random
         warmup: 100
