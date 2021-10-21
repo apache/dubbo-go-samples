@@ -31,7 +31,6 @@ type JsonRPCUser struct {
 	Sex  string `json:"sex"`
 }
 
-
 func (u JsonRPCUser) String() string {
 	return fmt.Sprintf(
 		"User{ID:%s, Name:%s, Age:%d, Time:%s, Sex:%s}",
