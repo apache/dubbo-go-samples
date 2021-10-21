@@ -33,8 +33,8 @@ cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohl
 cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RXyy7KQOVs=
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211021080029-e2021eaf703b h1:YJeI894vXsv5GWNxWgdBkX0FgOqmYlF9jRegJTmzarc=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211021080029-e2021eaf703b/go.mod h1:cKkXBkYoY5tzeIIzK/YbuycWzMCw9glf8wR9RJggLcI=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211021080526-4206fc2035f3 h1:AXjzVXhr4fgaoLbRTPvkFLAbN8MIislohCE5gP5wPQ0=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211021080526-4206fc2035f3/go.mod h1:vtZY/6buZ1RHI6JVBfbKw7Kp582AjLt+57g1Iyk1EdI=
 github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78/go.mod h1:LmzpDX56iTiv29bbRTIsUNlaFfuhWRQBWjQdVyAevI8=
 github.com/Azure/go-autorest/autorest v0.9.0/go.mod h1:xyHB1BMZT0cuDHU7I0+g046+BFDTQ8rEZB0s4Yfa6bI=
 github.com/Azure/go-autorest/autorest/adal v0.5.0/go.mod h1:8Z9fGy2MpX0PvDjB1pEgQTmVqjGhiHBW7RJJEciWzS0=
@@ -186,8 +186,8 @@ github.com/dubbogo/gost v1.11.18/go.mod h1:vIcP9rqz2KsXHPjsAwIUtfJIJjppQLQDcYaZT
 github.com/dubbogo/jsonparser v1.0.1/go.mod h1:tYAtpctvSP/tWw4MeelsowSPgXQRVHHWbqL6ynps8jU=
 github.com/dubbogo/net v0.0.4 h1:Rn9aMPZwOiRE22YhtxmDEE3H0Q3cfVRNhuEjNMelJ/8=
 github.com/dubbogo/net v0.0.4/go.mod h1:1CGOnM7X3he+qgGNqjeADuE5vKZQx/eMSeUkpU3ujIc=
-github.com/dubbogo/triple v1.0.7 h1:rPRtf5QNQO2FqXckMugn8KmQyhXQPZyImrEJ/OKAB7o=
-github.com/dubbogo/triple v1.0.7/go.mod h1:1t9me4j4CTvNDcsMZy6/OGarbRyAUSY0tFXGXHCp7Iw=
+github.com/dubbogo/triple v1.0.8 h1:M3p2t+Bx6z1RbVMm4GjrZKFpe8Ar0g6J0m/6fYU46tQ=
+github.com/dubbogo/triple v1.0.8/go.mod h1:1t9me4j4CTvNDcsMZy6/OGarbRyAUSY0tFXGXHCp7Iw=
 github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/dustin/go-humanize v1.0.0 h1:VSnTsYCnlFHaM2/igO1h6X3HA71jcobQuxemgkq4zYo=
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
