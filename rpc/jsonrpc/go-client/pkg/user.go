@@ -31,6 +31,7 @@ type JsonRPCUser struct {
 	Sex  string `json:"sex"`
 }
 
+
 func (u JsonRPCUser) String() string {
 	return fmt.Sprintf(
 		"User{ID:%s, Name:%s, Age:%d, Time:%s, Sex:%s}",
@@ -48,10 +49,6 @@ type UserProvider struct {
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
 
-func (u *UserProvider) Reference() string {
-	return "com.ikurento.user.UserProvider"
-}
-
 type UserProvider1 struct {
 	GetUsers func(ids []interface{}) ([]*JsonRPCUser, error)
 	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
@@ -62,10 +59,6 @@ type UserProvider1 struct {
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
 
-func (u *UserProvider1) Reference() string {
-	return "com.ikurento.user.UserProvider1"
-}
-
 type UserProvider2 struct {
 	GetUsers func(ids []interface{}) ([]*JsonRPCUser, error)
 	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
@@ -74,8 +67,4 @@ type UserProvider2 struct {
 	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
-}
-
-func (u *UserProvider2) Reference() string {
-	return "com.ikurento.user.UserProvider2"
 }
