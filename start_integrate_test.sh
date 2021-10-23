@@ -51,6 +51,9 @@ array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
 
+# route
+array+=("route/meshroute")
+
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d

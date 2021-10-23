@@ -123,7 +123,9 @@ clean: stop
 
 ## start: Start the application (for server)
 .PHONY: start
-start: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-server/conf/dubbogo.yml
+start:
+	export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-server/conf/dubbogo.yml
+	export PROJECT_PATH ?= $(PROJECT_DIR)
 start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@ls $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
