@@ -90,5 +90,5 @@ func TestGetUser(t *testing.T) {
 
 	assert.Equal(t, "Hello Dong", reply.Name)
 	assert.Equal(t, "12345", reply.Id)
-	assert.Equal(t, 21, reply.Age)
+	assert.Equal(t, int32(21), reply.Age)
 }
