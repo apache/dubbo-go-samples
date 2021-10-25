@@ -52,7 +52,7 @@ array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
 
 # route
-array+=("route/meshroute")
+#array+=("route/meshroute")
 
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
