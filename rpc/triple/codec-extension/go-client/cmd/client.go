@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -50,7 +49,7 @@ func main() {
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
-	time.Sleep(3 * time.Second)
+
 	user, err := userProvider.GetUser(context.TODO(), &User{Name: "laurence"}, &User{Name: "laurence2"}, "testName")
 	if err != nil {
 		panic(err)

@@ -21,7 +21,6 @@ import (
 	"context"
 	"os"
 	"testing"
-	"time"
 )
 
 import (
@@ -34,7 +33,7 @@ var userProvider = new(UserProvider)
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	config.Load()
-	time.Sleep(3 * time.Second)
+
 	os.Exit(m.Run())
 }
 

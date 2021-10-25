@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -44,7 +43,6 @@ func main() {
 	if err := config.Load(config.WithPath(path)); err != nil {
 		panic(err)
 	}
-	time.Sleep(3 * time.Second)
 
 	logger.Info("start to test dubbo")
 	req := &api.HelloRequest{

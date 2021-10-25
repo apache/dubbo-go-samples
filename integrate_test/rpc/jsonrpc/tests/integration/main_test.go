@@ -19,7 +19,6 @@ package integration
 import (
 	"os"
 	"testing"
-	"time"
 )
 
 import (
@@ -47,8 +46,6 @@ func init() {
 func TestMain(m *testing.M) {
 
 	config.Load()
-
-	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }

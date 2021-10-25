@@ -15,33 +15,35 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
-	"os"
-	"testing"
-)
-
-import (
-	_ "dubbo.apache.org/dubbo-go/v3/common/logger"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"context"
+	"fmt"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/registry/etcd/go-client/pkg"
+	"dubbo.apache.org/dubbo-go/v3/common/extension"
+	"dubbo.apache.org/dubbo-go/v3/filter"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
 )
 
-var (
-	userProvider = &pkg.UserProvider{}
-)
+func init() {
+	extension.SetFilter("myClientFilter", NewMyClientFilter)
+}
 
-func TestMain(m *testing.M) {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
+func NewMyClientFilter() filter.Filter {
+	return &MyClientFilter{}
+}
 
-	os.Exit(m.Run())
+type MyClientFilter struct {
+}
+
+func (f *MyClientFilter) Invoke(ctx context.Context, invoker protocol.Invoker, invocation protocol.Invocation) protocol.Result {
+	fmt.Println("MyClientFilter Invoke is called, method Name = ", invocation.MethodName())
+	return invoker.Invoke(ctx, invocation)
+}
+func (f *MyClientFilter) OnResponse(ctx context.Context, result protocol.Result, invoker protocol.Invoker, protocol protocol.Invocation) protocol.Result {
+	fmt.Println("MyClientFilter OnResponse is called")
+	return result
 }
