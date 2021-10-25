@@ -25,7 +25,15 @@ import (
 )
 
 import (
+	_ "dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	api "github.com/apache/dubbo-go-samples/api"
 )
 
 const MeshRouteConf = "apiVersion: service.dubbo.apache.org/v1alpha1\n" +

@@ -31,6 +31,10 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
+import (
+	api "github.com/apache/dubbo-go-samples/api"
+)
+
 var (
 	grpcGreeterImpl = &api.GreeterClientImpl{}
 )
