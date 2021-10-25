@@ -69,7 +69,7 @@ const MeshRouteConf = "apiVersion: service.dubbo.apache.org/v1alpha1\n" +
 	"        - {exact: com.apache.dubbo.sample.basic.IGreeter}\n" +
 	"  hosts: [demo]"
 
-var grpcGreeterImpl = api.GreeterClientImpl{}
+var grpcGreeterImpl = &api.GreeterClientImpl{}
 
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/route/meshroute/go-client/conf/dubbogo.yml
 func main() {
@@ -83,7 +83,7 @@ func main() {
 		panic(err)
 	}
 
-	// 1. publish mesh route config
+	// publish mesh route config
 	err = dynamicConfiguration.PublishConfig("dubbo.io.MESHAPPRULE", "dubbo", MeshRouteConf)
 	if err != nil {
 		return
@@ -98,5 +98,4 @@ func main() {
 		logger.Error(err)
 	}
 	logger.Infof("client response result: %v\n", reply)
-	select {}
 }

@@ -32,7 +32,7 @@ import (
 )
 
 var (
-	grpcGreeterImpl = api.GreeterClientImpl{}
+	grpcGreeterImpl = &api.GreeterClientImpl{}
 )
 
 func TestMain(m *testing.M) {

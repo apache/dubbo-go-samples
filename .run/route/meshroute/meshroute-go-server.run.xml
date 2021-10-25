@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="meshroute-go-server" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/route/meshroute/go-server/conf/dubbogo.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/route/meshroute/go-server/cmd" />
+    <directory value="$PROJECT_DIR$/../dubbo-go" />
+    <filePath value="$PROJECT_DIR$/route/meshroute/go-server/cmd/server.go" />
+    <method v="2" />
+  </configuration>
+</component>

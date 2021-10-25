@@ -67,6 +67,7 @@ const MeshRouteConf = "apiVersion: service.dubbo.apache.org/v1alpha1\n" +
 	"  hosts: [demo]"
 
 func TestGetUser(t *testing.T) {
+	config.GetRootConfig().ConfigCenter = config.NewConfigCenterConfigBuilder().SetProtocol("zookeeper").SetAddress("127.0.0.1:2181").SetDataID("dubbo-go-samples-configcenter-zookeeper-client").Build()
 	dynamicConfiguration, err := config.GetRootConfig().ConfigCenter.GetDynamicConfiguration()
 	assert.Nil(t, err)
 	// 1. publish mesh route config
