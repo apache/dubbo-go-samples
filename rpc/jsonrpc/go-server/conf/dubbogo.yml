@@ -11,7 +11,7 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:2181
   protocols:
-    "jsonrpc":
+    jsonrpc:
       name: jsonrpc
       ip: 127.0.0.1
       port: 20001
