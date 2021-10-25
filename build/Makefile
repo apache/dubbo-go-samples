@@ -158,3 +158,11 @@ integration:
 	$(info   >  Running integration test for application $(INTEGRATE_DIR))
 	@go clean -testcache
 	@go test -tags integration -v $(INTEGRATE_DIR)/tests/integration/...
+
+## integration-java: Integration java test (for client)
+.PHONY: integration-java
+integration-java:
+	@$(info   >  Running java test $(INTEGRATE_DIR), project name $(PROJECT_NAME))
+	@chmod +x $(INTEGRATE_DIR)/tests/java/run.sh
+	@$(shell )$(INTEGRATE_DIR)/tests/java/run.sh $(PROJECT_DIR)/java-client
+	@exit $(.SHELLSTATUS)

@@ -12,7 +12,7 @@ dubbo:
       - demoZK
     references:
       UserProvider:
-        protocol: jsonrpc
+        protocolIDs: jsonrpc
         interface: org.apache.dubbo.UserProvider
         cluster: failover
         

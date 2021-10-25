@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -47,8 +46,6 @@ func main() {
 	config.SetConsumerService(userProvider)
 
 	config.Load()
-
-	time.Sleep(6 * time.Second)
 
 	logger.Infof("\n\ntest")
 	test()
