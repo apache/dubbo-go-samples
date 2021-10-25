@@ -19,12 +19,15 @@ package integration
 
 import (
 	"context"
-	"github.com/apache/dubbo-go-samples/api"
 	"testing"
 )
 
 import (
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/api"
 )
 
 func TestGetUser(t *testing.T) {
