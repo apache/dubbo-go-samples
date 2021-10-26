@@ -39,6 +39,7 @@ public class ApiConsumer {
     public static void main(String[] args) {
         initConfig();
 
+        logger.info("Start to test generic invoke");
         callGetUser();
         callGetOneUser();
         callGetUsers();
@@ -49,22 +50,26 @@ public class ApiConsumer {
     }
 
     private static void initConfig() {
-        logger.info("\n\n\nstart to init config\n\n\n");
+        logger.info("\n\n\nStart to init config\n\n\n");
+
         ApplicationConfig applicationConfig = new ApplicationConfig();
-        ReferenceConfig<GenericService> reference = new ReferenceConfig<GenericService>();
         applicationConfig.setName("user-info-server");
-        reference.setApplication(applicationConfig);
+
         RegistryConfig registryConfig = new RegistryConfig();
         registryConfig.setAddress("zookeeper://127.0.0.1:2181");
+
+        ReferenceConfig<GenericService> reference = new ReferenceConfig<GenericService>();
+        reference.setApplication(applicationConfig);
         reference.setRegistry(registryConfig);
         reference.setGeneric(true);
         reference.setInterface("org.apache.dubbo.UserProvider");
         genericService = reference.get();
+
+        logger.info("\n\n\nEnd to init config\n\n\n");
     }
 
     private static void callGetUser() {
         logger.info("\n\n\nCall GetUser");
-        logger.info("Start to generic invoke");
         Object result;
 
         result = genericService.$invoke("GetUser1", new String[]{"java.lang.String"}, new Object[]{"A003"});
@@ -82,7 +87,6 @@ public class ApiConsumer {
 
     private static void callGetOneUser() {
         logger.info("\n\n\nCall GetOneUser");
-        logger.info("Start to generic invoke");
 
         Object result = genericService.$invoke("GetOneUser", new String[]{}, new Object[]{});
         logger.info("\n\n\n" + "GetOneUser() " + "res: " + result + "\n\n\n");
@@ -90,7 +94,6 @@ public class ApiConsumer {
 
     private static void callGetUsers() {
         logger.info("\n\n\nCall GetUsers");
-        logger.info("Start to generic invoke");
 
         List<String> userIdList = new ArrayList<String>();
         userIdList.add("001");
@@ -104,7 +107,6 @@ public class ApiConsumer {
 
     private static void callGetUsersMap() {
         logger.info("\n\n\nCall GetUsersMap");
-        logger.info("Start to generic invoke");
         Object result;
 
         List<String> userIdList = new ArrayList<String>();
@@ -131,7 +133,6 @@ public class ApiConsumer {
 
     private static void callQueryUsers() {
         logger.info("\n\n\nCall QueryUsers");
-        logger.info("Start to generic invoke");
 
         ArrayList<Map> userArr = new ArrayList<>();
         Map<Object, Object> userMap1 = new HashMap<>();
@@ -151,7 +152,6 @@ public class ApiConsumer {
 
     private static void callQueryAll() {
         logger.info("\n\n\nCall queryAll");
-        logger.info("Start to generic invoke");
 
         Object result = genericService.$invoke("queryAll", new String[]{}, new Object[]{});
         logger.info("\n\n\n" + "queryAll() " + "res: " + result + "\n\n\n");

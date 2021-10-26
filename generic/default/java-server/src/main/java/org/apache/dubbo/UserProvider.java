@@ -20,13 +20,15 @@ package org.apache.dubbo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-//import org.apache.dubbo.rpc.filter.GenericFilter;
 
+/**
+ * UserProvider, the first alpha of method name is Upper case to compatible with golang.
+ */
 public interface UserProvider {
 
     boolean isLimit(Gender gender, String name);
 
-    User GetUser1(String userId); // the first alpha is Upper case to compatible with golang.
+    User GetUser1(String userId);
 
     User GetUser2(String userId, String name);
 

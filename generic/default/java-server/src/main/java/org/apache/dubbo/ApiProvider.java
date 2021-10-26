@@ -35,6 +35,5 @@ public class ApiProvider {
         service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
         service.export();
         System.out.println("dubbo service started");
-        new CountDownLatch(1).await();
     }
 }
