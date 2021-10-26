@@ -20,4 +20,4 @@ dubbo:
   config-center:
     protocol: zookeeper
     address: 127.0.0.1:2181
-    data-id: "dubbo-go-samples-configcenter-zookeeper-client"
+    data-id: dubbo-go-samples-configcenter-zookeeper-client
