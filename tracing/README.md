@@ -3,7 +3,7 @@
 If u wanna know how to startup the client/server and the definition of APIs, please refer to [dubbo-go 3.0 quickstart](https://dubbogo.github.io/zh-cn/docs/user/quickstart/3.0/quickstart.html)
 
 ## Instructions
-1. Start `zookeeper` service in `docker/docker-compose.yml` file
+1. Start `zookeeper` service in `integrate_test/dockercompose/docker-compose.yml` file
 2. Start the server side. 
    1. Find the go-server folder, run the `main` function under the cmd package, and start the golang server
 3. Start the client side. 
