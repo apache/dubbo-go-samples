@@ -28,7 +28,7 @@ public class ApiProvider {
     public static void main(String[] args) throws InterruptedException {
         ServiceConfig<IGreeter> service = new ServiceConfig<>();
         service.setInterface(IGreeter.class);
-        service.setRef(new IGreeter1Impl());
+        service.setRef(new IGreeterImpl());
         service.setProtocol(new ProtocolConfig(CommonConstants.TRIPLE, 50051));
         service.setApplication(new ApplicationConfig("demo-provider"));
         service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));

@@ -31,8 +31,10 @@ import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Consumer {
-    // Define a private variable (Required in Spring)
+/**
+ * Define a private variable (Required in Spring)
+ */
+public class ApiConsumer {
     private static UserProvider userProvider;
     private static UserProvider userProvider1;
     private static UserProvider userProvider2;
@@ -45,11 +47,12 @@ public class Consumer {
 
         start();
         startComplexConsumerService();
-        // TODO when upgrade hessian version, remember to delete this comment
-       startWrapperArrayClassService();
+        startWrapperArrayClassService();
     }
 
-    // Start the entry function for consumer (Specified in the configuration file)
+    /**
+     * Start the entry function for consumer (Specified in the configuration file)
+     */
     public static void start() throws Exception {
         System.out.println("\n\ntest");
         testGetUser();

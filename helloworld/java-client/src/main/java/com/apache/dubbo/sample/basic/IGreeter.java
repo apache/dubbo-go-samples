@@ -17,15 +17,11 @@
 
 package com.apache.dubbo.sample.basic;
 
-
 import org.apache.dubbo.sample.hello.Helloworld;
 
 public interface IGreeter {
     /**
-     * <pre>
      *  Sends a greeting
-     * </pre>
      */
     Helloworld.User sayHello(Helloworld.HelloRequest request);
-
 }

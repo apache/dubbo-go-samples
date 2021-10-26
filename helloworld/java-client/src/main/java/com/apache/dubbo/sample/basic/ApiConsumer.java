@@ -23,11 +23,8 @@ import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.sample.hello.Helloworld;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
 public class ApiConsumer {
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) {
         ReferenceConfig<IGreeter> ref = new ReferenceConfig<>();
         ref.setInterface(IGreeter.class);
         ref.setCheck(false);
@@ -40,13 +37,7 @@ public class ApiConsumer {
 
         System.out.println("dubbo ref started");
         Helloworld.HelloRequest req = Helloworld.HelloRequest.newBuilder().setName("laurence").build();
-        try {
-            final Helloworld.User reply = iGreeter.sayHello(req);
-            TimeUnit.SECONDS.sleep(1);
-            System.out.println("Reply:" + reply);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        System.in.read();
+        final Helloworld.User reply = iGreeter.sayHello(req);
+        System.out.println("Reply:" + reply);
     }
 }
