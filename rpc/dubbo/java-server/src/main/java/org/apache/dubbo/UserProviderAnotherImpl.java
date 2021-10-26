@@ -17,43 +17,51 @@
 
 package org.apache.dubbo;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
-
 public class UserProviderAnotherImpl implements UserProvider {
-    // private static final Logger logger = LoggerFactory.getLogger(getClass()); // Only output to dubbo's log(logs/server.log)
     private static final Logger logger = LoggerFactory.getLogger("userLogger"); // Output to com.dubbogo.user-server.log
 
-    private Map<String, User> userMap = new HashMap<String, User>();
+    private final Map<String, User> userMap = new HashMap<String, User>();
 
     public UserProviderAnotherImpl() {
-        // userMap.put("001", new User("001", "other-zhangsan", 18, new Date(1998-1900, 1, 2, 3, 4, 5), Gender.MAN));
         userMap.put("001", new User("001", "other-zhangsan", 18, new Date(0x12345678), Gender.MAN));
         userMap.put("002", new User("002", "other-lisi", 20, new Date(1996-1900, 1, 2, 3, 4, 5), Gender.MAN));
         userMap.put("003", new User("003", "other-lily", 23, new Date(1993-1900, 1, 2, 3, 4, 5), Gender.WOMAN));
         userMap.put("004", new User("004", "other-lisa", 32, new Date(1985-1900, 1, 2, 3, 4, 5), Gender.WOMAN));
     }
 
+    @Override
     public boolean isLimit(Gender gender, String name) {
         logger.info(String.format("input gender=%sand name=%s", gender, name));
         return Gender.MAN == gender;
     }
 
+    @Override
     public User GetUser(String userId) {
         logger.info("input userId = " + userId);
         return new User(userId, "Joe", 48);
     }
 
+    @Override
     public User GetUser0(String userId, String name) {
         return new User(userId, name, 48);
     }
 
+    @Override
     public void GetUser3() {
         logger.info("this is GetUser3 of another");
     }
 
+    @Override
     public User GetErr(String userId) throws Exception {
         throw new Exception("exception");
     }
@@ -75,6 +83,7 @@ public class UserProviderAnotherImpl implements UserProvider {
         return userList;
     }
 
+    @Override
     public Map<String, User> GetUserMap(List<String> userIdList) {
         Iterator it = userIdList.iterator();
         Map<String, User> map = new HashMap<String, User>();
@@ -92,6 +101,7 @@ public class UserProviderAnotherImpl implements UserProvider {
         return map;
     }
 
+    @Override
     public List<User> GetUsers(List<String> userIdList) {
         Iterator it = userIdList.iterator();
         List<User> userList = new ArrayList<User>();
@@ -109,21 +119,24 @@ public class UserProviderAnotherImpl implements UserProvider {
         return userList;
     }
 
-    // @Override
+    @Override
     public User getUser(int userCode) {
         logger.info("input userCode = " + userCode);
         return new User(String.valueOf(userCode), "userCode get", 48);
     }
 
+    @Override
     public User getUser(int usercode, String name) {
         return new User(String.valueOf(usercode), name, 18);
     }
 
+    @Override
     public User queryUser(User user) {
         logger.info("input com.dubbogo.user = " + user);
         return new User(user.getId(), "get:" + user.getName(), user.getAge() + 18);
     }
 
+    @Override
     public Map<String, User> queryAll() {
         logger.info("input");
         Map<String, User> map = new HashMap<String, User>();
@@ -133,15 +146,18 @@ public class UserProviderAnotherImpl implements UserProvider {
         return map;
     }
 
-    public int Calc(int a,int b) {
+    @Override
+    public int Calc(int a, int b) {
         return a + b + 100;
     }
 
-    public Response<Integer> Sum(int a,int b) {
-        return Response.ok(a+b);
+    @Override
+    public Response<Integer> Sum(int a, int b) {
+        return Response.ok(a + b);
     }
 
-        public Integer GetGender(Integer gender) {
+    @Override
+    public Integer GetGender(Integer gender) {
             return gender != null && gender == 1 ? 1 : 0;
         }
 }

@@ -34,22 +34,27 @@ public class UserProviderImpl implements UserProvider {
         userMap.put("A004", new User("A004", "demo-lisa", 32));
     }
 
+    @Override
     public boolean isLimit(Gender gender, String name) {
         return Gender.WOMAN == gender;
     }
 
+    @Override
     public User GetUser(String userId) {
         return new User(userId, "zhangsan", 18);
     }
 
+    @Override
     public User GetErr(String userId) throws Exception {
         throw new Exception("exception");
     }
 
+    @Override
     public User GetUser0(String userId, String name) {
             return new User(userId, name, 18);
     }
 
+    @Override
     public List<User> GetUsers(List<String> userIdList) {
         Iterator it = userIdList.iterator();
         List<User> userList = new ArrayList<User>();
@@ -67,10 +72,12 @@ public class UserProviderImpl implements UserProvider {
         return userList;
     }
 
+    @Override
     public void GetUser3() {
         LOG.info("this is GetUser3 of impl");
     }
 
+    @Override
     public Map<String, User> GetUserMap(List<String> userIdList) {
         Iterator it = userIdList.iterator();
         Map<String, User> map = new HashMap<String, User>();
@@ -88,31 +95,38 @@ public class UserProviderImpl implements UserProvider {
         return map;
     }
 
+    @Override
     public User queryUser(User user) {
         return new User(user.getId(), "hello:" +user.getName(), user.getAge() + 18);
     }
 
+    @Override
     public Map<String, User> queryAll() {
         return userMap;
     }
 
 
+    @Override
     public User getUser(int userCode) {
         return new User(String.valueOf(userCode), "userCode get", 48);
     }
 
+    @Override
     public User getUser(int usercode, String name) {
         return new User(String.valueOf(usercode), name, 38);
     }
 
-    public int Calc(int a,int b) {
+    @Override
+    public int Calc(int a, int b) {
         return a + b;
     }
 
-     public Response<Integer> Sum(int a,int b) {
+     @Override
+     public Response<Integer> Sum(int a, int b) {
         return Response.ok(a+b);
     }
 
+    @Override
     public Integer GetGender(Integer gender) {
         return gender != null && gender == 1 ? 1 : 0;
     }

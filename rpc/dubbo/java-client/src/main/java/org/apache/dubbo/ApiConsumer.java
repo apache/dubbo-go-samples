@@ -41,19 +41,19 @@ public class ApiConsumer {
 
     public static void main(String[] args) throws Exception {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo.consumer.xml"});
-        userProvider = (UserProvider)context.getBean("userProvider");
-        userProvider1 = (UserProvider)context.getBean("userProvider1");
-        userProvider2 = (UserProvider)context.getBean("userProvider2");
+        userProvider = (UserProvider) context.getBean("userProvider");
+        userProvider1 = (UserProvider) context.getBean("userProvider1");
+        userProvider2 = (UserProvider) context.getBean("userProvider2");
 
-        start();
+        startUserConsumerService();
         startComplexConsumerService();
-        startWrapperArrayClassService();
+        startWrapperArrayClassConsumerService();
     }
 
     /**
-     * Start the entry function for consumer (Specified in the configuration file)
+     * Start the user consumer test
      */
-    public static void start() throws Exception {
+    public static void startUserConsumerService() throws Exception {
         System.out.println("\n\ntest");
         testGetUser();
         testGetUsers();
@@ -66,16 +66,16 @@ public class ApiConsumer {
         Thread.sleep(2000);
     }
 
-    private static void testGetUser() throws Exception {
+    private static void testGetUser() {
         try {
-            EchoService echoService = (EchoService)userProvider;
+            EchoService echoService = (EchoService) userProvider;
             Object status = echoService.$echo("OK");
-            System.out.println("echo: "+status);
+            System.out.println("echo: " + status);
             User user1 = userProvider.GetUser("A003");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
-            User user2 = userProvider.GetUser0("A003","Moorse");
+            User user2 = userProvider.GetUser0("A003", "Moorse");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user2.getId() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
                     + ", age:" + user2.getAge() + ", time:" + user2.getTime().toString());
@@ -88,24 +88,20 @@ public class ApiConsumer {
                     " UserInfo, ID:" + user4.getId() + ", name:" + user4.getName() + ", sex:" + user4.getSex().toString()
                     + ", age:" + user4.getAge() + ", time:" + user4.getTime());
             userProvider.GetUser3();
-            System.out.println("GetUser3 succ");
-
-            User user9 = userProvider.GetUser1("A003");
+            System.out.println("GetUser3 succeed");
         } catch (Throwable e) {
-            System.out.println("*************exception***********");
             e.printStackTrace();
         }
         try {
             userProvider.GetErr("A003");
         } catch (Throwable t) {
-            System.out.println("*************exception***********");
             t.printStackTrace();
         }
     }
 
-    private static void testGetUsers() throws Exception {
+    private static void testGetUsers() {
         try {
-            List<String> userIDList = new ArrayList<String>();
+            List<String> userIDList = new ArrayList<>();
             userIDList.add("A001");
             userIDList.add("A002");
             userIDList.add("A003");
@@ -123,16 +119,16 @@ public class ApiConsumer {
         }
     }
 
-    private static  void testGetUser1() throws Exception {
+    private static void testGetUser1() throws Exception {
         try {
-            EchoService echoService = (EchoService)userProvider1;
+            EchoService echoService = (EchoService) userProvider1;
             Object status = echoService.$echo("OK");
-            System.out.println("echo: "+status);
+            System.out.println("echo: " + status);
             User user1 = userProvider1.GetUser("A003");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
-            User user2 = userProvider1.GetUser0("A003","Moorse");
+            User user2 = userProvider1.GetUser0("A003", "Moorse");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user2.getId() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
                     + ", age:" + user2.getAge() + ", time:" + user2.getTime().toString());
@@ -146,8 +142,6 @@ public class ApiConsumer {
                     + ", age:" + user4.getAge() + ", time:" + user4.getTime());
             userProvider1.GetUser3();
             System.out.println("GetUser3 succ");
-
-            User user9 = userProvider1.GetUser1("A003");
         } catch (Throwable e) {
             System.out.println("*************exception***********");
             e.printStackTrace();
@@ -160,7 +154,7 @@ public class ApiConsumer {
         }
     }
 
-    private static  void testGetUsers1() throws Exception {
+    private static void testGetUsers1() throws Exception {
         try {
             List<String> userIDList = new ArrayList<String>();
             userIDList.add("A001");
@@ -182,14 +176,14 @@ public class ApiConsumer {
 
     private static void testGetUser2() throws Exception {
         try {
-            EchoService echoService = (EchoService)userProvider2;
+            EchoService echoService = (EchoService) userProvider2;
             Object status = echoService.$echo("OK");
-            System.out.println("echo: "+status);
+            System.out.println("echo: " + status);
             User user1 = userProvider2.GetUser("A003");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
-            User user2 = userProvider2.GetUser0("A003","Moorse");
+            User user2 = userProvider2.GetUser0("A003", "Moorse");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user2.getId() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
                     + ", age:" + user2.getAge() + ", time:" + user2.getTime().toString());
@@ -217,17 +211,16 @@ public class ApiConsumer {
         }
     }
 
-    private static void testGetUsers2() throws Exception {
+    private static void testGetUsers2() {
         try {
-            List<String> userIDList = new ArrayList<String>();
+            List<String> userIDList = new ArrayList<>();
             userIDList.add("A001");
             userIDList.add("A002");
             userIDList.add("A003");
 
             List<User> userList = userProvider2.GetUsers(userIDList);
 
-            for (int i = 0; i < userList.size(); i++) {
-                User user = userList.get(i);
+            for (User user : userList) {
                 System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                         " UserInfo, ID:" + user.getId() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
                         + ", age:" + user.getAge() + ", time:" + user.getTime().toString());
@@ -245,46 +238,26 @@ public class ApiConsumer {
         ref.setLazy(true);
         ref.setTimeout(100000);
         ref.setApplication(new ApplicationConfig("demo-consumer"));
-
         ref.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
         final ComplexProvider complexProvider = ref.get();
 
-//        complexProvider.invokeWithEmptyReq();
-//        complexProvider.invokeWithSingleString("single string");
-//        complexProvider.invokeWithMultiString("string1", "string2", "string3");
-//        String [] strList = new String []{"first string"," second string"};
-//        complexProvider.invokeWithStringList(strList );
-//       String rsp = complexProvider.invokeWithEmptyReqStringRsp();
-//       System.out.println("get rsp = "+  rsp);
-
-
-       ComplexData cpxData = new ComplexData();
-       cpxData.booleanData = true;
-       cpxData.stringData = "test string";
-       cpxData.byteData =  new byte[] {1, 12, 4, 3, 3,3};
-       cpxData.int16Data =16;
-       cpxData.intData = 32;
-       cpxData.int64Data = 64;
-       cpxData.arrayListData = new String[]{"array1", "array2"};
-//       cpxData.arrayUserData = new User[]{new User(), new User(), new User()};
+        ComplexData cpxData = new ComplexData();
+        cpxData.booleanData = true;
+        cpxData.stringData = "test string";
+        cpxData.byteData = new byte[]{1, 12, 4, 3, 3, 3};
+        cpxData.int16Data = 16;
+        cpxData.intData = 32;
+        cpxData.int64Data = 64;
+        cpxData.arrayListData = new String[]{"array1", "array2"};
         cpxData.userDefinedData = new User();
         cpxData.userDefinedData.setAge(18);
         cpxData.userDefinedData.setId("iojfioj");
         cpxData.stringStringHashMap = new HashMap<>();
-//        cpxData.stringStringHashMap.put("key1", "value");
-//        cpxData.stringStringHashMap.put("key2", "value");
-//        cpxData.stringUserDefinedPtrMapData = new HashMap<>();
-//        cpxData.stringUserDefinedPtrMapData.put("key1", new User());
-//        cpxData.stringUserDefinedPtrMapData.put("key2", new User());
-
-//        ComplexData response = complexProvider.invokeWithComplexReqComplexRspPtr(cpxData);
-//        System.out.println("get complex = "+  response);
-
-        int rsp = complexProvider.InvokeWithMultiBasicData("str",new byte[]{1, 3, 4,6,7}, 32, true);
-        System.out.println("get multi basic rsp = "+  rsp);
+        int rsp = complexProvider.InvokeWithMultiBasicData("str", new byte[]{1, 3, 4, 6, 7}, 32, true);
+        System.out.println("get multi basic rsp = " + rsp);
     }
 
-    public static void startWrapperArrayClassService() {
+    public static void startWrapperArrayClassConsumerService() {
         ReferenceConfig<WrapperArrayClassProvider> ref = new ReferenceConfig<>();
         ref.setInterface(WrapperArrayClassProvider.class);
         ref.setCheck(false);

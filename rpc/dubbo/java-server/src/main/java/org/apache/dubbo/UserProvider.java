@@ -20,11 +20,14 @@ package org.apache.dubbo;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * UserProvider, the first alpha of method name is upper case to compatible with golang.
+ */
 public interface UserProvider {
 
     boolean isLimit(Gender gender, String name);
 
-    User GetUser(String userId); // the first alpha is Upper case to compatible with golang.
+    User GetUser(String userId);
 
     List<User> GetUsers(List<String> userIdList);
 

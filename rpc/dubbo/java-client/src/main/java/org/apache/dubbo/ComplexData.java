@@ -44,7 +44,4 @@ public class ComplexData implements Serializable {
      */
     User userDefinedData;
     HashMap<String, String> stringStringHashMap;
-//    HashMap<String, User> stringUserDefinedPtrMapData;
-//    User[] arrayUserData;
-
 }

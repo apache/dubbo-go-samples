@@ -17,8 +17,6 @@
 
 package org.apache.dubbo;
 
-import java.util.concurrent.CountDownLatch;
-
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ProtocolConfig;
@@ -26,7 +24,7 @@ import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Provider {
+public class ApiProvider {
 
     /**
      * To get ipv6 address to work, add
@@ -37,7 +35,6 @@ public class Provider {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo.provider.xml"});
         context.start();
         startComplexService();
-        System.in.read(); // press any key to exit
     }
 
     public static void startComplexService() throws InterruptedException {
@@ -49,6 +46,5 @@ public class Provider {
         service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
         service.export();
         System.out.println("dubbo service started");
-        new CountDownLatch(1).await();
     }
 }

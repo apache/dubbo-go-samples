@@ -55,7 +55,7 @@ public class ComplexProviderImpl implements ComplexProvider {
 
     @Override
     public ComplexData InvokeWithComplexReqComplexRspPtr(ComplexData complexData) {
-        System.out.println("InvokeWithComplexReqComplexRspPtr = "+ complexData.GetString());
+        System.out.println("InvokeWithComplexReqComplexRspPtr = "+ complexData);
         return complexData;
     }
 }

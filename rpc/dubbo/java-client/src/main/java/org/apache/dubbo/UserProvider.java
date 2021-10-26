@@ -17,11 +17,11 @@ import java.util.List;
 
 public interface UserProvider {
 	User GetUser(String userId);
-	User GetErr(String userId) throws Exception;
-	User GetUser1(String userId) throws Exception;
-    User getUser(int usercode);
-	User getUser(int usercode, String name);
+    User getUser(int userCode);
+	User getUser(int userCode, String name);
+	User GetUser0(String userId, String name);
+	User GetUser1(String userId);
     void GetUser3();
 	List<User> GetUsers(List<String> userIdList);
-	User GetUser0(String userId, String name);
+	User GetErr(String userId) throws Exception;
 }

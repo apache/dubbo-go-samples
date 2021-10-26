@@ -17,6 +17,9 @@
 
 package org.apache.dubbo;
 
+/**
+ * ComplexProvider the first alpha of method name is Upper case to compatible with golang.
+ */
 public interface ComplexProvider {
     int InvokeWithMultiBasicData (String str, byte[]data, int num, boolean boolValue);
     void InvokeWithSingleString(String req);
