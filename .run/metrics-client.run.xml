@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="metrics-client" type="GoApplicationRunConfiguration" factoryName="Go Application">
+  <configuration default="false" name="metrics-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="metrics">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>

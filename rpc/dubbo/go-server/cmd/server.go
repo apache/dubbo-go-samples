@@ -50,6 +50,7 @@ func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.SetProviderService(&pkg.UserProvider{})
 	config.SetProviderService(&pkg.ComplexProvider{})
+	config.SetProviderService(&pkg.WrapperArrayClassProvider{})
 	// ------------
 
 	config.Load()

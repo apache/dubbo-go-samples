@@ -18,7 +18,7 @@
 package pkg
 
 import (
-	"github.com/apache/dubbo-go-samples/game/go-server-gate/pkg"
+	"github.com/apache/dubbo-go-samples/game/pkg/consumer/gate"
 )
 
-var GateBasketball = new(pkg.BasketballService)
+var GateBasketball = gate.BasketballService{}

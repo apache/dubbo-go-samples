@@ -34,14 +34,14 @@ func init() {
 	/*
 	 * register your custom implementation into filter.
 	 * "DefaultValueHandler" is the name used in configure file, like server.yml:
-	 * "UserProvider":
-	 *   registry: "hangzhouzk"
-	 *   protocol : "dubbo"
-	 *   interface : "com.ikurento.user.UserProvider"
+	 * UserProvider:
+	 *   registry: hangzhouzk
+	 *   protocol : dubbo
+	 *   interface : com.ikurento.user.UserProvider
 	 *   ... # other configuration
-	 *   tps.limiter: "method-service",
+	 *   tps.limiter: method-service,
 	 *
-	 *   tps.limit.rejected.handler: "DefaultValueHandler",
+	 *   tps.limit.rejected.handler: DefaultValueHandler,
 	 * So when the invocation is over the tps limitation, it will return the default value.
 	 * This is a common use case.
 	 */

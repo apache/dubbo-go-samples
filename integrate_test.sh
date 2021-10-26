@@ -32,20 +32,33 @@ INTEGRATE_DIR=$(pwd)/integrate_test/$1
 sleep 5
 
 # start server
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile start
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) INTEGRATE_DIR=$INTEGRATE_DIR -f build/Makefile start
 # waiting for registry
 sleep 5
 
 # start integration
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile integration
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) INTEGRATE_DIR=$INTEGRATE_DIR -f build/Makefile integration
 result=$?
 
 # if fail print server log
 if [ $result != 0 ];then
-  make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile print-server-log
+  make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) INTEGRATE_DIR=$INTEGRATE_DIR -f build/Makefile print-server-log
 fi
 
+JAVA_TEST_SHELL=$INTEGRATE_DIR/tests/java
+if [ -e $JAVA_TEST_SHELL ]; then
+  # run java test
+  make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) INTEGRATE_DIR=$INTEGRATE_DIR -f build/Makefile integration-java
+  result=$?
+
+  # if fail print server log
+  if [ $result != 0 ];then
+    make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) INTEGRATE_DIR=$INTEGRATE_DIR -f build/Makefile print-server-log
+  fi
+fi
+
+
 # stop server
-make PROJECT_DIR="$P_DIR" PROJECT_NAME="$(basename "$P_DIR")" INTEGRATE_DIR="$INTEGRATE_DIR" -f build/Makefile clean
+make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) INTEGRATE_DIR=$INTEGRATE_DIR -f build/Makefile clean
 
 exit $((result))

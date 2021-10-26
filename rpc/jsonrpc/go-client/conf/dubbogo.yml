@@ -1,0 +1,32 @@
+dubbo:
+  application:
+    organization: dubbo.apache.org
+    name: UserInfoServer
+    module: dubbo-go-user-info-client
+    version: 0.0.1
+    environment: dev
+  registries:
+    hangzhouzk:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  consumer:
+    references:
+      UserProvider:
+        registryIDs: hangzhouzk
+        protocol: jsonrpc
+        interface: com.ikurento.user.UserProvider
+      UserProvider1:
+        registryIDs: hangzhouzk
+        protocol: jsonrpc
+        version: 2.0
+        interface: com.ikurento.user.UserProvider
+      UserProvider2:
+        registryIDs: hangzhouzk
+        protocol: jsonrpc
+        version: 2.0
+        group: as
+        interface: com.ikurento.user.UserProvider
+  logger:
+    zap-config:
+      level: info

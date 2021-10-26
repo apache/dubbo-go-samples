@@ -1,10 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="rpc-dubbo-go-client" type="GoApplicationRunConfiguration" factoryName="Go Application">
+  <configuration default="false" name="dubbo-go-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="rpc/dubbo">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
       <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/rpc/dubbo/go-client/conf/dubbogo.yml" />
-      <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/rpc/dubbo/go-client/conf/log.yml" />
     </envs>
     <kind value="PACKAGE" />
     <package value="github.com/apache/dubbo-go-samples/rpc/dubbo/go-client/cmd" />

@@ -30,11 +30,7 @@ type User struct {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}, rsp *User) error
-}
-
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
+	GetUser func(ctx context.Context, user *User) (*User, error)
 }
 
 func (User) JavaClassName() string {

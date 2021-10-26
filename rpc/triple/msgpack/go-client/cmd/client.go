@@ -20,7 +20,6 @@ package main
 import (
 	"context"
 	"os"
-	"time"
 )
 
 import (
@@ -38,10 +37,6 @@ type UserProvider struct {
 	GetUser func(ctx context.Context, req *api.User) (rsp *api.User, err error)
 }
 
-func (u *UserProvider) Reference() string {
-	return "greeterImpl"
-}
-
 var userProvider = new(UserProvider)
 
 func init() {
@@ -51,7 +46,6 @@ func init() {
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
 	config.Load()
-	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user, err := userProvider.GetUser(context.TODO(), &api.User{Name: "laurence"})

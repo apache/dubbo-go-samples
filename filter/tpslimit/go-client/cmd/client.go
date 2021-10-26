@@ -19,19 +19,13 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
@@ -40,26 +34,31 @@ import (
 	"github.com/apache/dubbo-go-samples/filter/tpslimit/go-client/pkg"
 )
 
-var userProvider = new(pkg.UserProvider)
+var userProvider = &pkg.UserProvider{}
 
 func init() {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&pkg.User{})
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
-
-	fmt.Println("\n\n\nstart to test dubbo")
-	for i := 0; i < 50; i++ {
-		user := &pkg.User{}
-		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-		if err != nil {
-			fmt.Printf("error: %v\n", err)
-		}
-		fmt.Printf("response: %v\n", user)
+	err := config.Load()
+	if err != nil {
+		panic(err)
 	}
+
+	var successCount, failCount int64
+	logger.Infof("\n\n\nstart to test dubbo")
+	for i := 0; i < 60; i++ {
+		time.Sleep(200 * time.Millisecond)
+		user, err := userProvider.GetUser(context.TODO(), "A001")
+		if err != nil {
+			failCount++
+			logger.Infof("error: %v\n", err)
+		} else {
+			successCount++
+		}
+		logger.Infof("response: %v\n", user)
+	}
+	logger.Infof("failCount=%v, failCount=%v\n", successCount, failCount)
 }

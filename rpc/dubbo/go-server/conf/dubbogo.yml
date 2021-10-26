@@ -11,7 +11,7 @@ dubbo:
       name: dubbo
       port: 20000
   provider:
-    registry:
+    registryIDs:
       - demoZK
     services:
       UserProvider:
@@ -27,3 +27,9 @@ dubbo:
       ComplexProvider:
         protocol: dubbo
         interface: org.apache.dubbo.ComplexProvider
+      WrapperArrayClassProvider:
+        protocol: dubbo
+        interface: org.apache.dubbo.WrapperArrayClassProvider
+  logger:
+    zap-config:
+      level: info

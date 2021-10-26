@@ -19,49 +19,34 @@ package main
 
 import (
 	"context"
-	"os"
-	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/filter/custom/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-var userProvider = new(pkg.UserProvider)
+var userProvider = &api.GreeterClientImpl{}
 
 func init() {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
+	err := config.Load()
 	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
+		panic(err)
 	}
-	gxlog.CInfo("response result: %v\n", user)
+
+	logger.Infof("\n\n\nstart to test")
+	user, err := userProvider.SayHello(context.TODO(), &api.HelloRequest{Name: "laurence"})
+	if err != nil {
+		panic(err)
+	}
+	logger.Infof("get user = %+v", user)
 }

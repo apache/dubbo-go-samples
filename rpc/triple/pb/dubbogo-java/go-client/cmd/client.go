@@ -20,7 +20,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 import (
@@ -45,7 +44,6 @@ func main() {
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
-	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	req := &pb.HelloRequest{

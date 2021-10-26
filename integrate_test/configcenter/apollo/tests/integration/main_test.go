@@ -20,19 +20,11 @@ package integration
 import (
 	"os"
 	"testing"
-	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
@@ -44,7 +36,6 @@ var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 func TestMain(m *testing.M) {
 	config.SetConsumerService(greeterProvider)
 	config.Load()
-	time.Sleep(3 * time.Second)
 
 	os.Exit(m.Run())
 }

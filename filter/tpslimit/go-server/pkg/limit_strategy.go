@@ -32,13 +32,13 @@ func init() {
 	/*
 	 * register your implementation and them using it like:
 	 *
-	 * "UserProvider":
-	 *   registry: "hangzhouzk"
-	 *   protocol : "dubbo"
-	 *   interface : "com.ikurento.user.UserProvider"
+	 * UserProvider:
+	 *   registry: hangzhouzk
+	 *   protocol : dubbo
+	 *   interface : com.ikurento.user.UserProvider
 	 *   ... # other configuration
-	 *   tps.limiter: "method-service" # the name of limiter
-	 *   tps.limit.strategy: "RandomLimitStrategy"
+	 *   tps.limiter: method-service # the name of limiter
+	 *   tps.limit.strategy: RandomLimitStrategy
 	 */
 	extension.SetTpsLimitStrategy("RandomLimitStrategy", &RandomTpsLimitStrategyCreator{})
 }
@@ -52,6 +52,10 @@ type RandomTpsLimitStrategy struct {
 	interval int
 }
 
+/**
+ * It implements the TpsLimitStrategy interface.
+ * IsAllowable will return true if this invocation is not over limitation.
+ */
 func (r RandomTpsLimitStrategy) IsAllowable() bool {
 	// this is a simple demo.
 	gxlog.CInfo("Random IsAllowable!")
@@ -61,6 +65,11 @@ func (r RandomTpsLimitStrategy) IsAllowable() bool {
 
 type RandomTpsLimitStrategyCreator struct{}
 
+/**
+ * It implements the TpsLimitStrategyCreator interface.
+ * TpsLimitStrategyCreator is the creator abstraction for TpsLimitStrategy.
+ * Create will create an instance of TpsLimitStrategy.
+ */
 func (creator *RandomTpsLimitStrategyCreator) Create(rate int, interval int) filter.TpsLimitStrategy {
 	return &RandomTpsLimitStrategy{
 		rate:     rate,

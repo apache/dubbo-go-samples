@@ -23,52 +23,55 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	tpconst "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
-	pkg "github.com/apache/dubbo-go-samples/generic/default/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/generic/default/go-server/pkg"
 )
+
+const appName = "dubbo.io"
 
 var (
-	appName         = "dubbo.io"
-	referenceConfig config.ReferenceConfig
+	dubboRefConf  config.ReferenceConfig
+	tripleRefConf config.ReferenceConfig
 )
 
-func init() {
+func TestMain(m *testing.M) {
+	hessian.RegisterPOJO(&pkg.User{})
+
+	dubboRefConf = newRefConf("org.apache.dubbo.samples.UserProvider", dubbo.DUBBO)
+	tripleRefConf = newRefConf("org.apache.dubbo.samples.UserProviderTriple", tpconst.TRIPLE)
+
+	os.Exit(m.Run())
+}
+
+func newRefConf(iface, protocol string) config.ReferenceConfig {
 	registryConfig := &config.RegistryConfig{
 		Protocol: "zookeeper",
 		Address:  "127.0.0.1:2181",
 	}
 
-	referenceConfig = config.ReferenceConfig{
-		InterfaceName: "org.apache.dubbo.UserProvider",
+	refConf := config.ReferenceConfig{
+		InterfaceName: iface,
 		Cluster:       "failover",
-		Registry:      []string{"zk"},
-		Protocol:      dubbo.DUBBO,
+		RegistryIDs:   []string{"zk"},
+		Protocol:      protocol,
 		Generic:       "true",
 	}
 
-	rootConfig := config.NewRootConfig(config.WithRootRegistryConfig("zk", registryConfig))
+	rootConfig := config.NewRootConfigBuilder().
+		AddRegistry("zk", registryConfig).
+		Build()
 	_ = rootConfig.Init()
-	_ = referenceConfig.Init(rootConfig)
-	referenceConfig.GenericLoad(appName)
-}
+	_ = refConf.Init(rootConfig)
+	refConf.GenericLoad(appName)
 
-func TestMain(m *testing.M) {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.SetProviderService(&pkg.User{})
-	config.Load()
-
-	os.Exit(m.Run())
+	return refConf
 }

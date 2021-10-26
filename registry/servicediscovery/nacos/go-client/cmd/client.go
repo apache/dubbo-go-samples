@@ -19,58 +19,37 @@ package main
 
 import (
 	"context"
-	"os"
-	"time"
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/config_center/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/dynamic"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/local"
-	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/remote"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/registry/servicediscovery/nacos/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-var userProvider = new(pkg.UserProvider)
+var grpcGreeterImpl = &api.GreeterClientImpl{}
 
 func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
+	config.SetConsumerService(grpcGreeterImpl)
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+// export DUBBO_GO_CONFIG_PATH = PATH_TO_SAMPLES/registry/servicediscovery/zookeeper/go-client/conf/dubbogo.yml
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
-	time.Sleep(8 * time.Second)
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	for i := 0; i < 123; i++ {
-		user := &pkg.User{}
-		err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-		if err != nil {
-			gxlog.CError("error: %v\n", err)
-			os.Exit(1)
-			return
-		}
-		gxlog.CInfo("response result: %v\n", user)
-		time.Sleep(1 * time.Second)
+	if err := config.Load(); err != nil {
+		panic(err)
 	}
+
+	logger.Info("start to test dubbo")
+	req := &api.HelloRequest{
+		Name: "laurence",
+	}
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client response result: %v\n", reply)
 }

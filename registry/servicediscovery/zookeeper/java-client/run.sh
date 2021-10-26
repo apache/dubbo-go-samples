@@ -1,2 +1,2 @@
 mvn install -DSkipTests
-mvn exec:java -Dexec.mainClass="org.apache.dubbo.Application"
+mvn exec:java -Dexec.mainClass="com.apache.dubbo.sample.basic.ApiConsumer"

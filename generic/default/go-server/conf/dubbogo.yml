@@ -8,9 +8,16 @@ dubbo:
     dubbo:
       name: dubbo
       port: 20000
+    triple:
+      name: tri
+      port: 20001
   provider:
-    registry: zk
+    registryIDs: zk
     services:
       UserProvider:
-        protocol: dubbo
-        interface: org.apache.dubbo.UserProvider
+        protocolIDs: dubbo
+        interface: org.apache.dubbo.samples.UserProvider
+      UserProviderTriple:
+        protocolIDs: triple
+        serialization: hessian2
+        interface: org.apache.dubbo.samples.UserProviderTriple

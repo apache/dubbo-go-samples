@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="registry-zookeeper-go-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="v3config-registry-zookeeper">
+  <configuration default="false" name="registry-zookeeper-go-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="registry">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <kind value="PACKAGE" />

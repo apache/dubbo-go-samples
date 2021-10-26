@@ -26,9 +26,7 @@ import (
 	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
 )
 
-var GameBasketball = new(game.BasketballService)
-
-// var gameJump = new(game.JumpService)
+var GameBasketball = game.BasketballService{}
 
 // just easy for demo test
 

@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -40,7 +39,7 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:2181
   consumer:
-    registry:
+    registryIDs:
       - demoZK
     references:
       GreeterClientImpl:
@@ -51,9 +50,10 @@ var grpcGreeterImpl = new(api.GreeterClientImpl)
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	dynamicConfig, err := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("nacos"),
-		config.WithConfigCenterAddress("127.0.0.1:8848")).GetDynamicConfiguration()
+	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
+		SetProtocol("nacos").
+		SetAddress("127.0.0.1:8848").
+		Build().GetDynamicConfiguration()
 	if err != nil {
 		panic(err)
 	}
@@ -63,21 +63,16 @@ func main() {
 
 	config.SetConsumerService(grpcGreeterImpl)
 
-	centerConfig := config.NewConfigCenterConfig(
-		config.WithConfigCenterProtocol("nacos"),
-		config.WithConfigCenterAddress("localhost:8848"),
-		config.WithConfigCenterDataID("dubbo-go-samples-configcenter-nacos-client"),
-	)
-
-	rootConfig := config.NewRootConfig(
-		config.WithRootCenterConfig(centerConfig),
-	)
+	rootConfig := config.NewRootConfigBuilder().
+		SetConfigCenter(config.NewConfigCenterConfigBuilder().
+			SetProtocol("nacos").SetAddress("127.0.0.1:8848").
+			SetDataID("dubbo-go-samples-configcenter-nacos-client").
+			Build()).
+		Build()
 
 	if err := rootConfig.Init(); err != nil {
 		panic(err)
 	}
-
-	time.Sleep(3 * time.Second)
 
 	logger.Info("start to test dubbo")
 	req := &api.HelloRequest{

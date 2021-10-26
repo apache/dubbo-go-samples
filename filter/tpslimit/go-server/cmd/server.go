@@ -18,7 +18,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -26,15 +25,10 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
-	_ "dubbo.apache.org/dubbo-go/v3/common/proxy/proxy_factory"
 	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/filter/filter_impl"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
+	_ "dubbo.apache.org/dubbo-go/v3/filter/tps/strategy"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
@@ -47,11 +41,10 @@ var (
 	survivalTimeout = int(3e9)
 )
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
+	config.SetProviderService(new(pkg.UserProvider))
 	hessian.RegisterPOJO(&pkg.User{})
 	config.Load()
-
 	initSignal()
 }
 
@@ -72,7 +65,7 @@ func initSignal() {
 			})
 
 			// The program exits normally or timeout forcibly exits.
-			fmt.Println("provider app exit now...")
+			logger.Infof("provider app exit now...")
 			return
 		}
 	}

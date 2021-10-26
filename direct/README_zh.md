@@ -36,7 +36,7 @@
 ```yaml
 services:
   "UserProvider":
-    registry: "demoZk"
+    registryIDs: "demoZk"
     protocol : "dubbo"
     interface : "org.apache.dubbo.UserProvider"
     loadbalance: "random"
@@ -115,7 +115,7 @@ application:
   environment: "dev"
 references:
   "UserProvider":
-    registry: "demoZk"
+    registryIDs: "demoZk"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"
