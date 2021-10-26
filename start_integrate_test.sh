@@ -14,10 +14,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# game
-array+=("game/go-server-game")
-array+=("game/go-server-gate")
-
 # route
 array=("route/meshroute")
 
@@ -44,6 +40,10 @@ array+=("registry/servicediscovery/nacos")
 
 # generic
 array+=("generic/default")
+
+# game
+array+=("game/go-server-game")
+array+=("game/go-server-gate")
 
 # rpc
 array+=("rpc/dubbo")
