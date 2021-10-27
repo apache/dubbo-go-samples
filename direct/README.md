@@ -67,7 +67,7 @@ initSignal()
     func initSignal() {
         signals := make(chan os.Signal, 1)
         // It is not possible to block SIGKILL or syscall.SIGSTOP
-        signal.Notify(signals, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+        signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
         for {
             sig := <-signals
             logger.Infof("get signal %s", sig.String())
