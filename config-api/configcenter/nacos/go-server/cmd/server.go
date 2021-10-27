@@ -44,11 +44,11 @@ dubbo:
       name: tri
       port: 20000
   provider:
-    registryIDs:
+    registry-ids:
       - demoZK
     services:
       GreeterProvider:
-        protocolIDs: triple
+        protocol-ids: triple
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 type GreeterProvider struct {

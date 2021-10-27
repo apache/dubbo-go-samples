@@ -39,7 +39,7 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:8848
   consumer:
-    registryIDs:
+    registry-ids:
       - demoZK
     references:
       GreeterClientImpl:

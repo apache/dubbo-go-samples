@@ -35,8 +35,8 @@ cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9
 contrib.go.opencensus.io/exporter/prometheus v0.4.0 h1:0QfIkj9z/iVZgK31D9H9ohjjIDApI2GOPScCKwxedbs=
 contrib.go.opencensus.io/exporter/prometheus v0.4.0/go.mod h1:o7cosnyfuPVK0tB8q0QmaQNhGnptITnPQB+z1+qeFB0=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211027034436-e4723f44503b h1:11G/Ocb9Ux/CIMlaZXzFu1LnW5Vc9E8p2HHPp+xwe4U=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211027034436-e4723f44503b/go.mod h1:caCkQ4jw6tphBSP+NEd2/EZGOXK71VoD9yyw8qPpYxo=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211027072544-4d4fb6ed2f6c h1:GyKAO86EcK7+1i9oPE1/SyfgvjCdeEP0YsydlPi/wBc=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211027072544-4d4fb6ed2f6c/go.mod h1:caCkQ4jw6tphBSP+NEd2/EZGOXK71VoD9yyw8qPpYxo=
 github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78/go.mod h1:LmzpDX56iTiv29bbRTIsUNlaFfuhWRQBWjQdVyAevI8=
 github.com/Azure/go-autorest/autorest v0.9.0/go.mod h1:xyHB1BMZT0cuDHU7I0+g046+BFDTQ8rEZB0s4Yfa6bI=
 github.com/Azure/go-autorest/autorest/adal v0.5.0/go.mod h1:8Z9fGy2MpX0PvDjB1pEgQTmVqjGhiHBW7RJJEciWzS0=

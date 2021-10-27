@@ -13,16 +13,16 @@ dubbo:
   consumer:
     references:
       UserProvider:
-        registryIDs: hangzhouzk
+        registry-ids: hangzhouzk
         protocol: jsonrpc
         interface: com.ikurento.user.UserProvider
       UserProvider1:
-        registryIDs: hangzhouzk
+        registry-ids: hangzhouzk
         protocol: jsonrpc
         version: 2.0
         interface: com.ikurento.user.UserProvider
       UserProvider2:
-        registryIDs: hangzhouzk
+        registry-ids: hangzhouzk
         protocol: jsonrpc
         version: 2.0
         group: as
