@@ -53,7 +53,7 @@ func stream() {
 	logger.Infof(">>>>> Dubbo-go client is about to call to SayHelloStream")
 
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, "tri-req-id", "triple-request-id-demo")
+	ctx = context.WithValue(ctx, tripleConstant.TripleCtxKey("tri-req-id"), "triple-request-id-demo")
 
 	req := triplepb.HelloRequest{
 		Name: "laurence",

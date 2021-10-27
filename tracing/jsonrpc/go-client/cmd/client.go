@@ -55,7 +55,9 @@ var (
 
 func main() {
 	config.SetConsumerService(userProvider)
-	config.Load(config.WithPath("./tracing/jsonrpc/go-client/conf/dubbogo.yml"))
+	if err := config.Load(config.WithPath("./tracing/jsonrpc/go-client/conf/dubbogo.yml")); err != nil {
+		panic(err)
+	}
 	// initJaeger() and initZipkin() can only use one at the same time
 	initJaeger()
 	//initZipkin()
@@ -74,7 +76,7 @@ func main() {
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
+	signal.Notify(signals, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP,
 		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
@@ -114,6 +116,7 @@ func initJaeger() {
 	opentracing.SetGlobalTracer(nativeTracer)
 }
 
+// nolint
 func initZipkin() {
 	reporter := zipkinhttp.NewReporter("http://localhost:9411/api/v2/spans")
 	endpoint, err := zipkin.NewEndpoint("dobbugoZipkinTracingService", "myservice.mydomain.com:80")

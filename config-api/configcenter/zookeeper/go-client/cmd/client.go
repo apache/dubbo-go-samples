@@ -54,6 +54,9 @@ func main() {
 		SetProtocol("zookeeper").
 		SetAddress("127.0.0.1:2181").
 		Build().GetDynamicConfiguration()
+	if err != nil {
+		panic(err)
+	}
 
 	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", configCenterZKClientConfig); err != nil {
 		panic(err)

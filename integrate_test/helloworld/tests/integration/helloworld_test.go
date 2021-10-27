@@ -35,8 +35,6 @@ func TestSayHello(t *testing.T) {
 		Name: "laurence",
 	}
 
-	reply := &dubbo3pb.User{}
-
 	ctx := context.Background()
 
 	reply, err := greeterProvider.SayHello(ctx, req)

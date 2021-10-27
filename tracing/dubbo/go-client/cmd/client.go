@@ -56,7 +56,9 @@ var (
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	config.SetConsumerService(userProvider)
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	// initJaeger() and initZipkin() can only use one at the same time
 	//initJaeger()
 	initZipkin()
@@ -75,7 +77,7 @@ func main() {
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
+	signal.Notify(signals, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP,
 		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
@@ -95,6 +97,7 @@ func initSignal() {
 	}
 }
 
+// nolint
 func initJaeger() {
 	cfg := jaegerConfig.Configuration{
 		ServiceName: "dobbugoJaegerTracingService",

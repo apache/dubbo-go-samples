@@ -29,8 +29,6 @@ import (
 )
 
 func TestGetUser(t *testing.T) {
-	rspContext := &ContextContent{}
-
 	// add field that client wants to send
 	atta := make(map[string]interface{})
 	atta["string-value"] = "string-demo"

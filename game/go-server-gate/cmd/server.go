@@ -51,7 +51,10 @@ func init() {
 }
 
 func main() {
-	config.Load()
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
 
 	go startHttp()
 
@@ -61,7 +64,7 @@ func main() {
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(signals, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
 		logger.Infof("get signal %s", sig.String())
@@ -104,7 +107,11 @@ func startHttp() {
 			logger.Error(err.Error())
 		}
 		var info pojo.Info
-		json.Unmarshal(reqBody, &info)
+		err = json.Unmarshal(reqBody, &info)
+		if err != nil {
+			responseWithOrigin(w, r, 500, []byte(err.Error()))
+			return
+		}
 		res, err := pkg.Score(context.TODO(), info.Name, strconv.Itoa(info.Score))
 		if err != nil {
 			responseWithOrigin(w, r, 200, []byte(err.Error()))
@@ -145,5 +152,8 @@ func responseWithOrigin(w http.ResponseWriter, r *http.Request, code int, json [
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(code)
-	w.Write(json)
+	_, err := w.Write(json)
+	if err != nil {
+		panic(err)
+	}
 }

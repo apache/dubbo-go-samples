@@ -1,9 +1,9 @@
 dubbo:
   registries:
     demoZK:
-      protocol: nacos
+      protocol: zookeeper
       timeout: 3s
-      address: dubbogo-nacos:8848
+      address: 127.0.0.1:8848
   protocols:
     triple:
       name: tri

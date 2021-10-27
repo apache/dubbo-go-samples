@@ -35,7 +35,9 @@ var userProvider = &api.GreeterClientImpl{}
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	os.Exit(m.Run())
 }

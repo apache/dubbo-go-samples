@@ -38,7 +38,9 @@ type GreeterProvider struct {
 
 func main() {
 	config.SetProviderService(&GreeterProvider{})
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 	logger.SetLoggerLevel("warn")
