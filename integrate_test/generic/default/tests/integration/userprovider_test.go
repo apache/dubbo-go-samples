@@ -39,7 +39,7 @@ func TestGetUser1(t *testing.T) {
 		[]hessian.Object{"A003"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp := o.(map[interface{}]interface{})
 	assert.Equal(t, "Joe", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
@@ -52,7 +52,7 @@ func TestGetUser1(t *testing.T) {
 		[]hessian.Object{"A003"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp = o.(map[interface{}]interface{})
 	assert.Equal(t, "Joe", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
@@ -67,7 +67,7 @@ func TestGetUser2(t *testing.T) {
 		[]hessian.Object{"A003", "lily"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp := o.(map[interface{}]interface{})
 	assert.Equal(t, "lily", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
@@ -80,7 +80,7 @@ func TestGetUser2(t *testing.T) {
 		[]hessian.Object{"A003", "lily"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp = o.(map[interface{}]interface{})
 	assert.Equal(t, "lily", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
@@ -95,7 +95,7 @@ func TestGetUser3(t *testing.T) {
 		[]hessian.Object{1},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp := o.(map[interface{}]interface{})
 	assert.Equal(t, "Alex Stocks", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
@@ -108,7 +108,7 @@ func TestGetUser3(t *testing.T) {
 		[]hessian.Object{1},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp = o.(map[interface{}]interface{})
 	assert.Equal(t, "Alex Stocks", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
@@ -123,7 +123,7 @@ func TestGetUser4(t *testing.T) {
 		[]hessian.Object{1, "zhangsan"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp := o.(map[interface{}]interface{})
 	assert.Equal(t, "zhangsan", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
@@ -136,7 +136,7 @@ func TestGetUser4(t *testing.T) {
 		[]hessian.Object{1, "zhangsan"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp = o.(map[interface{}]interface{})
 	assert.Equal(t, "zhangsan", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
@@ -173,7 +173,7 @@ func TestGetUsers(t *testing.T) {
 		},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp := o.(map[interface{}]interface{})
 	assert.Equal(t, "other-zhangsan", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
 	assert.Equal(t, "other-lisi", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
@@ -191,7 +191,7 @@ func TestGetUsers(t *testing.T) {
 		},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp = o.(map[interface{}]interface{})
 	assert.Equal(t, "other-zhangsan", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
 	assert.Equal(t, "other-lisi", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
@@ -213,7 +213,7 @@ func TestQueryUser(t *testing.T) {
 	)
 
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp := o.(map[interface{}]interface{})
 	assert.Equal(t, "panty", resp["name"])
 	assert.Equal(t, int32(25), resp["age"])
@@ -232,7 +232,7 @@ func TestQueryUser(t *testing.T) {
 	)
 
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}, 0), o)
+	assert.IsType(t, make(map[interface{}]interface{}), o)
 	resp = o.(map[interface{}]interface{})
 	assert.Equal(t, "panty", resp["name"])
 	assert.Equal(t, int32(25), resp["age"])

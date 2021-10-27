@@ -10,7 +10,7 @@ dubbo:
     check: true
     request_timeout: 3s
     connect_timeout: 3s
-    registryIDs:
+    registry-ids:
       - demoZK
     references:
       UserProvider:

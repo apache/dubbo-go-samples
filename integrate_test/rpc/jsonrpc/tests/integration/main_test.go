@@ -45,7 +45,9 @@ func init() {
 
 func TestMain(m *testing.M) {
 
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	os.Exit(m.Run())
 }

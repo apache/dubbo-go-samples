@@ -48,22 +48,28 @@ func (s *GreeterProvider) SayHelloStream(svr triplepb.Greeter_SayHelloStreamServ
 	}
 	logger.Infof("Dubbo-go3 GreeterProvider recv 2 user, name = %s\n", c2.Name)
 
-	svr.Send(&triplepb.User{
+	err = svr.Send(&triplepb.User{
 		Name: "hello " + c.Name,
 		Age:  18,
 		Id:   "123456789",
 	})
+	if err != nil {
+		return err
+	}
 	c3, err := svr.Recv()
 	if err != nil {
 		return err
 	}
 	logger.Infof("Dubbo-go3 GreeterProvider recv 3 user, name = %s\n", c3.Name)
 
-	svr.Send(&triplepb.User{
+	err = svr.Send(&triplepb.User{
 		Name: "hello " + c2.Name,
 		Age:  19,
 		Id:   "123456789",
 	})
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

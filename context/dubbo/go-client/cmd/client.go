@@ -56,7 +56,9 @@ func main() {
 	var userProvider = &UserProvider{}
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&ContextContent{})
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 
 	atta := make(map[string]interface{})

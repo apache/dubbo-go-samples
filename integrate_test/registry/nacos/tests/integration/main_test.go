@@ -36,7 +36,9 @@ var userProvider = &UserProvider{}
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	os.Exit(m.Run())
 }

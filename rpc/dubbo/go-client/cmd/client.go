@@ -45,7 +45,10 @@ func main() {
 
 	config.SetConsumerService(userProvider)
 
-	config.Load()
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
 
 	logger.Infof("\n\ntest")
 	test()
@@ -91,9 +94,9 @@ func test() {
 	logger.Infof("response result: %v", ret1)
 
 	logger.Infof("\n\n\nstart to test dubbo - getUser")
-	user = &pkg.User{}
+
 	var i int32 = 1
-	user, err = userProvider.GetUser2(context.TODO(), i)
+	_, err = userProvider.GetUser2(context.TODO(), i)
 	if err != nil {
 		panic(err)
 	}
@@ -101,7 +104,7 @@ func test() {
 
 	logger.Infof("\n\n\nstart to test dubbo - getErr")
 	reqUser.ID = "003"
-	user, err = userProvider.GetErr(context.TODO(), reqUser)
+	_, err = userProvider.GetErr(context.TODO(), reqUser)
 	if err == nil {
 		panic("err is nil")
 	}
@@ -109,7 +112,7 @@ func test() {
 
 	logger.Infof("\n\n\nstart to test dubbo illegal method")
 	reqUser.ID = "003"
-	user, err = userProvider.GetUser1(context.TODO(), reqUser)
+	_, err = userProvider.GetUser1(context.TODO(), reqUser)
 	if err == nil {
 		panic("err is nil")
 	}

@@ -40,7 +40,9 @@ func TestMain(m *testing.M) {
 	hessian.RegisterJavaEnum(Gender(MAN))
 	hessian.RegisterJavaEnum(Gender(WOMAN))
 	hessian.RegisterPOJO(&User{})
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	os.Exit(m.Run())
 }

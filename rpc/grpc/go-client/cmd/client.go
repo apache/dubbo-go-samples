@@ -40,7 +40,9 @@ func init() {
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	req := &pb.HelloRequest{

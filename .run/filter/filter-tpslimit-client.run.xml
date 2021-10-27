@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="filter-tpslimit-client" type="GoApplicationRunConfiguration" factoryName="Go Application">
-    <module name="dubbo-go-samples2" />
+  <configuration default="false" name="filter-tpslimit-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="filter">
+    <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
       <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/filter/tpslimit/go-client/conf/dubbogo.yml" />

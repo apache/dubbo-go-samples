@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,41 +19,28 @@ package integration
 
 import (
 	"context"
-	"os"
 	"testing"
-	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/stretchr/testify/assert"
 )
 
-var userProvider = new(UserProvider)
+import (
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
+)
 
-func TestMain(m *testing.M) {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
-	config.Load()
+func TestSayHello(t *testing.T) {
+	req := &dubbo3pb.HelloRequest{
+		Name: "laurence",
+	}
 
-	time.Sleep(3 * time.Second)
+	ctx := context.Background()
 
-	os.Exit(m.Run())
-}
+	reply, err := greeterProvider.SayHello(ctx, req)
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req string) (*User, error)
-}
-
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	assert.Nil(t, err)
+	assert.Equal(t, "Hello laurence", reply.Name)
+	assert.Equal(t, "12345", reply.Id)
+	assert.Equal(t, int32(21), reply.Age)
 }

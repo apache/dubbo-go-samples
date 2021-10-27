@@ -37,6 +37,7 @@ import (
 )
 
 var (
+	// nolint
 	survivalTimeout int = 10e9
 	userProvider        = &pkg.UserProvider{}
 	userProvider1       = &pkg.UserProvider1{}
@@ -53,8 +54,9 @@ func init() {
 // 1. env config
 // 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
-
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	logger.Infof("\n\ntest")
 	test()
@@ -64,10 +66,11 @@ func main() {
 	test2()
 }
 
+// nolint
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP,
+	signal.Notify(signals, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP,
 		syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
@@ -171,7 +174,7 @@ func test1() {
 	logger.Infof("response result: %v", ret)
 
 	logger.Infof("\n\n\nstart to test jsonrpc - getUser")
-	user, err = userProvider1.GetUser2(context.TODO(), "1")
+	_, err = userProvider1.GetUser2(context.TODO(), "1")
 	if err != nil {
 		panic(err)
 	}
@@ -185,7 +188,7 @@ func test1() {
 	logger.Infof("succ!")
 
 	logger.Infof("\n\n\nstart to test jsonrpc illegal method")
-	user, err = userProvider1.GetUser1(context.TODO(), "A003")
+	_, err = userProvider1.GetUser1(context.TODO(), "A003")
 	if err == nil {
 		panic("err is nil")
 	}
@@ -232,7 +235,7 @@ func test2() {
 	logger.Infof("succ!")
 
 	logger.Infof("\n\n\nstart to test jsonrpc illegal method")
-	user, err = userProvider2.GetUser1(context.TODO(), "A003")
+	_, err = userProvider2.GetUser1(context.TODO(), "A003")
 	if err == nil {
 		panic("err is nil")
 	}

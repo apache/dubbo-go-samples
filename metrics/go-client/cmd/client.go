@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,34 +15,38 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
 	"context"
-	"strings"
-	"testing"
 )
 
 import (
-	"github.com/stretchr/testify/assert"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
-func TestGetUser(t *testing.T) {
-	user := &User{}
-	var err error
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
 
-	// loop 50 times to make sure rejection happens
-	for i := 0; i < 50; i++ {
-		if user, err = userProvider.GetUser(context.TODO(), "A001"); err != nil {
-			break
-		}
+var grpcGreeterImpl = new(api.GreeterClientImpl)
 
-		assert.Equal(t, "A001", user.ID)
-		assert.Equal(t, "Alex Stocks", user.Name)
-		assert.Equal(t, int32(18), user.Age)
-		assert.NotNil(t, user.Time)
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
+func main() {
+	config.SetConsumerService(grpcGreeterImpl)
+	if err := config.Load(); err != nil {
+		panic(err)
 	}
 
-	assert.NotNil(t, err)
-	assert.True(t, strings.Contains(err.Error(), "rejected"))
+	logger.Info("start to test dubbo")
+	req := &api.HelloRequest{
+		Name: "laurence",
+	}
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client response result: %v\n", reply)
 }

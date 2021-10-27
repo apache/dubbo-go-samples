@@ -44,14 +44,17 @@ var (
 func main() {
 	config.SetProviderService(new(pkg.UserProvider))
 	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
 	initSignal()
 }
 
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
 		logger.Infof("get signal %s", sig.String())

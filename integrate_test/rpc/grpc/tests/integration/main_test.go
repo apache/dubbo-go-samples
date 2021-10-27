@@ -35,7 +35,10 @@ var grpcGreeterImpl = new(pb.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(grpcGreeterImpl)
-	config.Load()
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
 
 	os.Exit(m.Run())
 }

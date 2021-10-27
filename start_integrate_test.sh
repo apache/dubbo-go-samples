@@ -21,6 +21,9 @@ array+=("game/go-server-gate")
 # route
 array=("route/meshroute")
 
+# metrics
+array+=("metrics")
+
 # helloworld
 array+=("helloworld")
 
