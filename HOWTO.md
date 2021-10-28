@@ -2,7 +2,7 @@
 
 There are three ways to run dubbo-go samples:
 
-1. Quick start with makefile: a common makefile is provided under "build" subdirectory, which can be used to run each sample here quickly. It is also useful to run all samples automatically so that now it is possible to leverage samples as dubbo-go's integration test.
+1. Quick start with bash command: start the sample and perform unit testing through a simple command line
 2. Quick start in IDE (**Recommended**): In ".run" subdirectory a couple of GoLand run configuration files are provided so that user can run each sample with just one click.
 3. Manually config and run in IDE: For completeness purpose, a step-by-step instruction is also provided so that user can understand how to configure and run or debug a sample in IDE. 
 
@@ -10,7 +10,7 @@ There are three ways to run dubbo-go samples:
 
 *Prerequisite: docker environment is required*
 
-Here we use "attachment" as an example:
+Here we use "helloworld" as an example:
 
 1. **Get the root path of dubbo-go-samples**
 
@@ -22,37 +22,41 @@ Here we use "attachment" as an example:
 2. **Start register server (e.g. zookeeper)**
    
    ```bash
-   cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-server
-   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile docker-up 
+   make -f build/Makefile docker-up 
    ```
    
    Once the following messages outputs, the zookeeper server is ready.
    
    ```bash
-   >  Starting dependency services with docker/docker-compose.yml
-   Creating network "docker_default" with the default driver
-   Creating docker_zookeeper_1 ... done
+   >  Starting dependency services with ./integrate_test/dockercompose/docker-compose.yml
+   Docker Compose is now in the Docker CLI, try `docker compose up`
+   
+   Creating network "dockercompose_default" with the default driver
+   Creating dockercompose_zookeeper_1 ... done
+   Creating etcd                      ... done
+   Creating nacos-standalone          ... done
    ```
    
    To shut it down, simple run
    
    ```bash
-   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile docker-down
+   make -f build/Makefile docker-down
    ```
    
 3. **Start server**
    
     ```bash
-    cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-server
-    make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile start
+    cd helloworld/go-server/cmd
+    export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
+    go run .
     ```
    
    Once the following messages outputs, the server is ready.
 
    ```bash
-   >  Buiding application binary: dist/darwin_amd64/release/go-server
-   >  Starting application go-server, output is redirected to dist/darwin_amd64/release/go-server.log
-     >  PID: 86428
+   2021/10/27 00:33:10 Connected to 127.0.0.1:2181
+   2021/10/27 00:33:10 Authenticated: id=72057926938066944, timeout=10000
+   2021/10/27 00:33:10 Re-submitting `0` credentials after reconnec
    ```
 
    The output of `go-server` can be found from 'dist/darwin_amd64/release/go-server.log'.
@@ -60,27 +64,34 @@ Here we use "attachment" as an example:
 4. **Run client**
    
     ```bash
-   cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-client
-   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile run 
+   cd helloworld/go-client/cmd
+   export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
+   go run .
    ```
 
    Once the following messages outputs, the `go-client` calls the `go-server` successfully.
 
    ```bash
-   >  Buiding application binary: dist/darwin_amd64/release/go-client
-   >  Running application go-client, output is redirected to dist/darwin_amd64/release/go-client.log
-   ...
-   2020-10-27T14:51:37.520+0800    DEBUG   dubbo/dubbo_invoker.go:144      result.Err: <nil>, result.Rest: &{A001 Alex Stocks 18 2020-10-27 14:51:37.52 +0800 CST}
-   2020-10-27T14:51:37.520+0800    DEBUG   proxy/proxy.go:177      [makeDubboCallProxy] result: &{A001 Alex Stocks 18 2020-10-27 14:51:37.52 +0800 CST}, err: <nil>
-   response result: &{A001 Alex Stocks 18 2020-10-27 14:51:37.52 +0800 CST}
+   2021-10-27T00:40:44.879+0800    DEBUG   triple/dubbo3_client.go:106     TripleClient.Invoke: get reply = name:"Hello laurence" id:"12345" age:21 
+   2021-10-27T00:40:44.879+0800    DEBUG   proxy/proxy.go:218      [makeDubboCallProxy] result: name:"Hello laurence" id:"12345" age:21 , err: <nil>
+   2021-10-27T00:40:44.879+0800    INFO    cmd/client.go:51        client response result: name:"Hello laurence" id:"12345" age:21
    ```
    
 5. **Integration test**
    dubbo-go-samples is designed to serve the purposes of not only the showcases of how to use apache/dubbo-go but also the integration-test for apache/dubbo-go. To run integration test for `go-server`, run the following commands:
 
+   Start the server first
    ```bash
-   cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-server
-   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile integration
+   cd helloworld/go-server/cmd
+   export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
+   go run .
+   ```
+
+   Then switch to the single test directory, set the environment variables, and then execute the single test
+   ```bash
+   cd integrate_test/helloworld/tests/integration
+   export DUBBO_GO_CONFIG_PATH="../../../../helloworld/go-client/conf/dubbogo.yml"
+   go test -v
    ```
 
    Once the following messages outputs, the integration tests pass.
@@ -88,15 +99,14 @@ Here we use "attachment" as an example:
    ```bash
    >  Running integration test for application go-server
    ...
-   --- PASS: TestGetUser (0.00s)
+   --- PASS: TestSayHello (0.01s)
    PASS
-   ok      github.com/apache/dubbo-go-samples/attachment/go-server/tests/integration   3.603s
+   ok      github.com/apache/dubbo-go-samples/integrate_test/helloworld/tests/integration  0.119s
    ```
    
-6. **Shutdown and cleanup**
+7. **Shutdown and cleanup**
    ```bash
-   cd $DUBBO_GO_SAMPLES_ROOT_PATH/attachment/go-server
-   make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile clean docker-down
+   make -f build/Makefile clean docker-down
    ```
 
 *The following two ways are all relevant to IDE. Intellij GoLand is discussed here as an example.*
@@ -116,11 +126,11 @@ example:
 
 1. **Start up zookeeper server**
 
-   Open "attachment/go-server/docker/docker-compose.yaml", and click ▶︎▶︎ icon in the gutter on the left side of the
+   Open "integrate_test/dockercompose/docker-compose.yml", and click ▶︎▶︎ icon in the gutter on the left side of the
    editor, then "Services" tab should pop up and shows the similar message below:
    ```
    Deploying 'Compose: docker'...
-   /usr/local/bin/docker-compose -f .../dubbo-go-samples/attachment/go-server/docker/docker-compose.yml up -d
+   /usr/local/bin/docker-compose -f .../dubbo-go-samples/helloworld/go-server/docker/docker-compose.yml up -d
    Creating network "docker_default" with the default driver
    Creating docker_zookeeper_1 ...
    'Compose: docker' has been deployed successfully.
@@ -128,25 +138,23 @@ example:
 
 2. **Start up service provider**
 
-   Open "attachment/go-server/cmd/server.go", and click ▶︎ icon just besides "main" function in the gutter on the left
+   Open "helloworld/go-server/cmd/server.go", and click ▶︎ icon just besides "main" function in the gutter on the left
    side, and select "Modify Run Configuration..." from the pop-up menu. Then make sure the following configs configured
    correctly:
-    * Working Directory: the absolute path to "attachment/go-server", for examples: *
-      /home/dubbo-go-samples/attachment/go-server*
-    * Environment: CONF_PROVIDER_FILE_PATH=conf/server.yml, optionally you could also specify logging configuration
-      with "APP_LOG_CONF_FILE=conf/log.yml"
+    * Working Directory: the absolute path to "helloworld/go-server", for examples: *
+      /home/dubbo-go-samples/helloworld/go-server*
+    * Environment: DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
 
    Then the sample server is ready to run.
 
 3. **Run service consumer**
 
-   Open "attachment/go-client/cmd/client.go", and click ▶︎ icon just besides "main" function in the gutter on the left
+   Open "helloworld/go-client/cmd/client.go", and click ▶︎ icon just besides "main" function in the gutter on the left
    side, and select "Modify Run Configuration..." from the pop-up menu. Then make sure the following configs configured
    correctly:
-    * Working Directory: the absolute path to "attachment/go-client", for examples: *
-      /home/dubbo-go-samples/attachment/go-client*
-    * Environment: CONF_CONSUMER_FILE_PATH=conf/client.yml, optionally you could also specify logging configuration
-      with "APP_LOG_CONF_FILE=conf/log.yml"
+    * Working Directory: the absolute path to "helloworld/go-client", for examples: *
+      /home/dubbo-go-samples/helloworld/go-client*
+    * Environment: DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
 
    Then run it to call the remote service, you will observe the following message output:
    ```
