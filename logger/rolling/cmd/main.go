@@ -33,7 +33,7 @@ import (
 )
 
 type GreeterProvider struct {
-	api.GreeterProviderBase
+	api.UnimplementedGreeterServer
 }
 
 func main() {

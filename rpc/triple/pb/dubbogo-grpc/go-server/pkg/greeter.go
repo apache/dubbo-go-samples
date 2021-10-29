@@ -33,7 +33,7 @@ import (
 )
 
 type GreeterProvider struct {
-	triplepb.GreeterProviderBase
+	triplepb.UnimplementedGreeterServer
 }
 
 func (s *GreeterProvider) SayHelloStream(svr triplepb.Greeter_SayHelloStreamServer) error {

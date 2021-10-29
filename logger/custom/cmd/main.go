@@ -35,7 +35,7 @@ import (
 )
 
 type GreeterProvider struct {
-	api.GreeterProviderBase
+	api.UnimplementedGreeterServer
 }
 
 type customLogger struct {
