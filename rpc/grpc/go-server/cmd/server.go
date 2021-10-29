@@ -41,7 +41,7 @@ var (
 )
 
 type GreeterProvider struct {
-	pb.UnimplementedGreeterServer
+	pb.GreeterProviderBase
 }
 
 func (g *GreeterProvider) SayHello(ctx context.Context, req *pb.HelloRequest) (reply *pb.HelloReply, err error) {
