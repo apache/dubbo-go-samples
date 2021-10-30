@@ -1,11 +1,11 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211029104429-bfc60c2496f9
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211030094929-8927105ef967
 	github.com/apache/dubbo-go-hessian2 v1.9.4-0.20210917102639-74a8ece5f3cb
 	github.com/dubbogo/gost v1.11.19
 	github.com/dubbogo/net v0.0.4
-	github.com/dubbogo/triple v1.0.9-0.20211029101533-26805fcfcf62
+	github.com/dubbogo/triple v1.0.9
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
