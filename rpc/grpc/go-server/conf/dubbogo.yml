@@ -11,11 +11,11 @@ dubbo:
       name: grpc
       port: 20000
   provider:
-    registryIDs:
+    registry-ids:
       - demoZK
     services:
       GreeterProvider:
-        protocolIDs: grpcProtocol
+        protocol-ids: grpcProtocol
         interface: org.apache.dubbo.UserProvider
   logger:
     zap-config:

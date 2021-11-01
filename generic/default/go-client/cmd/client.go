@@ -115,6 +115,7 @@ func callGetUser(refConf config.ReferenceConfig) {
 	logger.Infof("GetUser4(userCode int, name string) res: %+v", resp)
 }
 
+// nolint
 func callGetOneUser(refConf config.ReferenceConfig) {
 	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
@@ -219,6 +220,7 @@ func callQueryUsers(refConf config.ReferenceConfig) {
 	logger.Infof("queryUsers(users []*User) res: %+v", resp)
 }
 
+// nolint
 func callQueryAll(refConf config.ReferenceConfig) {
 	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),

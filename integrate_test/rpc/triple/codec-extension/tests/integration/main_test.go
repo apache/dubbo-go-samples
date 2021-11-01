@@ -32,7 +32,11 @@ var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	config.Load()
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
+
 	os.Exit(m.Run())
 }
 

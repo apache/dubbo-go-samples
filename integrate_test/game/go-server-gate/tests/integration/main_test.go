@@ -40,7 +40,9 @@ func TestMain(m *testing.M) {
 	config.SetConsumerService(gateProvider)
 
 	hessian.RegisterPOJO(&pojo.Result{})
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	os.Exit(m.Run())
 }

@@ -85,7 +85,7 @@ func TestGetUser0(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, user)
 
-	user, err = userProvider.GetUser0("003", "MOORSE")
+	_, err = userProvider.GetUser0("003", "MOORSE")
 	assert.NotNil(t, err)
 }
 

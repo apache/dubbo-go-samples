@@ -35,7 +35,9 @@ var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(greeterProvider)
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	os.Exit(m.Run())
 }

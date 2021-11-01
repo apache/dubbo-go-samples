@@ -17,6 +17,6 @@ dubbo:
   consumer:
     references:
       UserProvider:
-        registryIDs: "etcd"
+        registry-ids: "etcd"
         protocol: "dubbo"
         interface: "org.apache.dubbo.UserProvider"

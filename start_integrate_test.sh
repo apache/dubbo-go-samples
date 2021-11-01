@@ -18,8 +18,14 @@
 array+=("game/go-server-game")
 array+=("game/go-server-gate")
 
+# route
+array=("route/meshroute")
+
+# metrics
+array+=("metrics")
+
 # helloworld
-array=("helloworld")
+array+=("helloworld")
 
 # direct
 array+=("direct")
@@ -50,7 +56,6 @@ array+=("rpc/triple/msgpack")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
-
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d

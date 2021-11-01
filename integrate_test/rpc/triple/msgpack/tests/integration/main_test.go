@@ -19,6 +19,7 @@ package integration
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
 )
@@ -36,7 +37,11 @@ var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	config.Load()
+	if err := config.Load(); err != nil {
+		fmt.Println("test client init error = ", err)
+		os.Exit(1)
+	}
+
 	os.Exit(m.Run())
 }
 

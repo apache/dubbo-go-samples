@@ -55,7 +55,7 @@ type GreeterProvider struct {
 }
 
 func (g *GreeterProvider) SayHello(ctx context.Context, req *pb.HelloRequest) (reply *pb.HelloReply, err error) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, "User-RPC-Server-Span")
+	span, _ := opentracing.StartSpanFromContext(ctx, "User-RPC-Server-Span")
 	fmt.Printf("req: %v", req)
 	reply = &pb.HelloReply{Message: "this is message from reply"}
 	span.Finish()
@@ -76,7 +76,7 @@ func main() {
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
 		logger.Infof("get signal %s", sig.String())
@@ -116,6 +116,7 @@ func initJaeger() {
 	opentracing.SetGlobalTracer(nativeTracer)
 }
 
+// nolint
 func initZipkin() {
 	reporter := zipkinhttp.NewReporter("http://localhost:9411/api/v2/spans")
 	endpoint, err := zipkin.NewEndpoint("dobbugoZipkinTracingService", "myservice.mydomain.com:80")

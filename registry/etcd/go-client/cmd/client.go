@@ -20,7 +20,6 @@ package main
 import (
 	"context"
 	"os"
-	"time"
 )
 
 import (
@@ -48,8 +47,9 @@ func init() {
 // 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	user := &pkg.User{

@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -40,7 +39,7 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:2181
   consumer:
-    registryIDs:
+    registry-ids:
       - demoZK
     references:
       GreeterClientImpl:
@@ -74,8 +73,6 @@ func main() {
 	if err := rootConfig.Init(); err != nil {
 		panic(err)
 	}
-
-	time.Sleep(3 * time.Second)
 
 	logger.Info("start to test dubbo")
 	req := &api.HelloRequest{

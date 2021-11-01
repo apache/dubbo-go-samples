@@ -41,7 +41,7 @@ type UserProvider struct {
 }
 
 func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, "User-JsonRPC-Server-Span")
+	span, _ := opentracing.StartSpanFromContext(ctx, "User-JsonRPC-Server-Span")
 	gxlog.CInfo("req:%#v", req)
 	user := &User{Id: "001", Name: "zhangsan-dubbogo", Age: 18, Birth: time.Now()}
 	span.Finish()
