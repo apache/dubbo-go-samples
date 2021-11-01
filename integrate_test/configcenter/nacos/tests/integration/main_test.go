@@ -21,7 +21,6 @@ import (
 	"context"
 	"os"
 	"testing"
-	"time"
 )
 
 import (
@@ -47,7 +46,6 @@ type User struct {
 	ID   string
 	Name string
 	Age  int32
-	Time time.Time
 }
 
 type UserProvider struct {
