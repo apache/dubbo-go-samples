@@ -35,8 +35,8 @@ cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9
 contrib.go.opencensus.io/exporter/prometheus v0.4.0 h1:0QfIkj9z/iVZgK31D9H9ohjjIDApI2GOPScCKwxedbs=
 contrib.go.opencensus.io/exporter/prometheus v0.4.0/go.mod h1:o7cosnyfuPVK0tB8q0QmaQNhGnptITnPQB+z1+qeFB0=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211030094929-8927105ef967 h1:b4fz3CSoe3LeW07HmERDm+nYOMra5r98kgfsavVEvgk=
-dubbo.apache.org/dubbo-go/v3 v3.0.0-rc2.0.20211030094929-8927105ef967/go.mod h1:gv0CLkauS1ODfNjKVH3eGTEPsRqwYgj8MS3mDnQP/JY=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc3 h1:zVXnIyGJ8BnM8RuuZnKBSwm8adUMQuCnCBevPZuXz1w=
+dubbo.apache.org/dubbo-go/v3 v3.0.0-rc3/go.mod h1:gv0CLkauS1ODfNjKVH3eGTEPsRqwYgj8MS3mDnQP/JY=
 github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78/go.mod h1:LmzpDX56iTiv29bbRTIsUNlaFfuhWRQBWjQdVyAevI8=
 github.com/Azure/go-autorest/autorest v0.9.0/go.mod h1:xyHB1BMZT0cuDHU7I0+g046+BFDTQ8rEZB0s4Yfa6bI=
 github.com/Azure/go-autorest/autorest/adal v0.5.0/go.mod h1:8Z9fGy2MpX0PvDjB1pEgQTmVqjGhiHBW7RJJEciWzS0=
@@ -81,9 +81,8 @@ github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kd
 github.com/apache/dubbo-getty v1.4.5 h1:MptKbjC0n2Mo/8eFPwirSInH2BfdNG4IZch43PdNvIM=
 github.com/apache/dubbo-getty v1.4.5/go.mod h1:mcDyiu7M/TVrYDyL8TxDemQkOdvEqqHSQ4jOuYejY1w=
 github.com/apache/dubbo-go-hessian2 v1.9.1/go.mod h1:xQUjE7F8PX49nm80kChFvepA/AvqAZ0oh/UaB6+6pBE=
+github.com/apache/dubbo-go-hessian2 v1.9.3 h1:0G9cdOCiKILem1JRKeZtY0FdIUyvzt30qtukMXPtJks=
 github.com/apache/dubbo-go-hessian2 v1.9.3/go.mod h1:xQUjE7F8PX49nm80kChFvepA/AvqAZ0oh/UaB6+6pBE=
-github.com/apache/dubbo-go-hessian2 v1.9.4-0.20210917102639-74a8ece5f3cb h1:EPlAQLAmvy/6hIEhNhDBTvVCbcNLXjherAunUEEcsJ0=
-github.com/apache/dubbo-go-hessian2 v1.9.4-0.20210917102639-74a8ece5f3cb/go.mod h1:xQUjE7F8PX49nm80kChFvepA/AvqAZ0oh/UaB6+6pBE=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
 github.com/apache/thrift v0.13.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
 github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e/go.mod h1:3U/XgcO3hCbHZ8TKRvWD2dDTCfh9M9ya+I9JpbB7O8o=
