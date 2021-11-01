@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="custom-server_level" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="filter">
+  <configuration default="false" name="custom-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="filter">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>

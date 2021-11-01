@@ -3,7 +3,7 @@
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
-      <env name="DUBBO_GO_CONFIG_PATH" value="C:\work\samples\dubbo-go-samples\filter\custom\go-server\conf\dubbogo.yml" />
+      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/filter/custom/go-server/conf/dubbogo.yml" />
     </envs>
     <kind value="PACKAGE" />
     <package value="github.com/apache/dubbo-go-samples/filter/custom/go-server/cmd" />
