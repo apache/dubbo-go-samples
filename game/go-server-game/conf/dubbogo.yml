@@ -5,7 +5,7 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:2181
   consumer:
-    registryIDs:
+    registry-ids:
       - demoZK
     references:
       gateConsumer.basketballService:
@@ -16,7 +16,7 @@ dubbo:
           - name: "Send"
             retries: 0
   provider:
-    registryIDs:
+    registry-ids:
       - demoZK
     services:
       gameProvider.basketballService:

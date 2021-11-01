@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -40,7 +39,7 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:8848
   consumer:
-    registryIDs:
+    registry-ids:
       - demoZK
     references:
       GreeterClientImpl:
@@ -55,6 +54,9 @@ func main() {
 		SetProtocol("zookeeper").
 		SetAddress("127.0.0.1:2181").
 		Build().GetDynamicConfiguration()
+	if err != nil {
+		panic(err)
+	}
 
 	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", configCenterZKClientConfig); err != nil {
 		panic(err)
@@ -72,8 +74,6 @@ func main() {
 	if err := rootConfig.Init(); err != nil {
 		panic(err)
 	}
-
-	time.Sleep(3 * time.Second)
 
 	logger.Info("start to test dubbo")
 	req := &api.HelloRequest{

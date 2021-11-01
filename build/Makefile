@@ -17,6 +17,7 @@ PROJECT_NAME = $(shell basename "$(PWD)")
 PID = /tmp/.$(PROJECT_NAME).pid
 PROJECT_DIR=$(shell pwd)
 BASE_DIR := $(PROJECT_DIR)/go-server/dist
+DOCKER_DIR := ./integrate_test/dockercompose
 
 SOURCES = $(wildcard $(PROJECT_DIR)/go-server/cmd/*.go)
 GO = go
@@ -105,14 +106,14 @@ docker-health-check:
 ## docker-up: Shutdown dependency services on docker
 .PHONY: docker-up
 docker-up:
-	$(info   >  Starting dependency services with $(INTEGRATE_DIR)/docker/docker-compose.yml)
-	@docker-compose -f $(INTEGRATE_DIR)/docker/docker-compose.yml up -d
+	$(info   >  Starting dependency services with $(DOCKER_DIR)/docker-compose.yml)
+	@docker-compose -f $(DOCKER_DIR)/docker-compose.yml up -d
 
 ## docker-down: Shutdown dependency services on docker
 .PHONY: docker-down
 docker-down:
-	$(info   >  Stopping dependency services with $(INTEGRATE_DIR)/docker/docker-compose.yml)
-	@docker-compose -f $(INTEGRATE_DIR)/docker/docker-compose.yml down
+	$(info   >  Stopping dependency services with $(DOCKER_DIR)/docker-compose.ym)
+	@docker-compose -f $(DOCKER_DIR)/docker-compose.yml down
 
 ## clean: Clean up the output and the binary of the application
 .PHONY: clean

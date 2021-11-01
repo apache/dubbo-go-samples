@@ -19,14 +19,12 @@ package pkg
 
 import (
 	"context"
-	"time"
 )
 
 type User struct {
 	ID   string
 	Name string
 	Age  int32
-	Time time.Time
 }
 
 type UserProvider struct {

@@ -24,12 +24,11 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log"
 )
 
 type UserProvider struct {
@@ -47,20 +46,21 @@ func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
 	var userProvider = &UserProvider{}
 	config.SetConsumerService(userProvider)
 	hessian.RegisterPOJO(&User{})
-	config.Load()
-	time.Sleep(3 * time.Second)
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
+	logger.Infof("\n\n\nstart to test dubbo")
 	user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex001"})
 	if err != nil {
-		gxlog.CError("error: %v\n", err)
+		logger.Errorf("error: %v\n", err)
 		os.Exit(1)
 		return
 	}
-	gxlog.CInfo("response result: %v\n", user)
+	logger.Infof("response result: %v\n", user)
 }

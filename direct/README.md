@@ -33,7 +33,7 @@ Direct example code description:
 ```yaml
 services:
   "UserProvider":
-    registryIDs: "demoZk"
+    registry-ids: "demoZk"
     protocol : "dubbo"
     interface : "org.apache.dubbo.UserProvider"
     loadbalance: "random"
@@ -67,7 +67,7 @@ initSignal()
     func initSignal() {
         signals := make(chan os.Signal, 1)
         // It is not possible to block SIGKILL or syscall.SIGSTOP
-        signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+        signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
         for {
             sig := <-signals
             logger.Infof("get signal %s", sig.String())
@@ -112,7 +112,7 @@ application:
   environment: "dev"
 references:
   "UserProvider":
-    registryIDs: "demoZk"
+    registry-ids: "demoZk"
     protocol: "dubbo"
     interface: "org.apache.dubbo.UserProvider"
     cluster: "failover"

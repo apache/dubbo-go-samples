@@ -35,7 +35,7 @@ import (
 )
 
 type GreeterProvider struct {
-	api.GreeterProviderBase
+	api.UnimplementedGreeterServer
 }
 
 type customLogger struct {
@@ -85,7 +85,9 @@ func (c *customLogger) Fatalf(fmts string, args ...interface{}) {
 
 func main() {
 	config.SetProviderService(&GreeterProvider{})
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	logger.SetLogger(&customLogger{})
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()

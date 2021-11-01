@@ -1,0 +1,29 @@
+# dubbo server yaml configure file
+
+
+dubbo:
+  registries:
+    demoZK:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  protocols:
+    dubbo:
+      name: dubbo
+      port: 20000
+  provider:
+    registry-ids:
+      - demoZK
+    services:
+      UserProvider:
+        protocol: dubbo
+        interface: org.apache.dubbo.UserProvider
+        cluster: failover
+        loadbalance: random # load balancing strategy, such as random, roundrobin, leastactive or consistenthash.
+        warmup: 100  # warmup period, in seconds
+        tps.limiter: method-service # the Limiter that judge if the TPS overs the threshold, such as method-service or default
+        tps.limit.strategy: fixedWindow # the name of limit strategy, such as fixedWindow, slidingWindow, default, threadSafeFixedWindow or the strategy name you customed
+        tps.limit.rejected.handler: DefaultValueHandler
+        tps.limit.interval: 1000 # the interval time unit is ms
+        tps.limit.rate: 3 # the max value in the interval. <0 means that the service will not be limited.
+        

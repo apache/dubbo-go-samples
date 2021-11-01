@@ -20,7 +20,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"time"
 )
 
 import (
@@ -28,6 +27,8 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	"github.com/dubbogo/gost/log"
+
+	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
@@ -45,17 +46,14 @@ func main() {
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
-	time.Sleep(3 * time.Second)
 
 	gxlog.CInfo("\n\n\nstart to test dubbo")
 	req := &pb.HelloRequest{
 		Name: "laurence",
 	}
 
-	reply := &pb.User{}
-
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, "tri-req-id", "test_value_XXXXXXXX")
+	ctx = context.WithValue(ctx, tripleConstant.TripleCtxKey("tri-req-id"), "test_value_XXXXXXXX")
 
 	reply, err := grpcGreeterImpl.SayHello(ctx, req)
 	if err != nil {

@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -42,8 +41,10 @@ func init() {
 
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
 func main() {
-	config.Load()
-	time.Sleep(3 * time.Second)
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
 
 	logger.Info("start to test dubbo")
 	req := &api.HelloRequest{

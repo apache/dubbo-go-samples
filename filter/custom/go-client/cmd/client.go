@@ -44,7 +44,7 @@ func main() {
 	}
 
 	logger.Infof("\n\n\nstart to test")
-	user, err := userProvider.SayHello(context.TODO(), &api.HelloRequest{Name: "Jasondeng"})
+	user, err := userProvider.SayHello(context.TODO(), &api.HelloRequest{Name: "laurence"})
 	if err != nil {
 		panic(err)
 	}

@@ -46,15 +46,16 @@ var (
 // 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
-	config.Load()
-
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 	initSignal()
 }
 
 func initSignal() {
 	signals := make(chan os.Signal, 1)
 	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
 		logger.Infof("get signal %s", sig.String())

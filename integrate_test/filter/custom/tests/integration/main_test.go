@@ -1,5 +1,3 @@
-// +build integration
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -37,7 +35,9 @@ var userProvider = &api.GreeterClientImpl{}
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	config.Load()
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
 	os.Exit(m.Run())
 }

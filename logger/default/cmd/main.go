@@ -33,12 +33,15 @@ import (
 )
 
 type GreeterProvider struct {
-	api.GreeterProviderBase
+	api.UnimplementedGreeterServer
 }
 
 func main() {
 	config.SetProviderService(&GreeterProvider{})
-	config.Load()
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 	for {

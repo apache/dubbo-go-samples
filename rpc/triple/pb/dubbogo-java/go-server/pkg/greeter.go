@@ -30,7 +30,7 @@ import (
 )
 
 type GreeterProvider struct {
-	pb.GreeterProviderBase
+	pb.UnimplementedGreeterServer
 }
 
 func (s *GreeterProvider) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.User, error) {
