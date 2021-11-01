@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="filter-custom-server_level" type="GoApplicationRunConfiguration" factoryName="Go Application" singleton="false">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="DUBBO_GO_CONFIG_PATH" value="C:\work\samples\dubbo-go-samples\filter\custom\go-server\conf\dubbogo.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/filter/custom/go-server/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/filter/custom/go-server/cmd/server.go" />
+    <method v="2" />
+  </configuration>
+</component>
