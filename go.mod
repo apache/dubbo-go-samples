@@ -19,6 +19,6 @@ require (
 	google.golang.org/protobuf v1.27.1
 )
 
-replace github.com/dubbogo/triple => github.com/dubbogo/triple v1.0.10-0.20211106172100-7b154c8c70c9
+replace github.com/dubbogo/triple => github.com/dubbogo/triple v1.0.10-0.20211106172728-75c7b0e2b4de
 
 go 1.13
