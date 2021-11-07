@@ -14,36 +14,36 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# game
-array+=("game/go-server-game")
-array+=("game/go-server-gate")
-
-# route
-array=("route/meshroute")
-
-# metrics
-array+=("metrics")
-
-# helloworld
-array+=("helloworld")
-
-# direct
-array+=("direct")
-
-# context
-array+=("context/dubbo")
-
-# config-api
-array+=("config-api/rpc/triple")
-array+=("config-api/configcenter/nacos")
-array+=("config-api/configcenter/zookeeper")
-
-# registry
-array+=("registry/zookeeper")
-array+=("registry/nacos")
-array+=("registry/etcd")
-array+=("registry/servicediscovery/zookeeper")
-array+=("registry/servicediscovery/nacos")
+## game
+#array+=("game/go-server-game")
+#array+=("game/go-server-gate")
+#
+## route
+#array=("route/meshroute")
+#
+## metrics
+#array+=("metrics")
+#
+## helloworld
+#array+=("helloworld")
+#
+## direct
+#array+=("direct")
+#
+## context
+#array+=("context/dubbo")
+#
+## config-api
+#array+=("config-api/rpc/triple")
+#array+=("config-api/configcenter/nacos")
+#array+=("config-api/configcenter/zookeeper")
+#
+## registry
+#array+=("registry/zookeeper")
+#array+=("registry/nacos")
+#array+=("registry/etcd")
+#array+=("registry/servicediscovery/zookeeper")
+#array+=("registry/servicediscovery/nacos")
 
 # generic
 array+=("generic/default")
@@ -55,7 +55,7 @@ array+=("rpc/triple/hessian2")
 array+=("rpc/triple/msgpack")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
-array+=("rpc/jsonrpc")
+#array+=("rpc/jsonrpc")
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
