@@ -13,7 +13,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+#
 # game
 array+=("game/go-server-game")
 array+=("game/go-server-gate")
@@ -50,7 +50,7 @@ array+=("generic/default")
 
 # rpc
 array+=("rpc/dubbo")
-#array+=("rpc/triple/codec-extension")
+array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
 array+=("rpc/triple/msgpack")
 array+=("rpc/triple/pb/dubbogo-grpc")

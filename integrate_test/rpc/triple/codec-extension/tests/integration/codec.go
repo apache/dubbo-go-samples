@@ -19,21 +19,26 @@ package integration
 
 import (
 	"encoding/json"
+	triCommon "github.com/dubbogo/triple/pkg/common"
 )
 
 import (
-	triCommon "github.com/dubbogo/triple/pkg/common"
+	"github.com/dubbogo/triple/pkg/grpc/encoding"
 )
 
 func init() {
 	triCommon.SetTripleCodec("json", NewJSONCodec)
 }
 
-func NewJSONCodec() triCommon.Codec {
+func NewJSONCodec() encoding.Codec {
 	return &JSONCodec{}
 }
 
 type JSONCodec struct {
+}
+
+func (j *JSONCodec) Name() string {
+	return "json"
 }
 
 func (j *JSONCodec) Marshal(v interface{}) ([]byte, error) {
