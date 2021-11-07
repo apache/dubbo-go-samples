@@ -18,14 +18,13 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
 )
 
 import (
-	"github.com/dubbogo/net/context"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

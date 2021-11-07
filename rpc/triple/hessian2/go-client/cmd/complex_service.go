@@ -78,6 +78,6 @@ type ComplexProvider struct {
 	//InvokeWithStringMap func(ctx context.Context, req map[string]string) (map[string]string,error)
 }
 
-func (u ComplexData) JavaClassName() string {
+func (u *ComplexData) JavaClassName() string {
 	return "com.apache.dubbo.sample.basic.ComplexData"
 }

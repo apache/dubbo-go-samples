@@ -23,7 +23,7 @@ import (
 )
 
 import (
-	"github.com/dubbogo/triple/pkg/grpc/encoding"
+	"github.com/dubbogo/grpc-go/encoding"
 )
 
 func init() {
