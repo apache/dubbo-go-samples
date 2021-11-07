@@ -19,9 +19,4 @@ require (
 	google.golang.org/protobuf v1.27.1
 )
 
-replace (
-	dubbo.apache.org/dubbo-go/v3 => ../dubbo-go
-	github.com/dubbogo/triple => ../triple
-)
-
 go 1.13
