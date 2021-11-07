@@ -23,6 +23,7 @@ import (
 	"time"
 )
 
+// nolint
 import (
 	"dubbo.apache.org/dubbo-go/v3/config/generic"
 
