@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="api-config-center-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="config-api" singleton="true">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/config-api/configcenter/nacos/go-server/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/config-api/go-server/cmd/server.go" />
+    <method v="2" />
+  </configuration>
+</component>
