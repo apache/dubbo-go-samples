@@ -15,9 +15,8 @@ dubbo:
     registry-ids: zk
     services:
       UserProvider:
-        protocol-ids: dubbo
+        serialization: hessian2
         interface: org.apache.dubbo.samples.UserProvider
       UserProviderTriple:
-        protocol-ids: triple
         serialization: hessian2
         interface: org.apache.dubbo.samples.UserProviderTriple

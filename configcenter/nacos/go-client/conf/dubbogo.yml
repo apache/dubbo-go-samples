@@ -2,7 +2,10 @@ dubbo:
   config-center:
     protocol: nacos
     address: 127.0.0.1:8848
-    data-id: "dubbo-go-samples-configcenter-nacos-client"
+    data-id: dubbo-go-samples-configcenter-nacos-client
+    group: myGroup # default is DEFAULT_GROUP
+#    namespace: 9fb00abb-278d-42fc-96bf-e0151601e4a1 # default is public
+
 
 ## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default
 #dubbo:
@@ -12,8 +15,6 @@ dubbo:
 #      timeout: 3s
 #      address: 127.0.0.1:2181
 #  consumer:
-#    registry-ids:
-#      - demoZK
 #    references:
 #      GreeterClientImpl:
 #        protocol: tri

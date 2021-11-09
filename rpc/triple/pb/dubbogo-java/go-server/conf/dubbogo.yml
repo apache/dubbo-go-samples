@@ -7,9 +7,7 @@ dubbo:
       name: tri
       port: 20001
   provider:
-    registry-ids: zk
     services:
       GreeterProvider:
-        protocol-ids: triple
         # interface is for registry
         interface: org.apache.dubbo.demo.IGreeter

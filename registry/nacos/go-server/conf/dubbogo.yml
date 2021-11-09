@@ -1,33 +1,23 @@
 dubbo:
+  application:
+    name: myApp # metadata: application=myApp; name=myApp
+    module: opensource #metadata: module=opensource
+    group: myAppGroup # no metadata record
+    organization: dubbo # metadata: organization=dubbo
+    owner: laurence # metadata: owner=laurence
+    version: myversion # metadata: app.version=myversion
+    environment: pro # metadata: environment=pro
   registries:
     demoNacos:
       protocol: nacos
-      timeout: 3s
       address: 127.0.0.1:8848
+      group: myGroup # nacos group, default is DEFAULT_GROUP
+#      namespace: 9fb00abb-278d-42fc-96bf-e0151601e4a1 # nacos namespaceID, should be created before. default is public
   protocols:
     dubbo:
       name: dubbo
       port: 20000
-      # 在 params 中定义当前使用的协议特有的网络配置
-      # 如该 sample 配置的是 dubbo 协议（底层使用 getty 通信库）
-      params:
-        session-number: 700
-        session-timeout: 180s
-        compress-encoding: false
-        tcp-no-delay: true
-        tcp-keep-alive: true
-        keep-alive-period: 120s
-        tcp-r-buf-size: 262144
-        tcp-w-buf-size: 65536
-        tcp-read-timeout: 10s
-        tcp-write-timeout: 5s
-        wait-timeout: 1s
-        max-msg-len: 1024000
-        session-name: server
   provider:
-    registry-ids:
-      - demoNacos
     services:
       UserProvider:
-        protocol: dubbo
-        interface: org.apache.dubbo.UserProvider
+        interface: org.apache.dubbo.UserProvider.Test

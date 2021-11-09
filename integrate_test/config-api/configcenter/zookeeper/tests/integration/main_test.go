@@ -37,11 +37,8 @@ dubbo:
   registries:
     demoZK:
       protocol: nacos
-      timeout: 3s
       address: 127.0.0.1:8848
   consumer:
-    registries:
-      - demoZK
     references:
       GreeterClientImpl:
         protocol: tri
@@ -73,7 +70,7 @@ func TestMain(m *testing.M) {
 			Build()).
 		Build()
 
-	if err := rootConfig.Init(); err != nil {
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 

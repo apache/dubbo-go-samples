@@ -15,9 +15,6 @@ dubbo:
       name: "dubbo"
       port: 20000
   provider:
-    registry-ids:
-      - etcd
     services:
       UserProvider:
-        protocol: "dubbo"
         interface: "org.apache.dubbo.UserProvider"

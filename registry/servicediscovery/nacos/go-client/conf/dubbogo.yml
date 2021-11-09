@@ -8,8 +8,6 @@ dubbo:
     protocol: nacos
     address: 127.0.0.1:8848
   consumer:
-    registry-ids:
-      - demoZK
     references:
       GreeterClientImpl:
         protocol: tri

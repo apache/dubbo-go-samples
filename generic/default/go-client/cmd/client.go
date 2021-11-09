@@ -255,7 +255,9 @@ func newRefConf(iface, protocol string) config.ReferenceConfig {
 	rootConfig := config.NewRootConfigBuilder().
 		AddRegistry("zk", registryConfig).
 		Build()
-	_ = rootConfig.Init()
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
+		panic(err)
+	}
 	_ = refConf.Init(rootConfig)
 	refConf.GenericLoad(appName)
 

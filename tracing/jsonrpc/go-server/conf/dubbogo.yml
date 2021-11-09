@@ -2,7 +2,7 @@
 
 dubbo:
   registries:
-    "demoZK":
+    demoZK:
       protocol: zookeeper
       timeout: 3s
       address: 127.0.0.1:2181
@@ -13,11 +13,8 @@ dubbo:
       port: 20001
   provider:
     filter: tracing
-    registry-ids:
-      - demoZK
     services:
       UserProvider:
-        protocol-ids: jsonrpc
         interface: org.apache.dubbo.UserProvider
         cluster: failover
         

@@ -12,11 +12,8 @@ dubbo:
       name: dubbo
       port: 20000
   provider:
-    registry-ids:
-      - demoZK
     services:
       UserProvider:
-        protocol: dubbo
         interface: org.apache.dubbo.UserProvider
         cluster: failover
         loadbalance: random # load balancing strategy, such as random, roundrobin, leastactive or consistenthash.

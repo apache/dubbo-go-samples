@@ -44,11 +44,8 @@ dubbo:
       name: tri
       port: 20000
   provider:
-    registry-ids:
-      - demoZK
     services:
       GreeterProvider:
-        protocol-ids: triple
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 type GreeterProvider struct {
@@ -81,11 +78,11 @@ func main() {
 	rootConfig := config.NewRootConfigBuilder().
 		SetConfigCenter(config.NewConfigCenterConfigBuilder().
 			SetProtocol("nacos").SetAddress("127.0.0.1:8848").
-			SetDataID("dubbo-go-samples-configcenter-nacos-server").
+			SetDataID("dubbo-go-samples-configcenter-nacos-server").SetGroup("dubbo").
 			Build()).
 		Build()
 
-	if err := rootConfig.Init(); err != nil {
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 	select {}

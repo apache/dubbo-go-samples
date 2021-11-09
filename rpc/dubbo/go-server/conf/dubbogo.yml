@@ -11,11 +11,8 @@ dubbo:
       name: dubbo
       port: 20000
   provider:
-    registry-ids:
-      - demoZK
     services:
       UserProvider:
-        protocol: dubbo
         interface: org.apache.dubbo.UserProvider
         loadbalance: random
         warmup: 100
@@ -25,10 +22,8 @@ dubbo:
             retries: 1
             loadbalance: random
       ComplexProvider:
-        protocol: dubbo
         interface: org.apache.dubbo.ComplexProvider
       WrapperArrayClassProvider:
-        protocol: dubbo
         interface: org.apache.dubbo.WrapperArrayClassProvider
   logger:
     zap-config:

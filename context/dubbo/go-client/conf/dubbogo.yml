@@ -2,7 +2,6 @@ dubbo:
   registries:
     demoZK:
       protocol: zookeeper
-      timeout: 3s
       address: 127.0.0.1:2181
   protocols:
     dubbo:
@@ -29,8 +28,6 @@ dubbo:
         max-msg-len: 1024000
         session-name: client
   consumer:
-    registry-ids:
-      - demoZK
     references:
       UserProvider:
         protocol: dubbo

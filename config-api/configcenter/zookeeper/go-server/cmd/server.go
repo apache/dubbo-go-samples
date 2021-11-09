@@ -37,18 +37,14 @@ dubbo:
   registries:
     demoZK:
       protocol: nacos
-      timeout: 3s
       address: 127.0.0.1:8848
   protocols:
     triple:
       name: tri
       port: 20000
   provider:
-    registry-ids:
-      - demoZK
     services:
       GreeterProvider:
-        protocol-ids: triple
         interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
 
 type GreeterProvider struct {
@@ -85,7 +81,7 @@ func main() {
 			Build()).
 		Build()
 
-	if err := rootConfig.Init(); err != nil {
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 	select {}
