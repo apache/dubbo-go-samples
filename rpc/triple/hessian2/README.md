@@ -11,8 +11,6 @@ PB serialization is used by default. To use Hessian2+PB, please specify the seri
 # service config
 services:
   "UserProvider":
-    registry-ids: "demoZK"
-    protocol-ids: "tri" # tri is dubbo-go3.0 protocol
     serialization: "hessian2" # hessian2 is serialization type
     interface: "org.apache.dubbo.UserProvider"
 ```

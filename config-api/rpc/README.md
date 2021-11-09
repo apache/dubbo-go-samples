@@ -37,7 +37,7 @@ rootConfig := config.NewRootConfig(
 )
 
 // 服务启动
-if err := rootConfig.Init(); err != nil {
+if err := config.Load(config.WithRootConfig(rootConfig)); err != nil{
     panic(err)
 }
 select {}
@@ -63,7 +63,7 @@ rootConfig := config.NewRootConfig(
   config.WithRootConsumerConfig(consumerConfig),
 )
 
-if err := rootConfig.Init(); err != nil {
-  panic(err) 
+if err := config.Load(config.WithRootConfig(rootConfig)); err != nil{
+  panic(err)
 }
 ```

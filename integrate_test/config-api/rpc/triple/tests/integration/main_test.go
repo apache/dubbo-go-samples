@@ -45,10 +45,9 @@ func TestMain(m *testing.M) {
 		AddRegistry("zkRegistryKey", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).
 		Build()
 
-	if err := rootConfig.Init(); err != nil {
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
-
 	os.Exit(m.Run())
 
 }

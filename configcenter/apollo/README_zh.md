@@ -13,24 +13,20 @@
 ```yaml
 dubbo:
   application:
-     name: "demo-server"
-     version: "2.0"
+     name: demo-server
+     version: 2.0"
   registries:
-    "demoZK":
-      protocol: "zookeeper"
-      timeout: "3s"
-      address: "127.0.0.1:2181"
+    demoZK:
+      protocol: zookeeper
+      address: 127.0.0.1:2181
   protocols:
-    "triple":
-      name: "tri"
+    triple:
+      name: tri
       port: 20000
   provider:
-    registry-ids:
-      - demoZK
     services:
-      "greeterImpl":
-        protocol-ids: "triple"
-        interface: "com.apache.dubbo.sample.basic.IGreeter" # must be compatible with grpc or dubbo-java
+      greeterImpl:
+        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java
 ```
 
 3. 启动go-server

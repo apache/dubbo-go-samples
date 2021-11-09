@@ -70,7 +70,7 @@ func TestMain(m *testing.M) {
 			Build()).
 		Build()
 
-	if err := rootConfig.Init(); err != nil {
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 
