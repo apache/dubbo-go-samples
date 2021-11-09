@@ -3,7 +3,6 @@ dubbo:
     zk:
       address: zookeeper://127.0.0.1:2181
   consumer:
-    registry-ids: zk
     references:
       GreeterClientImpl:
         protocol: tri

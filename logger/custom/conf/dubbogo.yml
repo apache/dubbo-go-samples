@@ -9,8 +9,6 @@ dubbo:
       name: tri
       port: 20000
   provider:
-    registry-ids:
-      - demoZK
     services:
       greeterImpl:
         protocol: triple

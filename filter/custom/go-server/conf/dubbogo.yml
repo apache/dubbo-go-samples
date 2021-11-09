@@ -9,12 +9,9 @@ dubbo:
       name: tri
       port: 20000
   provider:
-    registry-ids:
-      - demoZK
     services:
       GreeterProvider:
         filter: myServerFilter
-        protocol-ids: tripleProtocol
         interface: org.apache.dubbo.UserProvider
         loadbalance: random
         warmup: 100

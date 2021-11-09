@@ -1,11 +1,11 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc3.0.20211107100213-fc341e3ac2f8
+	dubbo.apache.org/dubbo-go/v3 v3.0.0-rc3.0.20211109121610-2ebc38bed562
 	github.com/apache/dubbo-go-hessian2 v1.9.4-0.20210917102639-74a8ece5f3cb
 	github.com/dubbogo/gost v1.11.19
-	github.com/dubbogo/grpc-go v1.42.3-triple
-	github.com/dubbogo/triple v1.1.1
+	github.com/dubbogo/grpc-go v1.42.4-triple
+	github.com/dubbogo/triple v1.1.2
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
@@ -15,7 +15,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
-	google.golang.org/grpc v1.41.0
+	google.golang.org/grpc v1.42.0
 	google.golang.org/protobuf v1.27.1
 )
 

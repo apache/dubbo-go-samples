@@ -38,7 +38,7 @@ func main() {
 
 	ivkURL, err := common.NewURL("mock://localhost:8080",
 		common.WithPath("com.alibaba.dubbogo.HelloService"),
-		common.WithParamsValue(constant.RoleKey, strconv.Itoa(common.PROVIDER)),
+		common.WithParamsValue(constant.RegistryRoleKey, strconv.Itoa(common.PROVIDER)),
 		common.WithMethods([]string{"GetUser", "SayHello"}),
 	)
 	if err != nil {

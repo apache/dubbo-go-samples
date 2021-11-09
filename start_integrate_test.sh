@@ -14,6 +14,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
+
 # game
 array+=("game/go-server-game")
 array+=("game/go-server-gate")
@@ -29,6 +30,9 @@ array+=("helloworld")
 
 # direct
 array+=("direct")
+
+# filer
+array+=("filter/custom")
 
 # context
 array+=("context/dubbo")

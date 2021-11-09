@@ -4,8 +4,6 @@ dubbo:
       protocol: zookeeper
       address: 127.0.0.1:2181
   consumer:
-    registry-ids:
-      - registryKey
     references:
       UserProvider:
         protocol: tri

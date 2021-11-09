@@ -37,11 +37,8 @@ dubbo:
   registries:
     demoZK:
       protocol: nacos
-      timeout: 3s
       address: 127.0.0.1:8848
   consumer:
-    registries:
-      - demoZK
     references:
       GreeterClientImpl:
         protocol: tri

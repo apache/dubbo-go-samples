@@ -39,7 +39,6 @@ func main() {
 
 	rootConfig := config.NewRootConfigBuilder().
 		SetConsumer(config.NewConsumerConfigBuilder().
-			SetRegistryIDs("zkRegistryKey").
 			AddReference("GreeterClientImpl", config.NewReferenceConfigBuilder().
 				SetInterface("com.apache.dubbo.sample.basic.IGreeter").
 				SetProtocol("tri").
@@ -48,7 +47,7 @@ func main() {
 		AddRegistry("zkRegistryKey", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).
 		Build()
 
-	if err := rootConfig.Init(); err != nil {
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 

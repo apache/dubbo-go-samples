@@ -16,21 +16,13 @@ dubbo:
       ip: 127.0.0.1
       port: 20001
   provider:
-    registry-ids:
-      - hangzhouzk
     services:
       UserProvider:
-        registry-ids: hangzhouzk
-        protocol-ids: jsonrpc
         interface: com.ikurento.user.UserProvider
       UserProvider1:
-        registry-ids: hangzhouzk
-        protocol-ids: jsonrpc
         interface: com.ikurento.user.UserProvider
         version: 2.0
       UserProvider2:
-        registry-ids: hangzhouzk
-        protocol-ids: jsonrpc
         interface: com.ikurento.user.UserProvider
         version: 2.0
         group: as

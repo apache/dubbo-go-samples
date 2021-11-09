@@ -2,17 +2,14 @@
 
 dubbo:
   registries:
-    "demoZK":
-      protocol: "zookeeper"
-      timeout: "3s"
-      address: "127.0.0.1:2181"
+    demoZK:
+      protocol: zookeeper
+      address: 127.0.0.1:2181
   consumer:
-    registry-ids:
-      - demoZK
     references:
-      "UserProvider":
-        protocol: "dubbo"
-        interface: "org.apache.dubbo.UserProvider"
+      UserProvider:
+        protocol: dubbo
+        interface: org.apache.dubbo.UserProvider
   logger:
     zap-config:
       level: info

@@ -8,11 +8,9 @@ dubbo:
       address: 127.0.0.1:2181
   consumer:
     filter: tracing
-    registry-ids:
-      - demoZK
     references:
       UserProvider:
-        protocol-ids: jsonrpc
+        protocol: jsonrpc
         interface: org.apache.dubbo.UserProvider
         cluster: failover
         

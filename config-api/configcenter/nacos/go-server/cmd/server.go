@@ -81,11 +81,11 @@ func main() {
 	rootConfig := config.NewRootConfigBuilder().
 		SetConfigCenter(config.NewConfigCenterConfigBuilder().
 			SetProtocol("nacos").SetAddress("127.0.0.1:8848").
-			SetDataID("dubbo-go-samples-configcenter-nacos-server").
+			SetDataID("dubbo-go-samples-configcenter-nacos-server").SetGroup("dubbo").
 			Build()).
 		Build()
 
-	if err := rootConfig.Init(); err != nil {
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 	select {}

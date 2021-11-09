@@ -37,11 +37,8 @@ dubbo:
   registries:
     demoZK:
       protocol: zookeeper
-      timeout: 3s
       address: 127.0.0.1:2181
   consumer:
-    registries:
-      - demoZK
     references:
       GreeterClientImpl:
         protocol: tri
@@ -70,6 +67,7 @@ func TestMain(m *testing.M) {
 		SetConfigCenter(config.NewConfigCenterConfigBuilder().
 			SetProtocol("nacos").SetAddress("127.0.0.1:8848").
 			SetDataID("dubbo-go-samples-configcenter-nacos-client").
+			SetGroup("dubbo").
 			Build()).
 		Build()
 
