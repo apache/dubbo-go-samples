@@ -10,7 +10,7 @@ dubbo:
   registries:
     demoNacos:
       protocol: nacos
-      address: 127.0.0.1
+      address: 127.0.0.1:8848
       group: myGroup # nacos group, default is DEFAULT_GROUP
 #      namespace: 9fb00abb-278d-42fc-96bf-e0151601e4a1 # nacos namespaceID, should be created before. default is public
   protocols:
