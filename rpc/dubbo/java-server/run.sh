@@ -1,1 +1,1 @@
-mvn -e clean compile exec:java -Dexec.mainClass="org.apache.dubbo.Provider"
+mvn -e clean compile -U exec:java -Dexec.mainClass="org.apache.dubbo.Provider"
