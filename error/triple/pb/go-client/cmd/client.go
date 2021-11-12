@@ -19,13 +19,14 @@ package main
 
 import (
 	"context"
-	tripleCommon "github.com/dubbogo/triple/pkg/common"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	tripleCommon "github.com/dubbogo/triple/pkg/common"
 )
 
 import (

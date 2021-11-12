@@ -19,11 +19,12 @@ package main
 
 import (
 	"context"
-	"github.com/pkg/errors"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
+
+	"github.com/pkg/errors"
 )
 
 import (

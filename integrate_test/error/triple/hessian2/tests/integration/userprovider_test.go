@@ -20,11 +20,12 @@ package integration
 import (
 	"context"
 	"fmt"
-	"github.com/dubbogo/triple/pkg/common"
 	"testing"
 )
 
 import (
+	"github.com/dubbogo/triple/pkg/common"
+
 	"github.com/stretchr/testify/assert"
 )
 
