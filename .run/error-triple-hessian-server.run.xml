@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="error-triple-hessian-server" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="error">
+    <module name="dubbo-go-samples" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="DUBBO_GO_CONFIG_PATH" value="$PROJECT_DIR$/error/triple/hessian2/go-server/conf/dubbogo.yml" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/apache/dubbo-go-samples/error/triple/hessian2/go-server/cmd" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/rpc/triple/pb/dubbogo-grpc/grpc-server/main.go" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -40,6 +40,7 @@ var (
 
 func init() {
 	config.SetProviderService(&UserProvider{})
+	config.SetProviderService(&UserProviderWithCustomGroupAndVersion{})
 	// ------for hessian2------
 	hessian.RegisterPOJO(&User{})
 }
@@ -63,6 +64,16 @@ func (u *UserProvider) GetUser(ctx context.Context, req *User) (*User, error) {
 
 func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
+}
+
+type UserProviderWithCustomGroupAndVersion struct {
+}
+
+func (u *UserProviderWithCustomGroupAndVersion) GetUser(ctx context.Context, req *User) (*User, error) {
+	logger.Infof("req:%#v", req)
+	rsp := User{"A001", "Alex Stocks from UserProviderWithCustomGroupAndVersion", 18, time.Now()}
+	logger.Infof("rsp:%#v", rsp)
+	return &rsp, nil
 }
 
 // need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run

@@ -31,6 +31,10 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
+type UserProviderWithCustomGroupAndVersion struct {
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
+}
+
 type UserProvider struct {
 	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
 }
@@ -48,7 +52,9 @@ func (u *User) JavaClassName() string {
 
 func main() {
 	var userProvider = &UserProvider{}
+	var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{}
 	config.SetConsumerService(userProvider)
+	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
 	hessian.RegisterPOJO(&User{})
 	err := config.Load()
 	if err != nil {
@@ -57,6 +63,14 @@ func main() {
 
 	logger.Infof("\n\n\nstart to test dubbo")
 	user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex001"})
+	if err != nil {
+		logger.Errorf("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+	logger.Infof("response result: %v\n", user)
+
+	user, err = userProviderWithCustomRegistryGroupAndVersion.GetUser(context.TODO(), &User{Name: "Alex001"})
 	if err != nil {
 		logger.Errorf("error: %v\n", err)
 		os.Exit(1)
