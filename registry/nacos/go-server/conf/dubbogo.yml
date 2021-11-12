@@ -8,7 +8,7 @@ dubbo:
     version: myversion # metadata: app.version=myversion
     environment: pro # metadata: environment=pro
   registries:
-    demoNacos:
+    nacosWithCustomGroup:
       protocol: nacos
       address: 127.0.0.1:8848
       group: myGroup # nacos group, default is DEFAULT_GROUP
@@ -21,3 +21,7 @@ dubbo:
     services:
       UserProvider:
         interface: org.apache.dubbo.UserProvider.Test
+      UserProviderWithCustomGroupAndVersion:
+        interface: org.apache.dubbo.UserProvider.Test2
+        version: myInterfaceVersion # dubbo interface version must be same with client
+        group: myInterfaceGroup # dubbo interface group must be same with client

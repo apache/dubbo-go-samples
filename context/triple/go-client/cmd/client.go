@@ -19,14 +19,13 @@ package main
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
@@ -51,8 +50,13 @@ func main() {
 		Name: "laurence",
 	}
 	ctx := context.Background()
-	// set user defined context attachment
-	ctx = context.WithValue(ctx, tripleConstant.CtxAttachmentKey, "user-defined-value")
+	// set user defined context attachment, map value can be string or []string, otherwise it is not to be transferred
+	userDefinedValueMap := make(map[string]interface{})
+	userDefinedValueMap["key1"] = "user defined value 1"
+	userDefinedValueMap["key2"] = "user defined value 2"
+	userDefinedValueMap["key3"] = []string{"user defined value 3.1", "user defined value 3.2"}
+	userDefinedValueMap["key4"] = []string{"user defined value 4.1", "user defined value 4.2"}
+	ctx = context.WithValue(ctx, constant.AttachmentKey, userDefinedValueMap)
 	reply, err := grpcGreeterImpl.SayHello(ctx, req)
 	if err != nil {
 		logger.Error(err)

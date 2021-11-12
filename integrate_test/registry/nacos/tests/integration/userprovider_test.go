@@ -34,3 +34,12 @@ func TestGetUser(t *testing.T) {
 	assert.Equal(t, int32(18), user.Age)
 	assert.NotNil(t, user.Time)
 }
+
+func TestGetUserWithCustomGroupAndVersion(t *testing.T) {
+	user, err := userProviderWithCustomRegistryGroupAndVersion.GetUser(context.TODO(), &User{ID: "A001"})
+	assert.Nil(t, err)
+	assert.Equal(t, "A001", user.ID)
+	assert.Equal(t, "Alex Stocks from UserProviderWithCustomGroupAndVersion", user.Name)
+	assert.Equal(t, int32(18), user.Age)
+	assert.NotNil(t, user.Time)
+}

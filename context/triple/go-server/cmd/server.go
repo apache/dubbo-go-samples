@@ -19,14 +19,15 @@ package main
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"fmt"
+	"strings"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
@@ -38,9 +39,24 @@ type GreeterProvider struct {
 }
 
 func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("get triple user attachment = %s", ctx.Value(tripleConstant.CtxAttachmentKey))
+	// map must be assert to map[string]interface, because of dubbo limitation
+	attachments := ctx.Value(constant.AttachmentKey).(map[string]interface{})
+
+	// value must be assert to []string[0], because of http2 header limitation
+	logger.Infof("get triple attachment key1 = %s", attachments["key1"].([]string)[0])
+	logger.Infof("get triple attachment key2 = %s", attachments["key2"].([]string)[0])
+	logger.Infof("get triple attachment key3 = %s and %s", attachments["key3"].([]string)[0],
+		attachments["key3"].([]string)[1])
+	logger.Infof("get triple attachment key4 = %s and %s", attachments["key4"].([]string)[0],
+		attachments["key4"].([]string)[1])
 	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
+	rspAttachment := make(map[string]interface{})
+	for k, v := range attachments {
+		if strings.HasPrefix(k, "key") {
+			rspAttachment[k] = v
+		}
+	}
+	return &api.User{Name: fmt.Sprintf("%s", rspAttachment), Id: "12345", Age: 21}, nil
 }
 
 func main() {
