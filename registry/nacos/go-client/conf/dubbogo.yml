@@ -1,12 +1,17 @@
 dubbo:
   registries:
-    demoNacos:
+    nacosWithCustomGroup:
       protocol: nacos
       address: 127.0.0.1:8848
-      group: myGroup
-#      namespace: 9fb00abb-278d-42fc-96bf-e0151601e4a1
+      group: myGroup # default is DEFAULT_GROUP
+#      namespace: 9fb00abb-278d-42fc-96bf-e0151601e4a1 # default is public
   consumer:
     references:
       UserProvider:
         protocol: dubbo
         interface: org.apache.dubbo.UserProvider.Test
+      UserProviderWithCustomGroupAndVersion:
+        protocol: dubbo
+        interface: org.apache.dubbo.UserProvider.Test2
+        group:  myInterfaceGroup # dubbo interface group must be same with server
+        version: myInterfaceVersion # dubbo interface version must be same with server

@@ -32,9 +32,15 @@ import (
 )
 
 var greeterProvider = &dubbo3pb.GreeterClientImpl{}
+var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{GreeterClientImpl: dubbo3pb.GreeterClientImpl{}}
+
+type UserProviderWithCustomGroupAndVersion struct {
+	dubbo3pb.GreeterClientImpl
+}
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(greeterProvider)
+	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
 	if err := config.Load(); err != nil {
 		panic(err)
 	}

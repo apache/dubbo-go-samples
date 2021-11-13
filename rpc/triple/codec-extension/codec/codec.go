@@ -19,11 +19,12 @@ package codec
 
 import (
 	"encoding/json"
-	triCommon "github.com/dubbogo/triple/pkg/common"
 )
 
 import (
 	"github.com/dubbogo/grpc-go/encoding"
+
+	triCommon "github.com/dubbogo/triple/pkg/common"
 )
 
 func init() {

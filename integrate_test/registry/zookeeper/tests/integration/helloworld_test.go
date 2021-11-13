@@ -44,3 +44,18 @@ func TestSayHello(t *testing.T) {
 	assert.Equal(t, "12345", reply.Id)
 	assert.Equal(t, int32(21), reply.Age)
 }
+
+func TestGetUserWithCustomRegistryGroupAndVersion(t *testing.T) {
+	req := &dubbo3pb.HelloRequest{
+		Name: "laurence",
+	}
+
+	ctx := context.Background()
+
+	reply, err := userProviderWithCustomRegistryGroupAndVersion.SayHello(ctx, req)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "Hello laurence from UserProviderWithCustomRegistryGroupAndVersion", reply.Name)
+	assert.Equal(t, "12345", reply.Id)
+	assert.Equal(t, int32(21), reply.Age)
+}

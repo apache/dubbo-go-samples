@@ -31,10 +31,12 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
+var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{}
 var userProvider = &UserProvider{}
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
+	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
 	hessian.RegisterPOJO(&User{})
 	if err := config.Load(); err != nil {
 		panic(err)
@@ -48,6 +50,10 @@ type User struct {
 	Name string
 	Age  int32
 	Time time.Time
+}
+
+type UserProviderWithCustomGroupAndVersion struct {
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
 }
 
 type UserProvider struct {

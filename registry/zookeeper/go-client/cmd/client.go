@@ -31,10 +31,16 @@ import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
+var grpcGreeterImplWithCustomGroupAndVersion = &UserProviderWithCustomGroupAndVersion{GreeterClientImpl: api.GreeterClientImpl{}}
 var grpcGreeterImpl = new(api.GreeterClientImpl)
+
+type UserProviderWithCustomGroupAndVersion struct {
+	api.GreeterClientImpl
+}
 
 func init() {
 	config.SetConsumerService(grpcGreeterImpl)
+	config.SetConsumerService(grpcGreeterImplWithCustomGroupAndVersion)
 }
 
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml if needed
@@ -49,6 +55,12 @@ func main() {
 		Name: "laurence",
 	}
 	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client response result: %v\n", reply)
+
+	reply, err = grpcGreeterImplWithCustomGroupAndVersion.SayHello(context.Background(), req)
 	if err != nil {
 		logger.Error(err)
 	}

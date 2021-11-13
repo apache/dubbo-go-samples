@@ -22,6 +22,10 @@ array+=("game/go-server-gate")
 # route
 array=("route/meshroute")
 
+# error
+array+=("error/triple/hessian2")
+array+=("error/triple/pb")
+
 # metrics
 array+=("metrics")
 
@@ -36,6 +40,7 @@ array+=("filter/custom")
 
 # context
 array+=("context/dubbo")
+array+=("context/triple")
 
 # config-api
 array+=("config-api/rpc/triple")
