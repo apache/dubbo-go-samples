@@ -26,11 +26,8 @@
 	<!-- 用dubbo协议在20880端口暴露服务 -->
 	<dubbo:protocol id="dubbo" name="dubbo" host="127.0.0.1" port="20010" />
 	<!-- 声明需要暴露的服务接口 -->
-	<dubbo:service id="aaa" registry="dubbogo" timeout="3000" interface="org.apache.dubbo.UserProvider" ref="demoService"/>
-	<dubbo:service id="bbb" registry="dubbogo" timeout="3000" interface="org.apache.dubbo.UserProvider" ref="otherService" version="2.0"/>
-	<dubbo:service id="ccc" registry="dubbogo" timeout="3000" interface="org.apache.dubbo.UserProvider" ref="otherService" group="as" version="2.0"/>
+	<dubbo:service id="aaa" registry="dubbogo" timeout="3000" interface="org.apache.dubbo.UserProvider" ref="userProvider"/>
 
-	<bean id="demoService" class="org.apache.dubbo.UserProviderImpl" />
-	<bean id="otherService" class="org.apache.dubbo.UserProviderAnotherImpl"/>
+	<bean id="userProvider" class="org.apache.dubbo.UserProviderImpl" />
 
 </beans>

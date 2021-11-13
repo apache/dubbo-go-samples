@@ -19,6 +19,7 @@ package org.apache.dubbo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.StringJoiner;
 
 public class User implements Serializable  {
 
@@ -89,7 +90,14 @@ public class User implements Serializable  {
         this.sex = sex;
     }
 
+    @Override
     public String toString() {
-        return "User{id:" + id + ", name:" + name + ", age:" + age + ", time:" + time + ", gender:" + sex + "}";
+        return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
+                .add("id='" + id + "'")
+                .add("name='" + name + "'")
+                .add("age=" + age)
+                .add("time=" + time)
+                .add("sex=" + sex)
+                .toString();
     }
 }

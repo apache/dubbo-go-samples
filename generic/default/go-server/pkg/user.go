@@ -21,13 +21,6 @@ import (
 	"time"
 )
 
-var userMap = map[string]*User{
-	"001": {"001", "other-zhangsan", 23, time.Date(1998, 1, 2, 3, 4, 5, 0, time.Local)},
-	"002": {"002", "other-lisi", 25, time.Date(1996, 1, 2, 3, 4, 5, 0, time.Local)},
-	"003": {"003", "other-lily", 28, time.Date(1993, 1, 2, 3, 4, 5, 0, time.Local)},
-	"004": {"004", "other-lisa", 36, time.Date(1985, 1, 2, 3, 4, 5, 0, time.Local)},
-}
-
 type User struct {
 	ID   string
 	Name string

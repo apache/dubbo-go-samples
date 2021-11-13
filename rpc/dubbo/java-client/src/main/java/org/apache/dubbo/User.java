@@ -18,6 +18,7 @@
 package org.apache.dubbo;
 
 import java.util.Date;
+import java.util.StringJoiner;
 
 import lombok.Data;
 
@@ -82,5 +83,16 @@ public class User {
 
     public void setSex(Gender sex) {
         this.sex = sex;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
+                .add("id='" + id + "'")
+                .add("name='" + name + "'")
+                .add("age=" + age)
+                .add("time=" + time)
+                .add("sex=" + sex)
+                .toString();
     }
 }

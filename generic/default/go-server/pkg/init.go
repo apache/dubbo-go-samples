@@ -28,5 +28,4 @@ func init() {
 	config.SetProviderService(new(UserProviderTriple))
 	// ------for hessian2------
 	hessian.RegisterPOJO(&User{})
-	hessian.RegisterPOJO(&UserResponse{})
 }
