@@ -18,14 +18,7 @@ dubbo:
   provider:
     services:
       UserProvider:
-        interface: com.ikurento.user.UserProvider
-      UserProvider1:
-        interface: com.ikurento.user.UserProvider
-        version: 2.0
-      UserProvider2:
-        interface: com.ikurento.user.UserProvider
-        version: 2.0
-        group: as
+        interface: org.apache.dubbo.UserProvider
   logger:
     zap-config:
       level: info

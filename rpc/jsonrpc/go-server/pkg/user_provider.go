@@ -25,8 +25,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 
 	"github.com/dubbogo/gost/log"
-
-	perrors "github.com/pkg/errors"
 )
 
 func init() {
@@ -58,20 +56,6 @@ func (u *UserProvider) GetUser(ctx context.Context, userID string) (*User, error
 	return user, err
 }
 
-func (u *UserProvider) GetUser0(userID string, name string) (User, error) {
-	var err error
-
-	gxlog.CInfo("userID:%s, name:%s", userID, name)
-	user, err := u.getUser(userID)
-	if err != nil {
-		return User{}, err
-	}
-	if user.Name != name {
-		return User{}, perrors.New("name is not " + user.Name)
-	}
-	return *user, err
-}
-
 func (u *UserProvider) GetUser2(ctx context.Context, userID string) (*User, error) {
 	var err error
 
@@ -81,29 +65,6 @@ func (u *UserProvider) GetUser2(ctx context.Context, userID string) (*User, erro
 		Sex: Gender(MAN).String(),
 	}
 	return rsp, err
-}
-
-func (u *UserProvider) GetUser3() error {
-	return nil
-}
-
-func (u *UserProvider) GetUsers(req []interface{}) ([]*User, error) {
-	var err error
-
-	gxlog.CInfo("userIDs:%s", req)
-	t := req[0].([]interface{})
-	user, err := u.getUser(t[0].(string))
-	if err != nil {
-		return nil, err
-	}
-	gxlog.CInfo("user:%v", user)
-	user1, err := u.getUser(t[1].(string))
-	if err != nil {
-		return nil, err
-	}
-	gxlog.CInfo("user1:%v", user1)
-
-	return []*User{user, user1}, err
 }
 
 func (s *UserProvider) MethodMapper() map[string]string {

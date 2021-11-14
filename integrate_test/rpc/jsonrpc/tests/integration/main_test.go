@@ -32,15 +32,11 @@ import (
 )
 
 var (
-	userProvider  = &pkg.UserProvider{}
-	userProvider1 = &pkg.UserProvider1{}
-	userProvider2 = &pkg.UserProvider2{}
+	userProvider = &pkg.UserProvider{}
 )
 
 func init() {
 	config.SetConsumerService(userProvider)
-	config.SetConsumerService(userProvider1)
-	config.SetConsumerService(userProvider2)
 }
 
 func TestMain(m *testing.M) {

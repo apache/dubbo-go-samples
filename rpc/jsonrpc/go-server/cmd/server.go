@@ -39,16 +39,11 @@ var (
 	survivalTimeout = int(3e9)
 )
 
-// Do some checking before the system starts up:
-// 1. env config
-// 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
-
 	err := config.Load()
 	if err != nil {
 		panic(err)
 	}
-
 	initSignal()
 }
 

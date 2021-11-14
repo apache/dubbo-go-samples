@@ -15,20 +15,27 @@
  * limitations under the License.
  */
 
-package com.ikurento.user;
+package org.apache.dubbo;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Provider {
+public class UserProviderImpl implements UserProvider {
+    Map<String, User> userMap = new HashMap<String, User>();
 
-    /**
-     * To get ipv6 address to work, add
-     * System.setProperty("java.net.preferIPv6Addresses", "true");
-     * before running your application.
-     */
-    public static void main(String[] args) throws Exception {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo.provider.xml"});
-        context.start();
-        System.in.read(); // press any key to exit
+    public UserProviderImpl() {
+        userMap.put("A000", new User("0", "Alex Stocks", 31, Gender.MAN));
+        userMap.put("A001", new User("A001", "ZhangSheng", 18, Gender.MAN));
+        userMap.put("A002", new User("A002", "Lily", 20, Gender.WOMAN));
+        userMap.put("A003", new User("A003", "Moorse", 30, Gender.MAN));
     }
+
+    public User getUser(String userId) {
+        User user = userMap.get(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("invalid user id: " + userId);
+        }
+        return user;
+    }
+
 }

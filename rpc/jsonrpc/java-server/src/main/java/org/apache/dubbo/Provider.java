@@ -15,36 +15,20 @@
  * limitations under the License.
  */
 
-package integration
+package org.apache.dubbo;
 
-import (
-	"context"
-	"testing"
-)
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import (
-	"github.com/stretchr/testify/assert"
-)
+public class Provider {
 
-func TestTest(t *testing.T) {
-	ctx := context.Background()
-
-	// test Echo
-	echo, err := userProvider.Echo(ctx, "Phil")
-	assert.Nil(t, err)
-	assert.Equal(t, "Phil", echo)
-
-	// test GetUser
-	user, err := userProvider.GetUser(ctx, "A003")
-	assert.Nil(t, err)
-	assert.Equal(t, "Moorse", user.Name)
-	assert.Equal(t, int64(30), user.Age)
-	assert.Equal(t, "MAN", user.Sex)
-
-	// test GetUser2
-	user, err = userProvider.GetUser2(ctx, "A001")
-	assert.Nil(t, err)
-	assert.Equal(t, "ZhangSheng", user.Name)
-	assert.Equal(t, int64(18), user.Age)
-	assert.Equal(t, "MAN", user.Sex)
+    /**
+     * To get ipv6 address to work, add
+     * System.setProperty("java.net.preferIPv6Addresses", "true");
+     * before running your application.
+     */
+    public static void main(String[] args) throws Exception {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo.provider.xml"});
+        context.start();
+        System.in.read(); // press any key to exit
+    }
 }

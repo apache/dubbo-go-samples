@@ -25,9 +25,9 @@
 
 	<properties>
 		<skip_maven_deploy>false</skip_maven_deploy>
-
 		<dubbo-jsonrpc-version>1.0.1</dubbo-jsonrpc-version>
 		<dubbo-version>2.6.5</dubbo-version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencyManagement>
@@ -188,51 +188,64 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>3.0.0</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 				<configuration>
-					<mainClass>com.alibaba.dubbo.container.Main</mainClass>
+					<source>8</source>
+					<target>8</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>package</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>com.alibaba</groupId>
-									<artifactId>dubbo</artifactId>
-									<version>${dubbo-version}</version>
-									<outputDirectory>${project.build.directory}/dubbo</outputDirectory>
-									<includes>META-INF/assembly/**</includes>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptor>src/main/assembly/assembly.xml</descriptor>
-                </configuration>
-                <executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-            </plugin>
 		</plugins>
 	</build>
+<!--	<build>-->
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<groupId>org.codehaus.mojo</groupId>-->
+<!--				<artifactId>exec-maven-plugin</artifactId>-->
+<!--				<version>3.0.0</version>-->
+<!--				<configuration>-->
+<!--					<mainClass>com.alibaba.dubbo.container.Main</mainClass>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+<!--			<plugin>-->
+<!--				<artifactId>maven-dependency-plugin</artifactId>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>unpack</id>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>unpack</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<artifactItems>-->
+<!--								<artifactItem>-->
+<!--									<groupId>com.alibaba</groupId>-->
+<!--									<artifactId>dubbo</artifactId>-->
+<!--									<version>${dubbo-version}</version>-->
+<!--									<outputDirectory>${project.build.directory}/dubbo</outputDirectory>-->
+<!--									<includes>META-INF/assembly/**</includes>-->
+<!--								</artifactItem>-->
+<!--							</artifactItems>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
+<!--			<plugin>-->
+<!--				<artifactId>maven-assembly-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <descriptor>src/main/assembly/assembly.xml</descriptor>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--					<execution>-->
+<!--						<id>make-assembly</id>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>single</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--            </plugin>-->
+<!--		</plugins>-->
+<!--	</build>-->
 </project>

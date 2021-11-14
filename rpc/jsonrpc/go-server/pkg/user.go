@@ -17,10 +17,6 @@
 
 package pkg
 
-import (
-	"time"
-)
-
 type Gender int
 
 const (
@@ -39,20 +35,18 @@ func (g Gender) String() string {
 
 type (
 	User struct {
-		ID    string `json:"id"`
-		Name  string `json:"name"`
-		Age   int    `json:"age"`
-		sex   Gender
-		Birth int    `json:"time"`
-		Sex   string `json:"sex"`
+		ID   string `json:"id"`
+		Name string `json:"name"`
+		Age  int    `json:"age"`
+		sex  Gender
+		Sex  string `json:"sex"`
 	}
 )
 
 var (
 	DefaultUser = User{
 		ID: "0", Name: "Alex Stocks", Age: 31,
-		Birth: int(time.Date(1985, 11, 24, 15, 15, 0, 0, time.Local).Unix()),
-		sex:   Gender(MAN),
+		sex: Gender(MAN),
 	}
 
 	userMap = make(map[string]User)
@@ -65,7 +59,6 @@ func init() {
 	userMap["A002"] = User{ID: "002", Name: "Lily", Age: 20, sex: WOMAN}
 	userMap["A003"] = User{ID: "113", Name: "Moorse", Age: 30, sex: MAN}
 	for k, v := range userMap {
-		v.Birth = int(time.Now().AddDate(-1*v.Age, 0, 0).Unix())
 		v.Sex = userMap[k].sex.String()
 		userMap[k] = v
 	}
