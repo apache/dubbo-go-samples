@@ -92,7 +92,7 @@ func (g Gender) EnumValue(s string) hessian.JavaEnum {
 
 type User struct {
 	// !!! Cannot define lowercase names of variable
-	ID   string
+	Id   string
 	Name string
 	Age  int32
 	Time time.Time
@@ -102,7 +102,7 @@ type User struct {
 func (u User) String() string {
 	return fmt.Sprintf(
 		"User{ID:%s, Name:%s, Age:%d, Time:%s, Sex:%s}",
-		u.ID, u.Name, u.Age, u.Time, u.Sex,
+		u.Id, u.Name, u.Age, u.Time, u.Sex,
 	)
 }
 
@@ -111,15 +111,7 @@ func (User) JavaClassName() string {
 }
 
 type UserProvider struct {
-	GetUsers  func(req []string) ([]*User, error)
-	GetErr    func(ctx context.Context, req *User) (*User, error)
-	GetUser   func(ctx context.Context, req *User) (*User, error)
-	GetUser0  func(id string, name string) (User, error)
-	GetUser1  func(ctx context.Context, req *User) (*User, error)
-	GetUser2  func(ctx context.Context, req int32) (*User, error) `dubbo:"getUser"`
-	GetUser3  func() error
-	GetGender func(i int32) (Gender, error)
-	Echo      func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
+	GetUser func(ctx context.Context, userID string) (*User, error)
 }
 
 func (u *UserProvider) Reference() string {

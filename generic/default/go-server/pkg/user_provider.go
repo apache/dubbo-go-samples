@@ -29,7 +29,7 @@ import (
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetUser(_ context.Context, userID string, name string) (*User, error) {
+func (u *UserProvider) GetUser(_ context.Context, userID, name string) (*User, error) {
 	logger.Infof("req:%#v, %#v", userID, name)
 	rsp := User{userID, name, 48, time.Now()}
 	logger.Infof("rsp:%#v", rsp)

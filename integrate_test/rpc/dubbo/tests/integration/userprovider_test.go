@@ -23,8 +23,6 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-hessian2/java_exception"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,11 +31,9 @@ import (
 )
 
 func TestGetUserA000(t *testing.T) {
-	reqUser := &User{}
-	reqUser.ID = "000"
-	user, err := userProvider.GetUser(context.TODO(), reqUser)
+	user, err := userProvider.GetUser(context.TODO(), "A000")
 	assert.Nil(t, err)
-	assert.Equal(t, "000", user.ID)
+	assert.Equal(t, "000", user.Id)
 	assert.Equal(t, "Alex Stocks", user.Name)
 	assert.Equal(t, int32(31), user.Age)
 	assert.Equal(t, Gender(pkg.MAN), user.Sex)
@@ -46,10 +42,10 @@ func TestGetUserA000(t *testing.T) {
 
 func TestGetUserA001(t *testing.T) {
 	reqUser := &User{}
-	reqUser.ID = "001"
-	user, err := userProvider.GetUser(context.TODO(), reqUser)
+	reqUser.Id = "001"
+	user, err := userProvider.GetUser(context.TODO(), "A001")
 	assert.Nil(t, err)
-	assert.Equal(t, "001", user.ID)
+	assert.Equal(t, "001", user.Id)
 	assert.Equal(t, "ZhangSheng", user.Name)
 	assert.Equal(t, int32(18), user.Age)
 	assert.Equal(t, Gender(pkg.MAN), user.Sex)
@@ -58,10 +54,10 @@ func TestGetUserA001(t *testing.T) {
 
 func TestGetUserA002(t *testing.T) {
 	reqUser := &User{}
-	reqUser.ID = "002"
-	user, err := userProvider.GetUser(context.TODO(), reqUser)
+	reqUser.Id = "002"
+	user, err := userProvider.GetUser(context.TODO(), "A002")
 	assert.Nil(t, err)
-	assert.Equal(t, "002", user.ID)
+	assert.Equal(t, "002", user.Id)
 	assert.Equal(t, "Lily", user.Name)
 	assert.Equal(t, int32(20), user.Age)
 	assert.Equal(t, Gender(pkg.WOMAN), user.Sex)
@@ -70,48 +66,12 @@ func TestGetUserA002(t *testing.T) {
 
 func TestGetUserA003(t *testing.T) {
 	reqUser := &User{}
-	reqUser.ID = "003"
-	user, err := userProvider.GetUser(context.TODO(), reqUser)
+	reqUser.Id = "003"
+	user, err := userProvider.GetUser(context.TODO(), "A003")
 	assert.Nil(t, err)
-	assert.Equal(t, "113", user.ID)
+	assert.Equal(t, "113", user.Id)
 	assert.Equal(t, "Moorse", user.Name)
 	assert.Equal(t, int32(30), user.Age)
 	assert.Equal(t, Gender(pkg.WOMAN), user.Sex)
 	assert.NotNil(t, user.Time)
-}
-
-func TestGetUser0(t *testing.T) {
-	user, err := userProvider.GetUser0("003", "Moorse")
-	assert.Nil(t, err)
-	assert.NotNil(t, user)
-
-	_, err = userProvider.GetUser0("003", "MOORSE")
-	assert.NotNil(t, err)
-}
-
-func TestGetUser2(t *testing.T) {
-	user, err := userProvider.GetUser2(context.TODO(), int32(64))
-	assert.Nil(t, err)
-	assert.Equal(t, "64", user.ID)
-}
-
-func TestGetErr(t *testing.T) {
-	reqUser := &User{}
-	reqUser.ID = "003"
-	_, err := userProvider.GetErr(context.TODO(), reqUser)
-	assert.IsType(t, &java_exception.Throwable{}, err)
-}
-
-func TestGetUsers(t *testing.T) {
-	reqUsers := []string{"002", "003"}
-	users, err := userProvider.GetUsers(reqUsers)
-	assert.Nil(t, err)
-	assert.Equal(t, "Lily", users[0].Name)
-	assert.Equal(t, "Moorse", users[1].Name)
-}
-
-func TestGetGender(t *testing.T) {
-	gender, err := userProvider.GetGender(1)
-	assert.Nil(t, err)
-	assert.Equal(t, Gender(pkg.WOMAN), gender)
 }
