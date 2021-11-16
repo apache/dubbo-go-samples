@@ -46,8 +46,7 @@ func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 
 	// generic invocation samples using hessian serialization on Dubbo protocol
-	dubboRefConf := newRefConf("org.apache.dubbo.samples.UserProvider", dubbo.DUBBO)
-
+	dubboRefConf := newRefConf("org.apache.dubbo.UserProvider", dubbo.DUBBO)
 	callGetUser(dubboRefConf)
 	//callGetOneUser(dubboRefConf)
 	callGetUsers(dubboRefConf)
@@ -57,7 +56,7 @@ func main() {
 	//callQueryAll(dubboRefConf)
 
 	// generic invocation samples using hessian serialization on Triple protocol
-	tripleRefConf := newRefConf("org.apache.dubbo.samples.UserProviderTriple", tpconst.TRIPLE)
+	tripleRefConf := newRefConf("org.apache.dubbo.UserProviderTriple", tpconst.TRIPLE)
 	callGetUser(tripleRefConf)
 	//callGetOneUser(tripleRefConf)
 	callGetUsers(tripleRefConf)

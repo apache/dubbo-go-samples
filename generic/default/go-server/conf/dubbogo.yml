@@ -16,7 +16,7 @@ dubbo:
     services:
       UserProvider:
         serialization: hessian2
-        interface: org.apache.dubbo.samples.UserProvider
+        interface: org.apache.dubbo.UserProvider
       UserProviderTriple:
         serialization: hessian2
-        interface: org.apache.dubbo.samples.UserProviderTriple
+        interface: org.apache.dubbo.UserProviderTriple
