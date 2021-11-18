@@ -7,7 +7,7 @@ dubbo:
       address: 127.0.0.1:2181
   tracing:
     mytracingKey:
-#      address: "http://tracing-analysis-dc-hz.aliyuncs.com/XXXXXX/api/traces"
+      address: "http://tracing-analysis-dc-hz.aliyuncs.com/XXXXXX/api/traces"
   consumer:
     references:
       GreeterClientImpl:
