@@ -11,7 +11,6 @@ dubbo:
       port: 20000
   tracing:
     mytracingKey:
-      address: "http://tracing-analysis-dc-hz.aliyuncs.com/adapt_dwk9x41cn7@22c418904871697_dwk9x41cn7@53df7ad2afe8301/api/traces"
 #      address: "http://tracing-analysis-dc-hz.aliyuncs.com/XXXXXXXX/api/traces"
   provider:
     services:

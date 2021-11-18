@@ -7,7 +7,6 @@ dubbo:
       address: 127.0.0.1:2181
   tracing:
     mytracingKey:
-      address: "http://tracing-analysis-dc-hz.aliyuncs.com/adapt_dwk9x41cn7@22c418904871697_dwk9x41cn7@53df7ad2afe8301/api/traces"
 #      address: "http://tracing-analysis-dc-hz.aliyuncs.com/XXXXXX/api/traces"
   consumer:
     references:

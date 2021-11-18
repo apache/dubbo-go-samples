@@ -34,7 +34,7 @@ import (
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)
 
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/tracing/go-client/conf/dubbogo.yml
 func main() {
 	//initJaeger()
 	config.SetConsumerService(grpcGreeterImpl)
@@ -54,7 +54,6 @@ func main() {
 
 
 func invokeStream(){
-	//1. stream invocation
 	ctx := context.Background()
 	req := api.HelloRequest{
 		Name: "laurence",
