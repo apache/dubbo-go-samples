@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="tracing-dubbo-go-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="tracing" singleton="false">
+  <configuration default="false" name="tracing-dubbo-go-client" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="tracing" singleton="true">
     <module name="dubbo-go-samples" />
     <working_directory value="$PROJECT_DIR$" />
     <envs>
