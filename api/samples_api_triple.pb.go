@@ -178,10 +178,11 @@ func _Greeter_SayHello_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc_go.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Greeter/SayHello",
+		FullMethod: ctx.Value("XXX_TRIPLE_GO_INTERFACE_NAME").(string),
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GreeterServer).SayHello(ctx, req.(*HelloRequest))
+		result := base.XXX_GetProxyImpl().Invoke(ctx, invo)
+		return result, result.Error()
 	}
 	return interceptor(ctx, in, info, handler)
 }
