@@ -52,8 +52,7 @@ func main() {
 	}
 }
 
-
-func invokeStream(){
+func invokeStream() {
 	ctx := context.Background()
 	req := api.HelloRequest{
 		Name: "laurence",
@@ -89,7 +88,7 @@ func invokeStream(){
 	logger.Infof("Receive 2 user = %+v\n", rspUser2)
 }
 
-func invoke(){
+func invoke() {
 	reply, err := grpcGreeterImpl.SayHello(context.Background(), &api.HelloRequest{
 		Name: "laurence",
 	})
