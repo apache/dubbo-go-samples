@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	grpcpb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/grpc"
+	grpcpb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/api"
 )
 
 func TestGRPCClientHello(t *testing.T) {
