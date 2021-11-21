@@ -22,22 +22,6 @@ import (
 	"testing"
 )
 
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
-
-import (
-	triplepb "github.com/apache/dubbo-go-samples/api"
-)
-
-var greeterProvider = new(triplepb.GreeterClientImpl)
-
 func TestMain(m *testing.M) {
-	config.SetConsumerService(greeterProvider)
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
-
 	os.Exit(m.Run())
 }
