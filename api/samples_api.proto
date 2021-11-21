@@ -16,7 +16,7 @@
  */
 
 syntax = "proto3";
-package api;
+package org.apache.dubbogo.samples.api;
 
 option go_package = "./;api";
 
