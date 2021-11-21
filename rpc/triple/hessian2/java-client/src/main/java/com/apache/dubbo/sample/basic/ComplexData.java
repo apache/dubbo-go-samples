@@ -14,8 +14,8 @@ public class ComplexData implements Serializable {
     User userDefinedData;
     byte [] byteData;
     HashMap<String, String> stringStringHashMap;
-//    HashMap<String, User> stringUserDefinedPtrMapData;
+    HashMap<String, User> stringUserDefinedPtrMapData;
     String[] arrayListData;
-//    User[] arrayUserData;
+    User[] arrayUserData;
 
 }

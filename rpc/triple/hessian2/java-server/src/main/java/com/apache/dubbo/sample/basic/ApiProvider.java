@@ -22,10 +22,18 @@ import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
+
 import java.util.concurrent.CountDownLatch;
 
 public class ApiProvider {
+    
     public static void main(String[] args) throws InterruptedException {
+        startComplexProvider();
+        startIGreeterService();
+        new CountDownLatch(1).await();
+    }
+
+    public static void startComplexProvider() {
         ServiceConfig<ComplexProvider> service = new ServiceConfig<>();
         service.setInterface(ComplexProvider.class);
         service.setRef(new ComplexProviderImpl());
@@ -34,6 +42,16 @@ public class ApiProvider {
         service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
         service.export();
         System.out.println("dubbo service started");
-        new CountDownLatch(1).await();
+    }
+
+    public static void startIGreeterService() {
+        ServiceConfig<IGreeter> service = new ServiceConfig<>();
+        service.setInterface(IGreeter.class);
+        service.setRef(new IGreeterImpl());
+        service.setProtocol(new ProtocolConfig(CommonConstants.TRIPLE, 50052));
+        service.setApplication(new ApplicationConfig("demo-provider"));
+        service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
+        service.export();
+        System.out.println("dubbo service started");
     }
 }

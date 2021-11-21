@@ -7,4 +7,5 @@ public interface ComplexProvider {
     void invokeWithMultiString(String str1, String str2, String str3);
     String invokeWithEmptyReqStringRsp ();
     ComplexData invokeWithComplexReqComplexRspPtr(ComplexData complexData);
+    int invokeWithMultiBasicData (String str, byte[]data, int num, boolean boolValue);
 }

@@ -24,6 +24,5 @@ public interface IGreeter {
      *  Sends a greeting
      * </pre>
      */
-    User getUser(String request);
-
+    User getUser(User request);
 }

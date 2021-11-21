@@ -168,6 +168,7 @@ func testComplexService() {
 	}
 	gxlog.CInfo("get InvokeWithComplexReqComplexRspPtr rsp = %+v", cplxRsp)
 
+	// todo 无法访问java客户端
 	intRsp, err := complexProvider.InvokeWithMultiBasicData(context.TODO(), "reqstr", []byte{1, 2, 4}, 32, true)
 	if err != nil {
 		panic(err)
