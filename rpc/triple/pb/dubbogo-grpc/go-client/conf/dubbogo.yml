@@ -6,4 +6,3 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: org.apache.dubbo.demo.Greeter

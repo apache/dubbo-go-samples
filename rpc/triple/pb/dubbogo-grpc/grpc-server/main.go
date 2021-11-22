@@ -30,7 +30,7 @@ import (
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/grpc"
+	pb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/api"
 )
 
 const (

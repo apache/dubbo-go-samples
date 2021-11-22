@@ -23,62 +23,14 @@ import (
 )
 
 import (
-	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
-
 	"github.com/stretchr/testify/assert"
 
 	"google.golang.org/grpc"
 )
 
 import (
-	triplepb "github.com/apache/dubbo-go-samples/api"
-	grpcpb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/grpc"
+	grpcpb "github.com/apache/dubbo-go-samples/rpc/triple/pb/dubbogo-grpc/protobuf/api"
 )
-
-func TestSayHello(t *testing.T) {
-	ctx := context.Background()
-	ctx = context.WithValue(ctx, tripleConstant.TripleCtxKey(tripleConstant.TripleRequestID), "triple-request-id-demo")
-	req := triplepb.HelloRequest{
-		Name: "laurence",
-	}
-	user, err := greeterProvider.SayHello(ctx, &req)
-	assert.Nil(t, err)
-	assert.Equal(t, "Hello laurence", user.Name)
-	assert.Equal(t, "12345", user.Id)
-	assert.Equal(t, int32(21), user.Age)
-}
-
-func TestStreamSayHello(t *testing.T) {
-	ctx := context.Background()
-	ctx = context.WithValue(ctx, tripleConstant.TripleCtxKey(tripleConstant.TripleRequestID), "triple-request-id-demo")
-	req := triplepb.HelloRequest{
-		Name: "laurence",
-	}
-
-	r, err := greeterProvider.SayHelloStream(ctx)
-	assert.Nil(t, err)
-
-	for i := 0; i < 2; i++ {
-		err := r.Send(&req)
-		assert.Nil(t, err)
-	}
-
-	rspUser := &triplepb.User{}
-	err = r.RecvMsg(rspUser)
-	assert.Nil(t, err)
-	assert.Equal(t, "hello laurence", rspUser.Name)
-	assert.Equal(t, "123456789", rspUser.Id)
-	assert.Equal(t, int32(18), rspUser.Age)
-
-	err = r.Send(&req)
-	assert.Nil(t, err)
-
-	err = r.RecvMsg(rspUser)
-	assert.Nil(t, err)
-	assert.Equal(t, "hello laurence", rspUser.Name)
-	assert.Equal(t, "123456789", rspUser.Id)
-	assert.Equal(t, int32(19), rspUser.Age)
-}
 
 func TestGRPCClientHello(t *testing.T) {
 	// Set up a connection to the client.

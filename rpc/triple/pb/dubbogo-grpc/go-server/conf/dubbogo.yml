@@ -10,5 +10,5 @@ dubbo:
     services:
       # you may refer to `Reference()` method defined in `protobuf/triple/helloworld.pb.go`
       GreeterProvider:
-        # interface is for registry
-        interface: org.apache.dubbo.demo.Greeter
+        # interface read from pb file
+        interface: ""
