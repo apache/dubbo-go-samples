@@ -17,6 +17,7 @@
 
 package org.apache.dubbo;
 
+import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
@@ -34,21 +35,22 @@ import java.lang.Integer;
 public class ApiConsumer {
     private static final Logger logger = LoggerFactory.getLogger("userLogger"); // Output to com.dubbogo.user-server.log
 
+    private static GenericService userProvider;
+    private static GenericService userProviderTriple;
     private static GenericService genericService;
 
     public static void main(String[] args) {
-        initConfig();
-
-        callGetUser();
-        callGetOneUser();
-        callGetUsers();
-        callGetUsersMap();
-        callQueryUser();
-        callQueryUsers();
-        callQueryAll();
+        initUserProvider();
+        initUserProviderTriple();
+        
+        genericService = userProvider;
+        call();
+        
+        genericService = userProviderTriple;
+        call();
     }
 
-    private static void initConfig() {
+    private static void initUserProvider() {
         logger.info("\n\n\nstart to init config\n\n\n");
         ApplicationConfig applicationConfig = new ApplicationConfig();
         ReferenceConfig<GenericService> reference = new ReferenceConfig<GenericService>();
@@ -59,7 +61,33 @@ public class ApiConsumer {
         reference.setRegistry(registryConfig);
         reference.setGeneric(true);
         reference.setInterface("org.apache.dubbo.UserProvider");
-        genericService = reference.get();
+        userProvider = reference.get();
+    }
+
+    private static void initUserProviderTriple() {
+        logger.info("\n\n\nstart to init config\n\n\n");
+        ApplicationConfig applicationConfig = new ApplicationConfig();
+        ReferenceConfig<GenericService> reference = new ReferenceConfig<GenericService>();
+        applicationConfig.setName("user-info-server");
+        reference.setApplication(applicationConfig);
+        RegistryConfig registryConfig = new RegistryConfig();
+        registryConfig.setAddress("zookeeper://127.0.0.1:2181");
+        reference.setRegistry(registryConfig);
+        reference.setProtocol(CommonConstants.TRIPLE);
+        reference.setCheck(false);
+        reference.setGeneric(true);
+        reference.setInterface("org.apache.dubbo.UserProviderTriple");
+        userProviderTriple = reference.get();
+    }
+    
+    public static void call() {
+        callGetUser();
+        callGetOneUser();
+        callGetUsers();
+        callGetUsersMap();
+        callQueryUser();
+        callQueryUsers();
+        callQueryAll();
     }
 
     private static void callGetUser() {
