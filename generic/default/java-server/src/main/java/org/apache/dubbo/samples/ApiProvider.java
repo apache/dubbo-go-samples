@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.samples;
 
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.*;

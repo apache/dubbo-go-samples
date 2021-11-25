@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.samples;
 
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.ApplicationConfig;
@@ -60,7 +60,7 @@ public class ApiConsumer {
         registryConfig.setAddress("zookeeper://127.0.0.1:2181");
         reference.setRegistry(registryConfig);
         reference.setGeneric(true);
-        reference.setInterface("org.apache.dubbo.UserProvider");
+        reference.setInterface("org.apache.dubbo.samples.UserProvider");
         userProvider = reference.get();
     }
 
@@ -76,7 +76,7 @@ public class ApiConsumer {
         reference.setProtocol(CommonConstants.TRIPLE);
         reference.setCheck(false);
         reference.setGeneric(true);
-        reference.setInterface("org.apache.dubbo.UserProviderTriple");
+        reference.setInterface("org.apache.dubbo.samples.UserProviderTriple");
         userProviderTriple = reference.get();
     }
     
@@ -153,7 +153,7 @@ public class ApiConsumer {
         user.setName("panty");
         user.setId("3213");
         user.setAge(25);
-        Object result = genericService.$invoke("queryUser", new String[]{"org.apache.dubbo.User"}, new Object[]{user});
+        Object result = genericService.$invoke("queryUser", new String[]{"org.apache.dubbo.samples.User"}, new Object[]{user});
         logger.info("\n\n\n" + "queryUser(User user) " + "res: " + result + "\n\n\n");
     }
 

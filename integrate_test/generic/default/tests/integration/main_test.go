@@ -46,8 +46,8 @@ var (
 func TestMain(m *testing.M) {
 	hessian.RegisterPOJO(&pkg.User{})
 
-	dubboRefConf = newRefConf("org.apache.dubbo.UserProvider", dubbo.DUBBO)
-	tripleRefConf = newRefConf("org.apache.dubbo.UserProviderTriple", tpconst.TRIPLE)
+	dubboRefConf = newRefConf("org.apache.dubbo.samples.UserProvider", dubbo.DUBBO)
+	tripleRefConf = newRefConf("org.apache.dubbo.samples.UserProviderTriple", tpconst.TRIPLE)
 
 	os.Exit(m.Run())
 }

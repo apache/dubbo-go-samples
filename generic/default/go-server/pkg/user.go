@@ -36,5 +36,5 @@ type User struct {
 }
 
 func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	return "org.apache.dubbo.samples.User"
 }

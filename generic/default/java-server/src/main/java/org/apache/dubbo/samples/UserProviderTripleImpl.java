@@ -15,19 +15,19 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.samples;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class UserProviderImpl implements UserProvider {
+public class UserProviderTripleImpl implements UserProviderTriple {
     // private static final Logger logger = LoggerFactory.getLogger(getClass()); // Only output to dubbo's log(logs/server.log)
     private static final Logger LOG = LoggerFactory.getLogger("userLogger"); // Output to com.dubbogo.user-server.log
     private Map<String, User> userMap = new HashMap<String, User>();
 
-    UserProviderImpl() {
+    UserProviderTripleImpl() {
         userMap.put("001", new User("001", "other-zhangsan", 18, new Date(1998, 1, 2, 3, 4, 5), Gender.MAN));
         userMap.put("002", new User("002", "other-lisi", 20, new Date(1996, 1, 2, 3, 4, 5), Gender.MAN));
         userMap.put("003", new User("003", "other-lily", 23, new Date(1993, 1, 2, 3, 4, 5), Gender.WOMAN));

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.samples;
 
 public enum Gender {
     MAN,

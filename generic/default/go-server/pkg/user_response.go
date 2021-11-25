@@ -22,5 +22,5 @@ type UserResponse struct {
 }
 
 func (u *UserResponse) JavaClassName() string {
-	return "org.apache.dubbo.UserResponse"
+	return "org.apache.dubbo.samples.UserResponse"
 }
