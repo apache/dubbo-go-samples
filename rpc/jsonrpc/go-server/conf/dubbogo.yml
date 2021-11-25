@@ -18,12 +18,12 @@ dubbo:
   provider:
     services:
       UserProvider:
-        interface: com.ikurento.user.UserProvider
+        interface: org.apache.dubbo.samples.UserProvider
       UserProvider1:
-        interface: com.ikurento.user.UserProvider
+        interface: org.apache.dubbo.samples.UserProvider
         version: 2.0
       UserProvider2:
-        interface: com.ikurento.user.UserProvider
+        interface: org.apache.dubbo.samples.UserProvider
         version: 2.0
         group: as
   logger:

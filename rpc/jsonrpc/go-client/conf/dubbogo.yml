@@ -14,16 +14,16 @@ dubbo:
     references:
       UserProvider:
         protocol: jsonrpc
-        interface: com.ikurento.user.UserProvider
+        interface: org.apache.dubbo.samples.UserProvider
       UserProvider1:
         protocol: jsonrpc
         version: 2.0
-        interface: com.ikurento.user.UserProvider
+        interface: org.apache.dubbo.samples.UserProvider
       UserProvider2:
         protocol: jsonrpc
         version: 2.0
         group: as
-        interface: com.ikurento.user.UserProvider
+        interface: org.apache.dubbo.samples.UserProvider
   logger:
     zap-config:
       level: info
