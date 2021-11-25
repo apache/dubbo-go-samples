@@ -38,12 +38,11 @@ public class ApiConsumer {
         ref.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
         final ComplexProvider complexProvider = ref.get();
 
-        // TODO: 2021/11/21 void 方法无法解析 
-//        complexProvider.invokeWithEmptyReq();
-//        complexProvider.invokeWithSingleString("single string");
-//        complexProvider.invokeWithMultiString("string1", "string2", "string3");
-//        String[] strList = new String[]{"first string", " second string"};
-//        complexProvider.invokeWithStringList(strList);
+        complexProvider.invokeWithEmptyReq();
+        complexProvider.invokeWithSingleString("single string");
+        complexProvider.invokeWithMultiString("string1", "string2", "string3");
+        String[] strList = new String[]{"first string", " second string"};
+        complexProvider.invokeWithStringList(strList);
         String rsp = complexProvider.invokeWithEmptyReqStringRsp();
         System.out.println("get rsp = " + rsp);
 
@@ -66,8 +65,7 @@ public class ApiConsumer {
         ComplexData response = complexProvider.invokeWithComplexReqComplexRspPtr(cpxData);
         System.out.println("get complex = " + response);
 
-        // TODO: 2021/11/21 int 返回值无法解析 
-//        int rsp1 = complexProvider.invokeWithMultiBasicData("str", new byte[]{1, 3, 4, 44, 7}, 32, true);
-//        System.out.println("get multi basic rsp = " + rsp1);
+        int rsp1 = complexProvider.invokeWithMultiBasicData("str", new byte[]{1, 3, 4, 44, 7}, 32, true);
+        System.out.println("get multi basic rsp = " + rsp1);
     }
 }

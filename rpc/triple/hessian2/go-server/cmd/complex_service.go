@@ -75,7 +75,7 @@ func (u *ComplexData) JavaClassName() string {
 type ComplexProvider struct {
 }
 
-func (u *ComplexProvider) InvokeWithMultiBasicData(ctx context.Context, str string, data []byte, num int, boolValue bool) (int, error) {
+func (u *ComplexProvider) InvokeWithMultiBasicData(ctx context.Context, str string, data []byte, num int32, boolValue bool) (int32, error) {
 	logger.Info("InvokeWithMultiBasicData", str, " ", data, " ", num, " ", boolValue)
 	return num, nil
 }
