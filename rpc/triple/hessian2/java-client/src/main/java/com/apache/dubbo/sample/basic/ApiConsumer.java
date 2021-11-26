@@ -64,8 +64,8 @@ public class ApiConsumer {
 
         ComplexData response = complexProvider.invokeWithComplexReqComplexRspPtr(cpxData);
         System.out.println("get complex = " + response);
-
-        int rsp1 = complexProvider.invokeWithMultiBasicData("str", new byte[]{1, 3, 4, 44, 7}, 32, true);
-        System.out.println("get multi basic rsp = " + rsp1);
+        // todo hessian2's bug,not support basic return value yet
+//         int rsp1 = complexProvider.invokeWithMultiBasicData("str", new byte[]{1, 3, 4, 44, 7}, 32, true);
+//         System.out.println("get multi basic rsp = " + rsp1);
     }
 }
