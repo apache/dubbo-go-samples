@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.sample;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -33,6 +33,10 @@ public class User implements Serializable  {
     private Gender sex = Gender.MAN;
 
     public User() {
+    }
+
+    public User(String id) {
+        this.id = id;
     }
 
     public User(String id, String name, int age) {

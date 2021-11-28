@@ -15,14 +15,27 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.sample;
 
-public interface ComplexProvider {
-    int InvokeWithMultiBasicData (String str, byte[]data, int num, boolean boolValue);
-    void InvokeWithSingleString(String req);
-    void InvokeWithMultiString(String str1, String str2, String str3);
-    void InvokeWithStringList(String[] req);
-    void InvokeWithEmptyReq();
-    String InvokeWithEmptyReqStringRsp ();
-    ComplexData InvokeWithComplexReqComplexRspPtr(ComplexData complexData);
+import java.util.List;
+import java.util.Map;
+
+public interface UserProvider {
+    Map<String, User> getUserMap();
+
+    User[] GetUsers(String[] req) throws Exception;
+
+    User GetErr(User req) throws Exception;
+
+    User GetUser(User req) throws Exception;
+
+    User GetUser0(String userId, String name) throws Exception;
+
+    User GetUser2(int req) throws Exception;
+
+    User GetUser3() throws Exception;
+
+    Gender GetGender(int userId) throws Exception;
+
+    User getUser(int req) throws Exception;
 }

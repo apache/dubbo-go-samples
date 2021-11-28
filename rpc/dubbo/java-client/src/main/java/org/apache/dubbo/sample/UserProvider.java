@@ -11,17 +11,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.dubbo;
+package org.apache.dubbo.sample;
 
 import java.util.List;
 
 public interface UserProvider {
-	User GetUser(String userId);
-	User GetErr(String userId) throws Exception;
-	User GetUser1(String userId) throws Exception;
-    User getUser(int usercode);
-	User getUser(int usercode, String name);
-    void GetUser3();
-	List<User> GetUsers(List<String> userIdList);
-	User GetUser0(String userId, String name);
+    User[] GetUsers(String[] req) throws Exception;
+
+    User GetErr(User req) throws Exception;
+
+    User GetUser(User req) throws Exception;
+
+    User GetUser0(String userId, String name) throws Exception;
+
+    User GetUser2(int req) throws Exception;
+
+    User GetUser3() throws Exception;
+
+    Gender GetGender(Integer userId) throws Exception;
+
+    User getUser(int req) throws Exception;
 }

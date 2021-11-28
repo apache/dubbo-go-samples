@@ -1,4 +1,4 @@
-package org.apache.dubbo;
+package org.apache.dubbo.sample;
 
 public interface WrapperArrayClassProvider {
     Integer[] InvokeWithJavaIntegerArray(Integer[] ia);

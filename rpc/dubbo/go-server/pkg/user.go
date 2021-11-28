@@ -45,7 +45,7 @@ var genderValue = map[string]hessian.JavaEnum{
 }
 
 func (g Gender) JavaClassName() string {
-	return "org.apache.dubbo.Gender"
+	return "org.apache.dubbo.sample.Gender"
 }
 
 func (g Gender) String() string {
@@ -69,7 +69,7 @@ func (g Gender) EnumValue(s string) hessian.JavaEnum {
 type (
 	User struct {
 		// !!! Cannot define lowercase names of variable
-		ID   string
+		ID   string `hessian:"id"`
 		Name string
 		Age  int32
 		Time time.Time
@@ -105,5 +105,5 @@ func (u User) String() string {
 }
 
 func (u User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	return "org.apache.dubbo.sample.User"
 }

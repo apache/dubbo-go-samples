@@ -55,13 +55,6 @@ func main() {
 }
 
 func test() {
-	logger.Infof("\n\n\necho")
-	res, err := userProvider.Echo(context.TODO(), "OK")
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("res: %v\n", res)
-
 	logger.Infof("\n\n\nstart to test dubbo")
 	reqUser := &pkg.User{}
 	reqUser.ID = "003"
@@ -71,13 +64,13 @@ func test() {
 	}
 	logger.Infof("response result: %v", user)
 
-	logger.Infof("\n\n\nstart to test dubbo - enum")
-	gender, err := userProvider.GetGender(1)
-	if err != nil {
-		logger.Infof("error: %v", err)
-	} else {
-		logger.Infof("response result: %v", gender)
-	}
+	// TODO cann't call java server
+	//logger.Infof("\n\n\nstart to test dubbo - enum")
+	//gender, err := userProvider.GetGender(context.TODO(), 1)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//logger.Infof("response result: %v", gender)
 
 	logger.Infof("\n\n\nstart to test dubbo - GetUser0")
 	ret, err := userProvider.GetUser0("003", "Moorse")
@@ -96,7 +89,7 @@ func test() {
 	logger.Infof("\n\n\nstart to test dubbo - getUser")
 
 	var i int32 = 1
-	_, err = userProvider.GetUser2(context.TODO(), i)
+	user, err = userProvider.GetUser2(context.TODO(), i)
 	if err != nil {
 		panic(err)
 	}
@@ -109,12 +102,4 @@ func test() {
 		panic("err is nil")
 	}
 	logger.Infof("getErr - error: %v", err)
-
-	logger.Infof("\n\n\nstart to test dubbo illegal method")
-	reqUser.ID = "003"
-	_, err = userProvider.GetUser1(context.TODO(), reqUser)
-	if err == nil {
-		panic("err is nil")
-	}
-	logger.Infof("error: %v", err)
 }

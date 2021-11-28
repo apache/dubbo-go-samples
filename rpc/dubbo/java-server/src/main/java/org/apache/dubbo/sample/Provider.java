@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
-
-import java.util.concurrent.CountDownLatch;
+package org.apache.dubbo.sample;
 
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.ApplicationConfig;
@@ -37,6 +35,7 @@ public class Provider {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/dubbo.provider.xml"});
         context.start();
         startComplexService();
+        startWrapperArrayClassProvider();
         System.in.read(); // press any key to exit
     }
 
@@ -44,11 +43,21 @@ public class Provider {
         ServiceConfig<ComplexProvider> service = new ServiceConfig<>();
         service.setInterface(ComplexProvider.class);
         service.setRef(new ComplexProviderImpl());
-        service.setProtocol(new ProtocolConfig(CommonConstants.DUBBO_PROTOCOL, 20001));
-        service.setApplication(new ApplicationConfig("demo-provider"));
+        service.setProtocol(new ProtocolConfig(CommonConstants.DUBBO_PROTOCOL, 20010));
+        service.setApplication(new ApplicationConfig("user-info-server"));
         service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
         service.export();
         System.out.println("dubbo service started");
-        new CountDownLatch(1).await();
+    }
+
+    public static void startWrapperArrayClassProvider() throws InterruptedException {
+        ServiceConfig<WrapperArrayClassProvider> service = new ServiceConfig<>();
+        service.setInterface(WrapperArrayClassProvider.class);
+        service.setRef(new WrapperArrayClassProviderImpl());
+        service.setProtocol(new ProtocolConfig(CommonConstants.DUBBO_PROTOCOL, 20010));
+        service.setApplication(new ApplicationConfig("user-info-server"));
+        service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
+        service.export();
+        System.out.println("dubbo service started");
     }
 }
