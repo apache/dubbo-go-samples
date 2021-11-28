@@ -69,7 +69,7 @@ var genderValue = map[string]hessian.JavaEnum{
 }
 
 func (g Gender) JavaClassName() string {
-	return "org.apache.dubbo.Gender"
+	return "org.apache.dubbo.sample.Gender"
 }
 
 func (g Gender) String() string {
@@ -107,7 +107,7 @@ func (u User) String() string {
 }
 
 func (User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	return "org.apache.dubbo.sample.User"
 }
 
 type UserProvider struct {
