@@ -15,36 +15,20 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.sample;
 
-import java.io.Serializable;
-import java.util.HashMap;
+public interface ComplexProvider {
+    int InvokeWithMultiBasicData(String str, byte[] data, int num, boolean boolValue);
 
-import lombok.Data;
+    void InvokeWithSingleString(String req);
 
-@Data
-public class ComplexData implements Serializable {
-    /**
-     * Base Type & String
-     */
-    boolean booleanData;
-    String stringData;
-    short int16Data;
-    int intData;
-    long int64Data;
+    void InvokeWithMultiString(String str1, String str2, String str3);
 
-    /**
-     * Array Type
-     */
-    byte [] byteData;
-    String[] arrayListData;
+    void InvokeWithStringList(String[] req);
 
-    /**
-     * User Defined Type
-     */
-    User userDefinedData;
-    HashMap<String, String> stringStringHashMap;
-//    HashMap<String, User> stringUserDefinedPtrMapData;
-//    User[] arrayUserData;
+    void InvokeWithEmptyReq();
 
+    String InvokeWithEmptyReqStringRsp();
+
+    ComplexData InvokeWithComplexReqComplexRspPtr(ComplexData complexData);
 }

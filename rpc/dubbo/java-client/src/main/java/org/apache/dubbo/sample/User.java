@@ -15,14 +15,15 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.sample;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Data;
 
 @Data
-public class User {
+public class User implements Serializable {
 
     private String id;
 
@@ -37,6 +38,9 @@ public class User {
     public User() {
     }
 
+    public User(String id) {
+        this.id = id;
+    }
 
     public User(String id, String name, int age) {
         this.id = id;

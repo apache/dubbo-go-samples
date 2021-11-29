@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.sample;
 
 public interface ComplexProvider {
-    int InvokeWithMultiBasicData(String str, byte[] data, int num, boolean boolValue);
+    int InvokeWithMultiBasicData (String str, byte[]data, int num, boolean boolValue);
     void InvokeWithSingleString(String req);
     void InvokeWithMultiString(String str1, String str2, String str3);
     void InvokeWithStringList(String[] req);
     void InvokeWithEmptyReq();
-    String InvokeWithEmptyReqStringRsp();
+    String InvokeWithEmptyReqStringRsp ();
     ComplexData InvokeWithComplexReqComplexRspPtr(ComplexData complexData);
 }

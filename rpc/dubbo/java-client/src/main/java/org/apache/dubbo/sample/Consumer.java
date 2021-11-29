@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.sample;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.alibaba.dubbo.rpc.service.EchoService;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -60,19 +60,15 @@ public class Consumer {
         System.out.println("\n\ntest2");
         testGetUser2();
         testGetUsers2();
-        Thread.sleep(2000);
     }
 
     private static void testGetUser() throws Exception {
         try {
-            EchoService echoService = (EchoService)userProvider;
-            Object status = echoService.$echo("OK");
-            System.out.println("echo: "+status);
-            User user1 = userProvider.GetUser("A003");
+            User user1 = userProvider.GetUser(new User("003"));
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
-            User user2 = userProvider.GetUser0("A003","Moorse");
+            User user2 = userProvider.GetUser0("003","Moorse");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user2.getId() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
                     + ", age:" + user2.getAge() + ", time:" + user2.getTime().toString());
@@ -80,37 +76,30 @@ public class Consumer {
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user3.getId() + ", name:" + user3.getName() + ", sex:" + user3.getSex().toString()
                     + ", age:" + user3.getAge() + ", time:" + user3.getTime());
-            User user4 = userProvider.getUser(1, "name");
+            User user4 = userProvider.getUser(1);
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user4.getId() + ", name:" + user4.getName() + ", sex:" + user4.getSex().toString()
                     + ", age:" + user4.getAge() + ", time:" + user4.getTime());
             userProvider.GetUser3();
             System.out.println("GetUser3 succ");
-
-            User user9 = userProvider.GetUser1("A003");
         } catch (Throwable e) {
             System.out.println("*************exception***********");
             e.printStackTrace();
         }
         try {
-            userProvider.GetErr("A003");
+            userProvider.GetErr(new User("003"));
         } catch (Throwable t) {
-            System.out.println("*************exception***********");
-            t.printStackTrace();
+            System.out.println("*************exception***********" + t.toString());
         }
     }
 
     private static void testGetUsers() throws Exception {
         try {
-            List<String> userIDList = new ArrayList<String>();
-            userIDList.add("A001");
-            userIDList.add("A002");
-            userIDList.add("A003");
+            String[] userIDList = new String[]{"001","002","003"};
+            User[] userList = userProvider.GetUsers(userIDList);
 
-            List<User> userList = userProvider.GetUsers(userIDList);
-
-            for (int i = 0; i < userList.size(); i++) {
-                User user = userList.get(i);
+            for (int i = 0; i < userList.length; i++) {
+                User user = userList[i];
                 System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                         " UserInfo, ID:" + user.getId() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
                         + ", age:" + user.getAge() + ", time:" + user.getTime().toString());
@@ -122,14 +111,11 @@ public class Consumer {
 
     private static  void testGetUser1() throws Exception {
         try {
-            EchoService echoService = (EchoService)userProvider1;
-            Object status = echoService.$echo("OK");
-            System.out.println("echo: "+status);
-            User user1 = userProvider1.GetUser("A003");
+            User user1 = userProvider1.GetUser(new User("003"));
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
-            User user2 = userProvider1.GetUser0("A003","Moorse");
+            User user2 = userProvider1.GetUser0("003","Moorse");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user2.getId() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
                     + ", age:" + user2.getAge() + ", time:" + user2.getTime().toString());
@@ -137,37 +123,30 @@ public class Consumer {
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user3.getId() + ", name:" + user3.getName() + ", sex:" + user3.getSex().toString()
                     + ", age:" + user3.getAge() + ", time:" + user3.getTime());
-            User user4 = userProvider1.getUser(1, "name");
+            User user4 = userProvider1.getUser(1);
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user4.getId() + ", name:" + user4.getName() + ", sex:" + user4.getSex().toString()
                     + ", age:" + user4.getAge() + ", time:" + user4.getTime());
             userProvider1.GetUser3();
             System.out.println("GetUser3 succ");
-
-            User user9 = userProvider1.GetUser1("A003");
         } catch (Throwable e) {
             System.out.println("*************exception***********");
             e.printStackTrace();
         }
         try {
-            userProvider1.GetErr("A003");
+            userProvider1.GetErr(new User("003"));
         } catch (Throwable t) {
-            System.out.println("*************exception***********");
-            t.printStackTrace();
+            System.out.println("*************exception***********" + t.toString());
         }
     }
 
     private static  void testGetUsers1() throws Exception {
         try {
-            List<String> userIDList = new ArrayList<String>();
-            userIDList.add("A001");
-            userIDList.add("A002");
-            userIDList.add("A003");
+            String[] userIDList = new String[]{"001","002","003"};
+            User[] userList = userProvider1.GetUsers(userIDList);
 
-            List<User> userList = userProvider1.GetUsers(userIDList);
-
-            for (int i = 0; i < userList.size(); i++) {
-                User user = userList.get(i);
+            for (int i = 0; i < userList.length; i++) {
+                User user = userList[i];
                 System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                         " UserInfo, ID:" + user.getId() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
                         + ", age:" + user.getAge() + ", time:" + user.getTime().toString());
@@ -179,14 +158,11 @@ public class Consumer {
 
     private static void testGetUser2() throws Exception {
         try {
-            EchoService echoService = (EchoService)userProvider2;
-            Object status = echoService.$echo("OK");
-            System.out.println("echo: "+status);
-            User user1 = userProvider2.GetUser("A003");
+            User user1 = userProvider2.GetUser(new User("003"));
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user1.getId() + ", name:" + user1.getName() + ", sex:" + user1.getSex().toString()
                     + ", age:" + user1.getAge() + ", time:" + user1.getTime().toString());
-            User user2 = userProvider2.GetUser0("A003","Moorse");
+            User user2 = userProvider2.GetUser0("003","Moorse");
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user2.getId() + ", name:" + user2.getName() + ", sex:" + user2.getSex().toString()
                     + ", age:" + user2.getAge() + ", time:" + user2.getTime().toString());
@@ -194,37 +170,29 @@ public class Consumer {
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user3.getId() + ", name:" + user3.getName() + ", sex:" + user3.getSex().toString()
                     + ", age:" + user3.getAge() + ", time:" + user3.getTime());
-            User user4 = userProvider2.getUser(1, "name");
+            User user4 = userProvider2.getUser(1);
             System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                     " UserInfo, ID:" + user4.getId() + ", name:" + user4.getName() + ", sex:" + user4.getSex().toString()
                     + ", age:" + user4.getAge() + ", time:" + user4.getTime());
             userProvider2.GetUser3();
             System.out.println("GetUser3 succ");
-
-            User user9 = userProvider2.GetUser1("A003");
         } catch (Throwable e) {
-            System.out.println("*************exception***********");
-            e.printStackTrace();
+            System.out.println("*************exception***********" + e.toString());
         }
         try {
-            userProvider2.GetErr("A003");
+            userProvider2.GetErr(new User("003"));
         } catch (Throwable t) {
-            System.out.println("*************exception***********");
-            t.printStackTrace();
+            System.out.println("*************exception***********" + t.toString());
         }
     }
 
     private static void testGetUsers2() throws Exception {
         try {
-            List<String> userIDList = new ArrayList<String>();
-            userIDList.add("A001");
-            userIDList.add("A002");
-            userIDList.add("A003");
+            String[] userIDList = new String[]{"001","002","003"};
+            User[] userList = userProvider2.GetUsers(userIDList);
 
-            List<User> userList = userProvider2.GetUsers(userIDList);
-
-            for (int i = 0; i < userList.size(); i++) {
-                User user = userList.get(i);
+            for (int i = 0; i < userList.length; i++) {
+                User user = userList[i];
                 System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] " +
                         " UserInfo, ID:" + user.getId() + ", name:" + user.getName() + ", sex:" + user.getSex().toString()
                         + ", age:" + user.getAge() + ", time:" + user.getTime().toString());
@@ -241,7 +209,7 @@ public class Consumer {
         ref.setProtocol(CommonConstants.DUBBO_PROTOCOL);
         ref.setLazy(true);
         ref.setTimeout(100000);
-        ref.setApplication(new ApplicationConfig("demo-consumer"));
+        ref.setApplication(new ApplicationConfig("user-info-client"));
 
         ref.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
         final ComplexProvider complexProvider = ref.get();
@@ -288,7 +256,7 @@ public class Consumer {
         ref.setProtocol(CommonConstants.DUBBO_PROTOCOL);
         ref.setLazy(true);
         ref.setTimeout(100000);
-        ref.setApplication(new ApplicationConfig("demo-consumer"));
+        ref.setApplication(new ApplicationConfig("user-info-client"));
 
         ref.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
         final WrapperArrayClassProvider wrapperArrayClassProvider = ref.get();

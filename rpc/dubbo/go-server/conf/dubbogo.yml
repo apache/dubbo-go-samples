@@ -13,18 +13,18 @@ dubbo:
   provider:
     services:
       UserProvider:
-        interface: org.apache.dubbo.UserProvider
-        loadbalance: random
-        warmup: 100
-        cluster: failover
-        methods:
-          - name: GetUser
-            retries: 1
-            loadbalance: random
+        interface: org.apache.dubbo.sample.UserProvider
+      UserProvider1:
+        interface: org.apache.dubbo.sample.UserProvider
+        version: "2.0"
+      UserProvider2:
+        interface: org.apache.dubbo.sample.UserProvider
+        version: "2.0"
+        group: as
       ComplexProvider:
-        interface: org.apache.dubbo.ComplexProvider
+        interface: org.apache.dubbo.sample.ComplexProvider
       WrapperArrayClassProvider:
-        interface: org.apache.dubbo.WrapperArrayClassProvider
+        interface: org.apache.dubbo.sample.WrapperArrayClassProvider
   logger:
     zap-config:
       level: info

@@ -15,38 +15,36 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.sample;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.HashMap;
 
-public interface UserProvider {
+import lombok.Data;
 
-    boolean isLimit(Gender gender, String name);
+@Data
+public class ComplexData implements Serializable {
+    /**
+     * Base Type & String
+     */
+    boolean booleanData;
+    String stringData;
+    short int16Data;
+    int intData;
+    long int64Data;
 
-    User GetUser(String userId); // the first alpha is Upper case to compatible with golang.
+    /**
+     * Array Type
+     */
+    byte [] byteData;
+    String[] arrayListData;
 
-    List<User> GetUsers(List<String> userIdList);
+    /**
+     * User Defined Type
+     */
+    User userDefinedData;
+    HashMap<String, String> stringStringHashMap;
+//    HashMap<String, User> stringUserDefinedPtrMapData;
+//    User[] arrayUserData;
 
-    void GetUser3();
-
-    User GetUser0(String userId, String name);
-
-	User GetErr(String userId) throws Exception;
-
-    Map<String, User> GetUserMap(List<String> userIdList);
-
-    User getUser(int usercode);
-
-    User getUser(int usercode, String name);
-
-    Integer GetGender(Integer gender);
-
-    User queryUser(User user);
-
-    Map<String, User> queryAll();
-
-    int Calc(int a, int b);
-
-    Response<Integer> Sum(int a, int b);
 }
