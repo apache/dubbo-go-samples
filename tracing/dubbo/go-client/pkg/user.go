@@ -37,7 +37,7 @@ func (u User) String() string {
 	)
 }
 
-func (User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
 

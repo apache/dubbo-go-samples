@@ -26,9 +26,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
 	hessian "github.com/apache/dubbo-go-hessian2"
-
 	"github.com/dubbogo/gost/log"
 )
 
@@ -64,7 +62,7 @@ func main() {
 	atta := make(map[string]interface{})
 	atta["string-value"] = "string-demo"
 	atta["int-value"] = 1231242
-	atta["user-defined-value"] = ContextContent{InterfaceName: "test.interface.name"}
+	atta["user-defined-value"] = &ContextContent{InterfaceName: "test.interface.name"}
 	reqContext := context.WithValue(context.Background(), constant.DubboCtxKey("attachment"), atta)
 	rspContent, err := userProvider.GetContext(reqContext)
 	if err != nil {
