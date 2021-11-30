@@ -100,8 +100,6 @@ func test() {
 		logger.Infof("res: %v", res)
 	}
 
-	time.Sleep(3e9)
-
 	logger.Infof("\n\n\nstart to test jsonrpc")
 
 	user, err := userProvider.GetUser(context.TODO(), "A003")
@@ -157,8 +155,6 @@ func test1() {
 		logger.Infof("res: %v", res)
 	}
 
-	time.Sleep(3e9)
-
 	logger.Infof("\n\n\nstart to test jsonrpc")
 	user, err := userProvider1.GetUser(context.TODO(), "A003")
 	if err != nil {
@@ -203,8 +199,6 @@ func test2() {
 	} else {
 		logger.Infof("res: %v", res)
 	}
-
-	time.Sleep(3e9)
 
 	logger.Infof("\n\n\nstart to test jsonrpc")
 	user, err := userProvider2.GetUser(context.TODO(), "A003")
