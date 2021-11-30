@@ -203,7 +203,7 @@ func TestQueryUser(t *testing.T) {
 	o, err := dubboRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		"queryUser",
-		[]string{"org.apache.dubbo.User"},
+		[]string{"org.apache.dubbo.samples.User"},
 		[]hessian.Object{map[string]hessian.Object{
 			"iD":   "3213",
 			"name": "panty",
@@ -222,7 +222,7 @@ func TestQueryUser(t *testing.T) {
 	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		"queryUser",
-		[]string{"org.apache.dubbo.User"},
+		[]string{"org.apache.dubbo.samples.User"},
 		[]hessian.Object{map[string]hessian.Object{
 			"iD":   "3213",
 			"name": "panty",
@@ -251,14 +251,14 @@ func TestQueryUsers(t *testing.T) {
 					"name":  "XavierNiu",
 					"age":   24,
 					"time":  time.Now(),
-					"class": "org.apache.dubbo.User",
+					"class": "org.apache.dubbo.samples.User",
 				},
 				map[string]hessian.Object{
 					"iD":    "3213",
 					"name":  "zhangsan",
 					"age":   21,
 					"time":  time.Now(),
-					"class": "org.apache.dubbo.User",
+					"class": "org.apache.dubbo.samples.User",
 				},
 			},
 		},
@@ -273,7 +273,7 @@ func TestQueryUsers(t *testing.T) {
 	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		"queryUsers",
-		[]string{"org.apache.dubbo.User"},
+		[]string{"org.apache.dubbo.samples.User"},
 		[]hessian.Object{
 			[]hessian.Object{
 				map[string]hessian.Object{
@@ -281,14 +281,14 @@ func TestQueryUsers(t *testing.T) {
 					"name":  "XavierNiu",
 					"age":   24,
 					"time":  time.Now(),
-					"class": "org.apache.dubbo.User",
+					"class": "org.apache.dubbo.samples.User",
 				},
 				map[string]hessian.Object{
 					"iD":    "3213",
 					"name":  "zhangsan",
 					"age":   21,
 					"time":  time.Now(),
-					"class": "org.apache.dubbo.User",
+					"class": "org.apache.dubbo.samples.User",
 				},
 			},
 		},

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo;
+package org.apache.dubbo.samples;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

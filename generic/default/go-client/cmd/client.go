@@ -47,7 +47,6 @@ func main() {
 
 	// generic invocation samples using hessian serialization on Dubbo protocol
 	dubboRefConf := newRefConf("org.apache.dubbo.samples.UserProvider", dubbo.DUBBO)
-
 	callGetUser(dubboRefConf)
 	//callGetOneUser(dubboRefConf)
 	callGetUsers(dubboRefConf)
@@ -168,7 +167,7 @@ func callQueryUser(refConf config.ReferenceConfig) {
 	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
 		"queryUser",
-		[]string{"org.apache.dubbo.User"},
+		[]string{"org.apache.dubbo.samples.User"},
 		// the map represents a User object:
 		// &User {
 		// 		ID: "3213",
@@ -202,14 +201,14 @@ func callQueryUsers(refConf config.ReferenceConfig) {
 					"name":  "XavierNiu",
 					"age":   24,
 					"time":  time.Now().Add(4),
-					"class": "org.apache.dubbo.User",
+					"class": "org.apache.dubbo.samples.User",
 				},
 				map[string]hessian.Object{
 					"iD":    "3213",
 					"name":  "zhangsan",
 					"age":   21,
 					"time":  time.Now().Add(4),
-					"class": "org.apache.dubbo.User",
+					"class": "org.apache.dubbo.samples.User",
 				},
 			},
 		},
