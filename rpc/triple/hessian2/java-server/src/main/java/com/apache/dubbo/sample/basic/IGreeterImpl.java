@@ -18,14 +18,13 @@
 package com.apache.dubbo.sample.basic;
 
 
-public class IGreeter1Impl implements IGreeter {
+public class IGreeterImpl implements IGreeter {
     @Override
-    public User getUser(String request) {
+    public User getUser(User request) {
         System.out.println("receiv: " + request);
-        User usr = new User();
-        usr.age = 19;
-        usr.name = "hello" + request;
-        usr.id = "23";
-        return usr;
+        request.age = 18;
+        request.name = "Hello, " + request.name;
+        request.id = "12345";
+        return request;
     }
 }

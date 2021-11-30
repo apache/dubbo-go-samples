@@ -32,4 +32,10 @@ public class ComplexProviderImpl implements ComplexProvider {
         System.out.println("invokeWithComplexReqComplexRspPtr = "+ complexData.GetString());
         return complexData;
     }
+
+    @Override
+    public int invokeWithMultiBasicData(String str, byte[] data, int num, boolean boolValue) {
+        System.out.println("invokeWithEmptyReq" + str + data + num + boolValue);
+        return num;
+    }
 }
