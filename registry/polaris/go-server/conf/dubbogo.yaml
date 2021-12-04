@@ -1,0 +1,26 @@
+dubbo:
+  application:
+    name: myApp # metadata: application=myApp; name=myApp
+    module: opensource #metadata: module=opensource
+    group: myAppGroup # no metadata record
+    organization: dubbo # metadata: organization=dubbo
+    owner: laurence # metadata: owner=laurence
+    version: myversion # metadata: app.version=myversion
+    environment: pro # metadata: environment=pro
+  registries:
+    polarisMesh:
+      protocol: polaris
+      address: 127.0.0.1:8091
+      namespace: default
+  protocols:
+    dubbo:
+      name: dubbo
+      port: 20000
+  provider:
+    services:
+      UserProvider:
+        interface: org.apache.dubbo.UserProvider.Test
+      UserProviderWithCustomGroupAndVersion:
+        interface: org.apache.dubbo.UserProvider.Test2
+        version: myInterfaceVersion # dubbo interface version must be same with client
+        group: myInterfaceGroup # dubbo interface group must be same with client
