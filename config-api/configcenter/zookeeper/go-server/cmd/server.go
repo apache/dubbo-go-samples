@@ -36,8 +36,8 @@ const configCenterZKServerConfig = `# set in config center, group is 'dubbogo', 
 dubbo:
   registries:
     demoZK:
-      protocol: nacos
-      address: 127.0.0.1:8848
+      protocol: zookeeper
+      address: 127.0.0.1:2181
   protocols:
     triple:
       name: tri
