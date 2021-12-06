@@ -79,7 +79,7 @@ func (u *UserProvider) GetContext(ctx context.Context) (*ContextContent, error) 
 	return &rsp, nil
 }
 
-func (u ContextContent) JavaClassName() string {
+func (u *ContextContent) JavaClassName() string {
 	return "org.apache.dubbo.ContextContent"
 }
 

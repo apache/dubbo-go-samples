@@ -53,6 +53,6 @@ func (u *UserProvider) GetUser(ctx context.Context, req *User) (*User, error) {
 	return &rsp, nil
 }
 
-func (u User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }

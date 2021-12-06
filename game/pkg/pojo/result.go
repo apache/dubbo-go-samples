@@ -23,7 +23,7 @@ type Result struct {
 	Data map[string]interface{} `json:"data,omitempty"`
 }
 
-func (m Result) JavaClassName() string {
+func (m *Result) JavaClassName() string {
 	return "org.apache.dubbo.pojo.Result"
 }
 

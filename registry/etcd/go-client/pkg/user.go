@@ -33,6 +33,6 @@ type UserProvider struct {
 	GetUser func(ctx context.Context, user *User) (*User, error)
 }
 
-func (User) JavaClassName() string {
+func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
 }
