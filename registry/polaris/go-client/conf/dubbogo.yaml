@@ -1,0 +1,15 @@
+dubbo:
+  registries:
+    polarisMesh:
+      protocol: polaris
+      address: 127.0.0.1:8091
+      namespace: default
+  consumer:
+    references:
+      UserProvider:
+        protocol: dubbo
+        interface: org.apache.dubbo.UserProvider.Test
+      UserProviderWithCustomGroupAndVersion:
+        protocol: dubbo
+        interface: org.apache.dubbo.UserProvider.Test2
+        version: myInterfaceVersion # dubbo interface version must be same with server
