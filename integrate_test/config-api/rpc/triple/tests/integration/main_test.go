@@ -38,7 +38,6 @@ func TestMain(m *testing.M) {
 	rootConfig := config.NewRootConfigBuilder().
 		SetConsumer(config.NewConsumerConfigBuilder().
 			AddReference("GreeterClientImpl", config.NewReferenceConfigBuilder().
-				SetInterface("com.apache.dubbo.sample.basic.IGreeter").
 				SetProtocol("tri").
 				Build()).
 			Build()).

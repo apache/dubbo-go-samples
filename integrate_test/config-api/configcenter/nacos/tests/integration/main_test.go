@@ -42,7 +42,7 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
+        interface: "" # must be compatible with grpc or dubbo-java`
 
 var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 

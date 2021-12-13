@@ -14,4 +14,4 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: org.apache.dubbo.UserProvider
+        interface: ""
