@@ -27,14 +27,11 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
-
-	gxlog "github.com/dubbogo/gost/log"
 )
 
 var (
@@ -43,46 +40,43 @@ var (
 
 func init() {
 	config.SetProviderService(&UserProvider{})
+	config.SetProviderService(&UserProviderWithCustomGroupAndVersion{})
 	// ------for hessian2------
-	hessian.RegisterPOJO(&ContextContent{})
+	hessian.RegisterPOJO(&User{})
 }
 
-type ContextContent struct {
-	Path              string
-	InterfaceName     string
-	DubboVersion      string
-	LocalAddr         string
-	RemoteAddr        string
-	UserDefinedStrVal string
-	CtxStrVal         string
-	CtxIntVal         int64
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
 }
 
 type UserProvider struct {
 }
 
-func (u *UserProvider) GetContext(ctx context.Context) (*ContextContent, error) {
-	ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]interface{})
-	userDefinedval := ctxAtta["user-defined-value"].(*ContextContent)
-	gxlog.CInfo("get user defined struct:%#v", userDefinedval)
-	rsp := ContextContent{
-		Path:              ctxAtta["path"].(string),
-		InterfaceName:     ctxAtta["interface"].(string),
-		DubboVersion:      ctxAtta["dubbo"].(string),
-		LocalAddr:         ctxAtta["local-addr"].(string),
-		RemoteAddr:        ctxAtta["remote-addr"].(string),
-		UserDefinedStrVal: userDefinedval.InterfaceName,
-		CtxIntVal:         ctxAtta["int-value"].(int64),
-		CtxStrVal:         ctxAtta["string-value"].(string),
-	}
-	gxlog.CInfo("rsp:%#v", rsp)
+func (u *UserProvider) GetUser(ctx context.Context, req *User) (*User, error) {
+	logger.Infof("req:%#v", req)
+	rsp := User{"A001", "Alex Stocks", 18, time.Now()}
+	logger.Infof("rsp:%#v", rsp)
 	return &rsp, nil
 }
 
-func (u *ContextContent) JavaClassName() string {
-	return "org.apache.dubbo.ContextContent"
+func (u *User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
 
+type UserProviderWithCustomGroupAndVersion struct {
+}
+
+func (u *UserProviderWithCustomGroupAndVersion) GetUser(ctx context.Context, req *User) (*User, error) {
+	logger.Infof("req:%#v", req)
+	rsp := User{"A001", "Alex Stocks from UserProviderWithCustomGroupAndVersion", 18, time.Now()}
+	logger.Infof("rsp:%#v", rsp)
+	return &rsp, nil
+}
+
+// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
 func main() {
 	if err := config.Load(); err != nil {
 		panic(err)

@@ -15,32 +15,28 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
 	"context"
 	"os"
-	"testing"
 	"time"
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var userProvider = new(UserProvider)
+type UserProviderWithCustomGroupAndVersion struct {
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
+}
 
-func TestMain(m *testing.M) {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&User{})
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
-
-	os.Exit(m.Run())
+type UserProvider struct {
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
 }
 
 type User struct {
@@ -50,10 +46,35 @@ type User struct {
 	Time time.Time
 }
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *User) (*User, error)
-}
-
 func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
+}
+
+func main() {
+	var userProvider = &UserProvider{}
+	var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{}
+	config.SetConsumerService(userProvider)
+	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
+	hessian.RegisterPOJO(&User{})
+	err := config.Load()
+	if err != nil {
+		panic(err)
+	}
+
+	logger.Infof("\n\n\nstart to test dubbo")
+	user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex001"})
+	if err != nil {
+		logger.Errorf("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+	logger.Infof("response result: %v\n", user)
+
+	user, err = userProviderWithCustomRegistryGroupAndVersion.GetUser(context.TODO(), &User{Name: "Alex001"})
+	if err != nil {
+		logger.Errorf("error: %v\n", err)
+		os.Exit(1)
+		return
+	}
+	logger.Infof("response result: %v\n", user)
 }
