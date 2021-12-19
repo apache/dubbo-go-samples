@@ -10,4 +10,5 @@ dubbo:
   consumer:
     references:
       UserProvider:
+        protocol: dubbo
         interface: org.apache.dubbo.UserProvider
