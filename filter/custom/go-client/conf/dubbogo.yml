@@ -14,4 +14,3 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: ""

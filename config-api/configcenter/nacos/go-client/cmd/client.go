@@ -41,7 +41,7 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: "" # must be compatible with grpc or dubbo-java`
+`
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)
 

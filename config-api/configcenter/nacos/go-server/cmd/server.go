@@ -45,7 +45,7 @@ dubbo:
   provider:
     services:
       GreeterProvider:
-        interface: "" # must be compatible with grpc or dubbo-java`
+        interface: "" # read interface from pb`
 
 type GreeterProvider struct {
 	api.UnimplementedGreeterServer

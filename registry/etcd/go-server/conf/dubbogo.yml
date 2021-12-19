@@ -17,4 +17,4 @@ dubbo:
   provider:
     services:
       UserProvider:
-        interface: "org.apache.dubbo.UserProvider" # read interface name from pb
+        interface: "org.apache.dubbo.UserProvider"
