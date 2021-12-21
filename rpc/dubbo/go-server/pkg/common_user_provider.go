@@ -24,7 +24,6 @@ import (
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go-hessian2/java_exception"
 
 	"github.com/dubbogo/gost/log"
@@ -106,8 +105,11 @@ func (u *CommonUserProvider) GetUsers(req []string) ([]*User, error) {
 	return []*User{user, user1}, err
 }
 
-func (s *CommonUserProvider) GetGender(i int32) (hessian.JavaEnum, error) {
-	return hessian.JavaEnum(i), nil
+func (s *CommonUserProvider) GetGender(i int32) (Gender, error) {
+	if 1 == i {
+		return Gender(WOMAN), nil
+	}
+	return Gender(MAN), nil
 }
 
 func (s *CommonUserProvider) MethodMapper() map[string]string {

@@ -64,13 +64,12 @@ func test() {
 	}
 	logger.Infof("response result: %v", user)
 
-	// TODO cann't call java server
-	//logger.Infof("\n\n\nstart to test dubbo - enum")
-	//gender, err := userProvider.GetGender(context.TODO(), 1)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//logger.Infof("response result: %v", gender)
+	logger.Infof("\n\n\nstart to test dubbo - enum")
+	gender, err := userProvider.GetGender(context.TODO(), 1)
+	if err != nil {
+		panic(err)
+	}
+	logger.Infof("response result: %v", gender)
 
 	logger.Infof("\n\n\nstart to test dubbo - GetUser0")
 	ret, err := userProvider.GetUser0("003", "Moorse")
