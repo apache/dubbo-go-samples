@@ -19,8 +19,13 @@
 array+=("game/go-server-game")
 array+=("game/go-server-gate")
 
+# config-api
+array=("config-api/rpc/triple")
+array+=("config-api/configcenter/nacos")
+array+=("config-api/configcenter/zookeeper")
+
 # route
-array=("route/meshroute")
+array+=("route/meshroute")
 
 # error
 array+=("error/triple/hessian2")
@@ -41,11 +46,6 @@ array+=("filter/custom")
 # context
 array+=("context/dubbo")
 array+=("context/triple")
-
-# config-api
-array+=("config-api/rpc/triple")
-array+=("config-api/configcenter/nacos")
-array+=("config-api/configcenter/zookeeper")
 
 # registry
 array+=("registry/zookeeper")

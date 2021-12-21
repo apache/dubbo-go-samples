@@ -9,8 +9,8 @@ dubbo:
       port: 20000
   provider:
     services:
-      greeterImpl:
-        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java
+      GreeterProvider:
+        interface: ""
   logger:
     lumberjack-config:
       filename: logs.log

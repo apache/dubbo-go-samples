@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -45,7 +44,7 @@ dubbo:
   provider:
     services:
       GreeterProvider:
-        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
+        interface: "" # read interface from pb`
 
 type GreeterProvider struct {
 	api.UnimplementedGreeterServer
@@ -68,8 +67,6 @@ func main() {
 	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-server", "dubbogo", configCenterZKServerConfig); err != nil {
 		panic(err)
 	}
-
-	time.Sleep(time.Second * 10)
 
 	config.SetProviderService(&GreeterProvider{})
 

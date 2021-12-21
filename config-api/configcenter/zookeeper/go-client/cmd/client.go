@@ -25,9 +25,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
-
-import (
 	"github.com/apache/dubbo-go-samples/api"
 )
 
@@ -41,7 +38,7 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
+`
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)
 

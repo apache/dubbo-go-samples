@@ -18,18 +18,12 @@
 package integration
 
 import (
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 	"os"
 	"testing"
 	"time"
-)
-
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
-
-import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 )
 
 const configCenterZKTestClientConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-client', namespace is default
@@ -42,7 +36,7 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
+`
 
 var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 
@@ -60,7 +54,7 @@ func TestMain(m *testing.M) {
 	}
 
 	config.SetConsumerService(greeterProvider)
-	time.Sleep(time.Second * 20)
+	time.Sleep(time.Second * 15)
 
 	rootConfig := config.NewRootConfigBuilder().
 		SetConfigCenter(config.NewConfigCenterConfigBuilder().

@@ -37,7 +37,6 @@ dubbo:
   registries:
     demoZK:
       protocol: zookeeper
-      timeout: 3s
       address: 127.0.0.1:2181
   protocols:
     triple:
@@ -46,7 +45,7 @@ dubbo:
   provider:
     services:
       GreeterProvider:
-        interface: com.apache.dubbo.sample.basic.IGreeter # must be compatible with grpc or dubbo-java`
+        interface: "" # read interface from pb`
 
 type GreeterProvider struct {
 	api.UnimplementedGreeterServer
