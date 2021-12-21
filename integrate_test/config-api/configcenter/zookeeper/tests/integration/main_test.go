@@ -54,7 +54,7 @@ func TestMain(m *testing.M) {
 	}
 
 	config.SetConsumerService(greeterProvider)
-	time.Sleep(time.Second * 20)
+	time.Sleep(time.Second * 15)
 
 	rootConfig := config.NewRootConfigBuilder().
 		SetConfigCenter(config.NewConfigCenterConfigBuilder().
