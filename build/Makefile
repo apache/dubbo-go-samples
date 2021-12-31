@@ -38,16 +38,18 @@ LICENSE_DIR = /tmp/tools/license
 export GO111MODULE ?= on
 export GOSUMDB ?= sum.golang.org
 export GOARCH ?= amd64
-
-export DOCKER_HOST_IP = $(shell ifconfig en0 | grep inet | grep -v inet6 | awk '{print $$2}')
+export GONOPROXY ?= **.gitee.com**
 
 OS := $(shell uname)
 ifeq ($(OS), Linux)
 	export GOOS ?= linux
+	export DOCKER_HOST_IP = $(shell ifconfig enp3s0 | grep inet | grep -v inet6 | awk '{print $$2}')
 else ifeq ($(OS), Darwin)
 	export GOOS ?= darwin
+	export DOCKER_HOST_IP = $(shell ifconfig en0 | grep inet | grep -v inet6 | awk '{print $$2}')
 else
 	export GOOS ?= windows
+	export DOCKER_HOST_IP = $(shell ifconfig en0 | grep inet | grep -v inet6 | awk '{print $$2}')
 endif
 
 ifeq ($(GOOS), windows)
