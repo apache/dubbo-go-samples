@@ -13,7 +13,6 @@ dubbo:
   protocols:
     jsonrpc:
       name: jsonrpc
-      ip: 127.0.0.1
       port: 20001
   provider:
     services:
