@@ -18,12 +18,18 @@
 package integration
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 	"os"
 	"testing"
 	"time"
+)
+
+import (
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+import (
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 )
 
 const configCenterZKTestClientConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-client', namespace is default
