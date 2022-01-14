@@ -26,6 +26,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 import (
@@ -34,7 +35,7 @@ import (
 
 func TestGRPCClientHello(t *testing.T) {
 	// Set up a connection to the client.
-	conn, err := grpc.Dial("127.0.0.1:20000", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:20000", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	assert.Nil(t, err)
 	defer conn.Close()
 	c := grpcpb.NewGreeterClient(conn)
@@ -51,7 +52,7 @@ func TestGRPCClientHello(t *testing.T) {
 }
 
 func TestGRPCClientStreamSayHello(t *testing.T) {
-	conn, err := grpc.Dial("127.0.0.1:20000", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:20000", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	assert.Nil(t, err)
 	defer conn.Close()
 	c := grpcpb.NewGreeterClient(conn)
