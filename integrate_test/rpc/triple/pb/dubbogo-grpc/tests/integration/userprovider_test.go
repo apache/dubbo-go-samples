@@ -19,7 +19,6 @@ package integration
 
 import (
 	"context"
-	"google.golang.org/grpc/credentials/insecure"
 	"testing"
 )
 
@@ -27,6 +26,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 import (
