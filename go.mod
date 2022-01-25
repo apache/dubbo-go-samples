@@ -6,6 +6,7 @@ require (
 	github.com/dubbogo/gost v1.11.22
 	github.com/dubbogo/grpc-go v1.42.7
 	github.com/dubbogo/triple v1.1.7
+	github.com/emicklei/go-restful/v3 v3.7.2 // indirect
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5

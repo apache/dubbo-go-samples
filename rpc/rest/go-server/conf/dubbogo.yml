@@ -1,0 +1,117 @@
+dubbo:
+  application:
+    organization: dubbo.apache.org
+    name: UserInfoServer
+    module: dubbo-go-user-info-server
+    version: 0.0.1
+    environment: dev
+  registries:
+    zookeeper:
+      protocol: zookeeper
+      timeout: 3s
+      address: 127.0.0.1:2181
+  protocols:
+    rest:
+      name: rest
+      ip: "0.0.0.0"
+      port: 8888
+  provider:
+    services:
+      UserProvider:
+        registry: "demoZk"
+        protocol: "rest"
+        interface: "org.apache.dubbo.UserProvider"
+        loadbalance: "random"
+        warmup: "100"
+        cluster: "failover"
+        rest_path: "/UserProvider"
+        methods:
+          - name: "GetUser"
+            rest_path: "/GetUser"
+            rest_method: "GET"
+            rest_query_params: "0:id"
+          - name: "GetUser0"
+            rest_path: "/GetUser0/{id}"
+            rest_method: "POST"
+            rest_query_params: "1:name,2:age"
+            rest_path_params: "0:id"
+            rest_produces: "application/json"
+            rest_consumes: "application/json;charset=utf-8,*/*"
+          - name: "GetUser3"
+            rest_path: "/GetUser3"
+            rest_method: "GET"
+          - name: "GetUsers"
+            rest_path: "/GetUsers"
+            rest_method: "POST"
+            rest_body: 0
+          - name: "GetUser1"
+            rest_path: "/GetUser1"
+            rest_method: "GET"
+
+        UserProvider1:
+          registry: "demoZk"
+          protocol: "rest"
+          interface: "org.apache.dubbo.UserProvider"
+          loadbalance: "random"
+          version: "2.0"
+          warmup: "100"
+          cluster: "failover"
+          rest_path: "/UserProvider1"
+          methods:
+            - name: "GetUser"
+              rest_path: "/GetUser"
+              rest_method: "GET"
+              rest_query_params: "0:id"
+            - name: "GetUser0"
+              rest_path: "/GetUser0/{id}"
+              rest_method: "POST"
+              rest_query_params: "1:name,2:age"
+              rest_path_params: "0:id"
+              rest_produces: "application/json"
+              rest_consumes: "application/json;charset=utf-8,*/*"
+            - name: "GetUser3"
+              rest_path: "/GetUser3"
+              rest_method: "GET"
+            - name: "GetUsers"
+              rest_path: "/GetUsers"
+              rest_method: "POST"
+              rest_body: 0
+            - name: "GetUser1"
+              rest_path: "/GetUser1"
+              rest_method: "GET"
+
+        UserProvider2:
+          registry: "demoZk"
+          protocol: "rest"
+          interface: "org.apache.dubbo.UserProvider"
+          loadbalance: "random"
+          version: "2.0"
+          group: "as"
+          warmup: "100"
+          cluster: "failover"
+          rest_path: "/UserProvider2"
+          methods:
+            - name: "GetUser"
+              rest_path: "/GetUser"
+              rest_method: "GET"
+              rest_query_params: "0:id"
+            - name: "GetUser0"
+              rest_path: "/GetUser0/{id}"
+              rest_method: "POST"
+              rest_query_params: "1:name,2:age"
+              rest_path_params: "0:id"
+              rest_produces: "application/json"
+              rest_consumes: "application/json;charset=utf-8,*/*"
+            - name: "GetUser3"
+              rest_path: "/GetUser3"
+              rest_method: "GET"
+            - name: "GetUsers"
+              rest_path: "/GetUsers"
+              rest_method: "POST"
+              rest_body: 0
+            - name: "GetUser1"
+              rest_path: "/GetUser1"
+              rest_method: "GET"
+  logger:
+    zap-config:
+      level: debug
