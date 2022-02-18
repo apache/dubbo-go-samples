@@ -10,7 +10,7 @@ services:
     restart: on-failure
 
   nacos:
-    image: nacos/nacos-server:1.2.0
+    image: nacos/nacos-server:2.0.3-slim
     container_name: nacos-standalone
     environment:
       - PREFER_HOST_MODE=hostname
