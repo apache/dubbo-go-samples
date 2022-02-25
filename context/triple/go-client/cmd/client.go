@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"sync"
 )
 
 import (
@@ -45,7 +46,7 @@ func main() {
 		panic(err)
 	}
 
-	logger.Info("start to test dubbo")
+	logger.Info("start to test triple unary context attachment transport")
 	req := &api.HelloRequest{
 		Name: "laurence",
 	}
@@ -62,4 +63,32 @@ func main() {
 		logger.Error(err)
 	}
 	logger.Infof("client response result: %v\n", reply)
+
+	//stream rpc
+	logger.Info("start to test triple streaming rpc context attachment transport")
+	request := &api.HelloRequest{
+		Name: "laurence",
+	}
+	stream, err := grpcGreeterImpl.SayHelloStream(ctx)
+	if err != nil {
+		logger.Error(err)
+	}
+	// stream grpc双向流式发送
+	err = stream.Send(request)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client stream send request: %v\n", request)
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		reply, err := stream.Recv()
+		if err != nil {
+			logger.Error(err)
+		}
+		logger.Infof("client stream received result: %v\n", reply)
+	}()
+	wg.Wait()
 }

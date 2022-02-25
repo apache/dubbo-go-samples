@@ -59,6 +59,33 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 	return &api.User{Name: fmt.Sprintf("%s", rspAttachment), Id: "12345", Age: 21}, nil
 }
 
+func (s *GreeterProvider) SayHelloStream(svr api.Greeter_SayHelloStreamServer) error {
+	// map must be assert to map[string]interface, because of dubbo limitation
+	attachments := svr.Context().Value(constant.AttachmentKey).(map[string]interface{})
+
+	// value must be assert to []string[0], because of http2 header limitation
+	logger.Infof("get triple attachment key1 = %s", attachments["key1"].([]string)[0])
+	logger.Infof("get triple attachment key2 = %s", attachments["key2"].([]string)[0])
+	logger.Infof("get triple attachment key3 = %s and %s", attachments["key3"].([]string)[0],
+		attachments["key3"].([]string)[1])
+	logger.Infof("get triple attachment key4 = %s and %s", attachments["key4"].([]string)[0],
+		attachments["key4"].([]string)[1])
+	c, err := svr.Recv()
+	if err != nil {
+		return err
+	}
+	logger.Infof("Dubbo-go3 GreeterProvider recv 1 user, name = %s\n", c.Name)
+	err = svr.Send(&api.User{
+		Name: "hello " + c.Name,
+		Age:  18,
+		Id:   "123456789",
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func main() {
 	config.SetProviderService(&GreeterProvider{})
 	if err := config.Load(); err != nil {
