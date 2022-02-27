@@ -48,7 +48,7 @@ dubbo:
             rest_path: "/GetUser1"
             rest_method: "GET"
 
-        UserProvider1:
+      UserProvider1:
           registry: "demoZk"
           protocol: "rest"
           interface: "org.apache.dubbo.UserProvider"
@@ -80,7 +80,7 @@ dubbo:
               rest_path: "/GetUser1"
               rest_method: "GET"
 
-        UserProvider2:
+      UserProvider2:
           registry: "demoZk"
           protocol: "rest"
           interface: "org.apache.dubbo.UserProvider"

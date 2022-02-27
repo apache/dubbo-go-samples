@@ -18,9 +18,10 @@
 package main
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/protocol/rest/server/server_impl"
+	"dubbo.apache.org/dubbo-go/v3/protocol/rest/server"
 	"fmt"
 	gxlog "github.com/dubbogo/gost/log"
+	"github.com/emicklei/go-restful/v3"
 	"os"
 	"os/signal"
 	"syscall"
@@ -31,8 +32,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/emicklei/go-restful/v3"
 )
 
 import (
@@ -47,11 +46,11 @@ var (
 // 		export CONF_PROVIDER_FILE_PATH="xxx"
 // 		export APP_LOG_CONF_FILE="xxx"
 func main() {
-	server_impl.AddGoRestfulServerFilter(func(request *restful.Request, response *restful.Response, chain *restful.FilterChain) {
+	server.AddGoRestfulServerFilter(func(request *restful.Request, response *restful.Response, chain *restful.FilterChain) {
 		gxlog.CInfo(request.SelectedRoutePath())
 		chain.ProcessFilter(request, response)
 	})
-	server_impl.AddGoRestfulServerFilter(func(request *restful.Request, response *restful.Response, chain *restful.FilterChain) {
+	server.AddGoRestfulServerFilter(func(request *restful.Request, response *restful.Response, chain *restful.FilterChain) {
 		gxlog.CInfo("filter2")
 		chain.ProcessFilter(request, response)
 	})
