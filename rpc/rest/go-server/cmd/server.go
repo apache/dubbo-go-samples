@@ -54,7 +54,10 @@ func main() {
 		gxlog.CInfo("filter2")
 		chain.ProcessFilter(request, response)
 	})
-	config.Load()
+	err := config.Load()
+	if err != nil {
+		return
+	}
 
 	initSignal()
 }
