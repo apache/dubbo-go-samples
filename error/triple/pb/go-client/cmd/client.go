@@ -39,7 +39,7 @@ func init() {
 	config.SetConsumerService(greeterProvider)
 }
 
-// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-grpc/stream-client/go-client/conf/dubbogo.yml
+// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/error/triple/pb/go-client/conf/dubbogo.yml
 func main() {
 	if err := config.Load(); err != nil {
 		panic(err)
@@ -52,5 +52,7 @@ func main() {
 	if user, err := greeterProvider.SayHello(context.TODO(), &req); err != nil {
 		logger.Infof("response result: %v, error = %s", user, err)
 		logger.Infof("error details = %+v", err.(tripleCommon.TripleError).Stacks())
+		logger.Infof("error code = %+v", err.(tripleCommon.TripleError).Code())
+		logger.Infof("error message = %+v", err.(tripleCommon.TripleError).Message())
 	}
 }

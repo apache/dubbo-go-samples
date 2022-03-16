@@ -39,8 +39,10 @@ func TestSayHello(t *testing.T) {
 		Name: "laurence",
 	}
 	_, err := greeterProvider.SayHello(ctx, &req)
-	assert.Equal(t, "user defined error", fmt.Sprintf("%s", err))
 	stacks, ok := err.(common.TripleError)
 	assert.True(t, ok)
-	assert.NotEqual(t, "", stacks)
+	assert.Equal(t, "user defined error", fmt.Sprintf("%s", err))
+	assert.NotEqual(t, "", stacks.Stacks())
+	assert.Equal(t, uint32(1234), uint32(stacks.Code()))
+	assert.Equal(t, "user defined error", stacks.Message())
 }

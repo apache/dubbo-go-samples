@@ -33,7 +33,7 @@ import (
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)
 
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/direct/go-client/conf/dubbogo.yml
 func main() {
 	config.SetConsumerService(grpcGreeterImpl)
 	if err := config.Load(); err != nil {
