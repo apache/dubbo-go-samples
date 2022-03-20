@@ -1,6 +1,4 @@
 dubbo:
-  profiles:
-    active: local
   custom:
     config-map:
       test-config: true
