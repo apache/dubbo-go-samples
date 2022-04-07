@@ -30,6 +30,8 @@ dubbo:
             rest_path: "/GetUser"
             rest_method: "GET"
             rest_query_params: "0:id"
+            rest_produces: "application/json"
+            rest_consumes: "application/json;charset=utf-8,*/*"
           - name: "GetUser0"
             rest_path: "/GetUser0/{id}"
             rest_method: "POST"
@@ -37,6 +39,7 @@ dubbo:
             rest_path_params: "0:id"
             rest_produces: "application/json"
             rest_consumes: "application/json;charset=utf-8,*/*"
+            rest_body: -1
           - name: "GetUser3"
             rest_path: "/GetUser3"
             rest_method: "GET"
@@ -114,4 +117,4 @@ dubbo:
               rest_method: "GET"
   logger:
     zap-config:
-      level: debug
+      level: info

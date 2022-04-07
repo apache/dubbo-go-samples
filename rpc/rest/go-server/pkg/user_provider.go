@@ -28,7 +28,7 @@ func (u *UserProvider) getUser(userId string) (*User, error) {
 	return nil, fmt.Errorf("invalid user id:%s", userId)
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req []interface{}, rsp *User) error {
+func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, error) {
 	var (
 		err  error
 		user *User
@@ -37,10 +37,10 @@ func (u *UserProvider) GetUser(ctx context.Context, req []interface{}, rsp *User
 	gxlog.CInfo("req:%#v", req)
 	user, err = u.getUser(req[0].(string))
 	if err == nil {
-		*rsp = *user
-		gxlog.CInfo("rsp:%#v", rsp)
+		//*rsp = *user
+		gxlog.CInfo("rsp:%#v", user)
 	}
-	return err
+	return user, err
 }
 
 func (u *UserProvider) GetUser0(id string, name string, age int) (*User, error) {
