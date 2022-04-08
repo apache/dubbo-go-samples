@@ -14,7 +14,8 @@ registries:
     protocol: "nacos"
     timeout	: "3s"
     address: "127.0.0.1:8848"
-
+    params:
+      logLevel: info
 # service config
 services:
   "UserProvider":
