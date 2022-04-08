@@ -6,7 +6,7 @@
       <env name="CONF_PROVIDER_FILE_PATH" value="$PROJECT_DIR$/registry/nacos/go-server/conf/server.yml" />
       <env name="APP_LOG_CONF_FILE" value="$PROJECT_DIR$/registry/nacos/go-server/conf/log.yml" />
     </envs>
-    <kind value="PACKAGE" />
+    <kind value="FILE" />
     <package value="github.com/apache/dubbo-go-samples/registry/nacos/go-server/cmd" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$/registry/nacos/go-server/cmd/server.go" />
