@@ -56,42 +56,42 @@ func (u User) String() string {
 
 type UserProvider struct {
 	GetUsers func(req []interface{}) ([]User, error)
-	GetUser  func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser  func(ctx context.Context, req []interface{}) (*User, error)
 	GetUser0 func(id string, name string, age int) (*User, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *User) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
+	GetUser1 func(ctx context.Context, req []interface{}) (*User, error)
+	GetUser2 func(ctx context.Context, req []interface{}) (*User, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
 }
 
-func (u *UserProvider) Reference() string {
-	return "UserProvider"
-}
+//func (u *UserProvider) Reference() string {
+//	return "UserProvider"
+//}
 
 type UserProvider1 struct {
 	GetUsers func(req []interface{}) ([]User, error)
-	GetUser  func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser  func(ctx context.Context, req []interface{}) (*User, error)
 	GetUser0 func(id string, name string, age int) (User, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *User) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
+	GetUser1 func(ctx context.Context, req []interface{}) (*User, error)
+	GetUser2 func(ctx context.Context, req []interface{}) (*User, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
 }
 
-func (u *UserProvider1) Reference() string {
-	return "UserProvider1"
-}
+//func (u *UserProvider1) Reference() string {
+//	return "UserProvider1"
+//}
 
 type UserProvider2 struct {
 	GetUsers func(req []interface{}) ([]User, error)
-	GetUser  func(ctx context.Context, req []interface{}, rsp *User) error
+	GetUser  func(ctx context.Context, req []interface{}) (*User, error)
 	GetUser0 func(id string, name string, age int) (User, error)
-	GetUser1 func(ctx context.Context, req []interface{}, rsp *User) error
-	GetUser2 func(ctx context.Context, req []interface{}, rsp *User) error `dubbo:"getUser"`
+	GetUser1 func(ctx context.Context, req []interface{}) (*User, error)
+	GetUser2 func(ctx context.Context, req []interface{}) (*User, error) `dubbo:"getUser"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
 }
 
-func (u *UserProvider2) Reference() string {
-	return "UserProvider2"
-}
+//func (u *UserProvider2) Reference() string {
+//	return "UserProvider2"
+//}

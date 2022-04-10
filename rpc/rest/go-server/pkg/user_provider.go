@@ -37,7 +37,6 @@ func (u *UserProvider) GetUser(ctx context.Context, req []interface{}) (*User, e
 	gxlog.CInfo("req:%#v", req)
 	user, err = u.getUser(req[0].(string))
 	if err == nil {
-		//*rsp = *user
 		gxlog.CInfo("rsp:%#v", user)
 	}
 	return user, err
