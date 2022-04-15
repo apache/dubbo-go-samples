@@ -18,17 +18,39 @@
 package main
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	_ "github.com/dubbogo/triple/pkg/triple"
+	"context"
+	"fmt"
 )
 
-// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/error/triple/pb/go-server/conf/dubbogo.yml
+import (
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/api"
+)
+
+var grpcGreeterImpl = new(api.GreeterClientImpl)
+
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
 func main() {
-	config.SetProviderService(&ErrorResponseProvider{})
+	config.SetConsumerService(grpcGreeterImpl)
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
-	select {}
+	registries := config.GetRootConfig().Registries
+	fmt.Printf("\n!start test config-merge:\n")
+	fmt.Printf("registries[\"demoZK\"]: %v\n", registries["demoZK"])
+	fmt.Printf("config.GetDefineValue(\"test-config\", false): %v\n\n", config.GetDefineValue("test-config", false))
+	logger.Info("start to test dubbo")
+	req := &api.HelloRequest{
+		Name: "laurence",
+	}
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client response result: %v\n", reply)
 }
