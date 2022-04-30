@@ -24,9 +24,6 @@ array=("config-api/rpc/triple")
 array+=("config-api/configcenter/nacos")
 array+=("config-api/configcenter/zookeeper")
 
-# route
-array+=("route/meshroute")
-
 # error
 array+=("error/triple/hessian2")
 array+=("error/triple/pb")
