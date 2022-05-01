@@ -21,69 +21,69 @@
 array=("config-api/go-server")
 
 # config-center
-array+=("configcenter/apollo/go-server")
-array+=("configcenter/zookeeper/go-server")
-array+=("configcenter/nacos/go-server")
-
-# context
-array+=("context/go-server")
-
-# direct
-array+=("direct/go-server")
-
-# filter
-array+=("filter/custom/go-server")
-array+=("filter/tpslimit/go-server")
-array+=("filter/sentinel/go-server")
-
-# game
-array+=("game/go-server-game")
-array+=("game/go-server-gate")
-
-# general
-array+=("general/dubbo/go-server")
-array+=("general/grpc/go-server")
-array+=("general/jsonrpc/go-server")
-array+=("general/rest/go-server")
-
-# generic
-array+=("generic/go-server")
-
-# group
-array+=("group/go-server-group-a")
-array+=("group/go-server-group-b")
-
-# hello world
-array+=("helloworld/go-server")
-
-# metric
-array+=("metric/go-server")
-
-# multi-registry
-array+=("multi-registry/go-server")
-
-# multi-zone
-array+=("multi-zone/go-server-hz")
-array+=("multi-zone/go-server-sh")
-
-# registry
-array+=("registry/etcd/go-server") # M1 ignore
-array+=("registry/nacos/go-server")
-#array+=("registry/servicediscovery/consul/go-server") # M1 ignore & Bug
-array+=("registry/servicediscovery/etcd/go-server") # M1 ignore
-array+=("registry/servicediscovery/file/go-server")
-array+=("registry/servicediscovery/nacos/go-server")
-array+=("registry/servicediscovery/zookeeper/go-server")
-
-# router
-#array+=("router/condition/go-server") # unsupported
-#array+=("router/tag/go-server") # unsupported
-
-array+=("tls/go-server")
-
-# version
-array+=("version/go-server-v1")
-array+=("version/go-server-v2")
+#array+=("configcenter/apollo/go-server")
+#array+=("configcenter/zookeeper/go-server")
+#array+=("configcenter/nacos/go-server")
+#
+## context
+#array+=("context/go-server")
+#
+## direct
+#array+=("direct/go-server")
+#
+## filter
+#array+=("filter/custom/go-server")
+#array+=("filter/tpslimit/go-server")
+#array+=("filter/sentinel/go-server")
+#
+## game
+#array+=("game/go-server-game")
+#array+=("game/go-server-gate")
+#
+## general
+#array+=("general/dubbo/go-server")
+#array+=("general/grpc/go-server")
+#array+=("general/jsonrpc/go-server")
+#array+=("general/rest/go-server")
+#
+## generic
+#array+=("generic/go-server")
+#
+## group
+#array+=("group/go-server-group-a")
+#array+=("group/go-server-group-b")
+#
+## hello world
+#array+=("helloworld/go-server")
+#
+## metric
+#array+=("metric/go-server")
+#
+## multi-registry
+#array+=("multi-registry/go-server")
+#
+## multi-zone
+#array+=("multi-zone/go-server-hz")
+#array+=("multi-zone/go-server-sh")
+#
+## registry
+#array+=("registry/etcd/go-server") # M1 ignore
+#array+=("registry/nacos/go-server")
+##array+=("registry/servicediscovery/consul/go-server") # M1 ignore & Bug
+#array+=("registry/servicediscovery/etcd/go-server") # M1 ignore
+#array+=("registry/servicediscovery/file/go-server")
+#array+=("registry/servicediscovery/nacos/go-server")
+#array+=("registry/servicediscovery/zookeeper/go-server")
+#
+## router
+##array+=("router/condition/go-server") # unsupported
+##array+=("router/tag/go-server") # unsupported
+#
+#array+=("tls/go-server")
+#
+## version
+#array+=("version/go-server-v1")
+#array+=("version/go-server-v2")
 
 for((i=0;i<${#array[*]};i++))
 do
