@@ -11,7 +11,7 @@ require (
 	github.com/coreos/bbolt v1.3.3 // indirect
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
-	github.com/dubbogo/gost v1.11.14
+	github.com/dubbogo/gost v1.11.21-0.20220503144918-9e5ae44480af
 	github.com/emicklei/go-restful/v3 v3.4.0
 	github.com/golang/protobuf v1.4.3
 	github.com/google/uuid v1.2.0 // indirect
