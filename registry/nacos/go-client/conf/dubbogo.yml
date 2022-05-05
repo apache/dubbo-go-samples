@@ -1,4 +1,12 @@
 dubbo:
+  application:
+    name: myApp # metadata: application=myApp; name=myApp
+    module: opensource #metadata: module=opensource
+    group: myAppGroup # no metadata record
+    organization: dubbo # metadata: organization=dubbo
+    owner: laurence # metadata: owner=laurence
+    version: myversion # metadata: app.version=myversion
+    environment: pro # metadata: environment=pro
   registries:
     nacosWithCustomGroup:
       protocol: nacos
