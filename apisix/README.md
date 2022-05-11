@@ -1,8 +1,8 @@
-# apisix整合dubbo-go
+# APISIX 整合 Dubbo Go
 
 
 
-**[Demo地址](https://github.com/limerence-code/apisix-dubbo-go.git)**
+**[Demo](https://github.com/limerence-code/apisix-dubbo-go.git)**
 
 ## 环境准备
 
@@ -22,47 +22,47 @@
 
 ### apisix 
 
-apisix服务端
+APISIX 服务端
 
 ### apisix-dashboard (可选)
 
-apisix控制台，提供可视化控制
+APISIX 控制台，提供可视化控制
 
 ### etcd
 
-apisix的注册中心
+APISIX 的注册中心
 
 ### helloworld
 
-dubbo-go的测试demo
+Dubbo Go 的测试 Demo
 
 ### nacos
 
-用于注册dubbo-go服务，供apisix网关调用
+用于注册 Dubbo Go 服务，供 APISIX 网关调用
 
 ## 启动
 
-### 创建docker network
+### 创建 docker network
 
 ```shell
 docker network create default_network
 ```
 
-创建default_network，服务指定该网络；方便服务之间进行通讯
+创建 default_network ，服务指定该网络；方便服务之间进行通讯
 
 ### 依次启动服务
 
 按顺序启动 **etcd** 、**apisix** 、  **nacos**  、 **helloworld** 命令 **docker-compose up --build -d**
 
-如果需要通过控制台进行协议路由配置则可以启动 **apisix-dashboard** 本文介绍的是通过http直接控制，因此无需启动
+如果需要通过控制台进行协议路由配置则可以启动 **apisix-dashboard** 本文介绍的是通过 HTTP 直接控制，因此无需启动
 
-**PS: 启动helloworld服务时，需要提前查询nacos对应default_network中的ip，然后将main.go中nacosConfig.Address修改成对应的nacos地址**
+**PS: 启动 helloworld 服务时，需要提前查询 nacos 对应 default_network 中的 ip ，然后将 main.go 中 nacosConfig.Address 修改成对应的 nacos 地址**
 
 ```shell
 docker inspect --format='{{json .NetworkSettings.Networks}}'  nacos
 ```
 
-helloworld启动成功后，在nacos服务列表可以查看
+helloworld 启动成功后，在 nacos 服务列表可以查看
 
 ## 配置
 
@@ -76,9 +76,9 @@ curl --location --request PUT 'http://127.0.0.1:80/apisix/admin/proto/1?api_key=
 }'
 ```
 
-其中content内容就是helloworld.proto内容，api_key在apisix_conf下面即可找到
+其中 content 内容就是 helloworld.proto 内容， api_key 在 apisix_conf 下面即可找到
 
-配置了协议id为1的协议，下面会用到
+配置了协议 id 为1的协议，下面会用到
 
 ### 路由转发
 
@@ -117,9 +117,9 @@ curl --location --request PUT 'http://127.0.0.1:80/apisix/admin/routes/1?api_key
 }'
 ```
 
-以上配置表示通过/helloworld，可以路由到helloworld.Greeter中的SayHello方法
+以上配置表示通过 /helloworld ，可以路由到 helloworld.Greeter 中的 SayHello 方法
 
-详细配置可查看 [apisix](https://apisix.apache.org/zh/docs/apisix/getting-started)
+详细配置可查看 [APISIX](https://apisix.apache.org/zh/docs/apisix/getting-started)
 
 ## 访问
 
