@@ -14,17 +14,17 @@
 
 ## 依赖
 
-1. apisix  
-2. apisix-dashboard 
+1. APISIX  
+2. APISIX Dashboard 
 3. etcd  
 4. helloword  
-5. nacos  
+5. Nacos  
 
-### apisix 
+### APISIX 
 
 APISIX 服务端
 
-### apisix-dashboard (可选)
+### APISIX Dashboard (可选)
 
 APISIX 控制台，提供可视化控制
 
@@ -36,7 +36,7 @@ APISIX 的注册中心
 
 Dubbo Go 的测试 Demo
 
-### nacos
+### Nacos
 
 用于注册 Dubbo Go 服务，供 APISIX 网关调用
 
@@ -52,17 +52,17 @@ docker network create default_network
 
 ### 依次启动服务
 
-按顺序启动 **etcd** 、**apisix** 、  **nacos**  、 **helloworld** 命令 **docker-compose up --build -d**
+按顺序启动 **etcd** 、**APISIX** 、  **Nacos**  、 **helloworld** 命令 **docker-compose up --build -d**
 
-如果需要通过控制台进行协议路由配置则可以启动 **apisix-dashboard** 本文介绍的是通过 HTTP 直接控制，因此无需启动
+如果需要通过控制台进行协议路由配置则可以启动 **APISIX Dashboard** 本文介绍的是通过 HTTP 直接控制，因此无需启动
 
-**PS: 启动 helloworld 服务时，需要提前查询 nacos 对应 default_network 中的 ip ，然后将 main.go 中 nacosConfig.Address 修改成对应的 nacos 地址**
+**PS: 启动 helloworld 服务时，需要提前查询 Nacos 对应 default_network 中的 ip ，然后将 main.go 中 nacosConfig.Address 修改成对应的 Nacos 地址**
 
 ```shell
 docker inspect --format='{{json .NetworkSettings.Networks}}'  nacos
 ```
 
-helloworld 启动成功后，在 nacos 服务列表可以查看
+helloworld 启动成功后，在 Nacos 服务列表可以查看
 
 ## 配置
 
