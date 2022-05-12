@@ -25,10 +25,13 @@ package helloworld
 
 import (
 	context "context"
+	fmt "fmt"
+)
+
+import (
 	protocol "dubbo.apache.org/dubbo-go/v3/protocol"
 	dubbo3 "dubbo.apache.org/dubbo-go/v3/protocol/dubbo3"
 	invocation "dubbo.apache.org/dubbo-go/v3/protocol/invocation"
-	fmt "fmt"
 	grpc_go "github.com/dubbogo/grpc-go"
 	codes "github.com/dubbogo/grpc-go/codes"
 	metadata "github.com/dubbogo/grpc-go/metadata"

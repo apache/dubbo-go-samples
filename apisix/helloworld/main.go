@@ -19,13 +19,16 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
-
-	"helloworld/protobuf/helloworld"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+import (
+	"helloworld/protobuf/helloworld"
 )
 
 type GreeterProvider struct {
