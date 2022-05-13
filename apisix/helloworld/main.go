@@ -28,7 +28,7 @@ import (
 )
 
 import (
-	"helloworld/protobuf/helloworld"
+	"github.com/apache/dubbo-go-samples/apisix/helloworld/protobuf/helloworld"
 )
 
 type GreeterProvider struct {
