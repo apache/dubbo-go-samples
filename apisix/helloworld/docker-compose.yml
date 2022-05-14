@@ -1,0 +1,15 @@
+version: "3"
+services :
+  helloworld:
+    build: ./ #编译
+#    ports:
+#      - 8084:80 # 绑定服务器端口:容器端口
+    networks:
+      default_network:
+    restart: always
+    environment:
+        - TZ=Asia/Shanghai
+networks:
+  default_network:
+    external:
+      name: default_network

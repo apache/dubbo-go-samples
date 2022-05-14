@@ -1,0 +1,22 @@
+version: "3"
+services:
+  apisix-dashboard:
+    image: apache/apisix-dashboard:2.11-alpine
+    restart: always
+    volumes:
+    - ./dashboard_conf/conf.yaml:/usr/local/apisix-dashboard/conf/conf.yaml
+    ports:
+    - "9000:9000"
+    networks:
+      apisix:
+      etcd:
+    environment:
+      - TZ=Asia/Shanghai
+networks:
+  apisix:
+    external:
+      name: apisix-compose_apisix
+  etcd:
+    external:
+      name: etcd-compose_etcd
+
