@@ -2,20 +2,11 @@ version: '3'
 
 services:
   etcd:
-    image: "quay.io/coreos/etcd:latest"
+    image: bitnami/etcd:3.5.2
     container_name: etcd
     environment:
-      - ETCDCTL_API=3
-    command: [
-        "etcd",
-        "--name=etcd0",
-        "--advertise-client-urls=http://127.0.0.1:2379",
-        "--listen-client-urls=http://0.0.0.0:2379",
-        "--initial-advertise-peer-urls=http://127.0.0.1:2380",
-        "--listen-peer-urls=http://0.0.0.0:2380",
-        "--initial-cluster=etcd0=http://127.0.0.1:2380",
-    ]
+      - "ALLOW_NONE_AUTHENTICATION=yes"
+      - "ETCD_NAME=node1"
     ports:
       - "2379:2379"
       - "2380:2380"
-    restart: always

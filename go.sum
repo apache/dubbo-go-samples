@@ -89,9 +89,8 @@ github.com/apache/dubbo-getty v1.4.5 h1:MptKbjC0n2Mo/8eFPwirSInH2BfdNG4IZch43PdN
 github.com/apache/dubbo-getty v1.4.5/go.mod h1:mcDyiu7M/TVrYDyL8TxDemQkOdvEqqHSQ4jOuYejY1w=
 github.com/apache/dubbo-go v1.5.7 h1:aEdQyUH3duDYMw8wBYziuDBUwNBSVyYlUqqAQJ2ikZA=
 github.com/apache/dubbo-go v1.5.7/go.mod h1:KHmSHx2/foxW0dVlQIrqQ4Vs1Clg3d4UIkwKkuhaZt8=
+github.com/apache/dubbo-go-hessian2 v1.9.1 h1:ceSsU/9z/gv3hzUpl8GceEhQvF3i0BionfdHUGMmjHU=
 github.com/apache/dubbo-go-hessian2 v1.9.1/go.mod h1:xQUjE7F8PX49nm80kChFvepA/AvqAZ0oh/UaB6+6pBE=
-github.com/apache/dubbo-go-hessian2 v1.9.2 h1:XuI8KvENSfKiAhiCBS4RNihmQDoPNmGWKT3gTui0p9A=
-github.com/apache/dubbo-go-hessian2 v1.9.2/go.mod h1:xQUjE7F8PX49nm80kChFvepA/AvqAZ0oh/UaB6+6pBE=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
 github.com/apache/thrift v0.13.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=
 github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e h1:QEF07wC0T1rKkctt1RINW/+RMTVmiwxETico2l3gxJA=
@@ -208,7 +207,6 @@ github.com/dubbogo/gost v1.9.0/go.mod h1:pPTjVyoJan3aPxBPNUX0ADkXjPibLo+/Ib0/fAD
 github.com/dubbogo/gost v1.10.1/go.mod h1:+mQGS51XQEUWZP2JeGZTxJwipjRKtJO7Tr+FOg+72rI=
 github.com/dubbogo/gost v1.11.11/go.mod h1:vIcP9rqz2KsXHPjsAwIUtfJIJjppQLQDcYaZTy/61jI=
 github.com/dubbogo/gost v1.11.12/go.mod h1:vIcP9rqz2KsXHPjsAwIUtfJIJjppQLQDcYaZTy/61jI=
-github.com/dubbogo/gost v1.11.14 h1:9lfcdILOmqTOVAW1fPHa5uf1NrD6jlIOBe4vf8576yQ=
 github.com/dubbogo/gost v1.11.14/go.mod h1:vIcP9rqz2KsXHPjsAwIUtfJIJjppQLQDcYaZTy/61jI=
 github.com/dubbogo/gost v1.11.21-0.20220503144918-9e5ae44480af h1:5cBN7lpxzBYImEAezW0QRRi7XB59DAnA/hMzuEUCBew=
 github.com/dubbogo/gost v1.11.21-0.20220503144918-9e5ae44480af/go.mod h1:vIcP9rqz2KsXHPjsAwIUtfJIJjppQLQDcYaZTy/61jI=
