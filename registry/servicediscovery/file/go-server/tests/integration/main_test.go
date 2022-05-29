@@ -1,3 +1,4 @@
+//go:build integration
 // +build integration
 
 /*
@@ -34,10 +35,8 @@ import (
 	"github.com/apache/dubbo-go/config"
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
 	_ "github.com/apache/dubbo-go/metadata/mapping/memory"
-	_ "github.com/apache/dubbo-go/metadata/report/consul"
 	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/registry/consul"
 	_ "github.com/apache/dubbo-go/registry/file"
 	_ "github.com/apache/dubbo-go/registry/protocol"
 	_ "github.com/apache/dubbo-go/registry/servicediscovery"
