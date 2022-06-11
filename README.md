@@ -6,7 +6,7 @@
 
 * async: An async example.
 * attachment: An attachment example, to show how to use attachment to pass user data from the client to the server.
-* configcenter: uses of different config centers, including zookeeper, apollo and nacos at present.
+* configcenter: uses of different config centers, including zookeeper and nacos at present.
 * direct: A direct invocation example.
 * filter: Some examples of different filter, including custom_filter and tpslimit
 * rpc: dubbo directory display dubbo protocol communication
