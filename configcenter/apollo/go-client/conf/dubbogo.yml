@@ -1,7 +1,0 @@
-dubbo:
-  config-center:
-    protocol: "apollo"
-    address: "localhost:8080"
-    app-id: "demo_server"
-    cluster: "default"
-    namespace: "demo-client-config"
