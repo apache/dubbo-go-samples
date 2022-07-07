@@ -22,7 +22,7 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"github.com/dubbogo/gost/log/logger"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
