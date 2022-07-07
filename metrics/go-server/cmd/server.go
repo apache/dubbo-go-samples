@@ -24,10 +24,11 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/metrics/prometheus"
+
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (

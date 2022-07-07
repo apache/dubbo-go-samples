@@ -19,13 +19,13 @@ package main
 
 import (
 	"context"
-	"github.com/dubbogo/grpc-go/codes"
-	"github.com/dubbogo/grpc-go/status"
-	//"github.com/pkg/errors"
 )
 
 import (
 	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/dubbogo/grpc-go/codes"
+	"github.com/dubbogo/grpc-go/status"
 )
 
 import (

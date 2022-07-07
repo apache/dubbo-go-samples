@@ -23,13 +23,14 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	"dubbo.apache.org/dubbo-go/v3/config/generic"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
+
+	"github.com/dubbogo/gost/log/logger"
 
 	tpconst "github.com/dubbogo/triple/pkg/common/constant"
 )

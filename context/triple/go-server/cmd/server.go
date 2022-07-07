@@ -25,9 +25,10 @@ import (
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	"github.com/dubbogo/gost/log/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (

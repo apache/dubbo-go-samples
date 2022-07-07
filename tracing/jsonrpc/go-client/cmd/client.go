@@ -27,11 +27,11 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	gxlog "github.com/dubbogo/gost/log"
+	"github.com/dubbogo/gost/log/logger"
 
 	"github.com/opentracing/opentracing-go"
 
