@@ -20,13 +20,17 @@ package main
 import (
 	"context"
 	"log"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
-	"github.com/dubbogo/gost/log/logger"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/apache/dubbo-go-samples/api"
 
+	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/api"
 	otelconfig "github.com/apache/dubbo-go-samples/otel/trace/config"
 )
 
