@@ -1,0 +1,35 @@
+version: "3"
+services:
+  nacos:
+    image: nacos/nacos-server:2.0.3
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=derby
+      - JVM_XMS=128m
+      - JVM_XMX=128m
+      # - SPRING_DATASOURCE_PLATFORM=mysql
+      # - MYSQL_SERVICE_HOST=mysql
+      # - MYSQL_SERVICE_DB_NAME=nacos_config_apisix
+      # - MYSQL_SERVICE_PORT=3306
+      # - MYSQL_SERVICE_USER=root
+      # - MYSQL_SERVICE_PASSWORD=123456
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./logs/:/home/nacos/logs
+      - ./nacos_conf/custom.properties:/home/nacos/init.d/custom.properties
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9555:9555"
+    restart: always
+    networks:
+      #mysql_network:
+      default_network:
+networks:
+  default_network:
+    external:
+      name: default_network
+ # mysql_network:
+  #  external:
+   #   name: mysql57-compose_default

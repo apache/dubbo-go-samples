@@ -23,7 +23,7 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"github.com/dubbogo/gost/log/logger"
 
 	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 )

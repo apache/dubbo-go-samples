@@ -1,0 +1,27 @@
+version: "3"
+services:
+  apisix:
+    image: apache/apisix:2.13.1-alpine
+    restart: always
+    volumes:
+      - ./apisix_log:/usr/local/apisix/logs
+      - ./apisix_conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+    ports:
+      - "80:9080/tcp"
+      - "9091:9091/tcp"
+      - "443:9443/tcp"
+    networks:
+      apisix:
+      default_network:
+      etcd:
+    environment:
+      - TZ=Asia/Shanghai
+networks:
+  apisix:
+    driver: bridge
+  default_network:
+    external:
+      name: default_network
+  etcd:
+    external:
+      name: etcd-compose_etcd 
