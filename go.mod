@@ -14,8 +14,8 @@ require (
 	github.com/stretchr/testify v1.8.0
 	github.com/uber/jaeger-client-go v2.29.1+incompatible
 	go.opentelemetry.io/otel v1.8.0
-	go.opentelemetry.io/otel/exporters/jaeger v1.7.0
-	go.opentelemetry.io/otel/sdk v1.7.0
+	go.opentelemetry.io/otel/exporters/jaeger v1.8.0
+	go.opentelemetry.io/otel/sdk v1.8.0
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
 )
