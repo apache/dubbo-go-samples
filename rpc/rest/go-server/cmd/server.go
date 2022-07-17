@@ -21,6 +21,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol/rest/server"
 	"fmt"
 	gxlog "github.com/dubbogo/gost/log"
+	"github.com/dubbogo/gost/log/logger"
 	"github.com/emicklei/go-restful/v3"
 	"os"
 	"os/signal"
@@ -29,7 +30,6 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/common/logger"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
@@ -56,6 +56,7 @@ func main() {
 	})
 	err := config.Load()
 	if err != nil {
+		logger.Errorf("Start has failed, cause ", err)
 		return
 	}
 

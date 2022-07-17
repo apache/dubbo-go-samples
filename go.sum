@@ -35,8 +35,6 @@ cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9
 contrib.go.opencensus.io/exporter/prometheus v0.4.1 h1:oObVeKo2NxpdF/fIfrPsNj6K0Prg0R0mHM+uANlYMiM=
 contrib.go.opencensus.io/exporter/prometheus v0.4.1/go.mod h1:t9wvfitlUjGXG2IXAZsuFq26mDGid/JwCEXp+gTG/9U=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
-dubbo.apache.org/dubbo-go/v3 v3.0.3-0.20220708050457-1abbc2e77c76 h1:N91t/CDWN3Fm75GraPwySIUGcxbsFvpKeQVDt99+wD4=
-dubbo.apache.org/dubbo-go/v3 v3.0.3-0.20220708050457-1abbc2e77c76/go.mod h1:JHYPldfrzYaVtmO3ZqgpYTFKwc00W9YVTKssIhUMXUQ=
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
