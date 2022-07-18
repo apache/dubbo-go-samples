@@ -25,11 +25,16 @@ import (
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	
 	"github.com/SkyAPM/go2sky"
 	dubbo_go "github.com/SkyAPM/go2sky-plugins/dubbo-go"
 	"github.com/SkyAPM/go2sky/reporter"
-	"github.com/apache/dubbo-go-samples/api"
+	
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/api"
 )
 
 type Greeter struct {
