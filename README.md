@@ -4,21 +4,25 @@
 
 ## What It Contains
 
-* async: An async example.
-* attachment: An attachment example, to show how to use attachment to pass user data from the client to the server.
+* apisix: apache/apisix and Dubbo-go example
+* config-api: show how to use dubbogo by APIs without configuration
 * configcenter: uses of different config centers, including zookeeper and nacos at present.
+* context: how to transfer request context between multiple producers/consumers
 * direct: A direct invocation example.
+* error/triple: triple sample with hessian2/protobuf
 * filter: Some examples of different filter, including custom_filter and tpslimit
-* rpc: dubbo directory display dubbo protocol communication
+* game: game service example
 * generic: A generic invocation example
 * helloworld: A 101 example
-* router: router examples, including condition and tag
+* integrate_test: dubbogo github action integrate test use cases
+* logger: dubbogo logging
+* metrics: show how to collect dubbogo prometheus metrics
+* otel/trace: show how to use opentelemetry as dubbogo tracing tool
+* registry: show how to use etcd/nacos/polaris/zookeeper as dubbogo registry
+* rpc: dubbo directory display dubbo protocol communication
 * seata: A seata example
-* shop: Shop sample
-* tengine: Taobao Tengine and Dubbo-go example
-* tls: Use TLS in Dubbo-go application
+* skywalking: show how to integrate skywalking into dubbogo
 * tracing: tracing example
-* game: game service example
 
 ## How To Run
 
