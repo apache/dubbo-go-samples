@@ -93,6 +93,9 @@ func main() {
 
 	// setup reporter, use gRPC reporter for production
 	report, err := reporter.NewGRPCReporter("YOUR_SKYWALKING_DOMAIN_NAME_OR_IP:11800")
+	if err != nil {
+		log.Fatalf("new reporter error: %v \n", err)
+	}
 
 	// setup tracer
 	tracer, err := go2sky.NewTracer("dubbo-go-skywalking-sample-tracer", go2sky.WithReporter(report))
