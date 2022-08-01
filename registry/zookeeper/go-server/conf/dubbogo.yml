@@ -4,7 +4,7 @@ dubbo:
       protocol: zookeeper
       timeout: 3s
       address: 127.0.0.1:2181
-      group: myGroup # defualt is dubbo
+      group: myGroup # default is dubbo
   protocols:
     triple:
       name: tri
