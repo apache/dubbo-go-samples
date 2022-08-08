@@ -51,8 +51,9 @@ github.com/RoaringBitmap/roaring v1.2.0 h1:qayex3YgtOmzev8slia4A0jPGsn2o2bnqKDcR
 github.com/RoaringBitmap/roaring v1.2.0/go.mod h1:icnadbWcNyfEHlYdr+tDlOTih1Bf/h+rzPpv4sbomAA=
 github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWXgklEdEo=
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
-github.com/SkyAPM/go2sky v1.4.1 h1:FV0jUB8UeC5CW0Z12j8xgrK0LoVV85Z92ShQU0G3Xfo=
 github.com/SkyAPM/go2sky v1.4.1/go.mod h1:cebzbFtq5oc9VrgJy0Sv7oePj/TjIlXPdj2ntHdCXd0=
+github.com/SkyAPM/go2sky v1.5.0 h1:TzhKL9IyVCegCUdcqRI7R7g+rQCYNnF6QAzp6IhDy08=
+github.com/SkyAPM/go2sky v1.5.0/go.mod h1:cebzbFtq5oc9VrgJy0Sv7oePj/TjIlXPdj2ntHdCXd0=
 github.com/SkyAPM/go2sky-plugins/dubbo-go v0.0.0-20220718123631-cb8f743b16cf h1:72GrAMxA3kuKxZHrWSCnPaxONwVCWUsuB8NwaceHvcw=
 github.com/SkyAPM/go2sky-plugins/dubbo-go v0.0.0-20220718123631-cb8f743b16cf/go.mod h1:hCY7gcTwwJH78NV0+OOp4Ujq82jpHtaLQnJjLGgBoZE=
 github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
