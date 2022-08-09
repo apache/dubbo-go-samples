@@ -2,7 +2,7 @@ module github.com/apache/dubbo-go-samples
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.0.3-0.20220730033103-013f0b2804ce
-	github.com/SkyAPM/go2sky v1.4.1
+	github.com/SkyAPM/go2sky v1.5.0
 	github.com/SkyAPM/go2sky-plugins/dubbo-go v0.0.0-20220718123631-cb8f743b16cf
 	github.com/apache/dubbo-go-hessian2 v1.11.1
 	github.com/dubbogo/gost v1.12.6-0.20220719055648-01d5bc07b111
