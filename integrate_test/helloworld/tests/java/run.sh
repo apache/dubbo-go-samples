@@ -5,7 +5,7 @@ if [ -z "$1" ]; then
   exit
 fi
 
-cd $1
-set -e
-
-mvn test
+#cd $1
+#set -e
+#
+#mvn test
