@@ -5,6 +5,7 @@ dubbo:
       timeout: 3s
       address: 127.0.0.1:2181
       group: myGroup # default is dubbo
+      registry-type: interface
   protocols:
     triple:
       name: tri
