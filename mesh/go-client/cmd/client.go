@@ -50,4 +50,5 @@ func main() {
 		logger.Error(err)
 	}
 	logger.Infof("client response result: %v\n", reply)
+	select {}
 }
