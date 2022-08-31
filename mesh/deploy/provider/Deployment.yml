@@ -23,25 +23,24 @@ spec:
             - name: grpc-tri
               containerPort: 50052
               protocol: TCP
-#          livenessProbe:
-#            httpGet:
-#              path: /live
-#              port: http-health
-#            initialDelaySeconds: 10
-#            periodSeconds: 5
-#            timeoutSeconds: 1
-#          readinessProbe:
-#            httpGet:
-#              path: /ready
-#              port: http-health
-#            initialDelaySeconds: 5
-#            periodSeconds: 5
-#            timeoutSeconds: 2
-#          startupProbe:
-#            httpGet:
-#              path: /startup
-#              port: http-health
-#            failureThreshold: 30
-#            initialDelaySeconds: 10
-#            periodSeconds: 5
-#            timeoutSeconds: 2
+          livenessProbe:
+            tcpSocket:
+              port: 50052
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 1
+          readinessProbe:
+            tcpSocket:
+              port: 50052
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+          startupProbe:
+            exec:
+              command:
+                - echo
+                - "ok"
+            failureThreshold: 30
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
