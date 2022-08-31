@@ -4,11 +4,11 @@ dubbo:
   registries:
     demoZK:
       protocol: zookeeper
-      address: 127.0.0.1:2181
+      address: N/A
   protocols:
     triple:
       name: tri
-      port: 20000
+      port: 50052
   provider:
     services:
       GreeterProvider:

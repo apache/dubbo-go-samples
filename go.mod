@@ -23,5 +23,3 @@ require (
 )
 
 go 1.15
-
-replace dubbo.apache.org/dubbo-go/v3 => github.com/chickenlj/dubbo-go/v3 v3.1.0-proxy

@@ -1,20 +1,19 @@
-# syntax=docker/dockerfile:1
 FROM golang:1.18.0-alpine3.15 as builder
 ENV TIMEZONE Asia/Shanghai
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
-&& apk update && apk add git 
-WORKDIR /aixichen/helloworld
-RUN mkdir -p /aixichen/helloworld
+WORKDIR /mesh/
 #添加文件
-COPY conf /aixichen/helloworld
+COPY go.mod ./
+COPY go.sum ./
+COPY conf ./conf
+COPY cmd ./cmd
 ##编译
-RUN go env -w GO111MODULE=on && go env -w GOPROXY=https://goproxy.cn,direct \
-&& cd /aixichen/helloworld/ && go build -o aixichen-service
+RUN go env -w GO111MODULE=on && go env -w GOPROXY=https://goproxy.cn,direct && go mod download
+RUN go build -o client-demo ./...
 
 FROM alpine:3.15
-RUN mkdir -p /aixichen/helloworld
-COPY --from=builder /aixichen/helloworld/aixichen-service /aixichen/helloworld
-WORKDIR /aixichen/helloworld
+WORKDIR /mesh
+COPY --from=builder /mesh/client-demo ./client-demo
+COPY --from=builder /mesh/conf .
 
-EXPOSE 80
-ENTRYPOINT ["./aixichen-service"]
+ENV DUBBO_GO_CONFIG_PATH="./dubbogo.yml"
+ENTRYPOINT ["./client-demo"]
