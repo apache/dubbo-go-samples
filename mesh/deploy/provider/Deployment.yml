@@ -18,6 +18,8 @@ spec:
       containers:
         - name: server
           image: apache/dubbo-demo:dubbo-go-mesh-provider_0.0.1
+          command: ["/bin/sh"]
+          args: ["-c", "./server-demo"]
           imagePullPolicy: Always
           ports:
             - name: grpc-tri
