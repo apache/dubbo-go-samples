@@ -21,29 +21,29 @@ spec:
           command: ["/bin/sh"]
           args: ["-c", "echo test"]
           imagePullPolicy: Always
-          ports:
-            - name: grpc-tri
-              containerPort: 50052
-              protocol: TCP
-          livenessProbe:
-            tcpSocket:
-              port: 50052
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 1
-          readinessProbe:
-            tcpSocket:
-              port: 50052
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            timeoutSeconds: 2
-          startupProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - sleep 10; echo ok
-            failureThreshold: 30
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 2
+#          ports:
+#            - name: grpc-tri
+#              containerPort: 50052
+#              protocol: TCP
+#          livenessProbe:
+#            tcpSocket:
+#              port: 50052
+#            initialDelaySeconds: 10
+#            periodSeconds: 5
+#            timeoutSeconds: 1
+#          readinessProbe:
+#            tcpSocket:
+#              port: 50052
+#            initialDelaySeconds: 5
+#            periodSeconds: 5
+#            timeoutSeconds: 2
+#          startupProbe:
+#            exec:
+#              command:
+#                - /bin/sh
+#                - -c
+#                - sleep 10; echo ok
+#            failureThreshold: 30
+#            initialDelaySeconds: 10
+#            periodSeconds: 5
+#            timeoutSeconds: 2
