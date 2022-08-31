@@ -38,8 +38,9 @@ spec:
           startupProbe:
             exec:
               command:
-                - echo
-                - "ok"
+                - /bin/bash
+                - -c
+                - sleep 10;echo "ok"
             failureThreshold: 30
             initialDelaySeconds: 10
             periodSeconds: 5
