@@ -114,15 +114,16 @@ dubbo:
     name: server-demo
 ```
 
-> [Dubbo Consumer 服务声明](https://github.com/chickenlj/dubbo-go-samples/blob/mesh-proxy-demo/mesh/go-client/conf/dubbogo.yml)中还指定了要消费的 Provider 服务（应用）名
-> ```yaml
->   consumer:
+[Dubbo Consumer 服务声明](https://github.com/chickenlj/dubbo-go-samples/blob/mesh-proxy-demo/mesh/go-client/conf/dubbogo.yml)中还指定了要消费的 Provider 服务（应用）名
+
+```yaml
+consumer:
     mesh-enable: true
     references:
       GreeterClientImpl:
         protocol: tri
         provided_by: server-demo
-> ```
+```
 
 <h3 id="check">3.4 检查 Provider 和 Consumer 正常通信</h3>
 
