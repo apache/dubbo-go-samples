@@ -12,8 +12,6 @@
         - [3.3.2 部署 Consumer](#deploy_consumer)
     + [3.4 检查 Provider 和 Consumer 正常通信](#check)
     + [3.5 Istio 流量治理](#traffic)
-* [4 修改示例与镜像打包](#edit)
-* [5 附录：常用命令](#common)
 
 <h2 id="target">1 总体目标</h2>
 
