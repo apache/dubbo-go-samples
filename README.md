@@ -2,6 +2,8 @@
 
 ![CI](https://github.com/apache/dubbo-go-samples/workflows/CI/badge.svg)
 
+[中文 🇨🇳](./README_CN.md)
+
 ## What It Contains
 
 * apisix: apache/apisix and Dubbo-go example
@@ -16,8 +18,10 @@
 * helloworld: A 101 example
 * integrate_test: dubbogo github action integrate test use cases
 * logger: dubbogo logging
+* mesh: give an proxy service mesh example which shows how to deploy the dubbo-go services with envoy on kubernetes platform
 * metrics: show how to collect dubbogo prometheus metrics
 * otel/trace: show how to use opentelemetry as dubbogo tracing tool
+* proxyless: give an proxyless service mesh example which shows how to deploy the dubbo-go services on kubernetes platform
 * registry: show how to use etcd/nacos/polaris/zookeeper as dubbogo registry
 * rpc: dubbo directory display dubbo protocol communication
 * seata: A seata example

@@ -17,7 +17,7 @@
 
 <h2 id="target">1 总体目标</h2>
 
-* 部署 Dubbo Go 应用到 Kubernetes
+* 部署 dubbo-go 应用到 Kubernetes
 * Istio 自动注入 Envoy 并实现流量拦截
 * 基于 Istio 规则进行流量治理
 
@@ -28,7 +28,7 @@
 
 完成示例将需要的步骤如下：
 
-1. 创建一个 Dubbo Go 应用，可直接使用( [dubbo-go-samples](https://github.com/apache/dubbo-go-samples/tree/master/mesh) )
+1. 创建一个 dubbo-go 应用，可直接使用( [dubbo-go-samples](https://github.com/apache/dubbo-go-samples/tree/master/mesh) )
 2. 构建容器镜像并推送到镜像仓库，可直接使用 ([本示例官方镜像](https://hub.docker.com/u/dubboteam))
 3. 分别部署 Dubbo Provider 与 Dubbo Consumer 到 Kubernetes 并验证 Envoy 代理注入成功
 4. 验证 Envoy 发现服务地址、正常拦截 RPC 流量并实现负载均衡
@@ -142,9 +142,9 @@ kubectl logs your-pod-id -c istio-proxy
 consumer istio-proxy 日志输出如下:
 
 ```shell
-[2022-07-15T05:35:14.418Z] "POST /org.apache.dubbo.samples.Greeter/greet HTTP/2" 200 
-- via_upstream - "-" 19 160 2 1 "-" "-" "6b8a5a03-5783-98bf-9bee-f93ea6e3d68e" 
-"dubbo-samples-mesh-provider:50052" "172.17.0.4:50052" 
+[2022-07-15T05:35:14.418Z] "POST /org.apache.dubbo.samples.Greeter/greet HTTP/2" 200
+- via_upstream - "-" 19 160 2 1 "-" "-" "6b8a5a03-5783-98bf-9bee-f93ea6e3d68e"
+"dubbo-samples-mesh-provider:50052" "172.17.0.4:50052"
 outbound|50052||dubbo-samples-mesh-provider.dubbo-demo.svc.cluster.local 172.17.0.7:52768 10.101.172.129:50052 172.17.0.7:38488 - default
 ```
 
@@ -159,8 +159,8 @@ outbound|50052||dubbo-samples-mesh-provider.dubbo-demo.svc.cluster.local 172.17.
 provider istio-proxy 日志输出如下:
 
 ```shell
-[2022-07-15T05:25:34.061Z] "POST /org.apache.dubbo.samples.Greeter/greet HTTP/2" 200 
-- via_upstream - "-" 19 162 1 1 "-" "-" "201e6976-da10-96e1-8da7-ad032e58db47" 
+[2022-07-15T05:25:34.061Z] "POST /org.apache.dubbo.samples.Greeter/greet HTTP/2" 200
+- via_upstream - "-" 19 162 1 1 "-" "-" "201e6976-da10-96e1-8da7-ad032e58db47"
 "dubbo-samples-mesh-provider:50052" "172.17.0.10:50052"
  inbound|50052|| 127.0.0.6:47013 172.17.0.10:50052 172.17.0.7:60244
   outbound_.50052_._.dubbo-samples-mesh-provider.dubbo-demo.svc.cluster.local default

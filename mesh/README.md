@@ -1,4 +1,4 @@
-# Dubbo Go Proxy Mesh Using Istio
+# dubbo-go Proxy Mesh Using Istio
 
 可以按照下文步骤，将 Demo 部署到本地集群。
 
@@ -15,20 +15,20 @@
 
 <h2 id="target">1 总体目标</h2>
 
-* 部署 Dubbo Go 应用到 Kubernetes
+* 部署 dubbo-go 应用到 Kubernetes
 * Istio 自动注入 Envoy 并实现流量拦截
 * 基于 Istio 规则进行流量治理
 
 <h2 id="basic">2 基本流程与工作原理</h2>
-这个示例演示了如何将 Dubbo Go 开发的应用部署在 Istio 体系下，以实现 Envoy 对 Dubbo 服务的自动代理，示例总体架构如下图所示。
+这个示例演示了如何将 dubbo-go 开发的应用部署在 Istio 体系下，以实现 Envoy 对 Dubbo 服务的自动代理，示例总体架构如下图所示。
 
 [thinsdk](./assets/thinsdk.png)
 
 完成示例将需要的步骤如下：
 
-1. 创建一个 Dubbo Go 应用，可直接使用( [dubbo-go-samples](https://github.com/apache/dubbo-go-samples/tree/master/mesh) )
+1. 创建一个 dubbo-go 应用，可直接使用( [dubbo-go-samples](https://github.com/apache/dubbo-go-samples/tree/master/mesh) )
 2. 构建容器镜像并推送到镜像仓库，可直接使用 ([本示例官方镜像](https://hub.docker.com/r/apache/dubbo-demo/tags))
-3. 分别部署 Dubbo Go Provider 与 Dubbo Go Consumer 到 Kubernetes 并验证 Envoy 代理注入成功
+3. 分别部署 dubbo-go Provider 与 dubbo-go Consumer 到 Kubernetes 并验证 Envoy 代理注入成功
 4. 验证 Envoy 发现服务地址、正常拦截 RPC 流量并实现负载均衡
 5. 优化并配置健康检查流程
 

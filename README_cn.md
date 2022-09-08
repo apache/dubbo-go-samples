@@ -16,8 +16,10 @@
 * helloworld: 入门例子
 * integrate_test: dubbogo github action 集成测试用例
 * logger: dubbogo logging
+* mesh: 这个示例演示了如何将 dubbo-go 开发的应用部署在 Istio 体系下，以实现 Envoy 对 dubbo/dubbo-go 服务的自动代理
 * metrics: 使用 prometheus 收集 dubbogo 的 metrics
 * otel/trace: 使用 opentelemetry 进行 tracing 
+* proxyless: 这个示例演示了如何将 dubbo-go 开发的应用部署在 Istio 体系下，以实现 Envoy 对 dubbo/dubbo-go 服务的自动代理
 * registry: 把 etcd/nacos/polaris/zookeeper 当做 dubbogo 注册中心示例
 * rpc: 使用 Dubbogo 框架启动 rpc 服务，发起调用
 * seata:  在 dubbogo 中如何基于 seata 实现分布式事务
