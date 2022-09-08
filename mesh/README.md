@@ -62,7 +62,7 @@ kubectl cluster-info
 
 ```shell
 # 初始化命名空间并开启sidecar自动注入
-kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-samples/master/dubbo-samples-mesh-k8s/deploy/Namespace.yml
+kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-go-samples/mesh-proxy-demo/mesh/deploy/Namespace.yml
 
 # 切换命名空间
 kubens dubbo-demo
@@ -75,10 +75,10 @@ kubens dubbo-demo
 
 ```shell
 # 部署 Service
-kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-samples/master/dubbo-samples-mesh-k8s/deploy/provider/Service.yml
+kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-go-samples/mesh-proxy-demo/mesh/deploy/provider/Service.yml
 
 # 部署 Deployment
-kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-samples/master/dubbo-samples-mesh-k8s/deploy/provider/Deployment.yml
+kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-go-samples/mesh-proxy-demo/mesh/deploy/provider/Deployment.yml
 ```
 
 以上命令创建了一个名为 `server-demo` 的 Service，注意这里的 service name 与项目中的 dubbo 应用名是一样的。
@@ -101,20 +101,27 @@ kubectl logs your-pod-id
 
 ```shell
 # 部署 Service
-kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-samples/master/dubbo-samples-mesh-k8s/deploy/consumer/Service.yml
+kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-go-samples/mesh-proxy-demo/mesh/deploy/consumer/Service.yml
 
 # 部署 Deployment
-kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-samples/master/dubbo-samples-mesh-k8s/deploy/consumer/Deployment.yml
+kubectl apply -f https://raw.githubusercontent.com/apache/dubbo-go-samples/mesh-proxy-demo/mesh/deploy/consumer/Deployment.yml
 ```
 
-部署 consumer 与 provider 是一样的，这里也保持了 K8S Service 与 Dubbo consumer application name(在 [dubbogo.yml]() 中定义) 一致
+部署 consumer 与 provider 是一样的，这里也保持了 K8S Service 与 Dubbo consumer application name(在 [dubbogo.yml](https://github.com/chickenlj/dubbo-go-samples/blob/mesh-proxy-demo/mesh/go-server/conf/dubbogo.yml) 中定义) 一致
 ```yaml
-
+dubbo:
+  application:
+    name: server-demo
 ```
 
-> Dubbo Consumer 服务声明中还指定了消费的 Provider 服务（应用）名
+> [Dubbo Consumer 服务声明](https://github.com/chickenlj/dubbo-go-samples/blob/mesh-proxy-demo/mesh/go-client/conf/dubbogo.yml)中还指定了要消费的 Provider 服务（应用）名
 > ```yaml
-> 
+>   consumer:
+    mesh-enable: true
+    references:
+      GreeterClientImpl:
+        protocol: tri
+        provided_by: server-demo
 > ```
 
 <h3 id="check">3.4 检查 Provider 和 Consumer 正常通信</h3>
@@ -132,32 +139,10 @@ kubectl logs your-pod-id
 kubectl logs your-pod-id -c istio-proxy
 ```
 
-可以看到 consumer pod 日志输出如下( Triple 协议被 Envoy 代理负载均衡):
-
-```bash
-
-```
-
-consumer istio-proxy 日志输出如下:
-
-```shell
-
-```
-
-可以看到 provider pod 日志输出如下:
-
-```shell
-
-```
-
-provider istio-proxy 日志输出如下:
-
-```shell
-
-```
+具体日志情况可参考 [Java 版本对应 demo](https://github.com/apache/dubbo-samples/tree/master/dubbo-samples-mesh-k8s)
 
 <h3 id="traffic">3.5 Istio 流量治理</h3>
-参考 Java 版本对应 demo
+参考 [Java 版本对应 demo](https://github.com/apache/dubbo-samples/tree/master/dubbo-samples-mesh-k8s)
 
 #### 查看 dashboard
 Istio 官网查看 [如何启动 dashboard](https://istio.io/latest/docs/setup/getting-started/#dashboard)。
