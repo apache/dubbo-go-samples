@@ -24,7 +24,7 @@
 * proxyless: give an proxyless service mesh example which shows how to deploy the dubbo-go services on kubernetes platform
 * registry: show how to use etcd/nacos/polaris/zookeeper as dubbogo registry
 * rpc: dubbo directory display dubbo protocol communication
-* seata: A seata example
+* seata-go: A seata-go example
 * skywalking: show how to integrate skywalking into dubbogo
 * tracing: tracing example
 
