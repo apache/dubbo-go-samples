@@ -7,7 +7,7 @@ require (
 	github.com/apache/dubbo-go-hessian2 v1.11.1
 	github.com/dubbogo/gost v1.12.6-0.20220719055648-01d5bc07b111
 	github.com/dubbogo/grpc-go v1.42.10
-	github.com/dubbogo/triple v1.1.8
+	github.com/dubbogo/triple v1.1.9
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
