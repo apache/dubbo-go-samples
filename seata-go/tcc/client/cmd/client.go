@@ -19,16 +19,20 @@ package main
 
 import (
 	"context"
+)
 
-	"github.com/apache/dubbo-go-samples/seata-go/tcc/client/service"
-	"github.com/dubbogo/gost/log/logger"
-
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"github.com/dubbogo/gost/log/logger"
 	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
 	"github.com/seata/seata-go/pkg/tm"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/seata-go/tcc/client/service"
 )
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/client/conf/dubbogo.yml"

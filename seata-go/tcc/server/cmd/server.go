@@ -23,15 +23,19 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+)
 
-	"github.com/apache/dubbo-go-samples/seata-go/tcc/server/service"
-
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"github.com/dubbogo/gost/log/logger"
 	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/seata-go/tcc/server/service"
 )
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/server/conf/dubbogo.yml" before run
