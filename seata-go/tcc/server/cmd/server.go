@@ -19,11 +19,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/apache/dubbo-go-samples/seata-go/tcc/server/service"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/apache/dubbo-go-samples/seata-go/tcc/server/service"
 
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
