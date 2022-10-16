@@ -13,14 +13,14 @@ require (
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.2.2
 	github.com/pkg/errors v0.9.1
+	github.com/seata/seata-go v0.1.0-rc1
 	github.com/stretchr/testify v1.8.0
 	github.com/uber/jaeger-client-go v2.29.1+incompatible
 	go.opentelemetry.io/otel v1.10.0
 	go.opentelemetry.io/otel/exporters/jaeger v1.10.0
 	go.opentelemetry.io/otel/sdk v1.10.0
-	google.golang.org/grpc v1.49.0
+	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
-	github.com/seata/seata-go v0.1.0-rc1
 )
 
 go 1.15
