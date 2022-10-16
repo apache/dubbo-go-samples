@@ -20,6 +20,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.10.0
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
+	github.com/seata/seata-go v0.1.0-rc1
 )
 
 go 1.15

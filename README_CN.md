@@ -22,7 +22,7 @@
 * proxyless: 这个示例演示了如何将 dubbo-go 开发的应用部署在 Istio 体系下，以实现 Envoy 对 dubbo/dubbo-go 服务的自动代理
 * registry: 把 etcd/nacos/polaris/zookeeper 当做 dubbogo 注册中心示例
 * rpc: 使用 Dubbogo 框架启动 rpc 服务，发起调用
-* seata:  在 dubbogo 中如何基于 seata 实现分布式事务
+* seata-go:  在 dubbogo 中如何基于 seata-go 实现分布式事务
 * skywalking: 整合 skywalking 与 dubbogo 的示例
 * tracing: 链路追踪例子，支持
 
