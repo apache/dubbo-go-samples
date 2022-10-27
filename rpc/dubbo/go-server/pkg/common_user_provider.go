@@ -107,9 +107,9 @@ func (u *CommonUserProvider) GetUsers(req []string) ([]*User, error) {
 
 func (s *CommonUserProvider) GetGender(i int32) (Gender, error) {
 	if 1 == i {
-		return Gender(WOMAN), nil
+		return WOMAN, nil
 	}
-	return Gender(MAN), nil
+	return MAN, nil
 }
 
 func (s *CommonUserProvider) MethodMapper() map[string]string {
