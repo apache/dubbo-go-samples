@@ -40,8 +40,8 @@ var (
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
-	hessian.RegisterJavaEnum(pkg.Gender(pkg.MAN))
-	hessian.RegisterJavaEnum(pkg.Gender(pkg.WOMAN))
+	hessian.RegisterJavaEnum(pkg.MAN)
+	hessian.RegisterJavaEnum(pkg.WOMAN)
 	hessian.RegisterPOJO(&pkg.User{})
 
 	config.SetConsumerService(userProvider)
