@@ -28,10 +28,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/rpc/dubbo/go-server/pkg"
-)
-
 func TestGetUserA000(t *testing.T) {
 	reqUser := &User{}
 	reqUser.ID = "000"
@@ -40,7 +36,7 @@ func TestGetUserA000(t *testing.T) {
 	assert.Equal(t, "000", user.ID)
 	assert.Equal(t, "Alex Stocks", user.Name)
 	assert.Equal(t, int32(31), user.Age)
-	assert.Equal(t, Gender(pkg.MAN), user.Sex)
+	assert.Equal(t, MAN, user.Sex)
 	assert.NotNil(t, user.Time)
 }
 
@@ -52,7 +48,7 @@ func TestGetUserA001(t *testing.T) {
 	assert.Equal(t, "001", user.ID)
 	assert.Equal(t, "ZhangSheng", user.Name)
 	assert.Equal(t, int32(18), user.Age)
-	assert.Equal(t, Gender(pkg.MAN), user.Sex)
+	assert.Equal(t, MAN, user.Sex)
 	assert.NotNil(t, user.Time)
 }
 
@@ -64,7 +60,7 @@ func TestGetUserA002(t *testing.T) {
 	assert.Equal(t, "002", user.ID)
 	assert.Equal(t, "Lily", user.Name)
 	assert.Equal(t, int32(20), user.Age)
-	assert.Equal(t, Gender(pkg.WOMAN), user.Sex)
+	assert.Equal(t, WOMAN, user.Sex)
 	assert.NotNil(t, user.Time)
 }
 
@@ -76,7 +72,7 @@ func TestGetUserA003(t *testing.T) {
 	assert.Equal(t, "113", user.ID)
 	assert.Equal(t, "Moorse", user.Name)
 	assert.Equal(t, int32(30), user.Age)
-	assert.Equal(t, Gender(pkg.WOMAN), user.Sex)
+	assert.Equal(t, WOMAN, user.Sex)
 	assert.NotNil(t, user.Time)
 }
 
@@ -113,5 +109,5 @@ func TestGetUsers(t *testing.T) {
 func TestGetGender(t *testing.T) {
 	gender, err := userProvider.GetGender(1)
 	assert.Nil(t, err)
-	assert.Equal(t, Gender(pkg.WOMAN), gender)
+	assert.Equal(t, WOMAN, gender)
 }
