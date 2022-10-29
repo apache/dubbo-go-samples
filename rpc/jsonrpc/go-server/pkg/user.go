@@ -24,7 +24,7 @@ import (
 type Gender int
 
 const (
-	MAN = iota
+	MAN Gender = iota
 	WOMAN
 )
 
@@ -52,7 +52,7 @@ var (
 	DefaultUser = User{
 		ID: "0", Name: "Alex Stocks", Age: 31,
 		Birth: int(time.Date(1985, 11, 24, 15, 15, 0, 0, time.Local).Unix()),
-		sex:   Gender(MAN),
+		sex:   MAN,
 	}
 
 	userMap = make(map[string]User)

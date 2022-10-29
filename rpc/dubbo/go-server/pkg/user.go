@@ -30,16 +30,16 @@ import (
 type Gender hessian.JavaEnum
 
 const (
-	MAN hessian.JavaEnum = iota
+	MAN Gender = iota
 	WOMAN
 )
 
-var genderName = map[hessian.JavaEnum]string{
+var genderName = map[Gender]string{
 	MAN:   "MAN",
 	WOMAN: "WOMAN",
 }
 
-var genderValue = map[string]hessian.JavaEnum{
+var genderValue = map[string]Gender{
 	"MAN":   MAN,
 	"WOMAN": WOMAN,
 }
@@ -49,7 +49,7 @@ func (g Gender) JavaClassName() string {
 }
 
 func (g Gender) String() string {
-	s, ok := genderName[hessian.JavaEnum(g)]
+	s, ok := genderName[g]
 	if ok {
 		return s
 	}
@@ -60,7 +60,7 @@ func (g Gender) String() string {
 func (g Gender) EnumValue(s string) hessian.JavaEnum {
 	v, ok := genderValue[s]
 	if ok {
-		return v
+		return hessian.JavaEnum(v)
 	}
 
 	return hessian.InvalidJavaEnum
@@ -80,7 +80,7 @@ type (
 var (
 	DefaultUser = User{
 		ID: "000", Name: "Alex Stocks", Age: 31,
-		Sex: Gender(MAN),
+		Sex: MAN,
 	}
 
 	userMap = make(map[string]User)
@@ -88,9 +88,9 @@ var (
 
 func init() {
 	userMap["000"] = DefaultUser
-	userMap["001"] = User{ID: "001", Name: "ZhangSheng", Age: 18, Sex: Gender(MAN)}
-	userMap["002"] = User{ID: "002", Name: "Lily", Age: 20, Sex: Gender(WOMAN)}
-	userMap["003"] = User{ID: "113", Name: "Moorse", Age: 30, Sex: Gender(WOMAN)}
+	userMap["001"] = User{ID: "001", Name: "ZhangSheng", Age: 18, Sex: MAN}
+	userMap["002"] = User{ID: "002", Name: "Lily", Age: 20, Sex: WOMAN}
+	userMap["003"] = User{ID: "113", Name: "Moorse", Age: 30, Sex: WOMAN}
 	for k, v := range userMap {
 		v.Time = time.Now()
 		userMap[k] = v

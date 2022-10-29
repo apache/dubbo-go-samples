@@ -78,7 +78,7 @@ func (u *UserProvider) GetUser2(ctx context.Context, userID string) (*User, erro
 	gxlog.CInfo("userID:%#v", userID)
 	rsp := &User{
 		ID:  userID,
-		Sex: Gender(MAN).String(),
+		Sex: MAN.String(),
 	}
 	return rsp, err
 }
