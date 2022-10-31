@@ -37,8 +37,8 @@ var userProvider = new(UserProvider)
 
 func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterJavaEnum(Gender(MAN))
-	hessian.RegisterJavaEnum(Gender(WOMAN))
+	hessian.RegisterJavaEnum(MAN)
+	hessian.RegisterJavaEnum(WOMAN)
 	hessian.RegisterPOJO(&User{})
 	if err := config.Load(); err != nil {
 		panic(err)
