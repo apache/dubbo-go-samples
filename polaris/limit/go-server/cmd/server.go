@@ -24,14 +24,13 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3/config"
+
+	_ "dubbo.apache.org/dubbo-go/v3/filter/tps/strategy"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
-
 	"github.com/dubbogo/gost/log/logger"
 )
 
