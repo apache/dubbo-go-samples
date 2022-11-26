@@ -27,7 +27,7 @@ import (
 
 	"github.com/dubbogo/gost/log/logger"
 
-	tripleCommon "github.com/dubbogo/triple/pkg/common"
+	"github.com/dubbogo/triple/pkg/common"
 )
 
 import (
@@ -52,8 +52,8 @@ func main() {
 
 	if user, err := greeterProvider.SayHello(context.TODO(), &req); err != nil {
 		logger.Infof("response result: %v, error = %s", user, err)
-		logger.Infof("error details = %+v", err.(tripleCommon.TripleError).Stacks())
-		logger.Infof("error code = %+v", err.(tripleCommon.TripleError).Code())
-		logger.Infof("error message = %+v", err.(tripleCommon.TripleError).Message())
+		logger.Infof("error details = %+v", err.(common.TripleError).Stacks())
+		logger.Infof("error code = %+v", err.(common.TripleError).Code())
+		logger.Infof("error message = %+v", err.(common.TripleError).Message())
 	}
 }

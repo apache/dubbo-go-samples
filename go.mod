@@ -4,10 +4,10 @@ require (
 	dubbo.apache.org/dubbo-go/v3 v3.0.3-0.20220730033103-013f0b2804ce
 	github.com/SkyAPM/go2sky v1.5.0
 	github.com/SkyAPM/go2sky-plugins/dubbo-go v0.0.0-20220718123631-cb8f743b16cf
-	github.com/apache/dubbo-go-hessian2 v1.11.4
-	github.com/dubbogo/gost v1.13.1
+	github.com/apache/dubbo-go-hessian2 v1.11.3
+	github.com/dubbogo/gost v1.12.6-0.20220719055648-01d5bc07b111
 	github.com/dubbogo/grpc-go v1.42.10
-	github.com/dubbogo/triple v1.2.1
+	github.com/dubbogo/triple v1.1.9
 	github.com/golang/protobuf v1.5.2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
