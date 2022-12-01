@@ -1,25 +1,59 @@
-# RPC Dubbo for Dubbo-go 3.0
+# Use TLS encryption in Dubbo go
 
-For api definition and go client and server startup, please refer to [dubbo-go 3.0 quickstart](https://dubbogo.github.io/zh-cn/docs/user/quickstart/3.0/quickstart.html)
+## Usage
 
-## Instructions
-### 1. Start zookeeper
-Execute the command `docker run --rm -p 2181:2181 zookeeper` or `make -f $DUBBO_GO_SAMPLES_ROOT_PATH/build/Makefile docker-up`.
-   If you choose the second way, please ensure that you have set the environment $DUBBO_GO_SAMPLES_ROOT_PATH.
-   
-### 2. Start the server
+0. Generate the required certificate and secret key
 
-Use goland to start rpc-dubbo-go-server
+This example provides the generated certificate and secret key under the directory `tls/x509`
 
-or
+1. Configure dubbogo.yaml
 
-Execute `sh run.sh` in the java-server folder to start the java server
+Client TLS configuration:
 
-### 3. Start the client
+```yaml
+dubbo:
+   tls_config:
+      ca-cert-file: ../../../x509/server_ca_cert.pem
+      tls-cert-file: ../../../x509/client2_cert.pem
+      tls-key-file: ../../../x509/client2_key.pem
+      tls-server-name: dubbogo.test.example.com
+```
 
-Use goland to start rpc-dubbo-go-client
+Server TLS configuration:
 
-or
+```yaml
+dubbo:
+   tls_config:
+      ca-cert-file: ../../../x509/client_ca_cert.pem
+      tls-cert-file: ../../../x509/server2_cert.pem
+      tls-key-file: ../../../x509/server2_key.pem
+      tls-server-name: dubbogo.test.example.com
+```
 
-Execute `sh run.sh` under the java-client folder to start the java client
+2. Startup example
 
+This example provides TLS encryption examples of Dubbo, Grpc and Triple communication modes, respectively located in
+
+`tls/dubbo` 、`tls/grpc` 、`tls/triple`。 Enter the folder to launch the sample.
+
+Take tls/dubbo as an example:
+
+Start the server:
+
+Enter 'tls/dubbo/go server/cmd' and start 'server.go`
+
+The TLS configuration takes effect when you see the following logs
+
+```
+2022-12-01T23:39:30.690+0800 INFO getty/getty_ server. go:78 Getty Server initialized the TLSConfig configuration
+```
+
+Start client:
+
+Enter 'tls/dubbo/go client/cmd' and start 'client.go`
+
+The TLS configuration takes effect when you see the following logs
+
+```
+2022-12-01T23:40:05.998+0800 INFO grpc/client. go:90 Grpc Client initialized the TLSConfig configuration
+```
