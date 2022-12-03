@@ -57,7 +57,7 @@ dubbogo 中的 PolarisMesh TpsLimiter 扩展点实现，能够根据用户配置
 进入 go-server 的 cmd 目录，执行以下命令
 
 ```
- export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
+ export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yaml"
  go run .
 ```
 

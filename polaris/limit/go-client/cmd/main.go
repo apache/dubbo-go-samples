@@ -21,14 +21,12 @@ import (
 	"context"
 	"errors"
 	"time"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3/config"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
-
 	"github.com/dubbogo/gost/log/logger"
 )
 
@@ -65,9 +63,9 @@ func main() {
 	logger.Infof("\n\n\nstart to test dubbo")
 
 	var successCount, failCount int64
-	for i := 0; i < 60; i++ {
-		time.Sleep(200 * time.Millisecond)
-		user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex001"})
+	for i := 0; i < 10; i++ {
+		time.Sleep(50 * time.Millisecond)
+		user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex03"})
 		if err != nil {
 			failCount++
 			logger.Infof("error: %v\n", err)
@@ -76,7 +74,7 @@ func main() {
 		}
 		logger.Infof("response: %v\n", user)
 	}
-	logger.Infof("failCount=%v, failCount=%v\n", successCount, failCount)
+	logger.Infof("successCount=%v, failCount=%v\n", successCount, failCount)
 
 	if failCount == 0 {
 		panic(errors.New("need failCount > 0"))

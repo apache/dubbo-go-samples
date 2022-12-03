@@ -18,7 +18,7 @@
 
 ### dubbogo.yaml 配置文件
 
-在使用 PolarisMesh 的服务限流能力时，需要先启用 PolarisMesh 在 dubbogo 中的注册发现功能。
+在使用 PolarisMesh 的服务路由能力时，需要先启用 PolarisMesh 在 dubbogo 中的注册发现功能。
 
 ```yaml
 dubbo:
@@ -32,15 +32,11 @@ dubbo:
     services:
       UserProvider:
         interface: org.apache.dubbo.UserProvider.Test
-        tps.limiter: polaris-limit  # 配置 tps.limiter 为 polaris-limiter 即可
-
 ```
-
-注意：PolarisMesh 的服务限流能力是工作在 Provider 侧的。
 
 ### 如何配置服务路由参数
 
-dubbogo 中的 PolarisMesh PriorityRouter 扩展点实现，能够根据用户配置的限流规则，自动的从当前 RPC 调用上下文以及请求信息中识别出需要参与服务路由的请求标签信息
+dubbogo 中的 PolarisMesh PriorityRouter 扩展点实现，能够根据用户配置的服务路由规则，自动的从当前 RPC 调用上下文以及请求信息中识别出需要参与服务路由的请求标签信息
 
 ![](./images/dubbogo-route-rule-prod.png)
 ![](./images/dubbogo-route-rule-pre.png)

@@ -25,4 +25,3 @@ dubbo:
         interface: org.apache.dubbo.UserProvider.Test2
         version: myInterfaceVersion # dubbo interface version must be same with client
         group: myInterfaceGroup # dubbo interface group must be same with client
-        tps.limiter: polaris-limit # the Limiter that judge if the TPS overs the threshold, such as method-service or default

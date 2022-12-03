@@ -18,7 +18,7 @@ Quickly experience Polaris' service routing capabilities in dubbogo
 
 ### dubbogo.yaml configuration file
 
-When using PolarisMesh's service current limiting capability, you need to enable PolarisMesh's registration discovery function in dubbogo first.
+When using PolarisMesh's service route capability, you need to enable PolarisMesh's registration discovery function in dubbogo first.
 
 ````yaml
 dubbo:
@@ -32,15 +32,11 @@ dubbo:
     services:
       UserProvider:
         interface: org.apache.dubbo.UserProvider.Test
-        tps.limiter: polaris-limit # Configure tps.limiter as polaris-limiter
-
 ````
-
-Note: The service current limiting capability of PolarisMesh works on the Provider side.
 
 ### How to configure service routing parameters
 
-The implementation of the PolarisMesh PriorityRouter extension point in dubbogo can automatically identify the request label information that needs to participate in service routing from the current RPC call context and request information according to the current limiting rules configured by the user.
+The implementation of the PolarisMesh PriorityRouter extension point in dubbogo can automatically identify the request label information that needs to participate in service routing from the current RPC call context and request information according to the service route rules configured by the user.
 
 ![](./images/dubbogo-route-rule-prod.png)
 ![](./images/dubbogo-route-rule-pre.png)
