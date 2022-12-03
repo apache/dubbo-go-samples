@@ -18,7 +18,7 @@ Quickly experience Polaris' service current limiting capabilities in dubbogo
 
 ### dubbogo.yaml configuration file
 
-When using PolarisMesh's service current limiting capability, you need to enable PolarisMesh's registration discovery function in dubbogo first.
+When using PolarisMesh's service current limiting capability, you need to enable PolarisMesh's registration discovery function in dubbogo firstly.
 
 ````yaml
 dubbo:

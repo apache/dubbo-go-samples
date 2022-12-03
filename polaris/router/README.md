@@ -18,7 +18,7 @@ Quickly experience Polaris' service routing capabilities in dubbogo
 
 ### dubbogo.yaml configuration file
 
-When using PolarisMesh's service route capability, you need to enable PolarisMesh's registration discovery function in dubbogo first.
+When using PolarisMesh's service route capability, you need to enable PolarisMesh's registration discovery function in dubbogo firstly.
 
 ````yaml
 dubbo:
