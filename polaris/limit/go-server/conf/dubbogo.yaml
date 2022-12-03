@@ -10,8 +10,8 @@ dubbo:
   registries:
     polarisMesh:
       protocol: polaris
-      address: 127.0.0.1:8091
-      namespace: default
+      address: 183.47.111.80:8091
+      namespace: dubbogo
   protocols:
     dubbo:
       name: dubbo
@@ -20,7 +20,9 @@ dubbo:
     services:
       UserProvider:
         interface: org.apache.dubbo.UserProvider.Test
+        tps.limiter: polaris-limit # the Limiter that judge if the TPS overs the threshold, such as method-service or default
       UserProviderWithCustomGroupAndVersion:
         interface: org.apache.dubbo.UserProvider.Test2
         version: myInterfaceVersion # dubbo interface version must be same with client
         group: myInterfaceGroup # dubbo interface group must be same with client
+        tps.limiter: polaris-limit # the Limiter that judge if the TPS overs the threshold, such as method-service or default

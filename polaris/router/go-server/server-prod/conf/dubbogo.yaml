@@ -1,0 +1,27 @@
+dubbo:
+  application:
+    name: myApp # metadata: application=myApp; name=myApp
+    module: opensource #metadata: module=opensource
+    group: myAppGroup # no metadata record
+    organization: dubbo # metadata: organization=dubbo
+    owner: laurence # metadata: owner=laurence
+    version: myversion # metadata: app.version=myversion
+    environment: prod # metadata: environment=pro
+  registries:
+    polarisMesh:
+      protocol: polaris
+      address: 183.47.111.80:8091
+      namespace: dubbogo
+  protocols:
+    dubbo:
+      name: dubbo
+      port: 22000
+  provider:
+    services:
+      UserProvider:
+        interface: org.apache.dubbo.UserProvider.Test
+        tps.limiter: polaris-limit # the Limiter that judge if the TPS overs the threshold, such as method-service or default
+      UserProviderWithCustomGroupAndVersion:
+        interface: org.apache.dubbo.UserProvider.Test2
+        version: myInterfaceVersion # dubbo interface version must be same with client
+        group: myInterfaceGroup # dubbo interface group must be same with client
