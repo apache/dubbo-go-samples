@@ -26,6 +26,7 @@
 * rpc: dubbo directory display dubbo protocol communication
 * seata-go: A seata-go example
 * skywalking: show how to integrate skywalking into dubbogo
+* tls: use TLS encryption in getty(tcp)/triple/gRPC communication mode
 * tracing: tracing example
 
 ## How To Run
