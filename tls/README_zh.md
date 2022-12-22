@@ -1,10 +1,10 @@
-# 在Dubbo-go中使用TLS加密
+# 在Dubbo-go中使用TLS加密  
 
-## 背景
+## 背景  
 
-Dubbo-go在Getty/Triple/Grpc三个通信层面支持TLS链路安全通信。
+Dubbo-go在Getty/Triple/Grpc三个通信层面支持TLS链路安全通信。  
 
-## 原理
+## 原理  
 
 ### 证书机制： 
 
@@ -79,27 +79,27 @@ dubbo:
     tls-server-name: dubbogo.test.example.com
 ```
 
-2. 启动示例
+2. 启动示例  
 
 本示例提供了Dubbo、Grpc、Triple三种通信方式的TLS加密示例，分别位于`tls/dubbo` 、`tls/grpc` 、`tls/triple`。进入文件夹即可启动示例。
 
 以tls/dubbo为例:
 
-启动服务端：
+启动服务端： 
 
 进入`tls/dubbo/go-server/cmd`,启动`server.go`
 
-看到如下日志，则TLS配置生效
+看到如下日志，则TLS配置生效  
 
 ```
 2022-12-01T23:39:30.690+0800    INFO    getty/getty_server.go:78        Getty Server initialized the TLSConfig configuration
 ```
 
-启动客户端：
-
+启动客户端：   
+ 
 进入`tls/dubbo/go-client/cmd`，启动`client.go`
 
-看到如下日志，则TLS配置生效
+看到如下日志，则TLS配置生效   
 
 ```
 2022-12-01T23:40:05.998+0800    INFO    grpc/client.go:90       Grpc Client initialized the TLSConfig configuration
