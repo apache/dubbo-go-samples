@@ -38,7 +38,7 @@ This example provides TLS encryption examples of Dubbo, Grpc and Triple communic
 
 Take tls/dubbo as an example:
 
-Start the server:
+* step1: Start the server:
 
 Enter 'tls/dubbo/go server/cmd' and start 'server.go`
 
@@ -48,7 +48,7 @@ The TLS configuration takes effect when you see the following logs
 2022-12-01T23:39:30.690+0800 INFO getty/getty_ server. go:78 Getty Server initialized the TLSConfig configuration
 ```
 
-Start client:
+* step2: Start client:
 
 Enter 'tls/dubbo/go client/cmd' and start 'client.go`
 
