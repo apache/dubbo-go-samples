@@ -42,7 +42,7 @@ var (
 	survivalTimeout = int(3 * time.Second)
 )
 
-// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb2/go-server/dubbogo-server/conf/dubbogo.yml
+// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-grpc/server/dubbogo-server/conf/dubbogo.yml
 func main() {
 	config.SetProviderService(&pkg.GreeterProvider{})
 	if err := config.Load(); err != nil {
