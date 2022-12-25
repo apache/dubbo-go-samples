@@ -7,6 +7,7 @@
 ## What It Contains
 
 * apisix: apache/apisix and Dubbo-go example
+* async: the dubbogo callback[asynchronous] and call-one-way rpc example
 * config-api: show how to use dubbogo by APIs without configuration
 * configcenter: uses of different config centers, including zookeeper and nacos at present.
 * context: how to transfer request context between multiple producers/consumers

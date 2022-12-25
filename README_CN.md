@@ -5,7 +5,8 @@
 ## 本工程包含的示例
 
 * apisix: apache/apisix 与 Dubbo-go 整合示例
-* config-api: 无需配置文件，使用 API 的方式启动服务、构造组件和使用。
+* async: dubbogo 通过 callback 方式进行异步 RPC 和call-one-way RPC
+* config-api: 无需配置文件，使用 API 的方式启动服务、构造组件和使用
 * configcenter: 使用不同的配置中心，目前支持：zookeeper、和 nacos
 * context: 如何通过 go context  把用户数据 attachment 从调用方传递给服务方
 * direct: 直连模式，无需注册中心，直连服务提供者
