@@ -20,21 +20,21 @@ package pkg
 import (
 	"context"
 	"fmt"
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/models"
 )
 
 import (
 	"github.com/dubbogo/gost/log/logger"
 
-	//triplepb "github.com/apache/dubbo-go-samples/rpc/triple/pb2/api"
-	triplepb "github.com/apache/dubbo-go-samples/api"
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/api"
 	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 type GreeterProvider struct {
-	triplepb.UnimplementedGreeterServer
+	api.UnimplementedGreeterServer
 }
 
-func (s *GreeterProvider) SayHelloStream(svr triplepb.Greeter_SayHelloStreamServer) error {
+func (s *GreeterProvider) SayHelloStream(svr api.Greeter_SayHelloStreamServer) error {
 	c, err := svr.Recv()
 	if err != nil {
 		return err
@@ -46,7 +46,7 @@ func (s *GreeterProvider) SayHelloStream(svr triplepb.Greeter_SayHelloStreamServ
 	}
 	logger.Infof("Dubbo-go3 GreeterProvider recv 2 user, name = %s\n", c2.Name)
 
-	err = svr.Send(&triplepb.User{
+	err = svr.Send(&models.User{
 		Name: "hello " + c.Name,
 		Age:  18,
 		Id:   "123456789",
@@ -60,7 +60,7 @@ func (s *GreeterProvider) SayHelloStream(svr triplepb.Greeter_SayHelloStreamServ
 	}
 	logger.Infof("Dubbo-go3 GreeterProvider recv 3 user, name = %s\n", c3.Name)
 
-	err = svr.Send(&triplepb.User{
+	err = svr.Send(&models.User{
 		Name: "hello " + c2.Name,
 		Age:  19,
 		Id:   "123456789",
@@ -71,9 +71,9 @@ func (s *GreeterProvider) SayHelloStream(svr triplepb.Greeter_SayHelloStreamServ
 	return nil
 }
 
-func (s *GreeterProvider) SayHello(ctx context.Context, in *triplepb.HelloRequest) (*triplepb.User, error) {
+func (s *GreeterProvider) SayHello(ctx context.Context, in *models.HelloRequest) (*models.User, error) {
 	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n" + in.Name)
 	fmt.Println("get triple header tri-req-id = ", ctx.Value(tripleConstant.TripleCtxKey(tripleConstant.TripleRequestID)))
 	fmt.Println("get triple header tri-service-version = ", ctx.Value(tripleConstant.TripleCtxKey(tripleConstant.TripleServiceVersion)))
-	return &triplepb.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
+	return &models.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
