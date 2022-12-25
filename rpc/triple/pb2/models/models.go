@@ -1,4 +1,4 @@
-package api
+package models
 
 type User struct {
 	Id   string `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`

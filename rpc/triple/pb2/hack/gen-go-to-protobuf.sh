@@ -15,7 +15,7 @@ APIMACHINERY_PKGS=(
 
 # add your go models package here
 goModels=(
-  github.com/apache/dubbo-go-samples/rpc/triple/pb2/api
+  github.com/apache/dubbo-go-samples/rpc/triple/pb2/models
 )
 
 packages=$(IFS=, ; echo "${goModels[*]}")

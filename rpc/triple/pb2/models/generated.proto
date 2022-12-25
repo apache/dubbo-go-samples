@@ -3,10 +3,10 @@
 
 syntax = "proto2";
 
-package github.com.apache.dubbo_go_samples.rpc.triple.pb2.api;
+package github.com.apache.dubbo_go_samples.rpc.triple.pb2.models;
 
 // Package-wide variables from generator "generated".
-option go_package = "github.com/apache/dubbo-go-samples/rpc/triple/pb2/api";
+option go_package = "github.com/apache/dubbo-go-samples/rpc/triple/pb2/models";
 
 message HelloRequest {
   optional string name = 1;
