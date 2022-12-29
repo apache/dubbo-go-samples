@@ -47,7 +47,7 @@ protoc \
   --proto_path="$GOPATH/src" \
   --go_out=rpc/triple/pb2/api \
   --go-triple_out=rpc/triple/pb2/api \
-  rpc/triple/pb2/api/generated.proto
+  rpc/triple/pb2/api/helloworld.proto
   
 # 清理 vendor
 rm -rf vendor
