@@ -20,14 +20,17 @@ package pkg
 import (
 	"context"
 	"fmt"
-	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/models"
 )
 
 import (
 	"github.com/dubbogo/gost/log/logger"
 
-	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/api"
 	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/api"
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/models"
 )
 
 type GreeterProvider struct {
@@ -49,7 +52,7 @@ func (s *GreeterProvider) SayHelloStream(svr api.Greeter_SayHelloStreamServer) e
 	err = svr.Send(&models.User{
 		Name: "hello " + c.Name,
 		Age:  18,
-		Id:   "123456789",
+		ID:   "123456789",
 	})
 	if err != nil {
 		return err
@@ -63,7 +66,7 @@ func (s *GreeterProvider) SayHelloStream(svr api.Greeter_SayHelloStreamServer) e
 	err = svr.Send(&models.User{
 		Name: "hello " + c2.Name,
 		Age:  19,
-		Id:   "123456789",
+		ID:   "123456789",
 	})
 	if err != nil {
 		return err
@@ -75,5 +78,5 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *models.HelloRequest)
 	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n" + in.Name)
 	fmt.Println("get triple header tri-req-id = ", ctx.Value(tripleConstant.TripleCtxKey(tripleConstant.TripleRequestID)))
 	fmt.Println("get triple header tri-service-version = ", ctx.Value(tripleConstant.TripleCtxKey(tripleConstant.TripleServiceVersion)))
-	return &models.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
+	return &models.User{Name: "Hello " + in.Name, ID: "12345", Age: 21}, nil
 }

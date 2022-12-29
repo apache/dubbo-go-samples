@@ -19,14 +19,19 @@ package main
 
 import (
 	"context"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/models"
 
 	"github.com/dubbogo/gost/log/logger"
-
-	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/api"
 	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/api"
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/models"
 )
 
 var greeterProvider = new(api.GreeterClientImpl)
