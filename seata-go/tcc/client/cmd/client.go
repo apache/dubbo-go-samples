@@ -36,7 +36,7 @@ import (
 )
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/client/conf/dubbogo.yml"
-//and run "seata-go/tcc/server/cmd/server.go" before run
+// and run "seata-go/tcc/server/cmd/server.go" before run
 func main() {
 	integration.UseDubbo()
 	config.SetConsumerService(service.UserProviderInstance)
