@@ -7,9 +7,10 @@ Triple-go 3.0 版本的网络协议库。获取更多信息请查看 [dubbogo/tr
 - [codec-extension](./codec-extension): 用户自定义序列化方式例子
 - [hessian2](./hessian2): Hessian2 序列化方式例子
 - [msgpack](./msgpack): Msgpack 序列化方式例子
-- [pb](./pb): 使用 ProtoBuf(PB) 序列化方案的例子
+- [pb](./pb): 使用 ProtoBuf(PB) v3 序列化方案的例子
   - [dubbogo-grpc](./pb/dubbogo-grpc): Triple 和 gRPC 互通案例
   - [dubbogo-java](./pb/dubbogo-java): Triple-java 和 Triple-go 互通案例
+- [pb2](./pb2): 基于 protobuf v2 序列化协议与 triple 通信协议一个简单例子
 
 ## 如何配置
 
@@ -21,7 +22,7 @@ dubbo:
     myProtocol: # 自定义一个协议 Key
       name: tri # 协议名，支持tri/dubbo/grpc/jsonrpc
       port: 20000 # 暴露端口
-  provider: 
+  provider:
     services:
       MyProvider: # 服务提供者结构类名
         interface: org.apache.dubbogo.MyProvider # 用户自定义的接口名

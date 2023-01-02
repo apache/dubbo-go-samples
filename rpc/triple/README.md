@@ -7,9 +7,10 @@ Triple is  dubbo3.0 network protocol. You can refer to [dubbogo/triple](https://
 - [codec-extension](./codec-extension): user defined serialization sample
 - [hessian2](./hessian2): Hessian2 serialization sample
 - [msgpack](./msgpack): Msgpack serialization sample
-- [pb](./pb):  ProtoBuf(PB) serialization sample
+- [pb](./pb):  ProtoBuf(PB) v3 serialization sample
   - [dubbogo-grpc](./pb/dubbogo-grpc): Triple and gRPC interactive samples
   - [dubbogo-java](./pb/dubbogo-java): Triple-java and Triple-go interactive samples
+- [pb2](./pb2):  ProtoBuf(PB) v2 serialization sample
 
 ## How to write configuration file
 
@@ -22,9 +23,9 @@ dubbo:
       name: tri # protocol name, suppporting: tri/dubbo/grpc/jsonrpc
       port: 20000 # port to export service
 
-  provider: 
-    services: 
-      MyProvider: # service provider type name 
+  provider:
+    services:
+      MyProvider: # service provider type name
         interface: org.apache.dubbogo.MyProvider # user defined interface name
       # serialization: hessian2 # serialization that can be choosed：pb/hessian2/custome
       # pb serialization by default
