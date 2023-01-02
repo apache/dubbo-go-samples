@@ -1,0 +1,1 @@
+Please do not delete custom-boilerplate.go.txt which is used by go-to-protobuf, although its empty.
