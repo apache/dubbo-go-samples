@@ -29,32 +29,28 @@ import (
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/tls/triple/codec"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
+var grpcGreeterImpl = &api.GreeterClientImpl{}
+
+func init() {
+	config.SetConsumerService(grpcGreeterImpl)
 }
 
-type UserProvider struct {
-}
-
-func (u *UserProvider) GetUser(ctx context.Context, req *User, req2 *User, name string) (*User, error) {
-	logger.Infof("req:%#v", req)
-	logger.Infof("req2:%#v", req2)
-	logger.Infof("name%#v", name)
-	rsp := User{"12345", req.Name + req2.Name, 18}
-	logger.Infof("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/triple/codec-extension/go-server/conf/dubbogo.yaml
+// export DUBBO_GO_CONFIG_PATH = PATH_TO_SAMPLES/registry/servicediscovery/zookeeper/go-client/conf/dubbogo.yml
 func main() {
-	config.SetProviderService(&UserProvider{})
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
-	select {}
+
+	logger.Info("start to test dubbo")
+	req := &api.HelloRequest{
+		Name: "laurence",
+	}
+	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("client response result: %v\n", reply)
 }

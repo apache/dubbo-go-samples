@@ -29,30 +29,21 @@ import (
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/tls/triple/codec"
+	"github.com/apache/dubbo-go-samples/api"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
+type GreeterProvider struct {
+	api.UnimplementedGreeterServer
 }
 
-type UserProvider struct {
+func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
+	logger.Infof("Dubbo3 GreeterProvider get user request name = %s\n", in.Name)
+	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req *User, req2 *User, name string) (*User, error) {
-	logger.Infof("req:%#v", req)
-	logger.Infof("req2:%#v", req2)
-	logger.Infof("name%#v", name)
-	rsp := User{"12345", req.Name + req2.Name, 18}
-	logger.Infof("rsp:%#v", rsp)
-	return &rsp, nil
-}
-
-// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/triple/codec-extension/go-server/conf/dubbogo.yaml
+// export DUBBO_GO_CONFIG_PATH = PATH_TO_SAMPLES/registry/servicediscovery/zookeeper/go-server/conf/dubbogo.yml
 func main() {
-	config.SetProviderService(&UserProvider{})
+	config.SetProviderService(&GreeterProvider{})
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
