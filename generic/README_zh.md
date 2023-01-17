@@ -51,7 +51,6 @@ cd $ProjectRootDir/generic/default/go-client/cmd \
   && go run client.go
 ```
 
-
 ## 将示例由接口级服务发现切换至应用级服务发现
 
 1. 修改服务端 go-server 的配置文件，增添字段 `registry-type: service`
