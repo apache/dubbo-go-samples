@@ -50,3 +50,46 @@ Using command line tool. The `$ProjectRootDir` is the root directory of the dubb
 cd $ProjectRootDir/generic/default/go-client/cmd \
   && go run client.go
 ```
+
+## Switch the example from interface-level service discovery to application-level service discovery
+
+1. Modify the configuration file of the server go-server and add the field `registry-type: service`
+```
+registries:
+     zk:
+       protocol: zookeeper
+       timeout: 3s
+       address: 127.0.0.1:2181
+       registry-type: service
+...
+...
+```
+2. Modify the client.go file of client go-client
+
+First add the field `RegistryType: "service"`:
+```
+registryConfig := &config.RegistryConfig{
+     Protocol: "zookeeper",
+     Address: "127.0.0.1:2181",
+     RegistryType: "service",
+}
+```
+Then add `metadataConfig` configuration:
+```
+metadataConf := &config.MetadataReportConfig{
+     Protocol: "zookeeper",
+     Address: "127.0.0.1:2181",
+}
+```
+Finally, configure `metadataConfig` into `rootConfig` through `SetMetadataReport`
+```
+...
+...
+rootConfig := config. NewRootConfigBuilder().
+     AddRegistry("zk", registryConfig).
+     SetMetadataReport(metadataConf).
+     build()
+...
+...
+```
+Now, the generic call of application-level service discovery can be realized.
