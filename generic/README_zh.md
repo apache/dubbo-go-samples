@@ -54,6 +54,7 @@ cd $ProjectRootDir/generic/default/go-client/cmd \
 ## 将示例由接口级服务发现切换至应用级服务发现
 
 1. 修改服务端 go-server 的配置文件，增添字段 `registry-type: service`
+
 ```
 registries:
     zk:
@@ -64,9 +65,11 @@ registries:
 ...
 ...
 ```
+
 2. 修改客户端 go-client 的 client.go 文件
 
-首先添加同样添加 `RegistryType: "service"` 字段：
+首先添加同样添加 `RegistryType: "service"` 字段
+
 ```
 registryConfig := &config.RegistryConfig{
     Protocol:     "zookeeper",
@@ -74,14 +77,18 @@ registryConfig := &config.RegistryConfig{
     RegistryType: "service",
 }
 ```
-然后增添 `metadataConfig` 配置：
+
+然后增添 `metadataConfig` 配置
+
 ```
 metadataConf := &config.MetadataReportConfig{
     Protocol: "zookeeper",
     Address:  "127.0.0.1:2181",
 }
 ```
+
 最后将 `metadataConfig` 通过 `SetMetadataReport` 配置进入 `rootConfig`
+
 ```
 ...
 ...
@@ -92,5 +99,6 @@ rootConfig := config.NewRootConfigBuilder().
 ...
 ...
 ```
+
 至此即可实现应用级服务发现的泛化调用。
 
