@@ -25,48 +25,37 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	"github.com/dubbogo/gost/log/logger"
-
-	_ "github.com/seata/seata-go/pkg/imports"
-	"github.com/seata/seata-go/pkg/integration"
-	"github.com/seata/seata-go/pkg/rm/tcc"
+	"github.com/seata/seata-go/pkg/client"
 	"github.com/seata/seata-go/pkg/tm"
+	"github.com/seata/seata-go/pkg/util/log"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/seata-go/tcc/client/service"
 )
 
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/client/conf/dubbogo.yml"
-// and run "seata-go/tcc/server/cmd/server.go" before run
+// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
-	integration.UseDubbo()
+	client.InitPath("seata-go/conf/seatago.yml")
 	config.SetConsumerService(service.UserProviderInstance)
-	err := config.Load()
-	if err != nil {
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
-	test()
+	run()
 }
 
-func test() {
-	var err error
-	ctx := tm.Begin(context.Background(), "TestTCCServiceBusiness")
-	defer func() {
-		resp := tm.CommitOrRollback(ctx, err == nil)
-		logger.Infof("tx result %v", resp)
-		<-make(chan struct{})
-	}()
+func run() {
+	tm.WithGlobalTx(context.Background(), &tm.GtxConfig{
+		Name: "TccSampleLocalGlobalTx",
+	}, business)
+	<-make(chan struct{})
+}
 
-	userProviderProxy, err := tcc.NewTCCServiceProxy(service.UserProviderInstance)
-	if err != nil {
-		logger.Infof("userProviderProxyis not tcc service")
-		return
+func business(ctx context.Context) (re error) {
+	if resp, re := service.UserProviderInstance.Prepare(ctx, 1); re != nil {
+		log.Infof("response prepare: %v", re)
+	} else {
+		log.Infof("get resp %#v", resp)
 	}
-	resp, err := userProviderProxy.Prepare(ctx, 1)
-	if err != nil {
-		logger.Infof("response prepare: %v", err)
-		return
-	}
-	logger.Infof("get resp %#v", resp)
+	return
 }

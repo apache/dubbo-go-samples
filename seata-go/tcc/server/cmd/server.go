@@ -29,29 +29,22 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	"github.com/dubbogo/gost/log/logger"
-
-	_ "github.com/seata/seata-go/pkg/imports"
-	"github.com/seata/seata-go/pkg/integration"
+	"github.com/seata/seata-go/pkg/client"
 	"github.com/seata/seata-go/pkg/rm/tcc"
+	"github.com/seata/seata-go/pkg/util/log"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/seata-go/tcc/server/service"
 )
 
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/server/conf/dubbogo.yml" before run
+// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
-	integration.UseDubbo()
+
+	client.InitPath("seata-go/conf/seatago.yml")
 	userProviderProxy, err := tcc.NewTCCServiceProxy(&service.UserProvider{})
 	if err != nil {
-		logger.Errorf("get userProviderProxy tcc service proxy error, %v", err.Error())
-		return
-	}
-	// server should register resource
-	err = userProviderProxy.RegisterResource()
-	if err != nil {
-		logger.Errorf("userProviderProxy register resource error, %v", err.Error())
+		log.Errorf("get userProviderProxy tcc service proxy error, %v", err.Error())
 		return
 	}
 	config.SetProviderService(userProviderProxy)
@@ -67,13 +60,13 @@ func initSignal() {
 	signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
 		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
+		log.Infof("get signal %s", sig.String())
 		switch sig {
 		case syscall.SIGHUP:
 			// reload()
 		default:
 			time.AfterFunc(time.Duration(int(3e9)), func() {
-				logger.Warnf("app exit now by force...")
+				log.Warnf("app exit now by force...")
 				os.Exit(1)
 			})
 			// The program exits normally or timeout forcibly exits.
