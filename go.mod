@@ -17,7 +17,7 @@ require (
 	github.com/seata/seata-go v0.1.0-rc1
 	github.com/stretchr/testify v1.8.1
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
-	go.opentelemetry.io/otel v1.11.0
+	go.opentelemetry.io/otel v1.13.0
 	go.opentelemetry.io/otel/exporters/jaeger v1.10.0
 	go.opentelemetry.io/otel/sdk v1.10.0
 	google.golang.org/grpc v1.51.0
