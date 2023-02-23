@@ -41,7 +41,7 @@ var (
 	survivalTimeout = int(3e9)
 )
 
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yaml" before run
+// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
 
 	// ------for hessian2------
