@@ -25,7 +25,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/extension"
 	"dubbo.apache.org/dubbo-go/v3/filter"
 
-	"github.com/dubbogo/gost/log"
+	gxlog "github.com/dubbogo/gost/log"
 )
 
 func init() {
