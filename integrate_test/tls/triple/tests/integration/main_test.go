@@ -15,20 +15,14 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
-)
-
-import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/dubbogo/gost/log/logger"
-)
 
-import (
-	_ "github.com/apache/dubbo-go-samples/tls/triple/codec"
+	"testing"
 )
 
 type User struct {
@@ -43,16 +37,9 @@ type UserProvider struct {
 
 var userProvider = new(UserProvider)
 
-// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/triple/codec-extension/go-client/conf/dubbogo.yml
-func main() {
+func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
-
-	user, err := userProvider.GetUser(context.TODO(), &User{Name: "zlber"}, &User{Name: "zlber2"}, "testName")
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("response result: %v\n", user)
 }
