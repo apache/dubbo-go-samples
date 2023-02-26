@@ -19,10 +19,16 @@ package integration
 
 import (
 	"context"
-	pb "github.com/apache/dubbo-go-samples/tls/grpc/protobuf"
+	"testing"
+)
+
+import (
 	gxlog "github.com/dubbogo/gost/log"
 	"github.com/stretchr/testify/assert"
-	"testing"
+)
+
+import (
+	pb "github.com/apache/dubbo-go-samples/tls/grpc/protobuf"
 )
 
 func TestGreeter(t *testing.T) {

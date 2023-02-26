@@ -18,11 +18,16 @@
 package integration
 
 import (
+	"testing"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
 
+import (
 	pb "github.com/apache/dubbo-go-samples/tls/grpc/protobuf"
-	"testing"
 )
 
 var grpcGreeterImpl = new(pb.GreeterClientImpl)

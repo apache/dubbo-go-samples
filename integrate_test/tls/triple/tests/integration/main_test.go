@@ -19,10 +19,12 @@ package integration
 
 import (
 	"context"
+	"testing"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"testing"
 )
 
 type User struct {

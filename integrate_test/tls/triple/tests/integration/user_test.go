@@ -19,10 +19,15 @@ package integration
 
 import (
 	"context"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/dubbogo/gost/log/logger"
-	"github.com/stretchr/testify/assert"
 	"testing"
+)
+
+import (
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGreeter(t *testing.T) {

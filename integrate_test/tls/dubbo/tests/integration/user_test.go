@@ -19,9 +19,15 @@ package integration
 
 import (
 	"context"
-	"github.com/apache/dubbo-go-samples/tls/dubbo/go-client/pkg"
-	"github.com/stretchr/testify/assert"
 	"testing"
+)
+
+import (
+	"github.com/stretchr/testify/assert"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/tls/dubbo/go-client/pkg"
 )
 
 func TestUser(t *testing.T) {
