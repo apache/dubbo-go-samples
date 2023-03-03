@@ -44,7 +44,9 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
 
-/* metrics in localhost:9090:
+/*
+	metrics in localhost:9090:
+
 userCounterVec# HELP dubbo_test_counter
 # TYPE dubbo_test_counter counter
 dubbo_test_counter 36

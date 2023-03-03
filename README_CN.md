@@ -5,7 +5,8 @@
 ## 本工程包含的示例
 
 * apisix: apache/apisix 与 Dubbo-go 整合示例
-* config-api: 无需配置文件，使用 API 的方式启动服务、构造组件和使用。
+* async: dubbogo 通过 callback 方式进行异步 RPC 和call-one-way RPC
+* config-api: 无需配置文件，使用 API 的方式启动服务、构造组件和使用
 * configcenter: 使用不同的配置中心，目前支持：zookeeper、和 nacos
 * context: 如何通过 go context  把用户数据 attachment 从调用方传递给服务方
 * direct: 直连模式，无需注册中心，直连服务提供者
@@ -22,6 +23,10 @@
 * proxyless: 这个示例演示了如何将 dubbo-go 开发的应用部署在 Istio 体系下，以实现 Envoy 对 dubbo/dubbo-go 服务的自动代理
 * registry: 把 etcd/nacos/polaris/zookeeper 当做 dubbogo 注册中心示例
 * rpc: 使用 Dubbogo 框架启动 rpc 服务，发起调用
+  * rpc/dubbo: dubbo-go 3.0 RPC 通信示例，同时给出了 Java 和 Go 两种语言通信示例
+  * rpc/grpc: 基于 gRPC 的 RPC 通信示例
+  * rpc/jsonrpc: 基于json-rpc 的通信示例
+  * rpc/triple: 基于 hessian2/msgpack/pb(protobuf-v3)/pb2(protobuf-v2)/自定义序列化协议 的序列化协议与 triple 通信协议相结合的 RPC 示例
 * seata-go:  在 dubbogo 中如何基于 seata-go 实现分布式事务
 * skywalking: 整合 skywalking 与 dubbogo 的示例
 * tls: getty(tcp)/triple/gRPC 全链路 tls 安全通信示例

@@ -43,8 +43,8 @@ var (
 )
 
 // Do some checking before the system starts up:
-// 1. env config
-// 		`export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
+//  1. env config
+//     `export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 	if err := config.Load(); err != nil {

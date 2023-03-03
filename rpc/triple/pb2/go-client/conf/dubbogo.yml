@@ -1,0 +1,12 @@
+dubbo:
+  registries:
+    zk:
+      address: zookeeper://127.0.0.1:2181
+  consumer:
+    references:
+      GreeterClientImpl:
+        protocol: tri
+  metrics:
+    enable: false
+    path: /custom-metrics-path
+    port: 9092

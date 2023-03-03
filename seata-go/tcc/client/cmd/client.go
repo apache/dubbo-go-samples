@@ -24,7 +24,9 @@ import (
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
 	"github.com/dubbogo/gost/log/logger"
+
 	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
@@ -36,7 +38,7 @@ import (
 )
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/client/conf/dubbogo.yml"
-//and run "seata-go/tcc/server/cmd/server.go" before run
+// and run "seata-go/tcc/server/cmd/server.go" before run
 func main() {
 	integration.UseDubbo()
 	config.SetConsumerService(service.UserProviderInstance)

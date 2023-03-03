@@ -7,6 +7,7 @@
 ## What It Contains
 
 * apisix: apache/apisix and Dubbo-go example
+* async: the dubbogo callback[asynchronous] and call-one-way rpc example
 * config-api: show how to use dubbogo by APIs without configuration
 * configcenter: uses of different config centers, including zookeeper and nacos at present.
 * context: how to transfer request context between multiple producers/consumers
@@ -24,6 +25,10 @@
 * proxyless: give an proxyless service mesh example which shows how to deploy the dubbo-go services on kubernetes platform
 * registry: show how to use etcd/nacos/polaris/zookeeper as dubbogo registry
 * rpc: dubbo directory display dubbo protocol communication
+  * rpc/dubbo: dubbo-go 3.0 rpc example between Java and Go
+  * rpc/grpc: dubbo-go rpc example based on gRPC
+  * rpc/jsonrpc: dubbo-go rpc example based on json-rpc
+  * rpc/triple: dubbo-go rpc example based on hessian2/msgpack/pb(protobuf-v3)/pb2(protobuf-v2)/self-defined-serialization
 * seata-go: A seata-go example
 * skywalking: show how to integrate skywalking into dubbogo
 * tls: use TLS encryption in getty(tcp)/triple/gRPC communication mode
