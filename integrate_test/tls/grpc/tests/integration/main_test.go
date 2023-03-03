@@ -15,45 +15,26 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
+	"testing"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/tls/triple/codec"
+	pb "github.com/apache/dubbo-go-samples/tls/grpc/protobuf"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-}
+var grpcGreeterImpl = new(pb.GreeterClientImpl)
 
-type UserProvider struct {
-	GetUser func(context.Context, *User, *User, string) (*User, error)
-}
-
-var userProvider = new(UserProvider)
-
-// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/triple/codec-extension/go-client/conf/dubbogo.yml
-func main() {
-	config.SetConsumerService(userProvider)
+func TestMain(m *testing.M) {
+	config.SetConsumerService(grpcGreeterImpl)
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
-
-	user, err := userProvider.GetUser(context.TODO(), &User{Name: "zlber"}, &User{Name: "zlber2"}, "testName")
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("response result: %v\n", user)
 }

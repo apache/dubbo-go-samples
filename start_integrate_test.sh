@@ -63,6 +63,12 @@ array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
 
+#tls
+array+=("tls/dubbo")
+array+=("tls/triple")
+array+=("tls/grpc")
+
+
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
 bash -f $DOCKER_DIR/docker-health-check.sh

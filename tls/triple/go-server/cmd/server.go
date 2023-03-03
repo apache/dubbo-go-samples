@@ -50,7 +50,7 @@ func (u *UserProvider) GetUser(ctx context.Context, req *User, req2 *User, name 
 	return &rsp, nil
 }
 
-// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/triple/codec-extension/go-server/conf/dubbogo.yaml
+// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/triple/codec-extension/go-server/conf/dubbogo.yml
 func main() {
 	config.SetProviderService(&UserProvider{})
 	if err := config.Load(); err != nil {

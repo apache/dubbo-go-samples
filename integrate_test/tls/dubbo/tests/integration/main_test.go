@@ -15,45 +15,36 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
+	"os"
+	"testing"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	"github.com/dubbogo/gost/log/logger"
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/tls/triple/codec"
+	"github.com/apache/dubbo-go-samples/tls/dubbo/go-client/pkg"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-}
+var userProvider = &pkg.UserProvider{}
 
-type UserProvider struct {
-	GetUser func(context.Context, *User, *User, string) (*User, error)
-}
+func TestMain(m *testing.M) {
+	hessian.RegisterJavaEnum(pkg.Gender(pkg.MAN))
+	hessian.RegisterJavaEnum(pkg.Gender(pkg.WOMAN))
+	hessian.RegisterPOJO(&pkg.User{})
 
-var userProvider = new(UserProvider)
-
-// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/triple/codec-extension/go-client/conf/dubbogo.yml
-func main() {
 	config.SetConsumerService(userProvider)
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
 
-	user, err := userProvider.GetUser(context.TODO(), &User{Name: "zlber"}, &User{Name: "zlber2"}, "testName")
+	err := config.Load()
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("response result: %v\n", user)
+	os.Exit(m.Run())
 }

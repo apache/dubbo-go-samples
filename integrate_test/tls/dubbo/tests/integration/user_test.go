@@ -15,45 +15,47 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/dubbogo/gost/log/logger"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/tls/triple/codec"
+	"github.com/apache/dubbo-go-samples/tls/dubbo/go-client/pkg"
 )
 
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-}
+func TestUser(t *testing.T) {
+	reqUser := &pkg.User{}
+	reqUser.ID = "003"
+	user, err := userProvider.GetUser(context.TODO(), reqUser)
+	assert.Nil(t, err)
+	assert.NotNil(t, user)
 
-type UserProvider struct {
-	GetUser func(context.Context, *User, *User, string) (*User, error)
-}
+	gender, err := userProvider.GetGender(context.TODO(), 1)
+	assert.Nil(t, err)
+	assert.NotNil(t, gender)
 
-var userProvider = new(UserProvider)
+	ret, err := userProvider.GetUser0("003", "Moorse")
+	assert.Nil(t, err)
+	assert.NotNil(t, ret)
 
-// export DUBBO_GO_CONFIG_PATH=PATH_TO_SAMPLES/rpc/triple/codec-extension/go-client/conf/dubbogo.yml
-func main() {
-	config.SetConsumerService(userProvider)
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
+	ret1, err := userProvider.GetUsers([]string{"002", "003"})
+	assert.Nil(t, err)
+	assert.NotNil(t, ret1)
 
-	user, err := userProvider.GetUser(context.TODO(), &User{Name: "zlber"}, &User{Name: "zlber2"}, "testName")
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("response result: %v\n", user)
+	var i int32 = 1
+	user, err = userProvider.GetUser2(context.TODO(), i)
+	assert.Nil(t, err)
+	assert.NotNil(t, user)
+
+	reqUser.ID = "003"
+	_, err = userProvider.GetErr(context.TODO(), reqUser)
+	assert.NotNil(t, err)
+
 }
