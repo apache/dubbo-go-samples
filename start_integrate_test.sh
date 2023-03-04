@@ -64,6 +64,7 @@ array+=("rpc/triple/msgpack")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
+array+=("rpc/triple/pb2")
 
 #tls
 array+=("tls/dubbo")
