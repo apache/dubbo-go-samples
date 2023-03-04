@@ -50,6 +50,8 @@ array+=("registry/nacos")
 array+=("registry/etcd")
 array+=("registry/servicediscovery/zookeeper")
 array+=("registry/servicediscovery/nacos")
+array+=("registry/all/zookeeper")
+array+=("registry/all/nacos")
 
 # generic
 array+=("generic/default")
