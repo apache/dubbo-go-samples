@@ -21,7 +21,7 @@ require (
 	go.opentelemetry.io/otel/exporters/jaeger v1.10.0
 	go.opentelemetry.io/otel/sdk v1.10.0
 	google.golang.org/grpc v1.51.0
-	google.golang.org/protobuf v1.28.1
+	google.golang.org/protobuf v1.29.0
 )
 
 go 1.15
