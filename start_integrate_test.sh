@@ -72,6 +72,9 @@ array+=("tls/triple")
 array+=("tls/grpc")
 
 
+# replace tls config
+find $(pwd)/tls -type f -print0 | xargs -0 sed -i  's#\.\.\/\.\.\/\.\.#'"$(pwd)/tls"'#g'
+
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
 bash -f $DOCKER_DIR/docker-health-check.sh
