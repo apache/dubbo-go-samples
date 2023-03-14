@@ -23,8 +23,11 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/api"
 )
 
 func TestGreeter(t *testing.T) {

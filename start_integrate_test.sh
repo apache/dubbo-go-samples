@@ -64,12 +64,18 @@ array+=("rpc/triple/msgpack")
 array+=("rpc/triple/pb/dubbogo-grpc")
 array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
+array+=("rpc/triple/pb2")
 
 #tls
 array+=("tls/dubbo")
 array+=("tls/triple")
 array+=("tls/grpc")
 
+
+# replace tls config
+echo "The prefix of certificate path of the following files were replaced to \"$(pwd)/tls\"."
+find $(pwd)/tls -type f -name '*.yml' -print0 | xargs -0 -n1
+find $(pwd)/tls -type f -name '*.yml' -print0 | xargs -0 sed -i  's#\.\.\/\.\.\/\.\.#'"$(pwd)/tls"'#g'
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d

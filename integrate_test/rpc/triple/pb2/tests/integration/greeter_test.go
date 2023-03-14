@@ -23,23 +23,55 @@ import (
 )
 
 import (
-	gxlog "github.com/dubbogo/gost/log"
+	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
 
 	"github.com/stretchr/testify/assert"
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/tls/grpc/protobuf"
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/models"
 )
 
-func TestGreeter(t *testing.T) {
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
-		Name: "zlber",
+func TestStream(t *testing.T) {
+
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, tripleConstant.TripleCtxKey("tri-req-id"), "triple-request-id-demo")
+
+	req := models.HelloRequest{
+		Name: "dubbo-go",
 	}
-	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
+
+	r, err := greeterProvider.SayHelloStream(ctx)
 	assert.Nil(t, err)
-	assert.Equal(t, "this is message from reply", reply.Message)
-	gxlog.CInfo("client response result: %v\n", reply.Message)
+	assert.NotNil(t, r)
+
+	for i := 0; i < 2; i++ {
+		err = r.Send(&req)
+		assert.Nil(t, err)
+	}
+
+	rspUser := &models.User{}
+	err = r.RecvMsg(rspUser)
+	assert.Nil(t, err)
+	assert.NotNil(t, rspUser)
+
+	err = r.Send(&req)
+	assert.Nil(t, err)
+
+	rspUser2 := &models.User{}
+	err = r.RecvMsg(rspUser2)
+	assert.Nil(t, err)
+	assert.NotNil(t, rspUser2)
+
+}
+
+func TestUnary(t *testing.T) {
+
+	req := models.HelloRequest{
+		Name: "dubbo-go",
+	}
+	user, err := greeterProvider.SayHello(context.Background(), &req)
+	assert.Nil(t, err)
+	assert.NotNil(t, user)
 
 }

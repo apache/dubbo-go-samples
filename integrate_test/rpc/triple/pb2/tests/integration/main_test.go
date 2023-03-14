@@ -27,14 +27,17 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
+	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/api"
 )
 
-var grpcGreeterImpl = &api.GreeterClientImpl{}
+var greeterProvider = new(api.GreeterClientImpl)
 
 func TestMain(m *testing.M) {
-	config.SetConsumerService(grpcGreeterImpl)
+
+	config.SetConsumerService(greeterProvider)
+
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
+
 }
