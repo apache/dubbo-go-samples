@@ -73,7 +73,7 @@ array+=("tls/grpc")
 
 
 # replace tls config
-echo "The prefix of certificate path of the following file were replaced to "$(pwd)/tls" "
+echo "The prefix of certificate path of the following files were replaced to \"$(pwd)/tls\"."
 find $(pwd)/tls -type f -name '*.yml' -print0 | xargs -0 -n1
 find $(pwd)/tls -type f -name '*.yml' -print0 | xargs -0 sed -i  's#\.\.\/\.\.\/\.\.#'"$(pwd)/tls"'#g'
 
