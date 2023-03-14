@@ -73,7 +73,9 @@ array+=("tls/grpc")
 
 
 # replace tls config
-find $(pwd)/tls -type f -print0 | xargs -0 sed -i  's#\.\.\/\.\.\/\.\.#'"$(pwd)/tls"'#g'
+echo "The prefix of certificate path of the following file were replaced to "$(pwd)/tls" "
+find $(pwd)/tls -type f -name '*.yml' -print0 | xargs -0 -n1
+find $(pwd)/tls -type f -name '*.yml' -print0 | xargs -0 sed -i  's#\.\.\/\.\.\/\.\.#'"$(pwd)/tls"'#g'
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
