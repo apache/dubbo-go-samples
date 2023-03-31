@@ -21,5 +21,4 @@ func TestPolarisRegistry(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, user.Name, "Alex Stocks from UserProviderWithCustomGroupAndVersion")
 	assert.Equal(t, user.Age, 18)
-
 }
