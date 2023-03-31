@@ -66,10 +66,13 @@ array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
 array+=("rpc/triple/pb2")
 
-#tls
+# tls
 array+=("tls/dubbo")
 array+=("tls/triple")
 array+=("tls/grpc")
+
+# async
+array+=("async")
 
 
 # replace tls config
