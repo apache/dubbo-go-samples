@@ -23,7 +23,7 @@ array+=("game/go-server-gate")
 array=("config-api/rpc/triple")
 array+=("config-api/configcenter/nacos")
 array+=("config-api/configcenter/zookeeper")
-array=("config-api/config-merge")
+array+=("config-api/config-merge")
 
 # error
 array+=("error/triple/hessian2")
