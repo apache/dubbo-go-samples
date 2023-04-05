@@ -74,8 +74,7 @@ func main() {
 		time.Sleep(200 * time.Millisecond)
 		user, err := userProvider.GetUser(reqContext, &User{Name: "Alex001"})
 		if err != nil {
-			logger.Errorf("error: %v\n", err)
-		} else {
+			panic(err)
 		}
 		logger.Infof("response: %v\n", user)
 	}
