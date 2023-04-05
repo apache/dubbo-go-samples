@@ -43,13 +43,10 @@ export GONOPROXY ?= **.gitee.com**
 OS := $(shell uname)
 ifeq ($(OS), Linux)
 	export GOOS ?= linux
-	export DOCKER_HOST_IP = $(shell ifconfig enp3s0 | grep inet | grep -v inet6 | awk '{print $$2}')
 else ifeq ($(OS), Darwin)
 	export GOOS ?= darwin
-	export DOCKER_HOST_IP = $(shell ifconfig en0 | grep inet | grep -v inet6 | awk '{print $$2}')
 else
 	export GOOS ?= windows
-	export DOCKER_HOST_IP = $(shell ifconfig en0 | grep inet | grep -v inet6 | awk '{print $$2}')
 endif
 
 ifeq ($(GOOS), windows)
@@ -97,7 +94,7 @@ build: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 .PHONY: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME):
 	$(info   >  Buiding application binary: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME))
-	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(GCFLAGS) -ldflags=$(LDFLAGS) -i -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
+	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(GCFLAGS) -ldflags=$(LDFLAGS) -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
 
 ## docker-health-check: check services health on docker
 .PHONY: docker-health-check
