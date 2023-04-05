@@ -104,7 +104,6 @@ func (u *UserProvider) CallBack(response common.CallbackResponse) {
 
 	user := resp.Result.(*protocol.RPCResult).Rest.(*User)
 	gxlog.CInfo("async callback response! got result :%v\n", user)
-	return
 }
 
 // UserProviderV2 for one way
