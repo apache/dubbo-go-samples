@@ -18,12 +18,12 @@ dubbo:
       UserProvider1:
         protocol: jsonrpc
         version: 2.0
-        interface: org.apache.dubbo.samples.UserProvider
+        interface: org.apache.dubbo.samples.UserProvider1
       UserProvider2:
         protocol: jsonrpc
         version: 2.0
         group: as
-        interface: org.apache.dubbo.samples.UserProvider
+        interface: org.apache.dubbo.samples.UserProvider2
   logger:
     zap-config:
       level: info
