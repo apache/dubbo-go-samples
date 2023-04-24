@@ -1,10 +1,12 @@
 # dubbo-go tag router example
 
 ## 1 Introduction
+
 Tag router is an important part of Dubbo traffic management. Tag router achieves traffic isolation by dividing an instance of a service into different groups, constraining traffic with specific tags to only flow within specified groups. Different groups serve different traffic scenarios, and can serve as the basis for scenarios such as blue green publishing and gray publishing.
 
 ## 2 Usage
 ### 2.1 provider
+
 There are two ways to label the service provider on the provider side, static labeling and dynamic labeling.
 
 Static labeling is the process of labeling service providers in the configuration file before service startup. Every time a label is changed, the service provider needs to be restarted.
@@ -43,6 +45,7 @@ tags:
 After the configuration is completed, click Save to dynamically modify the label of the service provider.
 
 ### 2.2 consumer
+
 On the consumer side, you can choose which service provider to be used by tag, defined in the code. The following are the services provided using tag1.
 ```go
 // set tag
@@ -60,6 +63,7 @@ logger.Infof("client response result: %v\n", reply)
 ```
 
 ## 3 Deploy
+
 Users can deploy this demo to try using tag router, and Dubbo go needs to be upgraded to the latest version.
 1. Start the zookeeper and dubbo admin;
 2. Set the configuration file environment variables of the provider and start the provider;
