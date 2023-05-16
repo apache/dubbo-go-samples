@@ -10,7 +10,7 @@ dubbo:
   registries:
     polarisMesh:
       protocol: polaris
-      address: 183.47.111.80:8091
+      address: 111.230.189.149:8091
       namespace: dubbogo
   consumer:
     references:
