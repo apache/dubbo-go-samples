@@ -19,17 +19,13 @@ package main
 
 import (
 	"context"
-)
+	"fmt"
+	"time"
 
-import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/dubbogo/gost/log/logger"
-)
-
-import (
 	"github.com/apache/dubbo-go-samples/api"
+	"github.com/dubbogo/gost/log/logger"
 )
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)
@@ -42,12 +38,16 @@ func main() {
 	}
 
 	logger.Info("start to test dubbo")
-	req := &api.HelloRequest{
-		Name: "laurence",
+
+	for count := 0; ; count++ {
+		req := &api.HelloRequest{
+			Name: fmt.Sprintf("dubbo-go-%d", count),
+		}
+		reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+		if err != nil {
+			logger.Error(err)
+		}
+		logger.Infof("client response result: %v\n", reply)
+		time.Sleep(time.Second * 10)
 	}
-	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
-	if err != nil {
-		logger.Error(err)
-	}
-	logger.Infof("client response result: %v\n", reply)
 }

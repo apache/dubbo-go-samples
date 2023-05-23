@@ -21,18 +21,13 @@ import (
 	"context"
 	"math/rand"
 	"time"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3/config"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/metrics/prometheus"
-
-	"github.com/dubbogo/gost/log/logger"
-)
-
-import (
 	"github.com/apache/dubbo-go-samples/api"
+	"github.com/dubbogo/gost/log/logger"
 )
 
 type GreeterProvider struct {
