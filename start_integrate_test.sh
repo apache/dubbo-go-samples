@@ -76,6 +76,9 @@ array+=("tls/grpc")
 # async
 array+=("async")
 
+# polaris
+array+=("polaris/registry")
+array+=("polaris/limit")
 
 # replace tls config
 echo "The prefix of certificate path of the following files were replaced to \"$(pwd)/tls\"."
