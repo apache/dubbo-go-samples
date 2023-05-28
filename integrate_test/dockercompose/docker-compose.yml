@@ -27,15 +27,9 @@ services:
     container_name: polaris-standalone
     privileged: true
     ports:
-      - "15010:15010"
-      - "8101:8101"
-      - "8100:8100"
-      - "8080:8080"
       - "8090:8090"
       - "8091:8091"
       - "8093:8093"
-      - "8761:8761"
-      - "9090:9090"
     healthcheck:
       test: "curl --fail http://127.0.0.1:8090 || exit 1"
       interval: 5s
