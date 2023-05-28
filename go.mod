@@ -1,7 +1,7 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.5
+	dubbo.apache.org/dubbo-go/v3 v3.0.6-0.20230512025008-3af77e40f892
 	github.com/SkyAPM/go2sky v1.5.0
 	github.com/SkyAPM/go2sky-plugins/dubbo-go v0.0.0-20220718123631-cb8f743b16cf
 	github.com/apache/dubbo-go-hessian2 v1.12.2
@@ -20,7 +20,7 @@ require (
 	go.opentelemetry.io/otel v1.11.0
 	go.opentelemetry.io/otel/exporters/jaeger v1.10.0
 	go.opentelemetry.io/otel/sdk v1.10.0
-	google.golang.org/grpc v1.51.0
+	google.golang.org/grpc v1.52.0
 	google.golang.org/protobuf v1.30.0
 )
 
