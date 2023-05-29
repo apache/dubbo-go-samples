@@ -12,6 +12,7 @@ dubbo:
       protocol: polaris
       address: 127.0.0.1:8091
       namespace: dubbogo
+      registry-type: interface
   protocols:
     dubbo:
       name: dubbo
