@@ -54,13 +54,15 @@ jobs:
               go get -v -t -d ./...
           fi
 
-      - name: gofmt
+      - name: Go Fmt
         run: |
           go fmt ./... && git status && [[ -z `git status -s` ]]
           # diff -u <(echo -n) <(gofmt -d -s .)
 
       - name: Run Linter
         uses: golangci/golangci-lint-action@v3
+        with:
+          args: --timeout 10m --verbose
 
       - name: License
         run: make -f build/Makefile license
