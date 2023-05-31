@@ -63,7 +63,7 @@ func main() {
 
 func initSignal() {
 	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM)
 	for {
 		sig := <-signals
 		logger.Infof("get signal %s", sig.String())
