@@ -36,6 +36,7 @@ type GreeterProvider struct {
 
 func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
 	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
+	time.Sleep(time.Duration(rand.Intn(100))*time.Millisecond + 100*time.Millisecond)
 	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
 
