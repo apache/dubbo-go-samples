@@ -1,11 +1,11 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.0.6-0.20230528084837-9cf1b9f976da
+	dubbo.apache.org/dubbo-go/v3 v3.0.6-0.20230714083639-412bf7b2f36a
 	github.com/SkyAPM/go2sky v1.5.0
 	github.com/SkyAPM/go2sky-plugins/dubbo-go v0.0.0-20220718123631-cb8f743b16cf
 	github.com/apache/dubbo-go-hessian2 v1.12.2
-	github.com/dubbogo/gost v1.13.2
+	github.com/dubbogo/gost v1.14.0
 	github.com/dubbogo/grpc-go v1.42.10
 	github.com/dubbogo/triple v1.2.2-rc3
 	github.com/gogo/protobuf v1.3.2
