@@ -23,40 +23,21 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	detailAPI "github.com/apache/dubbo-go-samples/task/shop/detail/api"
-	"github.com/apache/dubbo-go-samples/task/shop/order/api"
+	"github.com/apache/dubbo-go-samples/task/shop/comment/api"
 )
 
-// OrderProvider is the provider of order service
-type OrderProvider struct {
-	api.UnimplementedOrderServer
-	detailService *detailAPI.DetailClientImpl
+// CommentProvider is the provider of comment service
+type CommentProvider struct {
+	api.UnimplementedCommentServer
 }
 
-func NewOrderProvider() *OrderProvider {
-	op := &OrderProvider{}
-	// set the detail rpc service
-	op.detailService = new(detailAPI.DetailClientImpl)
-	config.SetConsumerService(op.detailService)
-	return op
-}
-
-func (o *OrderProvider) SubmitOrder(ctx context.Context, req *api.OrderReq) (*api.OrderResp, error) {
-	o.detailService.DeductStock(context.Background(), &detailAPI.DeductStockReq{
-		Sku:   req.Sku,
-		Count: req.Count,
-	})
-	return &api.OrderResp{
-		Env:      "v1",
-		Address:  req.Address,
-		Phone:    req.Phone,
-		Receiver: req.Receiver,
-	}, nil
+func (c *CommentProvider) GetComment(ctx context.Context, itemName *api.CommentReq) (*api.CommentResp, error) {
+	return &api.CommentResp{Msg: "Comment from v2."}, nil
 }
 
 // export DUBBO_GO_CONFIG_PATH=../conf/dubbogo.yaml
 func main() {
-	config.SetProviderService(NewOrderProvider())
+	config.SetProviderService(&CommentProvider{})
 	if err := config.Load(); err != nil {
 		panic(err)
 	}

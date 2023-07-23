@@ -19,46 +19,31 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	detailAPI "github.com/apache/dubbo-go-samples/task/shop/detail/api"
-	"github.com/apache/dubbo-go-samples/task/shop/order/api"
+	"github.com/apache/dubbo-go-samples/task/shop/user/api"
 )
 
-// OrderProvider is the provider of order service
-type OrderProvider struct {
-	api.UnimplementedOrderServer
-	detailService *detailAPI.DetailClientImpl
-}
-
-func NewOrderProvider() *OrderProvider {
-	op := &OrderProvider{}
-	// set the detail rpc service
-	op.detailService = new(detailAPI.DetailClientImpl)
-	config.SetConsumerService(op.detailService)
-	return op
-}
-
-func (o *OrderProvider) SubmitOrder(ctx context.Context, req *api.OrderReq) (*api.OrderResp, error) {
-	o.detailService.DeductStock(context.Background(), &detailAPI.DeductStockReq{
-		Sku:   req.Sku,
-		Count: req.Count,
-	})
-	return &api.OrderResp{
-		Env:      "v1",
-		Address:  req.Address,
-		Phone:    req.Phone,
-		Receiver: req.Receiver,
-	}, nil
-}
+var grpcImpl = new(api.UserServiceClientImpl)
 
 // export DUBBO_GO_CONFIG_PATH=../conf/dubbogo.yaml
 func main() {
-	config.SetProviderService(NewOrderProvider())
+	config.SetConsumerService(grpcImpl)
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
-	select {}
+
+	fmt.Println("start to test dubbo")
+	req := &api.LoginReq{
+		Username: "dubbo",
+		Password: "123456",
+	}
+	reply, err := grpcImpl.TimeoutLogin(context.Background(), req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(reply)
 }
