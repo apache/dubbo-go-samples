@@ -21,11 +21,17 @@ import (
 	"context"
 	"fmt"
 	"time"
+)
 
+import (
+	"github.com/apache/dubbo-go-samples/api"
+
+	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/apache/dubbo-go-samples/api"
-	"github.com/dubbogo/gost/log/logger"
 )
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)
@@ -48,6 +54,6 @@ func main() {
 			logger.Error(err)
 		}
 		logger.Infof("client response result: %v\n", reply)
-		time.Sleep(time.Second * 10)
+		time.Sleep(time.Second * 10) // sleep 10 seconds
 	}
 }
