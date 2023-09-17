@@ -1,0 +1,16 @@
+dubbo:
+  application:
+    name: shop-comment
+  registries:
+    demoZK:
+      protocol: zookeeper
+      address: 127.0.0.1:2181
+  protocols:
+    triple:
+      name: tri
+      port: 20021
+  provider:
+    token: true
+    services:
+      DetailProvider:
+        interface: org.apache.dubbogo.samples.shop.detail.api.Detail # read interface from pb
