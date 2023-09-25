@@ -18,27 +18,45 @@
 package main
 
 import (
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
 	"github.com/apache/dubbo-go-samples/api_new/greettriple"
 	"github.com/apache/dubbo-go-samples/api_new/handler"
 	"github.com/dubbogo/gost/log/logger"
+	"time"
 )
 
 func main() {
-	srv, err := server.NewServer(
-		server.WithServer_Protocol("triple",
+	ins, err := dubbo.NewInstance(
+		dubbo.WithRegistry("zk",
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+			registry.WithTimeout(3*time.Second),
+			registry.WithGroup("myGroup"),
+			registry.WithRegisterInterface(),
+		),
+		dubbo.WithProtocol("tri",
 			protocol.WithTriple(),
 			protocol.WithPort(20000),
 		),
 	)
+	srv, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}
 	if err := greettriple.RegisterGreetServiceHandler(srv, &handler.GreetTripleServer{}); err != nil {
 		panic(err)
 	}
+	if err := greettriple.RegisterGreetServiceHandler(srv, &handler.GreetTripleServer{},
+		server.WithGroup("myInterfaceGroup"),
+		server.WithVersion("myInterfaceVersion"),
+	); err != nil {
+		panic(err)
+	}
+
 	if err := srv.Serve(); err != nil {
 		logger.Error(err)
 	}
