@@ -15,31 +15,17 @@
  * limitations under the License.
  */
 
-package main
+package handler
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/server"
-	"github.com/apache/dubbo-go-samples/api_new/greettriple"
-	"github.com/apache/dubbo-go-samples/api_new/handler"
-	"github.com/dubbogo/gost/log/logger"
+	"context"
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
-func main() {
-	srv, err := server.NewServer(
-		server.WithServer_Protocol("triple",
-			protocol.WithTriple(),
-			protocol.WithPort(20000),
-		),
-	)
-	if err != nil {
-		panic(err)
-	}
-	if err := greettriple.RegisterGreetServiceHandler(srv, &handler.GreetTripleServer{}); err != nil {
-		panic(err)
-	}
-	if err := srv.Serve(); err != nil {
-		logger.Error(err)
-	}
+type GreetTripleServer struct {
+}
+
+func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	resp := &greet.GreetResponse{Greeting: req.Name}
+	return resp, nil
 }

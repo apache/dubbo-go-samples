@@ -22,15 +22,15 @@ import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	greet "github.com/apache/dubbo-go-samples/api_new"
-	"github.com/apache/dubbo-go-samples/api_new/greettriple"
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+	"github.com/apache/dubbo-go-samples/helloworld/proto/greettriple"
 	"github.com/dubbogo/gost/log/logger"
 )
 
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("service-discovery-zookeeper"),
-		dubbo.WithRegistry("zk",
+		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
 		),

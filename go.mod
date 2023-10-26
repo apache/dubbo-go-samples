@@ -1,7 +1,7 @@
 module github.com/apache/dubbo-go-samples
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.1.0
+	dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20231026074600-9d62f726adba
 	github.com/SkyAPM/go2sky v1.5.0
 	github.com/SkyAPM/go2sky-plugins/dubbo-go v0.0.0-20220718123631-cb8f743b16cf
 	github.com/apache/dubbo-go-hessian2 v1.12.2
@@ -12,7 +12,7 @@ require (
 	github.com/golang/protobuf v1.5.3
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
-	github.com/openzipkin/zipkin-go v0.2.2
+	github.com/openzipkin/zipkin-go v0.4.0
 	github.com/pkg/errors v0.9.1
 	github.com/seata/seata-go v0.1.0-rc1
 	github.com/stretchr/testify v1.8.4
@@ -23,7 +23,5 @@ require (
 	google.golang.org/grpc v1.57.0
 	google.golang.org/protobuf v1.31.0
 )
-
-replace dubbo.apache.org/dubbo-go/v3 v3.1.0 => github.com/DMwangnima/dubbo-go/v3 v3.0.6-0.20230924134202-8d2877fd53e0
 
 go 1.15

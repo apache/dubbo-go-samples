@@ -23,22 +23,22 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	"github.com/apache/dubbo-go-samples/api_new/greettriple"
-	"github.com/apache/dubbo-go-samples/api_new/handler"
+	"github.com/apache/dubbo-go-samples/helloworld/go-server/handler"
+	"github.com/apache/dubbo-go-samples/helloworld/proto/greettriple"
 	"github.com/dubbogo/gost/log/logger"
 	"time"
 )
 
 func main() {
 	ins, err := dubbo.NewInstance(
-		dubbo.WithRegistry("zk",
+		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
 			registry.WithTimeout(3*time.Second),
 			registry.WithGroup("myGroup"),
 			registry.WithRegisterInterface(),
 		),
-		dubbo.WithProtocol("tri",
+		dubbo.WithProtocol(
 			protocol.WithTriple(),
 			protocol.WithPort(20000),
 		),
