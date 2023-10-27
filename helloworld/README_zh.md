@@ -1,10 +1,24 @@
 # dubbo-go Triple helloworld示例
 
-这个示例旨在帮助你快速地完成一次基础的RPC调用。
+这个示例旨在帮助您快速地完成一次基础的RPC调用。
 
 ## 开始
 
 ### 安装protoc
+
+#### 使用包管理器
+
+```shell
+# 对于Linux用户, 使用apt或者apt-get
+apt install -y protobuf-compiler
+protoc --version # 确保版本是 3+
+
+# 对于Macos用户, 使用homebrew
+brew install protobuf
+protoc --version # 确保版本是 3+
+```
+
+#### 使用预编译的二进制文件
 
 ```shell
 # 根据您的操作系统和架构下载预先编译好的protoc文件
@@ -19,6 +33,10 @@ unzip protoc-24.4-linux-x86_64.zip -d $HOME/.local
 # 更新环境变量
 export PATH="$PATH:$HOME/.local/bin"
 ```
+
+#### 使用源码进行编译
+
+详情请参考[**下载Protocol Buffers**](https://protobuf.dev/downloads/).
 
 ### 安装 protoc-gen-go
 

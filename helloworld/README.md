@@ -6,6 +6,20 @@ This is **Triple** helloworld example to help you finish a basic RPC invocation 
 
 ### install protoc
 
+#### install with package manager
+
+```shell
+# for Linux, use apt or apt-get
+apt install -y protobuf-compiler
+protoc --version # make sure that version is 3+
+
+# for Macos, using homebrew
+brew install protobuf
+protoc --version # make sure that version is 3+
+```
+
+#### install pre-compiled binary
+
 ```shell
 # fetch the pre-compiled protoc corresponding to your operating system and computer architecture
 # protoc-<version>-<os>-<arch>.zip
@@ -19,6 +33,10 @@ unzip protoc-24.4-linux-x86_64.zip -d $HOME/.local
 # update path variable
 export PATH="$PATH:$HOME/.local/bin"
 ```
+
+#### build protoc from sources
+
+Please see [**Download Protocol Buffers**](https://protobuf.dev/downloads/).
 
 ### install protoc-gen-go
 
