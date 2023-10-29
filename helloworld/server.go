@@ -19,37 +19,35 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/registry"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 	"github.com/apache/dubbo-go-samples/helloworld/proto/greettriple"
 	"github.com/dubbogo/gost/log/logger"
 )
 
+type GreetTripleServer struct {
+}
+
+func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	resp := &greet.GreetResponse{Greeting: req.Name}
+	return resp, nil
+}
+
 func main() {
-	ins, err := dubbo.NewInstance(
-		dubbo.WithName("service-discovery-zookeeper"),
-		dubbo.WithRegistry(
-			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
+	srv, err := server.NewServer(
+		server.WithServerProtocol(
+			protocol.WithPort(20000),
 		),
 	)
 	if err != nil {
 		panic(err)
 	}
-	cli, err := ins.NewClient()
-	if err != nil {
+	if err := greettriple.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
 		panic(err)
 	}
-	svc, err := greettriple.NewGreetService(cli)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "zookeeper"})
-	if err != nil {
+	if err := srv.Serve(); err != nil {
 		logger.Error(err)
 	}
-	logger.Infof("Greet response: %s", resp.Greeting)
 }
