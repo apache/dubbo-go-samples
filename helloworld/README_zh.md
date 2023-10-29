@@ -4,39 +4,10 @@
 
 ## 开始
 
-### 安装protoc
+### 安装版本为[3+](https://protobuf.dev/programming-guides/proto3/)的protoc
 
-#### 使用包管理器
-
-```shell
-# 对于Linux用户, 使用apt或者apt-get
-apt install -y protobuf-compiler
-protoc --version # 确保版本是 3+
-
-# 对于Macos用户, 使用homebrew
-brew install protobuf
-protoc --version # 确保版本是 3+
-```
-
-#### 使用预编译的二进制文件
-
-```shell
-# 根据您的操作系统和架构下载预先编译好的protoc文件
-# protoc-<version>-<os>-<arch>.zip
-# 或者您可以从 github.com/protocolbuffers/protobuf/releases 手动下载
-PB_REL="https://github.com/protocolbuffers/protobuf/releases"
-curl -LO $PB_REL/download/v24.4/protoc-24.4-linux-x86_64.zip
-
-# 在一个目录下解压下载好的protoc文件，这里使用$HOME/.local作为示例
-unzip protoc-24.4-linux-x86_64.zip -d $HOME/.local
-
-# 更新环境变量
-export PATH="$PATH:$HOME/.local/bin"
-```
-
-#### 使用源码进行编译
-
-详情请参考[**下载Protocol Buffers**](https://protobuf.dev/downloads/).
+详情请参考[**安装Protocol Buffer Compiler**](https://grpc.io/docs/protoc-installation/)和[**下载Protocol Buffers**](https://protobuf.dev/downloads/)。  
+安装完成后，请运行```protoc --version``来确保protoc的版本为3+。
 
 ### 安装 protoc-gen-go
 
@@ -93,106 +64,22 @@ protoc --go_out=. --go_opt=paths=source_relative --triple_out=. --triple_opt=pat
 
 ### 客户端
 
-```shell
-cd ~/triple_helloworld
-mkdir -p go-client/cmd && cd ./go-client/cmd
-```
-
-编写 **client.go** 并把它放置在 **go-client/cmd** 目录。
-
-```go
-package main
-
-import (
-	"context"
-	"dubbo.apache.org/dubbo-go/v3/client"
-	// 重要，使用这个import声明引用dubbo-go扩展
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "triple_helloworld/proto"
-	"triple_helloworld/proto/greettriple"
-	"github.com/dubbogo/gost/log/logger"
-)
-
-func main() {
-	// 初始化一个用于调用特定服务的Client，如果你想要调用其它服务，请创建新的Client
-	cli, err := client.NewClient(
-		// 指定该服务的URL
-		client.WithURL("127.0.0.1:20000"),
-	)
-	if err != nil {
-		panic(err)
-	}
-	
-	svc, err := greettriple.NewGreetService(cli)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-	if err != nil {
-		logger.Error(err)
-	}
-	logger.Infof("Greet response: %s", resp.Greeting)
-}
-```
+编写 **client.go**。具体代码请参考[**这里**](https://github.com/apache/dubbo-go-samples/blob/new-triple-samples/helloworld/client.go)。
 
 ### 服务端
-```shell
-cd ~/triple_helloworld
-mkdir -p go-server/cmd
-mkdir -p go-server/handler
-```
 
-实现 **GreetService** 接口并把它放置在 **go-server/handler** 目录。
-请参考[**具体实现**](https://github.com/apache/dubbo-go-samples/tree/new-triple-samples/helloworld/go-server/handler).
-
-完成 **server.go** 并把它放置在 **go-server/cmd** 目录。
-
-```go
-package main
-
-import (
-	// 重要，使用这个import声明引用dubbo-go扩展
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/server"
-	"triple_helloworld/go-server/handler"
-	"triple_helloworld/proto/greettriple"
-	"github.com/dubbogo/gost/log/logger"
-)
-
-func main() {
-	// 初始化一个Server用于承载多个服务
-	srv, err := server.NewServer(
-		// 默认使用Triple协议
-		server.WithServerProtocol(
-			// 指定监听的端口
-			protocol.WithPort(20000),
-		),
-	)
-	if err != nil {
-		panic(err)
-	}
-	// 注册一个特定服务
-	if err := greettriple.RegisterGreetServiceHandler(srv, &handler.GreetTripleServer{}); err != nil {
-		panic(err)
-	}
-	if err := srv.Serve(); err != nil {
-		logger.Error(err)
-	}
-}
-```
+实现 **GreetService** 接口并完成 **server.go**。具体代码请参考[**这里**](https://github.com/apache/dubbo-go-samples/blob/new-triple-samples/helloworld/server.go).
 
 ## 编译并运行
 
 ```shell
-cd ~/triple_helloworld/go-server/cmd
-go build -o server .
+cd ~/triple_helloworld
+go build -o server ./server.go
 ./server
 ```
 
 ```shell
-cd ~/triple_helloworld/go-client/cmd
-go build -o client .
+cd ~/triple_helloworld
+go build -o client ./client.go
 ./client
 ```

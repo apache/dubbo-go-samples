@@ -6,7 +6,8 @@ This is **Triple** helloworld example to help you finish a basic RPC invocation 
 
 ### install protocol buffer compiler, protoc, [version3](https://protobuf.dev/programming-guides/proto3/)
 
-Please refer to [**Protocol Buffer Compiler Installation**](https://grpc.io/docs/protoc-installation/) and [**Download Protocol Buffers**](https://protobuf.dev/downloads/).
+Please refer to [**Protocol Buffer Compiler Installation**](https://grpc.io/docs/protoc-installation/) and [**Download Protocol Buffers**](https://protobuf.dev/downloads/).  
+After installation, please run ```protoc --verion``` to ensure that the version of protoc is 3+.
 
 ### install protoc-gen-go
 
