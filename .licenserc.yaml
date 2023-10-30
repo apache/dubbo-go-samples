@@ -79,6 +79,9 @@ header:
     - '**/*.pem'
     - '**/protobuf.mk'
     - '**/*.java'
+    - 'apisix/mysql5.7-compose/mysql/my.cnf'
+    - 'build/Makefile'
+    - 'tls/x509/openssl.cnf'
 
   comment: on-failure
 
