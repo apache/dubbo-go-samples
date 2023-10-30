@@ -32,9 +32,6 @@ array+=("error/triple/pb")
 # metrics
 array+=("metrics")
 
-# helloworld
-array+=("helloworld")
-
 # direct
 array+=("direct")
 

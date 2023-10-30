@@ -19,7 +19,7 @@ PROJECT_DIR=$(shell pwd)
 BASE_DIR := $(PROJECT_DIR)/go-server/dist
 DOCKER_DIR := ./integrate_test/dockercompose
 
-SOURCES = $(wildcard $(PROJECT_DIR)/go-server/*.go)
+SOURCES = $(wildcard $(PROJECT_DIR)/go-server/cmd/*.go)
 GO = go
 GO_PATH = $(shell $(GO) env GOPATH)
 GO_OS = $(shell $(GO) env GOOS)
