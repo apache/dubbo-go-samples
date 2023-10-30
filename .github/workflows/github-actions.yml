@@ -64,6 +64,9 @@ jobs:
         with:
           args: --timeout 10m --verbose
 
+      - name: Check License Header
+        uses: apache/skywalking-eyes/header@e1a02359b239bd28de3f6d35fdc870250fa513d5
+
       - name: Integration Test
         run: |
           ./start_integrate_test.sh
