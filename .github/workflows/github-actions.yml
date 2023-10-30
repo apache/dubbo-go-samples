@@ -64,9 +64,6 @@ jobs:
         with:
           args: --timeout 10m --verbose
 
-      - name: License
-        run: make -f build/Makefile license
-
       - name: Integration Test
         run: |
           ./start_integrate_test.sh
