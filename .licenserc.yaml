@@ -68,6 +68,17 @@ header:
     - 'LICENSE'
     - 'NOTICE'
     - 'go.mod'
+    - 'go.sum'
+    - '**/*.yml'
+    - '**/*.yaml'
+    - '**/*.css'
+    - '**/*.js'
+    - '**/Dockerfile'
+    - '**/*.xml'
+    - '**/*.html'
+    - '**/*.pem'
+    - '**/protobuf.mk'
+    - '**/*.java'
 
   comment: on-failure
 
