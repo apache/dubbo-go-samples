@@ -604,6 +604,8 @@ dubbo.apache.org/dubbo-go/v3 v3.0.2-0.20220508105316-b27ec53b7bab/go.mod h1:Ytn9
 dubbo.apache.org/dubbo-go/v3 v3.0.2/go.mod h1:bODgByAf72kzG/5YIfZIODXx81pY3gaAdIQ8B4mN/Yk=
 dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20231026074600-9d62f726adba h1:lbfKnvjIC8Nz1wlVQ8jX5IDv63CXny1rz34v+fkjSao=
 dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20231026074600-9d62f726adba/go.mod h1:7Gl3GACKWMz5Xz2lpgoKG7qDXerxhHnxoMJRmrYkw18=
+dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20231027101150-15c43b823e74 h1:2W2oqz0BQbNULmvtokHbx5j86sDpCjd9OAi7wSpj9zA=
+dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20231027101150-15c43b823e74/go.mod h1:hGmY1esW7CV++/TKENtPCYnwZ4G55CeXkpDqLsLVOpU=
 gioui.org v0.0.0-20210308172011-57750fc8a0a6/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zumjgTw83q2ge/PI+yyw8=
 git.sr.ht/~sbinet/gg v0.3.1/go.mod h1:KGYtlADtqsqANL9ueOFkWymvzUvLMQllU5Ixo+8v3pc=
 github.com/Azure/go-autorest/autorest v0.9.0/go.mod h1:xyHB1BMZT0cuDHU7I0+g046+BFDTQ8rEZB0s4Yfa6bI=
