@@ -73,6 +73,6 @@ curl \
 go run ./client/main.go
 ```
 
-[Quick Start]: https://dubbo-next.staged.apache.org/zh-cn/overview/mannual/golang-sdk/quick-start/
+[Quick Start]: https://dubbo-next.staged.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/
 [version3]: https://protobuf.dev/programming-guides/proto3/
 [Protocol Buffer Compiler Installation]: https://dubbo-next.staged.apache.org/zh-cn/overview/reference/protoc-installation/
