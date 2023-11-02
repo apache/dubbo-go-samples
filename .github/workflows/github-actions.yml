@@ -2,7 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [master, develop]
+    branches:
+      - main
+      - 'release-*'
   pull_request:
     branches: "*"
 
@@ -12,7 +14,7 @@ jobs:
     name: ${{ matrix.os }} - Go ${{ matrix.go_version }}
     runs-on: ${{ matrix.os }}
     strategy:
-      # If you want to matrix build , you can append the following list.
+      # If you want to matrix build, you can append the following list.
       matrix:
         go_version:
           - 1.17
@@ -24,7 +26,6 @@ jobs:
       DING_SIGN: ${{ secrets.DING_SIGN }}
 
     steps:
-
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
         with:
@@ -63,9 +64,25 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           args: --timeout 10m --verbose
-
+      
       - name: License
         run: make -f build/Makefile license
+
+      - name: Switch Dubbo-go version
+        run: |
+          # Acquire information of branch
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+            BRANCH=${{github.base_ref}}
+          elif [ "$GITHUB_EVENT_NAME" == "push" ]; then
+            BRANCH=$GITHUB_REF_NAME
+          else
+            echo "$GITHUB_EVENT_NAME event is unsupported right now"
+            exit 1
+          fi
+          echo "EVENT = $GITHUB_EVENT_NAME, BRANCH = $BRANCH"
+          # Edit the version
+          go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH
+          go mod tidy
 
       - name: Integration Test
         run: |
