@@ -19,51 +19,40 @@ package main
 
 import (
 	"context"
-)
-
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
+	"dubbo.apache.org/dubbo-go/v3/registry"
+	greet "github.com/apache/dubbo-go-samples/registry/zookeeper/proto"
+	"github.com/apache/dubbo-go-samples/registry/zookeeper/proto/greettriple"
 	"github.com/dubbogo/gost/log/logger"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/api"
-)
-
-var grpcGreeterImplWithCustomGroupAndVersion = &UserProviderWithCustomGroupAndVersion{GreeterClientImpl: api.GreeterClientImpl{}}
-var grpcGreeterImpl = new(api.GreeterClientImpl)
-
-type UserProviderWithCustomGroupAndVersion struct {
-	api.GreeterClientImpl
-}
-
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
-	config.SetConsumerService(grpcGreeterImplWithCustomGroupAndVersion)
-}
-
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml if needed
 func main() {
-	path := "./registry/zookeeper/go-client/conf/dubbogo.yml"
-	if err := config.Load(config.WithPath(path)); err != nil {
+	// global conception
+	// configure global configurations and common modules
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_registry_zookeeper_client"),
+		dubbo.WithRegistry(
+			registry.WithID("zk"),
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+	// configure the params that only client layer cares
+	cli, err := ins.NewClient()
+
+	svc, err := greettriple.NewGreetService(cli)
+	if err != nil {
 		panic(err)
 	}
 
-	logger.Info("start to test dubbo")
-	req := &api.HelloRequest{
-		Name: "laurence",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
 		logger.Error(err)
 	}
-	logger.Infof("client response result: %v\n", reply)
-
-	reply, err = grpcGreeterImplWithCustomGroupAndVersion.SayHello(context.Background(), req)
-	if err != nil {
-		logger.Error(err)
-	}
-	logger.Infof("client response result: %v\n", reply)
+	logger.Infof("Greet response: %s", resp)
+	select {}
 }

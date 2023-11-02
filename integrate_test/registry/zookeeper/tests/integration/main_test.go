@@ -18,30 +18,36 @@
 package integration
 
 import (
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+	"github.com/apache/dubbo-go-samples/registry/zookeeper/proto/greettriple"
 	"os"
 	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
-import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/api"
-)
-
-var greeterProvider = &dubbo3pb.GreeterClientImpl{}
-var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{GreeterClientImpl: dubbo3pb.GreeterClientImpl{}}
-
-type UserProviderWithCustomGroupAndVersion struct {
-	dubbo3pb.GreeterClientImpl
-}
+var greetService greettriple.GreetService
 
 func TestMain(m *testing.M) {
-	config.SetConsumerService(greeterProvider)
-	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
-	if err := config.Load(); err != nil {
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_registry_zookeeper_client"),
+		dubbo.WithRegistry(
+			registry.WithID("zk"),
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+	// configure the params that only client layer cares
+	cli, err := ins.NewClient()
+
+	greetService, err = greettriple.NewGreetService(cli)
+	if err != nil {
 		panic(err)
 	}
 

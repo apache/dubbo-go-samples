@@ -19,63 +19,39 @@ package main
 
 import (
 	"context"
-	"os"
-	"time"
-)
-
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
+	"dubbo.apache.org/dubbo-go/v3/registry"
+	greet "github.com/apache/dubbo-go-samples/registry/nacos/proto"
+	"github.com/apache/dubbo-go-samples/registry/nacos/proto/greettriple"
 	"github.com/dubbogo/gost/log/logger"
 )
 
-type UserProviderWithCustomGroupAndVersion struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
 func main() {
-	var userProvider = &UserProvider{}
-	var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{}
-	config.SetConsumerService(userProvider)
-	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
-	hessian.RegisterPOJO(&User{})
-	err := config.Load()
+	// global conception
+	// configure global configurations and common modules
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_registry_nacos_client"),
+		dubbo.WithRegistry(
+			registry.WithNacos(),
+			registry.WithAddress("127.0.0.1:8848"),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+	// configure the params that only client layer cares
+	cli, err := ins.NewClient()
+
+	svc, err := greettriple.NewGreetService(cli)
 	if err != nil {
 		panic(err)
 	}
 
-	logger.Infof("\n\n\nstart to test dubbo")
-	user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex001"})
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
-		logger.Errorf("error: %v\n", err)
-		os.Exit(1)
-		return
+		logger.Error(err)
 	}
-	logger.Infof("response result: %v\n", user)
-
-	user, err = userProviderWithCustomRegistryGroupAndVersion.GetUser(context.TODO(), &User{Name: "Alex001"})
-	if err != nil {
-		logger.Errorf("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	logger.Infof("response result: %v\n", user)
+	logger.Infof("Greet response: %s", resp)
+	select {}
 }

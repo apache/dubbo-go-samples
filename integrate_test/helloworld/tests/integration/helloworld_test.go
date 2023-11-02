@@ -19,62 +19,23 @@ package integration
 
 import (
 	"context"
+	"fmt"
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 	"testing"
 )
 
 import (
-	tripleConstant "github.com/dubbogo/triple/pkg/common/constant"
-
 	"github.com/stretchr/testify/assert"
 )
 
-import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/api"
-)
-
-func TestStreamSayHello(t *testing.T) {
-	ctx := context.Background()
-	ctx = context.WithValue(ctx, tripleConstant.TripleCtxKey(tripleConstant.TripleRequestID), "triple-request-id-demo")
-	req := dubbo3pb.HelloRequest{
-		Name: "laurence",
-	}
-
-	r, err := greeterProvider.SayHelloStream(ctx)
-	assert.Nil(t, err)
-
-	for i := 0; i < 2; i++ {
-		err := r.Send(&req)
-		assert.Nil(t, err)
-	}
-
-	rspUser := &dubbo3pb.User{}
-	err = r.RecvMsg(rspUser)
-	assert.Nil(t, err)
-	assert.Equal(t, "hello laurence", rspUser.Name)
-	assert.Equal(t, "123456789", rspUser.Id)
-	assert.Equal(t, int32(18), rspUser.Age)
-
-	err = r.Send(&req)
-	assert.Nil(t, err)
-
-	err = r.RecvMsg(rspUser)
-	assert.Nil(t, err)
-	assert.Equal(t, "hello laurence", rspUser.Name)
-	assert.Equal(t, "123456789", rspUser.Id)
-	assert.Equal(t, int32(19), rspUser.Age)
-}
-
 func TestSayHello(t *testing.T) {
-	req := &dubbo3pb.HelloRequest{
-		Name: "laurence",
-	}
+	req := &greet.GreetRequest{Name: "hello world"}
 
 	ctx := context.Background()
 
-	reply, err := greeterProvider.SayHello(ctx, req)
+	reply, err := greeterProvider.Greet(ctx, req)
 
 	assert.Nil(t, err)
-	assert.Equal(t, "Hello laurence", reply.Name)
-	assert.Equal(t, "12345", reply.Id)
-	assert.Equal(t, int32(21), reply.Age)
+	assert.Equal(t, "hello world", reply.Greeting)
+	fmt.Sprint(reply.Greeting)
 }

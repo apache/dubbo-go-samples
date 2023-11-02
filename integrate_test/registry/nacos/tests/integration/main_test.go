@@ -18,48 +18,38 @@
 package integration
 
 import (
-	"context"
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+	"github.com/apache/dubbo-go-samples/registry/nacos/proto/greettriple"
 	"os"
 	"testing"
-	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{}
-var userProvider = &UserProvider{}
+var greetService greettriple.GreetService
 
 func TestMain(m *testing.M) {
-	config.SetConsumerService(userProvider)
-	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
-	hessian.RegisterPOJO(&User{})
-	if err := config.Load(); err != nil {
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_registry_zookeeper_client"),
+		dubbo.WithRegistry(
+			registry.WithID("zk"),
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+	// configure the params that only client layer cares
+	cli, err := ins.NewClient()
+
+	greetService, err = greettriple.NewGreetService(cli)
+	if err != nil {
 		panic(err)
 	}
 
 	os.Exit(m.Run())
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-type UserProviderWithCustomGroupAndVersion struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
-
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
 }

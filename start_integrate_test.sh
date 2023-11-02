@@ -46,7 +46,6 @@ array+=("context/triple")
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
-array+=("registry/etcd")
 array+=("registry/servicediscovery/zookeeper")
 array+=("registry/servicediscovery/nacos")
 array+=("registry/all/zookeeper")
