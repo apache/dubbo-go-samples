@@ -36,29 +36,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	check, err := svc.Check(context.Background(), &health.HealthCheckRequest{Service: "grpc.health.v1.Health"})
-	if err != nil {
-		logger.Error(err)
-	} else {
-		logger.Info("grpc.health.v1.Health's health", check.String())
-	}
-	check, err = svc.Check(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
+	check, err := svc.Check(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
 	if err != nil {
 		logger.Error(err)
 	} else {
 		logger.Info("greet.GreetService's health", check.String())
 	}
-
-	watch, err := svc.Watch(context.Background(), &health.HealthCheckRequest{Service: "grpc.health.v1.Health"})
-	if err != nil {
-		logger.Error(err)
-	} else {
-		if watch.Recv() {
-			logger.Info("grpc.health.v1.Health's health", watch.Msg().String())
-		}
-	}
-	watch, err = svc.Watch(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
+	watch, err := svc.Watch(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
 	if err != nil {
 		logger.Error(err)
 	} else {
