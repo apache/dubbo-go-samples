@@ -24,6 +24,4 @@ require (
 	google.golang.org/protobuf v1.31.0
 )
 
-replace dubbo.apache.org/dubbo-go/v3 => /Users/ken/aliware/dubbo3/golang/dubbo-go
-
 go 1.15
