@@ -19,7 +19,6 @@ package integration
 
 import (
 	"context"
-	"fmt"
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 	"testing"
 )
@@ -37,5 +36,4 @@ func TestSayHello(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, "hello world", reply.Greeting)
-	fmt.Sprint(reply.Greeting)
 }

@@ -40,5 +40,9 @@ func TestMain(m *testing.M) {
 
 	greeterProvider, err = greettriple.NewGreetService(cli)
 
+	if err != nil {
+		panic(err)
+	}
+
 	os.Exit(m.Run())
 }
