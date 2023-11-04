@@ -43,6 +43,9 @@ func main() {
 	}
 	// configure the params that only client layer cares
 	cli, err := ins.NewClient()
+	if err != nil {
+		panic(err)
+	}
 
 	svc, err := greettriple.NewGreetService(cli)
 	if err != nil {
