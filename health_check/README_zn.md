@@ -6,12 +6,12 @@ Dubbo-go 内置了基于Triple协议的健康检查服务，帮助用户检测�
 
 ## 使用方法
 
-- Dubbo-go框架在通过instance启动后会自动向框架中注册健康检查服务，提供基于triple服务的健康检查服务，无需在配置文件中额外配置。
+- Dubbo-go框架在启动后会自动向框架中注册健康检查服务，提供基于triple服务的健康检查服务，无需在配置文件中额外配置。
 - triple健康检查服务可以通过发起http请求检查框架中服务的状态，也可以通过客户端调用该健康检查服务，调用的服务名为“grpc.health.v1.Health”，接口为check。
 
 ## 1、通过客户端调用健康检查服务
 
-启动dubbo-go-samples/health_check/go-server中的instance服务，通过下方客户端即可查看“greet.GreetService”的状态。
+启动dubbo-go-samples/health_check/go-server中的服务，通过下方客户端即可查看“greet.GreetService”的状态。
 
 ```go
 package main
@@ -61,7 +61,7 @@ func main() {
 
 ## 2.通过发起http请求调用健康检查服务
 
-启动dubbo-go-samples/health_check/go-server中的instance服务，发起下方http请求即可查看“greet.GreetService”的状态
+启动dubbo-go-samples/health_check/go-server中的服务，发起下方http请求即可查看“greet.GreetService”的状态
 
 ```http
 POST /grpc.health.v1.Health/Check

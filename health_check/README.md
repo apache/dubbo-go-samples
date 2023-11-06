@@ -6,12 +6,12 @@ Dubbo-go provides a built-in health check service based on the Triple protocol t
 
 ## Usage
 
-- After starting the Dubbo-go framework through an instance, the health check service is automatically registered in the framework, providing health check services based on the Triple protocol without the need for additional configuration in the configuration file.
+- After starting the Dubbo-go framework, the health check service is automatically registered in the framework, providing health check services based on the Triple protocol without the need for additional configuration in the configuration file.
 - The Triple health check service can be used to check the status of services in the framework by making an HTTP request or by invoking the health check service through a client. The service name for the invocation is "grpc.health.v1.Health", and the interface is "check".
 
 ## 1. Invoking the Health Check Service through a Client
 
-Start the `instance` service in `dubbo-go-samples/health_check/go-server`. You can use the client code below to check the status of the "greet.GreetService".
+Start service in `dubbo-go-samples/health_check/go-server`. You can use the client code below to check the status of the "greet.GreetService".
 
 ```go
 package main
@@ -61,7 +61,7 @@ After starting, the following output will be displayed:
 
 ## 2. Invoking the Health Check Service by Making an HTTP Request
 
-Start the `instance` service in `dubbo-go-samples/health_check/go-server`. You can make the following HTTP request to check the status of the "greet.GreetService":
+Start service in `dubbo-go-samples/health_check/go-server`. You can make the following HTTP request to check the status of the "greet.GreetService":
 
 ```http
 POST /grpc.health.v1.Health/Check
