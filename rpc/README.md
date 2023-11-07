@@ -24,7 +24,7 @@ go run ./grpc/server/server.go
 
 
 
- 	2. 创建Triple的客户端或者服务端
+​	2. Create a Triple client or server
 
 Run the instance code client
 

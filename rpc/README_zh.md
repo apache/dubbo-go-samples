@@ -24,7 +24,7 @@ go run ./grpc/server/server.go
 
 
 
- 	2. 创建Triple的客户端或者服务端
+2. 创建Triple的客户端或者服务端
 
 运行实例代码客户端
 
