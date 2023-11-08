@@ -33,7 +33,7 @@ import (
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithMetric(
-			metrics.WithEnabled(), 
+			metrics.WithEnabled(),
 			metrics.WithPath("/metrics"),
 			metrics.WithPort(9093),
 		),

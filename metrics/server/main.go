@@ -42,7 +42,7 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithMetric(
-			metrics.WithEnabled(), 
+			metrics.WithEnabled(),
 			metrics.WithPath("/metrics"),
 			metrics.WithPort(9092),
 		),
@@ -53,7 +53,7 @@ func main() {
 	srv, err := ins.NewServer(
 		server.WithServerProtocol(
 			protocol.WithPort(20000),
-	))
+		))
 	if err != nil {
 		panic(err)
 	}
