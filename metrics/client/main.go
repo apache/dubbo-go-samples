@@ -19,35 +19,43 @@ package main
 
 import (
 	"context"
-	"math/rand"
-	"time"
-)
 
-import (
-	"github.com/apache/dubbo-go-samples/api"
-
+	dubbo "dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/metrics"
+	greet "github.com/apache/dubbo-go-samples/metrics/proto"
+	"github.com/apache/dubbo-go-samples/metrics/proto/greettriple"
 	"github.com/dubbogo/gost/log/logger"
 )
 
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
-
-type GreeterProvider struct {
-	api.UnimplementedGreeterServer
-}
-
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	time.Sleep(time.Duration(rand.Intn(100))*time.Millisecond + 100*time.Millisecond) // sleep 100~200ms
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
-
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
 func main() {
-	config.SetProviderService(&GreeterProvider{})
-	if err := config.Load(); err != nil {
+	ins, err := dubbo.NewInstance(
+		dubbo.WithMetric(
+			metrics.WithEnabled(), 
+			metrics.WithPath("/metrics"),
+			metrics.WithPort(9093),
+		),
+	)
+	if err != nil {
 		panic(err)
 	}
-	select {}
+	cli, err := ins.NewClient(
+		client.WithURL("tri://127.0.0.1:20000"),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	svc, err := greettriple.NewGreetService(cli)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("Greet response: %s", resp)
 }
