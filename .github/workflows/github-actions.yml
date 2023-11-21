@@ -56,19 +56,6 @@ jobs:
               go get -v -t -d ./...
           fi
 
-      - name: Go Fmt
-        run: |
-          go fmt ./... && git status && [[ -z `git status -s` ]]
-          # diff -u <(echo -n) <(gofmt -d -s .)
-
-      - name: Run Linter
-        uses: golangci/golangci-lint-action@v3
-        with:
-          args: --timeout 10m --verbose
-
-      - name: Check License Header
-        uses: apache/skywalking-eyes/header@e1a02359b239bd28de3f6d35fdc870250fa513d5
-
       - name: Switch Dubbo-go version
         run: |
           # Acquire information of branch
@@ -84,6 +71,19 @@ jobs:
           # Edit the version
           go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH
           go mod tidy
+
+      - name: Go Fmt
+        run: |
+          go fmt ./... && git status && [[ -z `git status -s` ]]
+          # diff -u <(echo -n) <(gofmt -d -s .)
+
+      - name: Run Linter
+        uses: golangci/golangci-lint-action@v3
+        with:
+          args: --timeout 10m --verbose
+
+      - name: Check License Header
+        uses: apache/skywalking-eyes/header@e1a02359b239bd28de3f6d35fdc870250fa513d5
 
       - name: Integration Test
         run: |
