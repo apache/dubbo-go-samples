@@ -19,35 +19,29 @@ package main
 
 import (
 	"context"
-)
-
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+	"github.com/apache/dubbo-go-samples/helloworld/proto/greettriple"
 	"github.com/dubbogo/gost/log/logger"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/api"
-)
-
-var grpcGreeterImpl = new(api.GreeterClientImpl)
-
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
 func main() {
-	config.SetConsumerService(grpcGreeterImpl)
-	if err := config.Load(); err != nil {
+	cli, err := client.NewClient(
+		client.WithURL("tri://127.0.0.1:20000"),
+	)
+	if err != nil {
 		panic(err)
 	}
 
-	logger.Info("start to test dubbo")
-	req := &api.HelloRequest{
-		Name: "laurence",
+	svc, err := greettriple.NewGreetService(cli)
+	if err != nil {
+		panic(err)
 	}
-	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
 		logger.Error(err)
 	}
-	logger.Infof("client response result: %v\n", reply)
+	logger.Infof("Greet response: %s", resp.Greeting)
 }
