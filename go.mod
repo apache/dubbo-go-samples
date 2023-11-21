@@ -25,3 +25,5 @@ require (
 )
 
 go 1.15
+
+replace dubbo.apache.org/dubbo-go/v3 => /Users/ken/aliware/dubbo3/golang/dubbo-go
