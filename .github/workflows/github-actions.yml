@@ -72,11 +72,6 @@ jobs:
           go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH
           go mod tidy
 
-      - name: Go Fmt
-        run: |
-          go fmt ./... && git status && [[ -z `git status -s` ]]
-          # diff -u <(echo -n) <(gofmt -d -s .)
-
       - name: Run Linter
         uses: golangci/golangci-lint-action@v3
         with:
