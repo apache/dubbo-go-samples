@@ -43,7 +43,7 @@ func TestStreamSayHello(t *testing.T) {
 	assert.Nil(t, err)
 
 	for i := 0; i < 2; i++ {
-		err := r.Send(&req)
+		err = r.Send(&req)
 		assert.Nil(t, err)
 	}
 
