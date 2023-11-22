@@ -1,0 +1,20 @@
+dubbo:
+  application:
+    organization: "dubbo.io"
+    name: "UserInfoServer"
+    module: "dubbo-go user-info server"
+    version: "0.0.1"
+    environment: "dev"
+  registries:
+    etcd:
+      protocol: "etcdv3"
+      timeout: "3s"
+      address: "127.0.0.1:2379"
+  protocols:
+    dubbo:
+      name: "dubbo"
+      port: 20000
+  provider:
+    services:
+      UserProvider:
+        interface: "org.apache.dubbo.UserProvider"
