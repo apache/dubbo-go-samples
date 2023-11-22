@@ -32,7 +32,7 @@ var greeterProvider greettriple.GreetService
 
 func TestMain(m *testing.M) {
 	cli, err := client.NewClient(
-		client.WithURL("tri://127.0.0.1:20000"),
+		client.WithClientURL("tri://127.0.0.1:20000"),
 	)
 	if err != nil {
 		panic(err)

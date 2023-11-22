@@ -51,10 +51,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	srv, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}
+
 	if err := greettriple.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
 		panic(err)
 	}

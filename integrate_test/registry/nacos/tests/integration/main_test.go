@@ -35,9 +35,8 @@ func TestMain(m *testing.M) {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("dubbo_registry_zookeeper_client"),
 		dubbo.WithRegistry(
-			registry.WithID("zk"),
-			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
+			registry.WithNacos(),
+			registry.WithAddress("127.0.0.1:8848"),
 		),
 	)
 	if err != nil {

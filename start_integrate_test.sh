@@ -48,13 +48,8 @@ array+=("context/dubbo")
 #array+=("context/triple") # ERROR   proxy_factory/default.go:146    Invoke function error: interface conversion: interface {} is nil, not []string,
 
 # registry
-#array+=("registry/zookeeper")# group and version
-#array+=("registry/nacos")# group and version
-#array+=("registry/etcd")# group and version
-#array+=("registry/servicediscovery/zookeeper")# group and version
-#array+=("registry/servicediscovery/nacos")# group and version
-#array+=("registry/all/zookeeper")# group and version
-#array+=("registry/all/nacos")# group and version
+array+=("registry/zookeeper")
+array+=("registry/nacos")
 
 # generic
 #array+=("generic/default") # Unsupported serialization: hessian2
@@ -81,6 +76,16 @@ array+=("async")
 # polaris
 array+=("polaris/registry")
 array+=("polaris/limit")
+
+# compatibility
+## registry
+#array+=("compatibility/registry/zookeeper")
+#array+=("compatibility/registry/nacos")# group and version
+#array+=("compatibility/registry/etcd")# group and version
+#array+=("compatibility/registry/servicediscovery/zookeeper")# group and version
+#array+=("compatibility/registry/servicediscovery/nacos")# group and version
+#array+=("compatibility/registry/all/zookeeper")# group and version
+#array+=("compatibility/registry/all/nacos")
 
 # replace tls config
 echo "The prefix of certificate path of the following files were replaced to \"$(pwd)/tls\"."

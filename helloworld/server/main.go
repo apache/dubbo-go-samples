@@ -39,14 +39,17 @@ func main() {
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
 			protocol.WithPort(20000),
+			protocol.WithTriple(),
 		),
 	)
 	if err != nil {
 		panic(err)
 	}
+
 	if err := greettriple.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
 		panic(err)
 	}
+
 	if err := srv.Serve(); err != nil {
 		logger.Error(err)
 	}
