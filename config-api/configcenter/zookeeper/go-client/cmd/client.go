@@ -56,7 +56,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", configCenterZKClientConfig); err != nil {
+	if err = dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", configCenterZKClientConfig); err != nil {
 		panic(err)
 	}
 
@@ -69,7 +69,7 @@ func main() {
 			Build()).
 		Build()
 
-	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
+	if err = config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 	logger.Info("start to test dubbo")
