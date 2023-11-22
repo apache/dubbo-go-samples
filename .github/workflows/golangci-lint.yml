@@ -1,0 +1,55 @@
+name: golangci-lint
+on:
+  push:
+    branches:
+      - main
+      - 'release-*'
+      - 'feature-*'
+  pull_request:
+    branches: "*"
+
+permissions:
+  contents: read
+
+jobs:
+  golangci:
+    permissions:
+      contents: read  # for actions/checkout to fetch code
+      pull-requests: read  # for golangci/golangci-lint-action to fetch pull requests
+    name: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        golang:
+          - 1.17
+    steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.17
+
+      - uses: actions/checkout@v3
+
+      - name: Switch Dubbo-go version
+        run: |
+          # Acquire information of branch
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+            BRANCH=${{github.base_ref}}
+          elif [ "$GITHUB_EVENT_NAME" == "push" ]; then
+            BRANCH=$GITHUB_REF_NAME
+          else
+            echo "$GITHUB_EVENT_NAME event is unsupported right now"
+            exit 1
+          fi
+          echo "EVENT = $GITHUB_EVENT_NAME, BRANCH = $BRANCH"
+          # Edit the version
+          go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH
+          go mod tidy
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3.4.0
+        with:
+          version: v1.44.2
+          args: --timeout=10m
+          skip-go-installation: true
+          skip-pkg-cache: true
+          skip-build-cache: true

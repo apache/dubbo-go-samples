@@ -55,7 +55,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-client", "dubbo", configCenterNacosClientConfig); err != nil {
+	if err = dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-client", "dubbo", configCenterNacosClientConfig); err != nil {
 		panic(err)
 	}
 
@@ -68,7 +68,7 @@ func main() {
 			Build()).
 		Build()
 
-	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
+	if err = config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 
