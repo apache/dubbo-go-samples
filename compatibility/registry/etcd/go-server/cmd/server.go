@@ -35,7 +35,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/registry/etcd/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/compatibility/registry/etcd/go-server/pkg"
 )
 
 var (

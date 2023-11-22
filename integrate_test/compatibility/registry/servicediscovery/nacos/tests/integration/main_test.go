@@ -15,51 +15,29 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
 	"os"
+	"testing"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	gxlog "github.com/dubbogo/gost/log"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/registry/etcd/go-client/pkg"
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
 )
 
-var userProvider = new(pkg.UserProvider)
+var greeterProvider = &dubbo3pb.GreeterClientImpl{}
 
-func init() {
-	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
-
-// Do some checking before the system starts up:
-//  1. env config
-//     `export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
-func main() {
-	hessian.RegisterPOJO(&pkg.User{})
+func TestMain(m *testing.M) {
+	config.SetConsumerService(greeterProvider)
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{
-		ID: "A001",
-	}
-	user, err := userProvider.GetUser(context.TODO(), user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+	os.Exit(m.Run())
 }

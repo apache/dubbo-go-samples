@@ -15,11 +15,13 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
 	"os"
+	"testing"
+	"time"
 )
 
 import (
@@ -27,39 +29,37 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
-
-	gxlog "github.com/dubbogo/gost/log"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/compatibility/registry/etcd/go-client/pkg"
-)
+var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{}
+var userProvider = &UserProvider{}
 
-var userProvider = new(pkg.UserProvider)
-
-func init() {
+func TestMain(m *testing.M) {
 	config.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&pkg.User{})
-}
-
-// Do some checking before the system starts up:
-//  1. env config
-//     `export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
-func main() {
-	hessian.RegisterPOJO(&pkg.User{})
+	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
+	hessian.RegisterPOJO(&User{})
 	if err := config.Load(); err != nil {
 		panic(err)
 	}
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &pkg.User{
-		ID: "A001",
-	}
-	user, err := userProvider.GetUser(context.TODO(), user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+	os.Exit(m.Run())
+}
+
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
+}
+
+type UserProviderWithCustomGroupAndVersion struct {
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
+}
+
+type UserProvider struct {
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
+}
+
+func (u *User) JavaClassName() string {
+	return "org.apache.dubbo.User"
 }
