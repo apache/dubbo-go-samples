@@ -52,26 +52,39 @@ type GreetService interface {
 }
 
 // NewGreetService constructs a client for the greet.GreetService service.
-func NewGreetService(cli *client.Client) (GreetService, error) {
-	if err := cli.Init(&GreetService_ClientInfo); err != nil {
+func NewGreetService(cli *client.Client, opts ...client.ReferenceOption) (GreetService, error) {
+	group, version, err := cli.Init(&GreetService_ClientInfo, opts...)
+	if err != nil {
 		return nil, err
 	}
+
 	return &GreetServiceImpl{
-		cli: cli,
+		cli:     cli,
+		group:   group,
+		version: version,
 	}, nil
 }
 
 // GreetServiceImpl implements GreetService.
 type GreetServiceImpl struct {
-	cli *client.Client
+	cli     *client.Client
+	group   string
+	version string
 }
 
 func (c *GreetServiceImpl) Greet(ctx context.Context, req *proto.GreetRequest, opts ...client.CallOption) (*proto.GreetResponse, error) {
+	opts = appendGroupVersion(opts, c)
 	resp := new(proto.GreetResponse)
 	if err := c.cli.CallUnary(ctx, req, resp, "greet.GreetService", "Greet", opts...); err != nil {
 		return nil, err
 	}
 	return resp, nil
+}
+
+func appendGroupVersion(opts []client.CallOption, c *GreetServiceImpl) []client.CallOption {
+	opts = append(opts, client.WithCallGroup(c.group))
+	opts = append(opts, client.WithCallVersion(c.version))
+	return opts
 }
 
 var GreetService_ClientInfo = client.ClientInfo{
