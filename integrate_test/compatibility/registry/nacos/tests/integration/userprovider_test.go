@@ -19,7 +19,6 @@ package integration
 
 import (
 	"context"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 	"testing"
 )
 
@@ -27,13 +26,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSayHello(t *testing.T) {
-	req := &greet.GreetRequest{Name: "hello world"}
-
-	ctx := context.Background()
-
-	reply, err := greeterProvider.Greet(ctx, req)
-
+func TestGetUser(t *testing.T) {
+	user, err := userProvider.GetUser(context.TODO(), &User{ID: "A001"})
 	assert.Nil(t, err)
-	assert.Equal(t, "hello world", reply.Greeting)
+	assert.Equal(t, "A001", user.ID)
+	assert.Equal(t, "Alex Stocks", user.Name)
+	assert.Equal(t, int32(18), user.Age)
+	assert.NotNil(t, user.Time)
+}
+
+func TestGetUserWithCustomGroupAndVersion(t *testing.T) {
+	user, err := userProviderWithCustomRegistryGroupAndVersion.GetUser(context.TODO(), &User{ID: "A001"})
+	assert.Nil(t, err)
+	assert.Equal(t, "A001", user.ID)
+	assert.Equal(t, "Alex Stocks from UserProviderWithCustomGroupAndVersion", user.Name)
+	assert.Equal(t, int32(18), user.Age)
+	assert.NotNil(t, user.Time)
 }

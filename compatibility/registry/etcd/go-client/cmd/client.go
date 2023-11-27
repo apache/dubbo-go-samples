@@ -19,42 +19,47 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/registry"
-	greet "github.com/apache/dubbo-go-samples/registry/zookeeper/proto"
-	"github.com/apache/dubbo-go-samples/registry/zookeeper/proto/greettriple"
-	"github.com/dubbogo/gost/log/logger"
+	"os"
 )
 
+import (
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
+
+	gxlog "github.com/dubbogo/gost/log"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/compatibility/registry/etcd/go-client/pkg"
+)
+
+var userProvider = new(pkg.UserProvider)
+
+func init() {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&pkg.User{})
+}
+
+// Do some checking before the system starts up:
+//  1. env config
+//     `export DUBBO_GO_CONFIG_PATH= ROOT_PATH/conf/dubbogo.yml` or `dubbogo.yaml`
 func main() {
-	// global conception
-	// configure global configurations and common modules
-	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_registry_zookeeper_client"),
-		dubbo.WithRegistry(
-			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
-		),
-	)
-	if err != nil {
-		panic(err)
-	}
-	// configure the params that only client layer cares
-	cli, err := ins.NewClient()
-	if err != nil {
+	hessian.RegisterPOJO(&pkg.User{})
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
 
-	svc, err := greettriple.NewGreetService(cli)
-	if err != nil {
-		panic(err)
+	gxlog.CInfo("\n\n\nstart to test dubbo")
+	user := &pkg.User{
+		ID: "A001",
 	}
-
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	user, err := userProvider.GetUser(context.TODO(), user)
 	if err != nil {
-		logger.Error(err)
+		gxlog.CError("error: %v\n", err)
+		os.Exit(1)
+		return
 	}
-	logger.Infof("Greet response: %s", resp)
-	select {}
+	gxlog.CInfo("response result: %v\n", user)
 }

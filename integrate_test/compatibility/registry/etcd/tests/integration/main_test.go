@@ -18,22 +18,33 @@
 package integration
 
 import (
-	"context"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+	"os"
 	"testing"
 )
 
 import (
-	"github.com/stretchr/testify/assert"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
+
+	_ "github.com/dubbogo/gost/log/logger"
 )
 
-func TestSayHello(t *testing.T) {
-	req := &greet.GreetRequest{Name: "hello world"}
+import (
+	"github.com/apache/dubbo-go-samples/compatibility/registry/etcd/go-client/pkg"
+)
 
-	ctx := context.Background()
+var (
+	userProvider = &pkg.UserProvider{}
+)
 
-	reply, err := greeterProvider.Greet(ctx, req)
+func TestMain(m *testing.M) {
+	config.SetConsumerService(userProvider)
+	hessian.RegisterPOJO(&pkg.User{})
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
 
-	assert.Nil(t, err)
-	assert.Equal(t, "hello world", reply.Greeting)
+	os.Exit(m.Run())
 }

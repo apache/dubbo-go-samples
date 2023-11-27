@@ -18,22 +18,32 @@
 package integration
 
 import (
-	"context"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+	"os"
 	"testing"
 )
 
 import (
-	"github.com/stretchr/testify/assert"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
-func TestSayHello(t *testing.T) {
-	req := &greet.GreetRequest{Name: "hello world"}
+import (
+	dubbo3pb "github.com/apache/dubbo-go-samples/api"
+)
 
-	ctx := context.Background()
+var greeterProvider = &dubbo3pb.GreeterClientImpl{}
+var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{GreeterClientImpl: dubbo3pb.GreeterClientImpl{}}
 
-	reply, err := greeterProvider.Greet(ctx, req)
+type UserProviderWithCustomGroupAndVersion struct {
+	dubbo3pb.GreeterClientImpl
+}
 
-	assert.Nil(t, err)
-	assert.Equal(t, "hello world", reply.Greeting)
+func TestMain(m *testing.M) {
+	config.SetConsumerService(greeterProvider)
+	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
+
+	os.Exit(m.Run())
 }

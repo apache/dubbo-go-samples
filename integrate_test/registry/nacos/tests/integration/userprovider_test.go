@@ -19,6 +19,7 @@ package integration
 
 import (
 	"context"
+	greet "github.com/apache/dubbo-go-samples/registry/nacos/proto"
 	"testing"
 )
 
@@ -27,19 +28,14 @@ import (
 )
 
 func TestGetUser(t *testing.T) {
-	user, err := userProvider.GetUser(context.TODO(), &User{ID: "A001"})
-	assert.Nil(t, err)
-	assert.Equal(t, "A001", user.ID)
-	assert.Equal(t, "Alex Stocks", user.Name)
-	assert.Equal(t, int32(18), user.Age)
-	assert.NotNil(t, user.Time)
-}
+	req := &greet.GreetRequest{
+		Name: "Dubbo",
+	}
 
-func TestGetUserWithCustomGroupAndVersion(t *testing.T) {
-	user, err := userProviderWithCustomRegistryGroupAndVersion.GetUser(context.TODO(), &User{ID: "A001"})
+	ctx := context.Background()
+
+	reply, err := greetService.Greet(ctx, req)
+
 	assert.Nil(t, err)
-	assert.Equal(t, "A001", user.ID)
-	assert.Equal(t, "Alex Stocks from UserProviderWithCustomGroupAndVersion", user.Name)
-	assert.Equal(t, int32(18), user.Age)
-	assert.NotNil(t, user.Time)
+	assert.Equal(t, "Dubbo", reply.Greeting)
 }

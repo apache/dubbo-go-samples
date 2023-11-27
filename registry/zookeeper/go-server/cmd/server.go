@@ -19,78 +19,49 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
-)
-
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+	"github.com/apache/dubbo-go-samples/helloworld/proto/greettriple"
 	"github.com/dubbogo/gost/log/logger"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/api"
-)
-
-var (
-	survivalTimeout = int(3e9)
-)
-
-type GreeterProvider struct {
-	api.UnimplementedGreeterServer
+type GreetTripleServer struct {
 }
 
-type UserProviderWithCustomGroupAndVersion struct {
-	api.UnimplementedGreeterServer
-}
-
-func (s *UserProviderWithCustomGroupAndVersion) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name + " from UserProviderWithCustomRegistryGroupAndVersion", Id: "12345", Age: 21}, nil
-}
-
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
+func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	resp := &greet.GreetResponse{Greeting: req.Name}
+	return resp, nil
 }
 
 func main() {
-	config.SetProviderService(&GreeterProvider{})
-	config.SetProviderService(&UserProviderWithCustomGroupAndVersion{})
-
-	path := "./registry/zookeeper/go-server/conf/dubbogo.yml"
-
-	if err := config.Load(config.WithPath(path)); err != nil {
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_registry_zookeeper_server"),
+		dubbo.WithRegistry(
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+		),
+		dubbo.WithProtocol(
+			protocol.WithTriple(),
+			protocol.WithPort(20000),
+		),
+	)
+	if err != nil {
 		panic(err)
 	}
 
-	initSignal()
-}
+	srv, err := ins.NewServer()
+	if err != nil {
+		panic(err)
+	}
 
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(time.Duration(survivalTimeout), func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
+	if err := greettriple.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
+		panic(err)
+	}
 
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("provider app exit now...")
-			return
-		}
+	if err := srv.Serve(); err != nil {
+		logger.Error(err)
 	}
 }
