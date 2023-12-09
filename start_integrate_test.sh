@@ -23,7 +23,7 @@ array+=("game/go-server-game")
 array+=("game/go-server-gate")
 
 # config-api
-array=("config-api/rpc/triple")
+#array=("config-api/rpc/triple") # 404 Not Found
 array+=("config-api/configcenter/nacos")
 array+=("config-api/configcenter/zookeeper")
 array+=("config-api/config-merge")
