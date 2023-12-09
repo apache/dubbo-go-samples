@@ -8,7 +8,9 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo.apache.org/dubbo-go/v3/common"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"dubbo.apache.org/dubbo-go/v3/protocol/triple/triple_protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
@@ -53,46 +55,38 @@ type GreetService interface {
 
 // NewGreetService constructs a client for the greet.GreetService service.
 func NewGreetService(cli *client.Client, opts ...client.ReferenceOption) (GreetService, error) {
-	group, version, err := cli.Init(&GreetService_ClientInfo, opts...)
+	conn, err := cli.DialWithInfo("greet.GreetService", &GreetService_ClientInfo, opts...)
 	if err != nil {
 		return nil, err
 	}
-
 	return &GreetServiceImpl{
-		cli:     cli,
-		group:   group,
-		version: version,
+		conn: conn,
 	}, nil
+}
+
+func SetConsumerService(srv common.RPCService) {
+	dubbo.SetConsumerServiceWithInfo(srv, &GreetService_ClientInfo)
 }
 
 // GreetServiceImpl implements GreetService.
 type GreetServiceImpl struct {
-	cli     *client.Client
-	group   string
-	version string
+	conn *client.Connection
 }
 
 func (c *GreetServiceImpl) Greet(ctx context.Context, req *proto.GreetRequest, opts ...client.CallOption) (*proto.GreetResponse, error) {
-	opts = appendGroupVersion(opts, c)
 	resp := new(proto.GreetResponse)
-	if err := c.cli.CallUnary(ctx, req, resp, "greet.GreetService", "Greet", opts...); err != nil {
+	if err := c.conn.CallUnary(ctx, []interface{}{req}, resp, "Greet", opts...); err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func appendGroupVersion(opts []client.CallOption, c *GreetServiceImpl) []client.CallOption {
-	opts = append(opts, client.WithCallGroup(c.group))
-	opts = append(opts, client.WithCallVersion(c.version))
-	return opts
-}
-
 var GreetService_ClientInfo = client.ClientInfo{
 	InterfaceName: "greet.GreetService",
 	MethodNames:   []string{"Greet"},
-	ClientInjectFunc: func(dubboCliRaw interface{}, cli *client.Client) {
-		dubboCli := dubboCliRaw.(GreetServiceImpl)
-		dubboCli.cli = cli
+	ConnectionInjectFunc: func(dubboCliRaw interface{}, conn *client.Connection) {
+		dubboCli := dubboCliRaw.(*GreetServiceImpl)
+		dubboCli.conn = conn
 	},
 }
 
@@ -103,6 +97,10 @@ type GreetServiceHandler interface {
 
 func RegisterGreetServiceHandler(srv *server.Server, hdlr GreetServiceHandler, opts ...server.ServiceOption) error {
 	return srv.Register(hdlr, &GreetService_ServiceInfo, opts...)
+}
+
+func SetProviderService(srv common.RPCService) {
+	dubbo.SetProviderServiceWithInfo(srv, &GreetService_ServiceInfo)
 }
 
 var GreetService_ServiceInfo = server.ServiceInfo{

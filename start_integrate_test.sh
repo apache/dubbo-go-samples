@@ -30,7 +30,7 @@ array+=("config-api/config-merge")
 
 # error
 #array+=("error/triple/hessian2") #unsupported serialization hessian2
-#array+=("error/triple/pb") #error details = [type.googleapis.com/google.rpc.DebugInfo]:{stack_entries:"
+array+=("error/triple/pb") #error details = [type.googleapis.com/google.rpc.DebugInfo]:{stack_entries:"
                              #github.com/dubbogo/grpc-go/internal/transport.(*http2Client).reader
 
 # metrics
@@ -59,7 +59,7 @@ array+=("rpc/dubbo")
 #array+=("rpc/triple/codec-extension") # Unsupported serialization: hessian2
 #array+=("rpc/triple/hessian2") # Unsupported serialization: hessian2
 #array+=("rpc/triple/msgpack") # Unsupported serialization: hessian2
-#array+=("rpc/triple/pb/dubbogo-grpc") # http2: panic serving 127.0.0.1:64763: interface conversion: *triple_protocol.compatHandlerStream is not grpc.CtxSetterStream: missing method SetContext
+array+=("rpc/triple/pb/dubbogo-grpc") # http2: panic serving 127.0.0.1:64763: interface conversion: *triple_protocol.compatHandlerStream is not grpc.CtxSetterStream: missing method SetContext
                                         #goroutine 42 [running]:
 array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
@@ -79,13 +79,13 @@ array+=("polaris/limit")
 
 # compatibility
 ## registry
-#array+=("compatibility/registry/zookeeper")
-#array+=("compatibility/registry/nacos")# group and version
-#array+=("compatibility/registry/etcd")# group and version
-#array+=("compatibility/registry/servicediscovery/zookeeper")# group and version
-#array+=("compatibility/registry/servicediscovery/nacos")# group and version
-#array+=("compatibility/registry/all/zookeeper")# group and version
-#array+=("compatibility/registry/all/nacos")
+array+=("compatibility/registry/zookeeper")
+array+=("compatibility/registry/nacos")# group and version
+array+=("compatibility/registry/etcd")# group and version
+array+=("compatibility/registry/servicediscovery/zookeeper")# group and version
+array+=("compatibility/registry/servicediscovery/nacos")# group and version
+array+=("compatibility/registry/all/zookeeper")# group and version
+array+=("compatibility/registry/all/nacos")
 
 # replace tls config
 echo "The prefix of certificate path of the following files were replaced to \"$(pwd)/tls\"."
