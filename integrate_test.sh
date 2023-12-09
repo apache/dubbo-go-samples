@@ -29,12 +29,12 @@ fi
 INTEGRATE_DIR=$(pwd)/integrate_test/$1
 
 # waiting for port release
-sleep 5
+sleep 10
 
 # start server
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) INTEGRATE_DIR=$INTEGRATE_DIR -f build/Makefile start
 # waiting for registry
-sleep 5
+sleep 10
 
 # start integration
 make PROJECT_DIR=$P_DIR PROJECT_NAME=$(basename $P_DIR) INTEGRATE_DIR=$INTEGRATE_DIR -f build/Makefile integration
