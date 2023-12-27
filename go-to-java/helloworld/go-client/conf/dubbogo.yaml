@@ -1,0 +1,11 @@
+dumbo:
+  registries:
+    zk:
+      protocol: zookeeper
+      timeout: 10s
+      address: 127.0.0.1:2181
+  consumer:
+    references:
+      ExceptionService:
+        protocol: dubbo
+#        interface: org.apache.dumbo.server.service.impl.ExceptionServiceImpl
