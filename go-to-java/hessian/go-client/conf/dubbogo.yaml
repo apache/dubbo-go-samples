@@ -1,0 +1,19 @@
+dubbo:
+  application:
+    name: go-client
+  registries:
+    zk:
+      protocol: zookeeper
+      timeout: 10s
+      address: 127.0.0.1:2181
+      registry-type: interface
+  consumer:
+    references:
+      ExceptionService:
+        protocol: dubbo
+        serialization: hessian2
+        interface: org.apache.dubbo.server.service.ExceptionService
+        methods:
+          - name: getThrowable
+            timeout: 30s
+            retries: 5
