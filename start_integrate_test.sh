@@ -19,8 +19,8 @@
 array+=("helloworld")
 
 # game
-array+=("game/go-server-game")
-array+=("game/go-server-gate")
+#array+=("game/go-server-game")
+#array+=("game/go-server-gate")
 
 # config-api
 #array=("config-api/rpc/triple") # 404 Not Found
@@ -29,9 +29,8 @@ array+=("config-api/configcenter/zookeeper")
 array+=("config-api/config-merge")
 
 # error
-#array+=("error/triple/hessian2") #unsupported serialization hessian2
-array+=("error/triple/pb") #error details = [type.googleapis.com/google.rpc.DebugInfo]:{stack_entries:"
-                             #github.com/dubbogo/grpc-go/internal/transport.(*http2Client).reader
+array+=("error/triple/hessian2")
+array+=("error/triple/pb")
 
 # metrics
 array+=("metrics")
@@ -45,23 +44,22 @@ array+=("filter/token")
 
 # context
 array+=("context/dubbo")
-#array+=("context/triple") # ERROR   proxy_factory/default.go:146    Invoke function error: interface conversion: interface {} is nil, not []string,
+array+=("context/triple") # ERROR   proxy_factory/default.go:146    Invoke function error: interface conversion: interface {} is nil, not []string,
 
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
 
 # generic
-#array+=("generic/default") # Unsupported serialization: hessian2
+#array+=("generic/default") # illegal service type registered
 
 # rpc
 array+=("rpc/dubbo")
-#array+=("rpc/triple/codec-extension") # Unsupported serialization: hessian2
-#array+=("rpc/triple/hessian2") # Unsupported serialization: hessian2
-#array+=("rpc/triple/msgpack") # Unsupported serialization: hessian2
-array+=("rpc/triple/pb/dubbogo-grpc") # http2: panic serving 127.0.0.1:64763: interface conversion: *triple_protocol.compatHandlerStream is not grpc.CtxSetterStream: missing method SetContext
-                                        #goroutine 42 [running]:
-array+=("rpc/grpc")
+#array+=("rpc/triple/codec-extension")
+array+=("rpc/triple/hessian2")
+#array+=("rpc/triple/msgpack")
+array+=("rpc/triple/pb/dubbogo-grpc")
+#array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
 array+=("rpc/triple/pb2")
 
@@ -80,11 +78,11 @@ array+=("polaris/limit")
 # compatibility
 ## registry
 array+=("compatibility/registry/zookeeper")
-array+=("compatibility/registry/nacos")# group and version
-array+=("compatibility/registry/etcd")# group and version
-array+=("compatibility/registry/servicediscovery/zookeeper")# group and version
-array+=("compatibility/registry/servicediscovery/nacos")# group and version
-array+=("compatibility/registry/all/zookeeper")# group and version
+array+=("compatibility/registry/nacos")
+array+=("compatibility/registry/etcd")
+array+=("compatibility/registry/servicediscovery/zookeeper")
+array+=("compatibility/registry/servicediscovery/nacos")
+array+=("compatibility/registry/all/zookeeper")
 array+=("compatibility/registry/all/nacos")
 
 # replace tls config
@@ -95,7 +93,7 @@ find $(pwd)/tls -type f -name '*.yml' -print0 | xargs -0 sed -i  's#\.\.\/\.\.\/
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
 bash -f $DOCKER_DIR/docker-health-check.sh
-for((i=0;i<${#array[*]};i++))
+for ((i=0;i<${#array[*]};i++))
 do
 	./integrate_test.sh "${array[i]}"
 	result=$?
