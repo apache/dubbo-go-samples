@@ -23,7 +23,7 @@ array+=("helloworld")
 #array+=("game/go-server-gate")
 
 # config-api
-#array=("config-api/rpc/triple") # 404 Not Found
+array+=("config-api/rpc/triple")
 array+=("config-api/configcenter/nacos")
 array+=("config-api/configcenter/zookeeper")
 array+=("config-api/config-merge")
@@ -44,7 +44,7 @@ array+=("filter/token")
 
 # context
 array+=("context/dubbo")
-array+=("context/triple") # ERROR   proxy_factory/default.go:146    Invoke function error: interface conversion: interface {} is nil, not []string,
+array+=("context/triple")
 
 # registry
 array+=("registry/zookeeper")
@@ -57,7 +57,7 @@ array+=("registry/nacos")
 array+=("rpc/dubbo")
 #array+=("rpc/triple/codec-extension")
 array+=("rpc/triple/hessian2")
-#array+=("rpc/triple/msgpack")
+array+=("rpc/triple/msgpack")
 array+=("rpc/triple/pb/dubbogo-grpc")
 #array+=("rpc/grpc")
 array+=("rpc/jsonrpc")
