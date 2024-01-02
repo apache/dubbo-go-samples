@@ -56,5 +56,4 @@ func main() {
 		logger.Error(err)
 	}
 	logger.Infof("Greet response: %s", resp)
-	select {}
 }

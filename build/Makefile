@@ -93,7 +93,7 @@ build: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 
 .PHONY: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME):
-	$(info   >  Buiding application binary: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME))
+	$(info   >  Building application binary: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME))
 	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(GCFLAGS) -ldflags=$(LDFLAGS) -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
 
 ## docker-health-check: check services health on docker

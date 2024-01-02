@@ -46,8 +46,7 @@ func init() {
 
 // export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml if needed
 func main() {
-	path := "./registry/zookeeper/go-client/conf/dubbogo.yml"
-	if err := config.Load(config.WithPath(path)); err != nil {
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
 

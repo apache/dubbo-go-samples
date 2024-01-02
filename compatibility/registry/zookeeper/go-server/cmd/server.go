@@ -50,7 +50,7 @@ type UserProviderWithCustomGroupAndVersion struct {
 }
 
 func (s *UserProviderWithCustomGroupAndVersion) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
+	logger.Infof("Dubbo3 GreeterProviderWithCustomGroupAndVersion get user name = %s\n", in.Name)
 	return &api.User{Name: "Hello " + in.Name + " from UserProviderWithCustomRegistryGroupAndVersion", Id: "12345", Age: 21}, nil
 }
 
@@ -63,9 +63,7 @@ func main() {
 	config.SetProviderService(&GreeterProvider{})
 	config.SetProviderService(&UserProviderWithCustomGroupAndVersion{})
 
-	path := "./registry/zookeeper/go-server/conf/dubbogo.yml"
-
-	if err := config.Load(config.WithPath(path)); err != nil {
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
 

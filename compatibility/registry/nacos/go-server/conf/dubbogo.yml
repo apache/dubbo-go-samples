@@ -23,6 +23,6 @@ dubbo:
       UserProvider:
         interface: org.apache.dubbo.UserProvider.Test
       UserProviderWithCustomGroupAndVersion:
-        interface: org.apache.dubbo.UserProvider.Test2
+        interface: org.apache.dubbo.UserProvider.Test
         version: myInterfaceVersion # dubbo interface version must be same with client
         group: myInterfaceGroup # dubbo interface group must be same with client
