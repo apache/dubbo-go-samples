@@ -32,7 +32,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/filter/tpslimit/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/compatibility/filter/tpslimit/go-client/pkg"
 )
 
 var userProvider = &pkg.UserProvider{}

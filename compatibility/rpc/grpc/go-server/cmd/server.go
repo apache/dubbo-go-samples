@@ -34,7 +34,7 @@ import (
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/rpc/grpc/protobuf"
+	pb "github.com/apache/dubbo-go-samples/compatibility/rpc/grpc/protobuf"
 )
 
 var (

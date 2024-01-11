@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	triplepb "github.com/apache/dubbo-go-samples/api"
+	triplepb "github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
 type ErrorResponseProvider struct {

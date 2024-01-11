@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
+	"github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
 const configCenterZKClientConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-client', namespace is default

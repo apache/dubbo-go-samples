@@ -36,7 +36,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/generic/default/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/compatibility/generic/default/go-client/pkg"
 )
 
 const appName = "dubbo.io"

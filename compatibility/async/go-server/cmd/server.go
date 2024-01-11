@@ -35,7 +35,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/async/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/compatibility/async/go-server/pkg"
 )
 
 var (

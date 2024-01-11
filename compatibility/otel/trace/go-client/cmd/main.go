@@ -30,8 +30,8 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
-	otelconfig "github.com/apache/dubbo-go-samples/otel/trace/config"
+	"github.com/apache/dubbo-go-samples/compatibility/api"
+	otelconfig "github.com/apache/dubbo-go-samples/compatibility/otel/trace/config"
 )
 
 var userProvider = &api.GreeterClientImpl{}

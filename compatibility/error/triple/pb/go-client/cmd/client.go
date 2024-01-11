@@ -31,7 +31,7 @@ import (
 )
 
 import (
-	triplepb "github.com/apache/dubbo-go-samples/api"
+	triplepb "github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
 var greeterProvider = new(triplepb.GreeterClientImpl)

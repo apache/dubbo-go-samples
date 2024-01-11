@@ -40,7 +40,7 @@
 package api
 
 import (
-	models "github.com/apache/dubbo-go-samples/rpc/triple/pb2/models"
+	models "github.com/apache/dubbo-go-samples/compatibility/rpc/triple/pb2/models"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

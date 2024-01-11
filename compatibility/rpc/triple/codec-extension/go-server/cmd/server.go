@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/rpc/triple/codec-extension/codec"
+	_ "github.com/apache/dubbo-go-samples/compatibility/rpc/triple/codec-extension/codec"
 )
 
 type User struct {

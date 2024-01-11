@@ -26,7 +26,7 @@ import (
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/api"
+	pb "github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
 type GreeterProvider struct {

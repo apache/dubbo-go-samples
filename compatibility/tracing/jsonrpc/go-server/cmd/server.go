@@ -43,7 +43,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/tracing/jsonrpc/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/compatibility/tracing/jsonrpc/go-server/pkg"
 )
 
 var (

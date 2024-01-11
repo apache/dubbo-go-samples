@@ -35,7 +35,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/filter/tpslimit/go-server/pkg"
+	"github.com/apache/dubbo-go-samples/compatibility/filter/tpslimit/go-server/pkg"
 )
 
 var (

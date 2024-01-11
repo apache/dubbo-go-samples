@@ -51,22 +51,22 @@ array+=("registry/zookeeper")
 array+=("registry/nacos")
 
 # generic
-#array+=("generic/default") # illegal service type registered
+#array+=("compatibility/generic/default") # illegal service type registered
 
 # rpc
 array+=("compatibility/rpc/dubbo")
-#array+=("rpc/triple/codec-extension")
+#array+=("compatibility/rpc/triple/codec-extension")
 array+=("compatibility/rpc/triple/hessian2")
 array+=("compatibility/rpc/triple/msgpack")
 array+=("compatibility/rpc/triple/pb/dubbogo-grpc")
-#array+=("rpc/grpc")
+#array+=("compatibility/rpc/grpc")
 array+=("compatibility/rpc/jsonrpc")
 array+=("compatibility/rpc/triple/pb2")
 
 # tls
-#array+=("tls/dubbo")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
-#array+=("tls/triple")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
-#array+=("tls/grpc")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
+#array+=("compatibility/tls/dubbo")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
+#array+=("compatibility/tls/triple")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
+#array+=("compatibility/tls/grpc")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
 
 # async
 array+=("compatibility/async")

@@ -32,7 +32,7 @@ import (
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/tls/grpc/protobuf"
+	pb "github.com/apache/dubbo-go-samples/compatibility/tls/grpc/protobuf"
 )
 
 var (

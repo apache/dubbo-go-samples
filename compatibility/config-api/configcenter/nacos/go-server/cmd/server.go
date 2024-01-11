@@ -30,7 +30,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
+	"github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
 const configCenterNacosServerConfig = `# set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-server', namespace is default

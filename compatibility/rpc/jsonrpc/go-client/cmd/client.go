@@ -34,7 +34,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/rpc/jsonrpc/go-client/pkg"
+	"github.com/apache/dubbo-go-samples/compatibility/rpc/jsonrpc/go-client/pkg"
 )
 
 var (

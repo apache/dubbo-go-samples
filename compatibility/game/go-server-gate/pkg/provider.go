@@ -26,7 +26,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
+	"github.com/apache/dubbo-go-samples/compatibility/game/pkg/pojo"
 )
 
 type BasketballService struct{}

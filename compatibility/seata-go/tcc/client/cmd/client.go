@@ -34,7 +34,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/seata-go/tcc/client/service"
+	"github.com/apache/dubbo-go-samples/compatibility/seata-go/tcc/client/service"
 )
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/client/conf/dubbogo.yml"

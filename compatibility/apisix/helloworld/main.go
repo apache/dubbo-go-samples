@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/apisix/helloworld/protobuf/helloworld"
+	"github.com/apache/dubbo-go-samples/compatibility/apisix/helloworld/protobuf/helloworld"
 )
 
 type GreeterProvider struct {

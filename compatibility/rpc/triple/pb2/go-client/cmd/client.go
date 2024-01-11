@@ -30,8 +30,8 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/api"
-	"github.com/apache/dubbo-go-samples/rpc/triple/pb2/models"
+	"github.com/apache/dubbo-go-samples/compatibility/rpc/triple/pb2/api"
+	"github.com/apache/dubbo-go-samples/compatibility/rpc/triple/pb2/models"
 )
 
 var greeterProvider = new(api.GreeterClientImpl)

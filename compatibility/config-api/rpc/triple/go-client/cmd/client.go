@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
+	"github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
 var tripleGreeterImpl = new(api.GreeterClientImpl)

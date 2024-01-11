@@ -22,8 +22,8 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/game/pkg/consumer/game"
-	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
+	"github.com/apache/dubbo-go-samples/compatibility/game/pkg/consumer/game"
+	"github.com/apache/dubbo-go-samples/compatibility/game/pkg/pojo"
 )
 
 var GameBasketball = game.BasketballService{}

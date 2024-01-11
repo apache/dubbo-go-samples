@@ -34,8 +34,8 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
-	"github.com/apache/dubbo-go-samples/game/pkg/pojo"
+	"github.com/apache/dubbo-go-samples/compatibility/game/go-server-game/pkg"
+	"github.com/apache/dubbo-go-samples/compatibility/game/pkg/pojo"
 )
 
 func init() {

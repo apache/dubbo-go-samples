@@ -33,7 +33,7 @@ import (
 )
 
 import (
-	_ "github.com/apache/dubbo-go-samples/rpc/jsonrpc/go-server/pkg"
+	_ "github.com/apache/dubbo-go-samples/compatibility/rpc/jsonrpc/go-server/pkg"
 )
 
 var (

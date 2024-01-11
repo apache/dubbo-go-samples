@@ -24,7 +24,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/api"
+	"github.com/apache/dubbo-go-samples/compatibility/api"
 
 	"github.com/dubbogo/gost/log/logger"
 )
