@@ -23,28 +23,28 @@ array+=("helloworld")
 #array+=("game/go-server-gate")
 
 # config-api
-array+=("config-api/rpc/triple")
-array+=("config-api/configcenter/nacos")
-array+=("config-api/configcenter/zookeeper")
-array+=("config-api/config-merge")
+array+=("compatibility/config-api/rpc/triple")
+array+=("compatibility/config-api/configcenter/nacos")
+array+=("compatibility/config-api/configcenter/zookeeper")
+array+=("compatibility/config-api/config-merge")
 
 # error
-array+=("error/triple/hessian2")
-array+=("error/triple/pb")
+array+=("compatibility/error/triple/hessian2")
+array+=("compatibility/error/triple/pb")
 
 # metrics
-array+=("metrics")
+array+=("compatibility/metrics")
 
 # direct
-array+=("direct")
+array+=("compatibility/direct")
 
 # filer
-array+=("filter/custom")
-array+=("filter/token")
+array+=("compatibility/filter/custom")
+array+=("compatibility/filter/token")
 
 # context
-array+=("context/dubbo")
-array+=("context/triple")
+array+=("compatibility/context/dubbo")
+array+=("compatibility/context/triple")
 
 # registry
 array+=("registry/zookeeper")
@@ -54,14 +54,14 @@ array+=("registry/nacos")
 #array+=("generic/default") # illegal service type registered
 
 # rpc
-array+=("rpc/dubbo")
+array+=("compatibility/rpc/dubbo")
 #array+=("rpc/triple/codec-extension")
-array+=("rpc/triple/hessian2")
-array+=("rpc/triple/msgpack")
-array+=("rpc/triple/pb/dubbogo-grpc")
+array+=("compatibility/rpc/triple/hessian2")
+array+=("compatibility/rpc/triple/msgpack")
+array+=("compatibility/rpc/triple/pb/dubbogo-grpc")
 #array+=("rpc/grpc")
-array+=("rpc/jsonrpc")
-array+=("rpc/triple/pb2")
+array+=("compatibility/rpc/jsonrpc")
+array+=("compatibility/rpc/triple/pb2")
 
 # tls
 #array+=("tls/dubbo")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
@@ -69,11 +69,11 @@ array+=("rpc/triple/pb2")
 #array+=("tls/grpc")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
 
 # async
-array+=("async")
+array+=("compatibility/async")
 
 # polaris
-array+=("polaris/registry")
-array+=("polaris/limit")
+array+=("compatibility/polaris/registry")
+array+=("compatibility/polaris/limit")
 
 # compatibility
 ## registry
