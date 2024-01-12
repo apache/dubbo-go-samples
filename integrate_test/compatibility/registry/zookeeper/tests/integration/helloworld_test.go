@@ -27,7 +27,7 @@ import (
 )
 
 import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/api"
+	dubbo3pb "github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
 func TestSayHello(t *testing.T) {

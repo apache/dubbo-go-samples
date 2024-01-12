@@ -28,7 +28,7 @@ import (
 )
 
 import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/api"
+	dubbo3pb "github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
 var greeterProvider = &dubbo3pb.GreeterClientImpl{}
