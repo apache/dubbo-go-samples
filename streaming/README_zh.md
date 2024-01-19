@@ -73,7 +73,7 @@ func (srv *GreetTripleServer) GreetServerStream(ctx context.Context, req *greet.
 
 编写客户端client文件
 
-源文件路径: dubbo-go-sample/streaming/go-client/client.go
+源文件路径: dubbo-go-sample/streaming/go-client/cmd/client.go
 
 ```go
 func main() {
