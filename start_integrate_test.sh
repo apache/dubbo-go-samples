@@ -53,6 +53,9 @@ array+=("registry/nacos")
 # generic
 #array+=("generic/default") # illegal service type registered
 
+#healthcheck
+array+=("healthcheck")
+
 # rpc
 array+=("rpc/dubbo")
 #array+=("rpc/triple/codec-extension")
