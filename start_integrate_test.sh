@@ -59,6 +59,9 @@ array+=("timeout")
 #healthcheck
 array+=("healthcheck")
 
+#streaming
+array+=("streaming")
+
 # rpc
 array+=("compatibility/rpc/dubbo")
 #array+=("compatibility/rpc/triple/codec-extension")
