@@ -56,6 +56,9 @@ array+=("registry/nacos")
 #timeout
 array+=("timeout")
 
+#healthcheck
+array+=("healthcheck")
+
 # rpc
 array+=("compatibility/rpc/dubbo")
 #array+=("compatibility/rpc/triple/codec-extension")
