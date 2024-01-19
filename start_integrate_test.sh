@@ -53,6 +53,9 @@ array+=("registry/nacos")
 # generic
 #array+=("compatibility/generic/default") # illegal service type registered
 
+#timeout
+array+=("timeout")
+
 # rpc
 array+=("compatibility/rpc/dubbo")
 #array+=("compatibility/rpc/triple/codec-extension")
