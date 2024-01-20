@@ -51,7 +51,7 @@ func main() {
 		Username: "dubbo",
 		Password: "123456",
 	}
-	reply, err := svc.TimeoutLogin(context.Background(), req)
+	reply, err := svc.Login(context.Background(), req)
 	if err != nil {
 		panic(err)
 	}
