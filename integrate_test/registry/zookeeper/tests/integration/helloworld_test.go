@@ -19,11 +19,9 @@ package integration
 
 import (
 	"context"
-	greet "github.com/apache/dubbo-go-samples/registry/zookeeper/proto"
 	"testing"
-)
 
-import (
+	greet "github.com/apache/dubbo-go-samples/registry/zookeeper/proto"
 	"github.com/stretchr/testify/assert"
 )
 
