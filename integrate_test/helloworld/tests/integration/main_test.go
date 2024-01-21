@@ -18,17 +18,17 @@
 package integration
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/client"
-	"github.com/apache/dubbo-go-samples/helloworld/proto/greettriple"
 	"os"
 	"testing"
-)
 
-import (
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+
+	"dubbo.apache.org/dubbo-go/v3/client"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
-var greeterProvider greettriple.GreetService
+var greeterProvider greet.GreetService
 
 func TestMain(m *testing.M) {
 	cli, err := client.NewClient(
@@ -38,7 +38,7 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	greeterProvider, err = greettriple.NewGreetService(cli)
+	greeterProvider, err = greet.NewGreetService(cli)
 
 	if err != nil {
 		panic(err)

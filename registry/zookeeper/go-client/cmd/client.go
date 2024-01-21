@@ -19,11 +19,11 @@ package main
 
 import (
 	"context"
+
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	greet "github.com/apache/dubbo-go-samples/registry/zookeeper/proto"
-	"github.com/apache/dubbo-go-samples/registry/zookeeper/proto/greettriple"
 	"github.com/dubbogo/gost/log/logger"
 )
 
@@ -46,7 +46,7 @@ func main() {
 		panic(err)
 	}
 
-	svc, err := greettriple.NewGreetService(cli)
+	svc, err := greet.NewGreetService(cli)
 	if err != nil {
 		panic(err)
 	}

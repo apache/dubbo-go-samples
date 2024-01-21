@@ -18,18 +18,18 @@
 package integration
 
 import (
-	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/apache/dubbo-go-samples/registry/nacos/proto/greettriple"
 	"os"
 	"testing"
-)
 
-import (
+	greet "github.com/apache/dubbo-go-samples/registry/nacos/proto"
+
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
-var greetService greettriple.GreetService
+var greetService greet.GreetService
 
 func TestMain(m *testing.M) {
 	ins, err := dubbo.NewInstance(
@@ -48,7 +48,7 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	greetService, err = greettriple.NewGreetService(cli)
+	greetService, err = greet.NewGreetService(cli)
 	if err != nil {
 		panic(err)
 	}
