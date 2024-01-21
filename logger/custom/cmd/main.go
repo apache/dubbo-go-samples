@@ -19,16 +19,14 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"fmt"
 	"os"
 	"time"
-)
 
-import (
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
 	"github.com/dubbogo/gost/log/logger"
 )
 
