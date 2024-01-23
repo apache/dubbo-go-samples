@@ -62,6 +62,9 @@ array+=("healthcheck")
 #streaming
 array+=("streaming")
 
+#retry
+array+=("retry")
+
 # rpc
 array+=("compatibility/rpc/dubbo")
 #array+=("compatibility/rpc/triple/codec-extension")
