@@ -18,11 +18,12 @@
 package integration
 
 import (
+	"os"
+	"testing"
+
 	"github.com/dubbogo/gost/log/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"os"
-	"testing"
 
 	pb "github.com/apache/dubbo-go-samples/rpc/grpc/proto"
 
