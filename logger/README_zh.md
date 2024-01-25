@@ -16,34 +16,16 @@
 zap 日志格式和级别设置
 ```yaml
     logger:
-    zapConfig:
-      level: "debug"
-      development: false
-      disableCaller: false
-      disableStacktrace: false
-      sampling:
-      encoding: "console"
-    
-      # encoder
-      encoderConfig:
-        messageKey: "message"
-        levelKey: "level"
-        timeKey: "time"
-        nameKey: "logger"
-        callerKey: "caller"
-        stacktraceKey: "stacktrace"
-        lineEnding: ""
-        levelEncoder: "capitalColor"
-        timeEncoder: "iso8601"
-        durationEncoder: "seconds"
-        callerEncoder: "short"
-        nameEncoder: ""
-    
-      outputPaths:
-        - "stderr"
-      errorOutputPaths:
-        - "stderr"
-      initialFields:
+      driver: zap
+      level: info
+      format: text
+      appender: console
+      file:
+        name: logs.log
+        max-size: 1
+        max-age: 3
+        max-backups: 5
+        compress: false
 ```
 
 #### 设置隔离级别
@@ -54,25 +36,16 @@ logger.SetLoggerLevel("warn")
 
 #### 输出到文件
 
-在配置文件中的 logger 选项下添加 lumberjackConfig 项
+在配置文件中的 logger 选项下添加 file 项
 
 ```yaml
-logger:
-    lumberjackConfig:
-      # 写日志的文件名称
-      filename: "logs.log"
-      # 每个日志文件长度的最大大小，单位是 MiB。默认 100MiB
-      maxSize: 1
-      # 日志保留的最大天数(只保留最近多少天的日志)
-      maxAge: 3
-      # 只保留最近多少个日志文件，用于控制程序总日志的大小
-      maxBackups: 5
-      # 是否使用本地时间，默认使用 UTC 时间
-      localTime: true
-      # 是否压缩日志文件，压缩方法 gzip
+  logger:
+    file:
+      name: logs.log
+      max-size: 1
+      max-age: 3
+      max-backups: 5
       compress: false
-      # zap 配置可默认不填
-    zapConfig:
 ```
 
 #### 自定义 logger
