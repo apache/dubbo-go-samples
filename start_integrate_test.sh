@@ -35,6 +35,9 @@ array+=("compatibility/error/triple/pb")
 # metrics
 array+=("compatibility/metrics")
 
+# tracing
+array+=("otel/tracing/stdout")
+
 # direct
 array+=("compatibility/direct")
 
