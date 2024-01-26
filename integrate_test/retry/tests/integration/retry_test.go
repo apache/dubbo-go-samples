@@ -35,6 +35,6 @@ func TestRetry(t *testing.T) {
 	assert.Equal(t, "hello world", reply.Greeting)
 
 	reply, err = greeterProvider.GreetRetry(ctx, req)
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.Equal(t, "hello world", reply.Greeting)
 }
