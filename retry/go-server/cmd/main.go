@@ -19,7 +19,7 @@ package main
 
 import (
 	"context"
-	"github.com/pkg/errors"
+	"fmt"
 
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
@@ -42,7 +42,7 @@ func (srv *GreetTripleServer) GreetRetry(ctx context.Context, req *greet.GreetRe
 	if srv.requestTime < 3 {
 		srv.requestTime++
 		logger.Infof("retry %d times", srv.requestTime)
-		return nil, errors.New("retry")
+		return nil, fmt.Errorf("retry %d times", srv.requestTime)
 	}
 	resp := &greet.GreetResponse{Greeting: req.Name}
 	logger.Infof("retry success, current request time is %d", srv.requestTime)
