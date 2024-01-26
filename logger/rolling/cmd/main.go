@@ -22,27 +22,15 @@ import (
 	"time"
 
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/protocol"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"github.com/dubbogo/gost/log/logger"
 )
 
+// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
-	ins, err := dubbo.NewInstance(
-		dubbo.WithProtocol(
-			protocol.WithTriple(),
-			protocol.WithPort(20000),
-		),
-	)
-	if err != nil {
+	if err := dubbo.Load(); err != nil {
 		panic(err)
 	}
-	server, err := ins.NewServer()
-	if err != nil {
-		panic(err)
-	}
-	go server.Serve()
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
 	for {

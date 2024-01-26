@@ -16,34 +16,16 @@ If you don't add a logger to the configuration file, the configuration log will 
 zap log format and level settings
 ```yaml
     logger:
-    zap-config:
-      level: "debug"
-      development: false
-      disableCaller: false
-      disableStacktrace: false
-      sampling:
-      encoding: "console"
-    
-      # encoder
-      encoderConfig:
-        messageKey: "message"
-        levelKey: "level"
-        timeKey: "time"
-        nameKey: "logger"
-        callerKey: "caller"
-        stacktraceKey: "stacktrace"
-        lineEnding: ""
-        levelEncoder: "capitalColor"
-        timeEncoder: "iso8601"
-        durationEncoder: "seconds"
-        callerEncoder: "short"
-        nameEncoder: ""
-    
-      outputPaths:
-        - "stderr"
-      errorOutputPaths:
-        - "stderr"
-      initialFields:
+      driver: zap
+      level: info
+      format: text
+      appender: console
+      file:
+        name: logs.log
+        max-size: 1
+        max-age: 3
+        max-backups: 5
+        compress: false
 ```
 
 #### set isolation level
@@ -54,22 +36,16 @@ logger.SetLoggerLevel("warn")
 
 #### output to file
 
-Add the lumberjackConfig item under the logger option in the configuration file
+Add the file item under the logger option in the configuration file
 
 ```yaml
-lumberjack-config:
-  # The name of the log file
-  filename: "logs.log"
-  # The maximum size of each log file length whose unit is MiB. The default value is 100MiB.
-  maxSize: 1
-  # Maximum number of days to keep logs (only keep the logs of the most recent days)
-  maxAge: 3
-  # Only keep the most recent log files, used to control the size of the total log of the program
-  maxBackups: 5
-  # Whether to use local time, UTC time is used by default
-  localTime: true
-  # Whether to compress the log file, the compression method is gzip
-  compress: false
+  logger:
+    file:
+      name: logs.log
+      max-size: 1
+      max-age: 3
+      max-backups: 5
+      compress: false
 ```
 
 #### coustom logger

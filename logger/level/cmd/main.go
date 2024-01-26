@@ -26,6 +26,8 @@ import (
 
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"github.com/dubbogo/gost/log/logger"
+
+	log "dubbo.apache.org/dubbo-go/v3/logger"
 )
 
 func main() {
@@ -34,6 +36,7 @@ func main() {
 			protocol.WithTriple(),
 			protocol.WithPort(20000),
 		),
+		dubbo.WithLogger(log.WithLevel("warn")),
 	)
 	if err != nil {
 		panic(err)
@@ -42,7 +45,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	logger.SetLoggerLevel("warn")
 	go server.Serve()
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()

@@ -1,0 +1,12 @@
+dubbo:
+  protocols:
+    triple:
+      name: tri
+      port: 20000
+  logger:
+    file:
+      name: logs.log
+      max-size: 1
+      max-age: 3
+      max-backups: 5
+      compress: false
