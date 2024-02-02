@@ -42,6 +42,7 @@ array+=("otel/tracing/stdout")
 array+=("compatibility/direct")
 
 # filer
+array+=("filter/token")
 array+=("compatibility/filter/custom")
 array+=("compatibility/filter/token")
 
