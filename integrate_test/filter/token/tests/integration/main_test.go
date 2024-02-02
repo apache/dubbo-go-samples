@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"dubbo.apache.org/dubbo-go/v3"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	greet "github.com/apache/dubbo-go-samples/filter/proto"
 )
