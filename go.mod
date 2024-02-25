@@ -1,4 +1,4 @@
-module github.com/apache/dubbo-go-samples
+module github.com/damengsheng/dubbo-go-samples
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20240202021041-198504bb0029
