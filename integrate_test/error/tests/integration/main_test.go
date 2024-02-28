@@ -21,11 +21,9 @@ import (
 	"os"
 	"testing"
 
-	greet "github.com/apache/dubbo-go-samples/error/proto"
-
 	"dubbo.apache.org/dubbo-go/v3/client"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	greet "github.com/apache/dubbo-go-samples/error/proto"
 )
 
 var greeterProvider greet.GreetService

@@ -19,9 +19,10 @@ package integration
 
 import (
 	"context"
+	"testing"
+
 	greet "github.com/apache/dubbo-go-samples/error/proto"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestSayHello(t *testing.T) {
