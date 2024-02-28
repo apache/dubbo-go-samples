@@ -19,11 +19,12 @@ package main
 
 import (
 	"context"
+	"fmt"
+
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	"fmt"
 	greet "github.com/apache/dubbo-go-samples/context/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
