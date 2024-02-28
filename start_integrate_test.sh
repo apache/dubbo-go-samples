@@ -49,6 +49,7 @@ array+=("compatibility/filter/token")
 # context
 array+=("compatibility/context/dubbo")
 array+=("compatibility/context/triple")
+array+=("context")
 
 # registry
 array+=("registry/zookeeper")
