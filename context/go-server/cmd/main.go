@@ -23,6 +23,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
+	"fmt"
 	greet "github.com/apache/dubbo-go-samples/context/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
@@ -31,15 +32,21 @@ type GreetTripleServer struct {
 }
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	// map must be assert to map[string]interface, because of dubbo limitation
 	attachments := ctx.Value(constant.AttachmentKey).(map[string]interface{})
-	if value1, ok := attachments["key1"]; ok {
-		logger.Infof("Dubbo attachment key1 = %s", value1.([]string)[0])
+	// value must be assert to []string[0], because of http2 header limitation
+	var value1, value2 string
+	if v, ok := attachments["key1"]; ok {
+		value1 = v.([]string)[0]
+		logger.Infof("Dubbo attachment key1 = %s", value1)
 	}
-	if value2, ok := attachments["key2"]; ok {
-		logger.Infof("Dubbo attachment key2 = %s", value2.([]string)[0])
+	if v, ok := attachments["key2"]; ok {
+		value2 = v.([]string)[0]
+		logger.Infof("Dubbo attachment key2 = %s", value2)
 	}
 
-	resp := &greet.GreetResponse{Greeting: req.Name}
+	respStr := fmt.Sprintf("name: %s, key1: %s, key2: %s", req.Name, value1, value2)
+	resp := &greet.GreetResponse{Greeting: respStr}
 	return resp, nil
 }
 

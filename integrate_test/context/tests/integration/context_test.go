@@ -19,6 +19,7 @@ package integration
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"testing"
 
 	greet "github.com/apache/dubbo-go-samples/context/proto"
@@ -29,9 +30,14 @@ func TestSayHello(t *testing.T) {
 	req := &greet.GreetRequest{Name: "hello world"}
 
 	ctx := context.Background()
+	ctx = context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{
+		"key1": "value1",
+		"key2": "value2",
+		"key3": "value3",
+	})
 
 	reply, err := greeterProvider.Greet(ctx, req)
 
 	assert.Nil(t, err)
-	assert.Equal(t, "hello world", reply.Greeting)
+	assert.Equal(t, "name: hello world, key1: value1, key2: value2", reply.Greeting)
 }
