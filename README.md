@@ -33,6 +33,7 @@
 * skywalking: show how to integrate skywalking into dubbogo
 * tls: use TLS encryption in getty(tcp)/triple/gRPC communication mode
 * tracing: tracing example
+* error: error handling
 
 ## How To Run
 
