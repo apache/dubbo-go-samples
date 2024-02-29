@@ -94,6 +94,9 @@ array+=("compatibility/async")
 array+=("compatibility/polaris/registry")
 array+=("compatibility/polaris/limit")
 
+# error
+array+=("error")
+
 # compatibility
 ## registry
 array+=("compatibility/registry/zookeeper")

@@ -31,6 +31,7 @@
 * skywalking: 整合 skywalking 与 dubbogo 的示例
 * tls: getty(tcp)/triple/gRPC 全链路 tls 安全通信示例
 * tracing: 链路追踪例子，支持
+* error: 错误处理
 
 
 ## 如何运行
