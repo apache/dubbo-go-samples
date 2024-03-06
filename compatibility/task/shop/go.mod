@@ -1,6 +1,6 @@
 module github.com/apache/dubbo-go-samples/task/shop
 
-go 1.18
+go 1.22.1
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.0.5
