@@ -64,6 +64,9 @@ func main() {
 			RelationStrategy:       flow.CurrentResource,
 		},
 	})
+	if err != nil {
+		panic(err)
+	}
 	if err := srv.Serve(); err != nil {
 		logger.Error(err)
 	}

@@ -53,6 +53,9 @@ func main() {
 			StatIntervalInMs:       1000,
 		},
 	})
+	if err != nil {
+		panic(err)
+	}
 	wg := sync.WaitGroup{}
 	wg.Add(10)
 	pass := int64(0)
