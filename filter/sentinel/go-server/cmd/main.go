@@ -47,7 +47,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
+	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
 		server.WithFilter(constant.SentinelProviderFilterKey),
 	); err != nil {
 		panic(err)
