@@ -390,8 +390,8 @@ contrib.go.opencensus.io/exporter/prometheus v0.4.1/go.mod h1:t9wvfitlUjGXG2IXAZ
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 dubbo.apache.org/dubbo-go/v3 v3.0.2-0.20220508105316-b27ec53b7bab/go.mod h1:Ytn9MtmsFYkpa1bzW/3loUFBgm7eJ3M3+XWRurhbBZc=
 dubbo.apache.org/dubbo-go/v3 v3.0.2/go.mod h1:bODgByAf72kzG/5YIfZIODXx81pY3gaAdIQ8B4mN/Yk=
-dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20240202021041-198504bb0029 h1:+5r/DyxObRS5gUkyyojGBl/QHs8zIkmX45F0hTjciL4=
-dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20240202021041-198504bb0029/go.mod h1:Aq4YRQHYH5rF6NpeYzPfjTdwhVTOBd5BhdXXstl7EZE=
+dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20240305083657-c865c8388ead h1:QF5AUmYCxBYXjWnnEHfaQj3xyiK+n3x/j5YefGfRaoI=
+dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20240305083657-c865c8388ead/go.mod h1:1BF7XKfc2pKnZxrZKK23UQNuYx0vz8MgZjUn0tA3Qiw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.1.0 h1:ksErzDEI1khOiGPgpwuI7x2ebx/uXQNw7xJpn9Eq1+I=
 github.com/BurntSushi/toml v1.1.0/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
