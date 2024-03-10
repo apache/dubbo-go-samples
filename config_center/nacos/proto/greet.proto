@@ -15,32 +15,20 @@
  * limitations under the License.
  */
 
-package integration
+syntax = "proto3";
 
-import (
-	"dubbo.apache.org/dubbo-go/v3/client"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
-	"os"
-	"testing"
+package greet;
 
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
+option go_package = "github.com/apache/dubbo-go-samples/context/proto;greet";
 
-var greeterProvider greet.GreetService
+message GreetRequest {
+  string name = 1;
+}
 
-func TestMain(m *testing.M) {
-	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
-	)
-	if err != nil {
-		panic(err)
-	}
+message GreetResponse {
+  string greeting = 1;
+}
 
-	greeterProvider, err = greet.NewGreetService(cli)
-
-	if err != nil {
-		panic(err)
-	}
-
-	os.Exit(m.Run())
+service GreetService {
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
 }

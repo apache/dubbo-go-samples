@@ -5,7 +5,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/registry/nacos/proto"
+	greet "github.com/apache/dubbo-go-samples/config_center/nacos/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 
