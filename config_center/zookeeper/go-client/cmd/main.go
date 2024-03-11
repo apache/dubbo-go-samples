@@ -75,8 +75,9 @@ func main() {
 			if setErr != nil {
 				panic(err)
 			}
+		} else {
+			panic(err)
 		}
-		panic(err)
 	}
 
 	time.Sleep(time.Second * 10)
