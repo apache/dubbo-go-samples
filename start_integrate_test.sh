@@ -81,6 +81,8 @@ array+=("compatibility/rpc/jsonrpc")
 array+=("compatibility/rpc/triple/pb2")
 
 array+=("rpc/grpc")
+array+=("rpc/triple/pb")
+array+=("rpc/triple/pb2")
 
 # tls
 #array+=("compatibility/tls/dubbo")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
