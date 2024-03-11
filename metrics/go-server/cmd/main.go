@@ -19,6 +19,8 @@ package main
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"math/rand"
 	"time"
 
 	"dubbo.apache.org/dubbo-go/v3"
@@ -36,6 +38,11 @@ type GreetTripleServer struct {
 
 func (srv *GreetTripleServer) Greet(_ context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	resp := &greet.GreetResponse{Greeting: req.Name}
+	rand.Seed(time.Now().UnixNano())
+	if rand.Intn(101) > 99 { // mock error here
+		return nil, errors.New("random error")
+	}
+	time.Sleep(10 * time.Millisecond) // mock business delay
 	return resp, nil
 }
 
