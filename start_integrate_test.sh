@@ -97,6 +97,9 @@ array+=("compatibility/polaris/limit")
 # error
 array+=("error")
 
+#config_center
+array+=("config_center/nacos")
+
 # compatibility
 ## registry
 array+=("compatibility/registry/zookeeper")
