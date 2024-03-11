@@ -12,7 +12,7 @@ This example demonstrates the metrics usage of dubbo-go as an RPC framework. Che
 
 ### Run server
 ```shell
-go run ./server/main.go
+go run ./go-server/cmd/main.go
 ```
 
 test server work as expected:
@@ -25,7 +25,7 @@ curl \
 
 ### Run client
 ```shell
-go run ./client/main.go
+go run ./go-client/cmd/main.go
 ```
 
 install prometheus and open prometheus config file `prometheus.yml`, write the config like this
