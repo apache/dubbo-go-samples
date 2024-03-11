@@ -99,6 +99,7 @@ array+=("error")
 
 #config_center
 array+=("config_center/nacos")
+array+=("config_center/zookeeper")
 
 # compatibility
 ## registry
