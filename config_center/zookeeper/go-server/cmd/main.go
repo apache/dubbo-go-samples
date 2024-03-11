@@ -62,7 +62,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-server", "dubbogo", configCenterZKServerConfig); err != nil {
+	if err = dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-server", "dubbogo", configCenterZKServerConfig); err != nil {
 		panic(err)
 	}
 	time.Sleep(time.Second * 10)
@@ -82,11 +82,11 @@ func main() {
 		panic(err)
 	}
 
-	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
+	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
 		panic(err)
 	}
 
-	if err := srv.Serve(); err != nil {
+	if err = srv.Serve(); err != nil {
 		logger.Error(err)
 	}
 }
