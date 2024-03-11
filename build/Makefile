@@ -65,6 +65,11 @@ else
 	LDFLAGS := "-s -w"
 endif
 
+DOCKER_COMPOSE_CMD := docker-compose
+ifeq ($(shell docker compose version > /dev/null; echo $$?), 0)
+	DOCKER_COMPOSE_CMD := docker compose
+endif
+
 OUT_DIR := $(BASE_DIR)/$(GOOS)_$(GOARCH)/$(BUILD_TYPE)
 LOG_FILE := $(OUT_DIR)/$(PROJECT_NAME).log
 
@@ -106,13 +111,13 @@ docker-health-check:
 .PHONY: docker-up
 docker-up:
 	$(info   >  Starting dependency services with $(DOCKER_DIR)/docker-compose.yml)
-	@docker-compose -f $(DOCKER_DIR)/docker-compose.yml up -d
+	@$(DOCKER_COMPOSE_CMD) -f $(DOCKER_DIR)/docker-compose.yml up -d
 
 ## docker-down: Shutdown dependency services on docker
 .PHONY: docker-down
 docker-down:
-	$(info   >  Stopping dependency services with $(DOCKER_DIR)/docker-compose.ym)
-	@docker-compose -f $(DOCKER_DIR)/docker-compose.yml down
+	$(info   >  Stopping dependency services with $(DOCKER_DIR)/docker-compose.yml)
+	@$(DOCKER_COMPOSE_CMD) -f $(DOCKER_DIR)/docker-compose.yml down
 
 ## clean: Clean up the output and the binary of the application
 .PHONY: clean
