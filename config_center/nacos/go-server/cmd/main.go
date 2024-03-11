@@ -19,13 +19,17 @@ package main
 
 import (
 	"context"
+	"time"
+
+	"github.com/nacos-group/nacos-sdk-go/v2/clients"
+	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
+	"github.com/nacos-group/nacos-sdk-go/v2/vo"
+
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/config"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	greet "github.com/apache/dubbo-go-samples/config_center/nacos/proto"
 	"github.com/dubbogo/gost/log/logger"
-	"time"
 )
 
 type GreetTripleServer struct {
@@ -54,18 +58,37 @@ dubbo:
 `
 
 func main() {
-	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
-		SetProtocol("nacos").
-		SetAddress("127.0.0.1:8848").
-		Build().GetDynamicConfiguration()
-
+	clientConfig := constant.ClientConfig{}
+	serverConfigs := []constant.ServerConfig{
+		*constant.NewServerConfig(
+			"127.0.0.1",
+			8848,
+			constant.WithScheme("http"),
+			constant.WithContextPath("/nacos"),
+		),
+	}
+	configClient, err := clients.NewConfigClient(
+		vo.NacosClientParam{
+			ClientConfig:  &clientConfig,
+			ServerConfigs: serverConfigs,
+		},
+	)
 	if err != nil {
 		panic(err)
 	}
 
-	if err = dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-server", "dubbo", configCenterNacosServerConfig); err != nil {
+	success, err := configClient.PublishConfig(vo.ConfigParam{
+		DataId:  "dubbo-go-samples-configcenter-nacos-server",
+		Group:   "dubbo",
+		Content: configCenterNacosServerConfig,
+	})
+	if err != nil {
 		panic(err)
 	}
+	if !success {
+		return
+	}
+
 	time.Sleep(time.Second * 10)
 
 	nacosOption := config_center.WithNacos()

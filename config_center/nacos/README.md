@@ -6,24 +6,24 @@ This example shows dubbo-go's dynamic configuration feature with Nacos as config
 
 ## 2. How to run
 
-### Add configuration to the configuration center of nacos
+### Configure the configuration file into nacos
 
-```go
-dynamicConfig, err := config.NewConfigCenterConfigBuilder().
-SetProtocol("nacos").
-SetAddress("127.0.0.1:8848").
-Build().GetDynamicConfiguration()
-
-if err != nil {
-    panic(err)
-}
-
-if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-server", "dubbo", configCenterNacosServerConfig); err != nil {
-    panic(err)
-}
-time.Sleep(time.Second * 10)
+```yaml
+dubbo:
+  registries:
+    demoZK:
+      protocol: zookeeper
+      timeout: 3s
+      address: '127.0.0.1:2181'
+  protocols:
+    triple:
+      name: tri
+      port: 20000
+  provider:
+    services:
+      GreeterProvider:
+        interface: com.apache.dubbo.sample.basic.IGreeter
 ```
-Open `https://localhost:8848/nacos/` with browser, make sure the relevant configuration is already in place in nacos.
 
 ### Start an instance with nacos as the configuration center
 

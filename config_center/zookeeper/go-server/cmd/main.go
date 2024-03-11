@@ -19,13 +19,18 @@ package main
 
 import (
 	"context"
+	"strings"
+	"time"
+
+	perrors "github.com/pkg/errors"
+
+	"github.com/dubbogo/go-zookeeper/zk"
+
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/config"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
 	"github.com/dubbogo/gost/log/logger"
-	"time"
 )
 
 type GreetTripleServer struct {
@@ -53,16 +58,40 @@ dubbo:
         interface: com.apache.dubbo.sample.basic.IGreeter
 `
 
+func ensurePath(c *zk.Conn, path string, data []byte, flags int32, acl []zk.ACL) error {
+	_, err := c.Create(path, data, flags, acl)
+	return err
+}
+
 func main() {
-	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
-		SetProtocol("zookeeper").
-		SetAddress("127.0.0.1:2181").
-		Build().GetDynamicConfiguration()
+	c, _, err := zk.Connect([]string{"127.0.0.1:2181"}, time.Second*10)
 	if err != nil {
 		panic(err)
 	}
 
-	if err = dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-server", "dubbogo", configCenterZKServerConfig); err != nil {
+	valueBytes := []byte(configCenterZKServerConfig)
+	path := "/dubbo/config/dubbogo/dubbo-go-samples-configcenter-zookeeper-server"
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+	paths := strings.Split(path, "/")
+	for idx := 2; idx < len(paths); idx++ {
+		tmpPath := strings.Join(paths[:idx], "/")
+		_, err = c.Create(tmpPath, []byte{}, 0, zk.WorldACL(zk.PermAll))
+		if err != nil && err != zk.ErrNodeExists {
+			panic(err)
+		}
+	}
+
+	_, err = c.Create(path, valueBytes, 0, zk.WorldACL(zk.PermAll))
+	if err != nil {
+		if perrors.Is(err, zk.ErrNodeExists) {
+			_, stat, _ := c.Get(path)
+			_, setErr := c.Set(path, valueBytes, stat.Version)
+			if setErr != nil {
+				panic(err)
+			}
+		}
 		panic(err)
 	}
 	time.Sleep(time.Second * 10)
