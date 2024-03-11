@@ -156,11 +156,11 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"errors"
 	"fmt"
 
+	"dubbo.apache.org/dubbo-go/v3"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
 )
 
