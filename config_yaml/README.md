@@ -23,7 +23,7 @@ This example demonstrates how to configure using yaml configuration files in Dub
     └── greet.triple.go
 
 ```
-通过 IDL`./proto/greet.proto` 定义服务 使用triple协议
+The service is defined using IDL (./proto/greet.proto) and utilizes the Triple protocol.
 
 ### build Proto
 ```bash
@@ -45,7 +45,8 @@ go run .
 
 ### 2.1 Client usage instructions
 
-Client-defined yaml file
+Client-defined dubbogo.yaml
+
 ```yaml
 # dubbo client yaml configure file
 dubbo:
@@ -63,7 +64,7 @@ dubbo:
         retries: 3
         timeout: 3000
 ```
-Read and load files through dubbo.Load() calls
+Read and load files through `dubbo.Load()`.
 
 ```go
 //...
@@ -78,7 +79,7 @@ func main() {
 
 ### 2.2 Server usage instructions
 
-Yaml file defined on the server side
+Server-defined dubbogo.yaml
 
 ```yaml
 # dubbo server yaml configure file
@@ -98,7 +99,7 @@ dubbo:
         interface: com.apache.dubbo.sample.Greeter
 ```
 
-Read and load files through dubbo.Load() calls
+Read and load files through `dubbo.Load()`.
 ```go
 //...
 func main() {
@@ -139,14 +140,15 @@ service GreetService {
 
 #### Server Handler
 
-On the server side, define GreetTripleServer interface:
+On the server side, define GreetTripleServer struct:
 ```go
 type GreetServiceHandler interface {
     Greet(context.Context, *GreetRequest) (*GreetResponse, error)
 }
 ```
-Implement the GreetServiceHandler interface and register through `greet.SetProviderService(&GreetTripleServer{})`  
-Also use `dubbo.Load()` to load the configuration file
+Implement the GreetServiceHandler interface and register it through `greet.SetProviderService(srv common.RPCService)`
+
+Load the configuration file through `dubbo.Load()`
 
 Source file path ：dubbo-go-sample/config_yaml/go-server/cmd/main.go
 
@@ -167,7 +169,7 @@ import (
 type GreetTripleServer struct {
 }
 
-func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+func (srv *GreetTripleServer) Greet(_ context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	name := req.Name
 	if name != "ConfigTest" {
 		errInfo := fmt.Sprintf("name is not right: %s", name)
@@ -189,7 +191,8 @@ func main() {
 
 ### 3.2 Client
 
-In the client, define greet.GreetServiceImpl instance and register with greet.SetConsumerService(svc):
+In the client, define greet.GreetServiceImpl instance and register it through `greet.SetConsumerService(srv common.RPCService)`:
+
 Load the configuration file through `dubbo.Load()`
 
 Source file path ：dubbo-go-sample/config_yaml/go-client/cmd/main.go
@@ -223,8 +226,8 @@ func main() {
 
 ### 3.3 Show
 
-Start the server first and then the client. You can observe that the client prints `ConfigTest successfully` and the configuration is loaded and the call is successful.
-
+Start the server first, then the client.
+If the client prints `ConfigTest Successful`, it means the configuration is loaded and the call success.
 ```
 2024-03-11 15:47:29     INFO    cmd/main.go:39  ConfigTest successfully
 ```
