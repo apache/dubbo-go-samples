@@ -81,6 +81,9 @@ array+=("compatibility/rpc/jsonrpc")
 array+=("compatibility/rpc/triple/pb2")
 
 array+=("rpc/grpc")
+array+=("rpc/triple/pb")
+array+=("rpc/triple/pb2")
+array+=("rpc/triple/pb-json")
 
 # tls
 #array+=("compatibility/tls/dubbo")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
@@ -113,19 +116,24 @@ array+=("compatibility/registry/all/nacos")
 
 # replace tls config
 echo "The prefix of certificate path of the following files were replaced to \"$(pwd)/tls\"."
-find $(pwd)/tls -type f -name '*.yml' -print0 | xargs -0 -n1
-find $(pwd)/tls -type f -name '*.yml' -print0 | xargs -0 sed -i  's#\.\.\/\.\.\/\.\.#'"$(pwd)/tls"'#g'
+find "$(pwd)/tls" -type f -name '*.yml' -print0 | xargs -0 -n1
+find "$(pwd)/tls" -type f -name '*.yml' -print0 | xargs -0 sed -i 's#\.\.\/\.\.\/\.\.#'"$(pwd)/tls"'#g'
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
-docker-compose -f $DOCKER_DIR/docker-compose.yml up -d
-bash -f $DOCKER_DIR/docker-health-check.sh
-for ((i=0;i<${#array[*]};i++))
-do
-	./integrate_test.sh "${array[i]}"
-	result=$?
-	if [ $result -gt 0 ]; then
-	      docker-compose -f $DOCKER_DIR/docker-compose.yml down
-        exit $result
-	fi
+DOCKER_COMPOSE_CMD="docker-compose"
+
+if [ "$(docker compose version > /dev/null; echo $?)" -eq 0 ]; then
+  DOCKER_COMPOSE_CMD="docker compose"
+fi
+
+$DOCKER_COMPOSE_CMD -f "$DOCKER_DIR"/docker-compose.yml up -d
+bash -f "$DOCKER_DIR"/docker-health-check.sh
+for ((i = 0; i < ${#array[*]}; i++)); do
+  ./integrate_test.sh "${array[i]}"
+  result=$?
+  if [ $result -gt 0 ]; then
+    $DOCKER_COMPOSE_CMD -f "$DOCKER_DIR"/docker-compose.yml down
+    exit $result
+  fi
 done
-docker-compose -f $DOCKER_DIR/docker-compose.yml down
+$DOCKER_COMPOSE_CMD -f "$DOCKER_DIR"/docker-compose.yml down
