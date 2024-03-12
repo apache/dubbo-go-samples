@@ -57,7 +57,7 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
 
 ### Run server
 ```shell
-go run ./server/main.go
+go run ./go-server/cmd/main.go
 ```
 
 test server work as expected:
@@ -70,7 +70,7 @@ curl \
 
 ### Run client
 ```shell
-go run ./client/main.go
+go run ./go-client/cmd/main.go
 ```
 
 [Quick Start]: https://dubbo-next.staged.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/
