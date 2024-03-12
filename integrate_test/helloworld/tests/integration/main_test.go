@@ -18,10 +18,11 @@
 package integration
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/client"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 	"os"
 	"testing"
+
+	"dubbo.apache.org/dubbo-go/v3/client"
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )

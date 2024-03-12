@@ -2,7 +2,7 @@
 
 ## 1. 介绍
 
-This example shows dubbo-go's dynamic configuration feature with Zookeeper as config-center.
+本示例演示Dubbo-Go以ZooKeeper为配置中心来实现动态配置功能
 
 ## 2. 如何运行
 
@@ -25,7 +25,7 @@ dubbo:
         interface: com.apache.dubbo.sample.basic.IGreeter
 ```
 
-Open the local zookeeper client to see if the configuration is successful
+打开本地ZooKeeper客户端查看配置是否成功
 
 ### 以zookeeper作为配置中心启动一个实例
 
@@ -60,11 +60,13 @@ if err := srv.Serve(); err != nil {
 ```
 
 ### 启动客户端
+
 ```shell
 $ go run ./go-client/cmd/main.go
 ```
 
 ### 预期的输出
+
 ```
 Greet response: greeting:"hello world"
 ```

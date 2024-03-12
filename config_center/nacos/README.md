@@ -25,6 +25,8 @@ dubbo:
         interface: com.apache.dubbo.sample.basic.IGreeter
 ```
 
+Open `https://localhost:8848/nacos/` with browser, make sure the relevant configuration is already in place in nacos.
+
 ### Start an instance with nacos as the configuration center
 
 ```go
@@ -58,11 +60,13 @@ if err := srv.Serve(); err != nil {
 ```
 
 ### Run client
+
 ```shell
 $ go run ./go-client/cmd/main.go
 ```
 
 ### Expect output
+
 ```
 Greet response: greeting:"hello world"
 ```

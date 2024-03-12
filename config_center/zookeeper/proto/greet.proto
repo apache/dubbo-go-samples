@@ -19,7 +19,7 @@ syntax = "proto3";
 
 package greet;
 
-option go_package = "github.com/apache/dubbo-go-samples/context/proto;greet";
+option go_package = "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto;greet";
 
 message GreetRequest {
   string name = 1;

@@ -35,10 +35,10 @@ dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeepe
 addressOption := config_center.WithAddress("127.0.0.1:2181")
 groupOption := config_center.WithGroup("dubbogo")
 ins, err := dubbo.NewInstance(
-dubbo.WithConfigCenter(zkOption, dataIdOption, addressOption, groupOption),
+    dubbo.WithConfigCenter(zkOption, dataIdOption, addressOption, groupOption),
 )
 if err != nil {
-panic(err)
+    panic(err)
 }
 ```
 
@@ -47,15 +47,15 @@ panic(err)
 ```go
 srv, err := ins.NewServer()
 if err != nil {
-panic(err)
+    panic(err)
 }
 
 if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-panic(err)
+    panic(err)
 }
 
 if err := srv.Serve(); err != nil {
-logger.Error(err)
+    logger.Error(err)
 }
 ```
 
