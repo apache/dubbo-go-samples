@@ -19,19 +19,27 @@ package main
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 	"github.com/dubbogo/gost/log/logger"
+	"os"
 	"time"
 
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/metrics"
 
-	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
 func main() {
+	zookeeper := os.Getenv("ZOOKEEPER_ADDRESS")
+	if zookeeper == "" {
+		zookeeper = "localhost"
+	}
 	ins, err := dubbo.NewInstance(
+		dubbo.WithRegistry(
+			registry.WithAddress("zookeeper://"+zookeeper+":2181"),
+		),
 		dubbo.WithMetrics(
 			metrics.WithEnabled(),
 			metrics.WithPrometheus(),                // set prometheus metric
@@ -57,9 +65,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	cli, err := ins.NewClient(
-		client.WithClientURL("127.0.0.1:20000"),
-	)
+	cli, err := ins.NewClient()
 	if err != nil {
 		panic(err)
 	}
@@ -76,5 +82,6 @@ func main() {
 		} else {
 			logger.Infof("Greet response: %s", resp.Greeting)
 		}
+		time.Sleep(100 * time.Millisecond)
 	}
 }

@@ -19,8 +19,10 @@ package main
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 	"github.com/pkg/errors"
 	"math/rand"
+	"os"
 	"time"
 
 	"dubbo.apache.org/dubbo-go/v3"
@@ -47,16 +49,23 @@ func (srv *GreetTripleServer) Greet(_ context.Context, req *greet.GreetRequest) 
 }
 
 func main() {
+	zookeeper := os.Getenv("ZOOKEEPER_ADDRESS")
+	if zookeeper == "" {
+		zookeeper = "localhost"
+	}
 	ins, err := dubbo.NewInstance(
+		dubbo.WithRegistry(
+			registry.WithAddress("zookeeper://"+zookeeper+":2181"),
+		),
 		dubbo.WithMetrics(
-			metrics.WithEnabled(),
-			metrics.WithPrometheus(),                // set prometheus metric
-			metrics.WithPrometheusExporterEnabled(), // enable prometheus exporter
-			metrics.WithPort(9099),                  // prometheus http exporter listen at 9099
-			metrics.WithPath("/prometheus"),         // prometheus http exporter url path
-			metrics.WithMetadataEnabled(),           // enable metadata center metrics
-			metrics.WithRegistryEnabled(),           // enable registry metrics
-			metrics.WithConfigCenterEnabled(),       // enable config center metrics
+			metrics.WithEnabled(),                   // default false
+			metrics.WithPrometheus(),                // set prometheus metric, default prometheus
+			metrics.WithPrometheusExporterEnabled(), // enable prometheus exporter default false
+			metrics.WithPort(9099),                  // prometheus http exporter listen at 9099,default 9090
+			metrics.WithPath("/prometheus"),         // prometheus http exporter url path, default /metrics
+			metrics.WithMetadataEnabled(),           // enable metadata center metrics, default true
+			metrics.WithRegistryEnabled(),           // enable registry metrics, default true
+			metrics.WithConfigCenterEnabled(),       // enable config center metrics, default true
 
 			metrics.WithPrometheusPushgatewayEnabled(), // enable prometheus pushgateway
 			metrics.WithPrometheusGatewayUsername("username"),
@@ -65,7 +74,7 @@ func main() {
 			metrics.WithPrometheusGatewayInterval(time.Second*10),
 			metrics.WithPrometheusGatewayJob("push"), // set a metric job label, job=push to metric
 
-			metrics.WithAggregationEnabled(), // enable rpc metrics aggregations，Most of the time there is no need to turn it on
+			metrics.WithAggregationEnabled(), // enable rpc metrics aggregations，Most of the time there is no need to turn it on, default false
 			metrics.WithAggregationTimeWindowSeconds(30),
 			metrics.WithAggregationBucketNum(10), // agg bucket num
 		),
