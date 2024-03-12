@@ -602,6 +602,8 @@ dubbo.apache.org/dubbo-go/v3 v3.0.2-0.20220508105316-b27ec53b7bab/go.mod h1:Ytn9
 dubbo.apache.org/dubbo-go/v3 v3.0.2/go.mod h1:bODgByAf72kzG/5YIfZIODXx81pY3gaAdIQ8B4mN/Yk=
 dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20240202021041-198504bb0029 h1:+5r/DyxObRS5gUkyyojGBl/QHs8zIkmX45F0hTjciL4=
 dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20240202021041-198504bb0029/go.mod h1:Aq4YRQHYH5rF6NpeYzPfjTdwhVTOBd5BhdXXstl7EZE=
+dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1 h1:31t/KezZ7R9TYpnsQkqSa15chW3UxWEvn41erKmsvrc=
+dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1/go.mod h1:4otARIJhwkOBWdRMlOpWLCJ45LR2tu9GhtEkMU5kXyg=
 gioui.org v0.0.0-20210308172011-57750fc8a0a6/go.mod h1:RSH6KIUZ0p2xy5zHDxgAM4zumjgTw83q2ge/PI+yyw8=
 git.sr.ht/~sbinet/gg v0.3.1/go.mod h1:KGYtlADtqsqANL9ueOFkWymvzUvLMQllU5Ixo+8v3pc=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
