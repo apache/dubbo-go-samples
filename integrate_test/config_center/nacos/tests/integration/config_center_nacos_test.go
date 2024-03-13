@@ -18,30 +18,20 @@
 package integration
 
 import (
-	"os"
+	"context"
 	"testing"
 
-	"dubbo.apache.org/dubbo-go/v3/client"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
-
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	greet "github.com/apache/dubbo-go-samples/config_center/nacos/proto"
+	"github.com/stretchr/testify/assert"
 )
 
-var greeterProvider greet.GreetService
+func TestSayHello(t *testing.T) {
+	req := &greet.GreetRequest{Name: "hello world"}
 
-func TestMain(m *testing.M) {
-	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
-	)
-	if err != nil {
-		panic(err)
-	}
+	ctx := context.Background()
 
-	greeterProvider, err = greet.NewGreetService(cli)
+	reply, err := greeterProvider.Greet(ctx, req)
 
-	if err != nil {
-		panic(err)
-	}
-
-	os.Exit(m.Run())
+	assert.Nil(t, err)
+	assert.Equal(t, "hello world", reply.Greeting)
 }
