@@ -41,10 +41,9 @@ func main() {
 		dubbo.WithRegistry(
 			registry.WithNacos(),
 			registry.WithAddress("127.0.0.1:8848"),
-			registry.WithRegisterServiceAndInterface(),
 		),
 		dubbo.WithProtocol(
-			protocol.WithDubbo(),
+			protocol.WithTriple(),
 			protocol.WithPort(20022),
 		),
 	)
