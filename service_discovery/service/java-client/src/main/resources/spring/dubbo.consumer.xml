@@ -20,15 +20,15 @@
 
 
     <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
-    <dubbo:application name="greet-client" register-mode="APPLICATION_FIRST"/>
+    <dubbo:application name="greet-client" />
     <!-- 连接到哪个本地注册中心 -->
     <dubbo:registry id="dubbogo"  address="nacos://127.0.0.1:8848" />
-    <!-- dubbo.registry.address from dubbo.properties -->
+<!--     dubbo.registry.address from dubbo.properties -->
     <!-- dubbo:registry address="${dubbo.registry.address}" / -->
     <!-- 用dubbo协议在20880端口暴露服务 -->
     <dubbo:protocol id="tri" name="tri" />
     <!-- 声明需要使用的服务接口 -->
-    <dubbo:reference registry="dubbogo" check="true" id="greetService" protocol="dubbo" interface="org.apache.dubbo.samples.proto.GreetService">
+    <dubbo:reference registry="dubbogo" check="true" id="GreetService" protocol="tri" interface="org.apache.dubbo.samples.proto.GreetService">
     </dubbo:reference>
 
 </beans>
