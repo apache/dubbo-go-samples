@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option java_package = "org.apache.dubbo.samples.proto";
+option java_multiple_files = true;
+option java_outer_classname = "GreetProto";
+option objc_class_prefix = "HLW";
+
+package org.apache.dubbo.samples.proto;
+
+message GreetRequest {
+  string name = 1;
+}
+
+message GreetResponse {
+  string greeting = 1;
+}
+
+message SayHelloRequest{
+  string name = 1;
+}
+
+message SayHelloResponse{
+  string hello = 1;
+}
+
+service GreetService {
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
+  rpc SayHello(SayHelloRequest) returns (SayHelloResponse) {}
+}
