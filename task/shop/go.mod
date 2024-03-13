@@ -6,7 +6,7 @@ require (
 	dubbo.apache.org/dubbo-go/v3 v3.1.1-0.20240111064552-d21e6995a3c7
 	github.com/dubbogo/gost v1.14.0
 	github.com/gin-gonic/gin v1.9.1
-	google.golang.org/protobuf v1.30.0
+	google.golang.org/protobuf v1.33.0
 )
 
 require (
