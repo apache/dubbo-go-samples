@@ -23,17 +23,54 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
+	"github.com/alibaba/sentinel-golang/core/circuitbreaker"
 	"github.com/alibaba/sentinel-golang/core/flow"
-	greet "github.com/apache/dubbo-go-samples/filter/proto"
+	"github.com/alibaba/sentinel-golang/core/isolation"
+	"github.com/alibaba/sentinel-golang/util"
+	greet "github.com/apache/dubbo-go-samples/filter/proto/sentinel"
 	"github.com/dubbogo/gost/log/logger"
+	"github.com/pkg/errors"
+	"math/rand"
+	"time"
 )
+
+type stateChangeTestListener struct {
+}
+
+func (s *stateChangeTestListener) OnTransformToClosed(prev circuitbreaker.State, rule circuitbreaker.Rule) {
+	logger.Infof("rule.steategy: %+v, From %s to Closed, time: %d\n", rule.Strategy, prev.String(), util.CurrentTimeMillis())
+}
+
+func (s *stateChangeTestListener) OnTransformToOpen(prev circuitbreaker.State, rule circuitbreaker.Rule, snapshot interface{}) {
+	logger.Infof("rule.steategy: %+v, From %s to Open, snapshot: %.2f, time: %d\n", rule.Strategy, prev.String(), snapshot, util.CurrentTimeMillis())
+}
+
+func (s *stateChangeTestListener) OnTransformToHalfOpen(prev circuitbreaker.State, rule circuitbreaker.Rule) {
+	logger.Infof("rule.steategy: %+v, From %s to Half-Open, time: %d\n", rule.Strategy, prev.String(), util.CurrentTimeMillis())
+}
 
 type GreetTripleServer struct {
 }
 
-func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	resp := &greet.GreetResponse{Greeting: req.Name}
+func (srv *GreetTripleServer) Greet(ctx context.Context, request *greet.GreetRequest) (*greet.GreetResponse, error) {
+	time.Sleep(time.Duration(rand.Uint64()%80+20) * time.Millisecond)
+	resp := &greet.GreetResponse{Greeting: request.Name}
 	return resp, nil
+}
+
+func (srv *GreetTripleServer) GreetWithChanceOfError(ctx context.Context, request *greet.GreetRequest) (*greet.GreetResponse, error) {
+	if request.Name == "error" {
+		return nil, errors.New("greet, error")
+	}
+	return srv.Greet(ctx, request)
+}
+
+func (srv *GreetTripleServer) GreetWithQPSLimit(ctx context.Context, request *greet.GreetRequest) (*greet.GreetResponse, error) {
+	return srv.Greet(ctx, request)
+}
+
+func (srv *GreetTripleServer) GreetWithConcurrencyLimit(ctx context.Context, request *greet.GreetRequest) (*greet.GreetResponse, error) {
+	return srv.Greet(ctx, request)
 }
 
 func main() {
@@ -47,7 +84,7 @@ func main() {
 		panic(err)
 	}
 
-	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
+	if err = greet.RegisterSentinelGreetServiceHandler(srv, &GreetTripleServer{},
 		server.WithFilter(constant.SentinelProviderFilterKey),
 	); err != nil {
 		panic(err)
@@ -56,7 +93,7 @@ func main() {
 	// Limit the request flow processed by GreetService to 100QPS
 	_, err = flow.LoadRules([]*flow.Rule{
 		{
-			Resource: greet.GreetService_ServiceInfo.InterfaceName + "::",
+			Resource: "dubbo:provider:greet.SentinelGreetService:::GreetWithQPSLimit()",
 			// MetricType:             flow.QPS,
 			TokenCalculateStrategy: flow.Direct,
 			ControlBehavior:        flow.Reject,
@@ -67,6 +104,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	_, err = isolation.LoadRules([]*isolation.Rule{
+		{
+			Resource:   "dubbo:provider:greet.SentinelGreetService:::GreetWithConcurrencyLimit()",
+			MetricType: isolation.Concurrency,
+			Threshold:  100,
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
 	if err := srv.Serve(); err != nil {
 		logger.Error(err)
 	}
