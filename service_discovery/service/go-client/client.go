@@ -48,9 +48,7 @@ func main() {
 		panic(err)
 	}
 	// configure the params that only client layer cares
-	cli, err := ins.NewClient(
-		
-	)
+	cli, err := ins.NewClient()
 
 	if err != nil {
 		panic(err)

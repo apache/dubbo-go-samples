@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
+        System.setProperty("dubbo.application.register-mode", "instance");
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"/spring/dubbo.server.xml"});
         context.start();
         System.out.println("dubbo service started");
