@@ -15,22 +15,33 @@
 * limitations under the License.
 */
 
-    package org.apache.dubbo.samples.proto;
+package org.apache.dubbo.samples.proto;
 
-import com.google.protobuf.Message;
-import org.apache.dubbo.common.URL;
 import org.apache.dubbo.common.stream.StreamObserver;
-import org.apache.dubbo.rpc.*;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.rpc.Invoker;
+import org.apache.dubbo.rpc.PathResolver;
+import org.apache.dubbo.rpc.RpcException;
+import org.apache.dubbo.rpc.ServerService;
+import org.apache.dubbo.rpc.TriRpcStatus;
 import org.apache.dubbo.rpc.model.MethodDescriptor;
 import org.apache.dubbo.rpc.model.ServiceDescriptor;
 import org.apache.dubbo.rpc.model.StubMethodDescriptor;
 import org.apache.dubbo.rpc.model.StubServiceDescriptor;
-import org.apache.dubbo.rpc.stub.*;
+import org.apache.dubbo.rpc.stub.BiStreamMethodHandler;
+import org.apache.dubbo.rpc.stub.ServerStreamMethodHandler;
+import org.apache.dubbo.rpc.stub.StubInvocationUtil;
+import org.apache.dubbo.rpc.stub.StubInvoker;
+import org.apache.dubbo.rpc.stub.StubMethodHandler;
+import org.apache.dubbo.rpc.stub.StubSuppliers;
+import org.apache.dubbo.rpc.stub.UnaryStubMethodHandler;
+
+import com.google.protobuf.Message;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import java.util.concurrent.CompletableFuture;
 
 public final class DubboGreetServiceTriple {
 
@@ -52,38 +63,43 @@ public final class DubboGreetServiceTriple {
     }
 
     private static final StubMethodDescriptor greetMethod = new StubMethodDescriptor("Greet",
-    GreetRequest.class, GreetResponse.class, serviceDescriptor, MethodDescriptor.RpcType.UNARY,
-    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), GreetRequest::parseFrom,
-    GreetResponse::parseFrom);
+    org.apache.dubbo.samples.proto.GreetRequest.class, org.apache.dubbo.samples.proto.GreetResponse.class, MethodDescriptor.RpcType.UNARY,
+    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), org.apache.dubbo.samples.proto.GreetRequest::parseFrom,
+    org.apache.dubbo.samples.proto.GreetResponse::parseFrom);
 
     private static final StubMethodDescriptor greetAsyncMethod = new StubMethodDescriptor("Greet",
-    GreetRequest.class, CompletableFuture.class, serviceDescriptor, MethodDescriptor.RpcType.UNARY,
-    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), GreetRequest::parseFrom,
-    GreetResponse::parseFrom);
+    org.apache.dubbo.samples.proto.GreetRequest.class, java.util.concurrent.CompletableFuture.class, MethodDescriptor.RpcType.UNARY,
+    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), org.apache.dubbo.samples.proto.GreetRequest::parseFrom,
+    org.apache.dubbo.samples.proto.GreetResponse::parseFrom);
 
     private static final StubMethodDescriptor greetProxyAsyncMethod = new StubMethodDescriptor("GreetAsync",
-    GreetRequest.class, GreetResponse.class, serviceDescriptor, MethodDescriptor.RpcType.UNARY,
-    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), GreetRequest::parseFrom,
-    GreetResponse::parseFrom);
-
+    org.apache.dubbo.samples.proto.GreetRequest.class, org.apache.dubbo.samples.proto.GreetResponse.class, MethodDescriptor.RpcType.UNARY,
+    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), org.apache.dubbo.samples.proto.GreetRequest::parseFrom,
+    org.apache.dubbo.samples.proto.GreetResponse::parseFrom);
     private static final StubMethodDescriptor sayHelloMethod = new StubMethodDescriptor("SayHello",
-    SayHelloRequest.class, SayHelloResponse.class, serviceDescriptor, MethodDescriptor.RpcType.UNARY,
-    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), SayHelloRequest::parseFrom,
-    SayHelloResponse::parseFrom);
+    org.apache.dubbo.samples.proto.SayHelloRequest.class, org.apache.dubbo.samples.proto.SayHelloResponse.class, MethodDescriptor.RpcType.UNARY,
+    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), org.apache.dubbo.samples.proto.SayHelloRequest::parseFrom,
+    org.apache.dubbo.samples.proto.SayHelloResponse::parseFrom);
 
     private static final StubMethodDescriptor sayHelloAsyncMethod = new StubMethodDescriptor("SayHello",
-    SayHelloRequest.class, CompletableFuture.class, serviceDescriptor, MethodDescriptor.RpcType.UNARY,
-    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), SayHelloRequest::parseFrom,
-    SayHelloResponse::parseFrom);
+    org.apache.dubbo.samples.proto.SayHelloRequest.class, java.util.concurrent.CompletableFuture.class, MethodDescriptor.RpcType.UNARY,
+    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), org.apache.dubbo.samples.proto.SayHelloRequest::parseFrom,
+    org.apache.dubbo.samples.proto.SayHelloResponse::parseFrom);
 
     private static final StubMethodDescriptor sayHelloProxyAsyncMethod = new StubMethodDescriptor("SayHelloAsync",
-    SayHelloRequest.class, SayHelloResponse.class, serviceDescriptor, MethodDescriptor.RpcType.UNARY,
-    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), SayHelloRequest::parseFrom,
-    SayHelloResponse::parseFrom);
+    org.apache.dubbo.samples.proto.SayHelloRequest.class, org.apache.dubbo.samples.proto.SayHelloResponse.class, MethodDescriptor.RpcType.UNARY,
+    obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), org.apache.dubbo.samples.proto.SayHelloRequest::parseFrom,
+    org.apache.dubbo.samples.proto.SayHelloResponse::parseFrom);
 
 
 
 
+    static{
+        serviceDescriptor.addMethod(greetMethod);
+        serviceDescriptor.addMethod(greetProxyAsyncMethod);
+        serviceDescriptor.addMethod(sayHelloMethod);
+        serviceDescriptor.addMethod(sayHelloProxyAsyncMethod);
+    }
 
     public static class GreetServiceStub implements GreetService{
         private final Invoker<GreetService> invoker;
@@ -93,29 +109,27 @@ public final class DubboGreetServiceTriple {
         }
 
         @Override
-        public GreetResponse greet(GreetRequest request){
+        public org.apache.dubbo.samples.proto.GreetResponse greet(org.apache.dubbo.samples.proto.GreetRequest request){
             return StubInvocationUtil.unaryCall(invoker, greetMethod, request);
         }
 
-        public CompletableFuture<GreetResponse> greetAsync(GreetRequest request){
+        public CompletableFuture<org.apache.dubbo.samples.proto.GreetResponse> greetAsync(org.apache.dubbo.samples.proto.GreetRequest request){
             return StubInvocationUtil.unaryCall(invoker, greetAsyncMethod, request);
         }
 
-        @Override
-        public void greet(GreetRequest request, StreamObserver<GreetResponse> responseObserver){
+        public void greet(org.apache.dubbo.samples.proto.GreetRequest request, StreamObserver<org.apache.dubbo.samples.proto.GreetResponse> responseObserver){
             StubInvocationUtil.unaryCall(invoker, greetMethod , request, responseObserver);
         }
         @Override
-        public SayHelloResponse sayHello(SayHelloRequest request){
+        public org.apache.dubbo.samples.proto.SayHelloResponse sayHello(org.apache.dubbo.samples.proto.SayHelloRequest request){
             return StubInvocationUtil.unaryCall(invoker, sayHelloMethod, request);
         }
 
-        public CompletableFuture<SayHelloResponse> sayHelloAsync(SayHelloRequest request){
+        public CompletableFuture<org.apache.dubbo.samples.proto.SayHelloResponse> sayHelloAsync(org.apache.dubbo.samples.proto.SayHelloRequest request){
             return StubInvocationUtil.unaryCall(invoker, sayHelloAsyncMethod, request);
         }
 
-        @Override
-        public void sayHello(SayHelloRequest request, StreamObserver<SayHelloResponse> responseObserver){
+        public void sayHello(org.apache.dubbo.samples.proto.SayHelloRequest request, StreamObserver<org.apache.dubbo.samples.proto.SayHelloResponse> responseObserver){
             StubInvocationUtil.unaryCall(invoker, sayHelloMethod , request, responseObserver);
         }
 
@@ -141,6 +155,40 @@ public final class DubboGreetServiceTriple {
         }
 
         @Override
+        public CompletableFuture<org.apache.dubbo.samples.proto.GreetResponse> greetAsync(org.apache.dubbo.samples.proto.GreetRequest request){
+                return CompletableFuture.completedFuture(greet(request));
+        }
+        @Override
+        public CompletableFuture<org.apache.dubbo.samples.proto.SayHelloResponse> sayHelloAsync(org.apache.dubbo.samples.proto.SayHelloRequest request){
+                return CompletableFuture.completedFuture(sayHello(request));
+        }
+
+        /**
+        * This server stream type unary method is <b>only</b> used for generated stub to support async unary method.
+        * It will not be called if you are NOT using Dubbo3 generated triple stub and <b>DO NOT</b> implement this method.
+        */
+        public void greet(org.apache.dubbo.samples.proto.GreetRequest request, StreamObserver<org.apache.dubbo.samples.proto.GreetResponse> responseObserver){
+            greetAsync(request).whenComplete((r, t) -> {
+                if (t != null) {
+                    responseObserver.onError(t);
+                } else {
+                    responseObserver.onNext(r);
+                    responseObserver.onCompleted();
+                }
+            });
+        }
+        public void sayHello(org.apache.dubbo.samples.proto.SayHelloRequest request, StreamObserver<org.apache.dubbo.samples.proto.SayHelloResponse> responseObserver){
+            sayHelloAsync(request).whenComplete((r, t) -> {
+                if (t != null) {
+                    responseObserver.onError(t);
+                } else {
+                    responseObserver.onNext(r);
+                    responseObserver.onCompleted();
+                }
+            });
+        }
+
+        @Override
         public final Invoker<GreetService> getInvoker(URL url) {
             PathResolver pathResolver = url.getOrDefaultFrameworkModel()
             .getExtensionLoader(PathResolver.class)
@@ -152,13 +200,13 @@ public final class DubboGreetServiceTriple {
             pathResolver.addNativeStub( "/" + SERVICE_NAME + "/SayHello" );
             pathResolver.addNativeStub( "/" + SERVICE_NAME + "/SayHelloAsync" );
 
-            BiConsumer<GreetRequest, StreamObserver<GreetResponse>> greetFunc = this::greet;
+            BiConsumer<org.apache.dubbo.samples.proto.GreetRequest, StreamObserver<org.apache.dubbo.samples.proto.GreetResponse>> greetFunc = this::greet;
             handlers.put(greetMethod.getMethodName(), new UnaryStubMethodHandler<>(greetFunc));
-            BiConsumer<GreetRequest, StreamObserver<GreetResponse>> greetAsyncFunc = syncToAsync(this::greet);
+            BiConsumer<org.apache.dubbo.samples.proto.GreetRequest, StreamObserver<org.apache.dubbo.samples.proto.GreetResponse>> greetAsyncFunc = syncToAsync(this::greet);
             handlers.put(greetProxyAsyncMethod.getMethodName(), new UnaryStubMethodHandler<>(greetAsyncFunc));
-            BiConsumer<SayHelloRequest, StreamObserver<SayHelloResponse>> sayHelloFunc = this::sayHello;
+            BiConsumer<org.apache.dubbo.samples.proto.SayHelloRequest, StreamObserver<org.apache.dubbo.samples.proto.SayHelloResponse>> sayHelloFunc = this::sayHello;
             handlers.put(sayHelloMethod.getMethodName(), new UnaryStubMethodHandler<>(sayHelloFunc));
-            BiConsumer<SayHelloRequest, StreamObserver<SayHelloResponse>> sayHelloAsyncFunc = syncToAsync(this::sayHello);
+            BiConsumer<org.apache.dubbo.samples.proto.SayHelloRequest, StreamObserver<org.apache.dubbo.samples.proto.SayHelloResponse>> sayHelloAsyncFunc = syncToAsync(this::sayHello);
             handlers.put(sayHelloProxyAsyncMethod.getMethodName(), new UnaryStubMethodHandler<>(sayHelloAsyncFunc));
 
 
@@ -169,12 +217,12 @@ public final class DubboGreetServiceTriple {
 
 
         @Override
-        public GreetResponse greet(GreetRequest request){
+        public org.apache.dubbo.samples.proto.GreetResponse greet(org.apache.dubbo.samples.proto.GreetRequest request){
             throw unimplementedMethodException(greetMethod);
         }
 
         @Override
-        public SayHelloResponse sayHello(SayHelloRequest request){
+        public org.apache.dubbo.samples.proto.SayHelloResponse sayHello(org.apache.dubbo.samples.proto.SayHelloRequest request){
             throw unimplementedMethodException(sayHelloMethod);
         }
 

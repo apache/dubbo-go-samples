@@ -11,7 +11,7 @@ public interface SayHelloResponseOrBuilder extends
    * <code>string hello = 1;</code>
    * @return The hello.
    */
-  String getHello();
+  java.lang.String getHello();
   /**
    * <code>string hello = 1;</code>
    * @return The bytes for hello.

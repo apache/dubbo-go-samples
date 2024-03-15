@@ -42,7 +42,7 @@ public final class GreetProto {
   private static  com.google.protobuf.Descriptors.FileDescriptor
       descriptor;
   static {
-    String[] descriptorData = {
+    java.lang.String[] descriptorData = {
       "\n\013greet.proto\022\036org.apache.dubbo.samples." +
       "proto\"\034\n\014GreetRequest\022\014\n\004name\030\001 \001(\t\"!\n\rG" +
       "reetResponse\022\020\n\010greeting\030\001 \001(\t\"\037\n\017SayHel" +
@@ -65,25 +65,25 @@ public final class GreetProto {
     internal_static_org_apache_dubbo_samples_proto_GreetRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_apache_dubbo_samples_proto_GreetRequest_descriptor,
-        new String[] { "Name", });
+        new java.lang.String[] { "Name", });
     internal_static_org_apache_dubbo_samples_proto_GreetResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_org_apache_dubbo_samples_proto_GreetResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_apache_dubbo_samples_proto_GreetResponse_descriptor,
-        new String[] { "Greeting", });
+        new java.lang.String[] { "Greeting", });
     internal_static_org_apache_dubbo_samples_proto_SayHelloRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_org_apache_dubbo_samples_proto_SayHelloRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_apache_dubbo_samples_proto_SayHelloRequest_descriptor,
-        new String[] { "Name", });
+        new java.lang.String[] { "Name", });
     internal_static_org_apache_dubbo_samples_proto_SayHelloResponse_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_org_apache_dubbo_samples_proto_SayHelloResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_apache_dubbo_samples_proto_SayHelloResponse_descriptor,
-        new String[] { "Hello", });
+        new java.lang.String[] { "Hello", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

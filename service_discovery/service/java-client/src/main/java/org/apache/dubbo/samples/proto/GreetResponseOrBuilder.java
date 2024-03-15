@@ -11,7 +11,7 @@ public interface GreetResponseOrBuilder extends
    * <code>string greeting = 1;</code>
    * @return The greeting.
    */
-  String getGreeting();
+  java.lang.String getGreeting();
   /**
    * <code>string greeting = 1;</code>
    * @return The bytes for greeting.
