@@ -37,14 +37,15 @@ func (svr *GreetTripleServer) SayHello(ctx context.Context, req *greet.SayHelloR
 func main() {
 
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo-go-server"),
+		dubbo.WithName("dubbo-go-server-interface"),
 		dubbo.WithRegistry(
 			registry.WithNacos(),
 			registry.WithAddress("127.0.0.1:8848"),
+			registry.WithRegisterInterface(),
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(20021),
+			protocol.WithPort(20022),
 		),
 	)
 	if err != nil {
