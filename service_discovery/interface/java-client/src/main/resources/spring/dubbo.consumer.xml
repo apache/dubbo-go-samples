@@ -26,7 +26,7 @@
 <!--     dubbo.registry.address from dubbo.properties -->
     <!-- dubbo:registry address="${dubbo.registry.address}" / -->
     <!-- 用dubbo协议在20880端口暴露服务 -->
-    <dubbo:protocol id="tri" name="tri"  host="127.0.0.1" port="20990"/>
+    <dubbo:protocol id="tri" name="tri"  host="127.0.0.1" port="20047"/>
     <!-- 声明需要使用的服务接口 -->
     <dubbo:reference registry="dubbogo" check="true" id="GreetService" protocol="tri" interface="org.apache.dubbo.samples.proto.GreetService">
         <dubbo:method name="greet" async="false"/>
