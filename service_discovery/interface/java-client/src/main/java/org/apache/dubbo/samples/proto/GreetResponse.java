@@ -10,27 +10,29 @@ public final class GreetResponse extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:org.apache.dubbo.samples.proto.GreetResponse)
     GreetResponseOrBuilder {
-private static final long serialVersionUID = 0L;
+  private static final long serialVersionUID = 0L;
+
   // Use GreetResponse.newBuilder() to construct.
   private GreetResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
+
   private GreetResponse() {
     greeting_ = "";
   }
 
   @Override
-  @SuppressWarnings({"unused"})
+  @SuppressWarnings({ "unused" })
   protected Object newInstance(
       UnusedPrivateParameter unused) {
     return new GreetResponse();
   }
 
   @Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
+  public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
     return this.unknownFields;
   }
+
   private GreetResponse(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -39,8 +41,7 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new NullPointerException();
     }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
+    com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
       boolean done = false;
       while (!done) {
@@ -74,14 +75,13 @@ private static final long serialVersionUID = 0L;
       makeExtensionsImmutable();
     }
   }
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
+
+  public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
     return GreetProto.internal_static_org_apache_dubbo_samples_proto_GreetResponse_descriptor;
   }
 
   @Override
-  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internalGetFieldAccessorTable() {
+  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
     return GreetProto.internal_static_org_apache_dubbo_samples_proto_GreetResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             GreetResponse.class, Builder.class);
@@ -89,8 +89,10 @@ private static final long serialVersionUID = 0L;
 
   public static final int GREETING_FIELD_NUMBER = 1;
   private volatile Object greeting_;
+
   /**
    * <code>string greeting = 1;</code>
+   * 
    * @return The greeting.
    */
   @Override
@@ -99,25 +101,24 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof String) {
       return (String) ref;
     } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
+      com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
       String s = bs.toStringUtf8();
       greeting_ = s;
       return s;
     }
   }
+
   /**
    * <code>string greeting = 1;</code>
+   * 
    * @return The bytes for greeting.
    */
   @Override
-  public com.google.protobuf.ByteString
-      getGreetingBytes() {
+  public com.google.protobuf.ByteString getGreetingBytes() {
     Object ref = greeting_;
     if (ref instanceof String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (String) ref);
+      com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8(
+          (String) ref);
       greeting_ = b;
       return b;
     } else {
@@ -126,11 +127,14 @@ private static final long serialVersionUID = 0L;
   }
 
   private byte memoizedIsInitialized = -1;
+
   @Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
-    if (isInitialized == 1) return true;
-    if (isInitialized == 0) return false;
+    if (isInitialized == 1)
+      return true;
+    if (isInitialized == 0)
+      return false;
 
     memoizedIsInitialized = 1;
     return true;
@@ -138,7 +142,7 @@ private static final long serialVersionUID = 0L;
 
   @Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
-                      throws java.io.IOException {
+      throws java.io.IOException {
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(greeting_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, greeting_);
     }
@@ -148,7 +152,8 @@ private static final long serialVersionUID = 0L;
   @Override
   public int getSerializedSize() {
     int size = memoizedSize;
-    if (size != -1) return size;
+    if (size != -1)
+      return size;
 
     size = 0;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(greeting_)) {
@@ -162,7 +167,7 @@ private static final long serialVersionUID = 0L;
   @Override
   public boolean equals(final Object obj) {
     if (obj == this) {
-     return true;
+      return true;
     }
     if (!(obj instanceof GreetResponse)) {
       return super.equals(obj);
@@ -170,8 +175,10 @@ private static final long serialVersionUID = 0L;
     GreetResponse other = (GreetResponse) obj;
 
     if (!getGreeting()
-        .equals(other.getGreeting())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+        .equals(other.getGreeting()))
+      return false;
+    if (!unknownFields.equals(other.unknownFields))
+      return false;
     return true;
   }
 
@@ -194,38 +201,45 @@ private static final long serialVersionUID = 0L;
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static GreetResponse parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static GreetResponse parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static GreetResponse parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static GreetResponse parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static GreetResponse parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static GreetResponse parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
+
   public static GreetResponse parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -233,11 +247,13 @@ private static final long serialVersionUID = 0L;
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
+
   public static GreetResponse parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
+
   public static GreetResponse parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -245,12 +261,14 @@ private static final long serialVersionUID = 0L;
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
+
   public static GreetResponse parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
+
   public static GreetResponse parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -260,17 +278,23 @@ private static final long serialVersionUID = 0L;
   }
 
   @Override
-  public Builder newBuilderForType() { return newBuilder(); }
+  public Builder newBuilderForType() {
+    return newBuilder();
+  }
+
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
+
   public static Builder newBuilder(GreetResponse prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
+
   @Override
   public Builder toBuilder() {
     return this == DEFAULT_INSTANCE
-        ? new Builder() : new Builder().mergeFrom(this);
+        ? new Builder()
+        : new Builder().mergeFrom(this);
   }
 
   @Override
@@ -279,6 +303,7 @@ private static final long serialVersionUID = 0L;
     Builder builder = new Builder(parent);
     return builder;
   }
+
   /**
    * Protobuf type {@code org.apache.dubbo.samples.proto.GreetResponse}
    */
@@ -286,14 +311,12 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:org.apache.dubbo.samples.proto.GreetResponse)
       GreetResponseOrBuilder {
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
       return GreetProto.internal_static_org_apache_dubbo_samples_proto_GreetResponse_descriptor;
     }
 
     @Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable internalGetFieldAccessorTable() {
       return GreetProto.internal_static_org_apache_dubbo_samples_proto_GreetResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               GreetResponse.class, Builder.class);
@@ -309,11 +332,12 @@ private static final long serialVersionUID = 0L;
       super(parent);
       maybeForceBuilderInitialization();
     }
+
     private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
+      if (com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders) {
       }
     }
+
     @Override
     public Builder clear() {
       super.clear();
@@ -323,8 +347,7 @@ private static final long serialVersionUID = 0L;
     }
 
     @Override
-    public com.google.protobuf.Descriptors.Descriptor
-        getDescriptorForType() {
+    public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
       return GreetProto.internal_static_org_apache_dubbo_samples_proto_GreetResponse_descriptor;
     }
 
@@ -354,38 +377,44 @@ private static final long serialVersionUID = 0L;
     public Builder clone() {
       return super.clone();
     }
+
     @Override
     public Builder setField(
         com.google.protobuf.Descriptors.FieldDescriptor field,
         Object value) {
       return super.setField(field, value);
     }
+
     @Override
     public Builder clearField(
         com.google.protobuf.Descriptors.FieldDescriptor field) {
       return super.clearField(field);
     }
+
     @Override
     public Builder clearOneof(
         com.google.protobuf.Descriptors.OneofDescriptor oneof) {
       return super.clearOneof(oneof);
     }
+
     @Override
     public Builder setRepeatedField(
         com.google.protobuf.Descriptors.FieldDescriptor field,
         int index, Object value) {
       return super.setRepeatedField(field, index, value);
     }
+
     @Override
     public Builder addRepeatedField(
         com.google.protobuf.Descriptors.FieldDescriptor field,
         Object value) {
       return super.addRepeatedField(field, value);
     }
+
     @Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof GreetResponse) {
-        return mergeFrom((GreetResponse)other);
+        return mergeFrom((GreetResponse) other);
       } else {
         super.mergeFrom(other);
         return this;
@@ -393,7 +422,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public Builder mergeFrom(GreetResponse other) {
-      if (other == GreetResponse.getDefaultInstance()) return this;
+      if (other == GreetResponse.getDefaultInstance())
+        return this;
       if (!other.getGreeting().isEmpty()) {
         greeting_ = other.greeting_;
         onChanged();
@@ -428,15 +458,16 @@ private static final long serialVersionUID = 0L;
     }
 
     private Object greeting_ = "";
+
     /**
      * <code>string greeting = 1;</code>
+     * 
      * @return The greeting.
      */
     public String getGreeting() {
       Object ref = greeting_;
       if (!(ref instanceof String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         greeting_ = s;
         return s;
@@ -444,64 +475,71 @@ private static final long serialVersionUID = 0L;
         return (String) ref;
       }
     }
+
     /**
      * <code>string greeting = 1;</code>
+     * 
      * @return The bytes for greeting.
      */
-    public com.google.protobuf.ByteString
-        getGreetingBytes() {
+    public com.google.protobuf.ByteString getGreetingBytes() {
       Object ref = greeting_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+        com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8(
+            (String) ref);
         greeting_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
+
     /**
      * <code>string greeting = 1;</code>
+     * 
      * @param value The greeting to set.
      * @return This builder for chaining.
      */
     public Builder setGreeting(
         String value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        throw new NullPointerException();
+      }
+
       greeting_ = value;
       onChanged();
       return this;
     }
+
     /**
      * <code>string greeting = 1;</code>
+     * 
      * @return This builder for chaining.
      */
     public Builder clearGreeting() {
-      
+
       greeting_ = getDefaultInstance().getGreeting();
       onChanged();
       return this;
     }
+
     /**
      * <code>string greeting = 1;</code>
+     * 
      * @param value The bytes for greeting to set.
      * @return This builder for chaining.
      */
     public Builder setGreetingBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+        throw new NullPointerException();
+      }
+      checkByteStringIsUtf8(value);
+
       greeting_ = value;
       onChanged();
       return this;
     }
+
     @Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -513,7 +551,6 @@ private static final long serialVersionUID = 0L;
         final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.mergeUnknownFields(unknownFields);
     }
-
 
     // @@protoc_insertion_point(builder_scope:org.apache.dubbo.samples.proto.GreetResponse)
   }
@@ -528,8 +565,7 @@ private static final long serialVersionUID = 0L;
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<GreetResponse>
-      PARSER = new com.google.protobuf.AbstractParser<GreetResponse>() {
+  private static final com.google.protobuf.Parser<GreetResponse> PARSER = new com.google.protobuf.AbstractParser<GreetResponse>() {
     @Override
     public GreetResponse parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
@@ -554,4 +590,3 @@ private static final long serialVersionUID = 0L;
   }
 
 }
-

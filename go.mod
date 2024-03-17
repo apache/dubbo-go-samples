@@ -12,7 +12,6 @@ require (
 	github.com/dubbogo/triple v1.2.2-rc3
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/protobuf v1.5.4
-
 	github.com/nacos-group/nacos-sdk-go/v2 v2.2.2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
