@@ -26,13 +26,12 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 public class Main {
-    private static GreetService greetService;
 
     public static void main(String[] args) throws InterruptedException, IOException {
         System.setProperty("dubbo.application.service-discovery.migration", "APPLICATION_FIRST");
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 new String[] { "/spring/dubbo.consumer.xml" });
-        greetService = (GreetService) context.getBean("GreetService");
+        GreetService greetService = (GreetService) context.getBean("GreetService");
         GreetRequest req = GreetRequest.newBuilder().setName("Mamba").build();
         System.out.println("dubbo ref started");
         GreetResponse greet = greetService.greet(req);
