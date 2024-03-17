@@ -19,12 +19,8 @@ package main
 
 import (
 	"context"
-	// "time"
 
 	"dubbo.apache.org/dubbo-go/v3"
-	// "dubbo.apache.org/dubbo-go/v3/config"
-
-	_ "dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	greet "github.com/apache/dubbo-go-samples/service_discovery/service/proto"
@@ -41,8 +37,6 @@ func main() {
 			registry.WithNacos(),
 			registry.WithAddress("127.0.0.1:8848"),
 		),
-
-		// dubbo.WithMetadataReport(metadata.WithMetadata())),
 	)
 	if err != nil {
 		panic(err)
@@ -65,5 +59,4 @@ func main() {
 		logger.Error(err)
 	}
 	logger.Infof("Greet response: %s", resp)
-	// select {}
 }

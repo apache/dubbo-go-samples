@@ -4,12 +4,9 @@ import (
 	"context"
 
 	"dubbo.apache.org/dubbo-go/v3"
-	// "dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-
 	greet "github.com/apache/dubbo-go-samples/service_discovery/service/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
@@ -20,13 +17,6 @@ type GreetTripleServer struct {
 func (svr *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	resp := &greet.GreetResponse{Greeting: req.Name}
 	return resp, nil
-}
-
-func (s *GreetTripleServer) MethodMapper() map[string]string {
-	return map[string]string{
-		"Greet":    "greet",
-		"SayHello": "sayHello",
-	}
 }
 
 func (svr *GreetTripleServer) SayHello(ctx context.Context, req *greet.SayHelloRequest) (*greet.SayHelloResponse, error) {
