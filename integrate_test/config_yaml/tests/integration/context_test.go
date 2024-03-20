@@ -15,42 +15,23 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
+
+	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
+	"github.com/dubbogo/gost/log/logger"
+	"github.com/stretchr/testify/assert"
 )
 
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
+func TestSayHello(t *testing.T) {
+	req := &greet.GreetRequest{Name: "ConfigTest"}
 
-	"github.com/dubbogo/gost/log"
-)
+	reply, err := greeterProvider.Greet(context.Background(), req)
 
-import (
-	pb "github.com/apache/dubbo-go-samples/compatibility/rpc/grpc/protobuf"
-)
-
-var grpcGreeterImpl = new(pb.GreeterClientImpl)
-
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
-}
-
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
-func main() {
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
-		Name: "xujianhai",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("client response result: %v\n", reply)
+	assert.Nil(t, err)
+	logger.Debug(reply)
+	assert.Equal(t, "ConfigTest-Success", reply.Greeting)
 }

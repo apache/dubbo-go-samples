@@ -1,0 +1,15 @@
+# dubbo server yaml configure file
+dubbo:
+  registries:
+    demoZK:
+      protocol: zookeeper
+      timeout: 10s
+      address: 127.0.0.1:2181
+  protocols:
+    tripleProtocol:
+      name: tri
+      port: 20000
+  provider:
+    services:
+      GreetTripleServer:
+        interface: com.apache.dubbo.sample.Greeter

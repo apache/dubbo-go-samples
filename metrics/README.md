@@ -28,6 +28,7 @@ curl \
 go run ./go-client/cmd/main.go
 ```
 
+## deploy to local
 install prometheus and open prometheus config file `prometheus.yml`, write the config like this
 
 ```yaml
@@ -65,7 +66,7 @@ open 【Home / Dashboards 】click 【New】【import】and enter 19294 click Lo
 
 ![import](./assert/import.png)
 
-if you can't access internet you can open `https://grafana.com/grafana/dashboards/19294-dubbo-observability/` and click 【Download JSON】
+if your grafana can't access internet you can open `https://grafana.com/grafana/dashboards/19294-dubbo-observability/` and click 【Download JSON】
 
 paste the JSON
 
@@ -76,3 +77,63 @@ paste the JSON
 click 【Import】button and you will see the Dubbo Observability dashboard,enjoy it
 
 ![databoard](./assert/dashboard.png)
+
+## Deploy to Kubernetes
+
+#### kube-prometheus
+
+install prometheus in k8s [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus)
+
+Set `prometheus-service.yaml` type to NodePort
+
+1. add `dubboPodMoitor.yaml` to  `kube-prometheus` `manifests` dir, The content is as follows
+ ```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: podmonitor
+  labels:
+    app: podmonitor
+  namespace: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - dubbo-system
+  selector:
+    matchLabels:
+      app-type: dubbo
+  podMetricsEndpoints:
+    - port: metrics # ref to dubbo-app port name metrics
+      path: /prometheus
+---
+# rbac
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: dubbo-system
+  name: pod-reader
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+
+---
+# rbac
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-reader-binding
+  namespace: dubbo-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pod-reader
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-k8s
+    namespace: monitoring
+```
+2. `kubectl apply -f Deployment.yaml`
+3. open prometheus web page such as http://localhost:9090/targets
+   ![podmonitor.png](./assert/podmonitor.png)
+

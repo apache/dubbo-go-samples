@@ -19,38 +19,32 @@ package main
 
 import (
 	"context"
-)
+	"errors"
+	"fmt"
 
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/dubbogo/gost/log"
+	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
 )
 
-import (
-	pb "github.com/apache/dubbo-go-samples/compatibility/rpc/grpc/protobuf"
-)
-
-var grpcGreeterImpl = new(pb.GreeterClientImpl)
-
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
+type GreetTripleServer struct {
 }
 
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
-func main() {
-	if err := config.Load(); err != nil {
-		panic(err)
+func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	name := req.Name
+	if name != "ConfigTest" {
+		errInfo := fmt.Sprintf("name is not right: %s", name)
+		return nil, errors.New(errInfo)
 	}
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
-		Name: "xujianhai",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
-	if err != nil {
+	resp := &greet.GreetResponse{Greeting: req.Name + "-Success"}
+	return resp, nil
+}
+
+func main() {
+	greet.SetProviderService(&GreetTripleServer{})
+	if err := dubbo.Load(); err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("client response result: %v\n", reply)
+	select {}
 }
