@@ -17,12 +17,12 @@
 
 package org.apache.dubbo.samples;
 
+import java.io.IOException;
+
 import org.apache.dubbo.samples.proto.GreetRequest;
 import org.apache.dubbo.samples.proto.GreetResponse;
 import org.apache.dubbo.samples.proto.GreetService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.io.IOException;
 
 public class Main {
 
