@@ -23,7 +23,6 @@ import org.apache.dubbo.samples.proto.GreetService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
 
 public class Main {
 

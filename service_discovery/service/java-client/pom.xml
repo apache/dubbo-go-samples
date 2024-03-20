@@ -51,17 +51,6 @@
             <artifactId>dubbo-registry-nacos</artifactId>
             <version>${dubbo.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-api</artifactId>-->
-<!--            <version>1.6.4</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-log4j12</artifactId>-->
-<!--            <version>1.6.4</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.alibaba.nacos</groupId>
             <artifactId>nacos-client</artifactId>
@@ -105,43 +94,6 @@
             <version>${log4j2.version}</version>
         </dependency>
     </dependencies>
-
-
-<!--    <build>-->
-<!--        <extensions>-->
-<!--            <extension>-->
-<!--                <groupId>kr.motd.maven</groupId>-->
-<!--                <artifactId>os-maven-plugin</artifactId>-->
-<!--                <version>1.6.1</version>-->
-<!--            </extension>-->
-<!--        </extensions>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.xolstice.maven.plugins</groupId>-->
-<!--                <artifactId>protobuf-maven-plugin</artifactId>-->
-<!--                <version>0.6.1</version>-->
-<!--                <configuration>-->
-<!--                    <protocArtifact>com.google.protobuf:protoc:3.19.4:exe:${os.detected.classifier}</protocArtifact>-->
-<!--                    <protocPlugins>-->
-<!--                        <protocPlugin>-->
-<!--                            <id>dubbo</id>-->
-<!--                            <groupId>org.apache.dubbo</groupId>-->
-<!--                            <artifactId>dubbo-compiler</artifactId>-->
-<!--                            <version>${dubbo.version}</version>-->
-<!--                            <mainClass>org.apache.dubbo.gen.tri.Dubbo3TripleGenerator</mainClass>-->
-<!--                        </protocPlugin>-->
-<!--                    </protocPlugins>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>compile</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
     <build>
         <plugins>
             <plugin>
@@ -152,6 +104,29 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
+            </plugin>
+             <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+                    <java>
+                        <googleJavaFormat>
+                        <version>1.7</version>
+                        <style>GOOGLE</style>
+                        </googleJavaFormat>
+                        <removeUnusedImports/>
+                    </java>
+                    <lineEndings>UNIX</lineEndings>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                        <goal>apply</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
