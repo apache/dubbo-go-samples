@@ -29,7 +29,7 @@ import (
 
 func main() {
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_multirpc_triple_client"),
+		dubbo.WithName("dubbo_multirpc_client"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
@@ -38,44 +38,28 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//test triple
-	cliTriple, err := ins.NewClient(
-		client.WithClientProtocolTriple(),
-	)
-	if err != nil {
-		panic(err)
-	}
-	svc, err := greet.NewGreetService(cliTriple)
+	cli, err := ins.NewClient()
 	if err != nil {
 		panic(err)
 	}
 
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	//Triple
+	client.WithProtocolTriple()
+	svc, err := greet.NewGreetService(cli)
+	if err != nil {
+		panic(err)
+	}
+
+	respTriple, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
 		logger.Error(err)
 	}
-	logger.Infof("Greet multirpc response: %s", resp)
+	logger.Infof("Greet triple response: %s", respTriple.Greeting)
 
-	//test dubbo
-	ins_dubbo, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_multirpc_dubbo_client"),
-		dubbo.WithRegistry(
-			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
-		),
-	)
-	if err != nil {
-		panic(err)
-	}
-	cli_dubbo, err := ins_dubbo.NewClient(
-		client.WithClientProtocolDubbo(),
-		client.WithClientSerialization(constant.Hessian2Serialization),
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	connDubbo, err := cli_dubbo.Dial("GreetProvider")
+	//Duboo
+	client.WithProtocolDubbo()
+	client.WithClientSerialization(constant.Hessian2Serialization)
+	connDubbo, err := cli.Dial("GreetProvider")
 	if err != nil {
 		panic(err)
 	}
@@ -84,28 +68,12 @@ func main() {
 		logger.Errorf("GreetProvider.Greet err: %s", err)
 		return
 	}
-	logger.Infof("Get Response: %s", respDubbo)
+	logger.Infof("Get dubbo Response: %s", respDubbo)
 
-	//test json rpc
-	insJsonRpc, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_multirpc_jsonrpc_client"),
-		dubbo.WithRegistry(
-			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
-		),
-	)
-	if err != nil {
-		panic(err)
-	}
-	cliJsonRpc, err := insJsonRpc.NewClient(
-		client.WithClientProtocolJsonRPC(),
-		client.WithClientSerialization(constant.Hessian2Serialization),
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	connJsonRpc, err := cliJsonRpc.Dial("GreetProvider")
+	//JsonRpc
+	client.WithProtocolJsonRPC()
+	client.WithClientSerialization(constant.Hessian2Serialization)
+	connJsonRpc, err := cli.Dial("GreetProvider")
 	if err != nil {
 		panic(err)
 	}
@@ -114,6 +82,5 @@ func main() {
 		logger.Errorf("GreetProvider.Greet err: %s", err)
 		return
 	}
-	logger.Infof("Get Response: %s", respJsonRpc)
-
+	logger.Infof("Get jsonrpc Response: %s", respJsonRpc)
 }

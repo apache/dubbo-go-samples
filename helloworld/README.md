@@ -1,4 +1,4 @@
-# Helloworld for dubbo-go
+# MultiRpc for dubbo-go
 
 This example demonstrates the basic usage of dubbo-go as an RPC framework. Check [Quick Start][] on our official website for detailed explanation.
 
