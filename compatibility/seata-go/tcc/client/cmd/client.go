@@ -24,7 +24,9 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
 	"github.com/dubbogo/gost/log/logger"
+
 	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/tm"
