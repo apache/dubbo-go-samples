@@ -20,13 +20,13 @@ package main
 import (
 	"context"
 
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/apache/dubbo-go-samples/compatibility/seata-go/tcc/client/service"
 	"github.com/dubbogo/gost/log/logger"
 	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
-	"github.com/seata/seata-go/pkg/rm/tcc"
 	"github.com/seata/seata-go/pkg/tm"
 )
 
@@ -34,47 +34,54 @@ import (
 // and run "seata-go/tcc/server/cmd/server.go" before run
 func main() {
 	integration.UseDubbo()
-	config.SetConsumerService(service.UserProviderInstance)
-	err := config.Load()
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_seata_client"),
+	)
 	if err != nil {
 		panic(err)
 	}
-	// dubbo.SetConsumerServiceWithInfo(service.UserProviderInstance, &client.ClientInfo{
-	// 	InterfaceName: "UserProvider",
-	// 	ConnectionInjectFunc: func(dubboCliRaw interface{}, conn *client.Connection) {
-	//
-	// 	},
-	// })
-	// if err := dubbo.Load(); err != nil {
-	// 	panic(err)
-	// }
-	// _, err := client.NewClient(
-	// 	client.WithClientURL("127.0.0.1:20000"),
-	// )
-	// if err != nil {
-	// 	panic(err)
-	// }
-	test()
+	cli, err := ins.NewClient(
+		client.WithClientURL("127.0.0.1:20000"),
+		client.WithClientProtocolDubbo(),
+	)
+	if err != nil {
+		panic(err)
+	}
+	conn, err := cli.Dial("UserProvider", client.WithSerialization(constant.Hessian2Serialization))
+	if err != nil {
+		panic(err)
+	}
+	test(conn)
 }
 
-func test() {
+func test(conn *client.Connection) {
 	var err error
 	ctx := tm.Begin(context.Background(), "TestTCCServiceBusiness")
 	defer func() {
-		resp := tm.CommitOrRollback(ctx, err == nil)
+		resp := CommitOrRollback(conn, ctx, err == nil)
 		logger.Infof("tx result %v", resp)
 		<-make(chan struct{})
 	}()
-
-	userProviderProxy, err := tcc.NewTCCServiceProxy(service.UserProviderInstance)
+	var resp string
+	err = conn.CallUnary(context.Background(), []interface{}{ctx, 1}, &resp, "Prepare")
 	if err != nil {
-		logger.Infof("userProviderProxyis not tcc service")
-		return
-	}
-	resp, err := userProviderProxy.Prepare(ctx, 1)
-	if err != nil {
-		logger.Infof("response prepare: %v", err)
+		logger.Errorf("response prepare: %v", err)
 		return
 	}
 	logger.Infof("get resp %#v", resp)
+}
+
+func CommitOrRollback(conn *client.Connection, ctx context.Context, isSuccess bool) (resp string) {
+	businessActionCtx := tm.GetBusinessActionContext(ctx)
+	if isSuccess {
+		if err := conn.CallUnary(context.Background(), []interface{}{ctx, businessActionCtx}, &resp, "Commit"); err != nil {
+			logger.Errorf("response commit", err)
+			return
+		}
+	}
+	if err := conn.CallUnary(context.Background(), []interface{}{ctx, businessActionCtx}, &resp, "Rollback"); err != nil {
+		logger.Errorf("response Rollback", err)
+		return
+	}
+	return
 }

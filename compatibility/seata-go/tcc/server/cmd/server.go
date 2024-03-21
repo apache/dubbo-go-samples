@@ -18,24 +18,19 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
-
 	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	"github.com/dubbogo/gost/log/logger"
+	"github.com/apache/dubbo-go-samples/compatibility/seata-go/tcc/client/service"
 
-	"github.com/apache/dubbo-go-samples/compatibility/seata-go/tcc/server/service"
+	"github.com/dubbogo/gost/log/logger"
 	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
 )
 
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/server/conf/dubbogo.yml" before run
 func main() {
 	integration.UseDubbo()
 	userProviderProxy, err := tcc.NewTCCServiceProxy(&service.UserProvider{})
@@ -49,39 +44,25 @@ func main() {
 		logger.Errorf("userProviderProxy register resource error, %v", err.Error())
 		return
 	}
-	srv, err := server.NewServer()
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_seata_server"),
+	)
 	if err != nil {
 		panic(err)
 	}
-	srv.Register(userProviderProxy, &server.ServiceInfo{
-		InterfaceName: "UserProvider",
-	})
-	if err := dubbo.Load(); err != nil {
+	srv, err := ins.NewServer(
+		server.WithServerProtocol(
+			protocol.WithDubbo(),
+			protocol.WithPort(20000),
+		),
+	)
+	if err != nil {
 		panic(err)
 	}
-	// fmt.Println(userProviderProxy.Reference())
-
-	initSignal()
-}
-
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(time.Duration(int(3e9)), func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("provider app exit now...")
-			return
-		}
+	if err := srv.Register(userProviderProxy, &server.ServiceInfo{}, server.WithInterface("UserProvider"), server.WithSerialization(constant.Hessian2Serialization)); err != nil {
+		panic(err)
+	}
+	if err := srv.Serve(); err != nil {
+		panic(err)
 	}
 }
