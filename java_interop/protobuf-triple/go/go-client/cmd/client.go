@@ -34,13 +34,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if err != nil {
-		panic(err)
-	}
-
-	if err != nil {
-		panic(err)
-	}
 
 	svc, err := greet.NewGreeter(cli)
 	if err != nil {
