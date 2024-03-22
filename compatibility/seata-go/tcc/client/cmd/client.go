@@ -27,14 +27,15 @@ import (
 
 	"github.com/dubbogo/gost/log/logger"
 
-	cli "github.com/seata/seata-go/pkg/client"
+	_ "github.com/seata/seata-go/pkg/imports"
+	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/tm"
 )
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/client/conf/dubbogo.yml"
 // and run "seata-go/tcc/server/cmd/server.go" before run
 func main() {
-	cli.InitPath("../../../conf/seatago.yml")
+	integration.UseDubbo()
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("dubbo_seata_client"),
 	)
@@ -55,22 +56,15 @@ func main() {
 	test(conn)
 }
 
-type connection struct {
-	conn string
-}
-
 func test(conn *client.Connection) {
-	ctx := context.WithValue(context.Background(), connection{"conn"}, conn)
-	tm.WithGlobalTx(ctx, &tm.GtxConfig{
-		Name: "DubboGoSeataSampleLocalTx",
-	}, business)
+	ctx := tm.Begin(context.Background(), "TestTCCServiceBusiness")
+	business(ctx, conn)
 	<-make(chan struct{})
 }
 
-func business(ctx context.Context) (re error) {
+func business(ctx context.Context, conn *client.Connection) (re error) {
 	var resp bool
-	conn := ctx.Value(connection{"conn"}).(*client.Connection)
-	if re := conn.CallUnary(context.Background(), []interface{}{1}, &resp, "Prepare"); re != nil {
+	if re := conn.CallUnary(ctx, []interface{}{1}, &resp, "Prepare"); re != nil {
 		logger.Infof("response prepare: %v", re)
 	} else {
 		logger.Infof("get resp %#v", resp)

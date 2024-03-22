@@ -26,21 +26,20 @@ import (
 
 	"github.com/dubbogo/gost/log/logger"
 
-	"github.com/seata/seata-go/pkg/client"
+	_ "github.com/seata/seata-go/pkg/imports"
+	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
 
 	"github.com/apache/dubbo-go-samples/compatibility/seata-go/tcc/service"
 )
 
 func main() {
-	// set seata
-	client.InitPath("../../../conf/seatago.yml")
+	integration.UseDubbo()
 	userProviderProxy, err := tcc.NewTCCServiceProxy(&service.UserProvider{})
 	if err != nil {
 		logger.Errorf("get userProviderProxy tcc service proxy error, %v", err.Error())
 		return
 	}
-	// set dubbo
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("dubbo_seata_server"),
 	)

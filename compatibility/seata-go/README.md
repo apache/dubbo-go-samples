@@ -1,12 +1,5 @@
 # Seata-go tcc example
 
-## Dependency Version
-
-```text
-dubbo-go 3.2.0
-seata-go 1.2.0
-```
-
 ## How to run?
 
 1. Start the seata-server with the docker file.
