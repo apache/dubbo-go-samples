@@ -26,7 +26,7 @@ import (
 	greet "github.com/apache/dubbo-go-samples/java_interop/protobuf-triple/go/proto"
 )
 
-// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/rpc/triple/pb/dubbogo-java/go-client/conf/dubbogo.yml
+// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/java_interop/protobuf-triple/go/go-server/conf/dubbogo.yml
 
 type GreetTripleServer struct {
 }
@@ -48,17 +48,20 @@ func main() {
 			protocol.WithPort(50052),
 		),
 	)
-	// create a server with registry and protocol set above
+	if err != nil {
+		panic(err) // 确保这里进行了错误检查
+	}
+
 	srv, err := ins.NewServer()
 	if err != nil {
-		panic(err)
+		panic(err) // 这里也有错误检查，确保每次赋值后都检查了 err
 	}
-	// register a service to server
+
 	if err := greet.RegisterGreeterHandler(srv, &GreetTripleServer{}); err != nil {
-		panic(err)
+		panic(err) // 这里的错误处理也是正确的
 	}
-	// start the server
+
 	if err := srv.Serve(); err != nil {
-		panic(err)
+		panic(err) // 启动服务器的错误处理也没有问题
 	}
 }
