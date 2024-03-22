@@ -51,6 +51,7 @@
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
+                <outputDirectory>${project.basedir}/../build/protobuf/java</outputDirectory>
                 <version>0.6.1</version>
                 <configuration>
                     <!--suppress UnresolvedMavenProperty -->
