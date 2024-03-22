@@ -1,12 +1,19 @@
 # Seata-go tcc example
 
+## Dependency Version
+
+```text
+dubbo-go 3.2.0
+seata-go 1.2.0
+```
+
 ## How to run?
 
-1. Start the seata-server and zookeeper service with the docker file.
+1. Start the seata-server with the docker file.
 
    ```shell
-   cd seata-go/tcc
-   docker-compose -f docker-compose.yml up -d seata-server zookeeper
+   cd dockercompose
+   docker-compose -f docker-compose.yml up -d seata-server
    ```
 
 2. Just execute the main function under tcc/client/cmd and tcc/server/cmd directory.

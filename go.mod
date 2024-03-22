@@ -17,7 +17,7 @@ require (
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.4.0
 	github.com/pkg/errors v0.9.1
-	github.com/seata/seata-go v0.1.0-rc1
+	github.com/seata/seata-go v1.2.0
 	github.com/stretchr/testify v1.8.4
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	go.opentelemetry.io/otel v1.11.0
