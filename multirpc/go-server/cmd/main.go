@@ -57,7 +57,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = nil
 	//var protocols []string
 	//protocols = append(protocols, "tri", "dubbo", "jsonrpc")
 	srv, err := ins.NewServer(
@@ -70,7 +69,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = nil
 	// 利用生成代码注册业务逻辑(GreetTripleServer)
 	// service配置，可以在此处覆盖server注入的默认配置
 	// 若观察RegisterGreetServiceHandler的代码，会发现本质上是调用Server.Register
@@ -82,7 +80,6 @@ func main() {
 	if err := srv.Serve(); err != nil {
 		logger.Error(err)
 	}
-	err = nil
 
 	//dubbo
 	insDubbo, err := dubbo.NewInstance(
@@ -98,7 +95,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = nil
 
 	srvDubbo, err := insDubbo.NewServer(
 		server.WithServerProtocol(
@@ -110,16 +106,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = nil
 	if err := srvDubbo.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
 		panic(err)
 	}
-	err = nil
+
 	// 运行
 	if err := srvDubbo.Serve(); err != nil {
 		logger.Error(err)
 	}
-	err = nil
 
 	//JsonRpc
 	insJsonRpc, err := dubbo.NewInstance(
@@ -136,7 +130,6 @@ func main() {
 		panic(err)
 	}
 
-	err = nil
 	srvJsonRpc, err := insJsonRpc.NewServer(
 		server.WithServerProtocol(
 			protocol.WithJSONRPC(),
@@ -147,11 +140,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = nil
 	if err := srvJsonRpc.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
 		panic(err)
 	}
-	err = nil
+
 	// 运行
 	if err := srvJsonRpc.Serve(); err != nil {
 		logger.Error(err)
