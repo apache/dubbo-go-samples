@@ -38,7 +38,7 @@ func (srv *GreetMultiRPCServer) Greet(ctx context.Context, req *greet.GreetReque
 type GreetProvider struct {
 }
 
-func (*GreetProvider) Greet(req string, req1 string, req2 string) (string, error) {
+func (*GreetProvider) SayHello(req string, req1 string, req2 string) (string, error) {
 	return req + req1 + req2, nil
 }
 
@@ -98,7 +98,7 @@ func main() {
 	srvDubbo, err := insDubbo.NewServer(
 		server.WithServerProtocol(
 			protocol.WithDubbo(),
-			protocol.WithPort(20000),
+			protocol.WithPort(20001),
 		),
 		//server.WithServerProtocolIDs(protocols),
 	)
@@ -110,7 +110,7 @@ func main() {
 		panic(err)
 	}
 	// 运行
-	if err := srv.Serve(); err != nil {
+	if err := srvDubbo.Serve(); err != nil {
 		logger.Error(err)
 	}
 
@@ -132,7 +132,7 @@ func main() {
 	srvJsonRpc, err := insJsonRpc.NewServer(
 		server.WithServerProtocol(
 			protocol.WithJSONRPC(),
-			protocol.WithPort(20000),
+			protocol.WithPort(20002),
 		),
 		//server.WithServerProtocolIDs(protocols),
 	)
@@ -144,7 +144,7 @@ func main() {
 		panic(err)
 	}
 	// 运行
-	if err := srv.Serve(); err != nil {
+	if err := srvJsonRpc.Serve(); err != nil {
 		logger.Error(err)
 	}
 }
