@@ -38,12 +38,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	cli, err := ins.NewClient()
+	cli, err := ins.NewClient(
+		client.WithClientProtocolTriple())
 	if err != nil {
 		panic(err)
 	}
 
-	client.WithProtocolTriple()
 	//Triple
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
@@ -57,9 +57,12 @@ func main() {
 	logger.Infof("Greet triple response: %s", respTriple.Greeting)
 
 	//Duboo
-	client.WithProtocolDubbo()
-	client.WithClientSerialization(constant.Hessian2Serialization)
-	connDubbo, err := cli.Dial("GreetProvider")
+	cliDubbo, err := ins.NewClient(
+		client.WithClientProtocolTriple(),
+		client.WithClientSerialization(constant.Hessian2Serialization),
+	)
+
+	connDubbo, err := cliDubbo.Dial("GreetProvider")
 	if err != nil {
 		panic(err)
 	}
@@ -71,9 +74,11 @@ func main() {
 	logger.Infof("Get dubbo Response: %s", respDubbo)
 
 	//JsonRpc
-	client.WithProtocolJsonRPC()
-	client.WithClientSerialization(constant.Hessian2Serialization)
-	connJsonRpc, err := cli.Dial("GreetProvider")
+	cliJsonRpc, err := ins.NewClient(
+		client.WithClientProtocolJsonRPC(),
+		client.WithClientSerialization(constant.Hessian2Serialization),
+	)
+	connJsonRpc, err := cliJsonRpc.Dial("GreetProvider")
 	if err != nil {
 		panic(err)
 	}
