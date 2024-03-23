@@ -76,7 +76,7 @@ func main() {
 		panic(err)
 	}
 	// 运行
-	if err := srv.Serve(); err != nil {
+	if err = srv.Serve(); err != nil {
 		logger.Error(err)
 	}
 
