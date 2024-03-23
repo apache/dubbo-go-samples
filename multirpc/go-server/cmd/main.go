@@ -72,10 +72,9 @@ func main() {
 	// 利用生成代码注册业务逻辑(GreetTripleServer)
 	// service配置，可以在此处覆盖server注入的默认配置
 	// 若观察RegisterGreetServiceHandler的代码，会发现本质上是调用Server.Register
-	if err := greet.RegisterGreetServiceHandler(srv, &GreetMultiRPCServer{}); err != nil {
+	if err = greet.RegisterGreetServiceHandler(srv, &GreetMultiRPCServer{}); err != nil {
 		panic(err)
 	}
-	err = nil
 	// 运行
 	if err := srv.Serve(); err != nil {
 		logger.Error(err)
@@ -106,12 +105,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if err := srvDubbo.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
+	if err = srvDubbo.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
 		panic(err)
 	}
 
 	// 运行
-	if err := srvDubbo.Serve(); err != nil {
+	if err = srvDubbo.Serve(); err != nil {
 		logger.Error(err)
 	}
 
@@ -140,7 +139,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if err := srvJsonRpc.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
+	if err = srvJsonRpc.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
 		panic(err)
 	}
 

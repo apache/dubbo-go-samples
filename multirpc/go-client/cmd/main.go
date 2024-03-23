@@ -38,7 +38,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = nil
+
 	cli, err := ins.NewClient(
 		client.WithClientProtocolTriple())
 	if err != nil {
@@ -70,9 +70,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = nil
 	var respDubbo string
-	if err := connDubbo.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &respDubbo, "SayHello"); err != nil {
+	if err = connDubbo.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &respDubbo, "SayHello"); err != nil {
 		logger.Errorf("GreetProvider.Greet err: %s", err)
 		return
 	}
