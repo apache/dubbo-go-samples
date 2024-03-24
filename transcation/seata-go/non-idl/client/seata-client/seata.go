@@ -8,7 +8,9 @@ import (
 	"time"
 
 	"dubbo.apache.org/dubbo-go/v3/client"
+
 	"github.com/dubbogo/gost/log/logger"
+
 	"github.com/seata/seata-go/pkg/common"
 	"github.com/seata/seata-go/pkg/common/net"
 	"github.com/seata/seata-go/pkg/protocol/branch"
@@ -59,7 +61,7 @@ func Prepare(t *tcc.TCCServiceProxy, ctx context.Context, conn *client.Connectio
 	return
 }
 
-func CommitOrRollback(conn *client.Connection, ctx context.Context, isSuccess bool) error {
+func CommitOrRollback(ctx context.Context, isSuccess bool) error {
 	role := *tm.GetTransactionRole(ctx)
 	if role == tm.PARTICIPANT {
 		// Participant has no responsibility of rollback
@@ -97,18 +99,3 @@ func CommitOrRollback(conn *client.Connection, ctx context.Context, isSuccess bo
 	}
 	return err
 }
-
-// 	businessActionCtx := tm.GetBusinessActionContext(ctx)
-// 	if isSuccess {
-// 		if err := conn.CallUnary(context.Background(), []interface{}{businessActionCtx}, &resp, "Commit"); err != nil {
-// 			logger.Errorf("response commit", err)
-// 			return
-// 		}
-// 	}
-// 	if err := conn.CallUnary(context.Background(), []interface{}{businessActionCtx}, &resp, "Rollback"); err != nil {
-// 		logger.Errorf("response Rollback", err)
-// 		return
-// 	}
-// 	logger.Infof("get resp %#v", resp)
-// 	return
-// }

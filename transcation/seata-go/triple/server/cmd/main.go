@@ -5,13 +5,15 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	"github.com/apache/dubbo-go-samples/transcation/seata-go/triple/proto"
-	_ "github.com/seata/seata-go/pkg/imports"
 
-	"github.com/apache/dubbo-go-samples/transcation/seata-go/triple/service"
 	"github.com/dubbogo/gost/log/logger"
+
+	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
+
+	"github.com/apache/dubbo-go-samples/transcation/seata-go/triple/proto"
+	"github.com/apache/dubbo-go-samples/transcation/seata-go/triple/service"
 )
 
 func main() {
