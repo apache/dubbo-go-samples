@@ -43,107 +43,57 @@ func (*GreetProvider) SayHello(req string, req1 string, req2 string) (string, er
 }
 
 func main() {
-	//triple
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_multirpc_triple_server"),
+		dubbo.WithName("dubbo_multirpc_server"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
 		),
-		//dubbo.WithProtocol(protocol.WithDubbo()),
-		dubbo.WithProtocol(protocol.WithTriple()),
-		//dubbo.WithProtocol(protocol.WithJSONRPC()),
-	)
-	if err != nil {
-		panic(err)
-	}
-	//var protocols []string
-	//protocols = append(protocols, "tri", "dubbo", "jsonrpc")
-	srv, err := ins.NewServer(
-		server.WithServerProtocol(
+		dubbo.WithProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(20000),
-		),
-		//server.WithServerProtocolIDs(protocols),
+			protocol.WithPort(20000)),
+		dubbo.WithProtocol(
+			protocol.WithDubbo(),
+			protocol.WithPort(20001)),
+		dubbo.WithProtocol(
+			protocol.WithJSONRPC(),
+			protocol.WithPort(20002)),
 	)
 	if err != nil {
 		panic(err)
 	}
-	// 利用生成代码注册业务逻辑(GreetTripleServer)
-	// service配置，可以在此处覆盖server注入的默认配置
-	// 若观察RegisterGreetServiceHandler的代码，会发现本质上是调用Server.Register
-	if err = greet.RegisterGreetServiceHandler(srv, &GreetMultiRPCServer{}); err != nil {
+	//Triple
+	srvTriple, err := ins.NewServer()
+	if err != nil {
 		panic(err)
 	}
-	// 运行
-	if err = srv.Serve(); err != nil {
+	if err = greet.RegisterGreetServiceHandler(srvTriple, &GreetMultiRPCServer{}); err != nil {
+		panic(err)
+	}
+	if err = srvTriple.Serve(); err != nil {
 		logger.Error(err)
 	}
 
-	//dubbo
-	insDubbo, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_multirpc_dubbo_server"),
-		dubbo.WithRegistry(
-			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
-		),
-		dubbo.WithProtocol(protocol.WithDubbo()),
-		//dubbo.WithProtocol(protocol.WithTriple()),
-		//dubbo.WithProtocol(protocol.WithJSONRPC()),
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	srvDubbo, err := insDubbo.NewServer(
-		server.WithServerProtocol(
-			protocol.WithDubbo(),
-			protocol.WithPort(20001),
-		),
-		//server.WithServerProtocolIDs(protocols),
-	)
+	//Dubbo
+	srvDubbo, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}
 	if err = srvDubbo.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
 		panic(err)
 	}
-
-	// 运行
 	if err = srvDubbo.Serve(); err != nil {
 		logger.Error(err)
 	}
 
 	//JsonRpc
-	insJsonRpc, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_multirpc_jsonrpc_server"),
-		dubbo.WithRegistry(
-			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
-		),
-		dubbo.WithProtocol(protocol.WithJSONRPC()),
-		//dubbo.WithProtocol(protocol.WithTriple()),
-		//dubbo.WithProtocol(protocol.WithJSONRPC()),
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	srvJsonRpc, err := insJsonRpc.NewServer(
-		server.WithServerProtocol(
-			protocol.WithJSONRPC(),
-			protocol.WithPort(20002),
-		),
-		//server.WithServerProtocolIDs(protocols),
-	)
+	srvJsonRpc, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}
 	if err = srvJsonRpc.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
 		panic(err)
 	}
-
-	// 运行
 	if err := srvJsonRpc.Serve(); err != nil {
 		logger.Error(err)
 	}

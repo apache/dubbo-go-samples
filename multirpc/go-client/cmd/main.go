@@ -39,13 +39,12 @@ func main() {
 		panic(err)
 	}
 
+	//Triple
 	cli, err := ins.NewClient(
 		client.WithClientProtocolTriple())
 	if err != nil {
 		panic(err)
 	}
-
-	//Triple
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
 		panic(err)
@@ -59,7 +58,7 @@ func main() {
 
 	//Duboo
 	cliDubbo, err := ins.NewClient(
-		client.WithClientProtocolTriple(),
+		client.WithClientProtocolDubbo(),
 		client.WithClientSerialization(constant.Hessian2Serialization),
 	)
 	if err != nil {
@@ -80,7 +79,7 @@ func main() {
 	//JsonRpc
 	cliJsonRpc, err := ins.NewClient(
 		client.WithClientProtocolJsonRPC(),
-		client.WithClientSerialization(constant.Hessian2Serialization),
+		client.WithClientSerialization(constant.JSONSerialization),
 	)
 	if err != nil {
 		panic(err)
@@ -90,7 +89,7 @@ func main() {
 		panic(err)
 	}
 	var respJsonRpc string
-	if err := connJsonRpc.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &respJsonRpc, "SayHello"); err != nil {
+	if err := connJsonRpc.CallUnary(context.Background(), []interface{}{"hello", "new", "jsonrpc"}, &respJsonRpc, "SayHello"); err != nil {
 		logger.Errorf("GreetProvider.Greet err: %s", err)
 		return
 	}

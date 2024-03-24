@@ -61,6 +61,9 @@ array+=("registry/nacos")
 #timeout
 array+=("timeout")
 
+#multirpc
+array+=("multirpc")
+
 #healthcheck
 array+=("healthcheck")
 
