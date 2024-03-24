@@ -30,7 +30,7 @@ import (
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
 
-	"github.com/apache/dubbo-go-samples/transcation/seata-go/tcc/service"
+	"github.com/apache/dubbo-go-samples/transcation/seata-go/non-idl/tcc/server/service"
 )
 
 func main() {
@@ -39,6 +39,10 @@ func main() {
 	if err != nil {
 		logger.Errorf("get userProviderProxy tcc service proxy error, %v", err.Error())
 		return
+	}
+	err = userProviderProxy.RegisterResource()
+	if err != nil {
+		logger.Errorf("userProviderProxy register resource error, %v", err.Error())
 	}
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("dubbo_seata_server"),

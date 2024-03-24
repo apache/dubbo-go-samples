@@ -27,9 +27,13 @@ import (
 
 	"github.com/dubbogo/gost/log/logger"
 
+	"github.com/apache/dubbo-go-samples/transcation/seata-go/non-idl/tcc/client/service"
 	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
+	"github.com/seata/seata-go/pkg/rm/tcc"
 	"github.com/seata/seata-go/pkg/tm"
+
+	SeataClient "github.com/apache/dubbo-go-samples/transcation/seata-go/non-idl/tcc/client/seata-client"
 )
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/client/conf/dubbogo.yml"
@@ -57,17 +61,25 @@ func main() {
 }
 
 func test(conn *client.Connection) {
+	var err error
 	ctx := tm.Begin(context.Background(), "TestTCCServiceBusiness")
-	business(ctx, conn)
-	<-make(chan struct{})
-}
-
-func business(ctx context.Context, conn *client.Connection) (re error) {
 	var resp bool
-	if re := conn.CallUnary(ctx, []interface{}{1}, &resp, "Prepare"); re != nil {
-		logger.Infof("response prepare: %v", re)
-	} else {
-		logger.Infof("get resp %#v", resp)
+	defer func() {
+		err := SeataClient.CommitOrRollback(conn, ctx, err == nil)
+		if err != nil {
+			logger.Errorf("response commit of rollback: %v", err)
+			return
+		}
+		logger.Info("complete commit of rollback")
+	}()
+	proxy, err := tcc.NewTCCServiceProxy(&service.UserProvider{})
+	if err != nil {
+		panic(err)
 	}
-	return
+	if resp, err := SeataClient.Prepare(proxy, ctx, conn, 1); err != nil {
+		logger.Infof("response prepare: %v", resp)
+		return
+	}
+	logger.Infof("get resp %#v", resp)
+	// business
 }
