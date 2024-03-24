@@ -5,8 +5,8 @@
 1. Start the seata-server with the docker file.
 
    ```shell
-   cd dockercompose
+   cd ../dockercompose
    docker-compose -f docker-compose.yml up -d seata-server
    ```
 
-2. Just execute the main function under tcc/client/cmd and tcc/server/cmd directory.
+2. Just execute the main function under triple/client/cmd and triple/server/cmd directory.

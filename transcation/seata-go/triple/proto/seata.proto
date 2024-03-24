@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package service;
+
+option go_package = "github.com/apache/dubbo-go-samples/transcation/seata-go/triple/proto;proto";
+
+import "google/protobuf/any.proto";
+
+message BusinessActionContext {
+  string xid = 1;
+  int64 branch_id = 2;
+  string action_name = 3;
+  map<string, google.protobuf.Any> action_context = 4;
+}
+
+service UserProvider {
+  rpc PrepareProxy (PrepareRequest) returns (PrepareResponse);
+  rpc CommitProxy (CommitRequest) returns (CommitResponse);
+  rpc RollbackProxy (RollbackRequest) returns (RollbackResponse);
+  rpc GetActionNameProxy (GetActionNameRequest) returns (GetActionNameResponse);
+}
+
+message PrepareRequest {
+}
+
+message PrepareResponse {
+  bool result = 1;
+}
+
+message CommitRequest {
+  BusinessActionContext business_action_context = 1;
+}
+
+message CommitResponse {
+  bool result = 1;
+}
+
+message RollbackRequest {
+  BusinessActionContext business_action_context = 1;
+}
+
+message RollbackResponse {
+  bool result = 1;
+}
+
+message GetActionNameRequest {
+}
+
+message GetActionNameResponse {
+  string action_name = 1;
+}
