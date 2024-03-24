@@ -19,55 +19,54 @@ package main
 
 import (
 	"context"
+)
 
-	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/client"
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
+import (
+	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	"github.com/dubbogo/gost/log/logger"
 
 	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
+	"github.com/seata/seata-go/pkg/rm/tcc"
 	"github.com/seata/seata-go/pkg/tm"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/compatibility/seata-go/tcc/client/service"
 )
 
 // need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/client/conf/dubbogo.yml"
 // and run "seata-go/tcc/server/cmd/server.go" before run
 func main() {
 	integration.UseDubbo()
-	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_seata_client"),
-	)
+	config.SetConsumerService(service.UserProviderInstance)
+	err := config.Load()
 	if err != nil {
 		panic(err)
 	}
-	cli, err := ins.NewClient(
-		client.WithClientURL("127.0.0.1:20000"),
-		client.WithClientProtocolDubbo(),
-	)
-	if err != nil {
-		panic(err)
-	}
-	conn, err := cli.Dial("UserProvider", client.WithSerialization(constant.Hessian2Serialization))
-	if err != nil {
-		panic(err)
-	}
-	test(conn)
+	test()
 }
 
-func test(conn *client.Connection) {
+func test() {
+	var err error
 	ctx := tm.Begin(context.Background(), "TestTCCServiceBusiness")
-	business(ctx, conn)
-	<-make(chan struct{})
-}
+	defer func() {
+		resp := tm.CommitOrRollback(ctx, err == nil)
+		logger.Infof("tx result %v", resp)
+		<-make(chan struct{})
+	}()
 
-func business(ctx context.Context, conn *client.Connection) (re error) {
-	var resp bool
-	if re := conn.CallUnary(ctx, []interface{}{1}, &resp, "Prepare"); re != nil {
-		logger.Infof("response prepare: %v", re)
-	} else {
-		logger.Infof("get resp %#v", resp)
+	userProviderProxy, err := tcc.NewTCCServiceProxy(service.UserProviderInstance)
+	if err != nil {
+		logger.Infof("userProviderProxyis not tcc service")
+		return
 	}
-	return
+	resp, err := userProviderProxy.Prepare(ctx, 1)
+	if err != nil {
+		logger.Infof("response prepare: %v", err)
+		return
+	}
+	logger.Infof("get resp %#v", resp)
 }
