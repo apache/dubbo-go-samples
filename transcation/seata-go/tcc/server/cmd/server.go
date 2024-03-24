@@ -30,7 +30,7 @@ import (
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
 
-	"github.com/apache/dubbo-go-samples/compatibility/seata-go/tcc/service"
+	"github.com/apache/dubbo-go-samples/transcation/seata-go/tcc/service"
 )
 
 func main() {
