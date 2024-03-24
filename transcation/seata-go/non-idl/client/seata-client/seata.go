@@ -69,7 +69,7 @@ func registeBranch(t *tcc.TCCServiceProxy, ctx context.Context) error {
 
 func Prepare(t *tcc.TCCServiceProxy, ctx context.Context, conn *client.Connection, param ...interface{}) (resp interface{}, err error) {
 	if tm.IsTransactionOpened(ctx) {
-		err := registeBranch(t, ctx)
+		err = registeBranch(t, ctx)
 		if err != nil {
 			return nil, err
 		}

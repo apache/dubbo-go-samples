@@ -62,14 +62,14 @@ func test(svc proto.UserProvider) {
 		logger.Errorf("userProviderProxyis not tcc service")
 		return
 	}
-
-	if resp, err := SeataClient.Prepare(uP, ctx, svc); err != nil {
+	var resp interface{}
+	if resp, err = SeataClient.Prepare(uP, ctx, svc); err != nil {
 		logger.Infof("response prepare: %v", err)
 	} else {
 		logger.Infof("get resp %#v", resp)
 	}
 	defer func() {
-		err := SeataClient.CommitOrRollback(ctx, err == nil)
+		err = SeataClient.CommitOrRollback(ctx, err == nil)
 		if err != nil {
 			logger.Errorf("response commit of rollback: %v", err)
 			return

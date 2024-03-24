@@ -67,7 +67,7 @@ func test(conn *client.Connection) {
 		logger.Error(err)
 	}
 	defer func() {
-		err := SeataClient.CommitOrRollback(ctx, err == nil)
+		err = SeataClient.CommitOrRollback(ctx, err == nil)
 		if err != nil {
 			logger.Errorf("response commit or rollback: %v", err)
 			return
