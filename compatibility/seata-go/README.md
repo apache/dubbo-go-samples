@@ -2,11 +2,11 @@
 
 ## How to run?
 
-1. Start the seata-server and zookeeper service with the docker file.
+1. Start the seata-server with the docker file.
 
-   ~~~shell
-   cd seata-go/tcc
-   docker-compose -f docker-compose.yml up -d seata-server zookeeper
-   ~~~
+   ```shell
+   cd dockercompose
+   docker-compose -f docker-compose.yml up -d seata-server
+   ```
 
 2. Just execute the main function under tcc/client/cmd and tcc/server/cmd directory.

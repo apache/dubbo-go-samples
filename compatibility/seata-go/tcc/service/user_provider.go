@@ -19,19 +19,30 @@ package service
 
 import (
 	"context"
-)
 
-import (
+	"github.com/dubbogo/gost/log/logger"
 	"github.com/seata/seata-go/pkg/tm"
 )
 
-var (
-	UserProviderInstance = &UserProvider{}
-)
-
 type UserProvider struct {
-	Prepare       func(ctx context.Context, params ...interface{}) (bool, error)                           `seataTwoPhaseAction:"prepare" seataTwoPhaseServiceName:"TwoPhaseDemoService"`
-	Commit        func(ctx context.Context, businessActionContext *tm.BusinessActionContext) (bool, error) `seataTwoPhaseAction:"commit"`
-	Rollback      func(ctx context.Context, businessActionContext *tm.BusinessActionContext) (bool, error) `seataTwoPhaseAction:"rollback"`
-	GetActionName func() string
+}
+
+func (t *UserProvider) Prepare(ctx context.Context, params ...interface{}) (bool, error) {
+	logger.Infof("Prepare result: %v, xid %v", params, tm.GetXID(ctx))
+	return true, nil
+}
+
+func (t *UserProvider) Commit(ctx context.Context, businessActionContext *tm.BusinessActionContext) (bool, error) {
+	logger.Infof("Commit result: %v, xid %s", businessActionContext, tm.GetXID(ctx))
+	return true, nil
+}
+
+func (t *UserProvider) Rollback(ctx context.Context, businessActionContext *tm.BusinessActionContext) (bool, error) {
+	logger.Infof("Rollback result: %v, xid %s", businessActionContext, tm.GetXID(ctx))
+	return true, nil
+}
+
+func (t *UserProvider) GetActionName() string {
+	logger.Infof("GetActionName result")
+	return "TwoPhaseDemoService"
 }
