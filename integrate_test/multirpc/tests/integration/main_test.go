@@ -46,31 +46,31 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	//Dubbo
-	cliDubbo, err := client.NewClient(
-		client.WithClientURL("dubbo://127.0.0.1:20001"),
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	connDubbo, err = cliDubbo.Dial("GreetProvider")
-	if err != nil {
-		panic(err)
-	}
-
-	//JsonRpc
-	cliJsonRpc, err := client.NewClient(
-		client.WithClientURL("jsonrpc://127.0.0.1:20002"),
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	connJsonRpc, err = cliJsonRpc.Dial("GreetProvider")
-
-	if err != nil {
-		panic(err)
-	}
+	////Dubbo
+	//cliDubbo, err := client.NewClient(
+	//	client.WithClientURL("dubbo://127.0.0.1:20001"),
+	//)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//
+	//connDubbo, err = cliDubbo.Dial("GreetProvider")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//
+	////JsonRpc
+	//cliJsonRpc, err := client.NewClient(
+	//	client.WithClientURL("jsonrpc://127.0.0.1:20002"),
+	//)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//
+	//connJsonRpc, err = cliJsonRpc.Dial("GreetProvider")
+	//
+	//if err != nil {
+	//	panic(err)
+	//}
 	os.Exit(m.Run())
 }

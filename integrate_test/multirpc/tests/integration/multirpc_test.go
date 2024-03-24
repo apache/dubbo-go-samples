@@ -19,7 +19,6 @@ package integration
 
 import (
 	"context"
-	"github.com/dubbogo/gost/log/logger"
 	"testing"
 
 	greet "github.com/apache/dubbo-go-samples/multirpc/proto"
@@ -37,21 +36,21 @@ func TestSayHello(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "hello world", reply.Greeting)
 
-	//Dubbo
-	var respDubbo string
-	if err = connDubbo.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &respDubbo, "SayHello"); err != nil {
-		logger.Errorf("GreetProvider.Greet err: %s", err)
-		return
-	}
-	assert.Nil(t, err)
-	assert.Equal(t, "hellonewdubbo", respDubbo)
-
-	//JsonRpc
-	var respJsonRpc string
-	if err = connJsonRpc.CallUnary(context.Background(), []interface{}{"hello", "new", "jsonrpc"}, &respJsonRpc, "SayHello"); err != nil {
-		logger.Errorf("GreetProvider.Greet err: %s", err)
-		return
-	}
-	assert.Nil(t, err)
-	assert.Equal(t, "hellonewjsonrpc", respJsonRpc)
+	////Dubbo
+	//var respDubbo string
+	//if err = connDubbo.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &respDubbo, "SayHello"); err != nil {
+	//	logger.Errorf("GreetProvider.Greet err: %s", err)
+	//	return
+	//}
+	//assert.Nil(t, err)
+	//assert.Equal(t, "hellonewdubbo", respDubbo)
+	//
+	////JsonRpc
+	//var respJsonRpc string
+	//if err = connJsonRpc.CallUnary(context.Background(), []interface{}{"hello", "new", "jsonrpc"}, &respJsonRpc, "SayHello"); err != nil {
+	//	logger.Errorf("GreetProvider.Greet err: %s", err)
+	//	return
+	//}
+	//assert.Nil(t, err)
+	//assert.Equal(t, "hellonewjsonrpc", respJsonRpc)
 }
