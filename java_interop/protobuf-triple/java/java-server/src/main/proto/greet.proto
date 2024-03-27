@@ -14,33 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+//protoc --go_out=. --go_opt=paths=source_relative --go-triple_out=. greet.proto
+syntax = "proto3";
+package org.apache.dubbo.sample;
 
-package main
+option go_package = "/proto;proto";
+//package of go
+option java_package = 'org.apache.dubbo.sample';
+option java_multiple_files = true;
+option java_outer_classname = "HelloWorldProto";
+option objc_class_prefix = "WH";
 
-import (
-	"context"
-	"dubbo.apache.org/dubbo-go/v3/client"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
-	"github.com/dubbogo/gost/log/logger"
-)
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello(HelloRequest) returns (HelloReply);
+  // Sends a greeting via stream
+  //  rpc SayHelloStream (stream HelloRequest) returns (stream HelloReply) {}
+}
 
-func main() {
-	cli, err := client.NewClient(
-		client.WithClientURL("127.0.0.1:20000"),
-	)
-	if err != nil {
-		panic(err)
-	}
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
 
-	svc, err := greet.NewGreetService(cli)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-	if err != nil {
-		logger.Error(err)
-	}
-	logger.Infof("Greet response: %s", resp.Greeting)
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
 }
