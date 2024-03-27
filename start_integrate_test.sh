@@ -116,6 +116,9 @@ array+=("compatibility/registry/all/nacos")
 
 # config yaml
 array+=("config_yaml")
+# service_discovery
+array+=("service_discovery/interface")
+array+=("service_discovery/service")
 # replace tls config
 echo "The prefix of certificate path of the following files were replaced to \"$(pwd)/tls\"."
 find "$(pwd)/tls" -type f -name '*.yml' -print0 | xargs -0 -n1
