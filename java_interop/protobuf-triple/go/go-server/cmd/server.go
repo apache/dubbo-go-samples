@@ -19,9 +19,9 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
 	greet "github.com/apache/dubbo-go-samples/java_interop/protobuf-triple/go/proto"
 )
 
@@ -36,17 +36,12 @@ func (srv *GreetTripleServer) SayHello(ctx context.Context, req *greet.HelloRequ
 }
 
 func main() {
-	ins, err := dubbo.NewInstance(
-		dubbo.WithProtocol(
+	srv, err := server.NewServer(
+		server.WithServerProtocol(
+			protocol.WithPort(20000),
 			protocol.WithTriple(),
-			protocol.WithPort(50052),
 		),
 	)
-	if err != nil {
-		panic(err)
-	}
-
-	srv, err := ins.NewServer()
 	if err != nil {
 		panic(err) // 这里也有错误检查，确保每次赋值后都检查了 err
 	}
