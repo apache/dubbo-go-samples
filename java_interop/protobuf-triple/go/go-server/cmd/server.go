@@ -38,7 +38,7 @@ func (srv *GreetTripleServer) SayHello(ctx context.Context, req *greet.HelloRequ
 func main() {
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
-			protocol.WithPort(20000),
+			protocol.WithPort(50052),
 			protocol.WithTriple(),
 		),
 	)
