@@ -22,12 +22,32 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/alibaba/sentinel-golang/core/flow"
-	greet "github.com/apache/dubbo-go-samples/filter/proto"
+	"github.com/alibaba/sentinel-golang/core/circuitbreaker"
+	"github.com/alibaba/sentinel-golang/core/isolation"
+	"github.com/alibaba/sentinel-golang/util"
+	greet "github.com/apache/dubbo-go-samples/filter/proto/sentinel"
 	"github.com/dubbogo/gost/log/logger"
 	"sync"
 	"sync/atomic"
+	"time"
 )
+
+type GreetFun func(ctx context.Context, req *greet.GreetRequest, opts ...client.CallOption) (*greet.GreetResponse, error)
+
+type stateChangeTestListener struct {
+}
+
+func (s *stateChangeTestListener) OnTransformToClosed(prev circuitbreaker.State, rule circuitbreaker.Rule) {
+	logger.Infof("rule.steategy: %+v, From %s to Closed, time: %d\n", rule.Strategy, prev.String(), util.CurrentTimeMillis())
+}
+
+func (s *stateChangeTestListener) OnTransformToOpen(prev circuitbreaker.State, rule circuitbreaker.Rule, snapshot interface{}) {
+	logger.Infof("rule.steategy: %+v, From %s to Open, snapshot: %.2f, time: %d\n", rule.Strategy, prev.String(), snapshot, util.CurrentTimeMillis())
+}
+
+func (s *stateChangeTestListener) OnTransformToHalfOpen(prev circuitbreaker.State, rule circuitbreaker.Rule) {
+	logger.Infof("rule.steategy: %+v, From %s to Half-Open, time: %d\n", rule.Strategy, prev.String(), util.CurrentTimeMillis())
+}
 
 func main() {
 	cli, err := client.NewClient(
@@ -37,39 +57,66 @@ func main() {
 		panic(err)
 	}
 
-	svc, err := greet.NewGreetService(cli, client.WithFilter(constant.SentinelConsumerFilterKey))
+	svc, err := greet.NewSentinelGreetService(cli, client.WithFilter(constant.SentinelConsumerFilterKey))
 	if err != nil {
 		panic(err)
 	}
-
-	// Limit the client's request to GreetService to 200QPS
-	_, err = flow.LoadRules([]*flow.Rule{
+	// Register a state change listener so that we could observe the state change of the internal circuit breaker.
+	circuitbreaker.RegisterStateChangeListeners(&stateChangeTestListener{})
+	_, err = circuitbreaker.LoadRules([]*circuitbreaker.Rule{
+		// Statistic time span=1s, recoveryTimeout=1s, maxErrorRatio=40%
 		{
-			Resource:               greet.GreetService_ServiceInfo.InterfaceName + "::",
-			TokenCalculateStrategy: flow.Direct,
-			ControlBehavior:        flow.Reject,
-			Threshold:              200,
-			RelationStrategy:       flow.CurrentResource,
-			StatIntervalInMs:       1000,
+			Resource:                     "dubbo:consumer:greet.SentinelGreetService:::GreetWithChanceOfError()",
+			Strategy:                     circuitbreaker.ErrorRatio,
+			RetryTimeoutMs:               2000,
+			MinRequestAmount:             10,
+			StatIntervalMs:               1000,
+			StatSlidingWindowBucketCount: 10,
+			Threshold:                    0.4,
 		},
 	})
 	if err != nil {
 		panic(err)
 	}
+
+	_, err = isolation.LoadRules([]*isolation.Rule{
+		{
+			Resource:   greet.SentinelGreetService_ServiceInfo.InterfaceName + "::",
+			MetricType: isolation.Concurrency,
+			Threshold:  100,
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	logger.Info("call svc.Greet concurrently")
+	CallGreetFunConcurrently(svc.Greet, "hello world", 150, 5)
+
+	logger.Info("call svc.GreetWithQPSLimit concurrently")
+	CallGreetFunConcurrently(svc.GreetWithQPSLimit, "hello world", 10, 30)
+
+	logger.Info("call svc.GreetWithChanceOfError triggers circuit breaker open")
+	CallGreetFunConcurrently(svc.GreetWithChanceOfError, "error", 1, 300)
+	logger.Info("wait circuit breaker HalfOpen")
+	time.Sleep(3 * time.Second)
+	CallGreetFunConcurrently(svc.GreetWithChanceOfError, "hello world", 1, 300)
+	time.Sleep(10 * time.Second)
+}
+
+func CallGreetFunConcurrently(f GreetFun, req string, numberOfConcurrently, frequency int) (pass int64, block int64) {
 	wg := sync.WaitGroup{}
-	wg.Add(10)
-	pass := int64(0)
-	block := int64(0)
-	for i := 0; i < 10; i++ {
+	wg.Add(numberOfConcurrently)
+	for i := 0; i < numberOfConcurrently; i++ {
 		go func() {
-			for j := 0; j < 30; j++ {
-				resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+			for j := 0; j < frequency; j++ {
+				_, err := f(context.Background(), &greet.GreetRequest{Name: req})
 				if err == nil {
 					atomic.AddInt64(&pass, 1)
-					logger.Info(resp.Greeting)
+					//logger.Info(resp.Greeting)
 				} else {
 					atomic.AddInt64(&block, 1)
-					logger.Error(err)
+					//logger.Error(err)
 				}
 			}
 			wg.Done()
@@ -77,4 +124,5 @@ func main() {
 	}
 	wg.Wait()
 	logger.Info("success:", pass, "fail:", block)
+	return pass, block
 }
