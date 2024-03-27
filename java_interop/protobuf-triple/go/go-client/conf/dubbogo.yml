@@ -1,9 +1,0 @@
-dubbo:
-  registries:
-    zk:
-      address: zookeeper://127.0.0.1:2181
-  Consumer:
-    services:
-      GreeterConsumer:
-        # interface is for registry
-        interface: org.apache.dubbo.demo.GreeterImpl
