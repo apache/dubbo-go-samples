@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	greet "github.com/apache/dubbo-go-samples/java_interop/protobuf-triple/go/proto"
