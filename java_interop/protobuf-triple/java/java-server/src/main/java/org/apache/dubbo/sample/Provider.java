@@ -1,3 +1,4 @@
+
 package org.apache.dubbo.sample;
 
 import org.apache.dubbo.common.constants.CommonConstants;
@@ -9,7 +10,7 @@ import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
 import java.io.IOException;
 
-public class Producer {
+public class Provider {
     public static void main(String[] args) throws IOException {
         ServiceConfig<Greeter> service =  new ServiceConfig<>();
         service.setInterface(Greeter.class);
@@ -17,7 +18,6 @@ public class Producer {
 
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
         bootstrap.application(new ApplicationConfig("java-go-sample-server"))
-                .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
                 .protocol(new ProtocolConfig(CommonConstants.TRIPLE,36969))
                 .service(service)
                 .start();

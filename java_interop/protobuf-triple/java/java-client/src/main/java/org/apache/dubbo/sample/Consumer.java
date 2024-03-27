@@ -7,7 +7,9 @@ import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
-public class ApiConsumer {
+
+
+public class Consumer {
     public static void main(String[] args) {
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
         ReferenceConfig<Greeter> ref = new ReferenceConfig<>();
@@ -15,9 +17,8 @@ public class ApiConsumer {
         ref.setProtocol(CommonConstants.TRIPLE);
         ref.setProxy(CommonConstants.NATIVE_STUB);
         ref.setTimeout(3000);
-        bootstrap.application(new ApplicationConfig("duboo-test"))
-                .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
-                .protocol(new ProtocolConfig(CommonConstants.TRIPLE,50052))
+        ref.setUrl("tri://localhost:36969");
+        bootstrap.application(new ApplicationConfig("dubbo-test"))
                 .reference(ref)
                 .start();
 

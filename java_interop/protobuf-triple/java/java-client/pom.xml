@@ -27,12 +27,6 @@
             <version>${dubbo.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-dependencies-zookeeper-curator5</artifactId>
-            <type>pom</type>
-            <version>${dubbo.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>3.19.4</version>
@@ -51,9 +45,10 @@
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
-                <outputDirectory>${project.basedir}/../build/protobuf/java</outputDirectory>
+
                 <version>0.6.1</version>
                 <configuration>
+<!--                    <outputDirectory>${project.basedir}/../build/protobuf/java</outputDirectory>-->
                     <!--suppress UnresolvedMavenProperty -->
                     <protocArtifact>com.google.protobuf:protoc:3.19.4:exe:${os.detected.classifier}</protocArtifact>
                     <protocPlugins>
