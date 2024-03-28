@@ -59,6 +59,9 @@ jobs:
       - name: Check License Header
         uses: apache/skywalking-eyes/header@e1a02359b239bd28de3f6d35fdc870250fa513d5
 
+      - name: Check go version
+        run: go version
+
       - name: Switch Dubbo-go version
         run: |
           # Acquire information of branch
