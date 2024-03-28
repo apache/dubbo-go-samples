@@ -49,12 +49,7 @@ jobs:
 
       - name: Get dependencies
         run: |
-          if [ -f Gopkg.toml ]; then
-              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-              dep ensure
-          else
-              go get -v -t -d ./...
-          fi
+          go mod tidy
 
       - name: Go Fmt
         run: |
