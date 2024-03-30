@@ -36,16 +36,16 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v4.0.0
 
-#      - name: Cache dependencies
-#        uses: actions/cache@v3.2.6
-#        with:
-#          # Cache
-#          path: ~/go/pkg/mod
-#          # Cache key
-#          key: ${{ runner.os }}-go-${{ matrix.go_version }}-${{ hashFiles('**/go.sum') }}
-#          # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
-#          restore-keys: |
-#            ${{ runner.os }}-go-${{ matrix.go_version }}-
+      - name: Cache dependencies
+        uses: actions/cache@v3.2.6
+        with:
+          # Cache
+          path: ~/go/pkg/mod
+          # Cache key
+          key: ${{ runner.os }}-go-${{ matrix.go_version }}-${{ hashFiles('**/go.sum') }}
+          # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go_version }}-
 
       - name: Get dependencies
         run: |
@@ -59,8 +59,14 @@ jobs:
       - name: Check License Header
         uses: apache/skywalking-eyes/header@e1a02359b239bd28de3f6d35fdc870250fa513d5
 
-      - name: Check go version
-        run: go version
+      - name: Set Go version again to override skywalking
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go_version }}
+
+      - name: Check Go version
+        run: |
+          go version
 
       - name: Switch Dubbo-go version
         run: |
