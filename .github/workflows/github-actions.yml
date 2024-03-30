@@ -18,7 +18,7 @@ jobs:
       # If you want to matrix build, you can append the following list.
       matrix:
         go_version:
-          - 1.17
+          - '1.20'
         os:
           - ubuntu-latest
 
@@ -42,19 +42,14 @@ jobs:
           # Cache
           path: ~/go/pkg/mod
           # Cache key
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ matrix.go_version }}-${{ hashFiles('**/go.sum') }}
           # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ runner.os }}-go-${{ matrix.go_version }}-
 
       - name: Get dependencies
         run: |
-          if [ -f Gopkg.toml ]; then
-              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-              dep ensure
-          else
-              go get -v -t -d ./...
-          fi
+          go mod tidy
 
       - name: Go Fmt
         run: |
@@ -63,6 +58,15 @@ jobs:
 
       - name: Check License Header
         uses: apache/skywalking-eyes/header@e1a02359b239bd28de3f6d35fdc870250fa513d5
+
+      - name: Set Go version again to override skywalking
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go_version }}
+
+      - name: Check Go version
+        run: |
+          go version
 
       - name: Switch Dubbo-go version
         run: |
