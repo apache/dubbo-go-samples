@@ -45,7 +45,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.go_version }}-${{ hashFiles('**/go.sum') }}
           # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ runner.os }}-go-${{ matrix.go_version }}-
 
       - name: Get dependencies
         run: |
