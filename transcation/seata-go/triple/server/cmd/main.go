@@ -18,7 +18,6 @@
 package main
 
 import (
-	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
@@ -30,7 +29,8 @@ import (
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
 
-	"github.com/apache/dubbo-go-samples/transcation/seata-go/tcc/service"
+	"github.com/apache/dubbo-go-samples/transcation/seata-go/triple/proto"
+	"github.com/apache/dubbo-go-samples/transcation/seata-go/triple/service"
 )
 
 func main() {
@@ -40,25 +40,20 @@ func main() {
 		logger.Errorf("get userProviderProxy tcc service proxy error, %v", err.Error())
 		return
 	}
-	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_seata_server"),
-	)
-	if err != nil {
-		panic(err)
-	}
-	srv, err := ins.NewServer(
+	srv, err := server.NewServer(
 		server.WithServerProtocol(
-			protocol.WithDubbo(),
 			protocol.WithPort(20000),
+			protocol.WithTriple(),
 		),
+		server.WithServerSerialization(constant.ProtobufSerialization),
 	)
 	if err != nil {
 		panic(err)
 	}
-	if err := srv.Register(userProviderProxy, nil, server.WithInterface("UserProvider"), server.WithSerialization(constant.Hessian2Serialization)); err != nil {
+	if err := proto.RegisterUserProviderHandler(srv, &service.UserProviderServer{TCCServiceProxy: userProviderProxy}); err != nil {
 		panic(err)
 	}
 	if err := srv.Serve(); err != nil {
-		panic(err)
+		logger.Error(err)
 	}
 }
