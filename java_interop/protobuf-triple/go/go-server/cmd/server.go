@@ -19,28 +19,38 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
-	"github.com/dubbogo/gost/log/logger"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
+	greet "github.com/apache/dubbo-go-samples/java_interop/protobuf-triple/go/proto"
 )
 
+// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/java_interop/protobuf-triple/go/go-server/conf/dubbogo.yml
+
+type GreetTripleServer struct {
+}
+
+func (srv *GreetTripleServer) SayHello(ctx context.Context, req *greet.HelloRequest) (*greet.HelloReply, error) {
+	resp := &greet.HelloReply{Message: req.Name}
+	return resp, nil
+}
+
 func main() {
-	cli, err := client.NewClient(
-		client.WithClientURL("127.0.0.1:20000"),
+	srv, err := server.NewServer(
+		server.WithServerProtocol(
+			protocol.WithPort(50052),
+			protocol.WithTriple(),
+		),
 	)
 	if err != nil {
-		panic(err)
+		panic(err) // 这里也有错误检查，确保每次赋值后都检查了 err
 	}
 
-	svc, err := greet.NewGreetService(cli)
-	if err != nil {
-		panic(err)
+	if err := greet.RegisterGreeterHandler(srv, &GreetTripleServer{}); err != nil {
+		panic(err) // 这里的错误处理也是正确的
 	}
 
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-	if err != nil {
-		logger.Error(err)
+	if err := srv.Serve(); err != nil {
+		panic(err) // 启动服务器的错误处理也没有问题
 	}
-	logger.Infof("Greet response: %s", resp.Greeting)
 }

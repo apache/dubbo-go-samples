@@ -21,26 +21,29 @@ import (
 	"context"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+	greet "github.com/apache/dubbo-go-samples/java_interop/protobuf-triple/go/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 
+// export DUBBO_GO_CONFIG_PATH=$PATH_TO_SAMPLES/java_interop/protobuf-triple/go/go-client/conf/dubbogo.yml
 func main() {
+
 	cli, err := client.NewClient(
-		client.WithClientURL("127.0.0.1:20000"),
+		client.WithClientURL("127.0.0.1:36969"),
 	)
 	if err != nil {
-		panic(err)
+		panic(err) // If there's an error, it's handled immediately by panicking.
 	}
 
-	svc, err := greet.NewGreetService(cli)
+	svc, err := greet.NewGreeter(cli)
 	if err != nil {
-		panic(err)
+		panic(err) // Same here, handle the error immediately.
 	}
 
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	resp, err := svc.SayHello(context.Background(), &greet.HelloRequest{Name: "hello world"})
 	if err != nil {
 		logger.Error(err)
+		return // Now, we explicitly handle the error by logging it and then returning from the function.
 	}
-	logger.Infof("Greet response: %s", resp.Greeting)
+	logger.Infof("Greet response: %s", resp.Message)
 }
