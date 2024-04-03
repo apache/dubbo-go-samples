@@ -1,6 +1,6 @@
 # Helloworld for dubbo-go
 
-This example demonstrates the basic usage of dubbo-go as an RPC framework. Check [Quick Start][https://dubbo.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/] on our official website for detailed explanation.
+This example demonstrates the basic usage of dubbo-go as an RPC framework. Check [Quick Start](https://dubbo.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/) on our official website for detailed explanation.
 
 ## Contents
 
