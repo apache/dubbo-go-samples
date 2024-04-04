@@ -14,8 +14,6 @@ public class Consumer {
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
         ReferenceConfig<Greeter> ref = new ReferenceConfig<>();
         ref.setInterface(Greeter.class);
-        ref.setProtocol(CommonConstants.TRIPLE);
-        ref.setProxy(CommonConstants.NATIVE_STUB);
         ref.setTimeout(3000);
         ref.setUrl("tri://localhost:50052");
         bootstrap.application(new ApplicationConfig("dubbo-test"))

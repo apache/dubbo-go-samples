@@ -25,7 +25,7 @@ const _ = triple_protocol.IsAtLeastVersion0_1_0
 
 const (
 	// GreeterName is the fully-qualified name of the Greeter service.
-	GreeterName = "org.apache.dubbo.samples.Greeter"
+	GreeterName = "org.apache.dubbo.sample.Greeter"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -37,21 +37,21 @@ const (
 // period.
 const (
 	// GreeterSayHelloProcedure is the fully-qualified name of the Greeter's SayHello RPC.
-	GreeterSayHelloProcedure = "/org.apache.dubbo.samples.Greeter/SayHello"
+	GreeterSayHelloProcedure = "/org.apache.dubbo.sample.Greeter/SayHello"
 )
 
 var (
 	_ Greeter = (*GreeterImpl)(nil)
 )
 
-// Greeter is a client for the org.apache.dubbo.samples.Greeter service.
+// Greeter is a client for the org.apache.dubbo.sample.Greeter service.
 type Greeter interface {
 	SayHello(ctx context.Context, req *HelloRequest, opts ...client.CallOption) (*HelloReply, error)
 }
 
 // NewGreeter constructs a client for the proto.Greeter service.
 func NewGreeter(cli *client.Client, opts ...client.ReferenceOption) (Greeter, error) {
-	conn, err := cli.DialWithInfo("org.apache.dubbo.samples.Greeter", &Greeter_ClientInfo, opts...)
+	conn, err := cli.DialWithInfo("org.apache.dubbo.sample.Greeter", &Greeter_ClientInfo, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (c *GreeterImpl) SayHello(ctx context.Context, req *HelloRequest, opts ...c
 }
 
 var Greeter_ClientInfo = client.ClientInfo{
-	InterfaceName: "org.apache.dubbo.samples.Greeter",
+	InterfaceName: "org.apache.dubbo.sample.Greeter",
 	MethodNames:   []string{"SayHello"},
 	ConnectionInjectFunc: func(dubboCliRaw interface{}, conn *client.Connection) {
 		dubboCli := dubboCliRaw.(*GreeterImpl)
@@ -86,7 +86,7 @@ var Greeter_ClientInfo = client.ClientInfo{
 	},
 }
 
-// GreeterHandler is an implementation of the org.apache.dubbo.samples.Greeter service.
+// GreeterHandler is an implementation of the org.apache.dubbo.sample.Greeter service.
 type GreeterHandler interface {
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 }
@@ -100,7 +100,7 @@ func SetProviderService(srv common.RPCService) {
 }
 
 var Greeter_ServiceInfo = server.ServiceInfo{
-	InterfaceName: "org.apache.dubbo.samples.Greeter",
+	InterfaceName: "org.apache.dubbo.sample.Greeter",
 	ServiceType:   (*GreeterHandler)(nil),
 	Methods: []server.MethodInfo{
 		{
