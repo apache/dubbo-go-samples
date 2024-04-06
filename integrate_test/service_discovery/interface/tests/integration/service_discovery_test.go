@@ -21,7 +21,7 @@ import (
 	"context"
 	"testing"
 
-	greet "github.com/apache/dubbo-go-samples/service_discovery/interface/proto"
+	greet "github.com/apache/dubbo-go-samples/java_interop/service_discovery/interface/proto"
 	"github.com/stretchr/testify/assert"
 )
 

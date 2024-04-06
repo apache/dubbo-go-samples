@@ -15,21 +15,48 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
 	"context"
-	"testing"
 
+	"dubbo.apache.org/dubbo-go/v3"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 	greet "github.com/apache/dubbo-go-samples/java_interop/service_discovery/service/proto"
-	"github.com/stretchr/testify/assert"
+	"github.com/dubbogo/gost/log/logger"
 )
 
-func TestGreet(t *testing.T) {
-	req := &greet.GreetRequest{Name: "hello world"}
-	ctx := context.Background()
-	reply, err := greetService.Greet(ctx, req)
-	assert.Nil(t, err)
-	assert.Equal(t, "hello world", reply.Greeting)
+func main() {
 
+	//global conception
+	//configure global configurations and common modules
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo-go-client"),
+		dubbo.WithRegistry(
+			registry.WithNacos(),
+			registry.WithAddress("127.0.0.1:8848"),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+	// configure the params that only client layer cares
+	cli, err := ins.NewClient()
+
+	if err != nil {
+		panic(err)
+	}
+
+	svc, err := greet.NewGreetService(cli)
+
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("Greet response: %s", resp)
 }

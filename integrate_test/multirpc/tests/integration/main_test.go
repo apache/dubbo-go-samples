@@ -19,12 +19,11 @@ package integration
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	greet "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
 	"os"
 	"testing"
 
 	"dubbo.apache.org/dubbo-go/v3/client"
-	greet "github.com/apache/dubbo-go-samples/multirpc/proto"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 

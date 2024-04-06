@@ -19,10 +19,10 @@ package integration
 
 import (
 	"context"
+	greet "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
 	"github.com/dubbogo/gost/log/logger"
 	"testing"
 
-	greet "github.com/apache/dubbo-go-samples/multirpc/proto"
 	"github.com/stretchr/testify/assert"
 )
 

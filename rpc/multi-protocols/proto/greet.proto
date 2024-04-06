@@ -15,21 +15,20 @@
  * limitations under the License.
  */
 
-package integration
+syntax = "proto3";
 
-import (
-	"context"
-	"testing"
+package greet;
 
-	greet "github.com/apache/dubbo-go-samples/java_interop/service_discovery/service/proto"
-	"github.com/stretchr/testify/assert"
-)
+option go_package = "github.com/apache/dubbo-go-samples/rpc/multi_protocols/proto;greet";
 
-func TestGreet(t *testing.T) {
-	req := &greet.GreetRequest{Name: "hello world"}
-	ctx := context.Background()
-	reply, err := greetService.Greet(ctx, req)
-	assert.Nil(t, err)
-	assert.Equal(t, "hello world", reply.Greeting)
+message GreetRequest {
+  string name = 1;
+}
 
+message GreetResponse {
+  string greeting = 1;
+}
+
+service GreetService {
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
 }
