@@ -1,83 +1,97 @@
-# dubbogo-java
+# Dubbo java and go interoperability, protobuf and triple protocol
+
+使用同一个 proto 文件实现 dubbo-java 和 dubbo-go 互通
 
 ## Contents
-- protobuf: Using the struct definitions from proto files
-- server
-- client
-Please note that this sample is coded using dubbo-go 3.2.0-rc1.
-The combinations we have tested include the following:
 
-- [x] java-client communicating with a dubbogo-server
-- [x] java-server communicating with a dubbogo-client
+- go，go 语言实现的 rpc server 与 client
+- java，java 语言实现的 rpc server 与 client
 
-## Generating Code
-- Java
-  - 1.Add build to pom.xml
-    ```xml
-      <build>
-        <extensions>
-            <extension>
-                <groupId>kr.motd.maven</groupId>
-                <artifactId>os-maven-plugin</artifactId>
-                <version>1.6.1</version>
-            </extension>
-        </extensions>
-        <plugins>
-            <plugin>
-                <groupId>org.xolstice.maven.plugins</groupId>
-                <artifactId>protobuf-maven-plugin</artifactId>
-                <version>0.6.1</version>
-                <configuration>
-                    <protocArtifact>com.google.protobuf:protoc:3.19.4:exe:${os.detected.classifier}</protocArtifact>
-                    <outputDirectory>${project.basedir}/../build/protobuf/java</outputDirectory>
-                    <protocPlugins>
-                        <protocPlugin>
-                            <id>dubbo</id>
-                            <groupId>org.apache.dubbo</groupId>
-                            <artifactId>dubbo-compiler</artifactId>
-                            <version>${dubbo.version}</version>
-                            <mainClass>org.apache.dubbo.gen.tri.Dubbo3TripleGenerator</mainClass>
-                        </protocPlugin>
-                    </protocPlugins>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    ```
-  - 2.Generate using mvn
-  ```shell
-  mvn clean install
-  ```
-- go
-  - Generate code with protoc
-    ```shell
-    protoc --go_out=. --go_opt=paths=source_relative --go-triple_out=. greet.proto 
-    ```
+## 互通模式
 
+共享服务定义如下：
 
-## Running the Application
-1. Start the server:
-    - Use goland to start triple/gojava-go-server
-    - Execute `sh run.sh` in the java-server folder to start the java server
-2. Start the client
-    - Use goland to start triple/gojava-go-client
-    - Execute `sh run.sh` under the java-client folder to start the java client
+```protobuf
+//protoc --go_out=. --go_opt=paths=source_relative --go-triple_out=. greet.proto
+syntax = "proto3";
+package org.apache.dubbo.sample;
 
-## Notes
-1. Interface naming must be consistent
-   - java-server: GreeterImpl
-   - go-client: The configuration should be similarly defined as follows
-   ```yml
-     Consumer:
-       services:
-         GreeterConsumer:
-           # interface is for registry
-           interface: org.apache.dubbo.sample.GreeterImpl
-   ```
+option go_package = "github.com/apache/dubbo-go-samples/java_interop/protobuf-triple/go/proto;proto";
+//package of go
+option java_package = 'org.apache.dubbo.sample';
+option java_multiple_files = true;
+option java_outer_classname = "HelloWorldProto";
+option objc_class_prefix = "WH";
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello(HelloRequest) returns (HelloReply);
+  // Sends a greeting via stream
+  //  rpc SayHelloStream (stream HelloRequest) returns (stream HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+```
+
+### Java client 调用 go server
+
+1. 首先启动 go server：
+
+```shell
+go run go/go-server/cmd/server.go
+```
+
+运行以上命令后，go server 运行在 50052 端口，可通过以下命令测试服务运行正常：
+
+```shell
+curl \
+    --header "Content-Type: application/json" \
+    --data '{"name": "Dubbo"}' \
+    http://localhost:50052/org.apache.dubbo.sample.Greeter/sayHello
+```
+
+2. 启动 java client 
+
+运行以下命令，启动 java 客户端，可以看到服务调用 go server 正常输出结果：
+
+```shell
+./java/java-client/run.sh
+```
+
+### Go client 调用 java server
+
+1. 启动 java server
+
+运行以下命令，启动 java 服务端：
+
+> 注意，请关闭之前启动的 go server，避免出现端口占用冲突。
+
+```shell
+./java/java-server/run.sh
+```
+
+可通过以下命令测试服务运行正常：
+
+```shell
+curl \
+    --header "Content-Type: application/json" \
+    --data '{"name": "Dubbo"}' \
+    http://localhost:50052/org.apache.dubbo.sample.Greeter/sayHello
+```
+
+2. 运行 go client
+
+运行以下命令启动 go 客户端，可以看到服务调用 java server 正常输出结果：
+
+```shell
+go run go/go-client/cmd/client.go
+```

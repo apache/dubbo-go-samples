@@ -1,11 +1,11 @@
-# Zookeeper as registry
+# Nacos as registry
 
-This example shows dubbo-go's service discovery feature with Zookeeper as registry.
+This example shows dubbo-go's service discovery feature with Nacos as registry.
 
 ## How to run
 
 ### Start Nacos server
-Follow this instruction to install and start Nacos server.
+Follow this instruction to [install and start Nacos server](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/integrations/nacos/).
 
 ### Run server
 ```shell

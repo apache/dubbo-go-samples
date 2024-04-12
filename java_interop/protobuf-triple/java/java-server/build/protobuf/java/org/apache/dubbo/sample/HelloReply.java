@@ -8,11 +8,11 @@ package org.apache.dubbo.sample;
  * The response message containing the greetings
  * </pre>
  *
- * Protobuf type {@code org.apache.dubbo.samples.HelloReply}
+ * Protobuf type {@code org.apache.dubbo.sample.HelloReply}
  */
 public final class HelloReply extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:org.apache.dubbo.samples.HelloReply)
+    // @@protoc_insertion_point(message_implements:org.apache.dubbo.sample.HelloReply)
     HelloReplyOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use HelloReply.newBuilder() to construct.
@@ -80,13 +80,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloReply_descriptor;
+    return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloReply_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloReply_fieldAccessorTable
+    return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloReply_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             org.apache.dubbo.sample.HelloReply.class, org.apache.dubbo.sample.HelloReply.Builder.class);
   }
@@ -288,21 +288,21 @@ private static final long serialVersionUID = 0L;
    * The response message containing the greetings
    * </pre>
    *
-   * Protobuf type {@code org.apache.dubbo.samples.HelloReply}
+   * Protobuf type {@code org.apache.dubbo.sample.HelloReply}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:org.apache.dubbo.samples.HelloReply)
+      // @@protoc_insertion_point(builder_implements:org.apache.dubbo.sample.HelloReply)
       org.apache.dubbo.sample.HelloReplyOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloReply_descriptor;
+      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloReply_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloReply_fieldAccessorTable
+      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloReply_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.apache.dubbo.sample.HelloReply.class, org.apache.dubbo.sample.HelloReply.Builder.class);
     }
@@ -333,7 +333,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloReply_descriptor;
+      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloReply_descriptor;
     }
 
     @java.lang.Override
@@ -523,10 +523,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:org.apache.dubbo.samples.HelloReply)
+    // @@protoc_insertion_point(builder_scope:org.apache.dubbo.sample.HelloReply)
   }
 
-  // @@protoc_insertion_point(class_scope:org.apache.dubbo.samples.HelloReply)
+  // @@protoc_insertion_point(class_scope:org.apache.dubbo.sample.HelloReply)
   private static final org.apache.dubbo.sample.HelloReply DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new org.apache.dubbo.sample.HelloReply();

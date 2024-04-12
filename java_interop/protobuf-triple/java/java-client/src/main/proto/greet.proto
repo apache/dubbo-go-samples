@@ -16,7 +16,7 @@
  */
 //protoc --go_out=. --go_opt=paths=source_relative --go-triple_out=. greet.proto
 syntax = "proto3";
-package org.apache.dubbo.samples;
+package org.apache.dubbo.sample;
 
 option go_package = "/proto;proto";
 //package of go

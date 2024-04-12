@@ -25,10 +25,10 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.concurrent.CompletableFuture;
 
-public interface Greeter {
+public interface Greeter extends org.apache.dubbo.rpc.model.DubboStub {
 
     String JAVA_SERVICE_NAME = "org.apache.dubbo.sample.Greeter";
-    String SERVICE_NAME = "org.apache.dubbo.samples.Greeter";
+    String SERVICE_NAME = "org.apache.dubbo.sample.Greeter";
 
         /**
          * <pre>

@@ -4,7 +4,7 @@
 package org.apache.dubbo.sample;
 
 public interface HelloRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:org.apache.dubbo.samples.HelloRequest)
+    // @@protoc_insertion_point(interface_extends:org.apache.dubbo.sample.HelloRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**
