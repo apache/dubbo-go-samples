@@ -64,7 +64,8 @@ curl \
 运行以下命令，启动 java 客户端，可以看到服务调用 go server 正常输出结果：
 
 ```shell
-./java/java-client/run.sh
+#在java-client目录中
+./run.sh
 ```
 
 ### Go client 调用 java server
@@ -76,7 +77,8 @@ curl \
 > 注意，请关闭之前启动的 go server，避免出现端口占用冲突。
 
 ```shell
-./java/java-server/run.sh
+#在java-server目录中
+./run.sh
 ```
 
 可通过以下命令测试服务运行正常：

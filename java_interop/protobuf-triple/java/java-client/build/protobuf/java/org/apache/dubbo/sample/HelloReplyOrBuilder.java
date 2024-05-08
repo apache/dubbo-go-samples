@@ -4,7 +4,7 @@
 package org.apache.dubbo.sample;
 
 public interface HelloReplyOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:org.apache.dubbo.samples.HelloReply)
+    // @@protoc_insertion_point(interface_extends:org.apache.dubbo.sample.HelloReply)
     com.google.protobuf.MessageOrBuilder {
 
   /**
