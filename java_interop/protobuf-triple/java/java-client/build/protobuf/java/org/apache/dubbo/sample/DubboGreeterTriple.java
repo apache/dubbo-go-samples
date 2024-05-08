@@ -15,7 +15,7 @@
 * limitations under the License.
 */
 
-    package org.apache.dubbo.sample;
+package org.apache.dubbo.sample;
 
 import org.apache.dubbo.common.stream.StreamObserver;
 import org.apache.dubbo.common.URL;
@@ -68,23 +68,27 @@ public final class DubboGreeterTriple {
          * </pre>
          */
     private static final StubMethodDescriptor sayHelloMethod = new StubMethodDescriptor("SayHello",
-    org.apache.dubbo.sample.HelloRequest.class, org.apache.dubbo.sample.HelloReply.class, serviceDescriptor, MethodDescriptor.RpcType.UNARY,
+    org.apache.dubbo.sample.HelloRequest.class, org.apache.dubbo.sample.HelloReply.class, MethodDescriptor.RpcType.UNARY,
     obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), org.apache.dubbo.sample.HelloRequest::parseFrom,
     org.apache.dubbo.sample.HelloReply::parseFrom);
 
     private static final StubMethodDescriptor sayHelloAsyncMethod = new StubMethodDescriptor("SayHello",
-    org.apache.dubbo.sample.HelloRequest.class, java.util.concurrent.CompletableFuture.class, serviceDescriptor, MethodDescriptor.RpcType.UNARY,
+    org.apache.dubbo.sample.HelloRequest.class, java.util.concurrent.CompletableFuture.class, MethodDescriptor.RpcType.UNARY,
     obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), org.apache.dubbo.sample.HelloRequest::parseFrom,
     org.apache.dubbo.sample.HelloReply::parseFrom);
 
     private static final StubMethodDescriptor sayHelloProxyAsyncMethod = new StubMethodDescriptor("SayHelloAsync",
-    org.apache.dubbo.sample.HelloRequest.class, org.apache.dubbo.sample.HelloReply.class, serviceDescriptor, MethodDescriptor.RpcType.UNARY,
+    org.apache.dubbo.sample.HelloRequest.class, org.apache.dubbo.sample.HelloReply.class, MethodDescriptor.RpcType.UNARY,
     obj -> ((Message) obj).toByteArray(), obj -> ((Message) obj).toByteArray(), org.apache.dubbo.sample.HelloRequest::parseFrom,
     org.apache.dubbo.sample.HelloReply::parseFrom);
 
 
 
 
+    static{
+        serviceDescriptor.addMethod(sayHelloMethod);
+        serviceDescriptor.addMethod(sayHelloProxyAsyncMethod);
+    }
 
     public static class GreeterStub implements Greeter{
         private final Invoker<Greeter> invoker;
@@ -93,7 +97,7 @@ public final class DubboGreeterTriple {
             this.invoker = invoker;
         }
 
-            /**
+        /**
          * <pre>
          *  Sends a greeting
          * </pre>
@@ -107,12 +111,11 @@ public final class DubboGreeterTriple {
             return StubInvocationUtil.unaryCall(invoker, sayHelloAsyncMethod, request);
         }
 
-            /**
+        /**
          * <pre>
          *  Sends a greeting
          * </pre>
          */
-        @Override
         public void sayHello(org.apache.dubbo.sample.HelloRequest request, StreamObserver<org.apache.dubbo.sample.HelloReply> responseObserver){
             StubInvocationUtil.unaryCall(invoker, sayHelloMethod , request, responseObserver);
         }
@@ -139,14 +142,38 @@ public final class DubboGreeterTriple {
         }
 
         @Override
+        public CompletableFuture<org.apache.dubbo.sample.HelloReply> sayHelloAsync(org.apache.dubbo.sample.HelloRequest request){
+                return CompletableFuture.completedFuture(sayHello(request));
+        }
+
+        /**
+        * This server stream type unary method is <b>only</b> used for generated stub to support async unary method.
+        * It will not be called if you are NOT using Dubbo3 generated triple stub and <b>DO NOT</b> implement this method.
+        */
+        public void sayHello(org.apache.dubbo.sample.HelloRequest request, StreamObserver<org.apache.dubbo.sample.HelloReply> responseObserver){
+            sayHelloAsync(request).whenComplete((r, t) -> {
+                if (t != null) {
+                    responseObserver.onError(t);
+                } else {
+                    responseObserver.onNext(r);
+                    responseObserver.onCompleted();
+                }
+            });
+        }
+
+        @Override
         public final Invoker<Greeter> getInvoker(URL url) {
             PathResolver pathResolver = url.getOrDefaultFrameworkModel()
             .getExtensionLoader(PathResolver.class)
             .getDefaultExtension();
             Map<String,StubMethodHandler<?, ?>> handlers = new HashMap<>();
 
-            pathResolver.addNativeStub( "/" + SERVICE_NAME + "/SayHello" );
-            pathResolver.addNativeStub( "/" + SERVICE_NAME + "/SayHelloAsync" );
+            pathResolver.addNativeStub( "/" + SERVICE_NAME + "/SayHello");
+            pathResolver.addNativeStub( "/" + SERVICE_NAME + "/SayHelloAsync");
+            // for compatibility
+            pathResolver.addNativeStub( "/" + JAVA_SERVICE_NAME + "/SayHello");
+            pathResolver.addNativeStub( "/" + JAVA_SERVICE_NAME + "/SayHelloAsync");
+
 
             BiConsumer<org.apache.dubbo.sample.HelloRequest, StreamObserver<org.apache.dubbo.sample.HelloReply>> sayHelloFunc = this::sayHello;
             handlers.put(sayHelloMethod.getMethodName(), new UnaryStubMethodHandler<>(sayHelloFunc));

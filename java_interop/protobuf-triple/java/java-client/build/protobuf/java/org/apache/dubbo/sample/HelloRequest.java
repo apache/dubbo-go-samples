@@ -8,11 +8,11 @@ package org.apache.dubbo.sample;
  * The request message containing the user's name.
  * </pre>
  *
- * Protobuf type {@code org.apache.dubbo.samples.HelloRequest}
+ * Protobuf type {@code org.apache.dubbo.sample.HelloRequest}
  */
 public final class HelloRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:org.apache.dubbo.samples.HelloRequest)
+    // @@protoc_insertion_point(message_implements:org.apache.dubbo.sample.HelloRequest)
     HelloRequestOrBuilder {
 private static final long serialVersionUID = 0L;
   // Use HelloRequest.newBuilder() to construct.
@@ -80,13 +80,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloRequest_descriptor;
+    return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloRequest_fieldAccessorTable
+    return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             org.apache.dubbo.sample.HelloRequest.class, org.apache.dubbo.sample.HelloRequest.Builder.class);
   }
@@ -288,21 +288,21 @@ private static final long serialVersionUID = 0L;
    * The request message containing the user's name.
    * </pre>
    *
-   * Protobuf type {@code org.apache.dubbo.samples.HelloRequest}
+   * Protobuf type {@code org.apache.dubbo.sample.HelloRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:org.apache.dubbo.samples.HelloRequest)
+      // @@protoc_insertion_point(builder_implements:org.apache.dubbo.sample.HelloRequest)
       org.apache.dubbo.sample.HelloRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloRequest_descriptor;
+      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloRequest_fieldAccessorTable
+      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.apache.dubbo.sample.HelloRequest.class, org.apache.dubbo.sample.HelloRequest.Builder.class);
     }
@@ -333,7 +333,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_samples_HelloRequest_descriptor;
+      return org.apache.dubbo.sample.HelloWorldProto.internal_static_org_apache_dubbo_sample_HelloRequest_descriptor;
     }
 
     @java.lang.Override
@@ -523,10 +523,10 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:org.apache.dubbo.samples.HelloRequest)
+    // @@protoc_insertion_point(builder_scope:org.apache.dubbo.sample.HelloRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:org.apache.dubbo.samples.HelloRequest)
+  // @@protoc_insertion_point(class_scope:org.apache.dubbo.sample.HelloRequest)
   private static final org.apache.dubbo.sample.HelloRequest DEFAULT_INSTANCE;
   static {
     DEFAULT_INSTANCE = new org.apache.dubbo.sample.HelloRequest();
