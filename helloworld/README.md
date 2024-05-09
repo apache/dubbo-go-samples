@@ -62,8 +62,8 @@ go run ./server/main.go
 
 test server work as expected:
 ```shell
-curl \
-    --header "Content-Type: application/json" \
+curl -v \
+    --header "content-type:application/json" \
     --data '{"name": "Dubbo"}' \
     http://localhost:20000/greet.GreetService/Greet
 ```
