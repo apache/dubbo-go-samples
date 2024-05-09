@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      serviceAccountName: go-micro 
+      containers:
+        - name: server
+          image: frontend
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: "/_healthz"
+              port: 8080
+              httpHeaders:
+                - name: "Cookie"
+                  value: "shop_session-id=x-readiness-probe"
+          livenessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: "/_healthz"
+              port: 8080
+              httpHeaders:
+                - name: "Cookie"
+                  value: "shop_session-id=x-liveness-probe"
+          env:
+            - name: ADDRESS 
+              value: ":8080"
+            - name: MICRO_REGISTRY
+              value: "kubernetes"
+            - name: PRODUCTCATALOGSERVICE
+              value: "productcatalogservice"
+            - name: CURRENCYSERVICE
+              value: "currencyservice"
+            - name: CARTSERVICE
+              value: "cartservice"
+            - name: RECOMMENDATIONSERVICE
+              value: "recommendationservice"
+            - name: SHIPPINGSERVICE
+              value: "shippingservice"
+            - name: CHECKOUTSERVICE
+              value: "checkoutservice"
+            - name: ADSERVICE
+              value: "adservice"
+            # # ENV_PLATFORM: One of: local, gcp, aws, azure, onprem, alibaba
+            # # When not set, defaults to "local" unless running in GKE, otherwies auto-sets to gcp
+            # - name: ENV_PLATFORM
+            #   value: "aws"
+            - name: TRACING_ENABLE
+              value: "true"
+            - name: TRACING_JAEGER_URL
+              value: "http://jaeger-collector.default.svc.cluster.local:14268/api/traces"
+            # - name: CYMBAL_BRANDING
+            #   value: "true"
+          # resources:
+          #   requests:
+          #     cpu: 100m
+          #     memory: 64Mi
+          #   limits:
+          #     cpu: 200m
+          #     memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080

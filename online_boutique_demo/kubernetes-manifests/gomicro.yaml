@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: go-micro
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: go-micro-registry
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - list
+      - patch
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: go-micro-registry
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: go-micro-registry
+subjects:
+  - kind: ServiceAccount
+    name: go-micro
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: go-micro-dashboard
+  labels:
+    app: go-micro-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-micro-dashboard
+  template:
+    metadata:
+      labels:
+        app: go-micro-dashboard
+    spec:
+      serviceAccountName: go-micro
+      containers:
+        - image: xpunch/go-micro-dashboard:latest
+          imagePullPolicy: IfNotPresent
+          name: dashboard
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: MICRO_REGISTRY
+              value: "kubernetes"
+            - name: MICRO_CLIENT_RETRIES
+              value: "0"
+            - name: SERVER_ADDRESS
+              value: ":80"
+            - name: SERVER_AUTH_USERNAME
+              value: "admin"
+            - name: SERVER_AUTH_PASSWORD
+              value: "micro"
+          # resources:
+          #   requests:
+          #     cpu: 100m
+          #     memory: 64Mi
+          #   limits:
+          #     cpu: 200m
+          #     memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-micro-dashboard
+spec:
+  type: ClusterIP
+  selector:
+    app: go-micro-dashboard
+  ports:
+    - name: web
+      port: 80
+      targetPort: 80
