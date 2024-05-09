@@ -21,6 +21,7 @@
 * logger: dubbogo logging
 * mesh: give an proxy service mesh example which shows how to deploy the dubbo-go services with envoy on kubernetes platform
 * metrics: show how to collect dubbogo prometheus metrics
+* multirpc: show how to use three protocols(triple, dubbo, jsonrpc) in one server and invoke them on the client-side
 * otel/trace: show how to use opentelemetry as dubbogo tracing tool
 * proxyless: give an proxyless service mesh example which shows how to deploy the dubbo-go services on kubernetes platform
 * registry: show how to use etcd/nacos/polaris/zookeeper as dubbogo registry

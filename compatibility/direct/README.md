@@ -91,7 +91,7 @@ initSignal()
 #### Consumer
 
 1. Set up the `dubbo service` you need to subscribe to at the beginning of the program startup.
-   Make sure that the configuration file [client.yml](go-client/conf/client.yml) has been configured with the relevant information of the subscription service, and the service properties can be customized to override the configuration of the Provider's properties.
+   Make sure that the configuration file [dubbogo.yml](go-client/conf/dubbogo.yml) has been configured with the relevant information of the subscription service, and the service properties can be customized to override the configuration of the Provider's properties.
    Retain minimum configuration `application` and `references` verification point-to-point direct connection effect, no need to configure the registry.
 
 ```go
@@ -152,7 +152,7 @@ CONF_PROVIDER_FILE_PATH=direct/go-server/conf/server.yml
 
 ```shell
 APP_LOG_CONF_FILE=direct/go-client/conf/log.yml;
-CONF_CONSUMER_FILE_PATH=direct/go-client/conf/client.yml
+DUBBO_GO_CONFIG_PATH=direct/go-client/conf/dubbogo.yml
 ```
 
 See [dubbo-go/.../env.go](https://dubbo.apache.org/dubbo-go/v3/blob/master/common/constant/env.go)

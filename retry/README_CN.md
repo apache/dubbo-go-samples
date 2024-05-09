@@ -28,7 +28,7 @@ syntax = "proto3";
 
 package greet;
 
-option go_package = "github.com/apache/dubbo-go-samples/timeout/proto;greet";
+option go_package = "github.com/apache/dubbo-go-samples/retry/proto;greet";
 
 message GreetRequest {
   string name = 1;
