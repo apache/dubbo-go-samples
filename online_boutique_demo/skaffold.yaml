@@ -48,7 +48,7 @@ deploy:
       - ./kubernetes-manifests/productcatalogservice.yaml
       - ./kubernetes-manifests/recommendationservice.yaml
       - ./kubernetes-manifests/shippingservice.yaml
-      - ./kubernetes-manifests/gomicro.yaml
+#      - ./kubernetes-manifests/gomicro.yaml
 # profiles:
 #   # "debug" profile replaces the default Dockerfile in cartservice with Dockerfile.debug,
 #   # which enables debugging via skaffold.

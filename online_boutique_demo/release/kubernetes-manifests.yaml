@@ -31,7 +31,7 @@ spec:
       labels:
         app: emailservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
@@ -87,7 +87,7 @@ spec:
       labels:
         app: checkoutservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       containers:
         - name: server
           image: xpunch/go-micro-demo-checkoutservice:v1.0.0
@@ -156,7 +156,7 @@ spec:
       labels:
         app: recommendationservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
@@ -218,7 +218,7 @@ spec:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       containers:
         - name: server
           image: xpunch/go-micro-demo-frontend:v1.0.0
@@ -316,7 +316,7 @@ spec:
       labels:
         app: paymentservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
@@ -372,7 +372,7 @@ spec:
       labels:
         app: productcatalogservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
@@ -430,7 +430,7 @@ spec:
       labels:
         app: cartservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
@@ -489,7 +489,7 @@ spec:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       restartPolicy: Always
       initContainers:
@@ -537,7 +537,7 @@ spec:
       labels:
         app: currencyservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
@@ -594,7 +594,7 @@ spec:
       labels:
         app: shippingservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       containers:
         - name: server
           image: xpunch/go-micro-demo-shippingservice:v1.0.0
@@ -705,7 +705,7 @@ spec:
       labels:
         app: adservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server

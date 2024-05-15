@@ -1,5 +1,6 @@
 go 1.19
 
+//define modules here
 use (
 	./src/adservice
 	./src/cartservice
