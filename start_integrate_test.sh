@@ -61,9 +61,6 @@ array+=("registry/nacos")
 #timeout
 array+=("timeout")
 
-#multirpc
-array+=("multirpc")
-
 #healthcheck
 array+=("healthcheck")
 
@@ -87,6 +84,7 @@ array+=("rpc/grpc")
 array+=("rpc/triple/pb")
 array+=("rpc/triple/pb2")
 array+=("rpc/triple/pb-json")
+array+=("rpc/multi-protocols")
 
 # tls
 #array+=("compatibility/tls/dubbo")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
@@ -119,6 +117,10 @@ array+=("compatibility/registry/all/nacos")
 
 # config yaml
 array+=("config_yaml")
+# service_discovery
+array+=("java_interop/service_discovery/interface")
+array+=("java_interop/service_discovery/service")
+
 # replace tls config
 echo "The prefix of certificate path of the following files were replaced to \"$(pwd)/tls\"."
 find "$(pwd)/tls" -type f -name '*.yml' -print0 | xargs -0 -n1

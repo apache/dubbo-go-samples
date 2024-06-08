@@ -12,15 +12,12 @@
 * direct: 直连模式，无需注册中心，直连服务提供者
 * error/triple: triple 示例，演示如何在 triple 协议中集成 hessian2/protobuf
 * filter: dubbogo filter 示例，包含了 custom_filter 与 tpslimit
-* game: dubbogo 游戏示例
 * generic: 泛化调用
 * helloworld: 入门例子
 * integrate_test: dubbogo github action 集成测试用例
 * logger: dubbogo logging
-* mesh: 这个示例演示了如何将 dubbo-go 开发的应用部署在 Istio 体系下，以实现 Envoy 对 dubbo/dubbo-go 服务的自动代理
 * metrics: 使用 prometheus 收集 dubbogo 的 metrics
 * otel/trace: 使用 opentelemetry 进行 tracing
-* proxyless: 这个示例演示了如何将 dubbo-go 开发的应用部署在 Istio 体系下，以实现 Envoy 对 dubbo/dubbo-go 服务的自动代理
 * registry: 把 etcd/nacos/polaris/zookeeper 当做 dubbogo 注册中心示例
 * rpc: 使用 Dubbogo 框架启动 rpc 服务，发起调用
   * rpc/dubbo: dubbo-go 3.0 RPC 通信示例，同时给出了 Java 和 Go 两种语言通信示例
@@ -32,6 +29,7 @@
 * tls: getty(tcp)/triple/gRPC 全链路 tls 安全通信示例
 * tracing: 链路追踪例子，支持
 * error: 错误处理
+* compatibility: 3.1.x 版本示例
 
 
 ## 如何运行
