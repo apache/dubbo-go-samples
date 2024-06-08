@@ -43,7 +43,7 @@ func init() {
 	config.SetConsumerService(userProvider)
 }
 
-// need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
+// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
 	if err := config.Load(); err != nil {
 		panic(err)

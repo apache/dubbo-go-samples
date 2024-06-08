@@ -94,7 +94,7 @@ initSignal()
 #### 服务消费者
 
 1. 在程序启动之初设置需要订阅的 `dubbo` 服务，
-   确保配置文件 `client.yml` 已配置订阅服务相关信息，可自定义设置服务属性等，覆盖 Provider 的属性配置，详情参阅 [client.yml](go-client/conf/client.yml),
+   确保配置文件 `dubbogo.yml` 已配置订阅服务相关信息，可自定义设置服务属性等，覆盖 Provider 的属性配置，详情参阅 [dubbogo.yml](go-client/conf/dubbogo.yml),
    保留最少配置 `application` 和 `references` 验证点对点直连效果，无需注册中心等配置
 
 ```go
@@ -153,7 +153,7 @@ CONF_PROVIDER_FILE_PATH=direct/go-server/conf/server.yml
 
 ```shell
 APP_LOG_CONF_FILE=direct/go-client/conf/log.yml;
-CONF_CONSUMER_FILE_PATH=direct/go-client/conf/client.yml
+DUBBO_GO_CONFIG_PATH=direct/go-client/conf/dubbogo.yml
 ```
 
 详情请参阅 [dubbo-go/.../env.go](https://dubbo.apache.org/dubbo-go/v3/blob/master/common/constant/env.go)

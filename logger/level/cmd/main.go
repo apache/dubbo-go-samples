@@ -36,7 +36,10 @@ func main() {
 			protocol.WithTriple(),
 			protocol.WithPort(20000),
 		),
-		dubbo.WithLogger(log.WithLevel("warn")),
+		dubbo.WithLogger(
+			log.WithLevel("warn"),
+			log.WithZap(),
+		),
 	)
 	if err != nil {
 		panic(err)
