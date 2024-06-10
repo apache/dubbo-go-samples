@@ -18,9 +18,10 @@
 package main
 
 import (
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/server"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 	"github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/handler"
 	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/proto"
 	"github.com/dubbogo/gost/log/logger"
@@ -28,13 +29,23 @@ import (
 )
 
 func main() {
-	//server
-	srv, err := server.NewServer(
-		server.WithServerProtocol(
-			protocol.WithPort(20000),
+
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("cartservice"),
+		dubbo.WithRegistry(
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+		),
+		dubbo.WithProtocol(
 			protocol.WithTriple(),
+			protocol.WithPort(20000),
 		),
 	)
+	if err != nil {
+		panic(err)
+	}
+	//server
+	srv, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}
