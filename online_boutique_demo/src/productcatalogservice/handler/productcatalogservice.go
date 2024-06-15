@@ -21,6 +21,8 @@ import (
 	"context"
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/productcatalogservice/proto"
 	"github.com/dubbogo/gost/log/logger"
+	"github.com/dubbogo/grpc-go/codes"
+	"github.com/dubbogo/grpc-go/status"
 	"google.golang.org/protobuf/encoding/protojson"
 	"io/ioutil"
 	"os"
@@ -53,7 +55,7 @@ func (s *ProductCatalogService) GetProduct(ctx context.Context, in *pb.GetProduc
 		}
 	}
 	if found == nil {
-		return nil, nil
+		return nil, status.Errorf(codes.NotFound, "Product not found with ID %s", in.Id)
 	}
 	out.Id = found.Id
 	out.Name = found.Name
