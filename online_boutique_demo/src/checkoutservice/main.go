@@ -5,7 +5,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice/handler"
-	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice/proto"
+	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 
@@ -35,13 +35,25 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	if err := hipstershop.RegisterCheckoutServiceHandler(srv, &handler.CheckoutService{}); err != nil {
+	client, err := ins.NewClient()
+	cartService, err := pb.NewCartService(client)
+	currencyService, err := pb.NewCurrencyService(client)
+	emailService, err := pb.NewEmailService(client)
+	paymentService, err := pb.NewPaymentService(client)
+	productCatalogService, err := pb.NewProductCatalogService(client)
+	shippingService, err := pb.NewShippingService(client)
+	if err := pb.RegisterCheckoutServiceHandler(srv, &handler.CheckoutService{
+		CartService:           cartService,
+		CurrencyService:       currencyService,
+		EmailService:          emailService,
+		PaymentService:        paymentService,
+		ProductCatalogService: productCatalogService,
+		ShippingService:       shippingService,
+	}); err != nil {
 		panic(err)
 	}
 
 	if err := srv.Serve(); err != nil {
 		logger.Error(err)
 	}
-
 }

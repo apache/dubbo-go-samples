@@ -5,7 +5,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"github.com/apache/dubbo-go-samples/online_boutique_demo/shippingservice/handler"
-	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/shippingservice/proto"
+	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/shippingservice/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 
@@ -36,12 +36,12 @@ func main() {
 		panic(err)
 	}
 
-	if err := hipstershop.RegisterShippingServiceHandler(srv, &handler.ShippingService{}); err != nil {
-		panic(err)
+	if err := pb.RegisterShippingServiceHandler(srv, new(handler.ShippingService)); err != nil {
+		logger.Fatal(err)
 	}
 
+	// Run service
 	if err := srv.Serve(); err != nil {
-		logger.Error(err)
+		logger.Fatal(err)
 	}
-
 }
