@@ -22,19 +22,19 @@ type CheckoutService struct {
 	ShippingService       pb.ShippingService
 }
 
-func (s *CheckoutService) PlaceOrder(ctx context.Context, in *pb.PlaceOrderRequest, out *pb.PlaceOrderResponse) error {
+func (s *CheckoutService) PlaceOrder(ctx context.Context, in *pb.PlaceOrderRequest) (*pb.PlaceOrderResponse, error) {
 	logger.Infof("[PlaceOrder] user_id=%q user_currency=%q", in.UserId, in.UserCurrency)
 
 	orderID, err := uuid.NewUUID()
 	if err != nil {
 		logger.Error(err)
-		return status.Errorf(codes.Internal, "failed to generate order uuid")
+		return nil, status.Errorf(codes.Internal, "failed to generate order uuid")
 	}
 
 	prep, err := s.prepareOrderItemsAndShippingQuoteFromCart(ctx, in.UserId, in.UserCurrency, in.Address)
 	if err != nil {
 		logger.Error(err)
-		return status.Errorf(codes.Internal, err.Error())
+		return nil, status.Errorf(codes.Internal, err.Error())
 	}
 
 	total := &pb.Money{CurrencyCode: in.UserCurrency, Units: 0, Nanos: 0}
@@ -47,17 +47,14 @@ func (s *CheckoutService) PlaceOrder(ctx context.Context, in *pb.PlaceOrderReque
 	txID, err := s.chargeCard(ctx, total, in.CreditCard)
 	if err != nil {
 		logger.Error(err)
-		return status.Errorf(codes.Internal, "failed to charge card: %+v", err)
+		return nil, status.Errorf(codes.Internal, "failed to charge card: %+v", err)
 	}
 	logger.Infof("payment went through (transaction_id: %s)", txID)
 
-	shipOrderResponse, err := s.ShipOrder(ctx, &pb.ShipOrderRequest{
-		Address: in.Address,
-		Items:   prep.cartItems,
-	})
+	shippingTrackingID, err := s.shipOrder(ctx, in.Address, prep.cartItems)
 	if err != nil {
 		logger.Error(err)
-		return status.Errorf(codes.Unavailable, "shipping error: %+v", err)
+		return nil, status.Errorf(codes.Unavailable, "shipping error: %+v", err)
 	}
 
 	if err := s.emptyUserCart(ctx, in.UserId); err != nil {
@@ -66,7 +63,7 @@ func (s *CheckoutService) PlaceOrder(ctx context.Context, in *pb.PlaceOrderReque
 
 	orderResult := &pb.OrderResult{
 		OrderId:            orderID.String(),
-		ShippingTrackingId: shipOrderResponse.TrackingId,
+		ShippingTrackingId: shippingTrackingID,
 		ShippingCost:       prep.shippingCostLocalized,
 		ShippingAddress:    in.Address,
 		Items:              prep.orderItems,
@@ -77,8 +74,7 @@ func (s *CheckoutService) PlaceOrder(ctx context.Context, in *pb.PlaceOrderReque
 	} else {
 		logger.Infof("order confirmation email sent to %q", in.Email)
 	}
-	out.Order = orderResult
-	return nil
+	return &pb.PlaceOrderResponse{Order: orderResult}, nil
 }
 
 type orderPrep struct {
@@ -184,27 +180,13 @@ func (s *CheckoutService) sendOrderConfirmation(ctx context.Context, email strin
 	return err
 }
 
-func (s *CheckoutService) ShipOrder(ctx context.Context, in *pb.ShipOrderRequest) (*pb.ShipOrderResponse, error) {
+func (s *CheckoutService) shipOrder(ctx context.Context, address *pb.Address, items []*pb.CartItem) (string, error) {
 	resp, err := s.ShippingService.ShipOrder(ctx, &pb.ShipOrderRequest{
-		Address: in.Address,
-		Items:   in.Items,
+		Address: address,
+		Items:   items,
 	})
 	if err != nil {
-		return nil, fmt.Errorf("shipment failed: %+v", err)
+		return "", fmt.Errorf("shipment failed: %+v", err)
 	}
-	return resp, nil
-}
-
-func (s *CheckoutService) GetQuote(ctx context.Context, in *pb.GetQuoteRequest) (*pb.GetQuoteResponse, error) {
-
-	resp, err := s.ShippingService.GetQuote(ctx, &pb.GetQuoteRequest{
-		Address: in.Address,
-		Items:   in.Items,
-	})
-	if err != nil {
-		return nil, fmt.Errorf("getquote failed: %+v", err)
-	}
-
-	// 2. Generate a response.
-	return resp, nil
+	return resp.GetTrackingId(), nil
 }

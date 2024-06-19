@@ -17,14 +17,14 @@ var (
 func main() {
 
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("cartservice"),
+		dubbo.WithName(name),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(20001),
+			protocol.WithPort(20002),
 		),
 	)
 	if err != nil {
@@ -36,7 +36,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := hipstershop.RegisterShippingServiceHandler(srv, &handler.CheckoutService{}); err != nil {
+	if err := hipstershop.RegisterCheckoutServiceHandler(srv, &handler.CheckoutService{}); err != nil {
 		panic(err)
 	}
 

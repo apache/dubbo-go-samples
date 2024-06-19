@@ -9,10 +9,15 @@ import (
 	"github.com/dubbogo/gost/log/logger"
 )
 
+var (
+	name    = "shippingservice"
+	version = "1.0.0"
+)
+
 func main() {
 
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("cartservice"),
+		dubbo.WithName(name),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
