@@ -35,7 +35,7 @@ services:
       interval: 5s
 
   etcd:
-    image: "bitnami/etcd:3.4"
+    image: "quay.io/coreos/etcd:v3.4.28"
     container_name: etcd
     environment:
       - ETCDCTL_API=3
