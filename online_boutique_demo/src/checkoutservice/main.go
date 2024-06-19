@@ -4,9 +4,14 @@ import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/apache/dubbo-go-samples/online_boutique_demo/shippingservice/handler"
-	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/shippingservice/proto"
+	"github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice/handler"
+	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice/proto"
 	"github.com/dubbogo/gost/log/logger"
+)
+
+var (
+	name    = "checkoutservice"
+	version = "1.0.0"
 )
 
 func main() {
@@ -31,7 +36,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := hipstershop.RegisterShippingServiceHandler(srv, &handler.ShippingService{}); err != nil {
+	if err := hipstershop.RegisterShippingServiceHandler(srv, &handler.CheckoutService{}); err != nil {
 		panic(err)
 	}
 
