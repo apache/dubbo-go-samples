@@ -1,4 +1,4 @@
-module github.com/apache/dubbo-go-demo/adservice
+module github.com/apache/dubbo-go-samples/online_boutique_demo/adservice
 
 go 1.20
 

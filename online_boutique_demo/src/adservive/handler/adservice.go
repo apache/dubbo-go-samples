@@ -21,7 +21,7 @@ import (
 	"context"
 	"math/rand"
 
-	pb "github.com/apache/dubbo-go-demo/adservice/proto"
+	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/adservice/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 
@@ -29,9 +29,9 @@ const MAX_ADS_TO_SERVE = 2
 
 var adsMap = createAdsMap()
 
-type AdTripleService struct{}
+type AdService struct{}
 
-func (s *AdTripleService) GetAds(ctx context.Context, req *pb.AdRequest) (res *pb.AdResponse, err error) {
+func (s *AdService) GetAds(ctx context.Context, req *pb.AdRequest) (res *pb.AdResponse, err error) {
 	logger.Infof("received ad request (context_words= %v )", req.ContextKeys)
 	allAds := make([]*pb.Ad, 0)
 	res = new(pb.AdResponse)
