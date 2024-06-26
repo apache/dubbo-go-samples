@@ -21,8 +21,8 @@ import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/apache/dubbo-go-samples/online_boutique_demo/src/paymentservice/handler"
-	payment "github.com/apache/dubbo-go-samples/online_boutique_demo/src/paymentservice/proto"
+	"github.com/apache/dubbo-go-samples/online_boutique_demo/paymentservice/handler"
+	payment "github.com/apache/dubbo-go-samples/online_boutique_demo/paymentservice/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 

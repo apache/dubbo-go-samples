@@ -18,7 +18,7 @@
 // 	protoc        v3.12.4
 // source: recommendationservice.proto
 
-package proto
+package hipstershop
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

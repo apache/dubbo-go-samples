@@ -22,8 +22,8 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/apache/dubbo-go-samples/online_boutique_demo/src/emailservice/handler"
-	email "github.com/apache/dubbo-go-samples/online_boutique_demo/src/emailservice/proto"
+	"github.com/apache/dubbo-go-samples/online_boutique_demo/emailservice/handler"
+	email "github.com/apache/dubbo-go-samples/online_boutique_demo/emailservice/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 

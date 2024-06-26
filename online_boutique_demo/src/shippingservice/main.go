@@ -24,7 +24,7 @@ func main() {
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(20001),
+			protocol.WithPort(20000),
 		),
 	)
 	if err != nil {
