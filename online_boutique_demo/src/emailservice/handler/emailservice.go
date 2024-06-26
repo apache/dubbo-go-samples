@@ -19,7 +19,7 @@ package handler
 
 import (
 	"context"
-	email "github.com/apache/dubbo-go-samples/online_boutique_demo/src/emailservice/proto"
+	email "github.com/apache/dubbo-go-samples/online_boutique_demo/emailservice/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 

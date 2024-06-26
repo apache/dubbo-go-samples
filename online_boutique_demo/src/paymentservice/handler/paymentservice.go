@@ -21,7 +21,7 @@ import (
 	"context"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	"errors"
-	payment "github.com/apache/dubbo-go-samples/online_boutique_demo/src/paymentservice/proto"
+	payment "github.com/apache/dubbo-go-samples/online_boutique_demo/paymentservice/proto"
 	"github.com/dubbogo/gost/log/logger"
 	creditcard "github.com/durango/go-credit-card"
 	"github.com/google/uuid"

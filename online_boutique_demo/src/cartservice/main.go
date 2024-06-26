@@ -38,7 +38,7 @@ func main() {
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(20000),
+			protocol.WithPort(20001),
 		),
 	)
 	if err != nil {
