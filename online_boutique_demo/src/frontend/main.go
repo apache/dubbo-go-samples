@@ -19,6 +19,7 @@ package main
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"fmt"
@@ -27,8 +28,6 @@ import (
 	"github.com/dubbogo/gost/log/logger"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
-	_ "go.opentelemetry.io/otel"
-	_ "go.opentelemetry.io/otel/propagation"
 	"net/http"
 	"os"
 	"time"
