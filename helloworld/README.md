@@ -24,7 +24,7 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
     Install the latest version of protoc-gen-triple:
 
     ```shell
-    go get github.com/dubbogo/protoc-gen-go-triple/v3
+    go install github.com/dubbogo/protoc-gen-go-triple/v3@v3.0.2
     ```
 
 3. Generate stub code
