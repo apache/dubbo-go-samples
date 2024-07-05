@@ -78,7 +78,7 @@ func main() {
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(20000),
+			protocol.WithPort(20010),
 		),
 	)
 	if err != nil {
@@ -136,7 +136,7 @@ func main() {
 		panic(err)
 	}
 	//recommendation
-	//TODO:RECOMMENDATION SERVICE
+	recommendationService, err := pb.NewRecommendationService(cli)
 
 	//shippingService
 	shippingService, err := pb.NewShippingService(cli)
@@ -151,7 +151,7 @@ func main() {
 		currencyService:       currencyService,
 		productCatalogService: productCatalogService,
 		shippingService:       shippingService,
-		//TODO:recommendation service
+		recommendationService: recommendationService,
 	}
 
 	r := mux.NewRouter()
@@ -178,6 +178,12 @@ func main() {
 	//if err := micro.RegisterHandler(srv.Server(), handler); err != nil {
 	//	logger.Fatal(err)
 	//}
+	srv_http := &http.Server{
+		Addr:    ":8090",
+		Handler: handler,
+	}
+
+	log.Fatal(srv_http.ListenAndServe())
 
 	logger.Infof("starting server on %s", config.Address())
 	if err := srv.Serve(); err != nil {
