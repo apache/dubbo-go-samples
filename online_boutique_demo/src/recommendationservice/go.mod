@@ -2,10 +2,12 @@ module github.com/apache/dubbo-go-samples/online_boutique_demo/recommendationser
 
 go 1.20
 
-require google.golang.org/protobuf v1.34.2
+require (
+	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1
+	google.golang.org/protobuf v1.34.2
+)
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1 // indirect
 	github.com/RoaringBitmap/roaring v1.2.3 // indirect
 	github.com/Workiva/go-datastructures v1.0.52 // indirect
 	github.com/apache/dubbo-getty v1.4.9 // indirect
@@ -16,6 +18,7 @@ require (
 	github.com/creasty/defaults v1.5.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dubbogo/gost v1.14.0 // indirect
+	github.com/dubbogo/grpc-go v1.42.10 // indirect
 	github.com/dubbogo/triple v1.2.2-rc3 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -52,6 +55,7 @@ require (
 	github.com/shirou/gopsutil/v3 v3.22.2 // indirect
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
 	github.com/tklauser/numcpus v0.4.0 // indirect
+	github.com/ugorji/go/codec v1.2.6 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	go.opentelemetry.io/contrib/propagators/b3 v1.10.0 // indirect
 	go.opentelemetry.io/otel v1.10.0 // indirect
@@ -61,8 +65,10 @@ require (
 	go.uber.org/multierr v1.8.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
+	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
 	google.golang.org/grpc v1.52.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
