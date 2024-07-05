@@ -1,0 +1,79 @@
+apiVersion: skaffold/v2beta27
+kind: Config
+metadata:
+  name: hipstershop
+build:
+  artifacts:
+    # image tags are relative; to specify an image repo (e.g. GCR), you
+    # must provide a "default repo" using one of the methods described
+    # here:
+    # https://skaffold.dev/docs/concepts/#image-repository-handling
+    - image: emailservice
+      context: src/emailservice
+    - image: productcatalogservice
+      context: src/productcatalogservice
+    - image: recommendationservice
+      context: src/recommendationservice
+    - image: shippingservice
+      context: src/shippingservice
+    - image: checkoutservice
+      context: src/checkoutservice
+    - image: paymentservice
+      context: src/paymentservice
+    - image: currencyservice
+      context: src/currencyservice
+    - image: cartservice
+      context: src/cartservice
+      docker:
+        dockerfile: Dockerfile
+    - image: frontend
+      context: src/frontend
+    - image: adservice
+      context: src/adservice
+  tagPolicy:
+    gitCommit: {}
+  local:
+    useBuildkit: false
+    concurrency: 10
+deploy:
+  kubectl:
+    manifests:
+      - ./kubernetes-manifests/adservice.yaml
+      - ./kubernetes-manifests/cartservice.yaml
+      - ./kubernetes-manifests/checkoutservice.yaml
+      - ./kubernetes-manifests/currencyservice.yaml
+      - ./kubernetes-manifests/emailservice.yaml
+      - ./kubernetes-manifests/frontend.yaml
+      - ./kubernetes-manifests/paymentservice.yaml
+      - ./kubernetes-manifests/productcatalogservice.yaml
+      - ./kubernetes-manifests/recommendationservice.yaml
+      - ./kubernetes-manifests/shippingservice.yaml
+      - ./kubernetes-manifests/gomicro.yaml
+# profiles:
+#   # "debug" profile replaces the default Dockerfile in cartservice with Dockerfile.debug,
+#   # which enables debugging via skaffold.
+#   #
+#   # This profile is used by default when running skaffold debug.
+#   - name: debug
+#     activation:
+#       - command: debug
+#     patches:
+#       - op: replace
+#         path: /build/artifacts/7/docker/dockerfile
+#         value: Dockerfile.debug
+
+---
+apiVersion: skaffold/v2beta27
+kind: Config
+metadata:
+  name: loadgenerator
+requires:
+  - configs: [hipstershop]
+build:
+  artifacts:
+    - image: loadgenerator
+      context: src/loadgenerator
+deploy:
+  kubectl:
+    manifests:
+      - ./kubernetes-manifests/loadgenerator.yaml

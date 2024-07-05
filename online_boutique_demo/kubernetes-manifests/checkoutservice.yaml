@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkoutservice
+spec:
+  selector:
+    matchLabels:
+      app: checkoutservice
+  template:
+    metadata:
+      labels:
+        app: checkoutservice
+    spec:
+      serviceAccountName: go-micro
+      containers:
+        - name: server
+          image: checkoutservice
+          ports:
+            - containerPort: 5050
+          readinessProbe:
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:5050"]
+          livenessProbe:
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:5050"]
+          env:
+            - name: PORT
+              value: "5050"
+            - name: MICRO_REGISTRY
+              value: "kubernetes"
+            - name: PRODUCTCATALOGSERVICE
+              value: "productcatalogservice"
+            - name: SHIPPINGSERVICE
+              value: "shippingservice"
+            - name: PAYMENTSERVICE
+              value: "paymentservice"
+            - name: EMAILSERVICE
+              value: "emailservice"
+            - name: CURRENCYSERVICE
+              value: "currencyservice"
+            - name: CARTSERVICE
+              value: "cartservice"
+            - name: TRACING_ENABLE
+              value: "true"
+            - name: TRACING_JAEGER_URL
+              value: "http://jaeger-collector.default.svc.cluster.local:14268/api/traces"
+          # resources:
+          #   requests:
+          #     cpu: 100m
+          #     memory: 64Mi
+          #   limits:
+          #     cpu: 200m
+          #     memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkoutservice
+spec:
+  type: ClusterIP
+  selector:
+    app: checkoutservice
+  ports:
+    - name: grpc
+      port: 5050
+      targetPort: 5050
