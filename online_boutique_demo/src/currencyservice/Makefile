@@ -15,10 +15,10 @@ tidy:
 
 .PHONY: build
 build:
-	@go build -o emailservice *.go
+	@go build -o currencyservice *.go
 
 .PHONY: docker
 docker:
-	@docker build -t emailservice:latest .
-	@docker tag emailservice:latest xpunch/dubbo-go-demo-emailservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-emailservice:v1.0.0
+	@docker build -t currencyservice:latest .
+	@docker tag currencyservice:latest xpunch/dubbo-go-demo-currencyservice:v1.0.0
+	@docker push xpunch/dubbo-go-demo-currencyservice:v1.0.0

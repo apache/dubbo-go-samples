@@ -4,13 +4,6 @@ GOPATH:=$(shell go env GOPATH)
 init:
 	@go get -u google.golang.org/protobuf/proto
 	@go install github.com/golang/protobuf/protoc-gen-go@latest
-	@go install github.com/go-micro/generator/cmd/protoc-gen-micro@latest
-
-.PHONY: proto
-proto:
-	@protoc --proto_path=. --micro_out=. --go_out=:. proto/cartservice.proto
-	@protoc --proto_path=. --micro_out=. --go_out=:. proto/health.proto
-	
 
 .PHONY: update
 update:
@@ -24,10 +17,8 @@ tidy:
 build:
 	@go build -o cartservice *.go
 
-.PHONY: test
-test:
-	@go test -v ./... -cover
-
 .PHONY: docker
 docker:
 	@docker build -t cartservice:latest .
+	@docker tag cartservice:latest xpunch/dubbo-go-demo-cartservice:v1.0.0
+	@docker push xpunch/dubbo-go-demo-cartservice:v1.0.0

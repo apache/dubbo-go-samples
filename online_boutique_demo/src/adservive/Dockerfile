@@ -5,7 +5,7 @@ ENV CGO_ENABLED=0 GOOS=linux
 WORKDIR /go/src/hipstershop
 
 # Install dependencies
-RUN apk --update --no-cache add ca-certificates make protoc
+RUN apk --update --no-cache add ca-certificates make
 
 # Download grpc_health_probe
 RUN GRPC_HEALTH_PROBE_VERSION=v0.4.11 && \
@@ -17,11 +17,9 @@ COPY Makefile go.mod go.sum ./
 RUN go env -w GOPROXY=https://goproxy.io,direct/
 RUN make init && go mod download
 COPY . .
-RUN make proto tidy
 
-# Skaffold passes in debug-oriented compiler flags
-ARG SKAFFOLD_GO_GCFLAGS
-RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -o /go/src/hipstershop/adservice .
+
+RUN go build -o /go/src/hipstershop/adservice .
 
 # Deployment container
 FROM scratch

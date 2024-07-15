@@ -4,13 +4,6 @@ GOPATH:=$(shell go env GOPATH)
 init:
 	@go get -u google.golang.org/protobuf/proto
 	@go install github.com/golang/protobuf/protoc-gen-go@latest
-	@go install github.com/go-micro/generator/cmd/protoc-gen-micro@latest
-
-.PHONY: proto
-proto:
-	@protoc --proto_path=. --micro_out=. --go_out=:. proto/currencyservice.proto
-	@protoc --proto_path=. --micro_out=. --go_out=:. proto/health.proto
-	
 
 .PHONY: update
 update:
@@ -22,12 +15,10 @@ tidy:
 
 .PHONY: build
 build:
-	@go build -o currencyservice *.go
-
-.PHONY: test
-test:
-	@go test -v ./... -cover
+	@go build -o checkoutservice *.go
 
 .PHONY: docker
 docker:
-	@docker build -t currencyservice:latest .
+	@docker build -t checkoutservice:latest .
+	@docker tag checkoutservice:latest xpunch/dubbo-go-demo-checkoutservice:v1.0.0
+	@docker push xpunch/dubbo-go-demo-checkoutservice:v1.0.0
