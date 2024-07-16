@@ -37,7 +37,7 @@ public class Application {
 
         GreetRequest request = new GreetRequest();
         request.setName("world");
-        String message = service.Greet(request).getGreeting();
+        String message = service.greet(request).getGreeting();
 
         System.out.println("Receive result ======> " + message);
         System.in.read();

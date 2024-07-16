@@ -18,5 +18,5 @@
 package org.apache.dubbo.tri.hessian2.api;
 
 public interface GreetingsService {
-    GreetResponse Greet(GreetRequest req);
+    GreetResponse greet(GreetRequest req);
 }
