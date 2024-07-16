@@ -45,7 +45,7 @@ func main() {
 	}
 
 	cli, err := ins.NewClient(
-		client.WithClientURL("127.0.0.1:20000"),
+		client.WithClientURL("127.0.0.1:50052"),
 		client.WithClientProtocolDubbo(),
 		client.WithClientSerialization(constant.Hessian2Serialization),
 	)
