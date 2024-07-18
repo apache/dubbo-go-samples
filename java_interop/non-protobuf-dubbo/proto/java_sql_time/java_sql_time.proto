@@ -15,8 +15,12 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo.tri.hessian2.api;
+syntax = "proto3";
 
-public interface GreetingsService {
-    GreetResponse greet(GreetRequest req);
-}
+package java_sql_time;
+
+option go_package = "dubbo.apache.org/dubbo-go/v3/proto/java_sql_time;java_sql_time";
+
+message Time {}
+
+message Date {}

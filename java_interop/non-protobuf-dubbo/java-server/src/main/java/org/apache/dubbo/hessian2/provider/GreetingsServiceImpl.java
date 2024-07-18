@@ -15,8 +15,17 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo.tri.hessian2.api;
+package org.apache.dubbo.hessian2.provider;
 
-public interface GreetingsService {
-    GreetResponse greet(GreetRequest req);
+import org.apache.dubbo.hessian2.api.GreetRequest;
+import org.apache.dubbo.hessian2.api.GreetResponse;
+import org.apache.dubbo.hessian2.api.GreetingsService;
+
+public class GreetingsServiceImpl implements GreetingsService {
+    @Override
+    public GreetResponse greet(GreetRequest req) {
+        GreetResponse response = new GreetResponse();
+        response.setGreeting("hi, " + req.getName());
+        return response;
+    }
 }

@@ -14,9 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.dubbo.hessian2.api;
 
-package org.apache.dubbo.tri.hessian2.api;
+public class GreetRequest implements java.io.Serializable {
+	private String name;
 
-public interface GreetingsService {
-    GreetResponse greet(GreetRequest req);
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

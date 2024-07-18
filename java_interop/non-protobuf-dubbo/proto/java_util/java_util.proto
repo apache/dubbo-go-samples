@@ -13,10 +13,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+*/
 
-package org.apache.dubbo.tri.hessian2.api;
+syntax = "proto3";
 
-public interface GreetingsService {
-    GreetResponse greet(GreetRequest req);
-}
+package java_util;
+
+option go_package = "dubbo.apache.org/dubbo-go/v3/proto/java_util;java_util";
+
+message Locale {}
+
+message UUID {}
