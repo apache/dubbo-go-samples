@@ -11,7 +11,7 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
 ## How to run
 
 ### Prerequisites
-1. Install `protoc [version3][]
+1. Install `protoc` [version3][]
    Please refer to [Protocol Buffer Compiler Installation][].
 
 2. Install `protoc-gen-go` and `protoc-gen-triple`
