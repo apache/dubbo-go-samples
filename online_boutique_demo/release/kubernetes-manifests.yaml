@@ -31,11 +31,11 @@ spec:
       labels:
         app: emailservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/go-micro-demo-emailservice:v1.0.0
+          image: xpunch/dubbo-go-demo-emailservice:v1.0.0
           ports:
             - containerPort: 8080
           env:
@@ -87,10 +87,10 @@ spec:
       labels:
         app: checkoutservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       containers:
         - name: server
-          image: xpunch/go-micro-demo-checkoutservice:v1.0.0
+          image: xpunch/dubbo-go-demo-checkoutservice:v1.0.0
           ports:
             - containerPort: 5050
           readinessProbe:
@@ -156,11 +156,11 @@ spec:
       labels:
         app: recommendationservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/go-micro-demo-recommendationservice:v1.0.0
+          image: xpunch/dubbo-go-demo-recommendationservice:v1.0.0
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -218,10 +218,10 @@ spec:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       containers:
         - name: server
-          image: xpunch/go-micro-demo-frontend:v1.0.0
+          image: xpunch/dubbo-go-demo-frontend:v1.0.0
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -258,7 +258,7 @@ spec:
             - name: AD_SERVICE_ADDR
               value: "adservice:9555"
             # # ENV_PLATFORM: One of: local, gcp, aws, azure, onprem, alibaba
-            # # When not set, go-micros to "local" unless running in GKE, otherwies auto-sets to gcp
+            # # When not set, dubbo-gos to "local" unless running in GKE, otherwies auto-sets to gcp
             # - name: ENV_PLATFORM
             #   value: "aws"
             - name: DISABLE_TRACING
@@ -316,11 +316,11 @@ spec:
       labels:
         app: paymentservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/go-micro-demo-paymentservice:v1.0.0
+          image: xpunch/dubbo-go-demo-paymentservice:v1.0.0
           ports:
             - containerPort: 50051
           env:
@@ -372,11 +372,11 @@ spec:
       labels:
         app: productcatalogservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/go-micro-demo-productcatalogservice:v1.0.0
+          image: xpunch/dubbo-go-demo-productcatalogservice:v1.0.0
           ports:
             - containerPort: 3550
           env:
@@ -430,11 +430,11 @@ spec:
       labels:
         app: cartservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/go-micro-demo-cartservice:v1.0.0
+          image: xpunch/dubbo-go-demo-cartservice:v1.0.0
           imagePullPolicy: Never
           ports:
             - containerPort: 7070
@@ -489,7 +489,7 @@ spec:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       restartPolicy: Always
       initContainers:
@@ -537,11 +537,11 @@ spec:
       labels:
         app: currencyservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/go-micro-demo-currencyservice:v1.0.0
+          image: xpunch/dubbo-go-demo-currencyservice:v1.0.0
           ports:
             - name: grpc
               containerPort: 7000
@@ -594,10 +594,10 @@ spec:
       labels:
         app: shippingservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       containers:
         - name: server
-          image: xpunch/go-micro-demo-shippingservice:v1.0.0
+          image: xpunch/dubbo-go-demo-shippingservice:v1.0.0
           ports:
             - containerPort: 50051
           env:
@@ -705,11 +705,11 @@ spec:
       labels:
         app: adservice
     spec:
-      serviceAccountName: go-micro
+      serviceAccountName: dubbo-go
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/go-micro-demo-adservice:v1.0.0
+          image: xpunch/dubbo-go-demo-adservice:v1.0.0
           ports:
             - containerPort: 9555
           env:
