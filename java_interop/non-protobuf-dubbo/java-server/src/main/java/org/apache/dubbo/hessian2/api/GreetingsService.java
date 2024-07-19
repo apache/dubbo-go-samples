@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo.tri.hessian2.api;
+package org.apache.dubbo.hessian2.api;
 
 public interface GreetingsService {
     GreetResponse greet(GreetRequest req);

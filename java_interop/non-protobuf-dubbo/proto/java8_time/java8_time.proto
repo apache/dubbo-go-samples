@@ -15,8 +15,34 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo.tri.hessian2.api;
+syntax = "proto3";
 
-public interface GreetingsService {
-    GreetResponse greet(GreetRequest req);
-}
+package java8_time;
+
+option go_package = "dubbo.apache.org/dubbo-go/v3/proto/java8_time;java8_time";
+
+message Duration{}
+
+message Instant {}
+
+message LocalDate{}
+
+message LocalDateTime{}
+
+message LocalTime{}
+
+message MonthDay{}
+
+message OffsetDateTime{}
+
+message OffsetTime{}
+
+message Period{}
+
+message Year{}
+
+message YearMonth{}
+
+message ZoneOffSet{}
+
+message ZonedDateTime{}

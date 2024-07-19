@@ -15,28 +15,28 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo.tri.hessian2.client;
+package org.apache.dubbo.hessian2.client;
 
 import java.io.IOException;
 
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.config.bootstrap.builders.ReferenceBuilder;
-import org.apache.dubbo.tri.hessian2.api.GreetRequest;
-import org.apache.dubbo.tri.hessian2.api.GreetingsService;
+import org.apache.dubbo.hessian2.api.GreetRequest;
+import org.apache.dubbo.hessian2.api.GreetingsService;
 
 public class Application {
     public static void main(String[] args) throws IOException {
         ReferenceConfig<GreetingsService> reference =
                 ReferenceBuilder.<GreetingsService>newBuilder()
                 .interfaceClass(GreetingsService.class)
-                .url("tri://localhost:50052")
+                .url("dubbo://localhost:50052")
                 .build();
         DubboBootstrap.getInstance().reference(reference).start();
         GreetingsService service = reference.get();
 
         GreetRequest request = new GreetRequest();
-        request.setName("world");
+        request.setName("dubbo-java");
         String message = service.greet(request).getGreeting();
 
         System.out.println("Receive result ======> " + message);

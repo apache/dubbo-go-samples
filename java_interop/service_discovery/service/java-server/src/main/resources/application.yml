@@ -18,6 +18,7 @@ dubbo:
   application:
     name: greet-java-server
     logger: slf4j
+    metadataServiceProtocol: dubbo # required, dubbo-go not support tri
   protocol:
     name: tri
     port: 20055
