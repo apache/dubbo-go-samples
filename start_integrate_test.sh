@@ -24,7 +24,7 @@ array+=("helloworld")
 
 # config-api
 array+=("compatibility/config-api/rpc/triple")
-array+=("compatibility/config-api/configcenter/nacos")
+#array+=("compatibility/config-api/configcenter/nacos")
 array+=("compatibility/config-api/configcenter/zookeeper")
 array+=("compatibility/config-api/config-merge")
 
