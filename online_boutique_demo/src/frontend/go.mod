@@ -137,7 +137,3 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace dubbo.apache.org/dubbo-go/v3 => /Users/ken/aliware/dubbo3/golang/dubbo-go
-
-replace github.com/dubbogo/go-zookeeper => /Users/ken/aliware/dubbo3/golang/go-zookeeper
