@@ -41,6 +41,35 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 	return resp, nil
 }
 
+func main() {
+	_ = writeRuleToConfigCenter()
+	time.Sleep(time.Second * 10)
+
+	ins, err := dubbo.NewInstance(
+		dubbo.WithConfigCenter(
+			config_center.WithZookeeper(),
+			config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-server"),
+			config_center.WithAddress("127.0.0.1:2181"),
+			config_center.WithGroup("dubbogo"),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+	srv, err := ins.NewServer()
+	if err != nil {
+		panic(err)
+	}
+
+	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
+		panic(err)
+	}
+
+	if err = srv.Serve(); err != nil {
+		logger.Error(err)
+	}
+}
+
 const configCenterZKServerConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-server', namespace is default
 dubbo:
   registries:
@@ -51,7 +80,7 @@ dubbo:
   protocols:
     triple:
       name: tri
-      port: 20000
+      port: 50000
   provider:
     services:
       GreeterProvider:
@@ -63,7 +92,7 @@ func ensurePath(c *zk.Conn, path string, data []byte, flags int32, acl []zk.ACL)
 	return err
 }
 
-func main() {
+func writeRuleToConfigCenter() error {
 	c, _, err := zk.Connect([]string{"127.0.0.1:2181"}, time.Second*10)
 	if err != nil {
 		panic(err)
@@ -95,28 +124,5 @@ func main() {
 			panic(err)
 		}
 	}
-	time.Sleep(time.Second * 10)
-
-	zkOption := config_center.WithZookeeper()
-	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-server")
-	addressOption := config_center.WithAddress("127.0.0.1:2181")
-	groupOption := config_center.WithGroup("dubbogo")
-	ins, err := dubbo.NewInstance(
-		dubbo.WithConfigCenter(zkOption, dataIdOption, addressOption, groupOption),
-	)
-	if err != nil {
-		panic(err)
-	}
-	srv, err := ins.NewServer()
-	if err != nil {
-		panic(err)
-	}
-
-	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-		panic(err)
-	}
-
-	if err = srv.Serve(); err != nil {
-		logger.Error(err)
-	}
+	return err
 }
