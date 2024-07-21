@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package payment;
+package hipstershop;
 
-option go_package = "./proto;payment";
+option go_package = "./proto;hipstershop";
 
 service PaymentService {
   rpc Charge(ChargeRequest) returns (ChargeResponse) {}

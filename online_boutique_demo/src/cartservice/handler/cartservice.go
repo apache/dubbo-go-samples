@@ -27,6 +27,12 @@ type CartService struct {
 	Store cartstore.CartStore
 }
 
+func NewCartService() *CartService {
+	return &CartService{
+		Store: cartstore.NewMemoryCartStore(),
+	}
+}
+
 func (s *CartService) AddItem(ctx context.Context, in *pb.AddItemRequest) (*pb.Empty, error) {
 	err := s.Store.AddItem(ctx, in.UserId, in.Item.ProductId, in.Item.Quantity)
 	if err != nil {

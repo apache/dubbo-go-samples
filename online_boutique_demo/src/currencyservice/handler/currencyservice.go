@@ -31,7 +31,7 @@ import (
 type CurrencyService struct{}
 
 func (s *CurrencyService) GetSupportedCurrencies(ctx context.Context, in *pb.Empty) (*pb.GetSupportedCurrenciesResponse, error) {
-	var out *pb.GetSupportedCurrenciesResponse
+	out := &pb.GetSupportedCurrenciesResponse{}
 	data, err := ioutil.ReadFile("data/currency_conversion.json")
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to load currency data : %+v", err.Error())
@@ -48,7 +48,7 @@ func (s *CurrencyService) GetSupportedCurrencies(ctx context.Context, in *pb.Emp
 }
 
 func (s *CurrencyService) Convert(ctx context.Context, in *pb.CurrencyConversionRequest) (*pb.Money, error) {
-	var out *pb.Money
+	out := &pb.Money{}
 	data, err := ioutil.ReadFile("data/currency_conversion.json")
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())

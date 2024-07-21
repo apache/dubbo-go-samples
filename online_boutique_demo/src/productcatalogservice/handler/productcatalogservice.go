@@ -40,14 +40,14 @@ type ProductCatalogService struct {
 }
 
 func (s *ProductCatalogService) ListProducts(ctx context.Context, in *pb.Empty) (*pb.ListProductsResponse, error) {
-	var out *pb.ListProductsResponse
+	out := &pb.ListProductsResponse{}
 	out.Products = s.parseCatalog()
 	return out, nil
 }
 
 func (s *ProductCatalogService) GetProduct(ctx context.Context, in *pb.GetProductRequest) (*pb.Product, error) {
 	var found *pb.Product
-	var out *pb.Product
+	out := &pb.Product{}
 	products := s.parseCatalog()
 	for _, p := range products {
 		if in.Id == p.Id {
@@ -68,7 +68,7 @@ func (s *ProductCatalogService) GetProduct(ctx context.Context, in *pb.GetProduc
 
 func (s *ProductCatalogService) SearchProducts(ctx context.Context, in *pb.SearchProductsRequest) (*pb.SearchProductsResponse, error) {
 	var ps []*pb.Product
-	var out *pb.SearchProductsResponse
+	out := &pb.SearchProductsResponse{}
 	products := s.parseCatalog()
 	for _, p := range products {
 		if strings.Contains(strings.ToLower(p.Name), strings.ToLower(in.Query)) ||

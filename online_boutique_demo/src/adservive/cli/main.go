@@ -23,7 +23,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	health "dubbo.apache.org/dubbo-go/v3/protocol/triple/health/triple_health"
-	hipstershop "github.com/apache/dubbo-go-demo/adservice/proto"
+	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/adservice/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 

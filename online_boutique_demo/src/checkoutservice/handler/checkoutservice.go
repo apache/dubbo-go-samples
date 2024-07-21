@@ -101,7 +101,7 @@ type orderPrep struct {
 }
 
 func (s *CheckoutService) prepareOrderItemsAndShippingQuoteFromCart(ctx context.Context, userID, userCurrency string, address *pb.Address) (orderPrep, error) {
-	var out orderPrep
+	out := orderPrep{}
 	cartItems, err := s.getUserCart(ctx, userID)
 	if err != nil {
 		return out, fmt.Errorf("cart failure: %+v", err)

@@ -19,6 +19,7 @@ package main
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"github.com/apache/dubbo-go-samples/online_boutique_demo/recommendationservice/handler"
@@ -41,13 +42,20 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	client, err := ins.NewClient()
+	productCatalogService, err := pb.NewProductCatalogService(client)
+	if err != nil {
+		panic(err)
+	}
+
 	//server
 	srv, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}
 
-	if err := pb.RegisterRecommendationServiceHandler(srv, &handler.RecommendationService{}); err != nil {
+	if err := pb.RegisterRecommendationServiceHandler(srv, handler.NewRecommendationServiceImpl(productCatalogService)); err != nil {
 		panic(err)
 	}
 

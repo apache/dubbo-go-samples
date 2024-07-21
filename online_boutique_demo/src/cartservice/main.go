@@ -50,7 +50,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := hipstershop.RegisterCartServiceHandler(srv, &handler.CartService{}); err != nil {
+	if err := hipstershop.RegisterCartServiceHandler(srv, handler.NewCartService()); err != nil {
 		panic(err)
 	}
 

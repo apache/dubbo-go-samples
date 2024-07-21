@@ -47,11 +47,12 @@ func (s *PaymentService) Charge(ctx context.Context, in *payment.ChargeRequest) 
 	// TODO:
 	// Only VISA and mastercard is accepted, other card types (AMEX, dinersclub) will
 	// throw UnacceptedCreditCard error.
-	if card.Company.Short != "visa" && card.Company.Short != "mastercard" {
-		err := errors.New("unaccepted credit card type")
-		logger.Errorf("Unaccept credit card type: %s", card.Company.Short)
-		return nil, err
-	}
+
+	//if card.Company.Short != "visa" && card.Company.Short != "mastercard" {
+	//	err := errors.New("unaccepted credit card type")
+	//	logger.Errorf("Unaccept credit card type: %s", card.Company.Short)
+	//	return nil, err
+	//}
 
 	logger.Infof(`Transaction processed: %s, Amount: %s%d.%d`, in.CreditCard.CreditCardNumber, in.Amount.CurrencyCode, in.Amount.Units, in.Amount.Nanos)
 

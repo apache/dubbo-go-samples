@@ -29,9 +29,13 @@ type RecommendationService struct {
 	ProductCatalogService pb.ProductCatalogService
 }
 
+func NewRecommendationServiceImpl(service pb.ProductCatalogService) *RecommendationService {
+	return &RecommendationService{ProductCatalogService: service}
+}
+
 func (s *RecommendationService) ListRecommendations(ctx context.Context, in *pb.ListRecommendationsRequest) (*pb.ListRecommendationsResponse, error) {
 	maxResponsesCount := 5
-	var out *pb.ListRecommendationsResponse
+	out := &pb.ListRecommendationsResponse{}
 	// # fetch list of products from product catalog stub
 	catalog, err := s.ProductCatalogService.ListProducts(ctx, &pb.Empty{})
 	if err != nil {
