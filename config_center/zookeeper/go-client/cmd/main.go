@@ -34,7 +34,7 @@ import (
 )
 
 func main() {
-	err := writeRuleToConfigCenter()
+	_ = writeRuleToConfigCenter()
 
 	time.Sleep(time.Second * 10)
 
