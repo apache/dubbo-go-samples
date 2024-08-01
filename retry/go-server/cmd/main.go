@@ -43,7 +43,7 @@ func (srv *GreetTripleServer) GreetRetry(ctx context.Context, req *greet.GreetRe
 	if srv.requestTime < 3 {
 		srv.requestTime++
 		logger.Infof("retry %d times", srv.requestTime)
-		return nil, triple_protocol.NewError(triple_protocol.CodeBizError, fmt.Errorf("retry %d times", srv.requestTime))
+		return nil, triple_protocol.NewError(triple_protocol.CodeInternal, fmt.Errorf("retry %d times", srv.requestTime))
 	}
 	resp := &greet.GreetResponse{Greeting: req.Name}
 	logger.Infof("retry success, current request time is %d", srv.requestTime)
