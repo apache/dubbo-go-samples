@@ -108,6 +108,6 @@ func (u *UserProvider) GetUsers(req []interface{}) ([]*User, error) {
 
 func (s *UserProvider) MethodMapper() map[string]string {
 	return map[string]string{
-		"GetUser2": "getUser",
+		"GetUser2": "getUser2",
 	}
 }
