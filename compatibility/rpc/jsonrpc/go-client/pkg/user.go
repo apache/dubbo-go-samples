@@ -43,7 +43,7 @@ type UserProvider struct {
 	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
 	GetUser0 func(id string, name string) (*JsonRPCUser, error)
 	GetUser1 func(ctx context.Context, id string) (*JsonRPCUser, error)
-	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser"`
+	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser2"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
@@ -53,7 +53,7 @@ type UserProvider1 struct {
 	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
 	GetUser0 func(id string, name string) (*JsonRPCUser, error)
 	GetUser1 func(ctx context.Context, id string) (*JsonRPCUser, error)
-	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser"`
+	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser2"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
@@ -63,7 +63,7 @@ type UserProvider2 struct {
 	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
 	GetUser0 func(id string, name string) (*JsonRPCUser, error)
 	GetUser1 func(ctx context.Context, id string) (*JsonRPCUser, error)
-	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser"`
+	GetUser2 func(ctx context.Context, id string) (*JsonRPCUser, error) `dubbo:"getUser2"`
 	GetUser3 func() error
 	Echo     func(ctx context.Context, req string) (string, error) // Echo represent EchoFilter will be used
 }
