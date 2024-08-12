@@ -11,7 +11,7 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
 ## How to run
 
 ### Prerequisites
-1. Install `protoc [version3][]
+1. Install `protoc` [version3][]
    Please refer to [Protocol Buffer Compiler Installation][].
 
 2. Install `protoc-gen-go` and `protoc-gen-triple`
@@ -24,7 +24,7 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
     Install the latest version of protoc-gen-triple:
 
     ```shell
-    go install github.com/dubbogo/protoc-gen-go-triple/v3@v3.0.0
+    go install github.com/dubbogo/protoc-gen-go-triple/v3@v3.0.2
     ```
 
 3. Generate stub code

@@ -4,7 +4,7 @@ version: '3'
 # integrate test will start up services and samples test will depend on those containers
 services:
   zookeeper:
-    image: zookeeper
+    image: zookeeper:3.8.4
     ports:
       - "2181:2181"
     restart: on-failure
@@ -35,7 +35,7 @@ services:
       interval: 5s
 
   etcd:
-    image: "quay.io/coreos/etcd:latest"
+    image: "quay.io/coreos/etcd:v3.4.28"
     container_name: etcd
     environment:
       - ETCDCTL_API=3

@@ -1,0 +1,88 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto3";
+
+package org.apache.dubbo.tri.hessian2.api;
+
+//go package
+option go_package = "github.com/apache/dubbo-go-samples/java_interop/non-protobuf-triple/proto;greet";
+//java package
+option java_package = 'org.apache.dubbo.tri.hessian2.api';
+option java_multiple_files = true;
+option java_outer_classname = "GreetingsService";
+option objc_class_prefix = "WH";
+
+import "hessian2_extend/hessian2_extend.proto";
+import "java_sql_time/java_sql_time.proto";
+import "java8_time/java8_time.proto";
+import "java_exception/java_exception.proto";
+import "java_util/java_util.proto";
+import "java_math/java_math.proto";
+import "self_extension/self_extension.proto";
+
+enum GreetEnum {
+  GREET_ENUM_0 = 0;
+  GREET_ENUM_1 = 1;
+  GREET_ENUM_2 = 2;
+  GREET_ENUM_3 = 3;
+  GREET_ENUM_4 = 4;
+
+  option (hessian2_extend.enum_extend) = {
+    java_class_name: "org.apache.greet.GreetEnum";
+  };
+}
+
+message GreetRequest {
+  message Internal {
+    int32 num = 1;
+    option (hessian2_extend.message_extend) = {
+      java_class_name: "org.apache.greet.Inner";
+      is_inheritance: true;
+    };
+  }
+
+  string name = 1;
+  GreetEnum way = 2;
+  Internal inner = 3;
+  java_sql_time.Time time = 4;
+  java8_time.Duration duration = 6;
+  java_exception.RuntimeException runtime_exception = 8;
+  java_util.UUID uuid = 9;
+  self_extension.Time self_time = 10;
+  java_math.Integer big_integer = 11;
+
+  option (hessian2_extend.message_extend) = {
+    java_class_name: "org.apache.greet.GreetRequest";
+  };
+}
+
+message GreetResponse {
+  string greeting = 1;
+  option (hessian2_extend.message_extend) = {
+    java_class_name: "org.apache.greet.GreetResponse";
+  };
+}
+
+service GreetingsService  {
+  rpc Greet(GreetRequest) returns (GreetResponse) {
+    option (hessian2_extend.method_extend) = {
+      method_name: "greet";
+    };
+  }
+
+}

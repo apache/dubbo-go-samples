@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package hipstershop;
+
+option  go_package = "./proto;hipstershop";
+
+service EmailService {
+  rpc SendOrderConfirmation (SendOrderConfirmationRequest) returns (SendOrderConfirmationResponse){}
+}
+
+message SendOrderConfirmationRequest {
+  string email = 1;
+  string order = 2;
+}
+
+message SendOrderConfirmationResponse {
+  string message = 1;
+}
+
