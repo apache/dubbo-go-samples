@@ -17,7 +17,7 @@ COPY Makefile go.mod go.sum ./
 RUN go env -w GOPROXY=https://goproxy.io,direct/
 RUN make init && go mod download
 COPY . .
-
+RUN make tidy
 
 RUN go build -o /go/src/hipstershop/productcatalogservice .
 
