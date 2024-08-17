@@ -22,6 +22,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
+	"github.com/apache/dubbo-go-samples/online_boutique_demo/adservice/config"
 	"github.com/apache/dubbo-go-samples/online_boutique_demo/adservice/handler"
 	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/adservice/proto"
 	"github.com/dubbogo/gost/log/logger"
@@ -36,7 +37,7 @@ func main() {
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(20000),
+			protocol.WithPort(config.Address()),
 		),
 	)
 	if err != nil {
