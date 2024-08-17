@@ -17,10 +17,6 @@
 
 package config
 
-import (
-	"fmt"
-)
-
 type Config struct {
 	Port    int
 	Tracing TracingConfig
@@ -39,8 +35,8 @@ var cfg *Config = &Config{
 	Port: 50051,
 }
 
-func Address() string {
-	return fmt.Sprintf(":%d", cfg.Port)
+func Address() int {
+	return cfg.Port
 }
 
 func Tracing() TracingConfig {
