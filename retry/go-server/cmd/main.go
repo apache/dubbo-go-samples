@@ -23,6 +23,7 @@ import (
 
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/protocol/triple/triple_protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
 	greet "github.com/apache/dubbo-go-samples/retry/proto"
 	"github.com/dubbogo/gost/log/logger"
@@ -42,7 +43,7 @@ func (srv *GreetTripleServer) GreetRetry(ctx context.Context, req *greet.GreetRe
 	if srv.requestTime < 3 {
 		srv.requestTime++
 		logger.Infof("retry %d times", srv.requestTime)
-		return nil, fmt.Errorf("retry %d times", srv.requestTime)
+		return nil, triple_protocol.NewError(triple_protocol.CodeInternal, fmt.Errorf("retry %d times", srv.requestTime))
 	}
 	resp := &greet.GreetResponse{Greeting: req.Name}
 	logger.Infof("retry success, current request time is %d", srv.requestTime)

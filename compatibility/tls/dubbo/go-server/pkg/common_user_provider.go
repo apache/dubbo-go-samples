@@ -114,6 +114,6 @@ func (s *CommonUserProvider) GetGender(i int32) (Gender, error) {
 
 func (s *CommonUserProvider) MethodMapper() map[string]string {
 	return map[string]string{
-		"GetUser2": "getUser",
+		"GetUser2": "getUser2",
 	}
 }

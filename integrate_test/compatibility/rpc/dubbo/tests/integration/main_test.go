@@ -116,7 +116,7 @@ type UserProvider struct {
 	GetUser   func(ctx context.Context, req *User) (*User, error)
 	GetUser0  func(id string, name string) (User, error)
 	GetUser1  func(ctx context.Context, req *User) (*User, error)
-	GetUser2  func(ctx context.Context, req int32) (*User, error) `dubbo:"getUser"`
+	GetUser2  func(ctx context.Context, req int32) (*User, error) `dubbo:"getUser2"`
 	GetUser3  func() error
 	GetGender func(i int32) (Gender, error)
 	Echo      func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
