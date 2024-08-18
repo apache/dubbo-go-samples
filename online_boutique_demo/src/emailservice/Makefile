@@ -38,5 +38,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t emailservice:latest .
-	@docker tag emailservice:latest xpunch/dubbo-go-demo-emailservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-emailservice:v1.0.0
+	@docker tag emailservice:latest sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-email-service:1.0-go
+	@docker push sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-email-service:1.0-go

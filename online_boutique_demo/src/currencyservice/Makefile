@@ -38,5 +38,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t currencyservice:latest .
-	@docker tag currencyservice:latest xpunch/dubbo-go-demo-currencyservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-currencyservice:v1.0.0
+	@docker tag currencyservice:latest sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-currency-service:1.0-go
+	@docker push sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-currency-service:1.0-go

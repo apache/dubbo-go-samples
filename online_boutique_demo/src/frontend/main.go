@@ -69,12 +69,16 @@ type frontendServer struct {
 }
 
 func main() {
+	regAddr := os.Getenv("DUBBO_REGISTRY_ADDRESS")
+	if regAddr == "" {
+		regAddr = "127.0.0.1:2181"
+	}
 
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("frontendservice"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
+			registry.WithAddress(regAddr),
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),

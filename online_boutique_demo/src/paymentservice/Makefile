@@ -37,6 +37,6 @@ build:
 
 .PHONY: docker
 docker:
-	@docker build -t paymentservice:latest .
-	@docker tag paymentservice:latest xpunch/dubbo-go-demo-paymentservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-paymentservice:v1.0.0
+	@docker build -t frontend:latest .
+	@docker tag frontend:latest sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-frontend-service:1.0-go
+	@docker push sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-frontend-service:1.0-go
