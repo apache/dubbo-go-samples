@@ -38,5 +38,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t checkoutservice:latest .
-	@docker tag checkoutservice:latest sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-checkout-service:1.0-go
-	@docker push sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-checkout-service:1.0-go
+	@docker tag checkoutservice:latest ken222/online-boutique-checkout-service:1.0-go
+	@docker push ken222/online-boutique-checkout-service:1.0-go

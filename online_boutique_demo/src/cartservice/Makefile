@@ -38,5 +38,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t cartService:latest .
-	@docker tag cartservice:latest sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-cart-service:1.0-go
-	@docker push sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-cart-service:1.0-go
+	@docker tag cartservice:latest ken222/online-boutique-cart-service:1.0-go
+	@docker push ken222/online-boutique-cart-service:1.0-go

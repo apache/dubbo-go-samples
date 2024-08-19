@@ -38,5 +38,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t recommendationservice:latest .
-	@docker tag recommendationservice:latest sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-recommendation-service:1.0-go
-	@docker push sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-recommendation-service:1.0-go
+	@docker tag recommendationservice:latest ken222/online-boutique-recommendation-service:1.0-go
+	@docker push ken222/online-boutique-recommendation-service:1.0-go

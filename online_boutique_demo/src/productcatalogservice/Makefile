@@ -38,5 +38,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t productcatalogservice:latest .
-	@docker tag productcatalogservice:latest sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-productcatalog-service:1.0-go
-	@docker push sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-productcatalog-service:1.0-go
+	@docker tag productcatalogservice:latest ken222/online-boutique-productcatalog-service:1.0-go
+	@docker push ken222/online-boutique-productcatalog-service:1.0-go

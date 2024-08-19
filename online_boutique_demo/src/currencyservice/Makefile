@@ -38,5 +38,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t currencyservice:latest .
-	@docker tag currencyservice:latest sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-currency-service:1.0-go
-	@docker push sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-currency-service:1.0-go
+	@docker tag currencyservice:latest ken222/online-boutique-currency-service:1.0-go
+	@docker push ken222/online-boutique-currency-service:1.0-go

@@ -38,5 +38,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t frontend:latest .
-	@docker tag frontend:latest sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-frontend-service:1.0-go
-	@docker push sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-frontend-service:1.0-go
+	@docker tag frontend:latest ken222/online-boutique-frontend-service:1.0-go
+	@docker push ken222/online-boutique-frontend-service:1.0-go
