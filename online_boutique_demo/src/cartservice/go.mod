@@ -3,7 +3,7 @@ module github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice
 go 1.20
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc2
+	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1.0.20240808044912-f61d7c94bfd2
 	github.com/dubbogo/gost v1.14.0
 	google.golang.org/protobuf v1.34.1
 )

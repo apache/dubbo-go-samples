@@ -3,7 +3,7 @@ module github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice
 go 1.20
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc2
+	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1.0.20240808044912-f61d7c94bfd2
 	github.com/dubbogo/gost v1.14.0
 	github.com/google/uuid v1.3.0
 	go.opentelemetry.io/otel v1.10.0
