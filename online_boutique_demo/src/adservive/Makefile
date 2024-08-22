@@ -37,5 +37,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t adservice:latest .
-	@docker tag adservice:latest xpunch/dubbo-go-demo-adservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-adservice:v1.0.0
+	@docker tag adservice:latest ken222/online-boutique-ad-service:1.0-go
+	@docker push ken222/online-boutique-ad-service:1.0-go

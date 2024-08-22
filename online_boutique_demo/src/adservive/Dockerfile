@@ -5,7 +5,7 @@ ENV CGO_ENABLED=0 GOOS=linux
 WORKDIR /go/src/hipstershop
 
 # Install dependencies
-RUN apk --update --no-cache add ca-certificates make
+RUN apk --update --no-cache add ca-certificates make protoc
 
 # Download grpc_health_probe
 RUN GRPC_HEALTH_PROBE_VERSION=v0.4.11 && \

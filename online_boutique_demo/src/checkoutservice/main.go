@@ -26,6 +26,7 @@ import (
 	"github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice/handler"
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice/proto"
 	"github.com/dubbogo/gost/log/logger"
+	"os"
 )
 
 var (
@@ -34,12 +35,16 @@ var (
 )
 
 func main() {
+	regAddr := os.Getenv("DUBBO_REGISTRY_ADDRESS")
+	if regAddr == "" {
+		regAddr = "127.0.0.1:2181"
+	}
 
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName(name),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
+			registry.WithAddress(regAddr),
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),

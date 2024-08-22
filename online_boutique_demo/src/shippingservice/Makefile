@@ -37,5 +37,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t shippingservice:latest .
-	@docker tag shippingservice:latest xpunch/dubbo-go-demo-shippingservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-shippingservice:v1.0.0
+	@docker tag shippingservice:latest ken222/online-boutique-shipping-service:1.0-go
+	@docker push ken222/online-boutique-shipping-service:1.0-go

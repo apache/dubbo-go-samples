@@ -37,5 +37,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t recommendationservice:latest .
-	@docker tag recommendationservice:latest xpunch/dubbo-go-demo-recommendationservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-recommendationservice:v1.0.0
+	@docker tag recommendationservice:latest ken222/online-boutique-recommendation-service:1.0-go
+	@docker push ken222/online-boutique-recommendation-service:1.0-go

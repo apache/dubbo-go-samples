@@ -22,23 +22,28 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/config"
 	"github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/handler"
 	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/proto"
 	"github.com/dubbogo/gost/log/logger"
+	_ "github.com/dubbogo/gost/log/logger"
+	"os"
 )
 
 func main() {
+	regAddr := os.Getenv("DUBBO_REGISTRY_ADDRESS")
+	if regAddr == "" {
+		regAddr = "127.0.0.1:2181"
+	}
 
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("cartservice"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
+			registry.WithAddress(regAddr),
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(config.Address()),
+			protocol.WithPort(20001),
 		),
 	)
 	if err != nil {

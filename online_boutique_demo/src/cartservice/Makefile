@@ -36,6 +36,6 @@ build:
 
 .PHONY: docker
 docker:
-	@docker build -t cartservice:latest .
-	@docker tag cartservice:latest xpunch/dubbo-go-demo-cartservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-cartservice:v1.0.0
+	@docker build -t cartService:latest .
+	@docker tag cartservice:latest ken222/online-boutique-cart-service:1.0-go
+	@docker push ken222/online-boutique-cart-service:1.0-go

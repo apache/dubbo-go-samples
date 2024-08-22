@@ -37,5 +37,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t productcatalogservice:latest .
-	@docker tag productcatalogservice:latest xpunch/dubbo-go-demo-productcatalogservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-productcatalogservice:v1.0.0
+	@docker tag productcatalogservice:latest ken222/online-boutique-productcatalog-service:1.0-go
+	@docker push ken222/online-boutique-productcatalog-service:1.0-go

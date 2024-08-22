@@ -37,6 +37,6 @@ build:
 
 .PHONY: docker
 docker:
-	@docker build -t frontendservice:latest .
-	@docker tag frontendservice:latest xpunch/dubbo-go-demo-frontendservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-frontendservice:v1.0.0
+	@docker build -t frontend:latest .
+	@docker tag frontend:latest ken222/online-boutique-frontend-service:1.0-go
+	@docker push ken222/online-boutique-frontend-service:1.0-go

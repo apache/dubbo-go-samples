@@ -17,6 +17,36 @@
 # ----------------------------------------------------------
 
 # [START gke_release_kubernetes_manifests_microservices_demo]
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dubbo-go
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dubbo-go-registry
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - list
+      - patch
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dubbo-go-registry
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dubbo-go-registry
+subjects:
+  - kind: ServiceAccount
+    name: dubbo-go
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -35,12 +65,14 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-emailservice:v1.0.0
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-email-service:1.0-go
           ports:
-            - containerPort: 8080
+            - containerPort: 20004
           env:
             - name: PORT
-              value: "8080"
+              value: "20004"
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
             - name: DISABLE_TRACING
               value: "1"
             - name: DISABLE_PROFILER
@@ -48,11 +80,11 @@ spec:
           readinessProbe:
             periodSeconds: 5
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:8080"]
+              command: ["/bin/grpc_health_probe", "-addr=:20004"]
           livenessProbe:
             periodSeconds: 5
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:8080"]
+              command: ["/bin/grpc_health_probe", "-addr=:20004"]
           resources:
             requests:
               cpu: 100m
@@ -71,8 +103,8 @@ spec:
     app: emailservice
   ports:
     - name: grpc
-      port: 5000
-      targetPort: 8080
+      port: 50004
+      targetPort: 20004
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -90,30 +122,32 @@ spec:
       serviceAccountName: dubbo-go
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-checkoutservice:v1.0.0
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-checkout-service:1.0-go
           ports:
-            - containerPort: 5050
+            - containerPort: 20002
           readinessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:5050"]
+              command: ["/bin/grpc_health_probe", "-addr=:20002"]
           livenessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:5050"]
+              command: ["/bin/grpc_health_probe", "-addr=:20002"]
           env:
             - name: PORT
-              value: "5050"
+              value: "20002"
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
             - name: PRODUCT_CATALOG_SERVICE_ADDR
-              value: "productcatalogservice:3550"
+              value: "productcatalogservice:50006"
             - name: SHIPPING_SERVICE_ADDR
-              value: "shippingservice:50051"
+              value: "shippingservice:50007"
             - name: PAYMENT_SERVICE_ADDR
-              value: "paymentservice:50051"
+              value: "paymentservice:50005"
             - name: EMAIL_SERVICE_ADDR
-              value: "emailservice:5000"
+              value: "emailservice:50004"
             - name: CURRENCY_SERVICE_ADDR
-              value: "currencyservice:7000"
+              value: "currencyservice:50003"
             - name: CART_SERVICE_ADDR
-              value: "cartservice:7070"
+              value: "cartservice:50001"
             - name: DISABLE_STATS
               value: "1"
             - name: DISABLE_TRACING
@@ -140,8 +174,8 @@ spec:
     app: checkoutservice
   ports:
     - name: grpc
-      port: 5050
-      targetPort: 5050
+      port: 50002
+      targetPort: 20002
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -160,22 +194,24 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-recommendationservice:v1.0.0
+          image:
           ports:
-            - containerPort: 8080
+            - containerPort: 20011
           readinessProbe:
             periodSeconds: 5
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:8080"]
+              command: ["/bin/grpc_health_probe", "-addr=:20011"]
           livenessProbe:
             periodSeconds: 5
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:8080"]
+              command: ["/bin/grpc_health_probe", "-addr=:20011"]
           env:
             - name: PORT
-              value: "8080"
+              value: "20011"
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
             - name: PRODUCT_CATALOG_SERVICE_ADDR
-              value: "productcatalogservice:3550"
+              value: "productcatalogservice:50006"
             - name: DISABLE_TRACING
               value: "1"
             - name: DISABLE_PROFILER
@@ -200,8 +236,8 @@ spec:
     app: recommendationservice
   ports:
     - name: grpc
-      port: 8080
-      targetPort: 8080
+      port: 50011
+      targetPort: 20011
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -215,20 +251,22 @@ spec:
     metadata:
       labels:
         app: frontend
-      annotations:
-        sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       serviceAccountName: dubbo-go
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-frontend:v1.0.0
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-frontend-service:1.0-go
           ports:
-            - containerPort: 8080
+            - containerPort: 8090
+            - containerPort: 20010
+          env:
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
           readinessProbe:
             initialDelaySeconds: 10
             httpGet:
               path: "/_healthz"
-              port: 8080
+              port: 8090
               httpHeaders:
                 - name: "Cookie"
                   value: "shop_session-id=x-readiness-probe"
@@ -236,39 +274,10 @@ spec:
             initialDelaySeconds: 10
             httpGet:
               path: "/_healthz"
-              port: 8080
+              port: 8090
               httpHeaders:
                 - name: "Cookie"
                   value: "shop_session-id=x-liveness-probe"
-          env:
-            - name: PORT
-              value: "8080"
-            - name: PRODUCT_CATALOG_SERVICE_ADDR
-              value: "productcatalogservice:3550"
-            - name: CURRENCY_SERVICE_ADDR
-              value: "currencyservice:7000"
-            - name: CART_SERVICE_ADDR
-              value: "cartservice:7070"
-            - name: RECOMMENDATION_SERVICE_ADDR
-              value: "recommendationservice:8080"
-            - name: SHIPPING_SERVICE_ADDR
-              value: "shippingservice:50051"
-            - name: CHECKOUT_SERVICE_ADDR
-              value: "checkoutservice:5050"
-            - name: AD_SERVICE_ADDR
-              value: "adservice:9555"
-            # # ENV_PLATFORM: One of: local, gcp, aws, azure, onprem, alibaba
-            # # When not set, dubbo-gos to "local" unless running in GKE, otherwies auto-sets to gcp
-            # - name: ENV_PLATFORM
-            #   value: "aws"
-            - name: DISABLE_TRACING
-              value: "1"
-            - name: DISABLE_PROFILER
-              value: "1"
-            # - name: JAEGER_SERVICE_ADDR
-            #   value: "jaeger-collector:14268"
-            # - name: CYMBAL_BRANDING
-            #   value: "true"
           resources:
             requests:
               cpu: 100m
@@ -288,7 +297,10 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 8080
+      targetPort: 8090
+    - name: tcp
+      port: 50010
+      targetPort: 20010
 ---
 apiVersion: v1
 kind: Service
@@ -301,7 +313,10 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 8080
+      targetPort: 8090
+    - name: tcp
+      port: 50010
+      targetPort: 20010
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -320,12 +335,14 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-paymentservice:v1.0.0
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-payment-service:1.0-go
           ports:
-            - containerPort: 50051
+            - containerPort: 20005
           env:
             - name: PORT
-              value: "50051"
+              value: "20005"
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
             - name: DISABLE_TRACING
               value: "1"
             - name: DISABLE_PROFILER
@@ -334,10 +351,10 @@ spec:
               value: "1"
           readinessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:50051"]
+              command: ["/bin/grpc_health_probe", "-addr=:20005"]
           livenessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:50051"]
+              command: ["/bin/grpc_health_probe", "-addr=:20005"]
           resources:
             requests:
               cpu: 100m
@@ -356,8 +373,8 @@ spec:
     app: paymentservice
   ports:
     - name: grpc
-      port: 50051
-      targetPort: 50051
+      port: 50005
+      targetPort: 20005
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -376,12 +393,14 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-productcatalogservice:v1.0.0
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-productcatalog-service:1.0-go
           ports:
-            - containerPort: 3550
+            - containerPort: 20006
           env:
             - name: PORT
-              value: "3550"
+              value: "20006"
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
             - name: DISABLE_STATS
               value: "1"
             - name: DISABLE_TRACING
@@ -392,10 +411,10 @@ spec:
           #   value: "jaeger-collector:14268"
           readinessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:3550"]
+              command: ["/bin/grpc_health_probe", "-addr=:20006"]
           livenessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:3550"]
+              command: ["/bin/grpc_health_probe", "-addr=:20006"]
           resources:
             requests:
               cpu: 100m
@@ -414,8 +433,8 @@ spec:
     app: productcatalogservice
   ports:
     - name: grpc
-      port: 3550
-      targetPort: 3550
+      port: 50006
+      targetPort: 20006
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -434,13 +453,15 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-cartservice:v1.0.0
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-cart-service:1.0-go
           imagePullPolicy: Never
           ports:
-            - containerPort: 7070
+            - containerPort: 20001
           env:
             - name: REDIS_ADDR
               value: "redis-cart:6379"
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
           resources:
             requests:
               cpu: 200m
@@ -452,13 +473,13 @@ spec:
             initialDelaySeconds: 15
             exec:
               command:
-                ["/bin/grpc_health_probe", "-addr=:7070", "-rpc-timeout=5s"]
+                ["/bin/grpc_health_probe", "-addr=:20001", "-rpc-timeout=5s"]
           livenessProbe:
             initialDelaySeconds: 15
             periodSeconds: 10
             exec:
               command:
-                ["/bin/grpc_health_probe", "-addr=:7070", "-rpc-timeout=5s"]
+                ["/bin/grpc_health_probe", "-addr=:20001", "-rpc-timeout=5s"]
 ---
 apiVersion: v1
 kind: Service
@@ -470,8 +491,8 @@ spec:
     app: cartservice
   ports:
     - name: grpc
-      port: 7070
-      targetPort: 7070
+      port: 50001
+      targetPort: 20001
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -541,13 +562,15 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-currencyservice:v1.0.0
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-currency-service:1.0-go
           ports:
             - name: grpc
-              containerPort: 7000
+              containerPort: 20003
           env:
             - name: PORT
-              value: "7000"
+              value: "20003"
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
             - name: DISABLE_TRACING
               value: "1"
             - name: DISABLE_PROFILER
@@ -556,10 +579,10 @@ spec:
               value: "1"
           readinessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:7000"]
+              command: ["/bin/grpc_health_probe", "-addr=:20003"]
           livenessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:7000"]
+              command: ["/bin/grpc_health_probe", "-addr=:20003"]
           resources:
             requests:
               cpu: 100m
@@ -578,8 +601,8 @@ spec:
     app: currencyservice
   ports:
     - name: grpc
-      port: 7000
-      targetPort: 7000
+      port: 50003
+      targetPort: 20003
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -597,12 +620,14 @@ spec:
       serviceAccountName: dubbo-go
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-shippingservice:v1.0.0
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-shipping-service:1.0-go
           ports:
-            - containerPort: 50051
+            - containerPort: 20007
           env:
             - name: PORT
-              value: "50051"
+              value: "20007"
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
             - name: DISABLE_STATS
               value: "1"
             - name: DISABLE_TRACING
@@ -614,10 +639,10 @@ spec:
           readinessProbe:
             periodSeconds: 5
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:50051"]
+              command: ["/bin/grpc_health_probe", "-addr=:20007"]
           livenessProbe:
             exec:
-              command: ["/bin/grpc_health_probe", "-addr=:50051"]
+              command: ["/bin/grpc_health_probe", "-addr=:20007"]
           resources:
             requests:
               cpu: 100m
@@ -636,8 +661,8 @@ spec:
     app: shippingservice
   ports:
     - name: grpc
-      port: 50051
-      targetPort: 50051
+      port: 50007
+      targetPort: 20007
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -709,20 +734,12 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: xpunch/dubbo-go-demo-adservice:v1.0.0
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-ad-service:1.0-go
           ports:
-            - containerPort: 9555
+            - containerPort: 20000
           env:
-            - name: PORT
-              value: "9555"
-            - name: DISABLE_STATS
-              value: "1"
-            - name: DISABLE_TRACING
-              value: "1"
-            - name: DISABLE_PROFILER
-              value: "1"
-          # - name: JAEGER_SERVICE_ADDR
-          #   value: "jaeger-collector:14268"
+            - name: DUBBO_REGISTRY_ADDRESS
+              value: "zookeeper.dubbo-system.svc:2181"
           resources:
             requests:
               cpu: 200m
@@ -730,16 +747,6 @@ spec:
             limits:
               cpu: 300m
               memory: 300Mi
-          readinessProbe:
-            initialDelaySeconds: 20
-            periodSeconds: 15
-            exec:
-              command: ["/bin/grpc_health_probe", "-addr=:9555"]
-          livenessProbe:
-            initialDelaySeconds: 20
-            periodSeconds: 15
-            exec:
-              command: ["/bin/grpc_health_probe", "-addr=:9555"]
 ---
 apiVersion: v1
 kind: Service
@@ -751,6 +758,258 @@ spec:
     app: adservice
   ports:
     - name: grpc
-      port: 9555
-      targetPort: 9555
+      port: 50000
+      targetPort: 20000
 # [END gke_release_kubernetes_manifests_microservices_demo]
+
+# zookeeper
+# Source: zookeeper/templates/scripts-configmap.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zookeeper-scripts
+  namespace: dubbo-system
+  labels:
+    app.kubernetes.io/name: zookeeper
+    helm.sh/chart: zookeeper-11.1.6
+    app.kubernetes.io/instance: zookeeper
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: zookeeper
+data:
+  init-certs.sh: |-
+    #!/bin/bash
+  setup.sh: |-
+    #!/bin/bash
+
+    # Execute entrypoint as usual after obtaining ZOO_SERVER_ID
+    # check ZOO_SERVER_ID in persistent volume via myid
+    # if not present, set based on POD hostname
+    if [[ -f "/bitnami/zookeeper/data/myid" ]]; then
+        export ZOO_SERVER_ID="$(cat /bitnami/zookeeper/data/myid)"
+    else
+        HOSTNAME="$(hostname -s)"
+        if [[ $HOSTNAME =~ (.*)-([0-9]+)$ ]]; then
+            ORD=${BASH_REMATCH[2]}
+            export ZOO_SERVER_ID="$((ORD + 1 ))"
+        else
+            echo "Failed to get index from hostname $HOST"
+            exit 1
+        fi
+    fi
+    exec /entrypoint.sh /run.sh
+---
+# Source: zookeeper/templates/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-headless
+  namespace: dubbo-system
+  labels:
+    app.kubernetes.io/name: zookeeper
+    helm.sh/chart: zookeeper-11.1.6
+    app.kubernetes.io/instance: zookeeper
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: zookeeper
+spec:
+  type: ClusterIP
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - name: tcp-clientgen
+      port: 2181
+      targetPort: clientgen
+    - name: tcp-follower
+      port: 2888
+      targetPort: follower
+    - name: tcp-election
+      port: 3888
+      targetPort: election
+  selector:
+    app.kubernetes.io/name: zookeeper
+    app.kubernetes.io/instance: zookeeper
+    app.kubernetes.io/component: zookeeper
+---
+# Source: zookeeper/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  namespace: dubbo-system
+  labels:
+    app.kubernetes.io/name: zookeeper
+    helm.sh/chart: zookeeper-11.1.6
+    app.kubernetes.io/instance: zookeeper
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: zookeeper
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+    - name: tcp-clientgen
+      port: 2181
+      targetPort: clientgen
+      nodePort: null
+    - name: tcp-follower
+      port: 2888
+      targetPort: follower
+    - name: tcp-election
+      port: 3888
+      targetPort: election
+  selector:
+    app.kubernetes.io/name: zookeeper
+    app.kubernetes.io/instance: zookeeper
+    app.kubernetes.io/component: zookeeper
+---
+# Source: zookeeper/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+  namespace: dubbo-system
+  labels:
+    app.kubernetes.io/name: zookeeper
+    helm.sh/chart: zookeeper-11.1.6
+    app.kubernetes.io/instance: zookeeper
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: zookeeper
+    role: zookeeper
+spec:
+  replicas: 1
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zookeeper
+      app.kubernetes.io/instance: zookeeper
+      app.kubernetes.io/component: zookeeper
+  serviceName: zookeeper-headless
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+      labels:
+        app.kubernetes.io/name: zookeeper
+        helm.sh/chart: zookeeper-11.1.6
+        app.kubernetes.io/instance: zookeeper
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: zookeeper
+    spec:
+      serviceAccountName: default
+
+      affinity:
+        podAffinity:
+
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: zookeeper
+                    app.kubernetes.io/instance: zookeeper
+                    app.kubernetes.io/component: zookeeper
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+
+      securityContext:
+        fsGroup: 1001
+      initContainers:
+      containers:
+        - name: zookeeper
+          image: docker.io/bitnami/zookeeper:3.8.1-debian-11-r18
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1001
+          command:
+            - /scripts/setup.sh
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: ZOO_DATA_LOG_DIR
+              value: ""
+            - name: ZOO_PORT_NUMBER
+              value: "2181"
+            - name: ZOO_TICK_TIME
+              value: "2000"
+            - name: ZOO_INIT_LIMIT
+              value: "10"
+            - name: ZOO_SYNC_LIMIT
+              value: "5"
+            - name: ZOO_PRE_ALLOC_SIZE
+              value: "65536"
+            - name: ZOO_SNAPCOUNT
+              value: "100000"
+            - name: ZOO_MAX_CLIENT_CNXNS
+              value: "60"
+            - name: ZOO_4LW_COMMANDS_WHITELIST
+              value: "srvr, mntr, ruok"
+            - name: ZOO_LISTEN_ALLIPS_ENABLED
+              value: "no"
+            - name: ZOO_AUTOPURGE_INTERVAL
+              value: "0"
+            - name: ZOO_AUTOPURGE_RETAIN_COUNT
+              value: "3"
+            - name: ZOO_MAX_SESSION_TIMEOUT
+              value: "40000"
+            - name: ZOO_SERVERS
+              value: zookeeper-0.zookeeper-headless.dubbo-system.svc.cluster.local:2888:3888::1
+            - name: ZOO_ENABLE_AUTH
+              value: "no"
+            - name: ZOO_ENABLE_QUORUM_AUTH
+              value: "no"
+            - name: ZOO_HEAP_SIZE
+              value: "1024"
+            - name: ZOO_LOG_LEVEL
+              value: "ERROR"
+            - name: ALLOW_ANONYMOUS_LOGIN
+              value: "yes"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+          ports:
+            - name: clientgen
+              containerPort: 2181
+            - name: follower
+              containerPort: 2888
+            - name: election
+              containerPort: 3888
+          livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command: ['/bin/bash', '-c', 'echo "ruok" | timeout 2 nc -w 2 localhost 2181 | grep imok']
+          readinessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command: ['/bin/bash', '-c', 'echo "ruok" | timeout 2 nc -w 2 localhost 2181 | grep imok']
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts/setup.sh
+              subPath: setup.sh
+            - name: data
+              mountPath: /bitnami/zookeeper
+      volumes:
+        - name: scripts
+          configMap:
+            name: zookeeper-scripts
+            defaultMode: 0755
+        - name: data
+          emptyDir: {}

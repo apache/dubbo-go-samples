@@ -37,5 +37,5 @@ build:
 .PHONY: docker
 docker:
 	@docker build -t checkoutservice:latest .
-	@docker tag checkoutservice:latest xpunch/dubbo-go-demo-checkoutservice:v1.0.0
-	@docker push xpunch/dubbo-go-demo-checkoutservice:v1.0.0
+	@docker tag checkoutservice:latest ken222/online-boutique-checkout-service:1.0-go
+	@docker push ken222/online-boutique-checkout-service:1.0-go
