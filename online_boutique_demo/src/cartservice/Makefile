@@ -37,6 +37,6 @@ build:
 
 .PHONY: docker
 docker:
-	@docker build -t cartService:latest .
+	@docker build -t cartservice:latest .
 	@docker tag cartservice:latest ken222/online-boutique-cart-service:1.0-go
 	@docker push ken222/online-boutique-cart-service:1.0-go

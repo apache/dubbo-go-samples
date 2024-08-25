@@ -194,7 +194,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image:
+          image: sca-registry.cn-hangzhou.cr.aliyuncs.com/dubbo/online-boutique-recommendation-service:1.0-go
           ports:
             - containerPort: 20011
           readinessProbe:
@@ -918,7 +918,7 @@ spec:
       initContainers:
       containers:
         - name: zookeeper
-          image: docker.io/bitnami/zookeeper:3.8.1-debian-11-r18
+          image: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/bitnami/zookeeper:3.8.1-debian-11-r18
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
