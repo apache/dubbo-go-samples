@@ -26,7 +26,7 @@ import (
 import (
 	"github.com/apache/dubbo-go-hessian2/java_exception"
 
-	"github.com/dubbogo/gost/log"
+	gxlog "github.com/dubbogo/gost/log"
 
 	perrors "github.com/pkg/errors"
 )

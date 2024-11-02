@@ -34,11 +34,11 @@ import (
 
 	"github.com/dubbogo/gost/log/logger"
 
-	"github.com/opentracing/opentracing-go"
+	opentracing "github.com/opentracing/opentracing-go"
 
 	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
 
-	"github.com/openzipkin/zipkin-go"
+	zipkin "github.com/openzipkin/zipkin-go"
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
 
 	"github.com/uber/jaeger-client-go"
