@@ -25,7 +25,7 @@ import (
 import (
 	gxlog "github.com/dubbogo/gost/log"
 
-	"github.com/opentracing/opentracing-go"
+	opentracing "github.com/opentracing/opentracing-go"
 )
 
 type (
