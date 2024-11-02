@@ -24,7 +24,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/remoting"
 	"fmt"
 	gxlog "github.com/dubbogo/gost/log"
-	"strconv"
 	"time"
 )
 
@@ -59,7 +58,7 @@ func (g Gender) String() string {
 		return s
 	}
 
-	return strconv.Itoa(int(int32(g)))
+	return "UNKNOWN"
 }
 
 func (g Gender) EnumValue(s string) hessian.JavaEnum {

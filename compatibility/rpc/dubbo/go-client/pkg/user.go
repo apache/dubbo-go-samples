@@ -20,7 +20,6 @@ package pkg
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"time"
 )
 
@@ -55,7 +54,7 @@ func (g Gender) String() string {
 		return s
 	}
 
-	return strconv.Itoa(int(int32(g)))
+	return "UNKNOWN"
 }
 
 func (g Gender) EnumValue(s string) hessian.JavaEnum {

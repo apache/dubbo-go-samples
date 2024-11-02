@@ -54,7 +54,7 @@ func (g Gender) String() string {
 		return s
 	}
 
-	return strconv.Itoa(int(g))
+	return "UNKNOWN"
 }
 
 func (g Gender) EnumValue(s string) hessian.JavaEnum {
