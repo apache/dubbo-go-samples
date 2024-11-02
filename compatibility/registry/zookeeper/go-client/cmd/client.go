@@ -60,7 +60,7 @@ func main() {
 	}
 	logger.Infof("client response result: %v\n", reply)
 
-	reply, err = grpcGreeterImplWithCustomGroupAndVersion.SayHello(context.Background(), req)
+	reply, err = grpcGreeterImplWithCustomGroupAndVersion.GreeterClientImpl.SayHello(context.Background(), req)
 	if err != nil {
 		logger.Error(err)
 	}
