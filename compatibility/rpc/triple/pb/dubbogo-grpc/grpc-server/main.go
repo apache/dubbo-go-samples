@@ -79,7 +79,7 @@ func (s *GreeterProvider) SayHelloStream(svr pb.Greeter_SayHelloStreamServer) er
 }
 
 func (s *GreeterProvider) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.User, error) {
-	fmt.Printf("Dubbo3 GreeterProvider get user name = %s\n" + in.Name)
+	fmt.Printf("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
 	return &pb.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
 
