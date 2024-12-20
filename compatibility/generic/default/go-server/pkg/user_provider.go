@@ -121,7 +121,7 @@ func (u *UserProvider) QueryAll(_ context.Context) (*UserResponse, error) {
 	}, nil
 }
 
-func (u *UserProvider) MethodMapper() map[string]string {
+func (u *UserProvider) MethodMapper(_ context.Context) map[string]string {
 	return map[string]string{
 		"QueryUser":  "queryUser",
 		"QueryUsers": "queryUsers",
