@@ -20,13 +20,14 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
 
+import (
 	greet "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
@@ -35,26 +36,32 @@ func main() {
 		client.WithClientURL("tri://127.0.0.1:20000"),
 	)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error creating client: %v\n", err)
+		return
 	}
 
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error creating service: %v\n", err)
+		return
 	}
 
 	stream, err := svc.Greet(context.Background(), &greet.GreetRequest{
 		Prompt: "Write a simple function to calculate fibonacci sequence in Go",
 	})
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("Error calling service: %v\n", err)
+		return
 	}
 
 	for stream.Recv() {
 		fmt.Print(stream.Msg().Content)
 	}
+
 	if err := stream.Err(); err != nil {
-		log.Fatal(err)
+		fmt.Printf("Stream error: %v\n", err)
+		return
 	}
+
 	stream.Close()
 }

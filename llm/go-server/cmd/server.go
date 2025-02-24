@@ -19,15 +19,17 @@ package main
 
 import (
 	"context"
+	"fmt"
 )
 
 import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
+)
 
+import (
 	greet "github.com/apache/dubbo-go-samples/llm/proto"
-
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 )
@@ -67,16 +69,23 @@ func main() {
 		),
 	)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error creating server: %v\n", err)
+		return
 	}
+
 	greetServer, err := NewGreetServer()
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error creating greet server: %v\n", err)
+		return
 	}
+
 	if err := greet.RegisterGreetServiceHandler(srv, greetServer); err != nil {
-		panic(err)
+		fmt.Printf("Error registering handler: %v\n", err)
+		return
 	}
+
 	if err := srv.Serve(); err != nil {
-		panic(err)
+		fmt.Printf("Error starting server: %v\n", err)
+		return
 	}
 }
