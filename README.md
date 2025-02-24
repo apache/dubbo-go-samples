@@ -35,7 +35,6 @@
 * tls: use TLS encryption in getty(tcp)/triple/gRPC communication mode
 * tracing: tracing example
 * error: error handling
-* llm: dubbo-go integration with large language models (LLM), using Ollama for inference
 
 ## How To Run
 

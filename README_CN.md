@@ -30,7 +30,6 @@
 * tracing: 链路追踪例子，支持
 * error: 错误处理
 * compatibility: 3.1.x 版本示例
-* llm：dubbo-go 与大型语言模型（LLM）集成，使用 Ollama 进行推理
 
 
 ## 如何运行
