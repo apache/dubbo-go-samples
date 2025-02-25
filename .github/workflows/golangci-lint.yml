@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         golang:
-          - '1.20'
+          - '1.23'
     steps:
       - uses: actions/setup-go@v3
         with:
