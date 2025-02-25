@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        golang:
+        go_version:
           - '1.23'
     steps:
       - uses: actions/setup-go@v3
