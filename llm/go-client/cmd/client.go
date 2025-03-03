@@ -133,38 +133,40 @@ func main() {
 			continue
 		}
 
-		currentCtx := contexts[currentCtxID]
-		currentCtx.History = append(currentCtx.History,
-			&chat.ChatMessage{
-				Role:    "human",
-				Content: input,
+		func() {
+			currentCtx := contexts[currentCtxID]
+			currentCtx.History = append(currentCtx.History,
+				&chat.ChatMessage{
+					Role:    "human",
+					Content: input,
+				})
+
+			stream, err := svc.Chat(context.Background(), &chat.ChatRequest{
+				Messages: currentCtx.History,
 			})
+			defer stream.Close()
+			if err != nil {
+				panic(err)
+			}
 
-		stream, err := svc.Chat(context.Background(), &chat.ChatRequest{
-			Messages: currentCtx.History,
-		})
-		if err != nil {
-			panic(err)
-		}
+			resp := ""
 
-		resp := ""
+			for stream.Recv() {
+				c := stream.Msg().Content
+				resp += c
+				fmt.Print(c)
+			}
 
-		for stream.Recv() {
-			c := stream.Msg().Content
-			resp += c
-			fmt.Print(c)
-		}
+			if err := stream.Err(); err != nil {
+				fmt.Printf("Stream error: %v\n", err)
+				return
+			}
 
-		if err := stream.Err(); err != nil {
-			fmt.Printf("Stream error: %v\n", err)
-			return
-		}
-
-		currentCtx.History = append(currentCtx.History,
-			&chat.ChatMessage{
-				Role:    "ai",
-				Content: resp,
-			})
-		stream.Close()
+			currentCtx.History = append(currentCtx.History,
+				&chat.ChatMessage{
+					Role:    "ai",
+					Content: resp,
+				})
+		}()
 	}
 }
