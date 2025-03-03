@@ -28,7 +28,7 @@ import (
 )
 
 import (
-	greet "github.com/apache/dubbo-go-samples/llm/proto"
+	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 func main() {
@@ -40,13 +40,13 @@ func main() {
 		return
 	}
 
-	svc, err := greet.NewGreetService(cli)
+	svc, err := chat.NewChatService(cli)
 	if err != nil {
 		fmt.Printf("Error creating service: %v\n", err)
 		return
 	}
 
-	stream, err := svc.Greet(context.Background(), &greet.GreetRequest{
+	stream, err := svc.Chat(context.Background(), &chat.ChatRequest{
 		Prompt: "Write a simple function to calculate fibonacci sequence in Go",
 	})
 	if err != nil {

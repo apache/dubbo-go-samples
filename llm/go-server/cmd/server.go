@@ -32,24 +32,24 @@ import (
 )
 
 import (
-	greet "github.com/apache/dubbo-go-samples/llm/proto"
+	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
-type GreetServer struct {
+type ChatServer struct {
 	llm *ollama.LLM
 }
 
-func NewGreetServer() (*GreetServer, error) {
+func NewChatServer() (*ChatServer, error) {
 	llm, err := ollama.New(ollama.WithModel("deepseek-r1:1.5b"))
 	if err != nil {
 		return nil, err
 	}
-	return &GreetServer{llm: llm}, nil
+	return &ChatServer{llm: llm}, nil
 }
 
-func (s *GreetServer) Greet(ctx context.Context, req *greet.GreetRequest, stream greet.GreetService_GreetServer) error {
+func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) error {
 	callback := func(ctx context.Context, chunk []byte) error {
-		return stream.Send(&greet.GreetResponse{
+		return stream.Send(&chat.ChatResponse{
 			Content: string(chunk),
 		})
 	}
@@ -74,13 +74,13 @@ func main() {
 		return
 	}
 
-	greetServer, err := NewGreetServer()
+	chatServer, err := NewChatServer()
 	if err != nil {
-		fmt.Printf("Error creating greet server: %v\n", err)
+		fmt.Printf("Error creating chat server: %v\n", err)
 		return
 	}
 
-	if err := greet.RegisterGreetServiceHandler(srv, greetServer); err != nil {
+	if err := chat.RegisterChatServiceHandler(srv, chatServer); err != nil {
 		fmt.Printf("Error registering handler: %v\n", err)
 		return
 	}
