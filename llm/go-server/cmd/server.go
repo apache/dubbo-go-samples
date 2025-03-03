@@ -53,12 +53,21 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 			Content: string(chunk),
 		})
 	}
+
+	var messages []llms.MessageContent
+	for _, msg := range req.Messages {
+		msgType := llms.ChatMessageTypeHuman
+		if msg.Role == "ai" {
+			msgType = llms.ChatMessageTypeAI
+		}
+		messages = append(messages, llms.TextParts(msgType, msg.Content))
+	}
+
 	_, err := s.llm.GenerateContent(
 		ctx,
-		[]llms.MessageContent{
-			llms.TextParts(llms.ChatMessageTypeHuman, req.Prompt),
-		},
+		messages,
 		llms.WithStreamingFunc(callback),
+		llms.WithTemperature(0.7),
 	)
 	return err
 }

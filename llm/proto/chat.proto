@@ -22,7 +22,12 @@ package chat;
 option go_package = "github.com/apache/dubbo-go-samples/llm/proto;chat";
 
 message ChatRequest {
-  string prompt = 1;
+  repeated ChatMessage messages = 1;
+}
+
+message ChatMessage {
+  string role = 1;  // "human" or "ai"
+  string content = 2;
 }
 
 message ChatResponse {
