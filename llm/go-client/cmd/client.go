@@ -144,10 +144,10 @@ func main() {
 			stream, err := svc.Chat(context.Background(), &chat.ChatRequest{
 				Messages: currentCtx.History,
 			})
-			defer stream.Close()
 			if err != nil {
 				panic(err)
 			}
+			defer stream.Close()
 
 			resp := ""
 

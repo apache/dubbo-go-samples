@@ -20,6 +20,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"runtime/debug"
+	"time"
 )
 
 import (
@@ -47,29 +50,102 @@ func NewChatServer() (*ChatServer, error) {
 	return &ChatServer{llm: llm}, nil
 }
 
-func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) error {
-	callback := func(ctx context.Context, chunk []byte) error {
-		return stream.Send(&chat.ChatResponse{
-			Content: string(chunk),
-		})
+func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("panic in Chat: %v\n%s", r, debug.Stack())
+			err = fmt.Errorf("internal server error")
+		}
+	}()
+
+	// timeout
+	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+
+	if s.llm == nil {
+		return fmt.Errorf("LLM is not initialized")
+	}
+
+	if len(req.Messages) == 0 {
+		log.Println("Request contains no messages")
+		return fmt.Errorf("empty messages in request")
 	}
 
 	var messages []llms.MessageContent
-	for _, msg := range req.Messages {
+	for i, msg := range req.Messages {
 		msgType := llms.ChatMessageTypeHuman
 		if msg.Role == "ai" {
 			msgType = llms.ChatMessageTypeAI
 		}
-		messages = append(messages, llms.TextParts(msgType, msg.Content))
+
+		messageContent := llms.TextParts(msgType, msg.Content)
+		if err != nil {
+			log.Printf("Invalid message content at index %d: %v", i, err)
+			return fmt.Errorf("invalid message content at index %d", i)
+		}
+
+		messages = append(messages, messageContent)
+	}
+	log.Printf("Messages constructed successfully: %+v", messages)
+
+	buffer := make(chan []byte, 100) // 使用缓冲区
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				log.Printf("Recovered in producer: %v\n%s", r, debug.Stack())
+			}
+			close(buffer)
+		}()
+
+		log.Println("Starting GenerateContent...")
+		_, err := s.llm.GenerateContent(
+			ctx,
+			messages,
+			llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
+				if ctx.Err() != nil {
+					log.Println("Context canceled in callback")
+					return ctx.Err()
+				}
+
+				if chunk == nil {
+					log.Println("Received nil chunk in callback")
+					return fmt.Errorf("nil chunk received")
+				}
+
+				select {
+				case buffer <- chunk:
+					return nil
+				case <-ctx.Done():
+					log.Println("Context canceled in producer")
+					return ctx.Err()
+				}
+			}),
+			llms.WithTemperature(0.7),
+			llms.WithMaxTokens(500), // 限制生成长度
+		)
+		if err != nil {
+			log.Printf("GenerateContent failed: %v", err)
+		}
+		log.Println("GenerateContent completed")
+	}()
+
+	// 从缓冲区读取数据并发送到客户端
+	for chunk := range buffer {
+		if ctx.Err() != nil {
+			log.Println("Context canceled while sending chunks")
+			break
+		}
+
+		err := stream.Send(&chat.ChatResponse{
+			Content: string(chunk),
+		})
+		if err != nil {
+			log.Printf("Failed to send chunk to stream: %v", err)
+			break
+		}
 	}
 
-	_, err := s.llm.GenerateContent(
-		ctx,
-		messages,
-		llms.WithStreamingFunc(callback),
-		llms.WithTemperature(0.7),
-	)
-	return err
+	return nil
 }
 
 func main() {
