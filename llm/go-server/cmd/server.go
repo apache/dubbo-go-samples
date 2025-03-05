@@ -88,7 +88,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 	}
 	log.Printf("Messages constructed successfully: %+v", messages)
 
-	buffer := make(chan []byte, 100) // 使用缓冲区
+	buffer := make(chan []byte, 100)
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
@@ -102,26 +102,10 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 			ctx,
 			messages,
 			llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
-				if ctx.Err() != nil {
-					log.Println("Context canceled in callback")
-					return ctx.Err()
-				}
-
-				if chunk == nil {
-					log.Println("Received nil chunk in callback")
-					return fmt.Errorf("nil chunk received")
-				}
-
-				select {
-				case buffer <- chunk:
-					return nil
-				case <-ctx.Done():
-					log.Println("Context canceled in producer")
-					return ctx.Err()
-				}
+				print(string(chunk))
+				buffer <- chunk
+				return nil
 			}),
-			llms.WithTemperature(0.7),
-			llms.WithMaxTokens(500), // 限制生成长度
 		)
 		if err != nil {
 			log.Printf("GenerateContent failed: %v", err)
@@ -129,7 +113,6 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		log.Println("GenerateContent completed")
 	}()
 
-	// 从缓冲区读取数据并发送到客户端
 	for chunk := range buffer {
 		if ctx.Err() != nil {
 			log.Println("Context canceled while sending chunks")

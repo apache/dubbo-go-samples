@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"runtime/debug"
-	"strings"
 	"time"
 )
 
@@ -83,8 +82,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache")
 	c.Header("Connection", "close")
 
-	responseCh := make(chan string)
-	//defer close(responseCh)
+	responseCh := make(chan string, 100) // 使用缓冲区
 
 	// 流处理协程
 	go func() {
@@ -95,11 +93,21 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 			close(responseCh)
 		}()
 
-		var fullResponse strings.Builder
-		for stream.Recv() {
-			content := stream.Msg().Content
-			responseCh <- content
-			fullResponse.WriteString(content)
+		for {
+			select {
+			case <-c.Request.Context().Done(): // 客户端断开
+				log.Println("Client disconnected, stopping stream processing")
+				return
+			default:
+				if !stream.Recv() {
+					if err := stream.Err(); err != nil {
+						log.Printf("Stream receive error: %v", err)
+					}
+					return
+				}
+				content := stream.Msg().Content
+				responseCh <- content
+			}
 		}
 	}()
 
