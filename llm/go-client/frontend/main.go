@@ -5,8 +5,8 @@ import "fmt"
 import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/apache/dubbo-go-samples/llm/frontend/handlers"
-	"github.com/apache/dubbo-go-samples/llm/frontend/service"
+	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/handlers"
+	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -35,8 +35,8 @@ func main() {
 	r.Use(sessions.Sessions("llm_session", store))
 
 	// register tmpl
-	r.LoadHTMLGlob("frontend/templates/*")
-	r.Static("../static", "frontend/static/")
+	r.LoadHTMLGlob("go-client/frontend/templates/*")
+	r.Static("../static", "go-client/frontend/static/")
 
 	// init service
 	ctxManager := service.NewContextManager()

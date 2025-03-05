@@ -22,7 +22,6 @@ import (
 	"fmt"
 	"log"
 	"runtime/debug"
-	"time"
 )
 
 import (
@@ -58,10 +57,6 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		}
 	}()
 
-	// timeout
-	ctx, cancel := context.WithTimeout(ctx, 30*time.Second)
-	defer cancel()
-
 	if s.llm == nil {
 		return fmt.Errorf("LLM is not initialized")
 	}
@@ -86,46 +81,21 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 
 		messages = append(messages, messageContent)
 	}
-	log.Printf("Messages constructed successfully: %+v", messages)
 
-	buffer := make(chan []byte, 100)
-	go func() {
-		defer func() {
-			if r := recover(); r != nil {
-				log.Printf("Recovered in producer: %v\n%s", r, debug.Stack())
-			}
-			close(buffer)
-		}()
-
-		log.Println("Starting GenerateContent...")
-		_, err := s.llm.GenerateContent(
-			ctx,
-			messages,
-			llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
-				print(string(chunk))
-				buffer <- chunk
+	_, err = s.llm.GenerateContent(
+		ctx,
+		messages,
+		llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
+			if chunk == nil {
 				return nil
-			}),
-		)
-		if err != nil {
-			log.Printf("GenerateContent failed: %v", err)
-		}
-		log.Println("GenerateContent completed")
-	}()
-
-	for chunk := range buffer {
-		if ctx.Err() != nil {
-			log.Println("Context canceled while sending chunks")
-			break
-		}
-
-		err := stream.Send(&chat.ChatResponse{
-			Content: string(chunk),
-		})
-		if err != nil {
-			log.Printf("Failed to send chunk to stream: %v", err)
-			break
-		}
+			}
+			return stream.Send(&chat.ChatResponse{
+				Content: string(chunk),
+			})
+		}),
+	)
+	if err != nil {
+		log.Printf("GenerateContent failed: %v", err)
 	}
 
 	return nil
