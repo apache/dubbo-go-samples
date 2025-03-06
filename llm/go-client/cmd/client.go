@@ -120,7 +120,7 @@ func main() {
 		return
 	}
 
-	fmt.Print("Send a message (/? for help)")
+	fmt.Print("\nSend a message (/? for help)")
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("\n> ")

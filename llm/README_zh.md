@@ -36,6 +36,11 @@ $ ollama run deepseek-r1:1.5b
 
 ## **3. 运行示例**
 
+以下所有的命令都需要在```llm``` 目录下运行.
+
+```shell
+$ cd llm
+```
 ### **服务端运行**
 
 在服务端中集成 Ollama 模型，并使用 Dubbo-go 提供的 RPC 服务进行调用。
@@ -56,5 +61,13 @@ $ go run llm/go-server/cmd/server.go
 $ go run llm/go-client/cmd/client.go
 ```
 
+命令行客户端支持多轮对话、命令交互、上下文管理功能。
 
+我们也提供了包含前端页面的客户端进行交互，运行以下命令然后访问 ```localhost:8080``` 即可使用:
+
+```shell
+$ go run llm/go-client/frontend/main.go
+```
+
+包含前端页面的客户端支持多轮对话，支持进行二进制文件（图片）传输并于大模型进行交互.
 
