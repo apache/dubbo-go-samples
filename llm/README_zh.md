@@ -69,5 +69,5 @@ $ go run llm/go-client/cmd/client.go
 $ go run llm/go-client/frontend/main.go
 ```
 
-包含前端页面的客户端支持多轮对话，支持进行二进制文件（图片）传输并于大模型进行交互.
+包含前端页面的客户端支持多轮对话，支持进行二进制文件（图片）传输并与大模型进行交互.
 
