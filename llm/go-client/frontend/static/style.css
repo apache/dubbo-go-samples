@@ -16,22 +16,19 @@ body {
 
 .chatbot {
   position: fixed;
-  right: 30%;
-  bottom: 15%;
+  left: 50%;
+  top: 50%;
   width: 420px;
   background: #fff;
   border-radius: 15px;
   overflow: hidden;
   opacity: 1;
-  pointer-events: none;
-  transform: scale(0.5);
   transform-origin: bottom right;
   box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
               0 32px 64px -48px rgba(0,0,0,0.5);
   transition: all 0.1s ease;
-  opacity: 1;
   pointer-events: auto;
-  transform: scale(1);
+  transform: translate(-50%, -50%) scale(1);
 }
 body.show-chatbot .chatbot {
   opacity: 1;
@@ -143,15 +140,84 @@ header h2 {
   visibility: hidden;
   font-size: 1.35rem;
 }
+.chat-input span1 {
+  align-self: flex-end;
+  color: #724ae8;
+  cursor: pointer;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  font-size: 1.35rem;
+}
 .chat-input textarea:valid ~ span {
   visibility: visible;
 }
 
-@media (max-width: 490px) {
-  .chatbot-toggler {
-    right: 20px;
-    bottom: 20px;
-  }
+.drop-box {
+  display: none;
+  height: 60px;
+  width: 20%;
+  border: 1px dashed #a89b9b;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.drop-box > div {
+  width: 40px;
+  height: 90%;
+  margin: 1px 3px;
+  display: block;
+  position: relative;
+}
+
+.drop-box > div > img {
+  width: 90%;
+  height: 70%;
+}
+
+.drop-box > div > div {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 15px;
+  height: 15px;
+  background: #347aa5;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 15px;
+  /* font-weight: bold; */
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.drop-box > div > p {
+  bottom: 5px;
+  text-align: center;
+  line-height: 10px;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drop-text {
+  position: absolute;
+  width: 450px;
+  height: 50px;
+  top: 200px;
+  text-align: center;
+  line-height: 50px;
+  opacity: 0.3;
+}
+
+.drop-text > span {
+  color: #347aa5;
+  cursor: pointer;
+}
+
+
+@media  (max-width: 600px), (max-height: 600px) {
   .chatbot {
     right: 0;
     bottom: 0;

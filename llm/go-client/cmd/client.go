@@ -139,6 +139,7 @@ func main() {
 				&chat.ChatMessage{
 					Role:    "human",
 					Content: input,
+					Bin:     nil,
 				})
 
 			stream, err := svc.Chat(context.Background(), &chat.ChatRequest{
@@ -166,6 +167,7 @@ func main() {
 				&chat.ChatMessage{
 					Role:    "ai",
 					Content: resp,
+					Bin:     nil,
 				})
 		}()
 	}

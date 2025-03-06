@@ -67,16 +67,27 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 	}
 
 	var messages []llms.MessageContent
-	for i, msg := range req.Messages {
+	for _, msg := range req.Messages {
 		msgType := llms.ChatMessageTypeHuman
 		if msg.Role == "ai" {
 			msgType = llms.ChatMessageTypeAI
 		}
 
-		messageContent := llms.TextParts(msgType, msg.Content)
-		if err != nil {
-			log.Printf("Invalid message content at index %d: %v", i, err)
-			return fmt.Errorf("invalid message content at index %d", i)
+		messageContent := llms.MessageContent{
+			Role: msgType,
+			Parts: []llms.ContentPart{
+				llms.TextContent{msg.Content},
+			},
+		}
+
+		if msg.Bin != nil && len(msg.Bin) != 0 {
+			img := string(msg.Bin)
+			if err != nil {
+				log.Println("Decode image error:", err)
+				return fmt.Errorf("decode image error: %s", err)
+			}
+
+			messageContent.Parts = append(messageContent.Parts, llms.BinaryPart("image/png", img))
 		}
 
 		messages = append(messages, messageContent)

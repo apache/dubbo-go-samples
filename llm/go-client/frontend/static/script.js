@@ -5,7 +5,11 @@ const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
 
 let userMessage = null; // Variable to store user's message
+let userBin = null; // Variable to store user's message
 const inputInitHeight = chatInput.scrollHeight;
+
+let fileBlobArr = [];
+let fileArr = [];
 
 const createChatLi = (message, className) => {
     // Create a chat <li> element with passed message and className
@@ -19,7 +23,10 @@ const createChatLi = (message, className) => {
 
 const handleChat = () => {
     userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
-    if(!userMessage) return;
+    if (fileBlobArr.length > 0) {
+        userBin = fileBlobArr[0]
+    }
+    if(!userMessage && !userBin) return;
 
     // Clear the input textarea and set its height to default
     chatInput.value = "";
@@ -36,6 +43,8 @@ const handleChat = () => {
         chatbox.scrollTo(0, chatbox.scrollHeight);
         generateResponse(incomingChatLi);
     }, 600);
+
+    clear()
 }
 
 const generateResponse = (chatElement) => {
@@ -52,7 +61,7 @@ const generateResponse = (chatElement) => {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ message: userMessage, bin: userBin }),
     })
         .then(response => {
             const reader = response.body.getReader();
@@ -64,10 +73,8 @@ const generateResponse = (chatElement) => {
                         return;
                     }
 
-                    // 解析SSE格式数据
                     const chunk = decoder.decode(value);
                     const events = chunk.split('\n\n');
-
 
                     events.forEach(event => {
                         if (event.startsWith('event:message')) {
@@ -78,7 +85,6 @@ const generateResponse = (chatElement) => {
                                     const data = JSON.parse(dataLine.replace('data:', ''));
                                     accumulatedResponse += data.content;
                                     messageElement.textContent = accumulatedResponse;
-                                    messageElement.innerHTML = marked.parse(accumulatedResponse);
                                     chatbox.scrollTo(0, chatbox.scrollHeight);
                                 } catch (error) {
                                     console.error('Failed to parse event data:', error);
@@ -100,13 +106,11 @@ const generateResponse = (chatElement) => {
         });
 }
 
-
 chatInput.addEventListener("input", () => {
     // Adjust the height of the input textarea based on its content
     chatInput.style.height = `${inputInitHeight}px`;
     chatInput.style.height = `${chatInput.scrollHeight}px`;
 });
-
 chatInput.addEventListener("keydown", (e) => {
     // If Enter key is pressed without Shift key and the window
     // width is greater than 800px, handle the chat
@@ -115,5 +119,91 @@ chatInput.addEventListener("keydown", (e) => {
         handleChat();
     }
 });
-
 sendChatBtn.addEventListener("click", handleChat);
+
+addBtn = document.getElementById("add-btn");
+fileInput = document.getElementById("input");
+
+// 文件处理函数
+function filesToBlob(file) {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = e => {
+        fileBlobArr.push(e.target.result);
+        let fileDiv = document.createElement('div');
+        // delete btn
+        let removeDiv = document.createElement('div');
+        removeDiv.id = 'file' + '-' + fileBlobArr.length;
+        removeDiv.innerHTML = '×';
+        // file name
+        let fileName = document.createElement('p');
+        fileName.innerHTML = file.name;
+        fileName.title = file.name;
+
+        let img = document.createElement('img');
+        img.src = "../static/file.png";
+
+        fileDiv.appendChild(img);
+        fileDiv.appendChild(removeDiv);
+        fileDiv.appendChild(fileName);
+
+        document.getElementById("drop").appendChild(fileDiv);
+    };
+
+    reader.onerror = () => {
+        switch(reader.error.code) {
+            case '1':
+                alert('File not found');
+                break;
+            case '2':
+                alert('Security error');
+                break;
+            case '3':
+                alert('Loading interrupted');
+                break;
+            case '4':
+                alert('File is not readable');
+                break;
+            case '5':
+                alert('Encode error');
+                break;
+            default:
+                alert('File read fail');
+        }
+    };
+}
+
+function handleFileSelect(event) {
+    const files = event.target.files;
+    if (files.length > 0) {
+        const file = files[0];
+
+        if (!file.type.startsWith('image/')) {
+            alert("Only support image files");
+            return;
+        }
+
+        fileArr.push(file);
+        filesToBlob(file);
+
+        document.querySelector('.drop-box').style.setProperty('--div-count', "1");
+        document.getElementById("drop").style.display = "flex";
+        addBtn.style.display = "none";
+    }
+}
+
+fileInput.addEventListener('change', handleFileSelect);
+
+addBtn.addEventListener('click', () => {
+    fileInput.click();
+    document.getElementById("drop").style.display = "flex";
+});
+
+function clear() {
+    document.getElementById("drop").innerHTML = '';
+    document.getElementById("drop").style.display = "none";
+    addBtn.style.display = "flex";
+    fileInput.value = "";
+}
+
+document.getElementById("drop").addEventListener('click', clear);

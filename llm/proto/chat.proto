@@ -28,6 +28,7 @@ message ChatRequest {
 message ChatMessage {
   string role = 1;  // "human" or "ai"
   string content = 2;
+  bytes bin = 3;  // binary file
 }
 
 message ChatResponse {

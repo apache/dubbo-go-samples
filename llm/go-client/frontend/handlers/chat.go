@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"runtime/debug"
+	"strings"
 	"time"
 )
 
@@ -52,16 +53,21 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 
 	var req struct {
 		Message string `json:"message"`
+		Bin     string `json:"bin"`
 	}
+
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
 		return
 	}
 
+	sepIndex := strings.Index(",", req.Bin)
+
 	messages := h.ctxManager.GetHistory(ctxID)
 	messages = append(messages, &chat.ChatMessage{
 		Role:    "human",
 		Content: req.Message,
+		Bin:     []byte(req.Bin[sepIndex+1:]),
 	})
 
 	stream, err := h.svc.Chat(context.Background(), &chat.ChatRequest{

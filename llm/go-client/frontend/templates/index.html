@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
     <script src="../static/script.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
   <body>
 
@@ -25,20 +24,26 @@
       <ul class="chatbox">
         <li class="chat incoming">
           <span class="material-symbols-outlined">smart_toy</span>
-          <p  class="chat incoming content" id="content">### Hi there 👋</p>
+          <p  class="chat incoming content" id="content">Hi there 👋</p>
         </li>
       </ul>
       <div class="chat-input">
+
         <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+
         <span id="send-btn" class="material-symbols-rounded">send</span>
+
+        <div id="drop" class="drop-box"></div>
+
+        <span1 id="add-btn" class="material-symbols-rounded">add</span1>
+
       </div>
+
     </div>
+
+    <input id="input" accept="image/*" type="file" style="display: none" >
 
   </body>
 
-  <script>
-    document.getElementById('content').innerHTML =
-            marked.parse(document.getElementById('content').innerText);
-  </script>
 
 </html>
