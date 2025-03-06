@@ -69,4 +69,4 @@ We also support a frontend using Gin framework for users to interact. If you wan
 $ go run llm/go-client/frontend/main.go
 ```
 
-Frontend client supports multi-turn conversations, binary file (image) upload and interact with llm.
+Frontend client supports multi-turn conversations, binary file (image) support for LLM interactions.
