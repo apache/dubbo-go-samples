@@ -63,7 +63,7 @@ $ go run llm/go-client/cmd/client.go
 
 Cli client supports multi-turn conversations, command interact, context management.
 
-We also support a frontend for users to interact. If you want run the frontend client you can executing the following command and open it in ```localhost:8080``` by default:
+We also support a frontend using Gin framework for users to interact. If you want run the frontend client you can executing the following command and open it in ```localhost:8080``` by default:
 
 ```shell
 $ go run llm/go-client/frontend/main.go

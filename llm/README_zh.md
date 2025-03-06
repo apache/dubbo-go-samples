@@ -63,7 +63,7 @@ $ go run llm/go-client/cmd/client.go
 
 命令行客户端支持多轮对话、命令交互、上下文管理功能。
 
-我们也提供了包含前端页面的客户端进行交互，运行以下命令然后访问 ```localhost:8080``` 即可使用:
+我们也提供了包含前端页面的基于Gin框架的客户端进行交互，运行以下命令然后访问 ```localhost:8080``` 即可使用:
 
 ```shell
 $ go run llm/go-client/frontend/main.go
