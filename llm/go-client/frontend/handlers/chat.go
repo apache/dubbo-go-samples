@@ -157,7 +157,10 @@ func (h *ChatHandler) NewContext(c *gin.Context) {
 	session := sessions.Default(c)
 	newCtxID := h.ctxManager.CreateContext()
 	session.Set("current_context", newCtxID)
-	session.Save()
+	if err := session.Save(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save session"})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"context_id": newCtxID,
@@ -168,13 +171,7 @@ func (h *ChatHandler) ListContexts(c *gin.Context) {
 	session := sessions.Default(c)
 	currentCtx := session.Get("current_context").(string)
 
-	h.ctxManager.Mu.RLock()
-	defer h.ctxManager.Mu.RUnlock()
-
-	contexts := make([]string, 0, len(h.ctxManager.Contexts))
-	for ctxID := range h.ctxManager.Contexts {
-		contexts = append(contexts, ctxID)
-	}
+	contexts := h.ctxManager.List()
 
 	c.JSON(http.StatusOK, gin.H{
 		"current":  currentCtx,
@@ -191,17 +188,19 @@ func (h *ChatHandler) SwitchContext(c *gin.Context) {
 		return
 	}
 
-	h.ctxManager.Mu.RLock()
-	defer h.ctxManager.Mu.RUnlock()
+	exists := h.ctxManager.Consists(req.ContextID)
 
-	if _, exists := h.ctxManager.Contexts[req.ContextID]; !exists {
+	if !exists {
 		c.JSON(http.StatusNotFound, gin.H{"error": "context not found"})
 		return
 	}
 
 	session := sessions.Default(c)
 	session.Set("current_context", req.ContextID)
-	session.Save()
+	if err := session.Save(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save session"})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "context switched",

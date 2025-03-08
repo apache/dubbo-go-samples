@@ -31,7 +31,7 @@ type ContextManager struct {
 	Mu       sync.RWMutex
 }
 
-var nowID uint8 = 0
+var nowID uint8
 
 func NewContextManager() *ContextManager {
 	return &ContextManager{
@@ -41,9 +41,9 @@ func NewContextManager() *ContextManager {
 
 func (m *ContextManager) CreateContext() string {
 	m.Mu.Lock()
+	defer m.Mu.Unlock()
 	ctxID := nowID
 	nowID++
-	defer m.Mu.Unlock()
 	m.Contexts[strconv.Itoa(int(ctxID))] = []*chat.ChatMessage{}
 	return strconv.Itoa(int(ctxID))
 }
@@ -57,8 +57,28 @@ func (m *ContextManager) GetHistory(ctxID string) []*chat.ChatMessage {
 func (m *ContextManager) AppendMessage(ctxID string, msg *chat.ChatMessage) {
 	m.Mu.Lock()
 	defer m.Mu.Unlock()
-	if len(m.Contexts[ctxID]) >= 10 {
+	if len(m.Contexts[ctxID]) >= 3 {
 		m.Contexts[ctxID] = m.Contexts[ctxID][1:]
 	}
 	m.Contexts[ctxID] = append(m.Contexts[ctxID], msg)
+}
+
+func (m *ContextManager) List() []string {
+	m.Mu.RLock()
+	defer m.Mu.RUnlock()
+	contexts := make([]string, 0, len(m.Contexts))
+	for ctxID := range m.Contexts {
+		contexts = append(contexts, ctxID)
+	}
+
+	return contexts
+}
+
+func (m *ContextManager) Consists(id string) bool {
+	m.Mu.RLock()
+	defer m.Mu.RUnlock()
+
+	_, ok := m.Contexts[id]
+
+	return ok
 }
