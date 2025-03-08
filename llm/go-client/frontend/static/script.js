@@ -51,7 +51,7 @@ const generateResponse = (chatElement) => {
     const API_URL = "/api/chat";
     const messageElement = chatElement.querySelector("p");
 
-    // 初始化流式接收
+    // init stream
     let accumulatedResponse = "";
     messageElement.textContent = "";
     messageElement.id = "content"
@@ -124,7 +124,7 @@ sendChatBtn.addEventListener("click", handleChat);
 addBtn = document.getElementById("add-btn");
 fileInput = document.getElementById("input");
 
-// 文件处理函数
+// file process
 function filesToBlob(file) {
     let reader = new FileReader();
     reader.readAsDataURL(file);

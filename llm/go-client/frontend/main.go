@@ -17,16 +17,21 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/handlers"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
+
 	"github.com/gin-gonic/gin"
 )
 

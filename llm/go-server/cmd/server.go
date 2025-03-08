@@ -29,12 +29,10 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
 
+	chat "github.com/apache/dubbo-go-samples/llm/proto"
+
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
-)
-
-import (
-	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 type ChatServer struct {

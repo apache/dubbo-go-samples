@@ -30,7 +30,9 @@ import (
 import (
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
+
 	"github.com/gin-contrib/sessions"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -100,14 +102,12 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 		}
 	}()
 
-	// 设置响应头
 	c.Header("Content-Type", "text/event-stream")
 	c.Header("Cache-Control", "no-cache")
 	c.Header("Connection", "close")
 
-	responseCh := make(chan string, 100) // 使用缓冲区
+	responseCh := make(chan string, 100) // use buffer
 
-	// 流处理协程
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
@@ -118,7 +118,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 
 		for {
 			select {
-			case <-c.Request.Context().Done(): // 客户端断开
+			case <-c.Request.Context().Done(): // client disconnect
 				log.Println("Client disconnected, stopping stream processing")
 				return
 			default:

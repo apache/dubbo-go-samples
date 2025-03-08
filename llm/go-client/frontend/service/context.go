@@ -18,9 +18,12 @@
 package service
 
 import (
-	chat "github.com/apache/dubbo-go-samples/llm/proto"
 	"strconv"
 	"sync"
+)
+
+import (
+	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 type ContextManager struct {
