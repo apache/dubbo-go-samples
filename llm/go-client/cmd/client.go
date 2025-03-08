@@ -18,49 +18,155 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
+	"os"
+	"strings"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
-import (
-	greet "github.com/apache/dubbo-go-samples/llm/proto"
+type ChatContext struct {
+	ID      string
+	History []*chat.ChatMessage
+}
+
+var (
+	contexts     = make(map[string]*ChatContext)
+	currentCtxID string
+	contextOrder []string
+	maxID        uint8 = 0
 )
+
+func handleCommand(cmd string) (resp string) {
+	cmd = strings.TrimSpace(cmd)
+	resp = ""
+	switch {
+	case cmd == "/?" || cmd == "/help":
+		resp += "Available commands:\n"
+		resp += "/? help        - Show this help\n"
+		resp += "/list          - List all contexts\n"
+		resp += "/cd <context>  - Switch context\n"
+		resp += "/new           - Create new context"
+		return resp
+	case cmd == "/list":
+		fmt.Println("Stored contexts (max 3):")
+		for _, ctxID := range contextOrder {
+			resp += fmt.Sprintf("- %s\n", ctxID)
+		}
+		return resp
+	case strings.HasPrefix(cmd, "/cd "):
+		target := strings.TrimPrefix(cmd, "/cd ")
+		if ctx, exists := contexts[target]; exists {
+			currentCtxID = ctx.ID
+			resp += fmt.Sprintf("Switched to context: %s\n", target)
+		} else {
+			resp += "Context not found"
+		}
+		return resp
+	case cmd == "/new":
+		newID := createContext()
+		currentCtxID = newID
+		resp += fmt.Sprintf("Created new context: %s\n", newID)
+		return resp
+	default:
+		resp += "Available commands:\n"
+		resp += "/? help        - Show this help\n"
+		resp += "/list          - List all contexts\n"
+		resp += "/cd <context>  - Switch context\n"
+		resp += "/new           - Create new context"
+		return resp
+	}
+}
+
+func createContext() string {
+	id := fmt.Sprintf("ctx%d", maxID)
+	maxID++
+	contexts[id] = &ChatContext{
+		ID:      id,
+		History: []*chat.ChatMessage{},
+	}
+	contextOrder = append(contextOrder, id)
+
+	// up to 3 context
+	if len(contextOrder) > 3 {
+		delete(contexts, contextOrder[0])
+		contextOrder = contextOrder[1:]
+	}
+	return id
+}
 
 func main() {
+	currentCtxID = createContext()
+
 	cli, err := client.NewClient(
 		client.WithClientURL("tri://127.0.0.1:20000"),
 	)
 	if err != nil {
-		fmt.Printf("Error creating client: %v\n", err)
-		return
+		panic(err)
 	}
 
-	svc, err := greet.NewGreetService(cli)
+	svc, err := chat.NewChatService(cli)
 	if err != nil {
 		fmt.Printf("Error creating service: %v\n", err)
 		return
 	}
 
-	stream, err := svc.Greet(context.Background(), &greet.GreetRequest{
-		Prompt: "Write a simple function to calculate fibonacci sequence in Go",
-	})
-	if err != nil {
-		fmt.Printf("Error calling service: %v\n", err)
-		return
-	}
-	defer stream.Close()
+	fmt.Print("\nSend a message (/? for help)")
+	scanner := bufio.NewScanner(os.Stdin)
+	for {
+		fmt.Print("\n> ")
+		scanner.Scan()
+		input := scanner.Text()
 
-	for stream.Recv() {
-		fmt.Print(stream.Msg().Content)
-	}
+		// handle command
+		if strings.HasPrefix(input, "/") {
+			fmt.Println(handleCommand(input))
+			continue
+		}
 
-	if err := stream.Err(); err != nil {
-		fmt.Printf("Stream error: %v\n", err)
-		return
+		func() {
+			currentCtx := contexts[currentCtxID]
+			currentCtx.History = append(currentCtx.History,
+				&chat.ChatMessage{
+					Role:    "human",
+					Content: input,
+					Bin:     nil,
+				})
+
+			stream, err := svc.Chat(context.Background(), &chat.ChatRequest{
+				Messages: currentCtx.History,
+			})
+			if err != nil {
+				panic(err)
+			}
+			defer stream.Close()
+
+			resp := ""
+
+			for stream.Recv() {
+				c := stream.Msg().Content
+				resp += c
+				fmt.Print(c)
+			}
+
+			if err := stream.Err(); err != nil {
+				fmt.Printf("Stream error: %v\n", err)
+				return
+			}
+
+			currentCtx.History = append(currentCtx.History,
+				&chat.ChatMessage{
+					Role:    "ai",
+					Content: resp,
+					Bin:     nil,
+				})
+		}()
 	}
 }

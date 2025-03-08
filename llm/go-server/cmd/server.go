@@ -20,6 +20,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"runtime/debug"
 )
 
 import (
@@ -27,40 +29,85 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
 
+	chat "github.com/apache/dubbo-go-samples/llm/proto"
+
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 )
 
-import (
-	greet "github.com/apache/dubbo-go-samples/llm/proto"
-)
-
-type GreetServer struct {
+type ChatServer struct {
 	llm *ollama.LLM
 }
 
-func NewGreetServer() (*GreetServer, error) {
+func NewChatServer() (*ChatServer, error) {
 	llm, err := ollama.New(ollama.WithModel("deepseek-r1:1.5b"))
 	if err != nil {
 		return nil, err
 	}
-	return &GreetServer{llm: llm}, nil
+	return &ChatServer{llm: llm}, nil
 }
 
-func (s *GreetServer) Greet(ctx context.Context, req *greet.GreetRequest, stream greet.GreetService_GreetServer) error {
-	callback := func(ctx context.Context, chunk []byte) error {
-		return stream.Send(&greet.GreetResponse{
-			Content: string(chunk),
-		})
+func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("panic in Chat: %v\n%s", r, debug.Stack())
+			err = fmt.Errorf("internal server error")
+		}
+	}()
+
+	if s.llm == nil {
+		return fmt.Errorf("LLM is not initialized")
 	}
-	_, err := s.llm.GenerateContent(
+
+	if len(req.Messages) == 0 {
+		log.Println("Request contains no messages")
+		return fmt.Errorf("empty messages in request")
+	}
+
+	var messages []llms.MessageContent
+	for _, msg := range req.Messages {
+		msgType := llms.ChatMessageTypeHuman
+		if msg.Role == "ai" {
+			msgType = llms.ChatMessageTypeAI
+		}
+
+		messageContent := llms.MessageContent{
+			Role: msgType,
+			Parts: []llms.ContentPart{
+				llms.TextContent{msg.Content},
+			},
+		}
+
+		if msg.Bin != nil && len(msg.Bin) != 0 {
+			img := string(msg.Bin)
+			if err != nil {
+				log.Println("Decode image error:", err)
+				return fmt.Errorf("decode image error: %s", err)
+			}
+
+			messageContent.Parts = append(messageContent.Parts, llms.BinaryPart("image/png", img))
+		}
+
+		messages = append(messages, messageContent)
+	}
+
+	_, err = s.llm.GenerateContent(
 		ctx,
-		[]llms.MessageContent{
-			llms.TextParts(llms.ChatMessageTypeHuman, req.Prompt),
-		},
-		llms.WithStreamingFunc(callback),
+		messages,
+		llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
+			if chunk == nil {
+				return nil
+			}
+			return stream.Send(&chat.ChatResponse{
+				Content: string(chunk),
+			})
+		}),
 	)
-	return err
+	if err != nil {
+		log.Printf("GenerateContent failed: %v", err)
+	}
+
+	return nil
 }
 
 func main() {
@@ -74,13 +121,13 @@ func main() {
 		return
 	}
 
-	greetServer, err := NewGreetServer()
+	chatServer, err := NewChatServer()
 	if err != nil {
-		fmt.Printf("Error creating greet server: %v\n", err)
+		fmt.Printf("Error creating chat server: %v\n", err)
 		return
 	}
 
-	if err := greet.RegisterGreetServiceHandler(srv, greetServer); err != nil {
+	if err := chat.RegisterChatServiceHandler(srv, chatServer); err != nil {
 		fmt.Printf("Error registering handler: %v\n", err)
 		return
 	}

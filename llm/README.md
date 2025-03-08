@@ -36,6 +36,11 @@ $ ollama run deepseek-r1:1.5b
 
 ## 3. **Run the Example**
 
+You need to run all the commands in ```llm``` directory.
+
+```shell
+$ cd llm
+```
 ### **Run the Server**
 
 The server integrates the Ollama model and uses Dubbo-go's RPC service for invocation.
@@ -50,9 +55,18 @@ $ go run llm/go-server/cmd/server.go
 
 The client invokes the server's RPC interface to retrieve the inference results from the Ollama model.
 
-Run the client by executing:
+Run the cli client by executing:
 
 ```shell
 $ go run llm/go-client/cmd/client.go
 ```
 
+Cli client supports multi-turn conversations, command interact, context management.
+
+We also support a frontend using Gin framework for users to interact. If you want run the frontend client you can executing the following command and open it in ```localhost:8080``` by default:
+
+```shell
+$ go run llm/go-client/frontend/main.go
+```
+
+Frontend client supports multi-turn conversations, binary file (image) support for LLM interactions.

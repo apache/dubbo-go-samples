@@ -17,18 +17,24 @@
 
 syntax = "proto3";
 
-package greet;
+package chat;
 
-option go_package = "github.com/apache/dubbo-go-samples/llm/proto;greet";
+option go_package = "github.com/apache/dubbo-go-samples/llm/proto;chat";
 
-message GreetRequest {
-  string prompt = 1;
+message ChatRequest {
+  repeated ChatMessage messages = 1;
 }
 
-message GreetResponse {
+message ChatMessage {
+  string role = 1;  // "human" or "ai"
+  string content = 2;
+  bytes bin = 3;  // binary file
+}
+
+message ChatResponse {
   string content = 1;
 }
 
-service GreetService {
-  rpc Greet(GreetRequest) returns (stream GreetResponse) {}
+service ChatService {
+  rpc Chat(ChatRequest) returns (stream ChatResponse) {}
 }
