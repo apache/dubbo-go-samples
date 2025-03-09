@@ -22,8 +22,8 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"regexp"
 	"runtime/debug"
-	"strings"
 	"time"
 )
 
@@ -82,13 +82,24 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 		return
 	}
 
-	sepIndex := strings.Index(",", req.Bin)
+	var img string
+	if len(req.Bin) > 0 {
+		re := regexp.MustCompile(`^data:image/([a-zA-Z]+);base64,([^"]+)$`)
+		matches := re.FindStringSubmatch(req.Bin)
+
+		if len(matches) != 3 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid base64 data format"})
+			return
+		}
+
+		img = matches[2]
+	}
 
 	messages := h.ctxManager.GetHistory(ctxID)
 	messages = append(messages, &chat.ChatMessage{
 		Role:    "human",
 		Content: req.Message,
-		Bin:     []byte(req.Bin[sepIndex+1:]),
+		Bin:     []byte(img),
 	})
 
 	stream, err := h.svc.Chat(context.Background(), &chat.ChatRequest{

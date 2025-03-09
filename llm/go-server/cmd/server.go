@@ -19,8 +19,10 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"log"
+	"net/http"
 	"runtime/debug"
 )
 
@@ -81,13 +83,13 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		}
 
 		if msg.Bin != nil && len(msg.Bin) != 0 {
-			img := string(msg.Bin)
+			decodeByte, err := base64.StdEncoding.DecodeString(string(msg.Bin))
 			if err != nil {
-				log.Println("Decode image error:", err)
-				return fmt.Errorf("decode image error: %s", err)
+				log.Println("GenerateContent failed: %v", err)
+				return fmt.Errorf("GenerateContent failed")
 			}
-
-			messageContent.Parts = append(messageContent.Parts, llms.BinaryPart("image/png", img))
+			imgType := http.DetectContentType(decodeString)
+			messageContent.Parts = append(messageContent.Parts, llms.BinaryPart(imgType, decodeByte))
 		}
 
 		messages = append(messages, messageContent)
