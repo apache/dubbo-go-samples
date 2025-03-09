@@ -48,7 +48,7 @@ The server integrates the Ollama model and uses Dubbo-go's RPC service for invoc
 Run the server by executing:
 
 ```shell
-$ go run llm/go-server/cmd/server.go
+$ go run go-server/cmd/server.go
 ```
 
 ### **Run the Client**
@@ -58,7 +58,7 @@ The client invokes the server's RPC interface to retrieve the inference results 
 Run the cli client by executing:
 
 ```shell
-$ go run llm/go-client/cmd/client.go
+$ go run go-client/cmd/client.go
 ```
 
 Cli client supports multi-turn conversations, command interact, context management.
@@ -66,7 +66,7 @@ Cli client supports multi-turn conversations, command interact, context manageme
 We also support a frontend using Gin framework for users to interact. If you want run the frontend client you can executing the following command and open it in ```localhost:8080``` by default:
 
 ```shell
-$ go run llm/go-client/frontend/main.go
+$ go run go-client/frontend/main.go
 ```
 
 Frontend client supports multi-turn conversations, binary file (image) support for LLM interactions.
