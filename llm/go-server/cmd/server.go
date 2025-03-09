@@ -88,7 +88,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 				log.Println("GenerateContent failed: %v", err)
 				return fmt.Errorf("GenerateContent failed")
 			}
-			imgType := http.DetectContentType(decodeString)
+			imgType := http.DetectContentType(decodeByte)
 			messageContent.Parts = append(messageContent.Parts, llms.BinaryPart(imgType, decodeByte))
 		}
 
