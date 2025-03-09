@@ -70,3 +70,4 @@ $ go run go-client/frontend/main.go
 ```
 
 Frontend client supports multi-turn conversations, binary file (image) support for LLM interactions.
+Currently the supported uploaded image types are limited to png, jpeg and gif, with plans to support more binary file types in the future.

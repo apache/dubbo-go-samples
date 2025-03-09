@@ -85,6 +85,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	var img string
 	if len(req.Bin) > 0 {
 		re := regexp.MustCompile(`^data:image/([a-zA-Z]+);base64,([^"]+)$`)
+		// this regex does not support file types like svg
 		matches := re.FindStringSubmatch(req.Bin)
 
 		if len(matches) != 3 {
