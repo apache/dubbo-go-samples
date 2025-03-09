@@ -28,12 +28,14 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
-	chat "github.com/apache/dubbo-go-samples/llm/proto"
-
 	"github.com/gin-contrib/sessions"
 
 	"github.com/gin-gonic/gin"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
+	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 type ChatHandler struct {
