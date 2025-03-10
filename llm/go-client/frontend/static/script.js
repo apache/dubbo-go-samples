@@ -23,6 +23,7 @@ const createChatLi = (message, className) => {
 
 const handleChat = () => {
     userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
+    userBin = null
     if (fileBlobArr.length > 0) {
         userBin = fileBlobArr[0]
     }
@@ -204,6 +205,8 @@ function clear() {
     document.getElementById("drop").style.display = "none";
     addBtn.style.display = "flex";
     fileInput.value = "";
+    fileBlobArr = [];
+    fileArr = [];
 }
 
 document.getElementById("drop").addEventListener('click', clear);
