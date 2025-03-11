@@ -15,19 +15,21 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
+	"os"
+	"testing"
 
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	greet "github.com/apache/dubbo-go-samples/rpc/triple/pb/proto"
-	"github.com/dubbogo/gost/log/logger"
+	greet "github.com/apache/dubbo-go-samples/rpc/triple/registry/proto"
 )
 
-func main() {
+var greetService greet.GreetService
+
+func TestMain(m *testing.M) {
 	cli, err := client.NewClient(
 		client.WithClientRegistry(
 			registry.WithZookeeper(),
@@ -37,16 +39,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	svc, err := greet.NewGreetService(cli)
+
+	greetService, err = greet.NewGreetService(cli)
 
 	if err != nil {
 		panic(err)
 	}
 
-	response, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "greet"})
-	if err != nil {
-		panic(err)
-	}
-
-	logger.Infof("result: %s", response.Greeting)
+	os.Exit(m.Run())
 }

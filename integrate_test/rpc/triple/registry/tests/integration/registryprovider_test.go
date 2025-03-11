@@ -15,38 +15,23 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
 
-	"dubbo.apache.org/dubbo-go/v3/client"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/registry"
-	greet "github.com/apache/dubbo-go-samples/rpc/triple/pb/proto"
-	"github.com/dubbogo/gost/log/logger"
+	greet "github.com/apache/dubbo-go-samples/rpc/triple/registry/proto"
+	"github.com/stretchr/testify/assert"
 )
 
-func main() {
-	cli, err := client.NewClient(
-		client.WithClientRegistry(
-			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
-		),
-	)
-	if err != nil {
-		panic(err)
-	}
-	svc, err := greet.NewGreetService(cli)
+func TestSayHello(t *testing.T) {
+	req := &greet.GreetRequest{Name: "hello world"}
 
-	if err != nil {
-		panic(err)
-	}
+	ctx := context.Background()
 
-	response, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "greet"})
-	if err != nil {
-		panic(err)
-	}
+	reply, err := greetService.Greet(ctx, req)
 
-	logger.Infof("result: %s", response.Greeting)
+	assert.Nil(t, err)
+	assert.Equal(t, "hello world", reply.Greeting)
 }
