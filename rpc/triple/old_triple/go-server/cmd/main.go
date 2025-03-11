@@ -36,7 +36,7 @@ func (srv *GreetDubbo3Server) Greet(ctx context.Context, req *greet.GreetRequest
 
 func main() {
 	config.SetProviderService(&GreetDubbo3Server{})
-	if err := config.Load(config.WithPath("./dubbogo.yml")); err != nil {
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
 	select {}
