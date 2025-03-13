@@ -18,12 +18,17 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	reflection "dubbo.apache.org/dubbo-go/v3/protocol/triple/reflection/triple_reflection"
+
 	"github.com/dubbogo/gost/log/logger"
+
 	"github.com/golang/protobuf/proto"
+
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 

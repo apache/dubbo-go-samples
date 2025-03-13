@@ -14,17 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package integration
 
 import (
 	"context"
 	"os"
 	"testing"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	reflection "dubbo.apache.org/dubbo-go/v3/protocol/triple/reflection/triple_reflection"
+
 	greet "github.com/apache/dubbo-go-samples/rpc/triple/reflection/proto"
 )
 

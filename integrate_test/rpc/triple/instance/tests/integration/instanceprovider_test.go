@@ -20,8 +20,11 @@ package integration
 import (
 	"context"
 	"testing"
+)
 
+import (
 	greet "github.com/apache/dubbo-go-samples/rpc/triple/instance/proto"
+
 	"github.com/stretchr/testify/assert"
 )
 
