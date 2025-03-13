@@ -14,7 +14,6 @@ linters-settings:
           # is allowed to use only in logutils package
           - pkg: "github.com/sirupsen/logrus"
             desc: not allowed
-    locale: US
   lll:
     line-length: 140
   goimports:
