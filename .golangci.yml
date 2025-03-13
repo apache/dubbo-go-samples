@@ -10,10 +10,8 @@ linters-settings:
     rules:
       main:
         deny:
-          # logging is allowed only by logutils.Log, logrus
-          # is allowed to use only in logutils package
           - pkg: "github.com/sirupsen/logrus"
-            desc: not allowed
+            desc: logging is allowed only by logutils.Log, logrus, is allowed to use only in logutils package
   lll:
     line-length: 140
   goimports:
