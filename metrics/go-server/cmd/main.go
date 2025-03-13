@@ -40,8 +40,9 @@ type GreetTripleServer struct {
 
 func (srv *GreetTripleServer) Greet(_ context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	resp := &greet.GreetResponse{Greeting: req.Name}
-	rand.Seed(time.Now().UnixNano())
-	if rand.Intn(101) > 99 { // mock error here
+	source := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(source)
+	if r.Intn(101) > 99 { // mock error here
 		return nil, errors.New("random error")
 	}
 	time.Sleep(10 * time.Millisecond) // mock business delay
