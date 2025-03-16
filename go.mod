@@ -169,6 +169,4 @@ replace (
 	go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v1.10.0
 )
 
-go 1.23.0
-
-toolchain go1.23.2
+go 1.23
