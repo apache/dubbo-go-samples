@@ -26,7 +26,9 @@ import (
 	reflection "dubbo.apache.org/dubbo-go/v3/protocol/triple/reflection/triple_reflection"
 
 	greet "github.com/apache/dubbo-go-samples/rpc/triple/reflection/proto"
+)
 
+import (
 	"github.com/golang/protobuf/proto"
 
 	"github.com/stretchr/testify/assert"

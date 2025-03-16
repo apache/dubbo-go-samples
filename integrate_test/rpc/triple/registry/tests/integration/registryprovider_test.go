@@ -24,7 +24,9 @@ import (
 
 import (
 	greet "github.com/apache/dubbo-go-samples/rpc/triple/registry/proto"
+)
 
+import (
 	"github.com/stretchr/testify/assert"
 )
 
