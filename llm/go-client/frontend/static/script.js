@@ -11,51 +11,81 @@ const inputInitHeight = chatInput.scrollHeight;
 let fileBlobArr = [];
 let fileArr = [];
 
-const createChatLi = (message, className) => {
-    // Create a chat <li> element with passed message and className
+const createChatLi = (content, className) => {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", `${className}`);
-    let chatContent = className === "outgoing" ? `<p></p>` : `<span class="material-symbols-outlined">smart_toy</span><p></p>`;
-    chatLi.innerHTML = chatContent;
-    chatLi.querySelector("p").textContent = message;
-    return chatLi; // return chat <li> element
-}
+
+    if (!(className === "outgoing")) {
+        let toy = document.createElement('span');
+        toy.className = "material-symbols-outlined";
+        toy.innerText = "smart_toy"
+        chatLi.appendChild(toy);
+    }
+
+    const contents = Array.isArray(content) ? content : [content];
+
+    contents.forEach(item => {
+        if (!item) return;
+        if (item.startsWith('data:image')) {
+            const img = document.createElement('img');
+            img.src = item;
+            chatLi.appendChild(img);
+        } else {
+            const p = document.createElement('p');
+            p.textContent = item;
+            chatLi.appendChild(p);
+        }
+    });
+
+    return chatLi;
+};
 
 const handleChat = () => {
-    userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
-    userBin = null
-    if (fileBlobArr.length > 0) {
-        userBin = fileBlobArr[0]
-    }
-    if(!userMessage && !userBin) return;
+    userMessage = chatInput.value.trim();
+    userBin = fileBlobArr.length > 0 ? fileBlobArr[0] : null;
 
-    // Clear the input textarea and set its height to default
+    const contents = [];
+    if (userMessage) contents.push(userMessage);
+    if (userBin) contents.push(userBin);
+
+    if (contents.length === 0) return;
+
     chatInput.value = "";
     chatInput.style.height = `${inputInitHeight}px`;
+    clear();
 
-    // Append the user's message to the chatbox
-    chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+    // user's message
+    chatbox.appendChild(createChatLi(contents, "outgoing"));
     chatbox.scrollTo(0, chatbox.scrollHeight);
 
-    setTimeout(() => {
-        // Display "Thinking..." message while waiting for the response
-        const incomingChatLi = createChatLi("Thinking...", "incoming");
-        chatbox.appendChild(incomingChatLi);
-        chatbox.scrollTo(0, chatbox.scrollHeight);
-        generateResponse(incomingChatLi);
-    }, 600);
+    // "Thinking..."
+    const incomingChatLi = createChatLi("Thinking...", "incoming");
+    chatbox.appendChild(incomingChatLi);
+    chatbox.scrollTo(0, chatbox.scrollHeight);
 
-    clear()
+    // timeout
+    const TIMEOUT_MS = CONFIG.TIME_OUT_SECOND;
+    let isTimeout = false;
+    const timeoutId = setTimeout(() => {
+        isTimeout = true;
+        incomingChatLi.querySelector(".content").textContent = "Request timed out. Please try again.";
+        chatbox.scrollTo(0, chatbox.scrollHeight);
+    }, TIMEOUT_MS);
+
+    // send request
+    generateResponse(incomingChatLi, () => {
+        if (!isTimeout) clearTimeout(timeoutId);
+    });
 }
 
-const generateResponse = (chatElement) => {
+const generateResponse = (chatElement, callback) => {
     const API_URL = "/api/chat";
     const messageElement = chatElement.querySelector("p");
 
-    // init stream
+    // Initialize stream
     let accumulatedResponse = "";
     messageElement.textContent = "";
-    messageElement.id = "content"
+    messageElement.id = "content";
 
     fetch(API_URL, {
         method: "POST",
@@ -68,21 +98,26 @@ const generateResponse = (chatElement) => {
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
 
+            // Function to read the stream recursively
             function readStream() {
                 return reader.read().then(({ done, value }) => {
                     if (done) {
+                        // Stream is complete, invoke the callback
+                        if (callback) callback();
                         return;
                     }
 
+                    // Decode the chunk and process events
                     const chunk = decoder.decode(value);
                     const events = chunk.split('\n\n');
 
                     events.forEach(event => {
                         if (event.startsWith('event:message')) {
-                            // extract data
+                            // Extract data from the event
                             const dataLine = event.split('\n')[1];
                             if (dataLine && dataLine.startsWith('data:')) {
                                 try {
+                                    // Parse the JSON data and update the UI
                                     const data = JSON.parse(dataLine.replace('data:', ''));
                                     accumulatedResponse += data.content;
                                     messageElement.textContent = accumulatedResponse;
@@ -94,18 +129,23 @@ const generateResponse = (chatElement) => {
                         }
                     });
 
+                    // Continue reading the stream
                     return readStream();
                 });
             }
 
+            // Start reading the stream
             return readStream();
         })
         .catch(error => {
             console.error('Error:', error);
             messageElement.classList.add("error");
             messageElement.textContent = "Oops! Something went wrong. Please try again.";
+
+            // Invoke the callback in case of error
+            if (callback) callback();
         });
-}
+};
 
 chatInput.addEventListener("input", () => {
     // Adjust the height of the input textarea based on its content
@@ -142,7 +182,8 @@ function filesToBlob(file) {
         fileName.title = file.name;
 
         let img = document.createElement('img');
-        img.src = "../static/file.png";
+        img.src = e.target.result;
+
 
         fileDiv.appendChild(img);
         fileDiv.appendChild(removeDiv);

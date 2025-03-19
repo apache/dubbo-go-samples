@@ -74,9 +74,21 @@ header h2 {
   display: flex;
   list-style: none;
 }
+.chatbox .chat img {
+  max-width: 250px;
+  max-height: 100px;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
 .chatbox .outgoing {
   margin: 20px 0;
   justify-content: flex-end;
+  display: flex;
+  list-style: none;
+  align-items: flex-end;
+  flex-direction: column;
 }
 .chatbox .incoming span {
   width: 32px;

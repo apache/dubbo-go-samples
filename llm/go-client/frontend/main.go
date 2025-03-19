@@ -19,6 +19,8 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"os"
 )
 
 import (
@@ -29,6 +31,8 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/joho/godotenv"
 )
 
 import (
@@ -38,6 +42,25 @@ import (
 )
 
 func main() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		panic(fmt.Sprintf("Error loading .env file: %v", err))
+	}
+
+	_, exist := os.LookupEnv("TIME_OUT_SECOND")
+
+	if !exist {
+		fmt.Println("TIME_OUT_SECOND is not set")
+		return
+	}
+
+	_, exist = os.LookupEnv("OLLAMA_MODEL")
+
+	if !exist {
+		fmt.Println("OLLAMA_MODEL is not set")
+		return
+	}
+
 	// init Dubbo
 	cli, err := client.NewClient(
 		client.WithClientURL("tri://127.0.0.1:20000"),
@@ -67,7 +90,12 @@ func main() {
 
 	// register route
 	h := handlers.NewChatHandler(svc, ctxManager)
-	r.GET("/", h.Index)
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"TimeoutSecond": os.Getenv("TIME_OUT_SECOND"),
+			"OllamaModel":   os.Getenv("OLLAMA_MODEL"),
+		})
+	})
 	r.POST("/api/chat", h.Chat)
 	r.POST("/api/context/new", h.NewContext)
 	r.GET("/api/context/list", h.ListContexts)

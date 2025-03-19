@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"runtime/debug"
 )
 
@@ -30,6 +31,8 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
+
+	"github.com/joho/godotenv"
 
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
@@ -44,7 +47,7 @@ type ChatServer struct {
 }
 
 func NewChatServer() (*ChatServer, error) {
-	llm, err := ollama.New(ollama.WithModel("deepseek-r1:1.5b"))
+	llm, err := ollama.New(ollama.WithModel(os.Getenv("OLLAMA_MODEL")))
 	if err != nil {
 		return nil, err
 	}
@@ -115,6 +118,20 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 }
 
 func main() {
+
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Printf("Error loading .env file: %v\n", err)
+		return
+	}
+
+	_, exist := os.LookupEnv("OLLAMA_MODEL")
+
+	if !exist {
+		fmt.Println("OLLAMA_MODEL is not set")
+		return
+	}
+
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
 			protocol.WithPort(20000),
