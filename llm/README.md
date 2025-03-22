@@ -31,8 +31,12 @@ $ ollama serve
 ### **Download Model**
 
 ```shell
-$ ollama run deepseek-r1:1.5b
+$ ollama pull llava:7b
 ```
+
+Default model uses ```llava:7b```, a novel end-to-end trained large multimodal model.
+
+You can pull your favourite model and specify the demo to use the model in ```.env``` file
 
 ## 3. **Run the Example**
 
@@ -71,3 +75,7 @@ $ go run go-client/frontend/main.go
 
 Frontend client supports multi-turn conversations, binary file (image) support for LLM interactions.
 Currently the supported uploaded image types are limited to png, jpeg and gif, with plans to support more binary file types in the future.
+
+### **Notice**
+
+The default timeout is set to two minutes, please make sure that your computer's performance can generate the corresponding response within two minutes, otherwise it will report an error timeout, you can set your own timeout time in the ```.env``` file

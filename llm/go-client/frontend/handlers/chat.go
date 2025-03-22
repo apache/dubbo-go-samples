@@ -22,8 +22,10 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 	"runtime/debug"
+	"strconv"
 	"time"
 )
 
@@ -149,6 +151,10 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	}()
 
 	// SSE stream output
+	timeout, err := strconv.Atoi(os.Getenv("TIME_OUT_SECOND"))
+	if err != nil {
+		timeout = 300
+	}
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case chunk, ok := <-responseCh:
@@ -157,8 +163,8 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 			}
 			c.SSEvent("message", gin.H{"content": chunk})
 			return true
-		case <-time.After(30 * time.Second):
-			log.Println("Stream timed out")
+		case <-time.After(time.Duration(timeout) * time.Second):
+			log.Println("Stream time out")
 			return false
 		case <-c.Request.Context().Done():
 			log.Println("Client disconnected")
