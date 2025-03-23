@@ -52,11 +52,6 @@ func NewCotAgentRunner(llm model.LLM, tools []tools.Tool, maxSteps int32, cfgPro
 func (cot *CotAgentRunner) Run(input string) (string, error) {
 	agentMemory := []map[string]any{}
 
-	// agentMemory = append(agentMemory,
-	// 	map[string]any{"input": "\ninit"},
-	// 	map[string]any{"output": "\nstart"},
-	// )
-
 	idxThoughtStep := 0
 	for idxThoughtStep < int(cot.maxThoughtSteps) {
 		fmt.Printf("\n>>>> Round: %v <<<<\n", idxThoughtStep)
