@@ -136,6 +136,13 @@ func main() {
 		return
 	}
 
+	_, exist = os.LookupEnv("OLLAMA_URL")
+
+	if !exist {
+		fmt.Println("OLLAMA_URL is not set")
+		return
+	}
+
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
 			protocol.WithPort(20000),
