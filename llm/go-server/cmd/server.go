@@ -47,7 +47,10 @@ type ChatServer struct {
 }
 
 func NewChatServer() (*ChatServer, error) {
-	llm, err := ollama.New(ollama.WithModel(os.Getenv("OLLAMA_MODEL")))
+	llm, err := ollama.New(
+		ollama.WithModel(os.Getenv("OLLAMA_MODEL")),
+		ollama.WithServerURL(os.Getenv("OLLAMA_URL")),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -88,8 +91,8 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		if msg.Bin != nil && len(msg.Bin) != 0 {
 			decodeByte, err := base64.StdEncoding.DecodeString(string(msg.Bin))
 			if err != nil {
-				log.Println("GenerateContent failed: %v", err)
-				return fmt.Errorf("GenerateContent failed")
+				log.Printf("GenerateContent failed: %v\n", err)
+				return fmt.Errorf("GenerateContent failed: %v", err)
 			}
 			imgType := http.DetectContentType(decodeByte)
 			messageContent.Parts = append(messageContent.Parts, llms.BinaryPart(imgType, decodeByte))
@@ -111,7 +114,8 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		}),
 	)
 	if err != nil {
-		log.Printf("GenerateContent failed: %v", err)
+		log.Printf("GenerateContent failed: %v\n", err)
+		return fmt.Errorf("GenerateContent failed: %v", err)
 	}
 
 	return nil

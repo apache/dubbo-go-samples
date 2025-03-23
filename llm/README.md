@@ -45,6 +45,15 @@ You need to run all the commands in ```llm``` directory.
 ```shell
 $ cd llm
 ```
+
+Create your local environment configuration by copying the template file. 
+After creating the ```.env``` file, edit it to set up your specific configurations.
+
+```shell
+# Copy environment template (Use `copy` for Windows)
+$ cp .env.example .env
+```
+
 ### **Run the Server**
 
 The server integrates the Ollama model and uses Dubbo-go's RPC service for invocation.
