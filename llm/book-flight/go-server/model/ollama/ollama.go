@@ -18,7 +18,6 @@ package ollama
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -27,6 +26,17 @@ import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model"
 	"github.com/ollama/ollama/api"
 )
+
+type ImageData = api.ImageData
+type LLMUrl struct {
+	scheam string // [scheam:]//host
+	host   string // host:port
+}
+
+func NewURL(url string) LLMUrl {
+	scheam_host := strings.Split(url, "://")
+	return LLMUrl{scheam: scheam_host[0], host: scheam_host[1]}
+}
 
 /*
 Options:
@@ -60,14 +70,13 @@ Options:
 	num_thread:
 */
 type LLMOllama struct {
-	model     string
-	url       string
-	scheam    string // [scheam:]//host
-	host      string // host:port
+	llmUrl    LLMUrl
+	Model     string
+	Url       string
 	Prompt    string
 	stream    *bool
 	suffix    string
-	images    []string
+	images    []ImageData
 	format    string
 	system    string
 	template  string
@@ -77,48 +86,31 @@ type LLMOllama struct {
 }
 
 func NewLLMOllama(model string, url string) *LLMOllama {
-	scheam_host := strings.Split(url, "://")
 	return &LLMOllama{
-		model:  model,
-		url:    url,
-		scheam: scheam_host[0],
-		host:   scheam_host[1],
+		llmUrl: NewURL(url),
+		Model:  model,
+		Url:    url,
 	}
 }
 
 func (llm *LLMOllama) Call(ctx context.Context, input string, opts ...model.Option) (string, error) {
-	client := api.NewClient(&url.URL{Scheme: llm.scheam, Host: llm.host}, http.DefaultClient)
+	client := api.NewClient(&url.URL{Scheme: llm.llmUrl.scheam, Host: llm.llmUrl.host}, http.DefaultClient)
 
-	optss := make(map[string]any)
-	if len(opts) > 0 {
-		for _, opt := range opts {
-			for k, v := range opt {
-				optss[k] = v
-			}
-		}
-	}
+	optss := model.NewOptions(opts...)
 
 	// By default, GenerateRequest is streaming.
 	req := &api.GenerateRequest{
-		Model:   llm.model,
+		Model:   llm.Model,
 		Prompt:  input,
 		Stream:  llm.stream,
 		Suffix:  llm.suffix,
-		Options: optss,
+		Options: optss.Opts,
 	}
 
 	response := ""
-	// ctx := context.Background()
 	respFunc := func(resp api.GenerateResponse) error {
-		// Only print the response here; GenerateResponse has a number of other
-		// interesting fields you want to examine.
-
-		// In streaming mode, responses are partial so we call fmt.Print (and not
-		// Println) in order to avoid spurious newlines being introduced. The
-		// model will insert its own newlines if it wants.
-		fmt.Print(resp.Response)
 		response += resp.Response
-		return nil
+		return optss.CallOpt(resp.Response)
 	}
 
 	err := client.Generate(ctx, req, respFunc)
@@ -126,7 +118,7 @@ func (llm *LLMOllama) Call(ctx context.Context, input string, opts ...model.Opti
 		log.Fatal(err)
 		return "", err
 	}
-	fmt.Println()
+
 	return response, nil
 }
 
@@ -135,9 +127,51 @@ func (llm *LLMOllama) Stream(ctx context.Context, input string, opts ...model.Op
 }
 
 func (llm *LLMOllama) Invoke(ctx context.Context, input string, opts ...model.Option) (string, error) {
-	var stream = new(bool)
-	llm.stream, stream = stream, llm.stream
-	rst, err := llm.Call(ctx, input, opts...)
-	llm.stream, stream = stream, llm.stream
-	return rst, err
+	client := api.NewClient(&url.URL{Scheme: llm.llmUrl.scheam, Host: llm.llmUrl.host}, http.DefaultClient)
+
+	// Messages
+	messages := []api.Message{
+		api.Message{
+			Role:    "system",
+			Content: llm.system,
+		},
+		api.Message{
+			Role:    "user",
+			Content: "Provide very brief, concise responses",
+		},
+		api.Message{
+			Role:    "assistant",
+			Content: "Provide very brief, concise responses",
+		},
+		api.Message{
+			Role:    "user",
+			Content: input,
+			Images:  llm.images,
+		},
+	}
+
+	// Options
+	optss := model.NewOptions(opts...)
+
+	// ChatRequest
+	req := &api.ChatRequest{
+		Model:    llm.Model,
+		Stream:   llm.stream,
+		Messages: messages,
+		Options:  optss.Opts,
+	}
+
+	response := ""
+	respFunc := func(resp api.ChatResponse) error {
+		response += resp.Message.Content
+		return optss.CallOpt(resp.Message.Content)
+	}
+
+	err := client.Chat(ctx, req, respFunc)
+	if err != nil {
+		log.Fatal(err)
+		return "", err
+	}
+
+	return response, nil
 }

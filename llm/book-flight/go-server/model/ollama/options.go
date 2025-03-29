@@ -16,7 +16,13 @@
  */
 package ollama
 
-import "github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model"
+import (
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model"
+)
+
+func WithStreamingFunc(fn model.CallFunc) model.Option {
+	return fn
+}
 
 func WithNumberKeep(numKeep int64) model.Option {
 	return map[string]any{"num_keep": numKeep}

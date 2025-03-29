@@ -16,4 +16,30 @@
  */
 package model
 
-type Option = map[string]any
+type CallFunc func(input string) error
+type Option = any
+type Options struct {
+	CallOpt CallFunc
+	Opts    map[string]any
+}
+
+func NewOptions(opts ...Option) Options {
+	var respFunc CallFunc
+	optss := make(map[string]any)
+	if len(opts) > 0 {
+		for _, opt := range opts {
+			if optm, ok := opt.(map[string]any); ok {
+				for k, v := range optm {
+					optss[k] = v
+				}
+			} else if fn, ok := opt.(CallFunc); ok {
+				respFunc = fn
+			}
+		}
+	}
+
+	return Options{
+		CallOpt: respFunc,
+		Opts:    optss,
+	}
+}

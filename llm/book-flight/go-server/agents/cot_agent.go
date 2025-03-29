@@ -49,21 +49,18 @@ func NewCotAgentRunner(llm model.LLM, tools []tools.Tool, maxSteps int32, cfgPro
 	}
 }
 
-func (cot *CotAgentRunner) Run(input string) (string, error) {
+func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.Option) (string, error) {
 	agentMemory := []map[string]any{}
 
 	idxThoughtStep := 0
 	for idxThoughtStep < int(cot.maxThoughtSteps) {
-		fmt.Printf("\n>>>> Round: %v <<<<\n", idxThoughtStep)
-		action, response := cot.step(input, agentMemory)
+		action, response := cot.step(input, agentMemory, callopt)
 
 		if action.Name == "FINISH" {
 			break
 		}
 
 		observation := cot.execAction(action)
-		fmt.Printf("----\nObservation:\n%v", observation)
-
 		agentMemory = cot.updateMemory(agentMemory, response, observation)
 
 		idxThoughtStep++
@@ -77,19 +74,19 @@ func (cot *CotAgentRunner) Run(input string) (string, error) {
 			"memory":           agentMemory},
 			cot.tools,
 		)
-		reply, err = cot.llm.Call(context.Background(), prompt, ollama.WithTemperature(0.0))
+		reply, err = cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
 	}
 
 	return reply, err
 }
 
-func (cot *CotAgentRunner) step(taskDescription string, memory []map[string]any) (actions.Action, string) {
+func (cot *CotAgentRunner) step(taskDescription string, memory []map[string]any, callopt model.Option) (actions.Action, string) {
 	prompt := conf.Prompt(
 		cot.reactPrompt,
 		map[string]any{"task_description": taskDescription, "memory": memory},
 		cot.tools,
 	)
-	response, _ := cot.llm.Call(context.Background(), prompt, ollama.WithTemperature(0.0))
+	response, _ := cot.llm.Invoke(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
 
 	response = model.RemoveThink(response)
 	return actions.NewAction(response), response
