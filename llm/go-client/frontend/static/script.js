@@ -95,6 +95,9 @@ const generateResponse = (chatElement, callback) => {
         body: JSON.stringify({ message: userMessage, bin: userBin }),
     })
         .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
 

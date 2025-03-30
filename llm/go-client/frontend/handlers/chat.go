@@ -58,7 +58,10 @@ func (h *ChatHandler) Index(c *gin.Context) {
 	if ctxID == nil {
 		ctxID = h.ctxManager.CreateContext()
 		session.Set("current_context", ctxID)
-		session.Save()
+		err := session.Save()
+		if err != nil {
+			return
+		}
 	}
 
 	c.HTML(http.StatusOK, "index.html", gin.H{
@@ -140,6 +143,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 			default:
 				if !stream.Recv() {
 					if err := stream.Err(); err != nil {
+						c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 						log.Printf("Stream receive error: %v", err)
 					}
 					return
