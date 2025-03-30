@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        golang:
+        go_version:
           - '1.23'
     steps:
       - uses: actions/setup-go@v3
@@ -44,10 +44,10 @@ jobs:
           # Edit the version
           go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH
           go mod tidy
-
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v3.7.0
         with:
-          # golangci-lint version
-          version: v1.61
+          version: v1.51.0
           args: --timeout=10m
+#          skip-pkg-cache: true
+#          skip-build-cache: true
