@@ -17,6 +17,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -56,6 +57,6 @@ func run() error {
 	cfgPrompt := conf.GetConfigPrompts()
 	cot := agents.NewCotAgentRunner(llm, agentTools, 10, cfgPrompt)
 	question := "帮我买24年6月1日晚上北京到上海的飞机票"
-	_, err := cot.Run(question)
+	_, err := cot.Run(context.Background(), question, nil)
 	return err
 }
