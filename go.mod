@@ -16,7 +16,7 @@ require (
 	github.com/golang/protobuf v1.5.4
 	github.com/joho/godotenv v1.3.0
 	github.com/nacos-group/nacos-sdk-go/v2 v2.2.2
-	github.com/ollama/ollama v0.5.9
+	github.com/ollama/ollama v0.5.2
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.4.0
