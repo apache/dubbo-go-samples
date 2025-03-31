@@ -19,9 +19,10 @@ package main
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/protocol/triple/triple_protocol"
+	"net/http"
 
 	"dubbo.apache.org/dubbo-go/v3/client"
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	greet "github.com/apache/dubbo-go-samples/context/proto"
 	"github.com/dubbogo/gost/log/logger"
@@ -40,15 +41,27 @@ func main() {
 		panic(err)
 	}
 
-	ctx := context.Background()
-	ctx = context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{
-		"key1": "user defined value 1",
-		"key2": "user defined value 2",
-	})
+	header := http.Header{"testKey1": []string{"testVal1"}, "testKey2": []string{"testVal2"}}
+	// to store outgoing data ,and reserve the location for the receive field.
+	// header will be copy , and header's key will change to be lowwer.
+	ctx := triple_protocol.NewOutgoingContext(context.Background(), header)
+	ctx = triple_protocol.AppendToOutgoingContext(ctx, "testKey3", "testVal3")
 
 	resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
 		logger.Error(err)
 	}
+	extractedHeader, _ := triple_protocol.FromIncomingContext(ctx)
+
+	var value1, value2 string
+	if values, ok := extractedHeader["outgoingcontextkey1"]; ok && len(values) > 0 {
+		value1 = values[0]
+		logger.Infof("OutgoingContextKey1: %s", value1)
+	}
+	if values, ok := extractedHeader["outgoingcontextkey2"]; ok && len(values) > 0 {
+		value2 = values[0]
+		logger.Infof("OutgoingContextKey2: %s", value2)
+	}
+
 	logger.Infof("Greet response: %s", resp.Greeting)
 }
