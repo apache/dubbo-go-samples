@@ -25,21 +25,21 @@ type Options struct {
 
 func NewOptions(opts ...Option) Options {
 	var respFunc CallFunc
-	optss := make(map[string]any)
+	optMap := make(map[string]any)
 	if len(opts) > 0 {
 		for _, opt := range opts {
-			if optm, ok := opt.(map[string]any); ok {
+			if fn, ok := opt.(*CallFunc); ok {
+				respFunc = *fn
+			} else if optm, ok := opt.(map[string]any); ok {
 				for k, v := range optm {
-					optss[k] = v
+					optMap[k] = v
 				}
-			} else if fn, ok := opt.(CallFunc); ok {
-				respFunc = fn
 			}
 		}
 	}
 
 	return Options{
 		CallOpt: respFunc,
-		Opts:    optss,
+		Opts:    optMap,
 	}
 }

@@ -21,7 +21,7 @@ import (
 )
 
 func WithStreamingFunc(fn model.CallFunc) model.Option {
-	return fn
+	return &fn
 }
 
 func WithNumberKeep(numKeep int64) model.Option {
