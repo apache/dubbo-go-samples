@@ -35,7 +35,7 @@ import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools/bookingflight"
 	"github.com/tmc/langchaingo/llms"
 
-	chat "github.com/apache/dubbo-go-samples/llm/proto"
+	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 
 func getTools() []tools.Tool {
@@ -110,33 +110,19 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 	cfgPrompt := conf.GetConfigPrompts()
 	cot := agents.NewCotAgentRunner(s.llm, s.tools, 10, cfgPrompt)
 
-	// ctx := context.Background()
 	respFunc := func(resp string) error {
-		// Only print the response here; GenerateResponse has a number of other
-		// interesting fields you want to examine.
-
-		// In streaming mode, responses are partial so we call fmt.Print (and not
-		// Println) in order to avoid spurious newlines being introduced. The
-		// model will insert its own newlines if it wants.
 		fmt.Print(resp)
 		return nil
 	}
-	_, err = cot.Run(ctx, input, ollama.WithStreamingFunc(respFunc))
-	// _, err = s.llm.GenerateContent(
-	// 	ctx,
-	// 	messages,
-	// 	llms.WithStreamingFunc(func(resp api.GenerateResponse) error {
-	// 		// Only print the response here; GenerateResponse has a number of other
-	// 		// interesting fields you want to examine.
 
-	// 		// In streaming mode, responses are partial so we call fmt.Print (and not
-	// 		// Println) in order to avoid spurious newlines being introduced. The
-	// 		// model will insert its own newlines if it wants.
-	// 		return stream.Send(&chat.ChatResponse{
-	// 			Content: string(resp.Response),
-	// 		})
-	// 	}),
-	// )
+	rstFunc := func(resp string) error {
+		fmt.Println()
+		return stream.Send(&chat.ChatResponse{
+			Content: string(resp),
+		})
+	}
+
+	_, err = cot.Run(ctx, input, ollama.WithStreamingFunc(respFunc), rstFunc)
 	if err != nil {
 		log.Printf("GenerateContent failed: %v", err)
 	}
@@ -145,20 +131,6 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 }
 
 func main() {
-
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Printf("Error loading .env file: %v\n", err)
-		return
-	}
-
-	_, exist := os.LookupEnv("OLLAMA_MODEL")
-
-	if !exist {
-		fmt.Println("OLLAMA_MODEL is not set")
-		return
-	}
-
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
 			protocol.WithPort(20000),

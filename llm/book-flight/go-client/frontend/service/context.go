@@ -20,10 +20,8 @@ package service
 import (
 	"strconv"
 	"sync"
-)
 
-import (
-	chat "github.com/apache/dubbo-go-samples/llm/proto"
+	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 
 type ContextManager struct {

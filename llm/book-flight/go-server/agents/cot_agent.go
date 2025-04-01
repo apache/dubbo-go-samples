@@ -50,25 +50,27 @@ func NewCotAgentRunner(llm model.LLM, tools []tools.Tool, maxSteps int32, cfgPro
 	}
 }
 
-func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.Option) (string, error) {
+func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.Option, callrst model.CallFunc) (string, error) {
 	agentMemory := []map[string]any{}
 
 	idxThoughtStep := 0
 	for idxThoughtStep < int(cot.maxThoughtSteps) {
 		action, response := cot.step(input, agentMemory, callopt)
+		callrst(response)
 
 		if action.Name == "FINISH" {
 			break
 		}
 
 		observation := cot.execAction(action)
+		callrst(observation)
 		agentMemory = cot.updateMemory(agentMemory, response, observation)
 
 		idxThoughtStep++
 	}
 
+	var err error
 	reply := "Sorry, failed to complete your task."
-	var err error = nil
 	if idxThoughtStep < int(cot.maxThoughtSteps) {
 		prompt := prompts.CreatePrompt(cot.finalPrompt, map[string]any{
 			"task_description": input,
@@ -76,6 +78,7 @@ func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.
 			cot.tools,
 		)
 		reply, err = cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
+		callrst(reply)
 	}
 
 	return reply, err
@@ -94,7 +97,7 @@ func (cot *CotAgentRunner) step(taskDescription string, memory []map[string]any,
 }
 
 func (cot *CotAgentRunner) execAction(action actions.Action) string {
-	var err error = nil
+	var err error
 	var observation string = fmt.Sprintf("Can't find tool: %v.", action.Name)
 	for _, tool := range cot.tools {
 		if tool.Name() == action.Name {

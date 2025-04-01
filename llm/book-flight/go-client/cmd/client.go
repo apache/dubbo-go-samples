@@ -23,15 +23,12 @@ import (
 	"fmt"
 	"os"
 	"strings"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3/client"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-)
 
-import (
-	chat "github.com/apache/dubbo-go-samples/llm/proto"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 
 type ChatContext struct {
