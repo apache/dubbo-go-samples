@@ -23,7 +23,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"runtime/debug"
 
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
@@ -34,7 +33,6 @@ import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model/ollama"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools/bookingflight"
-	"github.com/joho/godotenv"
 	"github.com/tmc/langchaingo/llms"
 
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
@@ -58,8 +56,8 @@ type ChatServer struct {
 }
 
 func NewChatServer() (*ChatServer, error) {
-	cfgLLM := conf.GetConfigLLM()
-	llm := ollama.NewLLMOllama(cfgLLM.LLM.Model, cfgLLM.LLM.Url)
+	cfgEnv := conf.GetEnvironment()
+	llm := ollama.NewLLMOllama(cfgEnv.Model, cfgEnv.Url)
 	return &ChatServer{llm: llm, tools: getTools()}, nil
 }
 

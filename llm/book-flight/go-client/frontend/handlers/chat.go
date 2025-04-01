@@ -22,12 +22,11 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"regexp"
 	"runtime/debug"
-	"strconv"
 	"time"
 
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -146,10 +145,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	}()
 
 	// SSE stream output
-	timeout, err := strconv.Atoi(os.Getenv("TIME_OUT_SECOND"))
-	if err != nil {
-		timeout = 300
-	}
+	timeout := conf.GetEnvironment().TimeOut
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case chunk, ok := <-responseCh:

@@ -20,47 +20,21 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3/client"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
-
-	"github.com/gin-gonic/gin"
-
-	"github.com/joho/godotenv"
-)
-
-import (
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/handlers"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/gin"
+
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 func main() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		panic(fmt.Sprintf("Error loading .env file: %v", err))
-	}
-
-	_, exist := os.LookupEnv("TIME_OUT_SECOND")
-
-	if !exist {
-		fmt.Println("TIME_OUT_SECOND is not set")
-		return
-	}
-
-	_, exist = os.LookupEnv("OLLAMA_MODEL")
-
-	if !exist {
-		fmt.Println("OLLAMA_MODEL is not set")
-		return
-	}
-
 	// init Dubbo
 	cli, err := client.NewClient(
 		client.WithClientURL("tri://127.0.0.1:20000"),
@@ -89,11 +63,12 @@ func main() {
 	ctxManager := service.NewContextManager()
 
 	// register route
+	cfgEnv := conf.GetEnvironment()
 	h := handlers.NewChatHandler(svc, ctxManager)
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
-			"TimeoutSecond": os.Getenv("TIME_OUT_SECOND"),
-			"OllamaModel":   os.Getenv("OLLAMA_MODEL"),
+			"TimeoutSecond": cfgEnv.TimeOut,
+			"OllamaModel":   cfgEnv.Model,
 		})
 	})
 	r.POST("/api/chat", h.Chat)
