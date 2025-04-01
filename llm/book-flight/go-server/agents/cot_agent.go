@@ -26,6 +26,7 @@ import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model/ollama"
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/prompts"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 )
 
@@ -69,7 +70,7 @@ func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.
 	reply := "Sorry, failed to complete your task."
 	var err error = nil
 	if idxThoughtStep < int(cot.maxThoughtSteps) {
-		prompt := conf.Prompt(cot.finalPrompt, map[string]any{
+		prompt := prompts.CreatePrompt(cot.finalPrompt, map[string]any{
 			"task_description": input,
 			"memory":           agentMemory},
 			cot.tools,
@@ -81,7 +82,7 @@ func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.
 }
 
 func (cot *CotAgentRunner) step(taskDescription string, memory []map[string]any, callopt model.Option) (actions.Action, string) {
-	prompt := conf.Prompt(
+	prompt := prompts.CreatePrompt(
 		cot.reactPrompt,
 		map[string]any{"task_description": taskDescription, "memory": memory},
 		cot.tools,
