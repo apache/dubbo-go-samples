@@ -29,10 +29,12 @@ message ChatMessage {
   string role = 1;  // "human" or "ai"
   string content = 2;
   bytes bin = 3;  // binary file
+  string record = 4;
 }
 
 message ChatResponse {
   string content = 1;
+  string record = 2;
 }
 
 service ChatService {

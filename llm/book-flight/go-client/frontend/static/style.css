@@ -14,11 +14,12 @@ body {
 }
 
 
-.chatbot {
+.chatbots {
   position: fixed;
-  left: 50%;
+  left: 40%;
   top: 50%;
-  width: 420px;
+  width: 40%;
+  height: 90%;
   background: #fff;
   border-radius: 15px;
   overflow: hidden;
@@ -30,12 +31,29 @@ body {
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
 }
-body.show-chatbot .chatbot {
+.records {
+  position: fixed;
+  left: 80%;
+  top: 50%;
+  width: 40%;
+  height: 90%;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  opacity: 1;
+  transform-origin: bottom right;
+  box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
+              0 32px 64px -48px rgba(0,0,0,0.5);
+  transition: all 0.1s ease;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+body.show-chatbot .records {
   opacity: 1;
   pointer-events: auto;
   transform: scale(1);
 }
-.chatbot header {
+.records header {
   padding: 16px 0;
   position: relative;
   text-align: center;
@@ -43,7 +61,30 @@ body.show-chatbot .chatbot {
   background: #724ae8;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-.chatbot header span {
+body.show-chatbot .chatbots {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.chatbots header {
+  padding: 16px 0;
+  position: relative;
+  text-align: center;
+  color: #fff;
+  background: #724ae8;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.chatbots header span {
+  overflow-y: auto;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  display: none;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+.records header span {
+  overflow-y: auto;
   position: absolute;
   right: 15px;
   top: 50%;
@@ -54,9 +95,9 @@ body.show-chatbot .chatbot {
 header h2 {
   font-size: 1.4rem;
 }
-.chatbot .chatbox {
-  overflow-y: auto;
-  height: 510px;
+.chatbox {
+  max-height: 90%;
+  overflow-y: true;
   padding: 30px 20px 100px;
 }
 .chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
@@ -230,21 +271,21 @@ header h2 {
 
 
 @media  (max-width: 600px), (max-height: 600px) {
-  .chatbot {
+  .chatbots {
     right: 0;
     bottom: 0;
     height: 100%;
     border-radius: 0;
     width: 100%;
   }
-  .chatbot .chatbox {
+  .chatbots .chatbox {
     height: 90%;
     padding: 25px 15px 100px;
   }
-  .chatbot .chat-input {
+  .chatbots .chat-input {
     padding: 5px 15px;
   }
-  .chatbot header span {
+  .chatbots header span {
     display: block;
   }
 }

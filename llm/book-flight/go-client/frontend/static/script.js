@@ -119,7 +119,7 @@ const generateResponse = (chatElement, callback) => {
                                 try {
                                     // Parse the JSON data and update the UI
                                     const data = JSON.parse(dataLine.replace('data:', ''));
-                                    accumulatedResponse += data.content;
+                                    accumulatedResponse += data.content || data.record || "";
                                     messageElement.textContent = accumulatedResponse;
                                     chatbox.scrollTo(0, chatbox.scrollHeight);
                                 } catch (error) {

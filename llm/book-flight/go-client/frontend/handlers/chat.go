@@ -117,6 +117,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	c.Header("Connection", "close")
 
 	responseCh := make(chan string, 100) // use buffer
+	responseRc := make(chan string, 100) // use buffer
 
 	go func() {
 		defer func() {
@@ -124,6 +125,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 				log.Printf("Recovered in stream processing: %v\n%s", r, debug.Stack())
 			}
 			close(responseCh)
+			close(responseRc)
 		}()
 
 		for {
@@ -139,7 +141,13 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 					return
 				}
 				content := stream.Msg().Content
-				responseCh <- content
+				record := stream.Msg().Record
+				if content != "" {
+					responseCh <- content
+				}
+				if record != "" {
+					responseRc <- record
+				}
 			}
 		}
 	}()
@@ -153,6 +161,12 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 				return false
 			}
 			c.SSEvent("message", gin.H{"content": chunk})
+			return true
+		case chunk, ok := <-responseRc:
+			if !ok {
+				return false
+			}
+			c.SSEvent("message", gin.H{"record": chunk})
 			return true
 		case <-time.After(time.Duration(timeout) * time.Second):
 			log.Println("Stream time out")
