@@ -73,8 +73,12 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	session := sessions.Default(c)
 	ctxID, ok := session.Get("current_context").(string)
 	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid session context"})
-		return
+		h.NewContext(c)
+		ctxID, ok = session.Get("current_context").(string)
+		if !ok {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get context"})
+			return
+		}
 	}
 
 	var req struct {
