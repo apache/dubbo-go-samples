@@ -14,7 +14,7 @@ body {
 }
 
 
-.chatbots {
+.chatbot {
   position: fixed;
   left: 40%;
   top: 50%;
@@ -26,12 +26,14 @@ body {
   opacity: 1;
   transform-origin: bottom right;
   box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
-              0 32px 64px -48px rgba(0,0,0,0.5);
+    0 32px 64px -48px rgba(0,0,0,0.5);
   transition: all 0.1s ease;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
+  display: flex; /* Added flexbox layout */
+  flex-direction: column; /* Added column direction */
 }
-.records {
+.record {
   position: fixed;
   left: 80%;
   top: 50%;
@@ -43,17 +45,19 @@ body {
   opacity: 1;
   transform-origin: bottom right;
   box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
-              0 32px 64px -48px rgba(0,0,0,0.5);
+    0 32px 64px -48px rgba(0,0,0,0.5);
   transition: all 0.1s ease;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
+  display: flex; /* Added flexbox layout */
+  flex-direction: column; /* Added column direction */
 }
-body.show-chatbot .records {
+body.show-chatbot .record {
   opacity: 1;
   pointer-events: auto;
   transform: scale(1);
 }
-.records header {
+.record header {
   padding: 16px 0;
   position: relative;
   text-align: center;
@@ -61,12 +65,12 @@ body.show-chatbot .records {
   background: #724ae8;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-body.show-chatbot .chatbots {
+body.show-chatbot .chatbot {
   opacity: 1;
   pointer-events: auto;
   transform: scale(1);
 }
-.chatbots header {
+.chatbot header {
   padding: 16px 0;
   position: relative;
   text-align: center;
@@ -74,7 +78,7 @@ body.show-chatbot .chatbots {
   background: #724ae8;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-.chatbots header span {
+.chatbot header span {
   overflow-y: auto;
   position: absolute;
   right: 15px;
@@ -83,7 +87,7 @@ body.show-chatbot .chatbots {
   cursor: pointer;
   transform: translateY(-50%);
 }
-.records header span {
+.record header span {
   overflow-y: auto;
   position: absolute;
   right: 15px;
@@ -96,8 +100,8 @@ header h2 {
   font-size: 1.4rem;
 }
 .chatbox {
-  max-height: 90%;
-  overflow-y: true;
+  flex-grow: 1; /* Added flex-grow to chatbox */
+  overflow-y: auto; /* Changed to auto to enable vertical scroll */
   padding: 30px 20px 100px;
 }
 .chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
@@ -124,8 +128,8 @@ header h2 {
 }
 
 .chatbox .outgoing {
-  margin: 20px 0;
-  justify-content: flex-end;
+  margin: 10px 0;
+  justify-content: flex-start;
   display: flex;
   list-style: none;
   align-items: flex-end;
@@ -138,22 +142,22 @@ header h2 {
   cursor: default;
   text-align: center;
   line-height: 32px;
-  align-self: flex-end;
+  align-self: flex-start;
   background: #724ae8;
   border-radius: 4px;
   margin: 0 10px 7px 0;
 }
 .chatbox .chat p {
   white-space: pre-wrap;
-  padding: 12px 16px;
-  border-radius: 10px 10px 0 10px;
-  max-width: 75%;
-  color: #fff;
+  padding: 12px 6px;
+  border-radius: 0 10px 0 10px;
+  max-width: 100%;
+  color: #000;
   font-size: 0.95rem;
-  background: #724ae8;
+  background: #fafafa;
 }
 .chatbox .incoming p {
-  border-radius: 10px 10px 10px 0;
+  border-radius: 5px 5px 5px 5px;
 }
 .chatbox .chat p.error {
   color: #721c24;
@@ -161,12 +165,12 @@ header h2 {
 }
 .chatbox .incoming p {
   color: #000;
-  background: #f2f2f2;
+  /* background: #f2f2f2; */
 }
 .chatbot .chat-input {
   display: flex;
   gap: 5px;
-  position: absolute;
+  position: relative; /* Changed to relative */
   bottom: 0;
   width: 100%;
   background: #fff;
@@ -234,8 +238,9 @@ header h2 {
   top: 5px;
   width: 15px;
   height: 15px;
-  background: #347aa5;
-  color: white;
+  /* background: #347aa5; */
+  color: #000;
+  /* color: white; */
   border-radius: 50%;
   text-align: center;
   line-height: 15px;
@@ -270,22 +275,22 @@ header h2 {
 }
 
 
-@media  (max-width: 600px), (max-height: 600px) {
-  .chatbots {
+@media (max-width: 600px), (max-height: 600px) {
+  .chatbot {
     right: 0;
     bottom: 0;
     height: 100%;
     border-radius: 0;
     width: 100%;
   }
-  .chatbots .chatbox {
+  .chatbot .chatbox {
     height: 90%;
     padding: 25px 15px 100px;
   }
-  .chatbots .chat-input {
+  .chatbot .chat-input {
     padding: 5px 15px;
   }
-  .chatbots header span {
+  .chatbot header span {
     display: block;
   }
 }

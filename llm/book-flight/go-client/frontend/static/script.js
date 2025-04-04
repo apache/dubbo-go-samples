@@ -1,6 +1,6 @@
 // This file originally cloned from https://github.com/yotam-halperin/chatbot-static-UI
-
-const chatbox = document.querySelector(".chatbox");
+const chatbox = document.querySelector(".chatbot .chatbox");
+const recordbox = document.querySelector(".record .chatbox");
 const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
 
@@ -11,15 +11,15 @@ const inputInitHeight = chatInput.scrollHeight;
 let fileBlobArr = [];
 let fileArr = [];
 
-const createChatLi = (content, className) => {
+const createChatLi = (content, className, targetBox = chatbox) => {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", `${className}`);
 
+    const iconSpan = document.createElement('span'); // Create icon span here
     if (!(className === "outgoing")) {
-        let toy = document.createElement('span');
-        toy.className = "material-symbols-outlined";
-        toy.innerText = "smart_toy"
-        chatLi.appendChild(toy);
+        iconSpan.className = "material-symbols-outlined";
+        iconSpan.innerText = "smart_toy";
+        chatLi.appendChild(iconSpan);
     }
 
     const contents = Array.isArray(content) ? content : [content];
@@ -37,6 +37,8 @@ const createChatLi = (content, className) => {
         }
     });
 
+    targetBox.appendChild(chatLi);
+    targetBox.scrollTo(0, targetBox.scrollHeight);
     return chatLi;
 };
 
@@ -55,37 +57,38 @@ const handleChat = () => {
     clear();
 
     // user's message
-    chatbox.appendChild(createChatLi(contents, "outgoing"));
-    chatbox.scrollTo(0, chatbox.scrollHeight);
+    createChatLi(contents, "outgoing", chatbox);
 
     // "Thinking..."
-    const incomingChatLi = createChatLi("Thinking...", "incoming");
-    chatbox.appendChild(incomingChatLi);
-    chatbox.scrollTo(0, chatbox.scrollHeight);
+    const incomingChatLi = createChatLi("Thinking...", "incoming", chatbox);
+    const incomingRecordLi = createChatLi("Thinking...", "incoming", recordbox); // Add to recordbox
 
     // timeout
     const TIMEOUT_MS = CONFIG.TIME_OUT_SECOND;
     let isTimeout = false;
     const timeoutId = setTimeout(() => {
         isTimeout = true;
-        incomingChatLi.querySelector(".content").textContent = "Request timed out. Please try again.";
-        chatbox.scrollTo(0, chatbox.scrollHeight);
+        incomingRecordLi.querySelector("p").textContent = "Request timed out. Please try again.";
     }, TIMEOUT_MS);
 
     // send request
-    generateResponse(incomingChatLi, () => {
+    generateResponse(incomingChatLi, incomingRecordLi, () => {
         if (!isTimeout) clearTimeout(timeoutId);
     });
 }
 
-const generateResponse = (chatElement, callback) => {
+const generateResponse = (chatElement, recordElement, callback) => {
     const API_URL = "/api/chat";
-    const messageElement = chatElement.querySelector("p");
+    const chatMessageElement = chatElement.querySelector("p");
+    const recordMessageElement = recordElement.querySelector("p");
 
     // Initialize stream
-    let accumulatedResponse = "";
-    messageElement.textContent = "";
-    messageElement.id = "content";
+    let accumulatedChatResponse = "";
+    let accumulatedRecordResponse = "";
+    chatMessageElement.textContent = "";
+    chatMessageElement.id = "chatContent";
+    recordMessageElement.textContent = "";
+    recordMessageElement.id = "recordContent";
 
     fetch(API_URL, {
         method: "POST",
@@ -94,57 +97,68 @@ const generateResponse = (chatElement, callback) => {
         },
         body: JSON.stringify({ message: userMessage, bin: userBin }),
     })
-        .then(response => {
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
+    .then(response => {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-            // Function to read the stream recursively
-            function readStream() {
-                return reader.read().then(({ done, value }) => {
-                    if (done) {
-                        // Stream is complete, invoke the callback
-                        if (callback) callback();
-                        return;
-                    }
+        // Function to read the stream recursively
+        function readStream() {
+            return reader.read().then(({ done, value }) => {
+                if (done) {
+                    // Stream is complete, invoke the callback
+                    if (callback) callback();
+                    return;
+                }
 
-                    // Decode the chunk and process events
-                    const chunk = decoder.decode(value);
-                    const events = chunk.split('\n\n');
+                // Decode the chunk and process events
+                const chunk = decoder.decode(value);
+                const events = chunk.split('\n\n');
 
-                    events.forEach(event => {
-                        if (event.startsWith('event:message')) {
-                            // Extract data from the event
-                            const dataLine = event.split('\n')[1];
-                            if (dataLine && dataLine.startsWith('data:')) {
-                                try {
-                                    // Parse the JSON data and update the UI
-                                    const data = JSON.parse(dataLine.replace('data:', ''));
-                                    accumulatedResponse += data.content || data.record || "";
-                                    messageElement.textContent = accumulatedResponse;
+                events.forEach(event => {
+                    if (event.startsWith('event:message')) {
+                        // Extract data from the event
+                        const dataLine = event.split('\n')[1];
+                        if (dataLine && dataLine.startsWith('data:')) {
+                            try {
+                                // Parse the JSON data and update the UI
+                                const data = JSON.parse(dataLine.replace('data:', ''));
+                                if (data.content) {
+                                    accumulatedChatResponse += data.content;
+                                    chatMessageElement.innerHTML = marked.parse(styleMatch(accumulatedChatResponse)); // Render Markdown
                                     chatbox.scrollTo(0, chatbox.scrollHeight);
-                                } catch (error) {
-                                    console.error('Failed to parse event data:', error);
                                 }
+                                if (data.record) {
+                                    accumulatedRecordResponse += data.record;
+                                    recordMessageElement.innerHTML = marked.parse(styleMatch(accumulatedRecordResponse)); // Render Markdown
+                                    recordbox.scrollTo(0, recordbox.scrollHeight);
+                                }
+
+                                hljs.highlightAll();
+                            } catch (error) {
+                                console.error('Failed to parse event data:', error);
                             }
                         }
-                    });
-
-                    // Continue reading the stream
-                    return readStream();
+                    }
                 });
-            }
 
-            // Start reading the stream
-            return readStream();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            messageElement.classList.add("error");
-            messageElement.textContent = "Oops! Something went wrong. Please try again.";
+                // Continue reading the stream
+                return readStream();
+            });
+        }
 
-            // Invoke the callback in case of error
-            if (callback) callback();
-        });
+        // Start reading the stream
+        return readStream();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        chatMessageElement.classList.add("error");
+        chatMessageElement.textContent = "Oops! Something went wrong. Please try again.";
+        recordMessageElement.classList.add("error");
+        recordMessageElement.textContent = "Oops! Something went wrong. Please try again.";
+
+        // Invoke the callback in case of error
+        if (callback) callback();
+    });
 };
 
 chatInput.addEventListener("input", () => {
@@ -155,7 +169,7 @@ chatInput.addEventListener("input", () => {
 chatInput.addEventListener("keydown", (e) => {
     // If Enter key is pressed without Shift key and the window
     // width is greater than 800px, handle the chat
-    if(e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+    if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
         e.preventDefault();
         handleChat();
     }
@@ -193,7 +207,7 @@ function filesToBlob(file) {
     };
 
     reader.onerror = () => {
-        switch(reader.error.code) {
+        switch (reader.error.code) {
             case '1':
                 alert('File not found');
                 break;
@@ -232,6 +246,20 @@ function handleFileSelect(event) {
         document.getElementById("drop").style.display = "flex";
         addBtn.style.display = "none";
     }
+}
+
+// content
+function styleMatch(content) {
+    // <think>
+    // code / equation
+    const regex = /(```[\s\S]*?```)|(\$\$[\s\S]*?\$\$)/g;
+    return addStringsAroundMatch(content.replace(/\n{2,}/g, '\n').trim(), regex, '\n', '\n');
+}
+
+function addStringsAroundMatch(text, regex, prefix, suffix) {
+    return text.replace(regex, (match) => {
+        return `${prefix}${match}${suffix}`;
+    });
 }
 
 fileInput.addEventListener('change', handleFileSelect);
