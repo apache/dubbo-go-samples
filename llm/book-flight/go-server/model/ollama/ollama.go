@@ -164,6 +164,9 @@ func (llm *LLMOllama) Invoke(ctx context.Context, input string, opts ...model.Op
 	response := ""
 	respFunc := func(resp api.ChatResponse) error {
 		response += resp.Message.Content
+		if optss.CallOpt == nil {
+			return nil
+		}
 		return optss.CallOpt(resp.Message.Content)
 	}
 

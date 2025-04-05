@@ -70,6 +70,7 @@ func GetEnvironment() Environment {
 type CfgPrompts struct {
 	ReactPrompt        string `yaml:"reactPrompt"`
 	FinalPrompt        string `yaml:"finalPrompt"`
+	IntentPrompt       string `yaml:"intentPrompt"`
 	FormatInstructions string `yaml:"formatInstructions"`
 }
 

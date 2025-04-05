@@ -39,24 +39,27 @@ import (
 func getTools() []tools.Tool {
 	searchFlightTicketTool := bookingflight.NewSearchFlightTicket("查询机票", "查询指定日期可用的飞机票。")
 	purchaseFlightTicketTool := bookingflight.NewPurchaseFlightTicket("购买机票", "购买飞机票。会返回购买结果(result), 和座位号(seat_number)")
+	missInformationTool := bookingflight.NewMissingInformation("MISSINFO", "收集缺失信息")
 	finishPlaceholder := bookingflight.NewFinishPlaceholder("FINISH", "用于表示任务完成的占位符工具")
 	agentTools := []tools.Tool{
 		searchFlightTicketTool,
 		purchaseFlightTicketTool,
+		missInformationTool,
 		finishPlaceholder,
 	}
 	return agentTools
 }
 
 type ChatServer struct {
-	llm   *ollama.LLMOllama
-	tools []tools.Tool
+	llm *ollama.LLMOllama
+	cot agents.CotAgentRunner
 }
 
 func NewChatServer() (*ChatServer, error) {
 	cfgEnv := conf.GetEnvironment()
 	llm := ollama.NewLLMOllama(cfgEnv.Model, cfgEnv.Url)
-	return &ChatServer{llm: llm, tools: getTools()}, nil
+	cot := agents.NewCotAgentRunner(llm, getTools(), 10, conf.GetConfigPrompts())
+	return &ChatServer{llm: llm, cot: cot}, nil
 }
 
 func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) (err error) {
@@ -76,9 +79,6 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		return fmt.Errorf("empty messages in request")
 	}
 
-	cfgPrompt := conf.GetConfigPrompts()
-	cot := agents.NewCotAgentRunner(s.llm, s.tools, 10, cfgPrompt)
-
 	respFunc := func(resp string) error {
 		return stream.Send(&chat.ChatResponse{
 			Record: resp,
@@ -92,7 +92,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 	}
 
 	input := req.Messages[len(req.Messages)-1].Content
-	_, err = cot.Run(ctx, input, ollama.WithStreamingFunc(respFunc), rstFunc)
+	_, err = s.cot.Run(ctx, input, ollama.WithStreamingFunc(respFunc), rstFunc)
 	if err != nil {
 		log.Printf("Run failed: %v", err)
 	}

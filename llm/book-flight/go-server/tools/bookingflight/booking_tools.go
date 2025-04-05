@@ -107,6 +107,7 @@ func (ptt *PurchaseFlightTicket) purchaseFlightTicket(data purchaseFlightTicketD
 	flightInfo := flightInformation()
 	for _, info := range flightInfo {
 		if data.FlightNumber == info["flight_number"] {
+			info["message"] = "购买成功"
 			rst_json, err := json.Marshal(info)
 			return string(rst_json), err
 		}
@@ -131,6 +132,29 @@ func NewFinishPlaceholder(name string, description string) FinishPlaceholder {
 
 func (ptt FinishPlaceholder) Call(ctx context.Context, input string) (string, error) {
 	return "FINISH", nil
+}
+
+/*
+MissingInformation
+*/
+type MissingInformation struct {
+	tools.BaseTool
+}
+
+type missingInformationData struct {
+	MissingInfo string `json:"missing_info" validate:"required"`
+}
+
+func NewMissingInformation(name string, description string) MissingInformation {
+	return MissingInformation{
+		tools.NewBaseTool(
+			name, description, tools.GetStructKeys(missingInformationData{}), "", "", ""),
+	}
+}
+
+func (mi MissingInformation) Call(ctx context.Context, input string) (string, error) {
+	fmt.Println(input)
+	return input, nil
 }
 
 func flightInformation() []map[string]string {
