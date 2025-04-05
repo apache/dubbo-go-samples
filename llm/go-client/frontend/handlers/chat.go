@@ -19,23 +19,22 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"regexp"
 	"runtime/debug"
-	"strconv"
 	"time"
 )
 
 import (
 	"github.com/gin-contrib/sessions"
-
 	"github.com/gin-gonic/gin"
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/llm/config"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
@@ -84,6 +83,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	var req struct {
 		Message string `json:"message"`
 		Bin     string `json:"bin"`
+		Model   string `json:"model"`
 	}
 
 	if err := c.BindJSON(&req); err != nil {
@@ -105,15 +105,16 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 		img = matches[2]
 	}
 
-	messages := h.ctxManager.GetHistory(ctxID)
-	messages = append(messages, &chat.ChatMessage{
+	h.ctxManager.AppendMessage(ctxID, &chat.ChatMessage{
 		Role:    "human",
 		Content: req.Message,
 		Bin:     []byte(img),
 	})
 
+	messages := h.ctxManager.GetHistory(ctxID)
 	stream, err := h.svc.Chat(context.Background(), &chat.ChatRequest{
 		Messages: messages,
+		Model:    req.Model,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -139,6 +140,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 			close(responseCh)
 		}()
 
+		resp := ""
 		for {
 			select {
 			case <-c.Request.Context().Done(): // client disconnect
@@ -150,19 +152,28 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 						c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 						log.Printf("Stream receive error: %v", err)
 					}
+					h.ctxManager.AppendMessage(ctxID, &chat.ChatMessage{
+						Role:    "ai",
+						Content: resp,
+						Bin:     nil,
+					})
 					return
 				}
 				content := stream.Msg().Content
+				resp += content
 				responseCh <- content
 			}
 		}
 	}()
 
 	// SSE stream output
-	timeout, err := strconv.Atoi(os.Getenv("TIME_OUT_SECOND"))
+	cfg, err := config.GetConfig()
 	if err != nil {
-		timeout = 300
+		fmt.Printf("Error loading config: %v\n", err)
+		return
 	}
+	timeout := cfg.TimeoutSeconds
+
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case chunk, ok := <-responseCh:

@@ -42,6 +42,9 @@ body.show-chatbot .chatbot {
   color: #fff;
   background: #724ae8;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .chatbot header span {
   position: absolute;
@@ -142,6 +145,11 @@ header h2 {
   padding: 15px 15px 15px 0;
   font-size: 0.95rem;
 }
+
+.chat-input textarea:valid ~ span {
+  visibility: visible;
+}
+
 .chat-input span {
   align-self: flex-end;
   color: #724ae8;
@@ -149,20 +157,7 @@ header h2 {
   height: 55px;
   display: flex;
   align-items: center;
-  visibility: hidden;
   font-size: 1.35rem;
-}
-.chat-input span1 {
-  align-self: flex-end;
-  color: #724ae8;
-  cursor: pointer;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  font-size: 1.35rem;
-}
-.chat-input textarea:valid ~ span {
-  visibility: visible;
 }
 
 .drop-box {
@@ -228,6 +223,26 @@ header h2 {
   cursor: pointer;
 }
 
+.model-selector {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.model-selector select {
+  background-color: #5f3dc4;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.model-selector select:focus {
+  outline: none;
+}
 
 @media  (max-width: 600px), (max-height: 600px) {
   .chatbot {

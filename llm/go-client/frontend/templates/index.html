@@ -18,7 +18,14 @@
 
   <div class="chatbot">
     <header>
-      <h2>{{ .OllamaModel }}</h2>
+      <h2>LLM Chat</h2>
+      <div class="model-selector">
+        <label for="model-select"></label><select id="model-select">
+          {{range .OllamaModels}}
+            <option value="{{.}}">{{.}}</option>
+          {{end}}
+        </select>
+      </div>
       <span class="close-btn material-symbols-outlined">close</span>
     </header>
     <ul class="chatbox">
@@ -29,13 +36,15 @@
     </ul>
     <div class="chat-input">
 
-      <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+      <label>
+        <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+      </label>
 
       <span id="send-btn" class="material-symbols-rounded">send</span>
 
       <div id="drop" class="drop-box"></div>
 
-      <span1 id="add-btn" class="material-symbols-rounded">add</span1>
+      <span id="add-btn" class="material-symbols-rounded">add</span>
 
     </div>
 
@@ -47,9 +56,8 @@
 
 <script>
   const CONFIG = {
-    TIME_OUT_SECOND: {{ .TimeoutSecond }} * 1000
-  };
-
+      TIME_OUT_SECOND: "{{ .TimeoutSecond }}" * 1000
+    };
 </script>
 
 

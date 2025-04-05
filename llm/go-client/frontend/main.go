@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 )
 
 import (
@@ -29,36 +30,26 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
-
 	"github.com/gin-gonic/gin"
-
-	"github.com/joho/godotenv"
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/llm/config"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/handlers"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 func main() {
-	err := godotenv.Load(".env")
+	cfg, err := config.GetConfig()
 	if err != nil {
-		panic(fmt.Sprintf("Error loading .env file: %v", err))
-	}
-
-	_, exist := os.LookupEnv("TIME_OUT_SECOND")
-
-	if !exist {
-		fmt.Println("TIME_OUT_SECOND is not set")
+		fmt.Printf("Error loading config: %v\n", err)
 		return
 	}
 
-	_, exist = os.LookupEnv("OLLAMA_MODEL")
-
-	if !exist {
-		fmt.Println("OLLAMA_MODEL is not set")
-		return
+	models := cfg.OllamaModels
+	for i, model := range models {
+		models[i] = strings.TrimSpace(model)
 	}
 
 	// init Dubbo
@@ -93,7 +84,8 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"TimeoutSecond": os.Getenv("TIME_OUT_SECOND"),
-			"OllamaModel":   os.Getenv("OLLAMA_MODEL"),
+			"OllamaModels":  models,
+			"DefaultModel":  models[0],
 		})
 	})
 	r.POST("/api/chat", h.Chat)

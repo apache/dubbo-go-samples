@@ -40,6 +40,17 @@ const createChatLi = (content, className) => {
     return chatLi;
 };
 
+const modelSelect = document.getElementById("model-select");
+let selectedModel = modelSelect.value;
+
+modelSelect.addEventListener("change", function() {
+    selectedModel = this.value;
+
+    const incomingChatLi = createChatLi(`Switched to model: ${selectedModel}`, "incoming");
+    chatbox.appendChild(incomingChatLi);
+    chatbox.scrollTo(0, chatbox.scrollHeight);
+});
+
 const handleChat = () => {
     userMessage = chatInput.value.trim();
     userBin = fileBlobArr.length > 0 ? fileBlobArr[0] : null;
@@ -92,7 +103,11 @@ const generateResponse = (chatElement, callback) => {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: userMessage, bin: userBin }),
+        body: JSON.stringify({ 
+            message: userMessage, 
+            bin: userBin,
+            model: selectedModel
+        }),
     })
         .then(response => {
             if (!response.ok) {

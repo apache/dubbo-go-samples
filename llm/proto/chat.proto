@@ -23,6 +23,7 @@ option go_package = "github.com/apache/dubbo-go-samples/llm/proto;chat";
 
 message ChatRequest {
   repeated ChatMessage messages = 1;
+  string model = 2;
 }
 
 message ChatMessage {
@@ -33,6 +34,7 @@ message ChatMessage {
 
 message ChatResponse {
   string content = 1;
+  string model = 2;
 }
 
 service ChatService {

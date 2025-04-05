@@ -23,8 +23,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"runtime/debug"
+	"strings"
 )
 
 import (
@@ -32,29 +32,45 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
 
-	"github.com/joho/godotenv"
-
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/llm/config"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 type ChatServer struct {
-	llm *ollama.LLM
+	llms map[string]*ollama.LLM
 }
 
 func NewChatServer() (*ChatServer, error) {
-	llm, err := ollama.New(
-		ollama.WithModel(os.Getenv("OLLAMA_MODEL")),
-		ollama.WithServerURL(os.Getenv("OLLAMA_URL")),
-	)
+	cfg, err := config.GetConfig()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Error loading config: %v\n", err)
 	}
-	return &ChatServer{llm: llm}, nil
+
+	llmMap := make(map[string]*ollama.LLM)
+
+	for _, model := range cfg.OllamaModels {
+		model = strings.TrimSpace(model)
+		if model == "" {
+			continue
+		}
+
+		llm, err := ollama.New(
+			ollama.WithModel(model),
+			ollama.WithServerURL(cfg.OllamaURL),
+		)
+		if err != nil {
+			return nil, fmt.Errorf("failed to initialize model %s: %v", model, err)
+		}
+		llmMap[model] = llm
+		log.Printf("Initialized model: %s", model)
+	}
+
+	return &ChatServer{llms: llmMap}, nil
 }
 
 func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) (err error) {
@@ -65,8 +81,8 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		}
 	}()
 
-	if s.llm == nil {
-		return fmt.Errorf("LLM is not initialized")
+	if len(s.llms) == 0 {
+		return fmt.Errorf("no LLM models are initialized")
 	}
 
 	if len(req.Messages) == 0 {
@@ -74,17 +90,40 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		return fmt.Errorf("empty messages in request")
 	}
 
+	modelName := req.Model
+	var llm *ollama.LLM
+
+	if modelName != "" {
+		var ok bool
+		llm, ok = s.llms[modelName]
+		if !ok {
+			return fmt.Errorf("requested model '%s' is not available", modelName)
+		}
+	} else {
+		for name, l := range s.llms {
+			modelName = name
+			llm = l
+			break
+		}
+		log.Printf("No model specified, using default model: %s", modelName)
+	}
+
 	var messages []llms.MessageContent
 	for _, msg := range req.Messages {
-		msgType := llms.ChatMessageTypeHuman
-		if msg.Role == "ai" {
+		var msgType llms.ChatMessageType
+		switch msg.Role {
+		case "human":
+			msgType = llms.ChatMessageTypeHuman
+		case "ai":
 			msgType = llms.ChatMessageTypeAI
+		case "system":
+			msgType = llms.ChatMessageTypeSystem
 		}
 
 		messageContent := llms.MessageContent{
 			Role: msgType,
 			Parts: []llms.ContentPart{
-				llms.TextContent{msg.Content},
+				llms.TextContent{Text: msg.Content},
 			},
 		}
 
@@ -101,7 +140,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		messages = append(messages, messageContent)
 	}
 
-	_, err = s.llm.GenerateContent(
+	_, err = llm.GenerateContent(
 		ctx,
 		messages,
 		llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
@@ -110,38 +149,19 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 			}
 			return stream.Send(&chat.ChatResponse{
 				Content: string(chunk),
+				Model:   modelName,
 			})
 		}),
 	)
 	if err != nil {
-		log.Printf("GenerateContent failed: %v\n", err)
-		return fmt.Errorf("GenerateContent failed: %v", err)
+		log.Printf("GenerateContent failed with model %s: %v\n", modelName, err)
+		return fmt.Errorf("GenerateContent failed with model %s: %v", modelName, err)
 	}
 
 	return nil
 }
 
 func main() {
-
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Printf("Error loading .env file: %v\n", err)
-		return
-	}
-
-	_, exist := os.LookupEnv("OLLAMA_MODEL")
-
-	if !exist {
-		fmt.Println("OLLAMA_MODEL is not set")
-		return
-	}
-
-	_, exist = os.LookupEnv("OLLAMA_URL")
-
-	if !exist {
-		fmt.Println("OLLAMA_URL is not set")
-		return
-	}
 
 	srv, err := server.NewServer(
 		server.WithServerProtocol(

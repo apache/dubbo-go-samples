@@ -1,0 +1,103 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package config
+
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+	"sync"
+)
+
+import (
+	"github.com/joho/godotenv"
+)
+
+type Config struct {
+	OllamaModels []string
+	OllamaURL    string
+
+	TimeoutSeconds int
+}
+
+var (
+	config     *Config
+	configOnce sync.Once
+	configErr  error
+)
+
+func Load(envFile string) (*Config, error) {
+	configOnce.Do(func() {
+		config = &Config{}
+		err := godotenv.Load(envFile)
+		if err != nil {
+			configErr = fmt.Errorf("error loading .env file: %v", err)
+			return
+		}
+
+		modelsEnv := os.Getenv("OLLAMA_MODELS")
+		if modelsEnv == "" {
+			configErr = fmt.Errorf("error: OLLAMA_MODELS environment variable is not set")
+			return
+		}
+
+		modelsList := strings.Split(modelsEnv, ",")
+		for i, model := range modelsList {
+			modelsList[i] = strings.TrimSpace(model)
+		}
+		if len(modelsList) == 0 {
+			configErr = fmt.Errorf("error: No models available")
+			return
+		}
+
+		config.OllamaModels = modelsList
+
+		ollamaURL := os.Getenv("OLLAMA_URL")
+		if ollamaURL == "" {
+			configErr = fmt.Errorf("OLLAMA_URL is not set")
+			return
+		}
+		config.OllamaURL = ollamaURL
+
+		timeoutStr := os.Getenv("TIME_OUT_SECOND")
+		if timeoutStr == "" {
+			config.TimeoutSeconds = 300
+		} else {
+			timeout, err := strconv.Atoi(timeoutStr)
+			if err != nil {
+				configErr = fmt.Errorf("invalid TIME_OUT_SECOND value: %v", err)
+				return
+			}
+			config.TimeoutSeconds = timeout
+		}
+	})
+
+	return config, configErr
+}
+
+func GetConfig() (*Config, error) {
+	return Load(".env")
+}
+
+func (c *Config) DefaultModel() string {
+	if len(c.OllamaModels) > 0 {
+		return c.OllamaModels[0]
+	}
+	return ""
+}
