@@ -70,7 +70,7 @@ func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.
 
 	idxThoughtStep := 0
 	var action actions.Action
-	var response = ""
+	var response string
 	for idxThoughtStep < int(cot.maxThoughtSteps) {
 		action, response = cot.step(inputMsg, timeFormatted, callopt, opts)
 
