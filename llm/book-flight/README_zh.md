@@ -8,13 +8,13 @@
 
 #### 修改配置文件
 
-修改配置文件复制`llm/book-flight/go-server/conf/config.example.yml`为`llm/book-flight/go-server/conf/config.example.yml`。
+修改配置文件复制`llm/book-flight/.env.example`为`llm/book-flight/.env`。
 
-```yaml
-LLM: {
-  url: "http://localhost:11434",  # Ollama 的 URL，填写 Ollama 的服务地址
-  model: "gemma3:27b"             # Ollama 模型名称
-}
+```ini
+LLM_MODEL = qwq                     # Ollama 模型名称
+LLM_URL = "http://127.0.0.1:11434"  # Ollama 的 URL，填写 Ollama 的服务地址
+LLM_API_KEY = "sk-..."              # API key
+TIME_OUT_SECOND = 300               # 超时时间
 ```
 
 **注意**：目前仅Ollama方式部署的模型
@@ -27,11 +27,24 @@ LLM: {
 $ cd llm/book-flight
 ```
 
-#### 运行示例
+#### 服务端运行
 
-执行下列命令，运行示例
+在服务端中集成 Ollama 模型，并使用 Dubbo-go 提供的 RPC 服务进行调用。
+
+在服务端目录下运行：
 
 ```shell
-go run main.go
+$ go run go-server/cmd/server.go
 ```
 
+#### 客户端运行
+
+前端页面基于Gin框架的客户端进行交互，运行以下命令然后访问 ```localhost:8080``` 即可使用:
+
+```shell
+$ go run go-client/frntend/main.go
+```
+
+### **注意事项**
+
+默认`Record`超时时间为两分钟，请确保您的电脑性能能在两分钟内生成相应的响应，否则会超时报错，您也可以在 ```.env``` 文件中自行设置超时时间。
