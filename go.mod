@@ -30,7 +30,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.24.0
 	google.golang.org/grpc v1.64.0
 	google.golang.org/protobuf v1.34.1
-	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -158,7 +158,7 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240604185151-ef581f913117 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	skywalking.apache.org/repo/goapi v0.0.0-20220401015832-2c9eee9481eb // indirect
 	vimagination.zapto.org/byteio v0.0.0-20200222190125-d27cba0f0b10 // indirect
 )
