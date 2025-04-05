@@ -52,17 +52,18 @@ func NewCotAgentRunner(llm model.LLM, tools []tools.Tool, maxSteps int32, cfgPro
 
 func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.Option, callrst model.CallFunc) (string, error) {
 	agentMemory := []map[string]any{}
+	opts := model.NewOptions(callopt)
 
 	idxThoughtStep := 0
 	for idxThoughtStep < int(cot.maxThoughtSteps) {
-		action, response := cot.step(input, agentMemory, callopt)
-		callrst(response)
+		action, response := cot.step(input, agentMemory, callopt, opts)
 
 		if action.Name == "FINISH" {
 			break
 		}
 
-		observation := cot.execAction(action)
+		callrst(response)
+		observation := cot.execAction(action, opts)
 		callrst(observation)
 		agentMemory = cot.updateMemory(agentMemory, response, observation)
 
@@ -78,31 +79,37 @@ func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.
 			cot.tools,
 		)
 		reply, err = cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
+		reply = model.RemoveThink(reply)
 		callrst(reply)
 	}
 
 	return reply, err
 }
 
-func (cot *CotAgentRunner) step(taskDescription string, memory []map[string]any, callopt model.Option) (actions.Action, string) {
+func (cot *CotAgentRunner) step(
+	taskDescription string,
+	memory []map[string]any,
+	callopt model.Option,
+	opts model.Options) (actions.Action, string) {
 	prompt := prompts.CreatePrompt(
 		cot.reactPrompt,
 		map[string]any{"task_description": taskDescription, "memory": memory},
 		cot.tools,
 	)
 	response, _ := cot.llm.Invoke(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
-
+	opts.CallOpt("\n")
 	response = model.RemoveThink(response)
 	return actions.NewAction(response), response
 }
 
-func (cot *CotAgentRunner) execAction(action actions.Action) string {
+func (cot *CotAgentRunner) execAction(action actions.Action, opts model.Options) string {
 	var err error
 	var observation string = fmt.Sprintf("Can't find tool: %v.", action.Name)
 	for _, tool := range cot.tools {
 		if tool.Name() == action.Name {
 			strArgs, _ := json.Marshal(action.Args)
 			observation, err = tool.Call(context.Background(), string(strArgs))
+			opts.CallOpt("\n")
 			if err != nil {
 				observation = "Validation Error in args: " + string(strArgs)
 			}

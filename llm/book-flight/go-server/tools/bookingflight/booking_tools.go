@@ -26,6 +26,10 @@ import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 )
 
+var (
+	date string
+)
+
 /*
 SearchFlightTicket
 */
@@ -65,6 +69,7 @@ func (stt SearchFlightTicket) searchFlightTicket(data serachFlightTicketData) (s
 		return "未查询到相关内容", nil
 	}
 
+	date = data.Date
 	rst := flightInformation()
 	rst_json, err := json.Marshal(rst)
 	return string(rst_json), err
@@ -134,8 +139,8 @@ func flightInformation() []map[string]string {
 			"flight_number":  "MU5100",
 			"origin":         "北京",
 			"destination":    "上海",
-			"departure_time": "2024-06-01 07:00",
-			"arrival_time":   "2024-06-01 09:15",
+			"departure_time": fmt.Sprintf("%v 07:00", date),
+			"arrival_time":   fmt.Sprintf("%v 09:15", date),
 			"price":          "900.00",
 			"seat_type":      "头等舱",
 		},
@@ -143,8 +148,8 @@ func flightInformation() []map[string]string {
 			"flight_number":  "MU6865",
 			"origin":         "北京",
 			"destination":    "上海",
-			"departure_time": "2024-06-01 07:20",
-			"arrival_time":   "2024-06-01 09:25",
+			"departure_time": fmt.Sprintf("%v 07:20", date),
+			"arrival_time":   fmt.Sprintf("%v 09:25", date),
 			"price":          "1160.00",
 			"seat_type":      "头等舱",
 		},
@@ -152,8 +157,8 @@ func flightInformation() []map[string]string {
 			"flight_number":  "HM7601",
 			"origin":         "北京",
 			"destination":    "上海",
-			"departure_time": "2024-06-01 07:30",
-			"arrival_time":   "2024-06-01 09:55",
+			"departure_time": fmt.Sprintf("%v 07:30", date),
+			"arrival_time":   fmt.Sprintf("%v 09:55", date),
 			"price":          "1080.00",
 			"seat_type":      "普通舱",
 		},
@@ -161,8 +166,8 @@ func flightInformation() []map[string]string {
 			"flight_number":  "CA1515",
 			"origin":         "北京",
 			"destination":    "上海",
-			"departure_time": "2024-06-01 15:45",
-			"arrival_time":   "2024-06-01 17:55",
+			"departure_time": fmt.Sprintf("%v 15:45", date),
+			"arrival_time":   fmt.Sprintf("%v 17:55", date),
 			"price":          "1080.00",
 			"seat_type":      "普通舱",
 		},
@@ -170,8 +175,8 @@ func flightInformation() []map[string]string {
 			"flight_number":  "GS9012",
 			"origin":         "北京",
 			"destination":    "上海",
-			"departure_time": "2024-06-01 19:00",
-			"arrival_time":   "2024-06-01 23:00",
+			"departure_time": fmt.Sprintf("%v 19:00", date),
+			"arrival_time":   fmt.Sprintf("%v 23:00", date),
 			"price":          "1250.00",
 			"seat_type":      "头等舱",
 		},
@@ -179,8 +184,8 @@ func flightInformation() []map[string]string {
 			"flight_number":  "GS9013",
 			"origin":         "北京",
 			"destination":    "上海",
-			"departure_time": "2024-06-01 18:30",
-			"arrival_time":   "2024-06-01 22:00",
+			"departure_time": fmt.Sprintf("%v 18:30", date),
+			"arrival_time":   fmt.Sprintf("%v 22:00", date),
 			"price":          "1200.00",
 			"seat_type":      "头等舱",
 		},

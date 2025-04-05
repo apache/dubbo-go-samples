@@ -19,11 +19,10 @@ package main
 
 import (
 	"context"
-	"encoding/base64"
 	"fmt"
 	"log"
-	"net/http"
 	"runtime/debug"
+	"strings"
 
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
@@ -33,7 +32,6 @@ import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model/ollama"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools/bookingflight"
-	"github.com/tmc/langchaingo/llms"
 
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
@@ -78,53 +76,25 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		return fmt.Errorf("empty messages in request")
 	}
 
-	var messages []llms.MessageContent
-	var input = ""
-	for _, msg := range req.Messages {
-		msgType := llms.ChatMessageTypeHuman
-		if msg.Role == "ai" {
-			msgType = llms.ChatMessageTypeAI
-		}
-
-		input = msg.Content
-		messageContent := llms.MessageContent{
-			Role: msgType,
-			Parts: []llms.ContentPart{
-				llms.TextContent{msg.Content},
-			},
-		}
-
-		if msg.Bin != nil && len(msg.Bin) != 0 {
-			decodeByte, err := base64.StdEncoding.DecodeString(string(msg.Bin))
-			if err != nil {
-				log.Println("GenerateContent failed: %v", err)
-				return fmt.Errorf("GenerateContent failed")
-			}
-			imgType := http.DetectContentType(decodeByte)
-			messageContent.Parts = append(messageContent.Parts, llms.BinaryPart(imgType, decodeByte))
-		}
-
-		messages = append(messages, messageContent)
-	}
-
 	cfgPrompt := conf.GetConfigPrompts()
 	cot := agents.NewCotAgentRunner(s.llm, s.tools, 10, cfgPrompt)
 
 	respFunc := func(resp string) error {
-		fmt.Print(resp)
-		return nil
-	}
-
-	rstFunc := func(resp string) error {
-		fmt.Println()
 		return stream.Send(&chat.ChatResponse{
-			Content: string(resp),
+			Record: resp,
 		})
 	}
 
+	rstFunc := func(resp string) error {
+		return stream.Send(&chat.ChatResponse{
+			Content: "\n" + strings.TrimSpace(resp),
+		})
+	}
+
+	input := req.Messages[len(req.Messages)-1].Content
 	_, err = cot.Run(ctx, input, ollama.WithStreamingFunc(respFunc), rstFunc)
 	if err != nil {
-		log.Printf("GenerateContent failed: %v", err)
+		log.Printf("Run failed: %v", err)
 	}
 
 	return nil
