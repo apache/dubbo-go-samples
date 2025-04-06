@@ -89,7 +89,7 @@ func handleCommand(cmd string) (resp string) {
 			if model == currentModel {
 				marker = "*"
 			}
-			resp += fmt.Sprintf("%s %s\n", marker, model)
+			resp += fmt.Sprintf("\n%s %s", marker, model)
 		}
 		return resp
 	case strings.HasPrefix(cmd, "/model "):
