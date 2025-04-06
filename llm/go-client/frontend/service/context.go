@@ -57,9 +57,6 @@ func (m *ContextManager) GetHistory(ctxID string) []*chat.ChatMessage {
 func (m *ContextManager) AppendMessage(ctxID string, msg *chat.ChatMessage) {
 	m.Mu.Lock()
 	defer m.Mu.Unlock()
-	if len(m.Contexts[ctxID]) >= 3 {
-		m.Contexts[ctxID] = m.Contexts[ctxID][1:]
-	}
 	m.Contexts[ctxID] = append(m.Contexts[ctxID], msg)
 }
 

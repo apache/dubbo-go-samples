@@ -31,6 +31,7 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/llm/config"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
@@ -40,10 +41,12 @@ type ChatContext struct {
 }
 
 var (
-	contexts     = make(map[string]*ChatContext)
-	currentCtxID string
-	contextOrder []string
-	maxID        uint8 = 0
+	contexts        = make(map[string]*ChatContext)
+	currentCtxID    string
+	contextOrder    []string
+	maxID           uint8 = 0
+	availableModels []string
+	currentModel    string
 )
 
 func handleCommand(cmd string) (resp string) {
@@ -55,19 +58,22 @@ func handleCommand(cmd string) (resp string) {
 		resp += "/? help        - Show this help\n"
 		resp += "/list          - List all contexts\n"
 		resp += "/cd <context>  - Switch context\n"
-		resp += "/new           - Create new context"
+		resp += "/new           - Create new context\n"
+		resp += "/models        - List available models\n"
+		resp += "/model <name>  - Switch to specified model"
 		return resp
 	case cmd == "/list":
 		fmt.Println("Stored contexts (max 3):")
 		for _, ctxID := range contextOrder {
 			resp += fmt.Sprintf("- %s\n", ctxID)
 		}
+		resp = strings.TrimSuffix(resp, "\n")
 		return resp
 	case strings.HasPrefix(cmd, "/cd "):
 		target := strings.TrimPrefix(cmd, "/cd ")
 		if ctx, exists := contexts[target]; exists {
 			currentCtxID = ctx.ID
-			resp += fmt.Sprintf("Switched to context: %s\n", target)
+			resp += fmt.Sprintf("Switched to context: %s", target)
 		} else {
 			resp += "Context not found"
 		}
@@ -75,15 +81,36 @@ func handleCommand(cmd string) (resp string) {
 	case cmd == "/new":
 		newID := createContext()
 		currentCtxID = newID
-		resp += fmt.Sprintf("Created new context: %s\n", newID)
+		resp += fmt.Sprintf("Created new context: %s", newID)
+		return resp
+	case cmd == "/models":
+		resp += "Available models:"
+		for _, model := range availableModels {
+			marker := " "
+			if model == currentModel {
+				marker = "*"
+			}
+			resp += fmt.Sprintf("\n%s %s", marker, model)
+		}
+		return resp
+	case strings.HasPrefix(cmd, "/model "):
+		modelName := strings.TrimPrefix(cmd, "/model ")
+		modelFound := false
+		for _, model := range availableModels {
+			if model == modelName {
+				currentModel = model
+				modelFound = true
+				break
+			}
+		}
+		if modelFound {
+			resp += fmt.Sprintf("Switched to model: %s", modelName)
+		} else {
+			resp += fmt.Sprintf("Model '%s' not found. Use /models to see available models.", modelName)
+		}
 		return resp
 	default:
-		resp += "Available commands:\n"
-		resp += "/? help        - Show this help\n"
-		resp += "/list          - List all contexts\n"
-		resp += "/cd <context>  - Switch context\n"
-		resp += "/new           - Create new context"
-		return resp
+		return "Invalid command, use /? for help"
 	}
 }
 
@@ -105,6 +132,15 @@ func createContext() string {
 }
 
 func main() {
+	cfg, err := config.GetConfig()
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		return
+	}
+
+	availableModels = cfg.OllamaModels
+	currentModel = cfg.DefaultModel()
+
 	currentCtxID = createContext()
 
 	cli, err := client.NewClient(
@@ -120,7 +156,7 @@ func main() {
 		return
 	}
 
-	fmt.Print("\nSend a message (/? for help)")
+	fmt.Printf("\nSend a message (/? for help) - Using model: %s\n", currentModel)
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("\n> ")
@@ -144,19 +180,27 @@ func main() {
 
 			stream, err := svc.Chat(context.Background(), &chat.ChatRequest{
 				Messages: currentCtx.History,
+				Model:    currentModel,
 			})
 			if err != nil {
 				panic(err)
 			}
-			defer stream.Close()
+			defer func(stream chat.ChatService_ChatClient) {
+				err := stream.Close()
+				if err != nil {
+					fmt.Printf("Error closing stream: %v\n", err)
+				}
+			}(stream)
 
 			resp := ""
 
 			for stream.Recv() {
-				c := stream.Msg().Content
+				msg := stream.Msg()
+				c := msg.Content
 				resp += c
 				fmt.Print(c)
 			}
+			fmt.Print("\n")
 
 			if err := stream.Err(); err != nil {
 				fmt.Printf("Stream error: %v\n", err)
