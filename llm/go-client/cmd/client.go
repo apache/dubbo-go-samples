@@ -83,7 +83,7 @@ func handleCommand(cmd string) (resp string) {
 		resp += fmt.Sprintf("Created new context: %s\n", newID)
 		return resp
 	case cmd == "/models":
-		resp += "Available models:\n"
+		resp += "Available models:"
 		for _, model := range availableModels {
 			marker := " "
 			if model == currentModel {
