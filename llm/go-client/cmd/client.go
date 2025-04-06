@@ -103,7 +103,7 @@ func handleCommand(cmd string) (resp string) {
 			}
 		}
 		if modelFound {
-			resp += fmt.Sprintf("Switched to model: %s\n", modelName)
+			resp += fmt.Sprintf("Switched to model: %s", modelName)
 		} else {
 			resp += fmt.Sprintf("Model '%s' not found. Use /models to see available models.", modelName)
 		}
