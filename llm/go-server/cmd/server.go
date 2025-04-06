@@ -24,7 +24,6 @@ import (
 	"log"
 	"net/http"
 	"runtime/debug"
-	"strings"
 )
 
 import (
@@ -54,7 +53,6 @@ func NewChatServer() (*ChatServer, error) {
 	llmMap := make(map[string]*ollama.LLM)
 
 	for _, model := range cfg.OllamaModels {
-		model = strings.TrimSpace(model)
 		if model == "" {
 			continue
 		}

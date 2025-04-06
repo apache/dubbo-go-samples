@@ -67,12 +67,13 @@ func handleCommand(cmd string) (resp string) {
 		for _, ctxID := range contextOrder {
 			resp += fmt.Sprintf("- %s\n", ctxID)
 		}
+		resp = strings.TrimSuffix(resp, "\n")
 		return resp
 	case strings.HasPrefix(cmd, "/cd "):
 		target := strings.TrimPrefix(cmd, "/cd ")
 		if ctx, exists := contexts[target]; exists {
 			currentCtxID = ctx.ID
-			resp += fmt.Sprintf("Switched to context: %s\n", target)
+			resp += fmt.Sprintf("Switched to context: %s", target)
 		} else {
 			resp += "Context not found"
 		}
@@ -80,7 +81,7 @@ func handleCommand(cmd string) (resp string) {
 	case cmd == "/new":
 		newID := createContext()
 		currentCtxID = newID
-		resp += fmt.Sprintf("Created new context: %s\n", newID)
+		resp += fmt.Sprintf("Created new context: %s", newID)
 		return resp
 	case cmd == "/models":
 		resp += "Available models:"
@@ -199,6 +200,7 @@ func main() {
 				resp += c
 				fmt.Print(c)
 			}
+			fmt.Print("\n")
 
 			if err := stream.Err(); err != nil {
 				fmt.Printf("Stream error: %v\n", err)

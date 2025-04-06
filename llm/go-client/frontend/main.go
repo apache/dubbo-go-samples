@@ -20,8 +20,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
-	"strings"
 )
 
 import (
@@ -45,11 +43,6 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error loading config: %v\n", err)
 		return
-	}
-
-	models := cfg.OllamaModels
-	for i, model := range models {
-		models[i] = strings.TrimSpace(model)
 	}
 
 	// init Dubbo
@@ -83,9 +76,9 @@ func main() {
 	h := handlers.NewChatHandler(svc, ctxManager)
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
-			"TimeoutSecond": os.Getenv("TIME_OUT_SECOND"),
-			"OllamaModels":  models,
-			"DefaultModel":  models[0],
+			"TimeoutSecond": cfg.TimeoutSeconds,
+			"OllamaModels":  cfg.OllamaModels,
+			"DefaultModel":  cfg.OllamaModels[0],
 		})
 	})
 	r.POST("/api/chat", h.Chat)
