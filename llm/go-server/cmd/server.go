@@ -162,7 +162,8 @@ func main() {
 	var err error
 	cfg, err = config.GetConfig()
 	if err != nil {
-		fmt.Errorf("Error loading config: %v\n", err)
+		fmt.Printf("Error loading config: %v\n", err)
+		return
 	}
 
 	ins, err := dubbo.NewInstance(
