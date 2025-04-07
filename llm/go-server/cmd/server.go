@@ -40,15 +40,13 @@ import (
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
+var cfg *config.Config
+
 type ChatServer struct {
 	llms map[string]*ollama.LLM
 }
 
 func NewChatServer() (*ChatServer, error) {
-	cfg, err := config.GetConfig()
-	if err != nil {
-		return nil, fmt.Errorf("Error loading config: %v\n", err)
-	}
 
 	llmMap := make(map[string]*ollama.LLM)
 
@@ -161,11 +159,16 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 
 func main() {
 
+	var err error
+	cfg, err = config.GetConfig()
+	if err != nil {
+		fmt.Errorf("Error loading config: %v\n", err)
+	}
+
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_llm_server"),
 		dubbo.WithRegistry(
 			registry.WithNacos(),
-			registry.WithAddress("127.0.0.1:8848"),
+			registry.WithAddress(cfg.NacosURL),
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),

@@ -34,6 +34,7 @@ type Config struct {
 	OllamaURL    string
 
 	TimeoutSeconds int
+	NacosURL       string
 }
 
 var (
@@ -86,6 +87,13 @@ func Load(envFile string) (*Config, error) {
 			}
 			config.TimeoutSeconds = timeout
 		}
+
+		nacosURL := os.Getenv("NACOS_URL")
+		if nacosURL == "" {
+			configErr = fmt.Errorf("OLLAMA_URL is not set")
+			return
+		}
+		config.NacosURL = nacosURL
 	})
 
 	return config, configErr

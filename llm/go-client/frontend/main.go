@@ -48,10 +48,9 @@ func main() {
 
 	// init Dubbo
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_llm_client"),
 		dubbo.WithRegistry(
 			registry.WithNacos(),
-			registry.WithAddress("127.0.0.1:8848"),
+			registry.WithAddress(cfg.NacosURL),
 		),
 	)
 	if err != nil {
