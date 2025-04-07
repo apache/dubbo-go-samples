@@ -27,10 +27,10 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/server"
-
+	"dubbo.apache.org/dubbo-go/v3/registry"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 )
@@ -161,11 +161,23 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 
 func main() {
 
-	srv, err := server.NewServer(
-		server.WithServerProtocol(
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_llm_server"),
+		dubbo.WithRegistry(
+			registry.WithNacos(),
+			registry.WithAddress("127.0.0.1:8848"),
+		),
+		dubbo.WithProtocol(
+			protocol.WithTriple(),
 			protocol.WithPort(20000),
 		),
 	)
+
+	if err != nil {
+		panic(err)
+	}
+	srv, err := ins.NewServer()
+
 	if err != nil {
 		fmt.Printf("Error creating server: %v\n", err)
 		return

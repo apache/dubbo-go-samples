@@ -26,8 +26,9 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 )
 
 import (
@@ -143,9 +144,18 @@ func main() {
 
 	currentCtxID = createContext()
 
-	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_llm_client"),
+		dubbo.WithRegistry(
+			registry.WithNacos(),
+			registry.WithAddress("127.0.0.1:8848"),
+		),
 	)
+	if err != nil {
+		panic(err)
+	}
+	// configure the params that only client layer cares
+	cli, err := ins.NewClient()
 	if err != nil {
 		panic(err)
 	}
