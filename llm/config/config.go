@@ -35,6 +35,7 @@ type Config struct {
 
 	TimeoutSeconds int
 	NacosURL       string
+	MaxContextCount int
 }
 
 var (
@@ -94,6 +95,17 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 		config.NacosURL = nacosURL
+		maxContextStr := os.Getenv("MAX_CONTEXT_COUNT")
+		if maxContextStr == "" {
+			config.MaxContextCount = 3 // Default to 3 for backward compatibility
+		} else {
+			maxContext, err := strconv.Atoi(maxContextStr)
+			if err != nil {
+				configErr = fmt.Errorf("invalid MAX_CONTEXT_COUNT value: %v", err)
+				return
+			}
+			config.MaxContextCount = maxContext
+		}
 	})
 
 	return config, configErr

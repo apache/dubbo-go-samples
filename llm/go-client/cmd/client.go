@@ -48,6 +48,7 @@ var (
 	maxID           uint8 = 0
 	availableModels []string
 	currentModel    string
+	maxContextCount int
 )
 
 func handleCommand(cmd string) (resp string) {
@@ -64,7 +65,7 @@ func handleCommand(cmd string) (resp string) {
 		resp += "/model <name>  - Switch to specified model"
 		return resp
 	case cmd == "/list":
-		fmt.Println("Stored contexts (max 3):")
+		fmt.Println("Stored contexts (max " + fmt.Sprintf("%d", maxContextCount) + "):")
 		for _, ctxID := range contextOrder {
 			resp += fmt.Sprintf("- %s\n", ctxID)
 		}
@@ -124,8 +125,8 @@ func createContext() string {
 	}
 	contextOrder = append(contextOrder, id)
 
-	// up to 3 context
-	if len(contextOrder) > 3 {
+	// Use configurable max context count
+	if len(contextOrder) > maxContextCount {
 		delete(contexts, contextOrder[0])
 		contextOrder = contextOrder[1:]
 	}
@@ -141,6 +142,7 @@ func main() {
 
 	availableModels = cfg.OllamaModels
 	currentModel = cfg.DefaultModel()
+	maxContextCount = cfg.MaxContextCount
 
 	currentCtxID = createContext()
 
