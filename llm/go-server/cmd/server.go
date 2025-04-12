@@ -27,10 +27,10 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/server"
-
+	"dubbo.apache.org/dubbo-go/v3/registry"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
 )
@@ -40,15 +40,13 @@ import (
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
+var cfg *config.Config
+
 type ChatServer struct {
 	llms map[string]*ollama.LLM
 }
 
 func NewChatServer() (*ChatServer, error) {
-	cfg, err := config.GetConfig()
-	if err != nil {
-		return nil, fmt.Errorf("Error loading config: %v\n", err)
-	}
 
 	llmMap := make(map[string]*ollama.LLM)
 
@@ -161,11 +159,29 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 
 func main() {
 
-	srv, err := server.NewServer(
-		server.WithServerProtocol(
+	var err error
+	cfg, err = config.GetConfig()
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		return
+	}
+
+	ins, err := dubbo.NewInstance(
+		dubbo.WithRegistry(
+			registry.WithNacos(),
+			registry.WithAddress(cfg.NacosURL),
+		),
+		dubbo.WithProtocol(
+			protocol.WithTriple(),
 			protocol.WithPort(20000),
 		),
 	)
+
+	if err != nil {
+		panic(err)
+	}
+	srv, err := ins.NewServer()
+
 	if err != nil {
 		fmt.Printf("Error creating server: %v\n", err)
 		return
