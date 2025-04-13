@@ -33,8 +33,8 @@ type Config struct {
 	OllamaModels []string
 	OllamaURL    string
 
-	TimeoutSeconds int
-	NacosURL       string
+	TimeoutSeconds  int
+	NacosURL        string
 	MaxContextCount int
 }
 
