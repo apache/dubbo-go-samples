@@ -65,7 +65,7 @@ func handleCommand(cmd string) (resp string) {
 		resp += "/model <name>  - Switch to specified model"
 		return resp
 	case cmd == "/list":
-		fmt.Println("Stored contexts (max " + fmt.Sprintf("%d", maxContextCount) + "):")
+		fmt.Printf("Stored contexts (max %d):\n", maxContextCount)
 		for _, ctxID := range contextOrder {
 			resp += fmt.Sprintf("- %s\n", ctxID)
 		}
