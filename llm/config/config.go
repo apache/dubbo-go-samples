@@ -44,6 +44,8 @@ var (
 	configErr  error
 )
 
+const defaultMaxContextCount = 3 // Default to 3 for backward compatibility
+
 func Load(envFile string) (*Config, error) {
 	configOnce.Do(func() {
 		config = &Config{}
@@ -96,7 +98,6 @@ func Load(envFile string) (*Config, error) {
 		}
 		config.NacosURL = nacosURL
 		maxContextStr := os.Getenv("MAX_CONTEXT_COUNT")
-		defaultMaxContextCount := 3 // Default to 3 for backward compatibility
 		if maxContextStr == "" {
 			config.MaxContextCount = defaultMaxContextCount
 			return
