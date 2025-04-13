@@ -33,8 +33,9 @@ type Config struct {
 	OllamaModels []string
 	OllamaURL    string
 
-	TimeoutSeconds int
-	NacosURL       string
+	TimeoutSeconds  int
+	NacosURL        string
+	MaxContextCount int
 }
 
 var (
@@ -42,6 +43,9 @@ var (
 	configOnce sync.Once
 	configErr  error
 )
+
+const defaultMaxContextCount = 3 // Default to 3 for backward compatibility
+const defaultTimeoutSeconds = 300
 
 func Load(envFile string) (*Config, error) {
 	configOnce.Do(func() {
@@ -78,7 +82,7 @@ func Load(envFile string) (*Config, error) {
 
 		timeoutStr := os.Getenv("TIME_OUT_SECOND")
 		if timeoutStr == "" {
-			config.TimeoutSeconds = 300
+			config.TimeoutSeconds = defaultTimeoutSeconds
 		} else {
 			timeout, err := strconv.Atoi(timeoutStr)
 			if err != nil {
@@ -94,6 +98,17 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 		config.NacosURL = nacosURL
+		maxContextStr := os.Getenv("MAX_CONTEXT_COUNT")
+		if maxContextStr == "" {
+			config.MaxContextCount = defaultMaxContextCount
+		} else {
+			maxContext, err := strconv.Atoi(maxContextStr)
+			if err != nil {
+				configErr = fmt.Errorf("invalid MAX_CONTEXT_COUNT value: %v", err)
+				return
+			}
+			config.MaxContextCount = maxContext
+		}
 	})
 
 	return config, configErr
