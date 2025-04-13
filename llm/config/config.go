@@ -96,16 +96,17 @@ func Load(envFile string) (*Config, error) {
 		}
 		config.NacosURL = nacosURL
 		maxContextStr := os.Getenv("MAX_CONTEXT_COUNT")
+		defaultMaxContextCount := 3 // Default to 3 for backward compatibility
 		if maxContextStr == "" {
-			config.MaxContextCount = 3 // Default to 3 for backward compatibility
-		} else {
-			maxContext, err := strconv.Atoi(maxContextStr)
-			if err != nil {
-				configErr = fmt.Errorf("invalid MAX_CONTEXT_COUNT value: %v", err)
-				return
-			}
-			config.MaxContextCount = maxContext
+			config.MaxContextCount = defaultMaxContextCount
+			return
 		}
+		maxContext, err := strconv.Atoi(maxContextStr)
+		if err != nil {
+			configErr = fmt.Errorf("invalid MAX_CONTEXT_COUNT value: %v", err)
+			return
+		}
+		config.MaxContextCount = maxContext
 	})
 
 	return config, configErr
