@@ -35,7 +35,7 @@ body {
 }
 .record {
   position: fixed;
-  left: 80%;
+  left: 80.5%;
   top: 50%;
   width: 40%;
   height: 90%;
@@ -51,6 +51,7 @@ body {
   transform: translate(-50%, -50%) scale(1);
   display: flex; /* Added flexbox layout */
   flex-direction: column; /* Added column direction */
+  
 }
 body.show-chatbot .record {
   opacity: 1;
@@ -60,10 +61,9 @@ body.show-chatbot .record {
 .record header {
   padding: 16px 0;
   position: relative;
+  background: linear-gradient(to bottom, #4169e1, #87ceeb);
+  border-radius: 10px;
   text-align: center;
-  color: #fff;
-  background: #724ae8;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 body.show-chatbot .chatbot {
   opacity: 1;
@@ -73,10 +73,9 @@ body.show-chatbot .chatbot {
 .chatbot header {
   padding: 16px 0;
   position: relative;
+  background: linear-gradient(to bottom, #4169e1, #87ceeb);
+  border-radius: 10px;
   text-align: center;
-  color: #fff;
-  background: #724ae8;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 .chatbot header span {
   overflow-y: auto;
@@ -118,6 +117,9 @@ header h2 {
 .chatbox .chat {
   display: flex;
   list-style: none;
+  letter-spacing: 0.6px;
+  line-height: 2;
+  margin-bottom: 10px;
 }
 .chatbox .chat img {
   max-width: 250px;
@@ -157,6 +159,10 @@ header h2 {
   background: #fafafa;
 }
 .chatbox .incoming p {
+  border-radius: 5px 5px 5px 5px;
+}
+.chatbox .outgoing p {
+  background: #f0f4ff;
   border-radius: 5px 5px 5px 5px;
 }
 .chatbox .chat p.error {
