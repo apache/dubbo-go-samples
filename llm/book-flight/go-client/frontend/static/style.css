@@ -13,6 +13,39 @@ body {
   background: #E3F2FD;
 }
 
+/* 机票预订信息 */
+.booking-confirmation {
+  position: fixed;
+  top: 50%;
+  left: 10%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 20%;
+  height: 90%;
+  z-index: 1000;
+  padding: 0 20px 20px 20px;
+  transition: box-shadow 0.3s;
+  overflow-y: auto; /* 允许垂直滚动 */
+}
+#flight-info {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: linear-gradient(to bottom, #87ceeb, #fff); /* 渐变的背景色 */
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+#flight-info:hover {
+  transform: translateY(5px); /* 悬停时上移 10px */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+#flight-info p {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
 
 .chatbot {
   position: fixed;

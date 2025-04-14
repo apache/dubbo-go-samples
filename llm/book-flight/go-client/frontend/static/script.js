@@ -161,6 +161,31 @@ const generateResponse = (chatElement, recordElement, callback) => {
     });
 };
 
+// 渲染航班信息的函数,需要在generateResponse函数中当机票预定成功调用renderFlightInfo渲染，这里假如返回data.flightinfo
+const renderFlightInfo = (flightInfo) => {
+    const flightInfoContainer = document.getElementById('flight-info');
+    // 清空提示信息
+    flightInfoContainer.innerHTML = `<h3>航班信息</h3><p>正在加载航班信息...</p>`;
+    // 返回为空
+    if (flightInfos.length === 0) {
+        flightInfoContainer.innerHTML += "<p>没有航班信息可显示</p>";
+        return;
+    }
+    flightInfos.forEach(flightInfo => {
+        const flightInfoHTML = `
+            <h3>航班信息</h3>
+            <p>航班号: ${flightInfo.flightNumber}</p>
+            <p>乘客姓名: ${flightInfo.passengerName}</p>
+            <p>出发城市: ${flightInfo.departureCity}</p>
+            <p>到达城市: ${flightInfo.arrivalCity}</p>
+            <p>出发时间: ${flightInfo.departureTime}</p>
+            <p>到达时间: ${flightInfo.arrivalTime}</p>
+            <hr />
+        `;
+        flightInfoContainer.innerHTML += flightInfoHTML;
+    });
+};
+
 chatInput.addEventListener("input", () => {
     // Adjust the height of the input textarea based on its content
     chatInput.style.height = `${inputInitHeight}px`;
