@@ -26,11 +26,11 @@ import (
 	"runtime/debug"
 	"time"
 
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-client/frontend/service"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-client/frontend/service"
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 

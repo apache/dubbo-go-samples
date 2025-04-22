@@ -27,12 +27,12 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
+
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/agents"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model/ollama"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools/bookingflight"
-
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 

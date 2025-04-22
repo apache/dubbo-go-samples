@@ -22,15 +22,14 @@ import (
 	"net/http"
 
 	"dubbo.apache.org/dubbo-go/v3/client"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-client/frontend/handlers"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-client/frontend/service"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-client/frontend/handlers"
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-client/frontend/service"
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 

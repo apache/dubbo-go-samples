@@ -18,9 +18,10 @@
 package agents
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 	"github.com/gin-gonic/gin"
 	"github.com/tmc/langchaingo/schema"
+
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 )
 
 // Agent is the interface all agents must implement.

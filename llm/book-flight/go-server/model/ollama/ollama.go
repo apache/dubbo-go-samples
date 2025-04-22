@@ -23,8 +23,9 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model"
 	"github.com/ollama/ollama/api"
+
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model"
 )
 
 type ImageData = api.ImageData

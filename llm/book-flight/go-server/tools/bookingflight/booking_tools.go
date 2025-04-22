@@ -18,9 +18,8 @@
 package bookingflight
 
 import (
-	"encoding/json"
-
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
