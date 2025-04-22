@@ -59,29 +59,38 @@ func NewCotAgentRunner(llm model.LLM, tools []tools.Tool, maxSteps int32, cfgPro
 }
 
 func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.Option, callrst model.CallFunc) (string, error) {
-	timeFormatted := time.Now().Format("2006-01-02 15:04:05")
+	timeNow := time.Now().Format("2006-01-02 15:04:05")
 	opts := model.NewOptions(callopt)
 
 	// Init Memory
 	cot.memoryAgent = []map[string]any{}
-	cot.memoryMsg = cot.updateMessage(cot.memoryMsg, input, "OK")
+	cot.memoryMsg = cot.updateMessage(cot.memoryMsg, input, "")
 
-	inputMsg := cot.summaryIntent(timeFormatted, callopt)
+	var task string
+	if len(cot.memoryMsg) > 0 {
+		task = cot.summaryIntent(timeNow, callopt)
+	} else {
+		task = input
+	}
 
-	idxThoughtStep := 0
-	var action actions.Action
+	// Runner
 	var response string
-	for idxThoughtStep < int(cot.maxThoughtSteps) {
-		action, response = cot.step(inputMsg, timeFormatted, callopt, opts)
+	var action actions.Action
 
-		if action.Name == "FINISH" {
+	var idxThoughtStep int32
+	var taskState TaskState
+	for idxThoughtStep < cot.maxThoughtSteps {
+		action, response = cot.thinkStep(task, timeNow, callopt, opts)
+		taskState = InitTaskState(action.Name)
+
+		if taskState == TaskCompleted || taskState == TaskUnrelated {
 			break
 		}
 
 		observation := cot.execAction(action, opts)
 		cot.memoryAgent = cot.updateMemory(cot.memoryAgent, response, observation)
 
-		if action.Name == "MISSINFO" {
+		if taskState == TaskInputRequired {
 			break
 		}
 
@@ -90,32 +99,20 @@ func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.
 
 	var err error
 	reply := "Sorry, failed to complete your task."
-	if idxThoughtStep < int(cot.maxThoughtSteps) {
-		prompt := prompts.CreatePrompt(
-			cot.finalPrompt,
-			map[string]any{
-				"task_description": inputMsg,
-				"memory":           cot.memoryAgent,
-				"time":             timeFormatted},
-			cot.tools,
-		)
-		reply, err = cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
-		reply = model.RemoveThink(reply)
+	if idxThoughtStep < cot.maxThoughtSteps {
+		reply, err = cot.finalStep(task, timeNow, callopt, callrst)
 
-		cot.memoryMsg = cot.updateMessage(cot.memoryMsg, input, reply)
-		if action.Name == "FINISH" {
+		cot.memoryMsg = cot.updateMessage(cot.memoryMsg, task, reply)
+		if taskState == TaskCompleted {
 			cot.memoryMsg = []map[string]any{}
 		}
-
-		callrst(reply)
 	}
 
-	cot.memoryAgent = []map[string]any{}
 	return reply, err
 }
 
 func (cot *CotAgentRunner) GetInputCtx(input string) string {
-	ctx := ""
+	var ctx string
 	for _, msg := range cot.memoryAgent {
 		if val, ok := msg["user"]; ok {
 			ctx += fmt.Sprintf("\n%v", val)
@@ -125,12 +122,12 @@ func (cot *CotAgentRunner) GetInputCtx(input string) string {
 	return strings.TrimSpace(ctx + "\n" + input)
 }
 
-func (cot *CotAgentRunner) summaryIntent(now string, callopt model.Option) string {
+func (cot *CotAgentRunner) summaryIntent(timeNow string, callopt model.Option) string {
 	prompt := prompts.CreatePrompt(
 		cot.intentPrompt,
 		map[string]any{
 			"content": cot.memoryMsg,
-			"time":    now,
+			"time":    timeNow,
 		},
 		nil,
 	)
@@ -138,17 +135,17 @@ func (cot *CotAgentRunner) summaryIntent(now string, callopt model.Option) strin
 	return model.RemoveThink(response)
 }
 
-func (cot *CotAgentRunner) step(
-	taskDescription string,
+func (cot *CotAgentRunner) thinkStep(
+	task string,
 	now string,
 	callopt model.Option,
 	opts model.Options) (actions.Action, string) {
 	prompt := prompts.CreatePrompt(
 		cot.reactPrompt,
 		map[string]any{
-			"task_description": taskDescription,
-			"memory":           cot.memoryAgent,
-			"time":             now,
+			"task":   task,
+			"memory": cot.memoryAgent,
+			"time":   now,
 		},
 		cot.tools,
 	)
@@ -156,6 +153,27 @@ func (cot *CotAgentRunner) step(
 	opts.CallOpt("\n")
 	response = model.RemoveThink(response)
 	return actions.NewAction(response), response
+}
+
+func (cot *CotAgentRunner) finalStep(
+	task string,
+	date string,
+	callopt model.Option,
+	callrst model.CallFunc) (string, error) {
+	prompt := prompts.CreatePrompt(
+		cot.finalPrompt,
+		map[string]any{
+			"task":   task,
+			"memory": cot.memoryAgent,
+			"time":   date},
+		cot.tools,
+	)
+
+	reply, err := cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
+	reply = model.RemoveThink(reply)
+
+	callrst(reply)
+	return reply, err
 }
 
 func (cot *CotAgentRunner) execAction(action actions.Action, opts model.Options) string {
@@ -181,13 +199,13 @@ func (cot *CotAgentRunner) updateMemory(memory []map[string]any, response string
 }
 
 func (cot *CotAgentRunner) updateMessage(memory []map[string]any, msgUser string, msgAgent string) []map[string]any {
-	return append(memory,
-		map[string]any{"user": msgUser, "agent": msgAgent},
-	)
-}
+	if msgUser != "" {
+		memory = append(memory, map[string]any{"user": msgUser})
+	}
 
-func (cot *CotAgentRunner) initUserMemory(memory []map[string]any, input string) []map[string]any {
-	return append(memory,
-		map[string]any{"user": input},
-	)
+	if msgAgent != "" {
+		memory = append(memory, map[string]any{"agent": msgAgent})
+	}
+
+	return memory
 }

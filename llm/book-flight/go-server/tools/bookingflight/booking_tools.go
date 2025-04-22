@@ -116,47 +116,6 @@ func (ptt *PurchaseFlightTicket) purchaseFlightTicket(data purchaseFlightTicketD
 	return fmt.Sprintf("The flight was not found: %v", data.FlightNumber), nil
 }
 
-/*
-FinishPlaceholder
-*/
-type FinishPlaceholder struct {
-	tools.BaseTool
-}
-
-func NewFinishPlaceholder(name string, description string) FinishPlaceholder {
-	return FinishPlaceholder{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(nil), "", "", ""),
-	}
-}
-
-func (ptt FinishPlaceholder) Call(ctx context.Context, input string) (string, error) {
-	return "FINISH", nil
-}
-
-/*
-MissingInformation
-*/
-type MissingInformation struct {
-	tools.BaseTool
-}
-
-type missingInformationData struct {
-	MissingInfo string `json:"missing_info" validate:"required"`
-}
-
-func NewMissingInformation(name string, description string) MissingInformation {
-	return MissingInformation{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(missingInformationData{}), "", "", ""),
-	}
-}
-
-func (mi MissingInformation) Call(ctx context.Context, input string) (string, error) {
-	fmt.Println(input)
-	return input, nil
-}
-
 func flightInformation() []map[string]string {
 	return []map[string]string{
 		{

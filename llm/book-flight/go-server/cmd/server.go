@@ -37,17 +37,9 @@ import (
 )
 
 func getTools() []tools.Tool {
-	searchFlightTicketTool := bookingflight.NewSearchFlightTicket("查询机票", "查询指定日期可用的飞机票。")
-	purchaseFlightTicketTool := bookingflight.NewPurchaseFlightTicket("购买机票", "购买飞机票。会返回购买结果(result), 和座位号(seat_number)")
-	missInformationTool := bookingflight.NewMissingInformation("MISSINFO", "收集缺失信息")
-	finishPlaceholder := bookingflight.NewFinishPlaceholder("FINISH", "用于表示任务完成的占位符工具")
-	agentTools := []tools.Tool{
-		searchFlightTicketTool,
-		purchaseFlightTicketTool,
-		missInformationTool,
-		finishPlaceholder,
-	}
-	return agentTools
+	return append(agents.GetTaskStateTools(agents.TaskCompleted|agents.TaskInputRequired|agents.TaskUnrelated),
+		bookingflight.NewSearchFlightTicket("查询机票", "查询指定日期可用的飞机票。"),
+		bookingflight.NewPurchaseFlightTicket("购买机票", "购买飞机票。会返回购买结果(result), 和座位号(seat_number)"))
 }
 
 type ChatServer struct {
