@@ -15,6 +15,9 @@ dist/
 *.out
 coverage.txt
 
+# .env is a user-specific environment configuration file
+*.env
+
 *.idea
 *.iml
 target/
