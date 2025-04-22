@@ -62,12 +62,15 @@ func (h *ChatHandler) Index(c *gin.Context) {
 
 func (h *ChatHandler) Chat(c *gin.Context) {
 	session := sessions.Default(c)
-	ctxID, ok := session.Get("current_context").(string)
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid session context"})
-		return
+
+	value := session.Get("current_context")
+	if value == nil {
+		value = h.ctxManager.CreateContext()
+		session.Set("current_context", value)
+		session.Save()
 	}
 
+	ctxID, _ := session.Get("current_context").(string)
 	var req struct {
 		Message string `json:"message"`
 		Bin     string `json:"bin"`
