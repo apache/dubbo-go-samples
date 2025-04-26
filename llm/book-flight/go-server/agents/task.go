@@ -64,7 +64,7 @@ func InitTaskState(value string) TaskState {
 }
 
 // CreateToolkit
-func CreateTaskToolkit(taskFlag TaskState, ts ...tools.Tool) tools.Tools {
+func CreateTaskToolkit(description string, taskFlag TaskState, ts ...tools.Tool) tools.Tools {
 	toolsTask := append(ts, NewTaskUndefinedTool("TaskUnrelated", "不相关问题占位符工具"))
 	if taskFlag&TaskSubmitted != 0 {
 		toolsTask = append(toolsTask, NewTaskSubmittedTool("TaskSubmitted", "任务已提交"))
@@ -88,11 +88,11 @@ func CreateTaskToolkit(taskFlag TaskState, ts ...tools.Tool) tools.Tools {
 		toolsTask = append(toolsTask, NewTaskUnrelatedTool("TaskUnrelated", "不相关任务"))
 	}
 
-	return tools.NewToolkit(toolsTask, "订机票工具包，查询/预订机票功能。")
+	return tools.NewToolkit(toolsTask, description)
 }
 
 func InterruptTask(taskFlag TaskState) bool {
-	return taskFlag&(TaskInputRequired|TaskCompleted|TaskUnrelated) != 0
+	return taskFlag&(TaskInputRequired|TaskCompleted|TaskFailed|TaskCanceled|TaskUnrelated) != 0
 }
 
 /*
