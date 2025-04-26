@@ -20,17 +20,11 @@ package actions
 import (
 	"encoding/json"
 	"regexp"
+
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/mcp"
 )
 
-type Action struct {
-	Name                string         `json:"name"`
-	Args                map[string]any `json:"args"`
-	ModelComputedFields map[string]any
-	ModelConfig         map[string]string
-	ModelExtra          string
-	ModelFields         map[string]any
-	ModelFieldsSet      map[string]struct{}
-}
+type Action mcp.RequestRPC
 
 func NewAction(text string) Action {
 	re := regexp.MustCompile("```json[^`]*```")
