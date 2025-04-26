@@ -41,12 +41,6 @@ type SearchFlightTicketTool struct {
 	DepartureTimeEnd   string `json:"departure_time_end"`
 }
 
-func NewSearchFlightTicketTool(name string, description string) *SearchFlightTicketTool {
-	return &SearchFlightTicketTool{
-		BaseTool: tools.NewBaseTool(name, description, "", ""),
-	}
-}
-
 // origin string, destination string, date string, departureTimeStart string, departureTimeEnd string
 func (stt *SearchFlightTicketTool) Call(ctx context.Context, input string) (string, error) {
 	err := json.Unmarshal([]byte(input), stt)
@@ -58,9 +52,9 @@ func (stt *SearchFlightTicketTool) Call(ctx context.Context, input string) (stri
 }
 
 func (stt *SearchFlightTicketTool) searchFlightTicket() (string, error) {
-	// 此处只做出发地校验，其他信息未进行校验
+	// Only the departure point is verified here, and other information is not verified
 	if stt.Origin != "北京" {
-		return "未查询到相关内容", nil
+		return "No relevant content was found", nil
 	}
 
 	date = stt.Date
@@ -77,12 +71,6 @@ type PurchaseFlightTicketTool struct {
 	FlightNumber string `json:"flight_number" validate:"required"`
 }
 
-func NewPurchaseFlightTicketTool(name string, description string) *PurchaseFlightTicketTool {
-	return &PurchaseFlightTicketTool{
-		BaseTool: tools.NewBaseTool(name, description, "", ""),
-	}
-}
-
 func (ptt *PurchaseFlightTicketTool) Call(ctx context.Context, input string) (string, error) {
 	err := json.Unmarshal([]byte(input), &ptt)
 	if err != nil {
@@ -96,7 +84,7 @@ func (ptt *PurchaseFlightTicketTool) purchaseFlightTicket() (string, error) {
 	flightInfo := flightInformation()
 	for _, info := range flightInfo {
 		if ptt.FlightNumber == info["flight_number"] {
-			info["message"] = "购买成功"
+			info["message"] = "Successful purchase."
 			rst_json, err := json.Marshal(info)
 			return string(rst_json), err
 		}

@@ -40,8 +40,9 @@ func getTools() tools.Tools {
 	return agents.CreateTaskToolkit(
 		"订机票工具包，查询/预订机票功能。",
 		agents.TaskCompleted|agents.TaskInputRequired|agents.TaskFailed|agents.TaskUnrelated,
-		bookingflight.NewSearchFlightTicketTool("查询机票", "查询指定日期可用的飞机票。"),
-		bookingflight.NewPurchaseFlightTicketTool("购买机票", "购买飞机票。会返回购买结果(result), 和座位号(seat_number)"),
+		tools.CreateTool[bookingflight.SearchFlightTicketTool]("查询机票", "查询指定日期可用的飞机票。", ""),
+		tools.CreateTool[bookingflight.PurchaseFlightTicketTool](
+			"购买机票", "购买飞机票。会返回购买结果(result), 和座位号(seat_number)", ""),
 	)
 }
 

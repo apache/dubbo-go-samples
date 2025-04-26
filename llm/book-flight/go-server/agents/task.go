@@ -65,27 +65,27 @@ func InitTaskState(value string) TaskState {
 
 // CreateToolkit
 func CreateTaskToolkit(description string, taskFlag TaskState, ts ...tools.Tool) tools.Tools {
-	toolsTask := append(ts, NewTaskUndefinedTool("TaskUnrelated", "不相关问题占位符工具"))
+	toolsTask := append(ts, tools.CreateTool[TaskUnrelatedTool]("TaskUnrelated", "不相关问题占位符工具", ""))
 	if taskFlag&TaskSubmitted != 0 {
-		toolsTask = append(toolsTask, NewTaskSubmittedTool("TaskSubmitted", "任务已提交"))
+		toolsTask = append(toolsTask, tools.CreateTool[TaskSubmittedTool]("TaskSubmitted", "任务已提交", ""))
 	}
 	if taskFlag&TaskWorking != 0 {
-		toolsTask = append(toolsTask, NewTaskWorkingTool("TaskWorking", "任务正在处理中"))
+		toolsTask = append(toolsTask, tools.CreateTool[TaskWorkingTool]("TaskWorking", "任务正在处理中", ""))
 	}
 	if taskFlag&TaskInputRequired != 0 {
-		toolsTask = append(toolsTask, NewTaskInputRequiredTool("TaskInputRequired", "任务需要更多信息输入"))
+		toolsTask = append(toolsTask, tools.CreateTool[TaskInputRequiredTool]("TaskInputRequired", "任务需要更多信息输入", ""))
 	}
 	if taskFlag&TaskCompleted != 0 {
-		toolsTask = append(toolsTask, NewTaskCompletedTool("TaskCompleted", "任务已完成"))
+		toolsTask = append(toolsTask, tools.CreateTool[TaskCompletedTool]("TaskCompleted", "任务已完成", ""))
 	}
 	if taskFlag&TaskFailed != 0 {
-		toolsTask = append(toolsTask, NewTaskFailedTool("TaskFailed", "任务执行失败"))
+		toolsTask = append(toolsTask, tools.CreateTool[TaskFailedTool]("TaskFailed", "任务执行失败", ""))
 	}
 	if taskFlag&TaskCanceled != 0 {
-		toolsTask = append(toolsTask, NewTaskCanceledTool("TaskCanceled", "任务已取消"))
+		toolsTask = append(toolsTask, tools.CreateTool[TaskCanceledTool]("TaskCanceled", "任务已取消", ""))
 	}
 	if taskFlag&TaskUnrelated != 0 {
-		toolsTask = append(toolsTask, NewTaskUnrelatedTool("TaskUnrelated", "不相关任务"))
+		toolsTask = append(toolsTask, tools.CreateTool[TaskUnrelatedTool]("TaskUnrelated", "不相关任务", ""))
 	}
 
 	return tools.NewToolkit(toolsTask, description)
@@ -102,12 +102,6 @@ type TaskUndefinedTool struct {
 	tools.BaseTool
 }
 
-func NewTaskUndefinedTool(name string, description string) TaskUndefinedTool {
-	return TaskUndefinedTool{
-		tools.NewBaseTool(name, description, "", ""),
-	}
-}
-
 func (ptt TaskUndefinedTool) Call(ctx context.Context, input string) (string, error) {
 	return "TaskUndefined", nil
 }
@@ -119,12 +113,6 @@ type TaskSubmittedTool struct {
 	tools.BaseTool
 }
 
-func NewTaskSubmittedTool(name string, description string) TaskSubmittedTool {
-	return TaskSubmittedTool{
-		tools.NewBaseTool(name, description, "", ""),
-	}
-}
-
 func (ptt TaskSubmittedTool) Call(ctx context.Context, input string) (string, error) {
 	return "TaskSubmitted", nil
 }
@@ -134,12 +122,6 @@ TaskWorkingTool
 */
 type TaskWorkingTool struct {
 	tools.BaseTool
-}
-
-func NewTaskWorkingTool(name string, description string) TaskWorkingTool {
-	return TaskWorkingTool{
-		tools.NewBaseTool(name, description, "", ""),
-	}
 }
 
 func (ptt TaskWorkingTool) Call(ctx context.Context, input string) (string, error) {
@@ -154,12 +136,6 @@ type TaskInputRequiredTool struct {
 	MissingInfo string `json:"missing_info" validate:"required"`
 }
 
-func NewTaskInputRequiredTool(name string, description string) TaskInputRequiredTool {
-	return TaskInputRequiredTool{
-		BaseTool: tools.NewBaseTool(name, description, "", ""),
-	}
-}
-
 func (mi TaskInputRequiredTool) Call(ctx context.Context, input string) (string, error) {
 	return input, nil
 }
@@ -169,12 +145,6 @@ TaskCompletedTool
 */
 type TaskCompletedTool struct {
 	tools.BaseTool
-}
-
-func NewTaskCompletedTool(name string, description string) TaskCompletedTool {
-	return TaskCompletedTool{
-		tools.NewBaseTool(name, description, "", ""),
-	}
 }
 
 func (ptt TaskCompletedTool) Call(ctx context.Context, input string) (string, error) {
@@ -188,12 +158,6 @@ type TaskFailedTool struct {
 	tools.BaseTool
 }
 
-func NewTaskFailedTool(name string, description string) TaskFailedTool {
-	return TaskFailedTool{
-		tools.NewBaseTool(name, description, "", ""),
-	}
-}
-
 func (ptt TaskFailedTool) Call(ctx context.Context, input string) (string, error) {
 	return "TaskFailed", nil
 }
@@ -205,12 +169,6 @@ type TaskCanceledTool struct {
 	tools.BaseTool
 }
 
-func NewTaskCanceledTool(name string, description string) TaskCanceledTool {
-	return TaskCanceledTool{
-		tools.NewBaseTool(name, description, "", ""),
-	}
-}
-
 func (ptt TaskCanceledTool) Call(ctx context.Context, input string) (string, error) {
 	return "TaskCanceled", nil
 }
@@ -220,12 +178,6 @@ TaskUnrelatedTool
 */
 type TaskUnrelatedTool struct {
 	tools.BaseTool
-}
-
-func NewTaskUnrelatedTool(name string, description string) TaskUnrelatedTool {
-	return TaskUnrelatedTool{
-		tools.NewBaseTool(name, description, "", ""),
-	}
 }
 
 func (ptt TaskUnrelatedTool) Call(ctx context.Context, input string) (string, error) {

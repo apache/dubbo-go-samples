@@ -24,8 +24,8 @@ reactPrompt: "
 "
 
 intentPrompt: "
-以下是你与用户之间的交互过程。
-{content}
+以下是你与用户之间的交互过程:
+{memory}
 
 用简单的话语对用户意图进行摘要总结，只输出总结结果。
 "
@@ -65,6 +65,6 @@ summary_prompt: "
 
 formatInstructions: '
 ```json
-{"method": "工具名称", "params": {"参数名称": "参数值"}}
+{"method": "Name of the tool/action", "params": {"parameter_name": "Parameter values required by the tool"}}
 ```
 '
