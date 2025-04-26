@@ -33,32 +33,36 @@ import (
 )
 
 type CotAgentRunner struct {
-	llm                model.LLM
-	tools              []tools.Tool
-	maxThoughtSteps    int32
-	reactPrompt        string
-	intentPrompt       string
-	finalPrompt        string
-	formatInstructions string
-	memoryAgent        []map[string]any
-	memoryMsg          []map[string]any
+	llm             model.LLM
+	tools           tools.Tools
+	maxThoughtSteps int32
+	cotPrompts      conf.CfgPrompts
+	memoryAgent     []map[string]any
+	memoryMsg       []map[string]any
 }
 
-func NewCotAgentRunner(llm model.LLM, tools []tools.Tool, maxSteps int32, cfgPrompt conf.CfgPrompts) CotAgentRunner {
+func NewCotAgentRunner(
+	llm model.LLM,
+	tools tools.Tools,
+	maxSteps int32,
+	cotPrompts conf.CfgPrompts,
+) CotAgentRunner {
 	return CotAgentRunner{
-		llm:                llm,
-		tools:              tools,
-		maxThoughtSteps:    maxSteps,
-		reactPrompt:        cfgPrompt.ReactPrompt,
-		intentPrompt:       cfgPrompt.IntentPrompt,
-		finalPrompt:        cfgPrompt.FinalPrompt,
-		formatInstructions: cfgPrompt.FormatInstructions,
-		memoryAgent:        []map[string]any{},
-		memoryMsg:          []map[string]any{},
+		llm:             llm,
+		tools:           tools,
+		maxThoughtSteps: maxSteps,
+		cotPrompts:      cotPrompts,
+		memoryAgent:     []map[string]any{},
+		memoryMsg:       []map[string]any{},
 	}
 }
 
-func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.Option, callrst model.CallFunc) (string, error) {
+func (cot *CotAgentRunner) Run(
+	ctx context.Context,
+	input string,
+	callopt model.Option,
+	callrst model.CallFunc,
+) (string, error) {
 	timeNow := time.Now().Format("2006-01-02 15:04:05")
 	opts := model.NewOptions(callopt)
 
@@ -81,16 +85,16 @@ func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.
 	var taskState TaskState
 	for idxThoughtStep < cot.maxThoughtSteps {
 		action, response = cot.thinkStep(task, timeNow, callopt, opts)
-		taskState = InitTaskState(action.Name)
+		taskState = InitTaskState(action.Method)
 
-		if taskState == TaskCompleted || taskState == TaskUnrelated {
+		if taskState == TaskUnrelated {
 			break
 		}
 
 		observation := cot.execAction(action, opts)
 		cot.memoryAgent = cot.updateMemory(cot.memoryAgent, response, observation)
 
-		if taskState == TaskInputRequired {
+		if InterruptTask(taskState) {
 			break
 		}
 
@@ -100,10 +104,10 @@ func (cot *CotAgentRunner) Run(ctx context.Context, input string, callopt model.
 	var err error
 	reply := "Sorry, failed to complete your task."
 	if idxThoughtStep < cot.maxThoughtSteps {
-		reply, err = cot.finalStep(task, timeNow, callopt, callrst)
+		reply, err = cot.finalStep(task, input, timeNow, taskState, callopt, callrst)
 
 		cot.memoryMsg = cot.updateMessage(cot.memoryMsg, task, reply)
-		if taskState == TaskCompleted {
+		if taskState == TaskCompleted || taskState == TaskUnrelated {
 			cot.memoryMsg = []map[string]any{}
 		}
 	}
@@ -124,12 +128,11 @@ func (cot *CotAgentRunner) GetInputCtx(input string) string {
 
 func (cot *CotAgentRunner) summaryIntent(timeNow string, callopt model.Option) string {
 	prompt := prompts.CreatePrompt(
-		cot.intentPrompt,
+		cot.cotPrompts.IntentPrompt,
 		map[string]any{
 			"content": cot.memoryMsg,
 			"time":    timeNow,
 		},
-		nil,
 	)
 	response, _ := cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
 	return model.RemoveThink(response)
@@ -139,15 +142,17 @@ func (cot *CotAgentRunner) thinkStep(
 	task string,
 	now string,
 	callopt model.Option,
-	opts model.Options) (actions.Action, string) {
+	opts model.Options,
+) (actions.Action, string) {
 	prompt := prompts.CreatePrompt(
-		cot.reactPrompt,
+		cot.cotPrompts.ReactPrompt,
 		map[string]any{
-			"task":   task,
-			"memory": cot.memoryAgent,
-			"time":   now,
+			"task":                task,
+			"memory":              cot.memoryAgent,
+			"time":                now,
+			"tools":               cot.tools.ToolsDescription(),
+			"format_instructions": conf.GetConfigPrompts().FormatInstructions,
 		},
-		cot.tools,
 	)
 	response, _ := cot.llm.Invoke(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
 	opts.CallOpt("\n")
@@ -157,18 +162,27 @@ func (cot *CotAgentRunner) thinkStep(
 
 func (cot *CotAgentRunner) finalStep(
 	task string,
+	input string,
 	date string,
+	taskState TaskState,
 	callopt model.Option,
-	callrst model.CallFunc) (string, error) {
-	prompt := prompts.CreatePrompt(
-		cot.finalPrompt,
-		map[string]any{
-			"task":   task,
-			"memory": cot.memoryAgent,
-			"time":   date},
-		cot.tools,
-	)
+	callrst model.CallFunc,
+) (string, error) {
+	config := map[string]any{"task": task}
+	promptTemplate := cot.cotPrompts.FinalPrompt
+	switch taskState {
+	case TaskUnrelated:
+		promptTemplate = cot.cotPrompts.UnrelatedPrompt
+		config["task"] = input
+	case TaskInputRequired:
+		promptTemplate = cot.cotPrompts.IntentPrompt
+		config["memory"] = cot.memoryAgent
+	default:
+		config["memory"] = cot.memoryAgent
+		config["time"] = date
+	}
 
+	prompt := prompts.CreatePrompt(promptTemplate, config)
 	reply, err := cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
 	reply = model.RemoveThink(reply)
 
@@ -178,15 +192,14 @@ func (cot *CotAgentRunner) finalStep(
 
 func (cot *CotAgentRunner) execAction(action actions.Action, opts model.Options) string {
 	var err error
-	var observation string = fmt.Sprintf("Can't find tool: %v.", action.Name)
-	for _, tool := range cot.tools {
-		if tool.Name() == action.Name {
-			strArgs, _ := json.Marshal(action.Args)
-			observation, err = tool.Call(context.Background(), string(strArgs))
-			opts.CallOpt("\n")
-			if err != nil {
-				observation = "Validation Error in args: " + string(strArgs)
-			}
+	var observation string = fmt.Sprintf("Can't find tool: %v.", action.Method)
+	tool := cot.tools.QueryTool(action.Method)
+	if tool != nil {
+		strArgs, _ := json.Marshal(action.Params)
+		observation, err = tool.Call(context.Background(), string(strArgs))
+		opts.CallOpt("\n")
+		if err != nil {
+			observation = "Validation Error in args: " + string(strArgs)
 		}
 	}
 	return observation
@@ -200,11 +213,11 @@ func (cot *CotAgentRunner) updateMemory(memory []map[string]any, response string
 
 func (cot *CotAgentRunner) updateMessage(memory []map[string]any, msgUser string, msgAgent string) []map[string]any {
 	if msgUser != "" {
-		memory = append(memory, map[string]any{"user": msgUser})
+		memory = append(memory, map[string]any{"Human": msgUser})
 	}
 
 	if msgAgent != "" {
-		memory = append(memory, map[string]any{"agent": msgAgent})
+		memory = append(memory, map[string]any{"Agent": msgAgent})
 	}
 
 	return memory
