@@ -21,14 +21,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 )
 
-func CreatePrompt(prompt string, ctx map[string]any, tools []tools.Tool) string {
-	// ctx
-	for k, v := range ctx {
+func CreatePrompt(prompt string, config map[string]any) string {
+	// config
+	for k, v := range config {
 		switch v.(type) {
 		case map[string]any:
 		case []map[string]any:
@@ -38,14 +35,6 @@ func CreatePrompt(prompt string, ctx map[string]any, tools []tools.Tool) string 
 			prompt = strings.ReplaceAll(prompt, "{"+k+"}", fmt.Sprintln(v))
 		}
 	}
-	// Tools
-	tools_description := ""
-	for _, tool := range tools {
-		tools_description += tool.Name() + tool.Description()
-	}
-	prompt = strings.ReplaceAll(prompt, "{tools}", tools_description)
-	// format_instructions
-	configPrompts := conf.GetConfigPrompts()
-	prompt = strings.ReplaceAll(prompt, "{format_instructions}", configPrompts.FormatInstructions)
+
 	return prompt
 }

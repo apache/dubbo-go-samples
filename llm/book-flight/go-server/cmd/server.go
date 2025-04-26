@@ -36,10 +36,12 @@ import (
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 
-func getTools() []tools.Tool {
-	return append(agents.GetTaskStateTools(agents.TaskCompleted|agents.TaskInputRequired|agents.TaskUnrelated),
-		bookingflight.NewSearchFlightTicket("查询机票", "查询指定日期可用的飞机票。"),
-		bookingflight.NewPurchaseFlightTicket("购买机票", "购买飞机票。会返回购买结果(result), 和座位号(seat_number)"))
+func getTools() tools.Tools {
+	return agents.CreateTaskToolkit(
+		agents.TaskCompleted|agents.TaskInputRequired|agents.TaskUnrelated,
+		bookingflight.NewSearchFlightTicketTool("查询机票", "查询指定日期可用的飞机票。"),
+		bookingflight.NewPurchaseFlightTicketTool("购买机票", "购买飞机票。会返回购买结果(result), 和座位号(seat_number)"),
+	)
 }
 
 type ChatServer struct {

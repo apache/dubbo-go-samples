@@ -30,13 +30,10 @@ var (
 )
 
 /*
-SearchFlightTicket
+SearchFlightTicketTool
 */
-type SearchFlightTicket struct {
+type SearchFlightTicketTool struct {
 	tools.BaseTool
-}
-
-type serachFlightTicketData struct {
 	Origin             string `json:"origin" validate:"required"`
 	Destination        string `json:"destination" validate:"required"`
 	Date               string `json:"date" validate:"required"`
@@ -44,75 +41,68 @@ type serachFlightTicketData struct {
 	DepartureTimeEnd   string `json:"departure_time_end"`
 }
 
-func NewSearchFlightTicket(name string, description string) SearchFlightTicket {
-	return SearchFlightTicket{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(serachFlightTicketData{}), "", "", ""),
+func NewSearchFlightTicketTool(name string, description string) *SearchFlightTicketTool {
+	return &SearchFlightTicketTool{
+		BaseTool: tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
 // origin string, destination string, date string, departureTimeStart string, departureTimeEnd string
-func (stt SearchFlightTicket) Call(ctx context.Context, input string) (string, error) {
-	data := serachFlightTicketData{}
-	err := json.Unmarshal([]byte(input), &data)
+func (stt *SearchFlightTicketTool) Call(ctx context.Context, input string) (string, error) {
+	err := json.Unmarshal([]byte(input), stt)
 	if err != nil {
 		return fmt.Sprintf("Error: %v", err), err
 	}
 
-	return stt.searchFlightTicket(data)
+	return stt.searchFlightTicket()
 }
 
-func (stt SearchFlightTicket) searchFlightTicket(data serachFlightTicketData) (string, error) {
+func (stt *SearchFlightTicketTool) searchFlightTicket() (string, error) {
 	// 此处只做出发地校验，其他信息未进行校验
-	if data.Origin != "北京" {
+	if stt.Origin != "北京" {
 		return "未查询到相关内容", nil
 	}
 
-	date = data.Date
+	date = stt.Date
 	rst := flightInformation()
 	rst_json, err := json.Marshal(rst)
 	return string(rst_json), err
 }
 
 /*
-PurchaseFlightTicket
+PurchaseFlightTicketTool
 */
-type PurchaseFlightTicket struct {
+type PurchaseFlightTicketTool struct {
 	tools.BaseTool
-}
-
-type purchaseFlightTicketData struct {
 	FlightNumber string `json:"flight_number" validate:"required"`
 }
 
-func NewPurchaseFlightTicket(name string, description string) PurchaseFlightTicket {
-	return PurchaseFlightTicket{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(purchaseFlightTicketData{}), "", "", ""),
+func NewPurchaseFlightTicketTool(name string, description string) *PurchaseFlightTicketTool {
+	return &PurchaseFlightTicketTool{
+		BaseTool: tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
-func (ptt PurchaseFlightTicket) Call(ctx context.Context, input string) (string, error) {
-	data := purchaseFlightTicketData{}
-	err := json.Unmarshal([]byte(input), &data)
+func (ptt *PurchaseFlightTicketTool) Call(ctx context.Context, input string) (string, error) {
+	err := json.Unmarshal([]byte(input), &ptt)
 	if err != nil {
 		return fmt.Sprintf("Error: %v", err), err
 	}
 
-	return ptt.purchaseFlightTicket(data)
+	return ptt.purchaseFlightTicket()
 }
 
-func (ptt *PurchaseFlightTicket) purchaseFlightTicket(data purchaseFlightTicketData) (string, error) {
+func (ptt *PurchaseFlightTicketTool) purchaseFlightTicket() (string, error) {
 	flightInfo := flightInformation()
 	for _, info := range flightInfo {
-		if data.FlightNumber == info["flight_number"] {
+		if ptt.FlightNumber == info["flight_number"] {
 			info["message"] = "购买成功"
 			rst_json, err := json.Marshal(info)
 			return string(rst_json), err
 		}
 	}
 
-	return fmt.Sprintf("The flight was not found: %v", data.FlightNumber), nil
+	return fmt.Sprintf("The flight was not found: %v", ptt.FlightNumber), nil
 }
 
 func flightInformation() []map[string]string {

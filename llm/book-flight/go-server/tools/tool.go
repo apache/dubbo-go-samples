@@ -25,3 +25,14 @@ type Tool interface {
 	Description() string
 	Call(ctx context.Context, input string) (string, error)
 }
+
+// Tools is the manager of the toolkit, mainly providing descriptions of
+// the tools and detailed descriptions of the toolkit.
+type Tools interface {
+	// toolkit description
+	Description() string
+	// all tools description
+	ToolsDescription() string
+	// Query tool, or return nil if it does not exist.
+	QueryTool(method string) Tool
+}

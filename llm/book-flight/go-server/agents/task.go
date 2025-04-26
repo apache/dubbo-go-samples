@@ -63,9 +63,9 @@ func InitTaskState(value string) TaskState {
 	return rst
 }
 
-// GetTaskStateTools
-func GetTaskStateTools(taskFlag TaskState) []tools.Tool {
-	var toolsTask = []tools.Tool{NewTaskUndefinedTool("TaskUnrelated", "不相关问题占位符工具")}
+// CreateToolkit
+func CreateTaskToolkit(taskFlag TaskState, ts ...tools.Tool) tools.Tools {
+	toolsTask := append(ts, NewTaskUndefinedTool("TaskUnrelated", "不相关问题占位符工具"))
 	if taskFlag&TaskSubmitted != 0 {
 		toolsTask = append(toolsTask, NewTaskSubmittedTool("TaskSubmitted", "任务已提交"))
 	}
@@ -88,7 +88,7 @@ func GetTaskStateTools(taskFlag TaskState) []tools.Tool {
 		toolsTask = append(toolsTask, NewTaskUnrelatedTool("TaskUnrelated", "不相关任务"))
 	}
 
-	return toolsTask
+	return tools.NewToolkit(toolsTask, "订机票工具包，查询/预订机票功能。")
 }
 
 func InterruptTask(taskFlag TaskState) bool {
@@ -104,8 +104,7 @@ type TaskUndefinedTool struct {
 
 func NewTaskUndefinedTool(name string, description string) TaskUndefinedTool {
 	return TaskUndefinedTool{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(nil), "", "", ""),
+		tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
@@ -122,8 +121,7 @@ type TaskSubmittedTool struct {
 
 func NewTaskSubmittedTool(name string, description string) TaskSubmittedTool {
 	return TaskSubmittedTool{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(nil), "", "", ""),
+		tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
@@ -140,8 +138,7 @@ type TaskWorkingTool struct {
 
 func NewTaskWorkingTool(name string, description string) TaskWorkingTool {
 	return TaskWorkingTool{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(nil), "", "", ""),
+		tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
@@ -154,16 +151,12 @@ TaskInputRequiredTool
 */
 type TaskInputRequiredTool struct {
 	tools.BaseTool
-}
-
-type taskInputRequiredData struct {
 	MissingInfo string `json:"missing_info" validate:"required"`
 }
 
 func NewTaskInputRequiredTool(name string, description string) TaskInputRequiredTool {
 	return TaskInputRequiredTool{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(taskInputRequiredData{}), "", "", ""),
+		BaseTool: tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
@@ -180,8 +173,7 @@ type TaskCompletedTool struct {
 
 func NewTaskCompletedTool(name string, description string) TaskCompletedTool {
 	return TaskCompletedTool{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(nil), "", "", ""),
+		tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
@@ -198,8 +190,7 @@ type TaskFailedTool struct {
 
 func NewTaskFailedTool(name string, description string) TaskFailedTool {
 	return TaskFailedTool{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(nil), "", "", ""),
+		tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
@@ -216,8 +207,7 @@ type TaskCanceledTool struct {
 
 func NewTaskCanceledTool(name string, description string) TaskCanceledTool {
 	return TaskCanceledTool{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(nil), "", "", ""),
+		tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
@@ -234,8 +224,7 @@ type TaskUnrelatedTool struct {
 
 func NewTaskUnrelatedTool(name string, description string) TaskUnrelatedTool {
 	return TaskUnrelatedTool{
-		tools.NewBaseTool(
-			name, description, tools.GetStructKeys(nil), "", "", ""),
+		tools.NewBaseTool(name, description, "", ""),
 	}
 }
 
