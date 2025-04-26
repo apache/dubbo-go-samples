@@ -71,6 +71,8 @@ type CfgPrompts struct {
 	ReactPrompt        string `yaml:"reactPrompt"`
 	FinalPrompt        string `yaml:"finalPrompt"`
 	IntentPrompt       string `yaml:"intentPrompt"`
+	InputPrompt        string `yaml:"inputPrompt"`
+	UnrelatedPrompt    string `yaml:"unrelatedPrompt"`
 	FormatInstructions string `yaml:"formatInstructions"`
 }
 
