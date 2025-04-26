@@ -130,8 +130,8 @@ func (cot *CotAgentRunner) summaryIntent(timeNow string, callopt model.Option) s
 	prompt := prompts.CreatePrompt(
 		cot.cotPrompts.IntentPrompt,
 		map[string]any{
-			"content": cot.memoryMsg,
-			"time":    timeNow,
+			"memory": cot.memoryMsg,
+			"time":   timeNow,
 		},
 	)
 	response, _ := cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
