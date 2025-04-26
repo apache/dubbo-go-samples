@@ -39,7 +39,7 @@ const (
 
 // InitTaskState
 func InitTaskState(value string) TaskState {
-	rst := TaskUndefined
+	var rst TaskState
 	switch strings.ToUpper(value) {
 	case "TASKUNDEFINED":
 		rst = TaskUndefined
