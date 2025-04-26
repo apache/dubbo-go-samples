@@ -22,9 +22,13 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+)
 
+import (
 	"github.com/ollama/ollama/api"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model"
 )
 

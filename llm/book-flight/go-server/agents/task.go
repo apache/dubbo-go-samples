@@ -20,7 +20,9 @@ package agents
 import (
 	"context"
 	"strings"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 )
 

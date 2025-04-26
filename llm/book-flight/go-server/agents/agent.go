@@ -20,7 +20,9 @@ package agents
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/tmc/langchaingo/schema"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 )
 

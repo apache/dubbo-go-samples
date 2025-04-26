@@ -21,7 +21,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
 )
 

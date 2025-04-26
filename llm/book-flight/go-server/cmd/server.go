@@ -23,11 +23,15 @@ import (
 	"log"
 	"runtime/debug"
 	"strings"
+)
 
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/agents"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model/ollama"

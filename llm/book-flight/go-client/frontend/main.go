@@ -20,13 +20,17 @@ package main
 import (
 	"fmt"
 	"net/http"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-client/frontend/handlers"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-client/frontend/service"
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
