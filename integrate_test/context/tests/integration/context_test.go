@@ -19,9 +19,9 @@ package integration
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"testing"
 
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	greet "github.com/apache/dubbo-go-samples/context/proto"
 	"github.com/stretchr/testify/assert"
 )

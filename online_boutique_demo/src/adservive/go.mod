@@ -1,6 +1,8 @@
 module github.com/apache/dubbo-go-samples/online_boutique_demo/adservice
 
-go 1.20
+go 1.23.0
+
+toolchain go1.23.4
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1.0.20240808044912-f61d7c94bfd2
