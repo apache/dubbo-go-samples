@@ -1,8 +1,6 @@
 module github.com/apache/dubbo-go-samples-mesh-client
 
-go 1.23.0
-
-toolchain go1.23.4
+go 1.18
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.0.3-0.20220730033103-013f0b2804ce

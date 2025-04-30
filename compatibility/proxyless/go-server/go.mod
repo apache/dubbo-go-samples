@@ -123,6 +123,4 @@ require (
 
 replace dubbo.apache.org/dubbo-go/v3 => github.com/chickenlj/dubbo-go/v3 v3.1.0-proxy2
 
-go 1.23.0
-
-toolchain go1.23.4
+go 1.18
