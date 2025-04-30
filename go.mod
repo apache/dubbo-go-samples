@@ -1,15 +1,17 @@
 module github.com/apache/dubbo-go-samples
 
+replace dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1.0.20240808044912-f61d7c94bfd2 => /Users/nyar/go/dubbo-go
+
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1.0.20240808044912-f61d7c94bfd2
 	github.com/SkyAPM/go2sky v1.5.0
 	github.com/SkyAPM/go2sky-plugins/dubbo-go v0.0.0-20220718123631-cb8f743b16cf
 	github.com/alibaba/sentinel-golang v1.0.4
-	github.com/apache/dubbo-go-hessian2 v1.12.2
+	github.com/apache/dubbo-go-hessian2 v1.12.5
 	github.com/dubbogo/go-zookeeper v1.0.4-0.20211212162352-f9d2183d89d5
 	github.com/dubbogo/gost v1.14.0
 	github.com/dubbogo/grpc-go v1.42.10
-	github.com/dubbogo/triple v1.2.2-rc3
+	github.com/dubbogo/triple v1.2.2-rc4
 	github.com/gin-contrib/sessions v1.0.2
 	github.com/gin-gonic/gin v1.10.0
 	github.com/gogo/protobuf v1.3.2
@@ -62,7 +64,6 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v1.0.4 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/go-co-op/gocron v1.9.0 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
@@ -119,7 +120,6 @@ require (
 	github.com/prometheus/client_model v0.5.0 // indirect
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
-	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/shirou/gopsutil/v3 v3.23.12 // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect

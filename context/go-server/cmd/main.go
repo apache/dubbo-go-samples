@@ -19,12 +19,11 @@ package main
 
 import (
 	"context"
-	triple "dubbo.apache.org/dubbo-go/v3/protocol/triple/triple_protocol"
-	"fmt"
-
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
+	"fmt"
 	greet "github.com/apache/dubbo-go-samples/context/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
@@ -33,23 +32,22 @@ type GreetTripleServer struct {
 }
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	data, _ := triple.FromIncomingContext(ctx)
-	ctx = triple.AppendToOutgoingContext(ctx, "OutgoingContextKey1", "OutgoingDataVal1", "OutgoingContextKey2", "OutgoingDataVal2")
-	var value1, value2, value3 string
-	if values, ok := data["testkey1"]; ok && len(values) > 0 {
-		value1 = values[0]
-		logger.Infof("testkey1: %s", value1)
+	// map must be assert to map[string]interface, because of dubbo limitation
+	attachments := ctx.Value(constant.AttachmentKey).(map[string]interface{})
+	// value must be assert to []string[0], because of http2 header limitation
+	var value1, value2 string
+	if v, ok := attachments["key1"]; ok {
+		value1 = v.([]string)[0]
+		logger.Infof("Dubbo attachment key1 = %s", value1)
 	}
-	if values, ok := data["testkey2"]; ok && len(values) > 0 {
-		value2 = values[0]
-		logger.Infof("testkey2: %s", value2)
-	}
-	if values, ok := data["testkey3"]; ok && len(values) > 0 {
-		value3 = values[0]
-		logger.Infof("testkey3: %s", value3)
+	if v, ok := attachments["key2"]; ok {
+		value2 = v.([]string)[0]
+		logger.Infof("Dubbo attachment key2 = %s", value2)
 	}
 
-	respStr := fmt.Sprintf("name: %s, testKey1: %s, testKey2: %s", req.Name, value1, value2)
+	serverAttachments := ctx.Value(constant.AttachmentServerKey).(map[string]interface{})
+	serverAttachments["myKey"] = []string{"myVal"}
+	respStr := fmt.Sprintf("name: %s, key1: %s, key2: %s", req.Name, value1, value2)
 	resp := &greet.GreetResponse{Greeting: respStr}
 	return resp, nil
 }
