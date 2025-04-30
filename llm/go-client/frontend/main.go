@@ -20,51 +20,45 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
-
 	"github.com/gin-gonic/gin"
-
-	"github.com/joho/godotenv"
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/llm/config"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/handlers"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 func main() {
-	err := godotenv.Load(".env")
+	cfg, err := config.GetConfig()
 	if err != nil {
-		panic(fmt.Sprintf("Error loading .env file: %v", err))
-	}
-
-	_, exist := os.LookupEnv("TIME_OUT_SECOND")
-
-	if !exist {
-		fmt.Println("TIME_OUT_SECOND is not set")
-		return
-	}
-
-	_, exist = os.LookupEnv("OLLAMA_MODEL")
-
-	if !exist {
-		fmt.Println("OLLAMA_MODEL is not set")
+		fmt.Printf("Error loading config: %v\n", err)
 		return
 	}
 
 	// init Dubbo
-	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
+	ins, err := dubbo.NewInstance(
+		dubbo.WithRegistry(
+			registry.WithNacos(),
+			registry.WithAddress(cfg.NacosURL),
+		),
 	)
+	if err != nil {
+		panic(err)
+	}
+	// configure the params that only client layer cares
+	cli, err := ins.NewClient()
+
 	if err != nil {
 		panic(fmt.Sprintf("Error creating Dubbo client: %v", err))
 	}
@@ -92,8 +86,9 @@ func main() {
 	h := handlers.NewChatHandler(svc, ctxManager)
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
-			"TimeoutSecond": os.Getenv("TIME_OUT_SECOND"),
-			"OllamaModel":   os.Getenv("OLLAMA_MODEL"),
+			"TimeoutSecond": cfg.TimeoutSeconds,
+			"OllamaModels":  cfg.OllamaModels,
+			"DefaultModel":  cfg.OllamaModels[0],
 		})
 	})
 	r.POST("/api/chat", h.Chat)

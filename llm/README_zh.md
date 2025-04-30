@@ -38,6 +38,10 @@ $ ollama pull llava:7b
 
 您可以自行pull自己喜欢的模型，并在 ```.env``` 文件中指定该demo使用模型。
 
+### **安装 Nacos**
+
+按照此说明[安装并运行 Nacos](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/integrations/nacos/).
+
 ## **3. 运行示例**
 
 以下所有的命令都需要在 ```llm``` 目录下运行.

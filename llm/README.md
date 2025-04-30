@@ -38,6 +38,10 @@ Default model uses ```llava:7b```, a novel end-to-end trained large multimodal m
 
 You can pull your favourite model and specify the demo to use the model in ```.env``` file
 
+### **Install Nacos**
+
+Follow this instruction to [install and start Nacos server](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/integrations/nacos/).
+
 ## 3. **Run the Example**
 
 You need to run all the commands in ```llm``` directory.
