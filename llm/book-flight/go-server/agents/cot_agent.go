@@ -89,10 +89,6 @@ func (cot *CotAgentRunner) Run(
 		action, response = cot.thinkStep(task, timeNow, callopt, opts)
 		taskState = InitTaskState(action.Method)
 
-		if taskState == TaskUnrelated {
-			break
-		}
-
 		observation := cot.execAction(action, opts)
 		cot.memoryAgent = cot.updateMemory(cot.memoryAgent, response, observation)
 
@@ -177,7 +173,7 @@ func (cot *CotAgentRunner) finalStep(
 		promptTemplate = cot.cotPrompts.UnrelatedPrompt
 		config["task"] = input
 	case TaskInputRequired:
-		promptTemplate = cot.cotPrompts.IntentPrompt
+		promptTemplate = cot.cotPrompts.InputPrompt
 		config["memory"] = cot.memoryAgent
 	default:
 		config["memory"] = cot.memoryAgent

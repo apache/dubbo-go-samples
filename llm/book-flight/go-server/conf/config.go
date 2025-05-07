@@ -80,7 +80,7 @@ type CfgPrompts struct {
 
 // loadConfigPrompts reads and parses YAML file
 func loadConfigPrompts() {
-	data, err := os.ReadFile("go-server/conf/prompt_template.yml")
+	data, err := os.ReadFile("go-server/conf/bookflight_prompt.yml")
 	if err != nil {
 		return
 	}

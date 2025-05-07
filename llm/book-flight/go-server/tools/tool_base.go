@@ -62,7 +62,8 @@ func scanStructKeys(obj interface{}) string {
 
 	t := reflect.TypeOf(obj)
 	if t.Kind() == reflect.Ptr {
-		t = t.Elem() // 👈 如果是指针，取它指向的值
+		// If it is a pointer, get the value it points to
+		t = t.Elem()
 	}
 
 	if t.Kind() != reflect.Struct {
@@ -105,7 +106,7 @@ func NewToolkit(tools []Tool, description string) Toolkit {
 		toolMap: func() map[string]*Tool {
 			toolMap := make(map[string]*Tool)
 			for _, tool := range tools {
-				// 直接使用当前的 tool 指针
+				// Use the current tool pointer directly
 				toolMap[tool.Name()] = &tool
 			}
 			return toolMap
