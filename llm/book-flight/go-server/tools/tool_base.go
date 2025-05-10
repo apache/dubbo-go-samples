@@ -125,11 +125,11 @@ func (t Toolkit) Description() string {
 
 // Returns description of all tools
 func (t Toolkit) ToolsDescription() string {
-	description := ""
+	var descBuilder strings.Builder // Use strings.Builder
 	for _, tool := range t.tools {
-		description += tool.Description()
+		descBuilder.WriteString(tool.Description())
 	}
-	return description
+	return descBuilder.String()
 }
 
 // Query Tool in the Toolkit

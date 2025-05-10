@@ -112,9 +112,9 @@ func (llm *LLMOllama) Call(ctx context.Context, input string, opts ...model.Opti
 		Options: optss.Opts,
 	}
 
-	response := ""
+	var respBuilder strings.Builder // Use strings.Builder
 	respFunc := func(resp api.GenerateResponse) error {
-		response += resp.Response
+		respBuilder.WriteString(resp.Response)
 		return optss.CallOpt(resp.Response)
 	}
 
@@ -124,7 +124,7 @@ func (llm *LLMOllama) Call(ctx context.Context, input string, opts ...model.Opti
 		return "", err
 	}
 
-	return response, nil
+	return respBuilder.String(), nil
 }
 
 func (llm *LLMOllama) Stream(ctx context.Context, input string, opts ...model.Option) (string, error) {
@@ -166,9 +166,9 @@ func (llm *LLMOllama) Invoke(ctx context.Context, input string, opts ...model.Op
 		Options:  optss.Opts,
 	}
 
-	response := ""
+	var respBuilder strings.Builder // Use strings.Builder
 	respFunc := func(resp api.ChatResponse) error {
-		response += resp.Message.Content
+		respBuilder.WriteString(resp.Message.Content)
 		if optss.CallOpt == nil {
 			return nil
 		}
@@ -181,5 +181,5 @@ func (llm *LLMOllama) Invoke(ctx context.Context, input string, opts ...model.Op
 		return "", err
 	}
 
-	return response, nil
+	return respBuilder.String(), nil
 }

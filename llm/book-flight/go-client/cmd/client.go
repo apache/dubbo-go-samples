@@ -53,43 +53,41 @@ var (
 
 func handleCommand(cmd string) (resp string) {
 	cmd = strings.TrimSpace(cmd)
-	resp = ""
+
+	var respBuilder strings.Builder // Use strings.Builder
 	switch {
 	case cmd == "/?" || cmd == "/help":
-		resp += "Available commands:\n"
-		resp += "/? help        - Show this help\n"
-		resp += "/list          - List all contexts\n"
-		resp += "/cd <context>  - Switch context\n"
-		resp += "/new           - Create new context"
-		return resp
+		respBuilder.WriteString("Available commands:\n")
+		respBuilder.WriteString("/? help        - Show this help\n")
+		respBuilder.WriteString("/list          - List all contexts\n")
+		respBuilder.WriteString("/cd <context>  - Switch context\n")
+		respBuilder.WriteString("/new           - Create new context")
 	case cmd == "/list":
 		fmt.Println("Stored contexts (max 3):")
 		for _, ctxID := range contextOrder {
-			resp += fmt.Sprintf("- %s\n", ctxID)
+			respBuilder.WriteString(fmt.Sprintf("- %s\n", ctxID))
 		}
-		return resp
 	case strings.HasPrefix(cmd, "/cd "):
 		target := strings.TrimPrefix(cmd, "/cd ")
 		if ctx, exists := contexts[target]; exists {
 			currentCtxID = ctx.ID
-			resp += fmt.Sprintf("Switched to context: %s\n", target)
+			respBuilder.WriteString(fmt.Sprintf("Switched to context: %s\n", target))
 		} else {
-			resp += "Context not found"
+			respBuilder.WriteString("Context not found")
 		}
-		return resp
 	case cmd == "/new":
 		newID := createContext()
 		currentCtxID = newID
-		resp += fmt.Sprintf("Created new context: %s\n", newID)
-		return resp
+		respBuilder.WriteString(fmt.Sprintf("Created new context: %s\n", newID))
 	default:
-		resp += "Available commands:\n"
-		resp += "/? help        - Show this help\n"
-		resp += "/list          - List all contexts\n"
-		resp += "/cd <context>  - Switch context\n"
-		resp += "/new           - Create new context"
-		return resp
+		respBuilder.WriteString("Available commands:\n")
+		respBuilder.WriteString("/? help        - Show this help\n")
+		respBuilder.WriteString("/list          - List all contexts\n")
+		respBuilder.WriteString("/cd <context>  - Switch context\n")
+		respBuilder.WriteString("/new           - Create new context")
 	}
+
+	return respBuilder.String()
 }
 
 func createContext() string {

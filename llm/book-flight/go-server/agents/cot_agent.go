@@ -114,14 +114,15 @@ func (cot *CotAgentRunner) Run(
 }
 
 func (cot *CotAgentRunner) GetInputCtx(input string) string {
-	var ctx string
+	var respBuilder strings.Builder // Use strings.Builder
 	for _, msg := range cot.memoryAgent {
 		if val, ok := msg["user"]; ok {
-			ctx += fmt.Sprintf("\n%v", val)
+			respBuilder.WriteString(fmt.Sprintf("\n%v", val))
 		}
 	}
+	respBuilder.WriteString(fmt.Sprintf("\n%v", input))
 
-	return strings.TrimSpace(ctx + "\n" + input)
+	return strings.TrimSpace(respBuilder.String())
 }
 
 func (cot *CotAgentRunner) summaryIntent(timeNow string, callopt model.Option) string {
