@@ -34,6 +34,9 @@ import (
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 
+// Example maximum history length
+const maxHistoryLength = 20
+
 type ChatContext struct {
 	ID      string
 	History []*chat.ChatMessage
@@ -104,6 +107,15 @@ func createContext() string {
 	return id
 }
 
+func addMessageToHistory(history []*chat.ChatMessage, newMessage *chat.ChatMessage) []*chat.ChatMessage {
+	history = append(history, newMessage)
+	if len(history) > maxHistoryLength {
+		// Remove the oldest message
+		history = history[1:]
+	}
+	return history
+}
+
 func main() {
 	currentCtxID = createContext()
 
@@ -136,7 +148,8 @@ func main() {
 
 		func() {
 			currentCtx := contexts[currentCtxID]
-			currentCtx.History = append(currentCtx.History,
+			currentCtx.History = addMessageToHistory(
+				currentCtx.History,
 				&chat.ChatMessage{
 					Role:    "human",
 					Content: input,
