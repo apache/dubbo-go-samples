@@ -152,13 +152,13 @@ func main() {
 			}
 			defer stream.Close()
 
-			resp := ""
-
+			var respBuilder strings.Builder // Use strings.Builder
 			for stream.Recv() {
 				c := stream.Msg().Content
-				resp += c
+				respBuilder.WriteString(c) // Append to the builder
 				fmt.Print(c)
 			}
+			resp := respBuilder.String() // Get the final string
 
 			if err := stream.Err(); err != nil {
 				fmt.Printf("Stream error: %v\n", err)
