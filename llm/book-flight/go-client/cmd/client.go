@@ -34,8 +34,10 @@ import (
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 
-// Example maximum history length
-const maxHistoryLength = 20
+const (
+	maxHistoryLength = 20 // Example maximum history length
+	maxContextCount  = 3  // Example maximum number of contexts
+)
 
 type ChatContext struct {
 	ID      string
@@ -99,8 +101,7 @@ func createContext() string {
 	}
 	contextOrder = append(contextOrder, id)
 
-	// up to 3 context
-	if len(contextOrder) > 3 {
+	if len(contextOrder) > maxContextCount {
 		delete(contexts, contextOrder[0])
 		contextOrder = contextOrder[1:]
 	}
