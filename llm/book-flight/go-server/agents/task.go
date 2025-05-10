@@ -72,9 +72,6 @@ func CreateToolkitByVariadic(description string, taskFlag TaskState, ts ...tools
 // CreateToolkit
 func CreateToolkit(description string, taskFlag TaskState, ts []tools.Tool) tools.Tools {
 	var toolsTask []tools.Tool = ts
-	if t, err := tools.CreateTool[TaskUnrelatedTool]("TaskUnrelated", "不相关问题占位符工具", ""); err == nil {
-		toolsTask = append(toolsTask, t)
-	}
 	if taskFlag&TaskSubmitted != 0 {
 		if t, err := tools.CreateTool[TaskSubmittedTool]("TaskSubmitted", "任务已提交", ""); err == nil {
 			toolsTask = append(toolsTask, t)
