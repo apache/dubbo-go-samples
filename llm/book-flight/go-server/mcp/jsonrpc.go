@@ -58,7 +58,7 @@ type ErrorRPC struct {
 	// A Number that indicates the error type that occurred.
 	// This MUST be an integer.
 	Code int64 `json:"code"`
-	// A String providing a shot description of the error.
+	// A String providing a short description of the error.
 	// The message SHOULD be limited to a concise single sentence.
 	Message string `json:"message"`
 	// A Primitive or Structured value that contains additional information about the error.
