@@ -65,29 +65,50 @@ func InitTaskState(value string) TaskState {
 	return rst
 }
 
+func CreateToolkitByVariadic(description string, taskFlag TaskState, ts ...tools.Tool) tools.Tools {
+	return CreateToolkit(description, taskFlag, ts)
+}
+
 // CreateToolkit
-func CreateTaskToolkit(description string, taskFlag TaskState, ts ...tools.Tool) tools.Tools {
-	toolsTask := append(ts, tools.CreateTool[TaskUnrelatedTool]("TaskUnrelated", "不相关问题占位符工具", ""))
+func CreateToolkit(description string, taskFlag TaskState, ts []tools.Tool) tools.Tools {
+	var toolsTask []tools.Tool = ts
+	if t, err := tools.CreateTool[TaskUnrelatedTool]("TaskUnrelated", "不相关问题占位符工具", ""); err == nil {
+		toolsTask = append(toolsTask, t)
+	}
 	if taskFlag&TaskSubmitted != 0 {
-		toolsTask = append(toolsTask, tools.CreateTool[TaskSubmittedTool]("TaskSubmitted", "任务已提交", ""))
+		if t, err := tools.CreateTool[TaskSubmittedTool]("TaskSubmitted", "任务已提交", ""); err == nil {
+			toolsTask = append(toolsTask, t)
+		}
 	}
 	if taskFlag&TaskWorking != 0 {
-		toolsTask = append(toolsTask, tools.CreateTool[TaskWorkingTool]("TaskWorking", "任务正在处理中", ""))
+		if t, err := tools.CreateTool[TaskWorkingTool]("TaskWorking", "任务正在处理中", ""); err == nil {
+			toolsTask = append(toolsTask, t)
+		}
 	}
 	if taskFlag&TaskInputRequired != 0 {
-		toolsTask = append(toolsTask, tools.CreateTool[TaskInputRequiredTool]("TaskInputRequired", "任务需要更多信息输入", ""))
+		if t, err := tools.CreateTool[TaskInputRequiredTool]("TaskInputRequired", "任务需要更多信息输入", ""); err == nil {
+			toolsTask = append(toolsTask, t)
+		}
 	}
 	if taskFlag&TaskCompleted != 0 {
-		toolsTask = append(toolsTask, tools.CreateTool[TaskCompletedTool]("TaskCompleted", "任务已完成", ""))
+		if t, err := tools.CreateTool[TaskCompletedTool]("TaskCompleted", "任务已完成", ""); err == nil {
+			toolsTask = append(toolsTask, t)
+		}
 	}
 	if taskFlag&TaskFailed != 0 {
-		toolsTask = append(toolsTask, tools.CreateTool[TaskFailedTool]("TaskFailed", "任务执行失败", ""))
+		if t, err := tools.CreateTool[TaskFailedTool]("TaskFailed", "任务执行失败", ""); err == nil {
+			toolsTask = append(toolsTask, t)
+		}
 	}
 	if taskFlag&TaskCanceled != 0 {
-		toolsTask = append(toolsTask, tools.CreateTool[TaskCanceledTool]("TaskCanceled", "任务已取消", ""))
+		if t, err := tools.CreateTool[TaskCanceledTool]("TaskCanceled", "任务已取消", ""); err == nil {
+			toolsTask = append(toolsTask, t)
+		}
 	}
 	if taskFlag&TaskUnrelated != 0 {
-		toolsTask = append(toolsTask, tools.CreateTool[TaskUnrelatedTool]("TaskUnrelated", "不相关任务", ""))
+		if t, err := tools.CreateTool[TaskUnrelatedTool]("TaskUnrelated", "不相关任务", ""); err == nil {
+			toolsTask = append(toolsTask, t)
+		}
 	}
 
 	return tools.NewToolkit(toolsTask, description)

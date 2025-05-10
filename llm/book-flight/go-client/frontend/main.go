@@ -43,12 +43,14 @@ func main() {
 		client.WithClientURL("tri://127.0.0.1:20000"),
 	)
 	if err != nil {
-		panic(fmt.Sprintf("Error creating Dubbo client: %v", err))
+		fmt.Printf("Error creating Dubbo client: %v", err)
+		return
 	}
 
 	svc, err := chat.NewChatService(cli)
 	if err != nil {
-		panic(fmt.Sprintf("Error creating chat service: %v", err))
+		fmt.Printf("Error creating chat service: %v", err)
+		return
 	}
 
 	// init Gin
@@ -80,6 +82,7 @@ func main() {
 	r.POST("/api/context/switch", h.SwitchContext)
 
 	if err := r.Run(":8080"); err != nil {
-		panic(fmt.Sprintf("Failed to start server: %v", err))
+		fmt.Printf("Failed to start server: %v", err)
+		return
 	}
 }

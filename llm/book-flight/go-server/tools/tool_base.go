@@ -67,7 +67,8 @@ func scanStructKeys(obj interface{}) string {
 	}
 
 	if t.Kind() != reflect.Struct {
-		panic("scanStructKeys: not a struct type")
+		fmt.Println("scanStructKeys: not a struct type")
+		return "()"
 	}
 
 	keys := []string{}
@@ -141,19 +142,19 @@ func (t Toolkit) QueryTool(method string) Tool {
 }
 
 // CreateTool
-func CreateTool[T any](name, description, id string) *T {
+func CreateTool[T any](name, description, id string) (*T, error) {
 	tool := new(T)
 	base := NewBaseTool(name, description, scanStructKeys(tool), id)
 
 	v := reflect.ValueOf(tool).Elem()
 	field := v.FieldByName("BaseTool")
 	if !field.IsValid() {
-		panic(fmt.Sprintf("CreateTool: %T does not have a BaseTool field", tool))
+		return nil, fmt.Errorf("CreateTool: %T does not have an embedded BaseTool field", tool)
 	}
 	if !field.CanSet() {
-		panic(fmt.Sprintf("CreateTool: cannot set BaseTool field on %T", tool))
+		return nil, fmt.Errorf("CreateTool: cannot set BaseTool field on %T", tool)
 	}
 
 	field.Set(reflect.ValueOf(base))
-	return tool
+	return tool, nil
 }

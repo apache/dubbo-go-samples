@@ -111,7 +111,8 @@ func main() {
 		client.WithClientURL("tri://127.0.0.1:20000"),
 	)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error: %v\n", err)
+		return
 	}
 
 	svc, err := chat.NewChatService(cli)
@@ -146,7 +147,8 @@ func main() {
 				Messages: currentCtx.History,
 			})
 			if err != nil {
-				panic(err)
+				fmt.Printf("Error: %v\n", err)
+				return
 			}
 			defer stream.Close()
 
