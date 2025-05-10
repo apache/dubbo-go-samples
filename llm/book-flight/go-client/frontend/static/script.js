@@ -2,7 +2,7 @@
 const chatbox = document.querySelector(".chatbot .chatbox");
 const recordbox = document.querySelector(".record .chatbox");
 const chatInput = document.querySelector(".chat-input textarea");
-const sendChatBtn = document.querySelector(".chat-input span");
+const sendChatBtn = document.querySelector(".chat-input #send-btn");
 
 let userMessage = null; // Variable to store user's message
 let userBin = null; // Variable to store user's message
@@ -53,6 +53,7 @@ const handleChat = () => {
     if (contents.length === 0) return;
 
     chatInput.value = "";
+    sendChatBtn.style.display = "none";
     chatInput.style.height = `${inputInitHeight}px`;
     clear();
 
@@ -187,6 +188,11 @@ const renderFlightInfo = (flightInfo) => {
 };
 
 chatInput.addEventListener("input", () => {
+    if (chatInput.value.trim() !== "") {
+        sendChatBtn.style.display = "block";
+    } else {
+        sendChatBtn.style.display = "none";
+    }
     // Adjust the height of the input textarea based on its content
     chatInput.style.height = `${inputInitHeight}px`;
     chatInput.style.height = `${chatInput.scrollHeight}px`;

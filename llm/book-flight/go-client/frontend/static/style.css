@@ -208,6 +208,7 @@ header h2 {
 }
 .chatbot .chat-input {
   display: flex;
+  align-items: center;
   gap: 5px;
   position: relative; /* Changed to relative */
   bottom: 0;
@@ -226,23 +227,15 @@ header h2 {
   padding: 15px 15px 15px 0;
   font-size: 0.95rem;
 }
-.chat-input span {
+.chat-input #send-btn
+.chat-input #add-btn {
   align-self: flex-end;
   color: #724ae8;
   cursor: pointer;
   height: 55px;
   display: flex;
   align-items: center;
-  visibility: hidden;
-  font-size: 1.35rem;
-}
-.chat-input span1 {
-  align-self: flex-end;
-  color: #724ae8;
-  cursor: pointer;
-  height: 55px;
-  display: flex;
-  align-items: center;
+  justify-content: center;
   font-size: 1.35rem;
 }
 .chat-input textarea:valid ~ span {
