@@ -31,7 +31,7 @@ type RequestRPC struct {
 	// Params is a structured value that holds the parameter values to be used
 	// during the invocation of the method. This member MAY be omitted.
 	Params map[string]any `json:"params,omitempty"` // Omitempty to skip if nil
-	// Id is an identifier established by the client that MUST contain a String,
+	// ID is an identifier established by the client that MUST contain a String,
 	// Number, or Null value if included. If not included it is assumed to be a
 	// notification. The value SHOULD normally not be Null [1] and Numbers SHOULD
 	// NOT contain fractional parts [2].
@@ -41,7 +41,7 @@ type RequestRPC struct {
 	// objects.
 	// [2] Fractional parts SHOULD NOT be used as there is no clear
 	// interoperable way to represent them across all systems.
-	Id string `json:"id,omitempty"` // Omitempty to skip if empty
+	ID string `json:"id,omitempty"` // Omitempty to skip if empty
 }
 
 // NewRequestRPC creates a new RequestRPC with the JsonRPC field set to "2.0".
@@ -50,7 +50,7 @@ func NewRequestRPC(method string, params map[string]any, id string) *RequestRPC 
 		JsonRPC: jsonrpc,
 		Method:  method,
 		Params:  params,
-		Id:      id,
+		ID:      id,
 	}
 }
 
@@ -88,12 +88,12 @@ type ResponseRPC struct {
 	// during the invocation of the method. This member MUST be present when
 	// there was an error invoking the method.
 	Error *ErrorRPC `json:"error,omitempty"` // Omitempty to skip if nil
-	// Id is the identifier established by the Client that MUST contain a String,
+	// ID is the identifier established by the Client that MUST contain a String,
 	// Number, or Null value if included in the request. It MUST be the same as
 	// the value of the id member in the Request object. If there was an error
 	// in detecting the id in the Request object (e.g. Parse error or Invalid
 	// Request), it MUST be Null.
-	Id string `json:"id,omitempty"` // Omitempty to skip if empty
+	ID string `json:"id,omitempty"` // Omitempty to skip if empty
 }
 
 // NewResponseRPC creates a new ResponseRPC with the JsonRPC field set to "2.0".
@@ -102,6 +102,6 @@ func NewResponseRPC(result map[string]any, error *ErrorRPC, id string) *Response
 		JsonRPC: jsonrpc,
 		Result:  result,
 		Error:   error,
-		Id:      id,
+		ID:      id,
 	}
 }

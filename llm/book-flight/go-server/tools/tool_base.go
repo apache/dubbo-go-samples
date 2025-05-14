@@ -41,7 +41,7 @@ func NewBaseTool(name, description, requestParams, id string) BaseTool {
 	}
 }
 
-func (b BaseTool) Id() string   { return b.id }
+func (b BaseTool) ID() string   { return b.id }
 func (b BaseTool) Name() string { return b.name }
 func (b BaseTool) Description() string {
 	return b.name + b.RequestParams() + " - " + b.description + "\n"
