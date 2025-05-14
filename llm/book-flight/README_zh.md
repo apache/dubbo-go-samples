@@ -2,13 +2,13 @@
 
 ### 1. 介绍
 
-本案例展示了Agent如何在大语言模型的加持下，完成机票预订的过程。
+本案例展示了 Agent 如何在大语言模型的加持下，完成机票预订的过程。
 
 ### 2. 准备工作
 
 #### 修改配置文件
 
-修改配置文件复制`llm/book-flight/.env.example`为`llm/book-flight/.env`。
+修改配置文件复制 `llm/book-flight/.env.example` 为 `llm/book-flight/.env`。
 
 ```ini
 LLM_MODEL = qwq                     # Ollama 模型名称
@@ -17,11 +17,11 @@ LLM_API_KEY = "sk-..."              # API key
 TIME_OUT_SECOND = 300               # 超时时间
 ```
 
-**注意**：目前仅Ollama方式部署的模型
+**注意**：目前仅 Ollama 方式部署的模型
 
 ### 3. 运行示例
 
-首先，进入`llm/book-flight`目录.
+首先，进入 `llm/book-flight` 目录.
 
 ```shell
 $ cd llm/book-flight
@@ -39,7 +39,7 @@ $ go run go-server/cmd/server.go
 
 #### 客户端运行
 
-前端页面基于Gin框架的客户端进行交互，运行以下命令然后访问 ```localhost:8080``` 即可使用:
+前端页面基于 Gin 框架的客户端进行交互，运行以下命令然后访问 ```localhost:8080``` 即可使用:
 
 ```shell
 $ go run go-client/frntend/main.go
@@ -47,4 +47,4 @@ $ go run go-client/frntend/main.go
 
 ### **注意事项**
 
-默认`Record`超时时间为两分钟，请确保您的电脑性能能在两分钟内生成相应的响应，否则会超时报错，您也可以在 ```.env``` 文件中自行设置超时时间。
+默认 `Record` 超时时间为两分钟，请确保您的电脑性能能在两分钟内生成相应的响应，否则会超时报错，您也可以在 ```.env``` 文件中自行设置超时时间。
