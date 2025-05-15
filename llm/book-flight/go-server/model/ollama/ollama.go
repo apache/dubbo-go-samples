@@ -32,11 +32,13 @@ import (
 	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model"
 )
 
-type ImageData = api.ImageData
-type LLMUrl struct {
-	scheam string // [scheam:]//host
-	host   string // host:port
-}
+type (
+	ImageData = api.ImageData
+	LLMUrl    struct {
+		scheam string // [scheam:]//host
+		host   string // host:port
+	}
+)
 
 func NewURL(url string) LLMUrl {
 	scheam_host := strings.Split(url, "://")

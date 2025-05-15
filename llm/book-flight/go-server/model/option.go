@@ -16,12 +16,14 @@
  */
 package model
 
-type CallFunc func(input string) error
-type Option = any
-type Options struct {
-	CallOpt CallFunc
-	Opts    map[string]any
-}
+type (
+	CallFunc func(input string) error
+	Option   = any
+	Options  struct {
+		CallOpt CallFunc
+		Opts    map[string]any
+	}
+)
 
 func NewOptions(opts ...Option) Options {
 	var respFunc CallFunc
