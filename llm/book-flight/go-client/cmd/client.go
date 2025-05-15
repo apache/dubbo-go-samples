@@ -31,8 +31,11 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
+
+var cfgEnv = conf.GetEnvironment()
 
 const (
 	maxHistoryLength = 20 // Example maximum history length
@@ -119,7 +122,7 @@ func main() {
 	currentCtxID = createContext()
 
 	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
+		client.WithClientURL(cfgEnv.UrlClient),
 	)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)

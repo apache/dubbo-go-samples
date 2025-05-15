@@ -37,10 +37,12 @@ import (
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 
+var cfgEnv = conf.GetEnvironment()
+
 func main() {
 	// init Dubbo
 	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
+		client.WithClientURL(cfgEnv.UrlClient),
 	)
 	if err != nil {
 		fmt.Printf("Error creating Dubbo client: %v", err)
@@ -81,7 +83,7 @@ func main() {
 	r.GET("/api/context/list", h.ListContexts)
 	r.POST("/api/context/switch", h.SwitchContext)
 
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(fmt.Sprintf(":%d", cfgEnv.PortWeb)); err != nil {
 		fmt.Printf("Failed to start server: %v", err)
 		return
 	}

@@ -40,6 +40,8 @@ import (
 	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
 )
 
+var cfgEnv = conf.GetEnvironment()
+
 func getTools() tools.Tools {
 	var t tools.Tool
 	var err error
@@ -68,7 +70,6 @@ type ChatServer struct {
 }
 
 func NewChatServer() (*ChatServer, error) {
-	cfgEnv := conf.GetEnvironment()
 	llm := ollama.NewLLMOllama(cfgEnv.Model, cfgEnv.Url)
 	cot := agents.NewCotAgentRunner(llm, getTools(), 10, conf.GetConfigPrompts())
 	return &ChatServer{llm: llm, cot: cot}, nil
@@ -115,7 +116,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 func main() {
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
-			protocol.WithPort(20000),
+			protocol.WithPort(cfgEnv.PortClient),
 		),
 	)
 	if err != nil {

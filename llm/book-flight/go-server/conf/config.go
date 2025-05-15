@@ -18,33 +18,36 @@
 package conf
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
 	"sync"
-)
 
-import (
 	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v3"
 )
 
 var (
 	configPrompts CfgPrompts
-	congifEnv     Environment
+	configEnv     Environment
 	oncePrompts   sync.Once
 	onceEnv       sync.Once
 )
 
-// Config structure matches the YAML file structure
+// Config structure matches the environment file structure
 type Environment struct {
-	Model   string
-	Url     string
-	ApiKey  string
-	TimeOut int
+	Model      string `env:"LLM_MODEL"`
+	Url        string `env:"LLM_URL"`
+	ApiKey     string `env:"LLM_API_KEY"`
+	HostClient string `env:"CLIENT_HOST"`
+	PortClient int    `env:"CLIENT_PORT"`
+	UrlClient  string `env:"_"`
+	PortWeb    int    `env:"WEB_PORT"`
+	TimeOut    int    `env:"TIMEOUT_SECONDS"`
 }
 
-// loadConfigPrompts reads and parses YAML file
+// loadConfigPrompts reads and parses environment file
 func loadEnvironment() {
 	err := godotenv.Load()
 	if err != nil {
@@ -52,20 +55,28 @@ func loadEnvironment() {
 	}
 
 	// Reading environment variables
-	congifEnv.Model = os.Getenv("LLM_MODEL")               //
-	congifEnv.Url = os.Getenv("LLM_URL")                   // Default: http://localhost:11434
-	congifEnv.ApiKey = os.Getenv("LLM_API_KEY")            //
-	val, err := strconv.Atoi(os.Getenv("TIME_OUT_SECOND")) // Default: 300
-	if err != nil {
-		congifEnv.TimeOut = 300
-	} else {
-		congifEnv.TimeOut = val
-	}
+	configEnv.Model = os.Getenv("LLM_MODEL")
+	configEnv.Url = os.Getenv("LLM_URL")
+	configEnv.ApiKey = os.Getenv("LLM_API_KEY")
+	configEnv.HostClient = os.Getenv("CLIENT_HOST")
+	configEnv.PortClient = AtoiWithDefault("CLIENT_PORT", 20000)
+	configEnv.UrlClient = fmt.Sprintf("%s:%d", configEnv.HostClient, configEnv.PortClient)
+	configEnv.PortWeb = AtoiWithDefault("WEB_PORT", 8080)
+	configEnv.TimeOut = AtoiWithDefault("TIMEOUT_SECONDS", 300)
 }
 
 func GetEnvironment() Environment {
 	onceEnv.Do(loadEnvironment)
-	return congifEnv
+	return configEnv
+}
+
+func AtoiWithDefault(key string, defaultValue int) int {
+	if value := os.Getenv(key); value != "" {
+		if val, err := strconv.Atoi(value); err == nil {
+			return val
+		}
+	}
+	return defaultValue
 }
 
 // Config structure matches the YAML file structure

@@ -11,10 +11,18 @@
 修改配置文件复制 `llm/book-flight/.env.example` 为 `llm/book-flight/.env`。
 
 ```ini
+# LLM 设置
 LLM_MODEL = qwq                     # Ollama 模型名称
 LLM_URL = "http://127.0.0.1:11434"  # Ollama 的 URL，填写 Ollama 的服务地址
 LLM_API_KEY = "sk-..."              # API key
-TIME_OUT_SECOND = 300               # 超时时间
+
+# Client 设置
+CLIENT_HOST = "tri://127.0.0.1"     # 客户端主机
+CLIENT_PORT = 20000                 # 客户端端口
+
+# Web 设置
+WEB_PORT = 8080
+TIMEOUT_SECONDS = 300               # 超时时间
 ```
 
 **注意**：目前仅 Ollama 方式部署的模型

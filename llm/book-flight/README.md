@@ -11,10 +11,18 @@ This case shows how Agent completes the airline booking process with the support
 Modify the configuration file and copy `llm/book-flight/.env.example` to `llm/book-flight/.env`.
 
 ```ini
+# LLM Settings
 LLM_MODEL = qwq # Ollama model name
 LLM_URL = "http://127.0.0.1:11434" # Ollama URL, fill in Ollama service address
 LLM_API_KEY = "sk-..." # API key
-TIME_OUT_SECOND = 300 # Timeout
+
+# Client Settings
+CLIENT_HOST = "tri://127.0.0.1"
+CLIENT_PORT = 20000
+
+# Web Settings
+WEB_PORT = 8080
+TIMEOUT_SECOND = 300 # Timeout
 ```
 
 **Note**: Currently only models deployed in Ollama mode
