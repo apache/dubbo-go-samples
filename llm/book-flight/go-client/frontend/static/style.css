@@ -1,0 +1,328 @@
+/* This file originally cloned from https://github.com/yotam-halperin/chatbot-static-UI*/
+
+
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  background: #E3F2FD;
+}
+
+/* 机票预订信息 */
+.booking-confirmation {
+  position: fixed;
+  top: 50%;
+  left: 10%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 20%;
+  height: 90%;
+  z-index: 1000;
+  padding: 0 20px 20px 20px;
+  transition: box-shadow 0.3s;
+  overflow-y: auto; /* 允许垂直滚动 */
+}
+#flight-info {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: linear-gradient(to bottom, #87ceeb, #fff); /* 渐变的背景色 */
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+#flight-info:hover {
+  transform: translateY(5px); /* 悬停时上移 10px */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+#flight-info p {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.chatbot {
+  position: fixed;
+  left: 40%;
+  top: 50%;
+  width: 40%;
+  height: 90%;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  opacity: 1;
+  transform-origin: bottom right;
+  box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
+    0 32px 64px -48px rgba(0,0,0,0.5);
+  transition: all 0.1s ease;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+  display: flex; /* Added flexbox layout */
+  flex-direction: column; /* Added column direction */
+}
+.record {
+  position: fixed;
+  left: 80.5%;
+  top: 50%;
+  width: 40%;
+  height: 90%;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  opacity: 1;
+  transform-origin: bottom right;
+  box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
+    0 32px 64px -48px rgba(0,0,0,0.5);
+  transition: all 0.1s ease;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+  display: flex; /* Added flexbox layout */
+  flex-direction: column; /* Added column direction */
+  
+}
+body.show-chatbot .record {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.record header {
+  padding: 16px 0;
+  position: relative;
+  background: linear-gradient(to bottom, #4169e1, #87ceeb);
+  border-radius: 10px;
+  text-align: center;
+}
+body.show-chatbot .chatbot {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.chatbot header {
+  padding: 16px 0;
+  position: relative;
+  background: linear-gradient(to bottom, #4169e1, #87ceeb);
+  border-radius: 10px;
+  text-align: center;
+}
+.chatbot header span {
+  overflow-y: auto;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  display: none;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+.record header span {
+  overflow-y: auto;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  display: none;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+header h2 {
+  font-size: 1.4rem;
+}
+.chatbox {
+  flex-grow: 1; /* Added flex-grow to chatbox */
+  overflow-y: auto; /* Changed to auto to enable vertical scroll */
+  padding: 30px 20px 100px;
+}
+.chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
+  width: 6px;
+}
+.chatbot :where(.chatbox, textarea)::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 25px;
+}
+.chatbot :where(.chatbox, textarea)::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 25px;
+}
+.chatbox .chat {
+  display: flex;
+  list-style: none;
+  letter-spacing: 0.6px;
+  line-height: 2;
+  margin-bottom: 10px;
+}
+.chatbox .chat img {
+  max-width: 250px;
+  max-height: 100px;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+.chatbox .outgoing {
+  margin: 10px 0;
+  justify-content: flex-start;
+  display: flex;
+  list-style: none;
+  align-items: flex-end;
+  flex-direction: column;
+}
+.chatbox .incoming span {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  cursor: default;
+  text-align: center;
+  line-height: 32px;
+  align-self: flex-start;
+  background: #724ae8;
+  border-radius: 4px;
+  margin: 0 10px 7px 0;
+}
+.chatbox .chat p {
+  white-space: pre-wrap;
+  padding: 12px 6px;
+  border-radius: 0 10px 0 10px;
+  max-width: 100%;
+  color: #000;
+  font-size: 0.95rem;
+  background: #fafafa;
+}
+.chatbox .incoming p {
+  border-radius: 5px 5px 5px 5px;
+}
+.chatbox .outgoing p {
+  background: #f0f4ff;
+  border-radius: 5px 5px 5px 5px;
+}
+.chatbox .chat p.error {
+  color: #721c24;
+  background: #f8d7da;
+}
+.chatbox .incoming p {
+  color: #000;
+  /* background: #f2f2f2; */
+}
+.chatbot .chat-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative; /* Changed to relative */
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  padding: 3px 20px;
+  border-top: 1px solid #ddd;
+}
+.chat-input textarea {
+  height: 55px;
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  max-height: 180px;
+  padding: 15px 15px 15px 0;
+  font-size: 0.95rem;
+}
+.chat-input #send-btn
+.chat-input #add-btn {
+  align-self: flex-end;
+  color: #724ae8;
+  cursor: pointer;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+.chat-input textarea:valid ~ span {
+  visibility: visible;
+}
+
+.drop-box {
+  display: none;
+  height: 60px;
+  width: 20%;
+  border: 1px dashed #a89b9b;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.drop-box > div {
+  width: 40px;
+  height: 90%;
+  margin: 1px 3px;
+  display: block;
+  position: relative;
+}
+
+.drop-box > div > img {
+  width: 90%;
+  height: 70%;
+}
+
+.drop-box > div > div {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 15px;
+  height: 15px;
+  /* background: #347aa5; */
+  color: #000;
+  /* color: white; */
+  border-radius: 50%;
+  text-align: center;
+  line-height: 15px;
+  /* font-weight: bold; */
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.drop-box > div > p {
+  bottom: 5px;
+  text-align: center;
+  line-height: 10px;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drop-text {
+  position: absolute;
+  width: 450px;
+  height: 50px;
+  top: 200px;
+  text-align: center;
+  line-height: 50px;
+  opacity: 0.3;
+}
+
+.drop-text > span {
+  color: #347aa5;
+  cursor: pointer;
+}
+
+
+@media (max-width: 600px), (max-height: 600px) {
+  .chatbot {
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    border-radius: 0;
+    width: 100%;
+  }
+  .chatbot .chatbox {
+    height: 90%;
+    padding: 25px 15px 100px;
+  }
+  .chatbot .chat-input {
+    padding: 5px 15px;
+  }
+  .chatbot header span {
+    display: block;
+  }
+}

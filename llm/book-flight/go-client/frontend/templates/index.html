@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Chatbot in JavaScript | CodingNepal</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <script src="../static/script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <style>
+        .markdown-body {
+            line-height: 1.2;
+            font-family: sans-serif;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 机票预订信息 -->
+<div class="booking-confirmation">
+    <div id="flight-info">
+        <h3>航班信息</h3>
+        <p>正在加载航班信息...</p>
+    </div>
+</div>
+<div class="chatbot">
+    <header>
+        <h2>Chatbot</h2>
+    </header>
+    <ul class="chatbox">
+        <li class="chat incoming">
+            <span class="material-symbols-outlined">smart_toy</span>
+            <p class="chat incoming content" id="content">Hi there 👋</p>
+        </li>
+    </ul>
+    <div class="chat-input">
+        <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+        <span id="send-btn" class="material-symbols-rounded" style="display: none;">send</span>
+        <div id="drop" class="drop-box"></div>
+        <span id="add-btn" class="material-symbols-rounded">add</span>
+    </div>
+    <input id="input" accept="image/png, image/jpeg, image/gif" type="file" style="display: none">
+</div>
+
+<div class="record">
+    <header>
+        <h2>Record</h2>
+    </header>
+    <ul class="chatbox">
+    </ul>
+</div>
+
+</div>
+
+</body>
+
+<script>
+    const CONFIG = {
+        TIME_OUT_SECOND: {{ .TimeoutSecond }} * 1000
+    };
+</script>
+
+</html>
