@@ -19,7 +19,7 @@ syntax = "proto3";
 
 package chat;
 
-option go_package = "github.com/apache/dubbo-go-samples/llm/book-flight/proto;chat";
+option go_package = "github.com/apache/dubbo-go-samples/book-flight-ai-agent/proto;chat";
 
 message ChatRequest {
   repeated ChatMessage messages = 1;

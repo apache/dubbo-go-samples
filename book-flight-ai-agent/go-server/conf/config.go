@@ -23,7 +23,9 @@ import (
 	"os"
 	"strconv"
 	"sync"
+)
 
+import (
 	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v3"
 )

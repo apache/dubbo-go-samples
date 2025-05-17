@@ -29,10 +29,10 @@ TIMEOUT_SECOND = 300 # Timeout
 
 ### 3. Run the example
 
-First, enter the `llm/book-flight` directory.
+First, enter the `book-flight-ai-agent` directory.
 
 ```shell
-$ cd llm/book-flight
+$ cd book-flight-ai-agent
 ```
 
 #### Server operation

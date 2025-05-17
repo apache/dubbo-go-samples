@@ -32,12 +32,12 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/agents"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model/ollama"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools/bookingflight"
-	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/agents"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/conf"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model/ollama"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/tools"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/tools/bookingflight"
+	chat "github.com/apache/dubbo-go-samples/book-flight-ai-agent/proto"
 )
 
 var cfgEnv = conf.GetEnvironment()
