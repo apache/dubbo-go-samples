@@ -8,7 +8,7 @@ This case shows how Agent completes the airline booking process with the support
 
 #### Modify the configuration file
 
-Modify the configuration file and copy `llm/book-flight/.env.example` to `llm/book-flight/.env`.
+Modify the configuration file and copy `book-flight-ai-agent/.env.example` to `book-flight-ai-agent/.env`.
 
 ```ini
 # LLM Settings

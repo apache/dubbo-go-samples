@@ -8,7 +8,7 @@
 
 #### 修改配置文件
 
-修改配置文件复制 `llm/book-flight/.env.example` 为 `llm/book-flight/.env`。
+修改配置文件: 复制 `book-flight-ai-agent/.env.example` 为 `book-flight-ai-agent/.env`.
 
 ```ini
 # LLM 设置
