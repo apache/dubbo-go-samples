@@ -5,6 +5,7 @@
 *.so
 *.dylib
 *.DS_Store
+*__debug_bin*
 
 dist/
 *.log
