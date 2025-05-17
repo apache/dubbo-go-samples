@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/model"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model"
 )
 
 type (

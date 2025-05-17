@@ -33,9 +33,9 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-client/frontend/service"
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/conf"
-	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-client/frontend/service"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/conf"
+	chat "github.com/apache/dubbo-go-samples/book-flight-ai-agent/proto"
 )
 
 type ChatHandler struct {

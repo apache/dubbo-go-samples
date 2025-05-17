@@ -23,7 +23,7 @@ import (
 )
 
 import (
-	chat "github.com/apache/dubbo-go-samples/llm/book-flight/proto"
+	chat "github.com/apache/dubbo-go-samples/book-flight-ai-agent/proto"
 )
 
 type ContextManager struct {

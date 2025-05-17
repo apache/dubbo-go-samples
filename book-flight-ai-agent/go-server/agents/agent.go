@@ -23,7 +23,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/tools"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/tools"
 )
 
 // Agent is the interface all agents must implement.

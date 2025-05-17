@@ -29,10 +29,10 @@ TIMEOUT_SECONDS = 300               # 超时时间
 
 ### 3. 运行示例
 
-首先，进入 `llm/book-flight` 目录.
+首先，进入 `book-flight-ai-agent` 目录.
 
 ```shell
-$ cd llm/book-flight
+$ cd book-flight-ai-agent
 ```
 
 #### 服务端运行

@@ -23,7 +23,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/book-flight/go-server/mcp"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/mcp"
 )
 
 type Action mcp.RequestRPC
