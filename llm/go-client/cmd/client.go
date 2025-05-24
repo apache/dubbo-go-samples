@@ -20,6 +20,7 @@ package main
 import (
 	"bufio"
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/logger"
 	"fmt"
 	"os"
 	"strings"
@@ -150,6 +151,10 @@ func main() {
 		dubbo.WithRegistry(
 			registry.WithNacos(),
 			registry.WithAddress(cfg.NacosURL),
+		),
+		dubbo.WithLogger(
+			logger.WithLevel("warn"),
+			logger.WithZap(),
 		),
 	)
 	if err != nil {
