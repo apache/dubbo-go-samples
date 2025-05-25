@@ -20,6 +20,7 @@ package main
 import (
 	"bufio"
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/logger"
 	"fmt"
 	"os"
@@ -147,6 +148,7 @@ func main() {
 
 	currentCtxID = createContext()
 
+	// #TODO support selecting model
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
 			registry.WithNacos(),
@@ -161,7 +163,9 @@ func main() {
 		panic(err)
 	}
 	// configure the params that only client layer cares
-	cli, err := ins.NewClient()
+	cli, err := ins.NewClient(
+		client.WithClientLoadBalanceRoundRobin(),
+	)
 	if err != nil {
 		panic(err)
 	}

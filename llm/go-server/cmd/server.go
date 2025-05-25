@@ -23,50 +23,44 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"runtime/debug"
-)
+	"strconv"
 
-import (
-	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/server"
+	"github.com/dubbogo/gost/log/logger"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
+	"github.com/apache/dubbo-go-samples/llm/config"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
-)
 
-import (
-	"github.com/apache/dubbo-go-samples/llm/config"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 var cfg *config.Config
 
 type ChatServer struct {
-	llms map[string]*ollama.LLM
+	llm *ollama.LLM
 }
 
 func NewChatServer() (*ChatServer, error) {
-
-	llmMap := make(map[string]*ollama.LLM)
-
-	for _, model := range cfg.OllamaModels {
-		if model == "" {
-			continue
-		}
-
-		llm, err := ollama.New(
-			ollama.WithModel(model),
-			ollama.WithServerURL(cfg.OllamaURL),
-		)
-		if err != nil {
-			return nil, fmt.Errorf("failed to initialize model %s: %v", model, err)
-		}
-		llmMap[model] = llm
-		log.Printf("Initialized model: %s", model)
+	if cfg.ModelName == "" {
+		return nil, fmt.Errorf("MODEL_NAME environment variable is not set")
 	}
 
-	return &ChatServer{llms: llmMap}, nil
+	llm, err := ollama.New(
+		ollama.WithModel(cfg.ModelName),
+		ollama.WithServerURL(cfg.OllamaURL),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize model %s: %v", cfg.ModelName, err)
+	}
+	log.Printf("Initialized model: %s", cfg.ModelName)
+
+	return &ChatServer{llm: llm}, nil
 }
 
 func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) (err error) {
@@ -77,31 +71,13 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		}
 	}()
 
-	if len(s.llms) == 0 {
-		return fmt.Errorf("no LLM models are initialized")
+	if s.llm == nil {
+		return fmt.Errorf("LLM model is not initialized")
 	}
 
 	if len(req.Messages) == 0 {
 		log.Println("Request contains no messages")
 		return fmt.Errorf("empty messages in request")
-	}
-
-	modelName := req.Model
-	var llm *ollama.LLM
-
-	if modelName != "" {
-		var ok bool
-		llm, ok = s.llms[modelName]
-		if !ok {
-			return fmt.Errorf("requested model '%s' is not available", modelName)
-		}
-	} else {
-		for name, l := range s.llms {
-			modelName = name
-			llm = l
-			break
-		}
-		log.Printf("No model specified, using default model: %s", modelName)
 	}
 
 	var messages []llms.MessageContent
@@ -136,7 +112,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		messages = append(messages, messageContent)
 	}
 
-	_, err = llm.GenerateContent(
+	_, err = s.llm.GenerateContent(
 		ctx,
 		messages,
 		llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
@@ -145,20 +121,21 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 			}
 			return stream.Send(&chat.ChatResponse{
 				Content: string(chunk),
-				Model:   modelName,
+				Model:   cfg.ModelName,
 			})
 		}),
 	)
 	if err != nil {
-		log.Printf("GenerateContent failed with model %s: %v\n", modelName, err)
-		return fmt.Errorf("GenerateContent failed with model %s: %v", modelName, err)
+		log.Printf("GenerateContent failed with model %s: %v\n", cfg.ModelName, err)
+		return fmt.Errorf("GenerateContent failed with model %s: %v", cfg.ModelName, err)
 	}
+
+	logger.Infof("GenerateContent successfully with model: %s", cfg.ModelName)
 
 	return nil
 }
 
 func main() {
-
 	var err error
 	cfg, err = config.GetConfig()
 	if err != nil {
@@ -166,21 +143,28 @@ func main() {
 		return
 	}
 
-	ins, err := dubbo.NewInstance(
-		dubbo.WithRegistry(
+	portStr := os.Getenv("SERVER_PORT")
+	if portStr == "" {
+		fmt.Printf("Error: SERVER_PORT environment variable is not set\n")
+		return
+	}
+
+	port, err := strconv.Atoi(portStr)
+	if err != nil {
+		fmt.Printf("Error converting SERVER_PORT to int: %v\n", err)
+		return
+	}
+
+	srv, err := server.NewServer(
+		server.WithServerRegistry(
 			registry.WithNacos(),
 			registry.WithAddress(cfg.NacosURL),
 		),
-		dubbo.WithProtocol(
+		server.WithServerProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(20000),
+			protocol.WithPort(port),
 		),
 	)
-
-	if err != nil {
-		panic(err)
-	}
-	srv, err := ins.NewServer()
 
 	if err != nil {
 		fmt.Printf("Error creating server: %v\n", err)

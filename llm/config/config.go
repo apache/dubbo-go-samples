@@ -30,12 +30,12 @@ import (
 )
 
 type Config struct {
-	OllamaModels []string
-	OllamaURL    string
-
+	OllamaModels    []string
+	OllamaURL       string
 	TimeoutSeconds  int
 	NacosURL        string
 	MaxContextCount int
+	ModelName       string
 }
 
 var (
@@ -73,6 +73,22 @@ func Load(envFile string) (*Config, error) {
 
 		config.OllamaModels = modelsList
 
+		modelName := os.Getenv("MODEL_NAME")
+		if modelName != "" {
+			modelValid := false
+			for _, m := range modelsList {
+				if m == modelName {
+					modelValid = true
+					break
+				}
+			}
+			if !modelValid {
+				configErr = fmt.Errorf("specified model %s is not in the configured models list", modelName)
+				return
+			}
+			config.ModelName = modelName
+		}
+
 		ollamaURL := os.Getenv("OLLAMA_URL")
 		if ollamaURL == "" {
 			configErr = fmt.Errorf("OLLAMA_URL is not set")
@@ -94,10 +110,11 @@ func Load(envFile string) (*Config, error) {
 
 		nacosURL := os.Getenv("NACOS_URL")
 		if nacosURL == "" {
-			configErr = fmt.Errorf("OLLAMA_URL is not set")
+			configErr = fmt.Errorf("NACOS_URL is not set")
 			return
 		}
 		config.NacosURL = nacosURL
+
 		maxContextStr := os.Getenv("MAX_CONTEXT_COUNT")
 		if maxContextStr == "" {
 			config.MaxContextCount = defaultMaxContextCount
