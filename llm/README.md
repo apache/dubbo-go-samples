@@ -2,7 +2,7 @@
 
 ## 1. **Introduction**
 
-This sample demonstrates how to integrate **large language models (LLM)** in **Dubbo-go**, allowing the server to invoke the Ollama model for inference and return the results to the client via Dubbo RPC.
+This sample demonstrates how to integrate **large language models (LLM)** in **Dubbo-go**, allowing the server to invoke the Ollama model for inference and return the results to the client via Dubbo RPC. It supports multiple model deployment with multiple instances per model.
 
 ## 2. **Preparation**
 
@@ -28,15 +28,14 @@ $ source ~/.bashrc
 $ ollama serve
 ```
 
-### **Download Model**
+### **Download Models**
 
 ```shell
 $ ollama pull llava:7b
+$ ollama pull qwen2.5:7b  # Optional: download additional models
 ```
 
-Default model uses ```llava:7b```, a novel end-to-end trained large multimodal model.
-
-You can pull your favourite model and specify the demo to use the model in ```.env``` file
+You can pull your preferred models and configure them in the `.env` file.
 
 ### **Install Nacos**
 
@@ -44,51 +43,77 @@ Follow this instruction to [install and start Nacos server](https://dubbo-next.s
 
 ## 3. **Run the Example**
 
-You need to run all the commands in ```llm``` directory.
+You need to run all the commands in the `llm` directory.
 
 ```shell
 $ cd llm
 ```
 
 Create your local environment configuration by copying the template file. 
-After creating the ```.env``` file, edit it to set up your specific configurations.
+After creating the `.env` file, edit it to set up your specific configurations.
 
 ```shell
 # Copy environment template (Use `copy` for Windows)
 $ cp .env.example .env
 ```
 
+### **Configuration**
+
+The `.env` file supports multiple model configurations, example:
+
+```text
+# Configure multiple models, comma-separated, spaces allowed
+OLLAMA_MODELS = llava:7b, qwen2.5:7b
+OLLAMA_URL = http://localhost:11434
+NACOS_URL = nacos://localhost:8848
+TIME_OUT_SECOND = 300
+MAX_CONTEXT_COUNT = 3
+```
+
 ### **Run the Server**
 
-The server integrates the Ollama model and uses Dubbo-go's RPC service for invocation.
+The server supports multi-instance deployment, with multiple instances per model to enhance service capacity. We provide convenient startup scripts:
 
-Run the server by executing:
-
+**Linux/macOS**:
 ```shell
-$ go run go-server/cmd/server.go
+# Default: 2 instances per model, starting from port 20020
+$ ./start_servers.sh
+
+# Custom configuration: specify instance count and start port
+$ ./start_servers.sh --instances 3 --start-port 20030
+```
+
+**Windows**:
+```shell
+# Default: 2 instances per model, starting from port 20020
+$ start_servers.bat
+
+# Custom configuration: specify instance count and start port
+$ start_servers.bat --instances 3 --start-port 20030
 ```
 
 ### **Run the Client**
 
-The client invokes the server's RPC interface to retrieve the inference results from the Ollama model.
+The client invokes the server's RPC interface to retrieve inference results from the Ollama models.
 
-Run the cli client by executing:
-
+CLI Client:
 ```shell
 $ go run go-client/cmd/client.go
 ```
+Supports multi-turn conversations, command interaction, and context management.
 
-Cli client supports multi-turn conversations, command interact, context management.
-
-We also support a frontend using Gin framework for users to interact. If you want run the frontend client you can executing the following command and open it in ```localhost:8080``` by default:
-
+Web Client:
 ```shell
 $ go run go-client/frontend/main.go
 ```
+Access at `localhost:8080` with features:
+- Multi-turn conversations
+- Image upload support (png, jpeg, gif)
+- Multiple model selection
 
-Frontend client supports multi-turn conversations, binary file (image) support for LLM interactions.
-Currently the supported uploaded image types are limited to png, jpeg and gif, with plans to support more binary file types in the future.
+### **Important Notes**
 
-### **Notice**
-
-The default timeout is set to two minutes, please make sure that your computer's performance can generate the corresponding response within two minutes, otherwise it will report an error timeout, you can set your own timeout time in the ```.env``` file
+1. Default timeout is 5 minutes (adjustable via `TIME_OUT_SECOND` in `.env`)
+2. Each model runs 2 instances by default, adjustable via startup script parameters
+3. Servers automatically register with Nacos, no manual port specification needed
+4. Ensure all configured models are downloaded through Ollama before starting

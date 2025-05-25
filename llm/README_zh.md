@@ -2,7 +2,7 @@
 
 ## 1. **介绍**
 
-本案例展示了如何在 **Dubbo-go** 中集成 **大语言模型（LLM）**，以便在服务端调用 Ollama 模型进行推理，并将结果通过 Dubbo 的 RPC 接口返回给客户端。
+本案例展示了如何在 **Dubbo-go** 中集成 **大语言模型（LLM）**，以便在服务端调用 Ollama 模型进行推理，并将结果通过 Dubbo 的 RPC 接口返回给客户端。支持多模型部署和每个模型运行多个实例。
 
 ## 2. **准备工作**
 
@@ -32,11 +32,10 @@ $ ollama serve
 
 ```shell
 $ ollama pull llava:7b
+$ ollama pull qwen2.5:7b  # 可选：下载其他模型
 ```
 
-默认模型使用```llava:7b```，这是一个新颖的端到端多模态的大模型。
-
-您可以自行pull自己喜欢的模型，并在 ```.env``` 文件中指定该demo使用模型。
+您可以自行 pull 需要的模型，并在 `.env` 文件中配置要使用的模型列表。
 
 ### **安装 Nacos**
 
@@ -44,51 +43,76 @@ $ ollama pull llava:7b
 
 ## **3. 运行示例**
 
-以下所有的命令都需要在 ```llm``` 目录下运行.
+以下所有的命令都需要在 `llm` 目录下运行。
 
 ```shell
 $ cd llm
 ```
 
-生成你的本地配置 ```.env``` 文件。完成后，请根据实际情况编辑 ```.env``` 文件并设置相关参数。
+生成你的本地配置 `.env` 文件。完成后，请根据实际情况编辑 `.env` 文件并设置相关参数。
 
 ```shell
 # 复制环境模板文件（Windows用户可使用copy命令）
 $ cp .env.example .env
 ```
 
+### **配置说明**
+
+`.env` 文件支持配置多个模型，示例：
+
+```text
+# 支持配置多个模型，使用逗号分隔，支持带空格
+OLLAMA_MODELS = llava:7b, qwen2.5:7b
+OLLAMA_URL = http://localhost:11434
+NACOS_URL = nacos://localhost:8848
+TIME_OUT_SECOND = 300
+MAX_CONTEXT_COUNT = 3
+```
 
 ### **服务端运行**
 
-在服务端中集成 Ollama 模型，并使用 Dubbo-go 提供的 RPC 服务进行调用。
+服务端支持多实例部署，每个模型可以运行多个实例以提高服务能力。我们提供了便捷的启动脚本：
 
-在服务端目录下运行：
-
+**Linux/macOS**:
 ```shell
-$ go run go-server/cmd/server.go
+# 默认配置：每个模型运行2个实例，端口从20020开始
+$ ./start_servers.sh
+
+# 自定义配置：指定实例数量和起始端口
+$ ./start_servers.sh --instances 3 --start-port 20030
+```
+
+**Windows**:
+```shell
+# 默认配置：每个模型运行2个实例，端口从20020开始
+$ start_servers.bat
+
+# 自定义配置：指定实例数量和起始端口
+$ start_servers.bat --instances 3 --start-port 20030
 ```
 
 ### **客户端运行**
 
 客户端通过 Dubbo RPC 调用服务端的接口，获取 Ollama 模型的推理结果。
 
-在客户端目录下运行：
-
+命令行客户端：
 ```shell
 $ go run go-client/cmd/client.go
 ```
+支持多轮对话、命令交互、上下文管理功能。
 
-命令行客户端支持多轮对话、命令交互、上下文管理功能。
-
-我们也提供了包含前端页面的基于Gin框架的客户端进行交互，运行以下命令然后访问 ```localhost:8080``` 即可使用:
-
+Web 客户端：
 ```shell
 $ go run go-client/frontend/main.go
 ```
-
-包含前端页面的客户端支持多轮对话，支持进行二进制文件（图片）传输并与大模型进行交互。
-目前所支持上传的图片类型被限制为 png，jpeg 和 gif 类型，计划在将来支持更多的二进制文件类型。
+访问 `localhost:8080` 使用 Web 界面，支持：
+- 多轮对话
+- 图片上传（支持 png、jpeg、gif）
+- 多模型选择
 
 ### **注意事项**
 
-默认超时时间为两分钟，请确保您的电脑性能能在两分钟内生成相应的响应，否则会超时报错，您也可以在 ```.env``` 文件中自行设置超时时间。
+1. 默认超时时间为5分钟（可在 `.env` 中通过 `TIME_OUT_SECOND` 调整）
+2. 每个模型默认运行2个实例，可通过启动脚本参数调整
+3. 服务端会自动注册到 Nacos，无需手动指定端口
+4. 确保所有配置的模型都已通过 Ollama 下载完成
