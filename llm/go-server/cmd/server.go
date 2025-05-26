@@ -26,17 +26,20 @@ import (
 	"os"
 	"runtime/debug"
 	"strconv"
+)
 
-	"dubbo.apache.org/dubbo-go/v3/server"
-	"github.com/dubbogo/gost/log/logger"
-
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/apache/dubbo-go-samples/llm/config"
+	"dubbo.apache.org/dubbo-go/v3/server"
+	"github.com/dubbogo/gost/log/logger"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
+)
 
+import (
+	"github.com/apache/dubbo-go-samples/llm/config"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 

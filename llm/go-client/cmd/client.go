@@ -20,8 +20,6 @@ package main
 import (
 	"bufio"
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/client"
-	"dubbo.apache.org/dubbo-go/v3/logger"
 	"fmt"
 	"os"
 	"strings"
@@ -29,7 +27,9 @@ import (
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/logger"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 )
 

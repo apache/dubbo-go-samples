@@ -18,13 +18,13 @@
 package main
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/client"
 	"fmt"
 	"net/http"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 
