@@ -148,7 +148,7 @@ func main() {
 
 	currentCtxID = createContext()
 
-	// #TODO support selecting model
+	// TODO: support selecting model
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
 			registry.WithNacos(),
