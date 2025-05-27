@@ -24,6 +24,7 @@ import (
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 
@@ -57,7 +58,9 @@ func main() {
 		panic(err)
 	}
 	// configure the params that only client layer cares
-	cli, err := ins.NewClient()
+	cli, err := ins.NewClient(
+		client.WithClientLoadBalanceRoundRobin(),
+	)
 
 	if err != nil {
 		panic(fmt.Sprintf("Error creating Dubbo client: %v", err))
