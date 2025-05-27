@@ -21,11 +21,8 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"log"
 	"net/http"
-	"os"
 	"runtime/debug"
-	"strconv"
 )
 
 import (
@@ -61,7 +58,7 @@ func NewChatServer() (*ChatServer, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize model %s: %v", cfg.ModelName, err)
 	}
-	log.Printf("Initialized model: %s", cfg.ModelName)
+	logger.Infof("Initialized model: %s", cfg.ModelName)
 
 	return &ChatServer{llm: llm}, nil
 }
@@ -69,7 +66,7 @@ func NewChatServer() (*ChatServer, error) {
 func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Printf("panic in Chat: %v\n%s", r, debug.Stack())
+			logger.Errorf("panic in Chat: %v\n%s", r, debug.Stack())
 			err = fmt.Errorf("internal server error")
 		}
 	}()
@@ -79,7 +76,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 	}
 
 	if len(req.Messages) == 0 {
-		log.Println("Request contains no messages")
+		logger.Info("Request contains no messages")
 		return fmt.Errorf("empty messages in request")
 	}
 
@@ -105,7 +102,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		if msg.Bin != nil && len(msg.Bin) != 0 {
 			decodeByte, err := base64.StdEncoding.DecodeString(string(msg.Bin))
 			if err != nil {
-				log.Printf("GenerateContent failed: %v\n", err)
+				logger.Errorf("GenerateContent failed: %v\n", err)
 				return fmt.Errorf("GenerateContent failed: %v", err)
 			}
 			imgType := http.DetectContentType(decodeByte)
@@ -129,7 +126,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		}),
 	)
 	if err != nil {
-		log.Printf("GenerateContent failed with model %s: %v\n", cfg.ModelName, err)
+		logger.Errorf("GenerateContent failed with model %s: %v\n", cfg.ModelName, err)
 		return fmt.Errorf("GenerateContent failed with model %s: %v", cfg.ModelName, err)
 	}
 
@@ -146,18 +143,6 @@ func main() {
 		return
 	}
 
-	portStr := os.Getenv("SERVER_PORT")
-	if portStr == "" {
-		fmt.Printf("Error: SERVER_PORT environment variable is not set\n")
-		return
-	}
-
-	port, err := strconv.Atoi(portStr)
-	if err != nil {
-		fmt.Printf("Error converting SERVER_PORT to int: %v\n", err)
-		return
-	}
-
 	srv, err := server.NewServer(
 		server.WithServerRegistry(
 			registry.WithNacos(),
@@ -165,7 +150,7 @@ func main() {
 		),
 		server.WithServerProtocol(
 			protocol.WithTriple(),
-			protocol.WithPort(port),
+			protocol.WithPort(cfg.ServerPort),
 		),
 	)
 
