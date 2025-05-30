@@ -27,7 +27,9 @@ import (
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/logger"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 )
 
@@ -146,17 +148,24 @@ func main() {
 
 	currentCtxID = createContext()
 
+	// TODO: support selecting model
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
 			registry.WithNacos(),
 			registry.WithAddress(cfg.NacosURL),
+		),
+		dubbo.WithLogger(
+			logger.WithLevel("warn"),
+			logger.WithZap(),
 		),
 	)
 	if err != nil {
 		panic(err)
 	}
 	// configure the params that only client layer cares
-	cli, err := ins.NewClient()
+	cli, err := ins.NewClient(
+		client.WithClientLoadBalanceRoundRobin(),
+	)
 	if err != nil {
 		panic(err)
 	}

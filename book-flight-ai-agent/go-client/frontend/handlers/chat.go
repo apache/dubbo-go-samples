@@ -19,8 +19,8 @@ package handlers
 
 import (
 	"context"
-	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"regexp"
 	"runtime/debug"
@@ -28,15 +28,14 @@ import (
 )
 
 import (
-	"github.com/dubbogo/gost/log/logger"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/config"
-	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
-	chat "github.com/apache/dubbo-go-samples/llm/proto"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-client/frontend/service"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/conf"
+	chat "github.com/apache/dubbo-go-samples/book-flight-ai-agent/proto"
 )
 
 type ChatHandler struct {
@@ -57,10 +56,7 @@ func (h *ChatHandler) Index(c *gin.Context) {
 	if ctxID == nil {
 		ctxID = h.ctxManager.CreateContext()
 		session.Set("current_context", ctxID)
-		err := session.Save()
-		if err != nil {
-			return
-		}
+		session.Save()
 	}
 
 	c.HTML(http.StatusOK, "index.html", gin.H{
@@ -70,20 +66,18 @@ func (h *ChatHandler) Index(c *gin.Context) {
 
 func (h *ChatHandler) Chat(c *gin.Context) {
 	session := sessions.Default(c)
-	ctxID, ok := session.Get("current_context").(string)
-	if !ok {
-		h.NewContext(c)
-		ctxID, ok = session.Get("current_context").(string)
-		if !ok {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get context"})
-			return
-		}
+
+	value := session.Get("current_context")
+	if value == nil {
+		value = h.ctxManager.CreateContext()
+		session.Set("current_context", value)
+		session.Save()
 	}
 
+	ctxID, _ := session.Get("current_context").(string)
 	var req struct {
 		Message string `json:"message"`
 		Bin     string `json:"bin"`
-		Model   string `json:"model"`
 	}
 
 	if err := c.BindJSON(&req); err != nil {
@@ -105,16 +99,15 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 		img = matches[2]
 	}
 
-	h.ctxManager.AppendMessage(ctxID, &chat.ChatMessage{
+	messages := h.ctxManager.GetHistory(ctxID)
+	messages = append(messages, &chat.ChatMessage{
 		Role:    "human",
 		Content: req.Message,
 		Bin:     []byte(img),
 	})
 
-	messages := h.ctxManager.GetHistory(ctxID)
 	stream, err := h.svc.Chat(context.Background(), &chat.ChatRequest{
 		Messages: messages,
-		Model:    req.Model,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -122,7 +115,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	}
 	defer func() {
 		if err := stream.Close(); err != nil {
-			logger.Errorf("Error closing stream: %v", err)
+			log.Println("Error closing stream:", err)
 		}
 	}()
 
@@ -131,49 +124,43 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	c.Header("Connection", "close")
 
 	responseCh := make(chan string, 100) // use buffer
+	responseRc := make(chan string, 100) // use buffer
 
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
-				logger.Errorf("Recovered in stream processing: %v\n%s", r, debug.Stack())
+				log.Printf("Recovered in stream processing: %v\n%s", r, debug.Stack())
 			}
 			close(responseCh)
+			close(responseRc)
 		}()
 
-		resp := ""
 		for {
 			select {
 			case <-c.Request.Context().Done(): // client disconnect
-				logger.Info("Client disconnected, stopping stream processing")
+				log.Println("Client disconnected, stopping stream processing")
 				return
 			default:
 				if !stream.Recv() {
 					if err := stream.Err(); err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-						logger.Errorf("Stream receive error: %v", err)
+						log.Printf("Stream receive error: %v", err)
 					}
-					h.ctxManager.AppendMessage(ctxID, &chat.ChatMessage{
-						Role:    "ai",
-						Content: resp,
-						Bin:     nil,
-					})
 					return
 				}
 				content := stream.Msg().Content
-				resp += content
-				responseCh <- content
+				record := stream.Msg().Record
+				if content != "" {
+					responseCh <- content
+				}
+				if record != "" {
+					responseRc <- record
+				}
 			}
 		}
 	}()
 
 	// SSE stream output
-	cfg, err := config.GetConfig()
-	if err != nil {
-		fmt.Printf("Error loading config: %v\n", err)
-		return
-	}
-	timeout := cfg.TimeoutSeconds
-
+	timeout := conf.GetEnvironment().TimeOut
 	c.Stream(func(w io.Writer) bool {
 		select {
 		case chunk, ok := <-responseCh:
@@ -182,11 +169,17 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 			}
 			c.SSEvent("message", gin.H{"content": chunk})
 			return true
+		case chunk, ok := <-responseRc:
+			if !ok {
+				return false
+			}
+			c.SSEvent("message", gin.H{"record": chunk})
+			return true
 		case <-time.After(time.Duration(timeout) * time.Second):
-			logger.Error("Stream time out")
+			log.Println("Stream time out")
 			return false
 		case <-c.Request.Context().Done():
-			logger.Error("Client disconnected")
+			log.Println("Client disconnected")
 			return false
 		}
 	})

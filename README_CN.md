@@ -1,46 +1,70 @@
 # Dubbo Go 示例仓库
 
-![CI](https://github.com/apache/dubbo-go-samples/workflows/CI/badge.svg)
-
 ## 本工程包含的示例
 
-* apisix: apache/apisix 与 Dubbo-go 整合示例
-* async: dubbogo 通过 callback 方式进行异步 RPC 和call-one-way RPC
-* config-api: 无需配置文件，使用 API 的方式启动服务、构造组件和使用
-* configcenter: 使用不同的配置中心，目前支持：zookeeper、和 nacos
-* context: 如何通过 go context  把用户数据 attachment 从调用方传递给服务方
-* direct: 直连模式，无需注册中心，直连服务提供者
-* error/triple: triple 示例，演示如何在 triple 协议中集成 hessian2/protobuf
-* filter: dubbogo filter 示例，包含了 custom_filter 与 tpslimit
-* generic: 泛化调用
-* helloworld: 入门例子
-* integrate_test: dubbogo github action 集成测试用例
-* logger: dubbogo logging
-* metrics: 使用 prometheus 收集 dubbogo 的 metrics
-* otel/trace: 使用 opentelemetry 进行 tracing
-* registry: 把 etcd/nacos/polaris/zookeeper 当做 dubbogo 注册中心示例
-* rpc: 使用 Dubbogo 框架启动 rpc 服务，发起调用
-  * rpc/dubbo: dubbo-go 3.0 RPC 通信示例，同时给出了 Java 和 Go 两种语言通信示例
-  * rpc/grpc: 基于 gRPC 的 RPC 通信示例
-  * rpc/jsonrpc: 基于json-rpc 的通信示例
-  * rpc/triple: 基于 hessian2/msgpack/pb(protobuf-v3)/pb2(protobuf-v2)/自定义序列化协议 的序列化协议与 triple 通信协议相结合的 RPC 示例
-* seata-go:  在 dubbogo 中如何基于 seata-go 实现分布式事务
-* skywalking: 整合 skywalking 与 dubbogo 的示例
-* tls: getty(tcp)/triple/gRPC 全链路 tls 安全通信示例
-* tracing: 链路追踪例子，支持
-* error: 错误处理
-* compatibility: 3.1.x 版本示例
+### compatibility（旧版 dubbo-go 示例，部分已迁移，推荐优先参考此目录）
+* compatibility/apisix：apache/apisix 与 Dubbo-go 整合示例
+* compatibility/async：通过 callback 方式进行异步 RPC 及单向调用示例
+* compatibility/config-api：无需配置文件，使用 API 启动 Dubbo-go 服务
+* compatibility/configcenter：多种配置中心（如 zookeeper、nacos）用法示例
+* compatibility/context：多生产者/消费者间传递请求 context 示例
+* compatibility/direct：直连调用示例，无需注册中心
+* compatibility/error：错误处理与 triple 协议示例
+* compatibility/filter：内置及自定义 filter 示例（如 custom_filter、tpslimit）
+* compatibility/game：游戏服务示例
+* compatibility/generic：泛化调用示例
+* compatibility/logger：Dubbo-go 日志功能示例
+* compatibility/mesh：基于 Envoy 的服务网格部署示例
+* compatibility/metrics：Prometheus 指标采集示例
+* compatibility/otel：OpenTelemetry 链路追踪示例
+* compatibility/proxyless：Kubernetes 下 proxyless 服务网格示例
+* compatibility/registry：多种注册中心（etcd/nacos/polaris/zookeeper）用法
+* compatibility/rpc：Dubbo 协议通信示例
+  * compatibility/rpc/dubbo：Dubbo-go 3.0 Java/Go 跨语言 RPC 示例
+  * compatibility/rpc/grpc：基于 gRPC 的 Dubbo-go RPC 示例
+  * compatibility/rpc/jsonrpc：基于 JSON-RPC 的 Dubbo-go RPC 示例
+  * compatibility/rpc/triple：支持多种序列化（hessian2/msgpack/pb/pb2/自定义）的 triple 协议示例
+* compatibility/seata-go：seata-go 分布式事务示例
+* compatibility/skywalking：集成 SkyWalking 的 Dubbo-go 示例
+* compatibility/tls：getty(tcp)/triple/gRPC 全链路 TLS 加密通信示例
+* compatibility/tracing：链路追踪示例
 
+### 传统示例（部分已迁移至 compatibility 目录，建议优先参考 compatibility）
+* book-flight-ai-agent：AI agent 机票预订示例
+* config_center：多种配置中心（如 nacos、zookeeper）管理配置示例
+* config_yaml：通过 YAML 文件配置 Dubbo-go 应用
+* context：通过 go context 传递用户数据（attachments）的示例
+* error：Dubbo-go 错误处理示例
+* filter：内置及自定义 filter 用法示例
+* healthcheck：服务健康检查示例
+* helloworld：Dubbo-go 入门 Hello World 示例
+* integrate_test：Dubbo-go 示例集成测试用例
+* java_interop：Java 与 Go Dubbo 实现互操作示例
+* llm：集成大语言模型（LLM）与 Dubbo-go 示例
+* logger：Dubbo-go 日志功能示例
+* metrics：Dubbo-go 服务指标采集与暴露示例
+* online_boutique：Dubbo-go 微服务电商示例
+* otel/tracing：基于 OpenTelemetry 的分布式链路追踪示例
+* registry：多种服务注册中心（如 nacos、zookeeper）用法示例
+* retry：Dubbo-go RPC 调用重试机制示例
+* rpc：多种 RPC 协议示例
+  * rpc/dubbo：Dubbo 协议示例，含 Java/Go 跨语言通信
+  * rpc/grpc：gRPC 协议示例
+  * rpc/jsonrpc：JSON-RPC 协议示例
+  * rpc/triple：支持多种序列化的 triple 协议示例
+* streaming：流式 RPC 通信示例
+* task：任务调度与执行示例
+* timeout：Dubbo-go 超时处理示例
+* transaction/seata-go：基于 seata-go 的分布式事务示例
 
 ## 如何运行
 
-请参阅 [HOWTO](HOWTO_zh.md)
+请参考 [How To Run](HOWTO_zh.md) 获取详细运行说明。
 
 ## 如何贡献
 
-如果您希望增加新的用例，请继续阅读:
-
-1. 为您的示例起合适的名字并创建子目录。如果您不太确定如何做，请参考现有示例摆放目录结构
-2. 提交 PR 之前请确保在本地运行通过，提交 PR 之后请确保 GitHub 上的集成测试通过。请参考现有示例增加对应的测试
-3. 请提供示例相关的 README.md 的中英文版本
+如需新增示例，请遵循以下流程：
+1. 新建子目录并命名，建议参考现有示例目录结构。
+2. 确保示例可正常运行，提交 PR 后通过 GitHub CI 检查。可参考现有示例的测试方式。
+3. 请为你的示例提供 README.md 说明文档。
 * registry: 展示与不同注册中心的对接，包含了 nacos、etcd 和 zookeeper。

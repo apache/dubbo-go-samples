@@ -23,52 +23,36 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/registry"
-
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/config"
-	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/handlers"
-	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
-	chat "github.com/apache/dubbo-go-samples/llm/proto"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-client/frontend/handlers"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-client/frontend/service"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/conf"
+	chat "github.com/apache/dubbo-go-samples/book-flight-ai-agent/proto"
 )
 
+var cfgEnv = conf.GetEnvironment()
+
 func main() {
-	cfg, err := config.GetConfig()
-	if err != nil {
-		fmt.Printf("Error loading config: %v\n", err)
-		return
-	}
-
 	// init Dubbo
-	ins, err := dubbo.NewInstance(
-		dubbo.WithRegistry(
-			registry.WithNacos(),
-			registry.WithAddress(cfg.NacosURL),
-		),
+	cli, err := client.NewClient(
+		client.WithClientURL(cfgEnv.UrlClient),
 	)
 	if err != nil {
-		panic(err)
-	}
-	// configure the params that only client layer cares
-	cli, err := ins.NewClient(
-		client.WithClientLoadBalanceRoundRobin(),
-	)
-
-	if err != nil {
-		panic(fmt.Sprintf("Error creating Dubbo client: %v", err))
+		fmt.Printf("Error creating Dubbo client: %v", err)
+		return
 	}
 
 	svc, err := chat.NewChatService(cli)
 	if err != nil {
-		panic(fmt.Sprintf("Error creating chat service: %v", err))
+		fmt.Printf("Error creating chat service: %v", err)
+		return
 	}
 
 	// init Gin
@@ -86,12 +70,12 @@ func main() {
 	ctxManager := service.NewContextManager()
 
 	// register route
+	cfgEnv := conf.GetEnvironment()
 	h := handlers.NewChatHandler(svc, ctxManager)
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
-			"TimeoutSecond": cfg.TimeoutSeconds,
-			"OllamaModels":  cfg.OllamaModels,
-			"DefaultModel":  cfg.OllamaModels[0],
+			"TimeoutSecond": cfgEnv.TimeOut,
+			"OllamaModel":   cfgEnv.Model,
 		})
 	})
 	r.POST("/api/chat", h.Chat)
@@ -99,7 +83,8 @@ func main() {
 	r.GET("/api/context/list", h.ListContexts)
 	r.POST("/api/context/switch", h.SwitchContext)
 
-	if err := r.Run(":8080"); err != nil {
-		panic(fmt.Sprintf("Failed to start server: %v", err))
+	if err := r.Run(fmt.Sprintf(":%d", cfgEnv.PortWeb)); err != nil {
+		fmt.Printf("Failed to start server: %v", err)
+		return
 	}
 }
