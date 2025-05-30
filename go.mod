@@ -5,11 +5,11 @@ require (
 	github.com/SkyAPM/go2sky v1.5.0
 	github.com/SkyAPM/go2sky-plugins/dubbo-go v0.0.0-20220718123631-cb8f743b16cf
 	github.com/alibaba/sentinel-golang v1.0.4
-	github.com/apache/dubbo-go-hessian2 v1.12.2
+	github.com/apache/dubbo-go-hessian2 v1.12.5
 	github.com/dubbogo/go-zookeeper v1.0.4-0.20211212162352-f9d2183d89d5
-	github.com/dubbogo/gost v1.14.0
+	github.com/dubbogo/gost v1.14.1
 	github.com/dubbogo/grpc-go v1.42.10
-	github.com/dubbogo/triple v1.2.2-rc3
+	github.com/dubbogo/triple v1.2.2-rc4
 	github.com/gin-contrib/sessions v1.0.2
 	github.com/gin-gonic/gin v1.10.0
 	github.com/gogo/protobuf v1.3.2
@@ -19,15 +19,15 @@ require (
 	github.com/ollama/ollama v0.5.1
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
-	github.com/openzipkin/zipkin-go v0.4.0
+	github.com/openzipkin/zipkin-go v0.4.2
 	github.com/pkg/errors v0.9.1
 	github.com/seata/seata-go v0.1.0-rc1
 	github.com/stretchr/testify v1.9.0
 	github.com/tmc/langchaingo v0.1.13
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	go.opentelemetry.io/otel v1.26.0
-	go.opentelemetry.io/otel/exporters/jaeger v1.10.0
-	go.opentelemetry.io/otel/sdk v1.24.0
+	go.opentelemetry.io/otel/exporters/jaeger v1.17.0
+	go.opentelemetry.io/otel/sdk v1.21.0
 	google.golang.org/grpc v1.64.0
 	google.golang.org/protobuf v1.34.1
 	gopkg.in/yaml.v3 v3.0.1
@@ -50,10 +50,10 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
-	github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe // indirect
+	github.com/cncf/udpa/go v0.0.0-20210930031921-04548b0d99d4 // indirect
 	github.com/cncf/xds/go v0.0.0-20240318125728-8a4994d93e50 // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
-	github.com/coreos/go-systemd/v22 v22.3.2 // indirect
+	github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534 // indirect
 	github.com/creasty/defaults v1.5.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dlclark/regexp2 v1.11.4 // indirect
@@ -124,6 +124,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/shirou/gopsutil/v3 v3.23.12 // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
+	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
@@ -135,12 +136,12 @@ require (
 	go.etcd.io/etcd/client/pkg/v3 v3.5.7 // indirect
 	go.etcd.io/etcd/client/v3 v3.5.7 // indirect
 	go.opentelemetry.io/contrib/propagators/b3 v1.10.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.10.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.10.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.10.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.10.0 // indirect
-	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.10.0 // indirect
-	go.opentelemetry.io/otel/exporters/zipkin v1.10.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.21.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.21.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.21.0 // indirect
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.21.0 // indirect
+	go.opentelemetry.io/otel/exporters/zipkin v1.21.0 // indirect
+	go.opentelemetry.io/otel/metric v1.26.0 // indirect
 	go.opentelemetry.io/otel/trace v1.26.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.0.0 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
@@ -164,11 +165,11 @@ require (
 )
 
 replace (
-	go.opentelemetry.io/otel => go.opentelemetry.io/otel v1.10.0
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace => go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.10.0
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.10.0
-	go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v1.10.0
-	go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v1.10.0
+	go.opentelemetry.io/otel => go.opentelemetry.io/otel v1.26.0
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace => go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.21.0
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.21.0
+	go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v1.21.0
+	go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v1.21.0
 )
 
 go 1.23
