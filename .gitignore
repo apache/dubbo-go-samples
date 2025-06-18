@@ -5,6 +5,7 @@
 *.so
 *.dylib
 *.DS_Store
+*__debug_bin*
 
 dist/
 *.log
@@ -14,6 +15,9 @@ dist/
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 coverage.txt
+
+# .env is a user-specific environment configuration file
+*.env
 
 *.idea
 *.iml
