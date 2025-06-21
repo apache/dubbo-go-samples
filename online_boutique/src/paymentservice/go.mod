@@ -3,7 +3,7 @@ module github.com/apache/dubbo-go-samples/online_boutique_demo/paymentservice
 go 1.20
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1.0.20240808044912-f61d7c94bfd2
+	dubbo.apache.org/dubbo-go/v3 v3.3.0
 	github.com/dubbogo/gost v1.14.0
 	github.com/durango/go-credit-card v0.0.0-20220404131259-a9e175ba4082
 	github.com/google/uuid v1.3.0
@@ -19,7 +19,7 @@ require (
 	github.com/alibaba/sentinel-golang v1.0.4 // indirect
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.1704 // indirect
 	github.com/apache/dubbo-getty v1.4.10 // indirect
-	github.com/apache/dubbo-go-hessian2 v1.12.2 // indirect
+	github.com/apache/dubbo-go-hessian2 v1.12.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
@@ -36,7 +36,7 @@ require (
 	github.com/dop251/goja v0.0.0-20240220182346-e401ed450204 // indirect
 	github.com/dubbogo/go-zookeeper v1.0.4-0.20211212162352-f9d2183d89d5 // indirect
 	github.com/dubbogo/grpc-go v1.42.10 // indirect
-	github.com/dubbogo/triple v1.2.2-rc3 // indirect
+	github.com/dubbogo/triple v1.2.2-rc4 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.10.1 // indirect
 	github.com/envoyproxy/go-control-plane v0.11.0 // indirect
