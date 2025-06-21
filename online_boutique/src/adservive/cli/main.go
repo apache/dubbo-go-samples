@@ -34,7 +34,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	checkhealth(cli)
+	err = checkHealth(cli)
+	if err != nil {
+		return
+	}
 	svc, err := hipstershop.NewAdService(cli)
 	if err != nil {
 		panic(err)
@@ -48,7 +51,7 @@ func main() {
 	logger.Infof("get resp: %v", resp)
 }
 
-func checkhealth(cli *client.Client) error {
+func checkHealth(cli *client.Client) error {
 	svc, err := health.NewHealth(cli)
 	if err != nil {
 		panic(err)
