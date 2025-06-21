@@ -182,12 +182,12 @@ func main() {
 	//if err := micro.RegisterHandler(srv.Server(), handler); err != nil {
 	//	logger.Fatal(err)
 	//}
-	srv_http := &http.Server{
+	srvHttp := &http.Server{
 		Addr:    ":8090",
 		Handler: handler,
 	}
 
-	log.Fatal(srv_http.ListenAndServe())
+	log.Fatal(srvHttp.ListenAndServe())
 
 	logger.Infof("starting server on %s", config.Address())
 	if err := srv.Serve(); err != nil {
