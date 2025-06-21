@@ -2,7 +2,6 @@ module github.com/apache/dubbo-go-samples/online_boutique_demo/emailservice
 
 go 1.23.0
 
-toolchain go1.24.0
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.0

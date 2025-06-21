@@ -1,6 +1,6 @@
 module github.com/apache/dubbo-go-samples/online_boutique_demo/paymentservice
 
-go 1.20
+go 1.23.0
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.0
