@@ -67,14 +67,17 @@ func main() {
 	var successCount, failCount int64
 	for i := 0; i < 10; i++ {
 		time.Sleep(50 * time.Millisecond)
-		user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex03"})
+		user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex001"})
 		if err != nil {
-			failCount++
 			logger.Infof("error: %v\n", err)
-		} else {
-			successCount++
 		}
-		logger.Infof("response: %v\n", user)
+		if user.ID == "A001" && user.Age == 18 {
+			successCount++
+			logger.Infof("response success: %v\n", user)
+		} else {
+			failCount++
+			logger.Infof("response fail: %v\n", user)
+		}
 	}
 	logger.Infof("successCount=%v, failCount=%v\n", successCount, failCount)
 

@@ -42,6 +42,8 @@ Note: The service current limiting capability of PolarisMesh works on the Provid
 
 The implementation of the PolarisMesh TpsLimiter extension point in dubbogo can automatically identify the request tag information that needs to participate in current limiting from the current RPC call context and request information according to the current limiting rules configured by the user.
 
+Please config the ratelimit strategy according to the picture.
+
 ![](images/dubbogo-ratelimit-rule.png)
 
 - The request matching rule is **Request parameter(QUERY)**
