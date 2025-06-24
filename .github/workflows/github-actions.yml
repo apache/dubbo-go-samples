@@ -17,7 +17,8 @@ jobs:
     strategy:
       # If you want to matrix build, you can append the following list.
       matrix:
-        go_version: '1.23'
+        go_version:
+          - '1.23'
         os:
           - ubuntu-latest
 
