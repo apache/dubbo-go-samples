@@ -37,7 +37,7 @@ var (
 	onceEnv       sync.Once
 )
 
-// Config structure matches the environment file structure
+// Environment Config structure matches the environment file structure
 type Environment struct {
 	Model      string `env:"LLM_MODEL"`
 	Url        string `env:"LLM_URL"`
@@ -81,7 +81,7 @@ func AtoiWithDefault(key string, defaultValue int) int {
 	return defaultValue
 }
 
-// Config structure matches the YAML file structure
+// CfgPrompts Config structure matches the YAML file structure
 type CfgPrompts struct {
 	ReactPrompt        string `yaml:"reactPrompt"`
 	FinalPrompt        string `yaml:"finalPrompt"`
