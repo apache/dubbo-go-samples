@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/setup-go@v5
         with:
-          go-version: ${{ matrix.go_version }}
+          go-version: ${{ matrix.go-version }}
           cache: true
           cache-dependency-path: |
             **/go.mod
