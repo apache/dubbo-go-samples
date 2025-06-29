@@ -36,7 +36,7 @@ func main() {
 	}
 	err = checkHealth(cli)
 	if err != nil {
-		return
+		panic(err)
 	}
 	svc, err := hipstershop.NewAdService(cli)
 	if err != nil {
