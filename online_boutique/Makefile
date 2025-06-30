@@ -1,4 +1,3 @@
-#!/usr/bin/env make
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -53,7 +52,7 @@ build-all:
 	@echo "$(BLUE)构建所有服务...$(NC)"
 	@for service in $(SERVICES); do \
 		echo "$(GREEN)构建 $$service...$(NC)"; \
-		cd src/$$service && $(MAKE) build && cd ../..; \
+		$(MAKE) -C src/$$service build; \
 	done
 	@echo "$(GREEN)所有服务构建完成！$(NC)"
 
@@ -63,8 +62,8 @@ start-all: build-all setup
 	@echo "$(BLUE)启动所有服务...$(NC)"
 	@for service in $(SERVICES); do \
 		echo "$(GREEN)启动 $$service...$(NC)"; \
-		cd src/$$service; \
-		nohup ./$$service > ../../logs/$$service.log 2>&1 & echo $$! > ../../pids/$$service.pid && cd ../..; \
+		(cd src/$$service; \
+		 nohup ./$$service > ../../logs/$$service.log 2>&1 & echo $$! > ../../pids/$$service.pid); \
 		sleep 2; \
 	done
 	@echo "$(GREEN)所有服务已启动！$(NC)"
@@ -76,7 +75,7 @@ stop-all:
 	@for service in $(SERVICES); do \
 		if [ -f pids/$$service.pid ]; then \
 			echo "$(YELLOW)停止 $$service...$(NC)"; \
-			kill -TERM `cat pids/$$service.pid` 2>/dev/null || true; \
+			kill -TERM $$(cat pids/$$service.pid) 2>/dev/null || true; \
 			rm -f pids/$$service.pid; \
 		fi; \
 	done
@@ -99,7 +98,7 @@ tidy-all:
 	@echo "$(BLUE)执行所有服务的 go mod tidy...$(NC)"
 	@for service in $(SERVICES); do \
 		echo "$(GREEN)tidy $$service...$(NC)"; \
-		cd src/$$service && $(MAKE) tidy && cd ../..; \
+		$(MAKE) -C src/$$service tidy; \
 	done
 	@echo "$(GREEN)所有服务 tidy 完成！$(NC)"
 
@@ -123,7 +122,7 @@ status:
 	@mkdir -p pids
 	@for service in $(SERVICES); do \
 		if [ -f pids/$$service.pid ]; then \
-			pid=`cat pids/$$service.pid`; \
+			pid=$$(cat pids/$$service.pid); \
 			if ps -p $$pid > /dev/null 2>&1; then \
 				echo "$(GREEN)✓ $$service (PID: $$pid) - 运行中$(NC)"; \
 			else \
@@ -145,7 +144,7 @@ define service-template
 .PHONY: build-$(1)
 build-$(1):
 	@echo "$(GREEN)构建 $(1)...$(NC)"
-	@cd src/$(1) && $(MAKE) build
+	@$(MAKE) -C src/$(1) build
 
 .PHONY: start-$(1)
 start-$(1): build-$(1) setup
@@ -157,7 +156,7 @@ stop-$(1):
 	@mkdir -p pids
 	@if [ -f pids/$(1).pid ]; then \
 		echo "$(YELLOW)停止 $(1)...$(NC)"; \
-		kill -TERM `cat pids/$(1).pid` 2>/dev/null || true; \
+		kill -TERM $$(cat pids/$(1).pid) 2>/dev/null || true; \
 		rm -f pids/$(1).pid; \
 	else \
 		echo "$(YELLOW)$(1) 未在运行$(NC)"; \
