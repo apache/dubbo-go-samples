@@ -54,10 +54,6 @@ func main() {
 		panic(err)
 	}
 
-	if err != nil {
-		panic(err)
-	}
-
 	if err := hipstershop.RegisterAdServiceHandler(srv, &handler.AdService{}); err != nil {
 		panic(err)
 	}
