@@ -95,7 +95,6 @@ make stop-cartservice
 - `productcatalogservice` - Product catalog service
 - `recommendationservice` - Product recommendation service
 - `shippingservice` - Shipping cost calculation service
-- `loadgenerator` - Load testing service
 
 ### Environment Setup
 
