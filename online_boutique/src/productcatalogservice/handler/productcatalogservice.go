@@ -24,7 +24,6 @@ import (
 	"github.com/dubbogo/grpc-go/codes"
 	"github.com/dubbogo/grpc-go/status"
 	"google.golang.org/protobuf/encoding/protojson"
-	"io/ioutil"
 	"os"
 	"os/signal"
 	"strings"
@@ -83,7 +82,7 @@ func (s *ProductCatalogService) SearchProducts(ctx context.Context, in *pb.Searc
 func (s *ProductCatalogService) readCatalogFile() (*pb.ListProductsResponse, error) {
 	s.Lock()
 	defer s.Unlock()
-	catalogJSON, err := ioutil.ReadFile("data/products.json")
+	catalogJSON, err := os.ReadFile("data/products.json")
 	if err != nil {
 		logger.Errorf("failed to open product catalog json file: %v", err)
 		return nil, err

@@ -22,8 +22,8 @@ import (
 	"encoding/json"
 	"github.com/dubbogo/grpc-go/codes"
 	"github.com/dubbogo/grpc-go/status"
-	"io/ioutil"
 	"math"
+	"os"
 
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/currencyservice/proto"
 )
@@ -32,7 +32,7 @@ type CurrencyService struct{}
 
 func (s *CurrencyService) GetSupportedCurrencies(ctx context.Context, in *pb.Empty) (*pb.GetSupportedCurrenciesResponse, error) {
 	out := &pb.GetSupportedCurrenciesResponse{}
-	data, err := ioutil.ReadFile("data/currency_conversion.json")
+	data, err := os.ReadFile("data/currency_conversion.json")
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to load currency data : %+v", err.Error())
 	}
@@ -49,7 +49,7 @@ func (s *CurrencyService) GetSupportedCurrencies(ctx context.Context, in *pb.Emp
 
 func (s *CurrencyService) Convert(ctx context.Context, in *pb.CurrencyConversionRequest) (*pb.Money, error) {
 	out := &pb.Money{}
-	data, err := ioutil.ReadFile("data/currency_conversion.json")
+	data, err := os.ReadFile("data/currency_conversion.json")
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

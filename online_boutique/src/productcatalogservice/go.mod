@@ -1,10 +1,10 @@
 module github.com/apache/dubbo-go-samples/online_boutique_demo/productcatalogservice
 
-go 1.20
+go 1.23.0
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.2.0-rc1.0.20240808044912-f61d7c94bfd2
-	github.com/dubbogo/gost v1.14.0
+	dubbo.apache.org/dubbo-go/v3 v3.3.0
+	github.com/dubbogo/gost v1.14.1
 	github.com/dubbogo/grpc-go v1.42.10
 	google.golang.org/protobuf v1.34.1
 )
@@ -18,7 +18,7 @@ require (
 	github.com/alibaba/sentinel-golang v1.0.4 // indirect
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.1704 // indirect
 	github.com/apache/dubbo-getty v1.4.10 // indirect
-	github.com/apache/dubbo-go-hessian2 v1.12.2 // indirect
+	github.com/apache/dubbo-go-hessian2 v1.12.5 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
@@ -34,12 +34,11 @@ require (
 	github.com/dlclark/regexp2 v1.7.0 // indirect
 	github.com/dop251/goja v0.0.0-20240220182346-e401ed450204 // indirect
 	github.com/dubbogo/go-zookeeper v1.0.4-0.20211212162352-f9d2183d89d5 // indirect
-	github.com/dubbogo/triple v1.2.2-rc3 // indirect
+	github.com/dubbogo/triple v1.2.2-rc4 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.10.1 // indirect
 	github.com/envoyproxy/go-control-plane v0.11.1-0.20230524094728-9239064ad72f // indirect
 	github.com/envoyproxy/protoc-gen-validate v0.10.1 // indirect
-	github.com/go-co-op/gocron v1.9.0 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
@@ -93,8 +92,8 @@ require (
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
-	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/shirou/gopsutil/v3 v3.22.2 // indirect
+	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
 	github.com/tklauser/numcpus v0.4.0 // indirect
