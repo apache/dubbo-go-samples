@@ -25,7 +25,7 @@ import (
 	"github.com/dubbogo/gost/log/logger"
 )
 
-const MAX_ADS_TO_SERVE = 2
+const MaxAdsToServe = 2
 
 var adsMap = createAdsMap()
 
@@ -55,12 +55,12 @@ func getAdsByCategory(category string) []*pb.Ad {
 }
 
 func getRandomAds() []*pb.Ad {
-	ads := make([]*pb.Ad, 0, MAX_ADS_TO_SERVE)
+	ads := make([]*pb.Ad, 0, MaxAdsToServe)
 	allAds := make([]*pb.Ad, 0, 7)
 	for _, ads := range adsMap {
 		allAds = append(allAds, ads...)
 	}
-	for i := 0; i < MAX_ADS_TO_SERVE; i++ {
+	for i := 0; i < MaxAdsToServe; i++ {
 		ads = append(ads, allAds[rand.Intn(len(allAds))])
 	}
 	return ads
