@@ -1,7 +1,5 @@
 module github.com/apache/dubbo-go-samples
 
-replace dubbo.apache.org/dubbo-go/v3 v3.3.0 => /Users/nyar/go/dubbo-go
-
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.0
 	github.com/SkyAPM/go2sky v1.5.0
