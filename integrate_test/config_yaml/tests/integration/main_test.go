@@ -36,7 +36,7 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	greeterProvider, err = greet.NewGreetService(cli)
+	greeterProvider, err = greet.NewGreetService(cli, client.WithInterface("com.apache.dubbo.sample.Greeter"))
 
 	if err != nil {
 		panic(err)
