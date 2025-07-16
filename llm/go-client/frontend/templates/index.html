@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Chatbot</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts Link For Icons -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+  <script src="../static/script.js" defer></script>
+</head>
+
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <h2>LLM Chat</h2>
+      <div class="model-selector">
+        <label for="model-select"></label><select id="model-select">
+          {{range .OllamaModels}}
+          <option value="{{.}}">{{.}}</option>
+          {{end}}
+        </select>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message ai">
+        <div class="avatar">
+          <span class="material-symbols-outlined">smart_toy</span>
+        </div>
+        <div class="message-content">
+          Hi there 👋
+        </div>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <div class="preview-container" id="previewContainer"></div>
+      <div class="input-row">
+        <div class="file-input">
+          <input type="file" id="imageUpload" accept="image/*" multiple>
+          <label for="imageUpload">
+            <span class="material-symbols-rounded">photo_camera</span>
+          </label>
+        </div>
+        <label for="userInput" style="display: none"></label><input type="text" id="userInput" placeholder="Enter your message...">
+        <button id="send-btn" onclick="sendMessage()">
+          <span class="material-symbols-rounded">send</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
