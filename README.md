@@ -40,6 +40,7 @@
 * context: Example of passing user data (attachments) via Go context between client and server
 * error: Error handling examples in Dubbo-go
 * filter: Demonstrates the use of built-in and custom filters in Dubbo-go
+  * polaris/limit: Use Polaris as tps limiter
 * healthcheck: Service health check example
 * helloworld: Basic hello world example for Dubbo-go
 * integrate_test: Integration test cases for Dubbo-go samples
