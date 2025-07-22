@@ -94,6 +94,10 @@ array+=("rpc/multi-protocols")
 # async
 array+=("compatibility/async")
 
+# polaris
+array+=("compatibility/polaris/registry")
+array+=("compatibility/polaris/limit")
+
 # error
 array+=("error")
 
