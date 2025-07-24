@@ -36,6 +36,7 @@
 * context：通过 go context 传递用户数据（attachments）的示例
 * error：Dubbo-go 错误处理示例
 * filter：内置及自定义 filter 用法示例
+  * polaris/limit: 使用Polaris的服务限流功能示例
 * healthcheck：服务健康检查示例
 * helloworld：Dubbo-go 入门 Hello World 示例
 * integrate_test：Dubbo-go 示例集成测试用例
