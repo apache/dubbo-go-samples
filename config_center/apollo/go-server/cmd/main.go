@@ -69,7 +69,7 @@ func main() {
 			config_center.WithDataID(apolloNamespace),
 			config_center.WithAppID(apolloAppID),
 			config_center.WithCluster(apolloCluster),
-			config_center.WithFileExtProperties(),
+			//config_center.WithFileExtProperties(),
 		),
 	)
 	if err != nil {
