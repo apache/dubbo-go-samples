@@ -171,6 +171,10 @@ microservices](./docs/img/architecture-diagram.png)](./docs/img/architecture-dia
 | [checkoutservice](./src/checkoutservice)             | Go            | Retrieves user cart, prepares order and orchestrates the payment, shipping and the email notification.                            |
 | [recommendationservice](./src/recommendationservice) | Go            | Recommends other products based on what's given in the cart.                                                                      |
 | [adservice](./src/adservice)                         | Go            | Provides text ads based on given context words.                                                                                   |
+
+
+| Script                                              | Language      | Description                                                                                                                       |
+|------------------------------------------------------| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | [loadgenerator](./src/loadgenerator)                 | Python+Locust | Continuously sends requests imitating realistic user shopping flows to the frontend.                                              |
 
 ## Features
