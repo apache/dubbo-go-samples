@@ -21,7 +21,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"regexp"
 	"runtime/debug"
@@ -29,6 +28,7 @@ import (
 )
 
 import (
+	"github.com/dubbogo/gost/log/logger"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
@@ -122,7 +122,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	}
 	defer func() {
 		if err := stream.Close(); err != nil {
-			log.Println("Error closing stream:", err)
+			logger.Errorf("Error closing stream: %v", err)
 		}
 	}()
 
@@ -135,7 +135,7 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
-				log.Printf("Recovered in stream processing: %v\n%s", r, debug.Stack())
+				logger.Errorf("Recovered in stream processing: %v\n%s", r, debug.Stack())
 			}
 			close(responseCh)
 		}()
@@ -144,13 +144,13 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 		for {
 			select {
 			case <-c.Request.Context().Done(): // client disconnect
-				log.Println("Client disconnected, stopping stream processing")
+				logger.Info("Client disconnected, stopping stream processing")
 				return
 			default:
 				if !stream.Recv() {
 					if err := stream.Err(); err != nil {
 						c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-						log.Printf("Stream receive error: %v", err)
+						logger.Errorf("Stream receive error: %v", err)
 					}
 					h.ctxManager.AppendMessage(ctxID, &chat.ChatMessage{
 						Role:    "ai",
@@ -183,10 +183,10 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 			c.SSEvent("message", gin.H{"content": chunk})
 			return true
 		case <-time.After(time.Duration(timeout) * time.Second):
-			log.Println("Stream time out")
+			logger.Error("Stream time out")
 			return false
 		case <-c.Request.Context().Done():
-			log.Println("Client disconnected")
+			logger.Error("Client disconnected")
 			return false
 		}
 	})

@@ -30,12 +30,13 @@ import (
 )
 
 type Config struct {
-	OllamaModels []string
-	OllamaURL    string
-
+	OllamaModels    []string
+	OllamaURL       string
 	TimeoutSeconds  int
 	NacosURL        string
 	MaxContextCount int
+	ModelName       string
+	ServerPort      int
 }
 
 var (
@@ -73,6 +74,36 @@ func Load(envFile string) (*Config, error) {
 
 		config.OllamaModels = modelsList
 
+		modelName := os.Getenv("MODEL_NAME")
+		if modelName == "" {
+			configErr = fmt.Errorf("MODEL_NAME environment variable is not set")
+			return
+		}
+		modelName = strings.TrimSpace(modelName)
+		modelValid := false
+		for _, m := range modelsList {
+			if m == modelName {
+				modelValid = true
+				break
+			}
+		}
+		if !modelValid {
+			configErr = fmt.Errorf("specified model %s is not in the configured models list", modelName)
+			return
+		}
+		config.ModelName = modelName
+
+		portStr := os.Getenv("SERVER_PORT")
+		if portStr == "" {
+			configErr = fmt.Errorf("Error: SERVER_PORT environment variable is not set\n")
+			return
+		}
+		config.ServerPort, err = strconv.Atoi(portStr)
+		if err != nil {
+			configErr = fmt.Errorf("Error converting SERVER_PORT to int: %v\n", err)
+			return
+		}
+
 		ollamaURL := os.Getenv("OLLAMA_URL")
 		if ollamaURL == "" {
 			configErr = fmt.Errorf("OLLAMA_URL is not set")
@@ -94,10 +125,11 @@ func Load(envFile string) (*Config, error) {
 
 		nacosURL := os.Getenv("NACOS_URL")
 		if nacosURL == "" {
-			configErr = fmt.Errorf("OLLAMA_URL is not set")
+			configErr = fmt.Errorf("NACOS_URL is not set")
 			return
 		}
 		config.NacosURL = nacosURL
+
 		maxContextStr := os.Getenv("MAX_CONTEXT_COUNT")
 		if maxContextStr == "" {
 			config.MaxContextCount = defaultMaxContextCount
