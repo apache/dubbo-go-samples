@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.0
 	github.com/dubbogo/gost v1.14.1
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.33.0
 )
 
 require (
