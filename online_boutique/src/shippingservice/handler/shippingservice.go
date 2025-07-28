@@ -20,8 +20,13 @@ package handler
 import (
 	"context"
 	"fmt"
-	"github.com/dubbogo/gost/log/logger"
+)
 
+import (
+	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/shippingservice/proto"
 )
 

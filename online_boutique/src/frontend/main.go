@@ -18,19 +18,28 @@
 package main
 
 import (
+	"fmt"
+	"net/http"
+	"os"
+	"time"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	"fmt"
+
+	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/gorilla/mux"
+
+	"github.com/sirupsen/logrus"
+)
+
+import (
 	"github.com/apache/dubbo-go-samples/online_boutique_demo/frontend/config"
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/frontend/proto"
-	"github.com/dubbogo/gost/log/logger"
-	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
-	"net/http"
-	"os"
-	"time"
 )
 
 const (

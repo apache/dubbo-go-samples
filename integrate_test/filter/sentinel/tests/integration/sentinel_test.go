@@ -19,17 +19,25 @@ package integration
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/client"
-	"github.com/alibaba/sentinel-golang/core/circuitbreaker"
-	"github.com/alibaba/sentinel-golang/core/isolation"
-	"github.com/dubbogo/gost/log/logger"
 	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
+)
 
-	greet "github.com/apache/dubbo-go-samples/filter/proto/sentinel"
+import (
+	"dubbo.apache.org/dubbo-go/v3/client"
+
+	"github.com/alibaba/sentinel-golang/core/circuitbreaker"
+	"github.com/alibaba/sentinel-golang/core/isolation"
+
+	"github.com/dubbogo/gost/log/logger"
+
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/filter/proto/sentinel"
 )
 
 type GreetFun func(ctx context.Context, req *greet.GreetRequest, opts ...client.CallOption) (*greet.GreetResponse, error)

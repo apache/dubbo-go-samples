@@ -20,9 +20,14 @@ package integration
 import (
 	"os"
 	"testing"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/java_interop/service_discovery/service/proto"
 )
 

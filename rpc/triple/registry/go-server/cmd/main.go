@@ -26,7 +26,9 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
+)
 
+import (
 	greet "github.com/apache/dubbo-go-samples/rpc/triple/registry/proto"
 )
 

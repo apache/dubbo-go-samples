@@ -19,10 +19,15 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/healthcheck/proto"
 )
 

@@ -20,11 +20,15 @@ package main
 import (
 	"context"
 	"fmt"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	commentAPI "github.com/apache/dubbo-go-samples/task/shop/comment/api"
+)
 
+import (
+	commentAPI "github.com/apache/dubbo-go-samples/task/shop/comment/api"
 	"github.com/apache/dubbo-go-samples/task/shop/detail/api"
 )
 

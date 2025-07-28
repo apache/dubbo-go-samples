@@ -24,7 +24,9 @@ import (
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
 
+import (
 	greet "github.com/apache/dubbo-go-samples/rpc/triple/old_triple/proto"
 )
 

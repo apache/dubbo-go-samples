@@ -21,10 +21,15 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+)
 
+import (
+	"github.com/gin-gonic/gin"
+)
+
+import (
 	"github.com/apache/dubbo-go-samples/task/shop/frontend/api"
 	"github.com/apache/dubbo-go-samples/task/shop/frontend/server_v1"
-	"github.com/gin-gonic/gin"
 )
 
 var (

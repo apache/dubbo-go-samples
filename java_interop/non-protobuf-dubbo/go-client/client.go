@@ -23,11 +23,10 @@ import (
 )
 
 import (
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 import (
