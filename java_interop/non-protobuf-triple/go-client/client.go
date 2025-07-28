@@ -34,7 +34,7 @@ import (
 	greet "github.com/apache/dubbo-go-samples/java_interop/non-protobuf-triple/proto"
 )
 
-//	java_math "github.com/dubbogo/gost/math/big"
+// java_math "github.com/dubbogo/gost/math/big"
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("dubbo_interop_non_idl_triple_client"),
