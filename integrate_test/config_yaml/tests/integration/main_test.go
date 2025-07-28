@@ -17,30 +17,30 @@
 
 package integration
 
-//import (
-//	"os"
-//	"testing"
-//
-//	"dubbo.apache.org/dubbo-go/v3/client"
-//	_ "dubbo.apache.org/dubbo-go/v3/imports"
-//	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
-//)
-//
-//var greeterProvider greet.GreetService
-//
-//func TestMain(m *testing.M) {
-//	cli, err := client.NewClient(
-//		client.WithClientURL("tri://127.0.0.1:20000"),
-//	)
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	greeterProvider, err = greet.NewGreetService(cli)
-//
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	os.Exit(m.Run())
-//}
+import (
+	"os"
+	"testing"
+
+	"dubbo.apache.org/dubbo-go/v3/client"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
+)
+
+var greeterProvider greet.GreetService
+
+func TestMain(m *testing.M) {
+	cli, err := client.NewClient(
+		client.WithClientURL("tri://127.0.0.1:20000"),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	greeterProvider, err = greet.NewGreetService(cli, client.WithInterface("com.apache.dubbo.sample.Greeter"))
+
+	if err != nil {
+		panic(err)
+	}
+
+	os.Exit(m.Run())
+}
