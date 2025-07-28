@@ -20,17 +20,22 @@ package main
 import (
 	"context"
 	"time"
+)
 
-	greet "github.com/apache/dubbo-go-samples/config_center/nacos/proto"
+import (
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/config_center"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	"github.com/dubbogo/gost/log/logger"
 
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
+)
 
-	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/config_center"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/dubbogo/gost/log/logger"
+import (
+	greet "github.com/apache/dubbo-go-samples/config_center/nacos/proto"
 )
 
 const configCenterNacosClientConfig = `## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default

@@ -20,9 +20,14 @@ package integration
 import (
 	"context"
 	"testing"
+)
 
-	pb "github.com/apache/dubbo-go-samples/rpc/grpc/proto"
+import (
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	pb "github.com/apache/dubbo-go-samples/rpc/grpc/proto"
 )
 
 func TestConnectWithGRPC(t *testing.T) {

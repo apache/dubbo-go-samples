@@ -19,13 +19,22 @@ package handler
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/config"
 	"errors"
-	payment "github.com/apache/dubbo-go-samples/online_boutique_demo/paymentservice/proto"
-	"github.com/dubbogo/gost/log/logger"
-	creditcard "github.com/durango/go-credit-card"
-	"github.com/google/uuid"
 	"strconv"
+)
+
+import (
+	"dubbo.apache.org/dubbo-go/v3/config"
+
+	"github.com/dubbogo/gost/log/logger"
+
+	creditcard "github.com/durango/go-credit-card"
+
+	"github.com/google/uuid"
+)
+
+import (
+	payment "github.com/apache/dubbo-go-samples/online_boutique_demo/paymentservice/proto"
 )
 
 type PaymentService struct{}

@@ -17,21 +17,27 @@
 
 package integration
 
-//import (
-//	"context"
-//	"testing"
-//
-//	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
-//	"github.com/dubbogo/gost/log/logger"
-//	"github.com/stretchr/testify/assert"
-//)
-//
-//func TestSayHello(t *testing.T) {
-//	req := &greet.GreetRequest{Name: "ConfigTest"}
-//
-//	reply, err := greeterProvider.Greet(context.Background(), req)
-//
-//	assert.Nil(t, err)
-//	logger.Debug(reply)
-//	assert.Equal(t, "ConfigTest-Success", reply.Greeting)
-//}
+import (
+	"context"
+	"testing"
+)
+
+import (
+	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/stretchr/testify/assert"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
+)
+
+func TestSayHello(t *testing.T) {
+	req := &greet.GreetRequest{Name: "ConfigTest"}
+
+	reply, err := greeterProvider.Greet(context.Background(), req)
+
+	assert.Nil(t, err)
+	logger.Debug(reply)
+	assert.Equal(t, "ConfigTest-Success", reply.Greeting)
+}

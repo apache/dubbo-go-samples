@@ -20,11 +20,16 @@ package integration
 import (
 	"os"
 	"testing"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/otel/trace"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/otel/tracing/stdout/proto"
 )
 

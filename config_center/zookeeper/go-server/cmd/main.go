@@ -21,16 +21,22 @@ import (
 	"context"
 	"strings"
 	"time"
+)
 
-	perrors "github.com/pkg/errors"
-
-	"github.com/dubbogo/go-zookeeper/zk"
-
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
+
+	"github.com/dubbogo/go-zookeeper/zk"
+
 	"github.com/dubbogo/gost/log/logger"
+
+	perrors "github.com/pkg/errors"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
 )
 
 type GreetTripleServer struct {

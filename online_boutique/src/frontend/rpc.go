@@ -20,9 +20,13 @@ package main
 import (
 	"context"
 	"time"
+)
 
+import (
 	"github.com/pkg/errors"
+)
 
+import (
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/frontend/proto"
 )
 

@@ -22,6 +22,9 @@ package greet
 
 import (
 	"context"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common"

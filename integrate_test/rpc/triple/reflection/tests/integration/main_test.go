@@ -26,7 +26,9 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	reflection "dubbo.apache.org/dubbo-go/v3/protocol/triple/reflection/triple_reflection"
+)
 
+import (
 	greet "github.com/apache/dubbo-go-samples/rpc/triple/reflection/proto"
 )
 
