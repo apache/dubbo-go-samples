@@ -1,21 +1,21 @@
-# metrics for dubbo-go
+# dubbo-go 的度量指标
 
-This example demonstrates the metrics usage of dubbo-go as an RPC framework. Check [Quick Start][https://cn.dubbo.apache.org/en/overview/mannual/golang-sdk/quickstart/] on our official website for detailed explanation.
+这个示例演示了如何在 RPC 框架 dubbo-go 使用度量指标。更详细的说明请参考我们官网的[快速开始][https://cn.dubbo.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/]
 
-## Contents
+## 目录
 
-- server/main.go - is the main definition of the service, handler and rpc server
-- client/main.go - is the rpc client
-- proto - contains the protobuf definition of the API
+- server/main.go - 定义了服务，处理程序和 RPC 服务器的主程序。
+- client/main.go - 是 RPC 客户端。
+- proto - 包含了 API 的 protobuf 定义。
 
-## How to run
+## 如何运行
 
-### Run server
+### 运行服务端
 ```shell
 go run ./go-server/cmd/main.go
 ```
 
-test server work as expected:
+测试一下服务端是否按照预期工作：
 ```shell
 curl \
     --header "Content-Type: application/json" \
@@ -23,13 +23,13 @@ curl \
     http://localhost:20000/greet.GreetService/Greet
 ```
 
-### Run client
+### 运行客户端
 ```shell
 go run ./go-client/cmd/main.go
 ```
 
-## deploy to local
-install prometheus and open prometheus config file `prometheus.yml`, write the config like this
+## 部署到本地
+安装 prometheus 并打开 prometheus 配置文件 `prometheus.yml`，配置如下：
 
 ```yaml
 global:
@@ -50,43 +50,43 @@ scrape_configs:
     - targets: ['localhost:9097']
 ```
 
-install grafana and open grafana web page like `localhost:3000`
+安装 grafana 并打开 grafana 的 web 页面，如 `localhost:3000`
 
-open: 【Home / Connections / Data sources】
+打开【Home / Connections / Data sources】
 
-click 【Add new data source】
+点击【Add new data source】
 
-select Prometheus
+选择 Prometheus
 
-enter 【Prometheus server URL】 like `http://localhost:9090` and click 【Save & test】
+输入【Prometheus server URL】（比如 `http://localhost:9090`）然后点击【Save & test】
 
 ![datasource.png](./assert/datasource.png)
 
-open 【Home / Dashboards 】click 【New】【import】and enter 19294 click Load
+打开 【Home / Dashboards】然后点击 【New】【import】并输入 19294 点击加载
 
 ![import](./assert/import.png)
 
-if your grafana can't access internet you can open `https://grafana.com/grafana/dashboards/19294-dubbo-observability/` and click 【Download JSON】
+如果你的 Grafana 无法访问互联网，可以访问 `https://grafana.com/grafana/dashboards/19294-dubbo-observability/` 并点击 【Download JSON】
 
-paste the JSON
+粘贴 JSON
 
 ![json.png](./assert/import-json.png)
 
 ![datasource.png](./assert/import-datasource.png)
 
-click 【Import】button and you will see the Dubbo Observability dashboard,enjoy it
+点击【Import】按钮你将看到 Dubbo 可观察性仪表盘，尽情享受吧！
 
 ![databoard](./assert/dashboard.png)
 
-## Deploy to Kubernetes
+## 部署到 Kubernetes
 
 #### kube-prometheus
 
-install prometheus in k8s [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus)
+在 K8s 中安装 prometheus [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus)
 
-Set `prometheus-service.yaml` type to NodePort
+将 `prometheus-service.yaml` 中的类型设置为 NodePort
 
-1. add `dubboPodMoitor.yaml` to  `kube-prometheus` `manifests` dir, The content is as follows
+1. 将 `dubboPodMoitor.yaml` 添加到 `kube-prometheus` 的 `manifests` 目录下，内容如下：
  ```yaml
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
@@ -103,7 +103,7 @@ spec:
     matchLabels:
       app-type: dubbo
   podMetricsEndpoints:
-    - port: metrics # ref to dubbo-app port name metrics
+    - port: metrics # 引用 dubbo-app 用于暴露指标的端口名
       path: /prometheus
 ---
 # rbac
@@ -133,7 +133,9 @@ subjects:
     name: prometheus-k8s
     namespace: monitoring
 ```
+
 2. `kubectl apply -f Deployment.yaml`
-3. open prometheus web page such as http://localhost:9090/targets
+
+3. 打开 Prometheus 网页，如 http://localhost:9090/targets
    ![podmonitor.png](./assert/podmonitor.png)
 
