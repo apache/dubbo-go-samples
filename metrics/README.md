@@ -1,6 +1,6 @@
 # metrics for dubbo-go
 
-This example demonstrates the metrics usage of dubbo-go as an RPC framework. Check [Quick Start][https://cn.dubbo.apache.org/en/overview/mannual/golang-sdk/quickstart/] on our official website for detailed explanation.
+This example demonstrates the metrics usage of dubbo-go as an RPC framework. Check [Quick Start](https://cn.dubbo.apache.org/en/overview/mannual/golang-sdk/quickstart/) on our official website for detailed explanation.
 
 ## Contents
 
