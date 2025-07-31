@@ -62,7 +62,7 @@ scrape_configs:
 
 ![datasource.png](./assert/datasource.png)
 
-打开 【Home / Dashboards】然后点击 【New】【import】并输入 19294 点击加载
+打开【Home / Dashboards】然后点击【New】【import】并输入 19294 点击加载
 
 ![import](./assert/import.png)
 
