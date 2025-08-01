@@ -1,6 +1,6 @@
 # dubbo-go 的度量指标
 
-这个示例演示了如何在 RPC 框架 dubbo-go 使用度量指标。更详细的说明请参考我们官网的[快速开始](https://cn.dubbo.apache.org/zh-cn/overview/manual/golang-sdk/quickstart/)
+这个示例演示了如何在 RPC 框架 dubbo-go 使用度量指标。更详细的说明请参考我们官网的[快速开始](https://cn.dubbo.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/)
 
 ## 目录
 
