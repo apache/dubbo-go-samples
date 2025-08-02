@@ -50,10 +50,12 @@ jobs:
       - name: Get dependencies
         run: |
           go mod tidy
+          # for imports-formatter
+          go install github.com/dubbogo/tools/cmd/imports-formatter@latest
 
       - name: Go Fmt
         run: |
-          go fmt ./... && git status && [[ -z `git status -s` ]]
+          go fmt ./... && GOROOT=$(go env GOROOT) imports-formatter && git status && [[ -z `git status -s` ]]
           # diff -u <(echo -n) <(gofmt -d -s .)
 
       - name: Check License Header
