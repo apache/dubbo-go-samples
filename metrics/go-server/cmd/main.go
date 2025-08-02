@@ -22,7 +22,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"github.com/pkg/errors"
 	"math/rand"
-	"os"
 	"time"
 
 	"dubbo.apache.org/dubbo-go/v3"
@@ -50,10 +49,6 @@ func (srv *GreetTripleServer) Greet(_ context.Context, req *greet.GreetRequest) 
 }
 
 func main() {
-	zookeeper := os.Getenv("ZOOKEEPER_ADDRESS")
-	if zookeeper == "" {
-		zookeeper = "localhost"
-	}
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
