@@ -1,9 +1,8 @@
 # Dubbo Go Demo [![License](https://img.shields.io/:license-apache-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![GoDoc](https://godoc.org/github.com/go-micro/demo?status.svg)](https://godoc.org/github.com/go-micro/demo) [![Unit Tests](https://github.com/go-micro/demo/actions/workflows/ci.yml/badge.svg)](https://github.com/go-micro/demo/actions/workflows/ci.yml) [![Docker](https://github.com/go-micro/demo/actions/workflows/docker.yml/badge.svg)](https://github.com/go-micro/demo/actions/workflows/docker.yml)
 
 <p align="center">
-<img src="src/frontend/static/icons/Hipster_HeroLogoCyan.svg" width="300" alt="Online Boutique" />
+<img src="src/frontendservice/static/icons/Hipster_HeroLogoCyan.svg" width="300" alt="Online Boutique" />
 </p>
-
 
 **This application was forked from [microservices-demo](https://github.com/GoogleCloudPlatform/microservices-demo), used to demonstrate how to build micro servics with [dubbo-go](https://github.com/apache/dubbo-go).**
 
@@ -11,6 +10,139 @@
 Online Boutique consists of a 11-tier microservices application. The application is a
 web-based e-commerce app where users can browse items,
 add them to the cart, and purchase them.
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+Before you begin, make sure you have the following installed:
+
+- [Go](https://golang.org/doc/install) 
+- [Python 3](https://www.python.org/downloads/)
+- [pip3](https://pip.pypa.io/en/stable/installation/)
+- [ZooKeeper](https://zookeeper.apache.org/)
+
+### One-Command Setup
+
+Start all services with a single command:
+
+```bash
+make start-all
+```
+
+This command will:
+1. Build all 11 microservices
+2. Start business services in the background
+3. Wait for services to initialize
+4. Start the load generator
+
+### Access the Application
+
+Once all services are running, you can access:
+- **Web Frontend**: http://localhost:8090
+- **Service Status**: Check with `make status`
+- **Service Logs**: View with `make logs`
+
+## 📋 Makefile Commands
+
+The project includes a comprehensive Makefile for easy service management:
+
+### Basic Commands
+
+| Command | Description |
+|---------|-------------|
+| `make help` | Show all available commands |
+| `make start-all` | Build and start all services |
+| `make stop-all` | Stop all running services |
+| `make status` | Check status of all services |
+| `make logs` | View logs from all services |
+
+### Service Management
+
+| Command | Description |
+|---------|-------------|
+| `make build-all` | Build all services without starting |
+| `make clean-all` | Clean all build artifacts |
+| `make tidy-all` | Run `go mod tidy` for all services |
+
+### Individual Service Control
+
+You can control individual services using the pattern `make <action>-<service>`:
+
+```bash
+# Build specific service
+make build-adservice
+make build-cartservice
+
+# Start specific service
+make start-adservice
+make start-cartservice
+
+# Stop specific service
+make stop-adservice
+make stop-cartservice
+```
+
+### Available Services
+
+- `adservice` - Advertisement service
+- `cartservice` - Shopping cart service
+- `checkoutservice` - Checkout processing service
+- `currencyservice` - Currency conversion service
+- `emailservice` - Email notification service
+- `frontendservice` - Web frontend service
+- `paymentservice` - Payment processing service
+- `productcatalogservice` - Product catalog service
+- `recommendationservice` - Product recommendation service
+- `shippingservice` - Shipping cost calculation service
+
+### Environment Setup
+
+Initialize your development environment:
+
+```bash
+# Check prerequisites and initialize project
+make init
+
+# Check environment dependencies
+make check-env
+```
+
+### Service Monitoring
+
+Monitor your services:
+
+```bash
+# Check which services are running
+make status
+
+# View recent logs from all services
+make logs
+
+# View logs for a specific service
+tail -f logs/frontend.log
+```
+
+### Troubleshooting
+
+If you encounter issues:
+
+1. **Check service status**: `make status`
+2. **View logs**: `make logs`
+3. **Restart services**: `make stop-all && make start-all`
+4. **Clean build**: `make clean-all && make build-all`
+
+### Development Workflow
+
+For development, you might want to:
+
+```bash
+# Start only business services for development
+make start-all
+
+# Stop all services when done
+make stop-all
+```
 
 ## Screenshots
 
@@ -28,8 +160,8 @@ languages that talk to each other over gRPC. See the [Development Principles](/d
 microservices](./docs/img/architecture-diagram.png)](./docs/img/architecture-diagram.png)
 
 | Service                                              | Language      | Description                                                                                                                       |
-| ---------------------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| [frontend](./src/frontend)                           | Go            | Exposes an HTTP server to serve the website. Does not require signup/login and generates session IDs for all users automatically. |
+|------------------------------------------------------| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| [frontendservice](src/frontendservice)               | Go            | Exposes an HTTP server to serve the website. Does not require signup/login and generates session IDs for all users automatically. |
 | [cartservice](./src/cartservice)                     | Go            | Stores the items in the user's shopping cart in Redis and retrieves it.                                                           |
 | [productcatalogservice](./src/productcatalogservice) | Go            | Provides the list of products from a JSON file and ability to search products and get individual products.                        |
 | [currencyservice](./src/currencyservice)             | Go            | Converts one money amount to another currency. Uses real values fetched from European Central Bank. It's the highest QPS service. |
@@ -39,6 +171,10 @@ microservices](./docs/img/architecture-diagram.png)](./docs/img/architecture-dia
 | [checkoutservice](./src/checkoutservice)             | Go            | Retrieves user cart, prepares order and orchestrates the payment, shipping and the email notification.                            |
 | [recommendationservice](./src/recommendationservice) | Go            | Recommends other products based on what's given in the cart.                                                                      |
 | [adservice](./src/adservice)                         | Go            | Provides text ads based on given context words.                                                                                   |
+
+
+| Script                                              | Language      | Description                                                                                                                       |
+|------------------------------------------------------| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | [loadgenerator](./src/loadgenerator)                 | Python+Locust | Continuously sends requests imitating realistic user shopping flows to the frontend.                                              |
 
 ## Features
