@@ -53,7 +53,7 @@ jobs:
           # for imports-formatter
           go install github.com/dubbogo/tools/cmd/imports-formatter@latest
 
-      - name: Go Fmt
+      - name: Format Code
         run: |
           go fmt ./... && GOROOT=$(go env GOROOT) imports-formatter && git status && [[ -z `git status -s` ]]
           # diff -u <(echo -n) <(gofmt -d -s .)
