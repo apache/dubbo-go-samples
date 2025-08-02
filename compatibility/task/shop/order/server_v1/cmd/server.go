@@ -19,10 +19,14 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
 
+import (
 	detailAPI "github.com/apache/dubbo-go-samples/task/shop/detail/api"
 	"github.com/apache/dubbo-go-samples/task/shop/order/api"
 )

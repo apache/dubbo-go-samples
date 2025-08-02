@@ -18,13 +18,20 @@ package main
 
 import (
 	"context"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	greet2 "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
+
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet2 "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
 )
 
 func main() {

@@ -20,14 +20,15 @@ package main
 import (
 	"context"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	log "dubbo.apache.org/dubbo-go/v3/logger"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"github.com/dubbogo/gost/log/logger"
-
-	log "dubbo.apache.org/dubbo-go/v3/logger"
 )
 
 func main() {

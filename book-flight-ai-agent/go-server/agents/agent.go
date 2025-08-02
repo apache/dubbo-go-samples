@@ -19,6 +19,7 @@ package agents
 
 import (
 	"github.com/gin-gonic/gin"
+
 	"github.com/tmc/langchaingo/schema"
 )
 

@@ -19,11 +19,15 @@ package server_v1
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
 
+import (
 	detailAPI "github.com/apache/dubbo-go-samples/task/shop/detail/api"
 	orderAPI "github.com/apache/dubbo-go-samples/task/shop/order/api"
 	userAPI "github.com/apache/dubbo-go-samples/task/shop/user/api"

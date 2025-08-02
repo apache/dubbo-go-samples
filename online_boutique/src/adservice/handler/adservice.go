@@ -20,9 +20,14 @@ package handler
 import (
 	"context"
 	"math/rand"
+)
 
-	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/adservice/proto"
+import (
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/adservice/proto"
 )
 
 const MaxAdsToServe = 2
