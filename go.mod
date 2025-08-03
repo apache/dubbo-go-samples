@@ -1,5 +1,7 @@
 module github.com/apache/dubbo-go-samples
 
+go 1.23
+
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.0
 	github.com/SkyAPM/go2sky v1.5.0
@@ -169,5 +171,3 @@ replace (
 	go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v1.21.0
 	go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v1.21.0
 )
-
-go 1.23
