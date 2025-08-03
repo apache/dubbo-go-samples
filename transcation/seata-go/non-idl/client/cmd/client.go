@@ -19,7 +19,9 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
@@ -31,7 +33,9 @@ import (
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
 	"github.com/seata/seata-go/pkg/tm"
+)
 
+import (
 	SeataClient "github.com/apache/dubbo-go-samples/transcation/seata-go/non-idl/client/seata-client"
 	"github.com/apache/dubbo-go-samples/transcation/seata-go/non-idl/client/service"
 )

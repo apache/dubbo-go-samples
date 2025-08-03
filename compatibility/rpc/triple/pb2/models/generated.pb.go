@@ -22,13 +22,14 @@ package models
 
 import (
 	fmt "fmt"
-
 	io "io"
 	math "math"
 	math_bits "math/bits"
 	reflect "reflect"
 	strings "strings"
+)
 
+import (
 	proto "github.com/gogo/protobuf/proto"
 )
 

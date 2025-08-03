@@ -21,9 +21,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
 )
 

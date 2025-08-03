@@ -19,15 +19,20 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/dubbogo/gost/log/logger"
 	"os"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/metrics"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/metrics"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+
+	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 

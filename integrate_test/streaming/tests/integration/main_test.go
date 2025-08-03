@@ -20,12 +20,15 @@ package integration
 import (
 	"os"
 	"testing"
+)
 
-	greet "github.com/apache/dubbo-go-samples/streaming/proto"
-
+import (
 	"dubbo.apache.org/dubbo-go/v3/client"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/streaming/proto"
 )
 
 var greeterProvider greet.GreetService

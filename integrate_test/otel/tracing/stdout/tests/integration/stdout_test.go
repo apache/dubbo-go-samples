@@ -20,9 +20,14 @@ package integration
 import (
 	"context"
 	"testing"
+)
 
-	greet "github.com/apache/dubbo-go-samples/otel/tracing/stdout/proto"
+import (
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/otel/tracing/stdout/proto"
 )
 
 func TestStdoutExporter(t *testing.T) {

@@ -21,7 +21,9 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+)
 
+import (
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/frontend/proto"
 )
 

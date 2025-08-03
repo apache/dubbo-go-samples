@@ -20,12 +20,18 @@ package main
 import (
 	"context"
 	"time"
+)
 
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	greet "github.com/apache/dubbo-go-samples/timeout/proto"
+
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/timeout/proto"
 )
 
 func main() {

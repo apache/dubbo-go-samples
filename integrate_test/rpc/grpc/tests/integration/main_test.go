@@ -20,14 +20,19 @@ package integration
 import (
 	"os"
 	"testing"
+)
+
+import (
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	"github.com/dubbogo/gost/log/logger"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+)
 
+import (
 	pb "github.com/apache/dubbo-go-samples/rpc/grpc/proto"
-
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
 )
 
 var greetService pb.GreetServiceClient
