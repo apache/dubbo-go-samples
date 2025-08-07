@@ -44,6 +44,9 @@ The implementation of the PolarisMesh TpsLimiter extension point in dubbogo can 
 
 Please config the ratelimit strategy according to the picture.
 
+the service name of ratelimit target is `org.apache.dubbo.UserProvider.Test`
+
+
 ![](images/dubbogo-ratelimit-rule.png)
 
 - The request matching rule is **Request parameter(QUERY)**

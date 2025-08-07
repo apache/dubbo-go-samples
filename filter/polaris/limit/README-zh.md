@@ -24,6 +24,8 @@ dubbogo 中的 PolarisMesh TpsLimiter 扩展点实现，能够根据用户配置
 
 请根据以下图片配置限流策略
 
+限流的服务名称为`org.apache.dubbo.UserProvider.Test`
+
 ![](images/dubbogo-ratelimit-rule.png)
 
 - 请求匹配规则为 **请求参数(QUERY)**
