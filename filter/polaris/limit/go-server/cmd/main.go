@@ -28,9 +28,11 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
 
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
-
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
 type GreetTripleServer struct {
