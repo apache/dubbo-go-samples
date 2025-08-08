@@ -19,35 +19,27 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/config_center/apollo/proto"
+
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/config_center/apollo/proto"
 )
 
 // Apollo Configuration Center Parameters
 const (
-	apolloMetaAddress = "tony2c4g:8080"
+	apolloMetaAddress = "127.0.0.1:8080"
 	apolloAppID       = "SampleApp"
 	apolloCluster     = "default"
 	apolloNamespace   = "dubbo.yml"
 )
-
-const configCenterApolloClientConfig = `## set in config center, namespace is 'dubbo.yml', appId is 'SampleApp'
-dubbo:
-  registries:
-    demoZK:
-      protocol: zookeeper
-      timeout: 3s
-      address: 127.0.0.1:2181
-  consumer:
-    references:
-      GreeterClientImpl:
-        protocol: tri
-        interface: com.apache.dubbo.sample.basic.IGreeter 
-`
 
 func main() {
 	// Initialize client using configuration center
@@ -59,7 +51,7 @@ func main() {
 			config_center.WithDataID(apolloNamespace),
 			config_center.WithAppID(apolloAppID),
 			config_center.WithCluster(apolloCluster),
-			config_center.WithFileExtProperties(),
+			//config_center.WithFileExtProperties(),
 		),
 	)
 	if err != nil {
