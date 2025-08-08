@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"os"
 	"time"
 )
 
@@ -37,13 +36,10 @@ import (
 )
 
 func main() {
-	zookeeper := os.Getenv("ZOOKEEPER_ADDRESS")
-	if zookeeper == "" {
-		zookeeper = "localhost"
-	}
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
-			registry.WithAddress("zookeeper://"+zookeeper+":2181"),
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
 		),
 		dubbo.WithMetrics(
 			metrics.WithEnabled(),
