@@ -10,7 +10,7 @@
 * compatibility/apisix: Example integrating apache/apisix with Dubbo-go
 * compatibility/async: Callback (asynchronous) and one-way RPC example
 * compatibility/config-api: How to use Dubbo-go by APIs without configuration files
-* compatibility/configcenter: Usage of different config centers, including zookeeper and nacos
+* compatibility/configcenter: Usage of different config centers, including zookeeper, nacos and apollo
 * compatibility/context: How to transfer request context between multiple producers/consumers
 * compatibility/direct: Direct invocation example
 * compatibility/error: Error handling and triple protocol examples

@@ -6,7 +6,7 @@
 * compatibility/apisix：apache/apisix 与 Dubbo-go 整合示例
 * compatibility/async：通过 callback 方式进行异步 RPC 及单向调用示例
 * compatibility/config-api：无需配置文件，使用 API 启动 Dubbo-go 服务
-* compatibility/configcenter：多种配置中心（如 zookeeper、nacos）用法示例
+* compatibility/configcenter：多种配置中心（如 zookeeper、nacos、apollo）用法示例
 * compatibility/context：多生产者/消费者间传递请求 context 示例
 * compatibility/direct：直连调用示例，无需注册中心
 * compatibility/error：错误处理与 triple 协议示例
