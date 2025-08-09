@@ -46,7 +46,7 @@
 * java_interop: Demonstrates interoperability between Java and Go Dubbo implementations
 * llm: Example of integrating large language models (LLM) with Dubbo-go
 * logger: Logging examples for Dubbo-go applications
-* metrics: How to collect and expose metrics from Dubbo-go services
+* metrics: How to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes
 * online_boutique: Microservices online boutique demo using Dubbo-go
 * otel/tracing: Distributed tracing example using OpenTelemetry
 * registry: Examples of using different service registries (e.g., nacos, zookeeper)
