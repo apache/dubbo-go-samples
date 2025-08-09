@@ -713,7 +713,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "max by (interface) (dubbo_provider_rt_p99_milliseconds_aggregate{application_name=~\"$application_name\", instance=~\"$instance\", interface=~\"$provider_interface\"})",
+          "expr": "max by (interface) (dubbo_provider_rt_milliseconds_p99{application_name=~\"$application_name\", instance=~\"$instance\", interface=~\"$provider_interface\"})",
           "legendFormat": "P99 - P: {{interface}}",
           "refId": "A"
         },
@@ -722,7 +722,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "max by (interface) (dubbo_provider_rt_avg_milliseconds_aggregate{application_name=~\"$application_name\", instance=~\"$instance\", interface=~\"$provider_interface\"})",
+          "expr": "max by (interface) (dubbo_provider_rt_milliseconds{application_name=~\"$application_name\", instance=~\"$instance\", interface=~\"$provider_interface\"})",
           "legendFormat": "Avg - P: {{interface}}",
           "refId": "B"
         },
@@ -731,7 +731,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "max by (interface) (dubbo_consumer_rt_p99_milliseconds_aggregate{application_name=~\"$application_name\", instance=~\"$instance\", interface=~\"$consumer_interface\"})",
+          "expr": "max by (interface) (dubbo_consumer_rt_milliseconds_p99{application_name=~\"$application_name\", instance=~\"$instance\", interface=~\"$consumer_interface\"})",
           "legendFormat": "P99 - C: {{interface}}",
           "refId": "C"
         },
@@ -740,7 +740,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "max by (interface) (dubbo_consumer_rt_avg_milliseconds_aggregate{application_name=~\"$application_name\", instance=~\"$instance\", interface=~\"$consumer_interface\"})",
+          "expr": "max by (interface) (dubbo_consumer_rt_milliseconds{application_name=~\"$application_name\", instance=~\"$instance\", interface=~\"$consumer_interface\"})",
           "legendFormat": "Avg - C: {{interface}}",
           "refId": "D"
         }
