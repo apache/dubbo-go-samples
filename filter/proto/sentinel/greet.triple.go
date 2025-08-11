@@ -69,7 +69,7 @@ func NewSentinelGreetService(cli *client.Client, opts ...client.ReferenceOption)
 	}, nil
 }
 
-func SetConsumerService(srv common.RPCService) {
+func SetConsumerSentinelGreetService(srv common.RPCService) {
 	dubbo.SetConsumerServiceWithInfo(srv, &SentinelGreetService_ClientInfo)
 }
 
@@ -131,7 +131,7 @@ func RegisterSentinelGreetServiceHandler(srv *server.Server, hdlr SentinelGreetS
 	return srv.Register(hdlr, &SentinelGreetService_ServiceInfo, opts...)
 }
 
-func SetProviderService(srv common.RPCService) {
+func SetProviderSentinelGreetService(srv common.RPCService) {
 	dubbo.SetProviderServiceWithInfo(srv, &SentinelGreetService_ServiceInfo)
 }
 

@@ -66,7 +66,7 @@ func NewProductCatalogService(cli *client.Client, opts ...client.ReferenceOption
 	}, nil
 }
 
-func SetConsumerService(srv common.RPCService) {
+func SetConsumerProductCatalogService(srv common.RPCService) {
 	dubbo.SetConsumerServiceWithInfo(srv, &ProductCatalogService_ClientInfo)
 }
 
@@ -119,7 +119,7 @@ func RegisterProductCatalogServiceHandler(srv *server.Server, hdlr ProductCatalo
 	return srv.Register(hdlr, &ProductCatalogService_ServiceInfo, opts...)
 }
 
-func SetProviderService(srv common.RPCService) {
+func SetProviderProductCatalogService(srv common.RPCService) {
 	dubbo.SetProviderServiceWithInfo(srv, &ProductCatalogService_ServiceInfo)
 }
 
