@@ -10,7 +10,7 @@ dubbo:
       GreeterProvider:
         interface: org.apache.dubbo.UserProvider
   tls_config:
-    ca-cert-file: /home/mars/code/dubbo-workspace/dubbo-go-samples/compatibility/tls/x509/client_ca_cert.pem
-    tls-cert-file: /home/mars/code/dubbo-workspace/dubbo-go-samples/compatibility/tls/x509/server1_cert.pem
-    tls-key-file: /home/mars/code/dubbo-workspace/dubbo-go-samples/compatibility/tls/x509/server1_key.pem
+    ca-cert-file: ../../../x509/client_ca_cert.pem
+    tls-cert-file: ../../../x509/server1_cert.pem
+    tls-key-file: ../../../x509/server1_key.pem
     tls-server-name: dubbogo.test.example.com
