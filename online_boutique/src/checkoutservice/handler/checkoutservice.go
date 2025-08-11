@@ -20,12 +20,19 @@ package handler
 import (
 	"context"
 	"fmt"
+)
+
+import (
 	"github.com/dubbogo/gost/log/logger"
 
 	"github.com/google/uuid"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 
+	"google.golang.org/grpc/codes"
+
+	"google.golang.org/grpc/status"
+)
+
+import (
 	"github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice/money"
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/checkoutservice/proto"
 )

@@ -19,11 +19,17 @@ package main
 
 import (
 	"context"
+	"fmt"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	"fmt"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/java_interop/non-protobuf-triple/proto"
 )
 

@@ -20,13 +20,20 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/pkg/errors"
+)
 
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+
 	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/pkg/errors"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
 type GreetTripleServer struct {

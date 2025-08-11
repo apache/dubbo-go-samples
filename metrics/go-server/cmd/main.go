@@ -19,20 +19,25 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/pkg/errors"
 	"math/rand"
-	"os"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/metrics"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/metrics"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+
 	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/pkg/errors"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
 type GreetTripleServer struct {
@@ -50,13 +55,10 @@ func (srv *GreetTripleServer) Greet(_ context.Context, req *greet.GreetRequest) 
 }
 
 func main() {
-	zookeeper := os.Getenv("ZOOKEEPER_ADDRESS")
-	if zookeeper == "" {
-		zookeeper = "localhost"
-	}
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
-			registry.WithAddress("zookeeper://"+zookeeper+":2181"),
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
 		),
 		dubbo.WithMetrics(
 			metrics.WithEnabled(),                   // default false

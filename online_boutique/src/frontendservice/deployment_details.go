@@ -21,8 +21,11 @@ import (
 	"net/http"
 	"os"
 	"time"
+)
 
+import (
 	"cloud.google.com/go/compute/metadata"
+
 	"github.com/sirupsen/logrus"
 )
 

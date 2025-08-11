@@ -19,12 +19,18 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	greet "github.com/apache/dubbo-go-samples/registry/zookeeper/proto"
+
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/registry/zookeeper/proto"
 )
 
 func main() {

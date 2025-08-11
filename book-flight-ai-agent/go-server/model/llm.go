@@ -16,7 +16,9 @@
  */
 package model
 
-import "context"
+import (
+	"context"
+)
 
 type LLM interface {
 	Call(ctx context.Context, input string, opts ...Option) (string, error)

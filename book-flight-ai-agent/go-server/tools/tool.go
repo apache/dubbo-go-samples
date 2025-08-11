@@ -17,7 +17,9 @@
 
 package tools
 
-import "context"
+import (
+	"context"
+)
 
 // Tool is a tool for the llm agent to interact with different applications.
 type Tool interface {

@@ -19,17 +19,25 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/client"
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/alibaba/sentinel-golang/core/circuitbreaker"
-	"github.com/alibaba/sentinel-golang/core/isolation"
-	"github.com/alibaba/sentinel-golang/util"
-	greet "github.com/apache/dubbo-go-samples/filter/proto/sentinel"
-	"github.com/dubbogo/gost/log/logger"
 	"sync"
 	"sync/atomic"
 	"time"
+)
+
+import (
+	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	"github.com/alibaba/sentinel-golang/core/circuitbreaker"
+	"github.com/alibaba/sentinel-golang/core/isolation"
+	"github.com/alibaba/sentinel-golang/util"
+
+	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/filter/proto/sentinel"
 )
 
 type GreetFun func(ctx context.Context, req *greet.GreetRequest, opts ...client.CallOption) (*greet.GreetResponse, error)
