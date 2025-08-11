@@ -47,7 +47,7 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 }
 
 func main() {
-	greet.SetProviderService(&GreetTripleServer{})
+	greet.SetProviderGreetService(&GreetTripleServer{})
 	if err := dubbo.Load(); err != nil {
 		panic(err)
 	}
