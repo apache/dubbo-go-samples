@@ -19,14 +19,17 @@ package main
 
 import (
 	"context"
-
-	"github.com/apache/dubbo-go-samples/compatibility/mesh/go-server/api"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/compatibility/mesh/go-server/api"
 )
 
 type GreeterProvider struct {
