@@ -19,6 +19,8 @@ package main
 
 import (
 	"context"
+
+	"github.com/apache/dubbo-go-samples-mesh-client/api"
 )
 
 import (
@@ -26,10 +28,6 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	"github.com/dubbogo/gost/log/logger"
-)
-
-import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)
