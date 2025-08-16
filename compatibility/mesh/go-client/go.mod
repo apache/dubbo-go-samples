@@ -1,4 +1,4 @@
-module github.com/apache/dubbo-go-samples-mesh-client
+module github.com/apache/dubbo-go-samples/compatibility/mesh/go-client
 
 go 1.23.0
 

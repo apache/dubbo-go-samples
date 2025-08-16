@@ -1,4 +1,4 @@
-module github.com/apache/dubbo-go-samples-mesh-server
+module github.com/apache/dubbo-go-samples/compatibility/mesh/go-server
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.0

@@ -19,13 +19,13 @@ package main
 
 import (
 	"context"
+
+	"github.com/apache/dubbo-go-samples/compatibility/proxyless/go-client/api"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/apache/dubbo-go-samples-mesh-client/api"
 
 	"github.com/dubbogo/gost/log/logger"
 )

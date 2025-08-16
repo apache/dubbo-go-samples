@@ -25,9 +25,11 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	"github.com/apache/dubbo-go-samples-mesh-server/api"
-
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/compatibility/proxyless/go-server/api"
 )
 
 type GreeterProvider struct {
