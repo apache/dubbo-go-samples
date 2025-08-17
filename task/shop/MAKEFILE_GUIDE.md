@@ -67,9 +67,7 @@ make test-comment   # 测试评论服务客户端
 
 ### 开发工具
 ```bash
-make dev            # 开发模式启动 (需要先安装 air)
 make proto          # 生成 Protocol Buffers 代码
-make mod-update     # 更新依赖模块
 ```
 
 ## 📁 项目结构

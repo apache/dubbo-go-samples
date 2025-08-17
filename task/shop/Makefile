@@ -236,6 +236,28 @@ test-comment: ## 测试评论服务客户端
 	@echo "$(BLUE)测试评论服务...$(RESET)"
 	@go run ./comment/client/cmd/client.go
 
+# 辅助命令
+init: ## 初始化项目目录
+	@echo "$(BLUE)初始化项目目录...$(RESET)"
+	@mkdir -p bin logs pids
+	@echo "$(GREEN)项目目录初始化完成$(RESET)"
+
+fmt: ## 格式化代码
+	@echo "$(BLUE)格式化Go代码...$(RESET)"
+	@go fmt ./...
+	@echo "$(GREEN)代码格式化完成$(RESET)"
+
+vet: ## 代码静态检查
+	@echo "$(BLUE)进行代码静态检查...$(RESET)"
+	@go vet ./...
+	@echo "$(GREEN)代码检查完成$(RESET)"
+
+mod-update: ## 更新依赖模块
+	@echo "$(BLUE)更新依赖模块...$(RESET)"
+	@go get -u ./...
+	@go mod tidy
+	@echo "$(GREEN)依赖模块更新完成$(RESET)"
+
 # 清理命令
 clean-all: clean ## 深度清理 (包括日志和PID文件)
 	@echo "$(BLUE)深度清理...$(RESET)"
