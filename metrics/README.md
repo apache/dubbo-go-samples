@@ -24,6 +24,28 @@ The monitoring data flow is as follows:
 | **go-server** | N/A | Dubbo-Go service provider (Provider) example. |
 | **go-client** | N/A | Dubbo-Go service consumer (Consumer) example that continuously calls the server. |
 
+## ⚙️ Client Configuration
+
+### Environment Variables
+
+```
+# Pushgateway address
+export PUSHGATEWAY_URL="ip:9091"
+
+# Job name (recommended to set according to application type)
+export JOB_NAME="dubbo-client"
+```
+
+### Command-line Arguments
+
+```
+# Use push mode (default)
+go run ./go-client/cmd/main.go
+
+# Use pull mode
+go run ./go-client/cmd/main.go --push=false
+```
+
 ## 🚀 Quick Start
 
 Please follow the steps below to run this example.
@@ -102,13 +124,13 @@ Enjoy\!
 
 - **Grafana dashboard shows "No Data"**
 
-   - Verify that the Prometheus data source URL (`http://host.docker.internal:9090`) is correct and that the connection test was successful.
-   - Go to the Prometheus UI (`http://localhost:9090`), and check the `Status -> Targets` page to ensure the `pushgateway` job has a status of **UP**.
-   - In the Prometheus query bar, enter `dubbo_consumer_requests_succeed_total` to confirm that data can be queried.
+    - Verify that the Prometheus data source URL (`http://host.docker.internal:9090`) is correct and that the connection test was successful.
+    - Go to the Prometheus UI (`http://localhost:9090`), and check the `Status -> Targets` page to ensure the `pushgateway` job has a status of **UP**.
+    - In the Prometheus query bar, enter `dubbo_consumer_requests_succeed_total` to confirm that data can be queried.
 
 - **Cannot connect to `host.docker.internal`**
 
-   - `host.docker.internal` is a built-in feature of Docker. If this address is not accessible, replace the IP address in `metrics/prometheus.yml` and the Grafana data source address with your actual IP address.
+    - `host.docker.internal` is a built-in feature of Docker. If this address is not accessible, replace the IP address in `metrics/prometheus.yml` and the Grafana data source address with your actual IP address.
 
 -----
 

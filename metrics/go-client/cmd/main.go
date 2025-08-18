@@ -19,23 +19,46 @@ package main
 
 import (
 	"context"
+	"flag"
+	"fmt"
+	"github.com/prometheus/client_golang/prometheus"
+	"net/http"
+	"net/url"
+	"os"
 	"time"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/metrics"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 
-import (
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+// Pushgateway Config (flags)
+var (
+	pushGatewayURL = getEnv("PUSHGATEWAY_URL", "127.0.0.1:9091")
+	jobName        = getEnv("JOB_NAME", "push")
+	usePush        = flag.Bool("push", true, "use push mode")
 )
 
+func getEnv(k, d string) string {
+	if v := os.Getenv(k); v != "" {
+		return v
+	}
+	return d
+}
+
 func main() {
+	flag.Parse()
+
+	pushedAt := prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: "job_pushed_at_seconds",
+		Help: "Unix seconds of last push to Pushgateway",
+	})
+	prometheus.MustRegister(pushedAt)
+
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
@@ -43,46 +66,83 @@ func main() {
 		),
 		dubbo.WithMetrics(
 			metrics.WithEnabled(),
-			metrics.WithPrometheus(),                // set prometheus metric
-			metrics.WithPrometheusExporterEnabled(), // enable prometheus exporter
-			metrics.WithPort(9097),                  // prometheus http exporter listen at 9097
-			metrics.WithPath("/prometheus"),         // prometheus http exporter url path
-			metrics.WithMetadataEnabled(),           // enable metadata center metrics
-			metrics.WithRegistryEnabled(),           // enable registry metrics
-			metrics.WithConfigCenterEnabled(),       // enable config center metrics
+			metrics.WithPrometheus(),
+			metrics.WithPrometheusExporterEnabled(),
+			metrics.WithPort(9097),
+			metrics.WithPath("/prometheus"),
+			metrics.WithMetadataEnabled(),
+			metrics.WithRegistryEnabled(),
+			metrics.WithConfigCenterEnabled(),
 
-			metrics.WithPrometheusPushgatewayEnabled(), // enable prometheus pushgateway
+			metrics.WithPrometheusPushgatewayEnabled(),
 			metrics.WithPrometheusGatewayUsername("username"),
 			metrics.WithPrometheusGatewayPassword("1234"),
-			metrics.WithPrometheusGatewayUrl("127.0.0.1:9091"), // host:port or ip:port,“http://” is added automatically,do not include the “/metrics/jobs/…” part
-			metrics.WithPrometheusGatewayInterval(time.Second*10),
-			metrics.WithPrometheusGatewayJob("push"), // set a metric job label, job=push to metric
-
-			metrics.WithAggregationEnabled(), // enable rpc metrics aggregations，Most of the time there is no need to turn it on
-			metrics.WithAggregationTimeWindowSeconds(30),
-			metrics.WithAggregationBucketNum(10), // agg bucket num
+			metrics.WithPrometheusGatewayUrl(pushGatewayURL),
+			metrics.WithPrometheusGatewayInterval(10*time.Second),
+			metrics.WithPrometheusGatewayJob(jobName),
 		),
 	)
 	if err != nil {
 		panic(err)
 	}
+
 	cli, err := ins.NewClient()
 	if err != nil {
 		panic(err)
 	}
-
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
 		panic(err)
 	}
 
-	for true {
+	// business loop
+	for i := 0; i < 10; i++ {
 		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
 		if err != nil {
 			logger.Error(err)
 		} else {
 			logger.Infof("Greet response: %s", resp.Greeting)
 		}
-		time.Sleep(100 * time.Millisecond)
+
+		pushedAt.Set(float64(time.Now().Unix()))
+
+		time.Sleep(1 * time.Second)
 	}
+
+	// cleanup: delete job from Pushgateway if push mode enabled
+	if *usePush {
+		path := fmt.Sprintf("http://%s", pushGatewayURL)
+		if err := deletePushgatewayJob(path, jobName); err != nil {
+			logger.Errorf("Delete pushgateway job failed: %v", err)
+		} else {
+			logger.Infof("Deleted job from Pushgateway: job=%s", jobName)
+		}
+	}
+}
+
+// delete Pushgateway job
+func deletePushgatewayJob(pushgw, job string) error {
+	u, err := url.Parse(pushgw)
+	if err != nil {
+		return err
+	}
+	u.Path = fmt.Sprintf("/metrics/job/%s", url.PathEscape(job))
+	req, err := http.NewRequest(http.MethodDelete, u.String(), nil)
+	if err != nil {
+		return err
+	}
+	req.SetBasicAuth("username", "1234")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		return nil
+	}
+	return fmt.Errorf("unexpected status: %s", resp.Status)
 }
