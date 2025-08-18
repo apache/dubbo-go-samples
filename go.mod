@@ -23,6 +23,7 @@ require (
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.4.2
 	github.com/pkg/errors v0.9.1
+	github.com/prometheus/client_golang v1.13.0
 	github.com/seata/seata-go v0.1.0-rc1
 	github.com/stretchr/testify v1.9.0
 	github.com/tmc/langchaingo v0.1.13
@@ -118,7 +119,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/polarismesh/polaris-go v1.3.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
-	github.com/prometheus/client_golang v1.13.0 // indirect
 	github.com/prometheus/client_model v0.5.0 // indirect
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect

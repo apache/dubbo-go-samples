@@ -15,6 +15,7 @@
 
 **Pull 模式：应用 (go-client / go-server) -> Prometheus -> Grafana**
 
+
 ## 包含组件
 
 | 组件              | 端口     | 描述                                     |
@@ -24,6 +25,25 @@
 | **Pushgateway** | `9091` | 用于接收来自 Dubbo-Go 应用推送的指标数据。             |
 | **go-server**   | N/A    | Dubbo-Go 服务提供者 (Provider) 示例。          |
 | **go-client**   | N/A    | Dubbo-Go 服务消费者 (Consumer) 示例，会持续调用服务端。 |
+
+## ⚙️ 客户端配置
+### 环境变量
+```bash
+# Pushgateway 地址
+export PUSHGATEWAY_URL="ip:9091"
+
+# 任务名称（推荐按应用类型设置）
+export JOB_NAME="dubbo-client"
+
+````
+### 命令行参数
+```bash
+# 使用 Push 模式（默认）
+go run ./go-client/cmd/main.go
+
+# 使用 Pull 模式
+go run ./go-client/cmd/main.go --push=false
+````
 
 ## 🚀 快速开始
 
@@ -114,6 +134,7 @@ go run ./go-client/cmd/main.go
 - **`host.docker.internal` 无法连接**
     - `host.docker.internal` 是 Docker 的内置功能，如果该地址无法访问，请将 `metrics/prometheus.yml`
       中的Ip地址以及Grafana的数据源地址换为实际的Ip地址。
+      好的，这是您提供内容的中文翻译。
 
 -----
 
