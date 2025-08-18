@@ -58,7 +58,6 @@ install-deps: check-deps ## Install project dependencies
 
 build: install-deps ## Build all services
 	@echo "$(BLUE)Building all services...$(RESET)"
-	@mkdir -p bin
 	@echo "$(YELLOW)Building Frontend service...$(RESET)"
 	@go build -o bin/frontend ./frontend/cmd/main.go
 	@echo "$(YELLOW)Building User service...$(RESET)"
@@ -84,46 +83,34 @@ clean: ## Clean build files
 	@echo "$(GREEN)Clean completed$(RESET)"
 
 # Start all services (V1 version)
-start: build ## Start all services (V1 version)
+start: init build ## Start all services (V1 version)
 	@echo "$(BLUE)Starting all microservices...$(RESET)"
-	@mkdir -p logs pids
 	@echo "$(YELLOW)Starting Comment V1 service (port 20004)...$(RESET)"
 	@nohup ./bin/comment-v1 > logs/comment-v1.log 2>&1 & echo $$! > pids/comment-v1.pid
-	@sleep 2
 	@echo "$(YELLOW)Starting Detail V1 service (port 20002)...$(RESET)"
 	@nohup ./bin/detail-v1 > logs/detail-v1.log 2>&1 & echo $$! > pids/detail-v1.pid
-	@sleep 2
 	@echo "$(YELLOW)Starting Order V1 service (port 20003)...$(RESET)"
 	@nohup ./bin/order-v1 > logs/order-v1.log 2>&1 & echo $$! > pids/order-v1.pid
-	@sleep 2
 	@echo "$(YELLOW)Starting User service (port 20001)...$(RESET)"
 	@nohup ./bin/user > logs/user.log 2>&1 & echo $$! > pids/user.pid
-	@sleep 2
 	@echo "$(YELLOW)Starting Frontend service (port 8080)...$(RESET)"
 	@nohup ./bin/frontend > logs/frontend.log 2>&1 & echo $$! > pids/frontend.pid
-	@sleep 2
 	@echo "$(GREEN)All services started$(RESET)"
 	@echo "$(GREEN)Frontend access URL: http://localhost:8080$(RESET)"
 
 # Start V2 version services
-start-v2: build ## Start all services (V2 version)
+start-v2: init build ## Start all services (V2 version)
 	@echo "$(BLUE)Starting all microservices (V2 version)...$(RESET)"
-	@mkdir -p logs pids
 	@echo "$(YELLOW)Starting Comment V2 service...$(RESET)"
 	@nohup ./bin/comment-v2 > logs/comment-v2.log 2>&1 & echo $$! > pids/comment-v2.pid
-	@sleep 2
 	@echo "$(YELLOW)Starting Detail V2 service...$(RESET)"
 	@nohup ./bin/detail-v2 > logs/detail-v2.log 2>&1 & echo $$! > pids/detail-v2.pid
-	@sleep 2
 	@echo "$(YELLOW)Starting Order V2 service...$(RESET)"
 	@nohup ./bin/order-v2 > logs/order-v2.log 2>&1 & echo $$! > pids/order-v2.pid
-	@sleep 2
 	@echo "$(YELLOW)Starting User service...$(RESET)"
 	@nohup ./bin/user > logs/user.log 2>&1 & echo $$! > pids/user.pid
-	@sleep 2
 	@echo "$(YELLOW)Starting Frontend service...$(RESET)"
 	@nohup ./bin/frontend > logs/frontend.log 2>&1 & echo $$! > pids/frontend.pid
-	@sleep 2
 	@echo "$(GREEN)All services (V2 version) started$(RESET)"
 	@echo "$(GREEN)Frontend access URL: http://localhost:8080$(RESET)"
 
@@ -247,22 +234,6 @@ init: ## Initialize project directories
 	@mkdir -p bin logs pids
 	@echo "$(GREEN)Project directories initialization completed$(RESET)"
 
-fmt: ## Format code
-	@echo "$(BLUE)Formatting Go code...$(RESET)"
-	@go fmt ./...
-	@echo "$(GREEN)Code formatting completed$(RESET)"
-
-vet: ## Static code analysis
-	@echo "$(BLUE)Running static code analysis...$(RESET)"
-	@go vet ./...
-	@echo "$(GREEN)Code analysis completed$(RESET)"
-
-mod-update: ## Update dependency modules
-	@echo "$(BLUE)Updating dependency modules...$(RESET)"
-	@go get -u ./...
-	@go mod tidy
-	@echo "$(GREEN)Dependency modules update completed$(RESET)"
-
 # Clean commands
 clean-all: clean ## Deep clean (including logs and PID files)
 	@echo "$(BLUE)Deep cleaning...$(RESET)"
@@ -270,5 +241,5 @@ clean-all: clean ## Deep clean (including logs and PID files)
 	@echo "$(GREEN)Deep clean completed$(RESET)"
 
 # Quick start
-quick-start: init install-deps start ## Quick start (init + install dependencies + start)
+quick-start: install-deps start ## Quick start (install dependencies + start)
 	@echo "$(GREEN)Quick start completed! Visit http://localhost:8080$(RESET)"
