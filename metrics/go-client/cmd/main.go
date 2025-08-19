@@ -8,7 +8,7 @@
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing,
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
@@ -24,6 +24,8 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -42,12 +44,27 @@ import (
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
-// Pushgateway Config (flags)
-var (
-	pushGatewayURL = getEnv("PUSHGATEWAY_URL", "127.0.0.1:9091")
-	jobName        = getEnv("JOB_NAME", "push")
-	usePush        = flag.Bool("push", true, "use push mode")
-)
+// Config structure for application settings
+type Config struct {
+	PushGatewayURL  string // PushGateway URL for metrics
+	PushGatewayUser string // Username for PushGateway authentication
+	PushGatewayPass string // Password for PushGateway authentication
+	JobName         string // Job name for PushGateway
+	ZkAddress       string // ZooKeeper address for service registry
+	UsePush         bool   // Flag to enable/disable push mode
+}
+
+var config Config
+
+// Initialize configuration from environment variables and flags
+func init() {
+	flag.BoolVar(&config.UsePush, "push", true, "use push mode")
+	config.PushGatewayURL = getEnv("PUSHGATEWAY_URL", "127.0.0.1:9091")
+	config.PushGatewayUser = getEnv("PUSHGATEWAY_USER", "username")
+	config.PushGatewayPass = getEnv("PUSHGATEWAY_PASS", "1234")
+	config.JobName = getEnv("JOB_NAME", "dubbo_client")
+	config.ZkAddress = getEnv("ZK_ADDRESS", "127.0.0.1:2181")
+}
 
 func getEnv(k, d string) string {
 	if v := os.Getenv(k); v != "" {
@@ -59,16 +76,18 @@ func getEnv(k, d string) string {
 func main() {
 	flag.Parse()
 
+	// Prometheus metric
 	pushedAt := prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: "job_pushed_at_seconds",
 		Help: "Unix seconds of last push to Pushgateway",
 	})
 	prometheus.MustRegister(pushedAt)
 
+	// Dubbo instance
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
+			registry.WithAddress(config.ZkAddress),
 		),
 		dubbo.WithMetrics(
 			metrics.WithEnabled(),
@@ -81,11 +100,11 @@ func main() {
 			metrics.WithConfigCenterEnabled(),
 
 			metrics.WithPrometheusPushgatewayEnabled(),
-			metrics.WithPrometheusGatewayUsername("username"),
-			metrics.WithPrometheusGatewayPassword("1234"),
-			metrics.WithPrometheusGatewayUrl(pushGatewayURL),
+			metrics.WithPrometheusGatewayUsername(config.PushGatewayUser),
+			metrics.WithPrometheusGatewayPassword(config.PushGatewayPass),
+			metrics.WithPrometheusGatewayUrl(config.PushGatewayURL),
 			metrics.WithPrometheusGatewayInterval(10*time.Second),
-			metrics.WithPrometheusGatewayJob(jobName),
+			metrics.WithPrometheusGatewayJob(config.JobName),
 		),
 	)
 	if err != nil {
@@ -101,27 +120,36 @@ func main() {
 		panic(err)
 	}
 
-	// business loop
-	for i := 0; i < 10; i++ {
-		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-		if err != nil {
-			logger.Error(err)
-		} else {
-			logger.Infof("Greet response: %s", resp.Greeting)
+	// Handle graceful shutdown
+	stopCh := make(chan os.Signal, 1)
+	signal.Notify(stopCh, syscall.SIGINT, syscall.SIGTERM)
+
+	// Dead loop, can be stopped by signal
+	go func() {
+		for {
+			resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+			if err != nil {
+				logger.Error(err)
+			} else {
+				logger.Infof("Greet response: %s", resp.Greeting)
+			}
+
+			pushedAt.Set(float64(time.Now().Unix()))
+			time.Sleep(1 * time.Second)
 		}
+	}()
 
-		pushedAt.Set(float64(time.Now().Unix()))
+	// Wait for signal
+	<-stopCh
+	logger.Info("Received shutdown signal, cleaning up...")
 
-		time.Sleep(1 * time.Second)
-	}
-
-	// cleanup: delete job from Pushgateway if push mode enabled
-	if *usePush {
-		path := fmt.Sprintf("http://%s", pushGatewayURL)
-		if err := deletePushgatewayJob(path, jobName); err != nil {
+	// Cleanup: delete job from Pushgateway if push mode enabled
+	if config.UsePush {
+		path := fmt.Sprintf("http://%s", config.PushGatewayURL)
+		if err := deletePushgatewayJob(path, config.JobName); err != nil {
 			logger.Errorf("Delete pushgateway job failed: %v", err)
 		} else {
-			logger.Infof("Deleted job from Pushgateway: job=%s", jobName)
+			logger.Infof("Deleted job from Pushgateway: job=%s", config.JobName)
 		}
 	}
 }
@@ -137,15 +165,12 @@ func deletePushgatewayJob(pushgw, job string) error {
 	if err != nil {
 		return err
 	}
-	req.SetBasicAuth("username", "1234")
+	req.SetBasicAuth(config.PushGatewayUser, config.PushGatewayPass)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return err
 	}
-
-	defer func() {
-		_ = resp.Body.Close()
-	}()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		return nil

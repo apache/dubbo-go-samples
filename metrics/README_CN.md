@@ -26,24 +26,41 @@
 | **go-server**   | N/A    | Dubbo-Go 服务提供者 (Provider) 示例。          |
 | **go-client**   | N/A    | Dubbo-Go 服务消费者 (Consumer) 示例，会持续调用服务端。 |
 
-## ⚙️ 客户端配置
+## 配置说明
+
 ### 环境变量
+
+客户端和服务端使用相同的配置方式：
 ```bash
-# Pushgateway 地址
-export PUSHGATEWAY_URL="ip:9091"
+# Pushgateway 地址 (必需)
+export PUSHGATEWAY_URL="127.0.0.1:9091"
 
-# 任务名称（推荐按应用类型设置）
-export JOB_NAME="dubbo-client"
+# 任务名称标识 (必需)
+export JOB_NAME="dubbo-service"
 
-````
+# Pushgateway 认证用户名 (可选)
+export PUSHGATEWAY_USER="username"
+
+# Pushgateway 认证密码 (可选)
+export PUSHGATEWAY_PASS="1234"
+
+# ZooKeeper 地址 (必需)
+export ZK_ADDRESS="127.0.0.1:2181"
+```
+
 ### 命令行参数
+
+
 ```bash
 # 使用 Push 模式（默认）
 go run ./go-client/cmd/main.go
+go run ./go-server/cmd/main.go
 
-# 使用 Pull 模式
+
+# 使用 Pull 模式（不推送指标到 Pushgateway）
 go run ./go-client/cmd/main.go --push=false
-````
+go run ./go-server/cmd/main.go --push=false
+```
 
 ## 🚀 快速开始
 
@@ -123,6 +140,27 @@ go run ./go-client/cmd/main.go
 ![grafana.png](assert/grafana.png)
 
 尽情使用吧！
+
+## Pushgateway 的僵尸指标
+### 问题描述
+Pushgateway 设计初衷：为短生命周期进程（batch job、cron job）提供一个临时的指标中转点，方便 Prometheus 抓取。
+
+但默认行为：Pushgateway 不会自动删除已上报但不再更新的指标。
+也就是说，任务上报一次后即使停止，上报的那组标签（job/instance）对应的指标会一直存在。
+
+### 方案一：应用侧自动清理（已实现）
+
+**实现原理**：
+
+-   应用启动时注册`job_pushed_at_seconds`时间戳指标
+-   应用运行时定期更新时间戳
+-   应用优雅退出时自动调用 Pushgateway DELETE API 清理自身指标
+
+### 方案二：运维侧生产级清理器（pgw-cleaner）
+详细请看:  [tools/pgw-cleaner](../tools/pgw-cleaner/README.md)
+
+
+
 
 ## 常见问题 (Troubleshooting)
 

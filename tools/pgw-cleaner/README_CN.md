@@ -1,5 +1,7 @@
 # Dubbo-Go Pushgateway Cleaner 文档
 
+[English](README.md) | 中文
+
 ## 概述
 
 Dubbo-Go Pushgateway Cleaner 是专门为解决 Prometheus Pushgateway 中"僵尸指标"问题设计的工具。现提供运维端清理方案。

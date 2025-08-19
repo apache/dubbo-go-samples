@@ -24,26 +24,41 @@ The monitoring data flow is as follows:
 | **go-server** | N/A | Dubbo-Go service provider (Provider) example. |
 | **go-client** | N/A | Dubbo-Go service consumer (Consumer) example that continuously calls the server. |
 
-## ⚙️ Client Configuration
+## Configuration Instructions
 
 ### Environment Variables
 
-```
-# Pushgateway address
-export PUSHGATEWAY_URL="ip:9091"
+Both client and server use the same configuration method:
 
-# Job name (recommended to set according to application type)
-export JOB_NAME="dubbo-client"
+
+```bash
+# Pushgateway address (required)
+export PUSHGATEWAY_URL="127.0.0.1:9091"
+
+# Job name identifier (required)
+export JOB_NAME="dubbo-service"
+
+# Pushgateway authentication username (optional)
+export PUSHGATEWAY_USER="username"
+
+# Pushgateway authentication password (optional)
+export PUSHGATEWAY_PASS="1234"
+
+# ZooKeeper address (required)
+export ZK_ADDRESS="127.0.0.1:2181"
 ```
 
-### Command-line Arguments
+### Command Line Parameters
 
-```
-# Use push mode (default)
+```bash
+# Use Push mode (default)
 go run ./go-client/cmd/main.go
+go run ./go-server/cmd/main.go
 
-# Use pull mode
+
+# Use Pull mode (do not push metrics to Pushgateway)
 go run ./go-client/cmd/main.go --push=false
+go run ./go-server/cmd/main.go --push=false
 ```
 
 ## 🚀 Quick Start
@@ -119,6 +134,29 @@ Now that all services are running, let's configure Grafana to display the data.
 After a successful import, you will see a complete Dubbo observability dashboard\! The data in the panels (like QPS, success rate, latency, etc.) will update dynamically as the client continues to make calls.
 
 Enjoy\!
+
+
+## Zombie Metrics in Pushgateway
+
+### Problem Description
+
+Original design purpose of Pushgateway:Provide a temporary metric transit point for short-lived processes (batch jobs, cron jobs) to facilitate Prometheus scraping.
+
+Default behavior: Pushgateway does not automatically delete metrics that have been reported but are no longer updated.  
+That is, once a job reports metrics, even if the job stops, the metrics corresponding to that set of labels (job/instance) will persist.
+
+### Solution 1: Automatic Cleanup on Application Side (Implemented)
+
+**Implementation Principle**:
+
+-   The application registers the`job_pushed_at_seconds`timestamp metric on startup
+-   The application periodically updates the timestamp during operation
+-   The application automatically calls the Pushgateway DELETE API to clean up its own metrics on graceful exit
+
+### Solution 2: Production-grade Cleaner on Operations Side (pgw-cleaner)
+
+For details:[tools/pgw-cleaner](../tools/pgw-cleaner/README.md)
+
 
 ## Troubleshooting
 

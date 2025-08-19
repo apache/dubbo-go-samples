@@ -1,5 +1,7 @@
 # Dubbo-Go Pushgateway Cleaner Documentation
 
+English | [中文](README_CN.md)
+
 ## Overview
 
 Dubbo-Go Pushgateway Cleaner is a tool designed to solve the "zombie metrics" issue in Prometheus Pushgateway. It provides an operation-side cleanup solution.  
