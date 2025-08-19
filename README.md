@@ -60,7 +60,10 @@
 * task: Task scheduling and execution example
 * timeout: Demonstrates timeout handling in Dubbo-go
 * transaction/seata-go: Distributed transaction example using seata-go
-* tools/pgw-cleaner: Operation and maintenance tool example for cleaning up zombie metrics in Prometheus Push mode
+
+### Tools
+* pgw-cleaner: Operation and maintenance tool for cleaning up zombie metrics in Prometheus Push mode
+
 
 ## How To Run
 
