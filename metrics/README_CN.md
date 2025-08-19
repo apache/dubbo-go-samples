@@ -134,7 +134,6 @@ go run ./go-client/cmd/main.go
 - **`host.docker.internal` 无法连接**
     - `host.docker.internal` 是 Docker 的内置功能，如果该地址无法访问，请将 `metrics/prometheus.yml`
       中的Ip地址以及Grafana的数据源地址换为实际的Ip地址。
-      好的，这是您提供内容的中文翻译。
 
 -----
 
