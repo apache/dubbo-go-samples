@@ -18,6 +18,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 )
 
 import (
@@ -35,70 +36,102 @@ import (
 )
 
 func main() {
-	ins, err := dubbo.NewInstance(
+	// 初始化实例
+	ins, err := initDubboInstance()
+	if err != nil {
+		panic(err)
+	}
+
+	// 调用不同协议的服务
+	if err := callTripleService(ins); err != nil {
+		logger.Error(err)
+	}
+
+	if err := callDubboService(ins); err != nil {
+		logger.Error(err)
+	}
+
+	if err := callJsonRpcService(ins); err != nil {
+		logger.Error(err)
+	}
+}
+
+// 初始化 Dubbo 实例
+func initDubboInstance() (*dubbo.Instance, error) {
+	return dubbo.NewInstance(
 		dubbo.WithName("dubbo_multirpc_client"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
 		),
 	)
+}
+
+// 调用 Triple 协议服务
+func callTripleService(ins *dubbo.Instance) error {
+	cli, err := ins.NewClient(client.WithClientProtocolTriple())
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to create triple client: %w", err)
 	}
 
-	//Triple
-	cli, err := ins.NewClient(
-		client.WithClientProtocolTriple())
-	if err != nil {
-		panic(err)
-	}
 	svc, err := greet2.NewGreetService(cli)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to create greet service: %w", err)
 	}
 
-	respTriple, err := svc.Greet(context.Background(), &greet2.GreetRequest{Name: "hello world"})
+	resp, err := svc.Greet(context.Background(), &greet2.GreetRequest{Name: "hello world"})
 	if err != nil {
-		logger.Error(err)
+		return fmt.Errorf("triple service call failed: %w", err)
 	}
-	logger.Infof("Greet triple response: %s", respTriple.Greeting)
 
-	//Duboo
-	cliDubbo, err := ins.NewClient(
+	logger.Infof("Greet triple response: %s", resp.Greeting)
+	return nil
+}
+
+// 调用 Dubbo 协议服务
+func callDubboService(ins *dubbo.Instance) error {
+	cli, err := ins.NewClient(
 		client.WithClientProtocolDubbo(),
 		client.WithClientSerialization(constant.Hessian2Serialization),
 	)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to create dubbo client: %w", err)
 	}
 
-	connDubbo, err := cliDubbo.Dial("GreetProvider")
+	conn, err := cli.Dial("GreetProvider")
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to dial dubbo service: %w", err)
 	}
-	var respDubbo string
-	if err = connDubbo.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &respDubbo, "SayHello"); err != nil {
-		logger.Errorf("GreetProvider.Greet err: %s", err)
-		return
-	}
-	logger.Infof("Get dubbo Response: %s", respDubbo)
 
-	//JsonRpc
-	cliJsonRpc, err := ins.NewClient(
+	var resp string
+	if err := conn.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &resp, "SayHello"); err != nil {
+		return fmt.Errorf("dubbo service call failed: %w", err)
+	}
+
+	logger.Infof("Get dubbo Response: %s", resp)
+	return nil
+}
+
+// 调用 JsonRPC 协议服务
+func callJsonRpcService(ins *dubbo.Instance) error {
+	cli, err := ins.NewClient(
 		client.WithClientProtocolJsonRPC(),
 		client.WithClientSerialization(constant.JSONSerialization),
 	)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to create jsonrpc client: %w", err)
 	}
-	connJsonRpc, err := cliJsonRpc.Dial("GreetProvider")
+
+	conn, err := cli.Dial("GreetProvider")
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("failed to dial jsonrpc service: %w", err)
 	}
-	var respJsonRpc string
-	if err := connJsonRpc.CallUnary(context.Background(), []interface{}{"hello", "new", "jsonrpc"}, &respJsonRpc, "SayHello"); err != nil {
-		logger.Errorf("GreetProvider.Greet err: %s", err)
-		return
+
+	var resp string
+	if err := conn.CallUnary(context.Background(), []interface{}{"hello", "new", "jsonrpc"}, &resp, "SayHello"); err != nil {
+		return fmt.Errorf("jsonrpc service call failed: %w", err)
 	}
-	logger.Infof("Get jsonrpc Response: %s", respJsonRpc)
+
+	logger.Infof("Get jsonrpc Response: %s", resp)
+	return nil
 }

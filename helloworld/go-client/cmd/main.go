@@ -33,6 +33,7 @@ import (
 )
 
 func main() {
+	logger.Info("start helloword/go-client")
 	cli, err := client.NewClient(
 		client.WithClientURL("127.0.0.1:20000"),
 	)

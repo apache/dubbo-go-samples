@@ -10,3 +10,5 @@ dubbo:
         protocol: tri
         serialization: hessian2
         interface: com.apache.dubbo.sample.basic.ErrorResponseProvider # must be compatible with grpc or dubbo-java
+        cluster: failfast
+        retries: 0

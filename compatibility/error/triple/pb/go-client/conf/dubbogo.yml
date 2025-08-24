@@ -7,3 +7,5 @@ dubbo:
       GreeterClientImpl:
         protocol: tri
         interface: org.apache.dubbo.demo.Greeter
+        cluster: failfast
+        retries: 0
