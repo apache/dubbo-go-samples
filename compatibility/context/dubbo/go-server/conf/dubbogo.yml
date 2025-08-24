@@ -6,7 +6,7 @@ dubbo:
   protocols:
     dubbo:
       name: dubbo
-      port: 20000
+      port: 20009
   provider:
     services:
       UserProvider:
