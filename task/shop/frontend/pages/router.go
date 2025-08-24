@@ -18,15 +18,27 @@
 package pages
 
 import (
+	"path/filepath"
+	"runtime"
+)
+
+import (
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() *gin.Engine {
 	router := gin.Default()
+	// get current file directory
+	_, filename, _, _ := runtime.Caller(0)
+	dir := filepath.Dir(filename)
+
 	// load the html
-	router.LoadHTMLGlob("../pages/templates/*")
+	templatePath := filepath.Join(dir, "templates", "*")
+	router.LoadHTMLGlob(templatePath)
+
 	// static files
-	router.Static("/static", "../pages/static")
+	staticPath := filepath.Join(dir, "static")
+	router.Static("/static", staticPath)
 	router.GET("/", Index)
 	router.GET("/login", Login)
 	router.GET("/timeoutLogin", TimeoutLogin)
