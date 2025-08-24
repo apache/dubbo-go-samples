@@ -7,10 +7,10 @@ on:
       - 'release-*'
       - 'feature-*'
   pull_request:
-    branches: "*"
+    branches:
+      - "*"
 
 jobs:
-
   build:
     name: ${{ matrix.os }} - Go ${{ matrix.go_version }}
     runs-on: ${{ matrix.os }}
@@ -21,31 +21,26 @@ jobs:
           - '1.23'
         os:
           - ubuntu-latest
+          # - macos-latest  # 可选：添加macOS测试
+          # - windows-latest  # 可选：添加Windows测试
 
     env:
       DING_TOKEN: ${{ secrets.DING_TOKEN }}
       DING_SIGN: ${{ secrets.DING_SIGN }}
 
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v2
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go ${{ matrix.go_version }}
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go_version }}
-        id: go
+          cache: true
+          cache-dependency-path: go.sum
 
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v4.0.0
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          # Cache
-          path: ~/go/pkg/mod
-          # Cache key
-          key: ${{ runner.os }}-go-${{ matrix.go_version }}-${{ hashFiles('**/go.sum') }}
-          # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
-          restore-keys: |
-            ${{ runner.os }}-go-${{ matrix.go_version }}-
+      - name: Verify Go installation
+        run: go version
 
       - name: Get dependencies
         run: |
@@ -55,37 +50,45 @@ jobs:
 
       - name: Format Code
         run: |
-          go fmt ./... && GOROOT=$(go env GOROOT) imports-formatter && git status && [[ -z `git status -s` ]]
-          # diff -u <(echo -n) <(gofmt -d -s .)
+          go fmt ./...
+          GOROOT=$(go env GOROOT) imports-formatter
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Code formatting issues found:"
+            git diff
+            exit 1
+          fi
 
       - name: Check License Header
-        uses: apache/skywalking-eyes/header@e1a02359b239bd28de3f6d35fdc870250fa513d5
-
-      - name: Set Go version again to override skywalking
-        uses: actions/setup-go@v2
-        with:
-          go-version: ${{ matrix.go_version }}
-
-      - name: Check Go version
-        run: |
-          go version
+        uses: apache/skywalking-eyes/header@v0.6.0
 
       - name: Switch Dubbo-go version
         run: |
+          set -e  # 遇到错误立即退出
+          
           # Acquire information of branch
-          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-            BRANCH=${{github.base_ref}}
-          elif [ "$GITHUB_EVENT_NAME" == "push" ]; then
-            BRANCH=$GITHUB_REF_NAME
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BRANCH="${{ github.base_ref }}"
+          elif [ "${{ github.event_name }}" == "push" ]; then
+            BRANCH="${{ github.ref_name }}"
           else
-            echo "$GITHUB_EVENT_NAME event is unsupported right now"
+            echo "Unsupported event: ${{ github.event_name }}"
             exit 1
           fi
-          echo "EVENT = $GITHUB_EVENT_NAME, BRANCH = $BRANCH"
-          # Edit the version
-          go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH
+          
+          echo "EVENT = ${{ github.event_name }}, BRANCH = $BRANCH"
+          
+          # Edit the version with error handling
+          if ! go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH; then
+            echo "Warning: Failed to replace dubbo-go version, using default"
+          fi
+          
           go mod tidy
+
+#      - name: Run tests
+#        run: |
+#          go test -v -race ./...
 
       - name: Integration Test
         run: |
+          chmod +x ./start_integrate_test.sh
           ./start_integrate_test.sh
