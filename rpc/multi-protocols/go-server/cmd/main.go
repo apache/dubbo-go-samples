@@ -18,6 +18,8 @@ package main
 
 import (
 	"context"
+
+	"dubbo.apache.org/dubbo-go/v3/common"
 )
 
 import (
@@ -70,38 +72,17 @@ func main() {
 		panic(err)
 	}
 	//Triple
-	srvTriple, err := ins.NewServer()
+	srv, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}
-	if err = greet2.RegisterGreetServiceHandler(srvTriple, &GreetMultiRPCServer{}); err != nil {
+	if err = greet2.RegisterGreetServiceHandler(srv, &GreetMultiRPCServer{}); err != nil {
 		panic(err)
 	}
-	if err = srvTriple.Serve(); err != nil {
-		logger.Error(err)
-	}
-
-	//Dubbo
-	srvDubbo, err := ins.NewServer()
-	if err != nil {
+	if err = srv.Register(&GreetProvider{}, &common.ServiceInfo{}, server.WithInterface("GreetProvider")); err != nil {
 		panic(err)
 	}
-	if err = srvDubbo.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
-		panic(err)
-	}
-	if err = srvDubbo.Serve(); err != nil {
-		logger.Error(err)
-	}
-
-	//JsonRpc
-	srvJsonRpc, err := ins.NewServer()
-	if err != nil {
-		panic(err)
-	}
-	if err = srvJsonRpc.Register(&GreetProvider{}, nil, server.WithInterface("GreetProvider")); err != nil {
-		panic(err)
-	}
-	if err := srvJsonRpc.Serve(); err != nil {
+	if err = srv.Serve(); err != nil {
 		logger.Error(err)
 	}
 }
