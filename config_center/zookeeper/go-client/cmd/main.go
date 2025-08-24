@@ -19,20 +19,15 @@ package main
 
 import (
 	"context"
-	"strings"
-	"time"
+
+	"dubbo.apache.org/dubbo-go/v3/registry"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/config_center"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	"github.com/dubbogo/go-zookeeper/zk"
-
 	"github.com/dubbogo/gost/log/logger"
-
-	perrors "github.com/pkg/errors"
 )
 
 import (
@@ -40,16 +35,11 @@ import (
 )
 
 func main() {
-	_ = writeRuleToConfigCenter()
-
-	time.Sleep(time.Second * 10)
-
-	zkOption := config_center.WithZookeeper()
-	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-client")
-	addressOption := config_center.WithAddress("127.0.0.1:2181")
-	groupOption := config_center.WithGroup("dubbogo")
 	ins, err := dubbo.NewInstance(
-		dubbo.WithConfigCenter(zkOption, dataIdOption, addressOption, groupOption),
+		dubbo.WithRegistry(
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+		),
 	)
 	if err != nil {
 		panic(err)
@@ -59,7 +49,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
 		panic(err)
@@ -71,52 +60,3 @@ func main() {
 	}
 	logger.Infof("Greet response: %s", resp)
 }
-
-func writeRuleToConfigCenter() error {
-	c, _, err := zk.Connect([]string{"127.0.0.1:2181"}, time.Second*10)
-	if err != nil {
-		panic(err)
-	}
-
-	valueBytes := []byte(configCenterZKClientConfig)
-	path := "/dubbo/config/dubbogo/dubbo-go-samples-configcenter-zookeeper-client"
-	if !strings.HasPrefix(path, "/") {
-		path = "/" + path
-	}
-	paths := strings.Split(path, "/")
-	for idx := 2; idx < len(paths); idx++ {
-		tmpPath := strings.Join(paths[:idx], "/")
-		_, err = c.Create(tmpPath, []byte{}, 0, zk.WorldACL(zk.PermAll))
-		if err != nil && err != zk.ErrNodeExists {
-			panic(err)
-		}
-	}
-
-	_, err = c.Create(path, valueBytes, 0, zk.WorldACL(zk.PermAll))
-	if err != nil {
-		if perrors.Is(err, zk.ErrNodeExists) {
-			_, stat, _ := c.Get(path)
-			_, setErr := c.Set(path, valueBytes, stat.Version)
-			if setErr != nil {
-				panic(err)
-			}
-		} else {
-			panic(err)
-		}
-	}
-	return err
-}
-
-const configCenterZKClientConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-client', namespace is default
-dubbo:
-  registries:
-    demoZK:
-      protocol: zookeeper
-      timeout: 3s
-      address: 127.0.0.1:2181
-  consumer:
-    references:
-      GreeterClientImpl:
-        protocol: tri
-        interface: com.apache.dubbo.sample.basic.IGreeter 
-`
