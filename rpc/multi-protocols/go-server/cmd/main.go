@@ -18,12 +18,11 @@ package main
 
 import (
 	"context"
-
-	"dubbo.apache.org/dubbo-go/v3/common"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/common"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
