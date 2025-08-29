@@ -42,7 +42,7 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-`
+        interface: "" # read interface from pb`
 
 var greeterProvider = new(dubbo3pb.GreeterClientImpl)
 
