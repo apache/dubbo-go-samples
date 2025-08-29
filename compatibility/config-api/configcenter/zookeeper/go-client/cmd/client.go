@@ -32,46 +32,18 @@ import (
 	"github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
-const configCenterZKClientConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-client', namespace is default
-dubbo:
-  registries:
-    demoZK:
-      protocol: nacos
-      address: 127.0.0.1:8848
-  consumer:
-    references:
-      GreeterClientImpl:
-        protocol: tri
-`
-
 var grpcGreeterImpl = new(api.GreeterClientImpl)
 
-// There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
-func main() {
-	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
-		SetProtocol("zookeeper").
-		SetAddress("127.0.0.1:2181").
-		Build().GetDynamicConfiguration()
-	if err != nil {
-		panic(err)
-	}
-
-	if err = dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", configCenterZKClientConfig); err != nil {
-		panic(err)
-	}
-
+func init() {
 	config.SetConsumerService(grpcGreeterImpl)
+}
 
-	rootConfig := config.NewRootConfigBuilder().
-		SetConfigCenter(config.NewConfigCenterConfigBuilder().
-			SetProtocol("nacos").SetAddress("127.0.0.1:2182").
-			SetDataID("dubbo-go-samples-configcenter-zookeeper-client").
-			Build()).
-		Build()
-
-	if err = config.Load(config.WithRootConfig(rootConfig)); err != nil {
+// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-client/conf/dubbogo.yml
+func main() {
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
+
 	logger.Info("start to test dubbo")
 	req := &api.HelloRequest{
 		Name: "laurence",
