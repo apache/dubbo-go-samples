@@ -32,21 +32,6 @@ import (
 	"github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
-const configCenterZKServerConfig = `# set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-server', namespace is default
-dubbo:
-  registries:
-    demoZK:
-      protocol: zookeeper
-      address: 127.0.0.1:2181
-  protocols:
-    triple:
-      name: tri
-      port: 20000
-  provider:
-    services:
-      GreeterProvider:
-        interface: "" # read interface from pb`
-
 type GreeterProvider struct {
 	api.UnimplementedGreeterServer
 }
@@ -58,20 +43,18 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
-		SetProtocol("zookeeper").
-		SetAddress("127.0.0.1:2181").
-		Build().GetDynamicConfiguration()
-	if err != nil {
-		panic(err)
-	}
-	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-server", "dubbogo", configCenterZKServerConfig); err != nil {
-		panic(err)
-	}
-
 	config.SetProviderService(&GreeterProvider{})
-
 	rootConfig := config.NewRootConfigBuilder().
+		SetProvider(config.NewProviderConfigBuilder().
+			AddService("GreeterProvider", config.NewServiceConfigBuilder().
+				Build()).
+			Build()).
+		AddRegistry("demoZK", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).
+		AddProtocol("triple", config.NewProtocolConfigBuilder().
+			SetName("tri").
+			SetPort("20000").
+			Build()).
+		// use config center
 		SetConfigCenter(config.NewConfigCenterConfigBuilder().
 			SetProtocol("zookeeper").SetAddress("127.0.0.1:2181").
 			SetDataID("dubbo-go-samples-configcenter-zookeeper-server").

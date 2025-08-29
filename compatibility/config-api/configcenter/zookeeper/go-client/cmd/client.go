@@ -32,45 +32,21 @@ import (
 	"github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
-const configCenterZKClientConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-client', namespace is default
-dubbo:
-  registries:
-    demoZK:
-      protocol: zookeeper
-      address: 127.0.0.1:2181
-  consumer:
-    references:
-      GreeterClientImpl:
-        protocol: tri
-`
-
 var grpcGreeterImpl = new(api.GreeterClientImpl)
 
 // There is no need to export DUBBO_GO_CONFIG_PATH, as you are using config api to set config
 func main() {
-	dynamicConfig, err := config.NewConfigCenterConfigBuilder().
-		SetProtocol("zookeeper").
-		SetAddress("127.0.0.1:2181").
-		Build().GetDynamicConfiguration()
-	if err != nil {
-		panic(err)
-	}
-
-	if err = dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", configCenterZKClientConfig); err != nil {
-		panic(err)
-	}
-
 	config.SetConsumerService(grpcGreeterImpl)
-
 	rootConfig := config.NewRootConfigBuilder().
-		SetConfigCenter(config.NewConfigCenterConfigBuilder().
-			SetProtocol("zookeeper").SetAddress("127.0.0.1:2181").
-			SetDataID("dubbo-go-samples-configcenter-zookeeper-client").
-			SetGroup("dubbogo").
+		SetConsumer(config.NewConsumerConfigBuilder().
+			AddReference("GreeterClientImpl", config.NewReferenceConfigBuilder().
+				SetProtocol("tri").
+				Build()).
 			Build()).
+		AddRegistry("zkRegistryKey", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).
 		Build()
 
-	if err = config.Load(config.WithRootConfig(rootConfig)); err != nil {
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 	logger.Info("start to test dubbo")
