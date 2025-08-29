@@ -19,13 +19,12 @@ package main
 
 import (
 	"context"
-
-	"dubbo.apache.org/dubbo-go/v3/registry"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 
 	"github.com/dubbogo/gost/log/logger"
 )

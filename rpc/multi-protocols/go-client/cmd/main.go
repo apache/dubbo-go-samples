@@ -28,8 +28,11 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 
-	greet2 "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet2 "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
 )
 
 func main() {
