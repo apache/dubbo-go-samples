@@ -44,15 +44,15 @@ func main() {
 
 	// Call services with different protocols
 	if err := callTripleService(ins); err != nil {
-		logger.Error(err)
+		panic(err)
 	}
 
 	if err := callDubboService(ins); err != nil {
-		logger.Error(err)
+		panic(err)
 	}
 
 	if err := callJsonRpcService(ins); err != nil {
-		logger.Error(err)
+		panic(err)
 	}
 }
 
