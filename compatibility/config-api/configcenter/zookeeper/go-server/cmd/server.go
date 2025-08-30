@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"time"
 )
 
 import (
@@ -68,6 +69,8 @@ func main() {
 	if err := dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-server", "dubbogo", configCenterZKServerConfig); err != nil {
 		panic(err)
 	}
+
+	time.Sleep(time.Second * 10)
 
 	config.SetProviderService(&GreeterProvider{})
 
