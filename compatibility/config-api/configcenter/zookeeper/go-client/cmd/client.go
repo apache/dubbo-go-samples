@@ -73,8 +73,7 @@ func main() {
 			Build()).
 		Build()
 
-	withRootConfig := config.WithRootConfig(rootConfig)
-	if err = config.Load(withRootConfig); err != nil {
+	if err = config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 	logger.Info("start to test dubbo")
