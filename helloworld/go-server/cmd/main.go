@@ -42,7 +42,6 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 }
 
 func main() {
-	logger.Info("start helloword/go-server")
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
 			protocol.WithPort(20000),

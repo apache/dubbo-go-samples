@@ -36,13 +36,13 @@ import (
 )
 
 func main() {
-	// 初始化实例
+	// Initialize instance
 	ins, err := initDubboInstance()
 	if err != nil {
 		panic(err)
 	}
 
-	// 调用不同协议的服务
+	// Call services using different protocols
 	if err := callTripleService(ins); err != nil {
 		logger.Error(err)
 	}
@@ -56,7 +56,7 @@ func main() {
 	}
 }
 
-// 初始化 Dubbo 实例
+// Initialize Dubbo instance
 func initDubboInstance() (*dubbo.Instance, error) {
 	return dubbo.NewInstance(
 		dubbo.WithName("dubbo_multirpc_client"),
@@ -67,7 +67,7 @@ func initDubboInstance() (*dubbo.Instance, error) {
 	)
 }
 
-// 调用 Triple 协议服务
+// Call Triple protocol service
 func callTripleService(ins *dubbo.Instance) error {
 	cli, err := ins.NewClient(client.WithClientProtocolTriple())
 	if err != nil {
@@ -88,7 +88,7 @@ func callTripleService(ins *dubbo.Instance) error {
 	return nil
 }
 
-// 调用 Dubbo 协议服务
+// Call Dubbo protocol service
 func callDubboService(ins *dubbo.Instance) error {
 	cli, err := ins.NewClient(
 		client.WithClientProtocolDubbo(),
@@ -112,7 +112,7 @@ func callDubboService(ins *dubbo.Instance) error {
 	return nil
 }
 
-// 调用 JsonRPC 协议服务
+// Call JsonRPC protocol service
 func callJsonRpcService(ins *dubbo.Instance) error {
 	cli, err := ins.NewClient(
 		client.WithClientProtocolJsonRPC(),
