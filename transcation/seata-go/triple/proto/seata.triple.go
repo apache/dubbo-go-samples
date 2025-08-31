@@ -69,7 +69,7 @@ func NewUserProvider(cli *client.Client, opts ...client.ReferenceOption) (UserPr
 	}, nil
 }
 
-func SetConsumerService(srv common.RPCService) {
+func SetConsumerUserProvider(srv common.RPCService) {
 	dubbo.SetConsumerServiceWithInfo(srv, &UserProvider_ClientInfo)
 }
 
@@ -131,7 +131,7 @@ func RegisterUserProviderHandler(srv *server.Server, hdlr UserProviderHandler, o
 	return srv.Register(hdlr, &UserProvider_ServiceInfo, opts...)
 }
 
-func SetProviderService(srv common.RPCService) {
+func SetProviderUserProvider(srv common.RPCService) {
 	dubbo.SetProviderServiceWithInfo(srv, &UserProvider_ServiceInfo)
 }
 

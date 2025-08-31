@@ -35,7 +35,7 @@ import (
 var svc = new(greet.GreetServiceImpl)
 
 func main() {
-	greet.SetConsumerService(svc)
+	greet.SetConsumerGreetService(svc)
 	if err := dubbo.Load(); err != nil {
 		panic(err)
 	}
