@@ -43,7 +43,7 @@
 * java_interop：Java 与 Go Dubbo 实现互操作示例
 * llm：集成大语言模型（LLM）与 Dubbo-go 示例
 * logger：Dubbo-go 日志功能示例
-* metrics：Dubbo-go 服务指标采集与暴露示例，支持 Prometheus Push 模式和 Pull 模式
+* metrics：Dubbo-go 服务指标采集与暴露示例，支持 Prometheus Push 模式和 Pull 模式, 同时包含 Push 模式下僵尸指标清理工具 “pgw-cleaner”
 * online_boutique：Dubbo-go 微服务电商示例
 * otel/tracing：基于 OpenTelemetry 的分布式链路追踪示例
 * registry：多种服务注册中心（如 nacos、zookeeper）用法示例
@@ -57,6 +57,9 @@
 * task：任务调度与执行示例
 * timeout：Dubbo-go 超时处理示例
 * transaction/seata-go：基于 seata-go 的分布式事务示例
+
+### 工具
+* pgw-cleaner：Prometheus Push 模式下清理僵尸指标的运维工具示例
 
 ## 如何运行
 
