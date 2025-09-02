@@ -18,35 +18,48 @@
 package integration
 
 import (
-	"os"
+	"context"
 	"testing"
+	"time"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
-)
+type UserProviderWithCustomGroupAndVersion struct {
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
+}
 
-var greeterProvider = new(api.GreeterClientImpl)
+type UserProvider struct {
+	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
+}
+
+type User struct {
+	ID   string
+	Name string
+	Age  int32
+	Time time.Time
+}
+
+func (u *User) JavaClassName() string {
+	return "org.apache.dubbo.User"
+}
+
+var userProvider = &UserProvider{}
+var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{}
 
 func TestMain(m *testing.M) {
-	config.SetConsumerService(greeterProvider)
-	rootConfig := config.NewRootConfigBuilder().
-		SetConsumer(config.NewConsumerConfigBuilder().
-			AddReference("GreeterClientImpl", config.NewReferenceConfigBuilder().
-				SetProtocol("tri").
-				Build()).
-			Build()).
-		AddRegistry("zkRegistryKey", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).
-		Build()
 
-	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
+	config.SetConsumerService(userProvider)
+	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
+	hessian.RegisterPOJO(&User{})
+	err := config.Load()
+	if err != nil {
 		panic(err)
 	}
-	os.Exit(m.Run())
 
 }
