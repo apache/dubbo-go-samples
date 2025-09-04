@@ -18,6 +18,7 @@ package ollama
 
 import (
 	"context"
+    "fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -100,11 +101,22 @@ func NewLLMOllama(model string, url string) *LLMOllama {
 	}
 }
 
-func (llm *LLMOllama) Call(ctx context.Context, input string, opts ...model.Option) (string, error) {
-	client := api.NewClient(&url.URL{Scheme: llm.llmUrl.scheam, Host: llm.llmUrl.host}, http.DefaultClient)
+func (llm *LLMOllama) Stream(ctx context.Context, input string, opts ...model.Option) (string, error) {
+	return llm.Call(ctx, input, opts...)
+}
 
+func (llm *LLMOllama) Call(ctx context.Context, input string, opts ...model.Option) (string, error) {
+	// 检查 ctx 是否已超时（提前返回）
+	select {
+	case <-ctx.Done():
+		return "", fmt.Errorf("LLM 调用超时：%w", ctx.Err())
+	default:
+	}
+
+	client := api.NewClient(&url.URL{Scheme: llm.llmUrl.scheam, Host: llm.llmUrl.host}, http.DefaultClient)
 	optss := model.NewOptions(opts...)
 
+	// 传递 ctx 到 client.Generate（确保 LLM 调用受超时控制）
 	// By default, GenerateRequest is streaming.
 	req := &api.GenerateRequest{
 		Model:   llm.Model,
@@ -114,26 +126,28 @@ func (llm *LLMOllama) Call(ctx context.Context, input string, opts ...model.Opti
 		Options: optss.Opts,
 	}
 
-	var respBuilder strings.Builder // Use strings.Builder
+	var respBuilder strings.Builder
 	respFunc := func(resp api.GenerateResponse) error {
 		respBuilder.WriteString(resp.Response)
 		return optss.CallOpt(resp.Response)
 	}
 
+	// 使用带超时的 ctx 调用 LLM
 	err := client.Generate(ctx, req, respFunc)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("LLM 调用失败（可能超时）：%v", err)
 		return "", err
 	}
 
 	return respBuilder.String(), nil
 }
 
-func (llm *LLMOllama) Stream(ctx context.Context, input string, opts ...model.Option) (string, error) {
-	return llm.Call(ctx, input, opts...)
-}
-
 func (llm *LLMOllama) Invoke(ctx context.Context, input string, opts ...model.Option) (string, error) {
+	select {
+	case <-ctx.Done():
+		return "", fmt.Errorf("LLM Invoke 超时：%w", ctx.Err())
+	default:
+	}
 	client := api.NewClient(&url.URL{Scheme: llm.llmUrl.scheam, Host: llm.llmUrl.host}, http.DefaultClient)
 
 	// Messages

@@ -34,6 +34,8 @@ import (
 import (
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/agents"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/conf"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model"
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model/bailian"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model/ollama"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/tools"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/tools/bookingflight"
@@ -65,12 +67,24 @@ func getTools() tools.Tools {
 }
 
 type ChatServer struct {
-	llm *ollama.LLMOllama
+	llm model.LLM
 	cot agents.CotAgentRunner
 }
 
 func NewChatServer() (*ChatServer, error) {
-	llm := ollama.NewLLMOllama(cfgEnv.Model, cfgEnv.Url)
+	var llm model.LLM
+	
+	// 检查URL是否包含dashscope.aliyuncs.com，判断是否使用百炼API
+	if strings.Contains(cfgEnv.Url, "dashscope.aliyuncs.com") {
+		// 使用百炼API
+		log.Println("使用百炼API")
+		llm = bailian.NewLLMBailian(cfgEnv.Model, cfgEnv.Url, cfgEnv.ApiKey)
+	} else {
+		// 使用Ollama API
+		log.Println("使用Ollama API")
+		llm = ollama.NewLLMOllama(cfgEnv.Model, cfgEnv.Url)
+	}
+	
 	cot := agents.NewCotAgentRunner(llm, getTools(), 10, conf.GetConfigPrompts())
 	return &ChatServer{llm: llm, cot: cot}, nil
 }

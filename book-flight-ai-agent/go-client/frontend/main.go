@@ -80,6 +80,13 @@ func main() {
 			"OllamaModel":   cfgEnv.Model,
 		})
 	})
+	// 新增配置接口：供前端获取超时等配置
+	r.GET("/api/config", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"TIMEOUT_SECONDS": cfgEnv.TimeOut, // 传递后端解析的超时时间
+			"WEB_PORT":        cfgEnv.PortWeb,
+		})
+	})
 	r.POST("/api/chat", h.Chat)
 	r.POST("/api/context/new", h.NewContext)
 	r.GET("/api/context/list", h.ListContexts)

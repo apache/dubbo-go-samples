@@ -37,6 +37,7 @@ body {
     transform 0.3s ease,
     box-shadow 0.3s ease,
     background 0.3s ease;
+  display: none; /* 默认不显示，只有在有航班信息时才显示 */
 }
 #flight-info:hover {
   transform: translateY(5px); /* 悬停时上移 10px */
@@ -227,7 +228,7 @@ header h2 {
   padding: 15px 15px 15px 0;
   font-size: 0.95rem;
 }
-.chat-input #send-btn
+.chat-input #send-btn,
 .chat-input #add-btn {
   align-self: flex-end;
   color: #724ae8;

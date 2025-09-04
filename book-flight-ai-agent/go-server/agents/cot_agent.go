@@ -23,9 +23,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
-)
 
-import (
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/actions"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/conf"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model"
@@ -65,6 +63,12 @@ func (cot *CotAgentRunner) Run(
 	callopt model.Option,
 	callrst model.CallFunc,
 ) (string, error) {
+	// 1. 获取配置的超时时间（秒转毫秒）
+	timeoutSec := conf.GetEnvironment().TimeOut
+	timeoutCtx, cancel := context.WithTimeout(ctx, time.Duration(timeoutSec)*time.Second)
+	defer cancel() // 确保任务结束后释放资源
+
+	// 2. 将原有逻辑的 ctx 替换为 timeoutCtx（确保全链路受超时控制）
 	timeNow := time.Now().Format("2006-01-02 15:04:05")
 	opts := model.NewOptions(callopt)
 
@@ -74,19 +78,32 @@ func (cot *CotAgentRunner) Run(
 
 	var task string
 	if len(cot.memoryMsg) > 0 {
+		// 传递 timeoutCtx 到 summaryIntent
 		task = cot.summaryIntent(timeNow, callopt)
 	} else {
 		task = input
 	}
 
-	// Runner
+	// Runner 循环（使用 timeoutCtx 判断超时）
 	var response string
 	var action actions.Action
-
 	var idxThoughtStep int32
 	var taskState TaskState
+
 	for idxThoughtStep < cot.maxThoughtSteps {
-		action, response = cot.thinkStep(task, timeNow, callopt, opts)
+		// 检查是否超时（提前退出循环）
+		select {
+		case <-timeoutCtx.Done():
+			// 记录超时日志（包含任务内容、超时时间、步骤数）
+			// log.Printf(
+			//   "Agent 任务超时：任务=%s，超时时间=%d秒，已执行步骤数=%d",
+			//   task, timeoutSec, idxThoughtStep,
+			// )
+			return fmt.Sprintf("任务超时（已超过%d秒）", timeoutSec), timeoutCtx.Err()
+		default:
+		}
+		// 传递 timeoutCtx 到 thinkStep/execAction
+		action, response = cot.thinkStep(timeoutCtx, task, timeNow, callopt, opts)
 		taskState = InitTaskState(action.Method)
 
 		observation := cot.execAction(action, opts)
@@ -138,6 +155,7 @@ func (cot *CotAgentRunner) summaryIntent(timeNow string, callopt model.Option) s
 }
 
 func (cot *CotAgentRunner) thinkStep(
+	ctx context.Context,
 	task string,
 	now string,
 	callopt model.Option,
@@ -153,7 +171,7 @@ func (cot *CotAgentRunner) thinkStep(
 			"format_instructions": conf.GetConfigPrompts().FormatInstructions,
 		},
 	)
-	response, _ := cot.llm.Invoke(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
+	response, _ := cot.llm.Invoke(ctx, prompt, callopt, ollama.WithTemperature(0.0))
 	opts.CallOpt("\n")
 	response = model.RemoveThink(response)
 	return actions.NewAction(response), response
