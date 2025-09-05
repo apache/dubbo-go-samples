@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"time"
 )
 
 import (
@@ -60,8 +59,6 @@ func main() {
 	if err = dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-zookeeper-client", "dubbogo", configCenterZKClientConfig); err != nil {
 		panic(err)
 	}
-
-	time.Sleep(10 * time.Second)
 
 	config.SetConsumerService(grpcGreeterImpl)
 
