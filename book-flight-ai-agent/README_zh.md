@@ -50,7 +50,7 @@ $ go run go-server/cmd/server.go
 前端页面基于 Gin 框架的客户端进行交互，运行以下命令然后访问 ```localhost:8080``` 即可使用:
 
 ```shell
-$ go run go-client/frntend/main.go
+$ go run go-client/frontend/main.go
 ```
 
 ### **注意事项**
