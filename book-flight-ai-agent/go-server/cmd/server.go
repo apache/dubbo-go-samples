@@ -65,14 +65,14 @@ func getTools() tools.Tools {
 }
 
 type ChatServer struct {
-	llm *ollama.LLMOllama
-	cot agents.CotAgentRunner
+	llm   *ollama.LLMOllama
+	react agents.ReactAgentRunner
 }
 
 func NewChatServer() (*ChatServer, error) {
 	llm := ollama.NewLLMOllama(cfgEnv.Model, cfgEnv.Url)
-	cot := agents.NewCotAgentRunner(llm, getTools(), 10, conf.GetConfigPrompts())
-	return &ChatServer{llm: llm, cot: cot}, nil
+	react := agents.NewReactAgentRunner(llm, getTools(), 10, conf.GetConfigPrompts())
+	return &ChatServer{llm: llm, react: react}, nil
 }
 
 func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) (err error) {
@@ -105,7 +105,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 	}
 
 	input := req.Messages[len(req.Messages)-1].Content
-	_, err = s.cot.Run(ctx, input, ollama.WithStreamingFunc(respFunc), rstFunc)
+	_, err = s.react.Run(ctx, input, ollama.WithStreamingFunc(respFunc), rstFunc)
 	if err != nil {
 		log.Printf("Run failed: %v", err)
 	}
