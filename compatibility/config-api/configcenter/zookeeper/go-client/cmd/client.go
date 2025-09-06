@@ -36,8 +36,8 @@ const configCenterZKClientConfig = `## set in config center, group is 'dubbogo',
 dubbo:
   registries:
     demoZK:
-      protocol: nacos
-      address: 127.0.0.1:8848
+      protocol: zookeeper
+      address: 127.0.0.1:2181
   consumer:
     references:
       GreeterClientImpl:
@@ -64,8 +64,9 @@ func main() {
 
 	rootConfig := config.NewRootConfigBuilder().
 		SetConfigCenter(config.NewConfigCenterConfigBuilder().
-			SetProtocol("nacos").SetAddress("127.0.0.1:2182").
+			SetProtocol("zookeeper").SetAddress("127.0.0.1:2181").
 			SetDataID("dubbo-go-samples-configcenter-zookeeper-client").
+			SetGroup("dubbogo").
 			Build()).
 		Build()
 

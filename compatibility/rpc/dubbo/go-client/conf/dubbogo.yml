@@ -10,6 +10,8 @@ dubbo:
       UserProvider:
         protocol: dubbo
         interface: org.apache.dubbo.sample.UserProvider
+        cluster: failfast
+        retries: 0
   logger:
     zap-config:
       level: info
