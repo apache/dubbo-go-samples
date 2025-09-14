@@ -29,16 +29,17 @@ import (
 	"github.com/dubbogo/gost/log/logger"
 )
 
-func main() {
+// runClient starts the client and calls the health check service.
+func runClient() error {
 	cli, err := client.NewClient(
 		client.WithClientURL("tri://127.0.0.1:20000"),
 	)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	svc, err := health.NewHealth(cli)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	check, err := svc.Check(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
 	if err != nil {
@@ -50,8 +51,17 @@ func main() {
 	if err != nil {
 		logger.Error(err)
 	} else {
+		// Only receive one message for demonstration; in production, consider a loop or timeout
 		if watch.Recv() {
 			logger.Info("greet.GreetService's health", watch.Msg().String())
 		}
+	}
+	return nil
+}
+
+func main() {
+	// Start the client and handle errors
+	if err := runClient(); err != nil {
+		logger.Errorf("client error: %v", err)
 	}
 }

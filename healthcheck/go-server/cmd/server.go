@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"errors"
 )
 
 import (
@@ -29,12 +30,24 @@ import (
 
 import (
 	greet "github.com/apache/dubbo-go-samples/healthcheck/proto"
+	"github.com/dubbogo/gost/log/logger"
 )
 
-func main() {
+// GreetTripleServer implements the greet.GreetServiceServer interface for the Triple protocol.
+type GreetTripleServer struct {
+}
 
-	// global conception
-	// configure global configurations and common modules
+// Greet handles the Greet request and returns a greeting message.
+func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	if req == nil {
+		return nil, errors.New("GreetRequest is nil")
+	}
+	resp := &greet.GreetResponse{Greeting: req.Name}
+	return resp, nil
+}
+
+// runServer starts and runs the Dubbo-go Triple server.
+func runServer() error {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
@@ -42,24 +55,21 @@ func main() {
 		),
 	)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	srv, err := ins.NewServer()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-		panic(err)
+		return err
 	}
-	if err = srv.Serve(); err != nil {
-		panic(err)
-	}
+	return srv.Serve()
 }
 
-type GreetTripleServer struct {
-}
-
-func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	resp := &greet.GreetResponse{Greeting: req.Name}
-	return resp, nil
+func main() {
+	// Start the server and handle errors
+	if err := runServer(); err != nil {
+		logger.Errorf("failed to start server: %v", err)
+	}
 }
