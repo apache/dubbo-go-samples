@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"time"
 )
 
 import (
@@ -45,7 +46,10 @@ func main() {
 		logger.Fatalf("failed to create greet service: %v", err)
 	}
 
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
 		logger.Fatalf("failed to greet: %v", err)
 	}
