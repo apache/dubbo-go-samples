@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"errors"
 )
 
 import (
@@ -33,34 +32,22 @@ import (
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
-// runClient starts the client and calls the Greet service
-func runClient() error {
+func main() {
 	cli, err := client.NewClient(
 		client.WithClientURL("127.0.0.1:20000"),
 	)
 	if err != nil {
-		return err
+		logger.Fatalf("failed to create client: %v", err)
 	}
 
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
-		return err
+		logger.Fatalf("failed to create greet service: %v", err)
 	}
 
 	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
-		return err
-	}
-	if resp == nil {
-		return errors.New("greet response is nil")
+		logger.Fatalf("failed to greet: %v", err)
 	}
 	logger.Infof("Greet response: %s", resp.Greeting)
-	return nil
-}
-
-func main() {
-	// Start the client and handle errors
-	if err := runClient(); err != nil {
-		logger.Errorf("client error: %v", err)
-	}
 }

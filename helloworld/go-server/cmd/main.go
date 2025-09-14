@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"errors"
 )
 
 import (
@@ -34,23 +33,15 @@ import (
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
-// GreetTripleServer implements the greet.GreetServiceServer interface for the Triple protocol.
 type GreetTripleServer struct {
 }
 
-// Greet handles the Greet request and returns a greeting message.
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	if req == nil {
-		return nil, errors.New("GreetRequest is nil")
-	}
-	resp := &greet.GreetResponse{
-		Greeting: req.Name,
-	}
+	resp := &greet.GreetResponse{Greeting: req.Name}
 	return resp, nil
 }
 
-// runServer starts and runs the Dubbo-go Triple server.
-func runServer() error {
+func main() {
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
 			protocol.WithPort(20000),
@@ -58,18 +49,14 @@ func runServer() error {
 		),
 	)
 	if err != nil {
-		return err
+		logger.Fatalf("failed to create server: %v", err)
 	}
 
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-		return err
+		logger.Fatalf("failed to register greet service handler: %v", err)
 	}
 
-	return srv.Serve()
-}
-
-func main() {
-	if err := runServer(); err != nil {
-		logger.Errorf("failed to start server: %v", err)
+	if err := srv.Serve(); err != nil {
+		logger.Fatalf("failed to serve: %v", err)
 	}
 }
