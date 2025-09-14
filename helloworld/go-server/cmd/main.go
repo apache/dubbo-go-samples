@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"errors"
 )
 
 import (
@@ -33,15 +34,23 @@ import (
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
+// GreetTripleServer implements the greet.GreetServiceServer interface for the Triple protocol.
 type GreetTripleServer struct {
 }
 
+// Greet handles the Greet request and returns a greeting message.
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	resp := &greet.GreetResponse{Greeting: req.Name}
+	if req == nil {
+		return nil, errors.New("GreetRequest is nil")
+	}
+	resp := &greet.GreetResponse{
+		Greeting: req.Name,
+	}
 	return resp, nil
 }
 
-func main() {
+// runServer starts and runs the Dubbo-go Triple server.
+func runServer() error {
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
 			protocol.WithPort(20000),
@@ -49,14 +58,18 @@ func main() {
 		),
 	)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-		panic(err)
+		return err
 	}
 
-	if err := srv.Serve(); err != nil {
-		logger.Error(err)
+	return srv.Serve()
+}
+
+func main() {
+	if err := runServer(); err != nil {
+		logger.Errorf("failed to start server: %v", err)
 	}
 }
