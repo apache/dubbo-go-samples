@@ -50,13 +50,13 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 }
 
 func main() {
-	// 写入配置到配置中心
+	// Write configuration to the config center
 	if err := writeRuleToConfigCenter(); err != nil {
 		logger.Errorf("Failed to write config to config center: %v", err)
 		panic(err)
 	}
 
-	// 等待配置生效
+	// Wait for the configuration to take effect
 	time.Sleep(time.Second * 10)
 
 	ins, err := dubbo.NewInstance(
@@ -106,34 +106,34 @@ dubbo:
         interface: com.apache.dubbo.sample.basic.IGreeter
 `
 
-// ensurePath 确保路径存在（已移除，因为未使用）
+// ensurePath Ensure the path exists (removed because it is unused)
 
 func writeRuleToConfigCenter() error {
-	// 连接到 Zookeeper
+	// Connect to Zookeeper
 	c, _, err := zk.Connect([]string{"127.0.0.1:2181"}, time.Second*10)
 	if err != nil {
 		return perrors.Wrap(err, "failed to connect to zookeeper")
 	}
-	defer c.Close() // 确保连接被关闭
+	defer c.Close() // Ensure the connection is closed
 
 	valueBytes := []byte(configCenterZKServerConfig)
 	path := "/dubbo/config/dubbogo/dubbo-go-samples-configcenter-zookeeper-server"
 
-	// 确保路径以 / 开头
+	// Ensure the path starts with '/'
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
 
-	// 创建父路径
+	// Create parent paths
 	if err := createParentPaths(c, path); err != nil {
 		return perrors.Wrap(err, "failed to create parent paths")
 	}
 
-	// 创建或更新配置节点
+	// Create or update configuration node
 	_, err = c.Create(path, valueBytes, 0, zk.WorldACL(zk.PermAll))
 	if err != nil {
 		if perrors.Is(err, zk.ErrNodeExists) {
-			// 节点已存在，更新配置
+			// Node already exists, update configuration
 			_, stat, getErr := c.Get(path)
 			if getErr != nil {
 				return perrors.Wrap(getErr, "failed to get existing node")
@@ -153,7 +153,7 @@ func writeRuleToConfigCenter() error {
 	return nil
 }
 
-// createParentPaths 创建父路径
+// createParentPaths Create parent paths
 func createParentPaths(c *zk.Conn, path string) error {
 	paths := strings.Split(path, "/")
 	for idx := 2; idx < len(paths); idx++ {
