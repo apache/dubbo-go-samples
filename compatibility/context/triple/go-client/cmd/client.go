@@ -53,7 +53,7 @@ func main() {
 	}
 	ctx := context.Background()
 	// set user defined context attachment, map value can be string or []string, otherwise it is not to be transferred
-	userDefinedValueMap := make(map[string]interface{})
+	userDefinedValueMap := make(map[string]any)
 	userDefinedValueMap["key1"] = "user defined value 1"
 	userDefinedValueMap["key2"] = "user defined value 2"
 	userDefinedValueMap["key3"] = []string{"user defined value 3.1", "user defined value 3.2"}

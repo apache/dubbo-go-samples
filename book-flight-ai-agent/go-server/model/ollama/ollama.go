@@ -22,14 +22,9 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-)
 
-import (
-	"github.com/ollama/ollama/api"
-)
-
-import (
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model"
+	"github.com/ollama/ollama/api"
 )
 
 type (
@@ -77,19 +72,14 @@ Options:
 	num_thread:
 */
 type LLMOllama struct {
-	llmUrl    LLMUrl
-	Model     string
-	Url       string
-	Prompt    string
-	stream    *bool
-	suffix    string
-	images    []ImageData
-	format    string
-	system    string
-	template  string
-	raw       bool
-	keepAlive string
-	options   []any
+	llmUrl LLMUrl
+	Model  string
+	Url    string
+	Prompt string
+	stream *bool
+	suffix string
+	images []ImageData
+	system string
 }
 
 func NewLLMOllama(model string, url string) *LLMOllama {

@@ -41,7 +41,7 @@ type GreeterProvider struct {
 
 func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
 	// map must be assert to map[string]interface, because of dubbo limitation
-	attachments := ctx.Value(constant.AttachmentKey).(map[string]interface{})
+	attachments := ctx.Value(constant.AttachmentKey).(map[string]any)
 
 	// value must be assert to []string[0], because of http2 header limitation
 	logger.Infof("get triple attachment key1 = %s", attachments["key1"].([]string)[0])
@@ -51,7 +51,7 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 	logger.Infof("get triple attachment key4 = %s and %s", attachments["key4"].([]string)[0],
 		attachments["key4"].([]string)[1])
 	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	rspAttachment := make(map[string]interface{})
+	rspAttachment := make(map[string]any)
 	for k, v := range attachments {
 		if strings.HasPrefix(k, "key") {
 			rspAttachment[k] = v
@@ -62,7 +62,7 @@ func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*
 
 func (s *GreeterProvider) SayHelloStream(svr api.Greeter_SayHelloStreamServer) error {
 	// map must be assert to map[string]interface, because of dubbo limitation
-	attachments := svr.Context().Value(constant.AttachmentKey).(map[string]interface{})
+	attachments := svr.Context().Value(constant.AttachmentKey).(map[string]any)
 
 	// value must be assert to []string[0], because of http2 header limitation
 	logger.Infof("get triple attachment key1 = %s", attachments["key1"].([]string)[0])

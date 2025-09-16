@@ -36,7 +36,7 @@ func TestSayHello(t *testing.T) {
 	req := &greet.GreetRequest{Name: "hello world"}
 
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{
+	ctx = context.WithValue(ctx, constant.AttachmentKey, map[string]any{
 		"key1": "value1",
 		"key2": "value2",
 		"key3": "value3",

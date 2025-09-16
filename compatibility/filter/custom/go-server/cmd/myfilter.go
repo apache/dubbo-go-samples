@@ -46,7 +46,7 @@ func (f *MyServerFilter) Invoke(ctx context.Context, invoker protocol.Invoker, i
 }
 func (f *MyServerFilter) OnResponse(ctx context.Context, result protocol.Result, invoker protocol.Invoker, protocol protocol.Invocation) protocol.Result {
 	fmt.Println("MyServerFilter OnResponse is called")
-	myAttachmentMap := make(map[string]interface{})
+	myAttachmentMap := make(map[string]any)
 	myAttachmentMap["key1"] = "value1"
 	myAttachmentMap["key2"] = []string{"value1", "value2"}
 	result.SetAttachments(myAttachmentMap)

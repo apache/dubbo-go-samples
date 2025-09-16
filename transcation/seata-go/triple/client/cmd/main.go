@@ -65,7 +65,7 @@ func test(svc proto.UserProvider) {
 		logger.Errorf("userProviderProxyis not tcc service")
 		return
 	}
-	var resp interface{}
+	var resp any
 	if resp, err = SeataClient.Prepare(uP, ctx, svc); err != nil {
 		logger.Infof("response prepare: %v", err)
 	} else {

@@ -77,7 +77,7 @@ func main() {
 		panic(err)
 	}
 	var respDubbo string
-	if err = connDubbo.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &respDubbo, "SayHello"); err != nil {
+	if err = connDubbo.CallUnary(context.Background(), []any{"hello", "new", "dubbo"}, &respDubbo, "SayHello"); err != nil {
 		logger.Errorf("GreetProvider.Greet err: %s", err)
 		return
 	}
@@ -96,7 +96,7 @@ func main() {
 		panic(err)
 	}
 	var respJsonRpc string
-	if err := connJsonRpc.CallUnary(context.Background(), []interface{}{"hello", "new", "jsonrpc"}, &respJsonRpc, "SayHello"); err != nil {
+	if err := connJsonRpc.CallUnary(context.Background(), []any{"hello", "new", "jsonrpc"}, &respJsonRpc, "SayHello"); err != nil {
 		logger.Errorf("GreetProvider.Greet err: %s", err)
 		return
 	}

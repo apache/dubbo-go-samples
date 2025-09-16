@@ -23,9 +23,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
-)
 
-import (
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/actions"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/conf"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model"
@@ -191,7 +189,7 @@ func (cot *CotAgentRunner) finalStep(
 
 func (cot *CotAgentRunner) execAction(action actions.Action, opts model.Options) string {
 	var err error
-	var observation string = fmt.Sprintf("Can't find tool: %v.", action.Method)
+	observation := fmt.Sprintf("Can't find tool: %v.", action.Method)
 	tool := cot.tools.QueryTool(action.Method)
 	if tool != nil {
 		strArgs, _ := json.Marshal(action.Params)

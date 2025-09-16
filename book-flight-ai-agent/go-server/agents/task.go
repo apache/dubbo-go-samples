@@ -20,9 +20,7 @@ package agents
 import (
 	"context"
 	"strings"
-)
 
-import (
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/tools"
 )
 
@@ -71,7 +69,7 @@ func CreateToolkitByVariadic(description string, taskFlag TaskState, ts ...tools
 
 // CreateToolkit
 func CreateToolkit(description string, taskFlag TaskState, ts []tools.Tool) tools.Tools {
-	var toolsTask []tools.Tool = ts
+	toolsTask := ts
 	if taskFlag&TaskSubmitted != 0 {
 		if t, err := tools.CreateTool[TaskSubmittedTool]("TaskSubmitted", "任务已提交", ""); err == nil {
 			toolsTask = append(toolsTask, t)

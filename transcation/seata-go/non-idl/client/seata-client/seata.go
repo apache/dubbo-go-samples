@@ -45,10 +45,10 @@ func registeBranch(t *tcc.TCCServiceProxy, ctx context.Context) error {
 		logger.Errorf(err.Error())
 		return err
 	}
-	tccContext := make(map[string]interface{}, 0)
+	tccContext := make(map[string]any, 0)
 	tccContext[common.StartTime] = time.Now().UnixNano() / 1e6
 	tccContext[common.HostName] = net.GetLocalIp()
-	tccContextStr, _ := json.Marshal(map[string]interface{}{
+	tccContextStr, _ := json.Marshal(map[string]any{
 		common.ActionContext: tccContext,
 	})
 
@@ -69,14 +69,14 @@ func registeBranch(t *tcc.TCCServiceProxy, ctx context.Context) error {
 	return nil
 }
 
-func Prepare(t *tcc.TCCServiceProxy, ctx context.Context, conn *client.Connection, param ...interface{}) (resp interface{}, err error) {
+func Prepare(t *tcc.TCCServiceProxy, ctx context.Context, conn *client.Connection, param ...any) (resp any, err error) {
 	if tm.IsTransactionOpened(ctx) {
 		err = registeBranch(t, ctx)
 		if err != nil {
 			return nil, err
 		}
 	}
-	err = conn.CallUnary(ctx, []interface{}{1}, &resp, "Prepare")
+	err = conn.CallUnary(ctx, []any{1}, &resp, "Prepare")
 	return
 }
 

@@ -20,14 +20,11 @@ package pkg
 import (
 	"errors"
 	"sync"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3/common"
 	"dubbo.apache.org/dubbo-go/v3/common/extension"
 	"dubbo.apache.org/dubbo-go/v3/filter"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
-
 	"github.com/dubbogo/gost/log/logger"
 )
 
@@ -75,7 +72,7 @@ func (mh *DefaultValueRejectedExecutionHandler) RejectedExecution(url *common.UR
 	if !loaded {
 		// we didn't configure any default value for this invocation
 		return &protocol.RPCResult{
-			Err: errors.New("The request is rejected and doesn't have any default value. "),
+			Err: errors.New("the request is rejected and doesn't have any default value"),
 		}
 	}
 	return result.(*protocol.RPCResult)

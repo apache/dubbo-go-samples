@@ -21,12 +21,10 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-)
 
-import (
 	"github.com/apache/dubbo-go-hessian2/java_exception"
 
-	"github.com/dubbogo/gost/log"
+	gxlog "github.com/dubbogo/gost/log"
 
 	perrors "github.com/pkg/errors"
 )
@@ -106,7 +104,7 @@ func (u *CommonUserProvider) GetUsers(req []string) ([]*User, error) {
 }
 
 func (s *CommonUserProvider) GetGender(i int32) (Gender, error) {
-	if 1 == i {
+	if i == 1 {
 		return WOMAN, nil
 	}
 	return MAN, nil

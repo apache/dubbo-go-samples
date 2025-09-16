@@ -40,7 +40,7 @@ import (
 type UserProvider struct {
 }
 
-func (t *UserProvider) Prepare(ctx context.Context, params ...interface{}) (bool, error) {
+func (t *UserProvider) Prepare(ctx context.Context, params ...any) (bool, error) {
 	logger.Infof("Prepare result: %v, xid %v", params, tm.GetXID(ctx))
 	return true, nil
 }
@@ -95,15 +95,15 @@ func (s *UserProviderServer) GetActionNameProxy(ctx context.Context, req *proto.
 	return &proto.GetActionNameResponse{ActionName: actionName}, nil
 }
 
-func convert(req map[string]*anypb.Any) map[string]interface{} {
-	convertedMap := make(map[string]interface{})
+func convert(req map[string]*anypb.Any) map[string]any {
+	convertedMap := make(map[string]any)
 	for key, value := range req {
 		jsonStr, err := (&jsonpb.Marshaler{}).MarshalToString(value)
 		if err != nil {
 			logger.Error("converting marshal wrong")
 		}
 
-		var data interface{}
+		var data any
 		err = json.Unmarshal([]byte(jsonStr), &data)
 		if err != nil {
 			logger.Error("converting unmarshal wrong")

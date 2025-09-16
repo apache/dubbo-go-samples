@@ -52,7 +52,7 @@ func (s *stateChangeTestListener) OnTransformToClosed(prev circuitbreaker.State,
 	s.OnTransformToClosedChan <- struct{}{}
 }
 
-func (s *stateChangeTestListener) OnTransformToOpen(prev circuitbreaker.State, rule circuitbreaker.Rule, snapshot interface{}) {
+func (s *stateChangeTestListener) OnTransformToOpen(prev circuitbreaker.State, rule circuitbreaker.Rule, snapshot any) {
 	s.OnTransformToOpenChan <- struct{}{}
 }
 

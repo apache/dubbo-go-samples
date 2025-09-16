@@ -20,18 +20,14 @@ package main
 import (
 	"context"
 	"time"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/metrics"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-
 	"github.com/dubbogo/gost/log/logger"
-)
 
-import (
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
@@ -76,7 +72,7 @@ func main() {
 		panic(err)
 	}
 
-	for true {
+	for {
 		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
 		if err != nil {
 			logger.Error(err)

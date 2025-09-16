@@ -23,9 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-)
 
-import (
 	"github.com/joho/godotenv"
 )
 
@@ -95,12 +93,12 @@ func Load(envFile string) (*Config, error) {
 
 		portStr := os.Getenv("SERVER_PORT")
 		if portStr == "" {
-			configErr = fmt.Errorf("Error: SERVER_PORT environment variable is not set\n")
+			configErr = fmt.Errorf("SERVER_PORT environment variable is not set")
 			return
 		}
 		config.ServerPort, err = strconv.Atoi(portStr)
 		if err != nil {
-			configErr = fmt.Errorf("Error converting SERVER_PORT to int: %v\n", err)
+			configErr = fmt.Errorf("error converting SERVER_PORT to int: %v", err)
 			return
 		}
 

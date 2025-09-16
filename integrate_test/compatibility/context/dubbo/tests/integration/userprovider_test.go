@@ -30,7 +30,7 @@ import (
 
 func TestGetUser(t *testing.T) {
 	// add field that client wants to send
-	atta := make(map[string]interface{})
+	atta := make(map[string]any)
 	atta["string-value"] = "string-demo"
 	atta["int-value"] = 1231242
 	atta["user-defined-value"] = ContextContent{InterfaceName: "test.interface.name"}

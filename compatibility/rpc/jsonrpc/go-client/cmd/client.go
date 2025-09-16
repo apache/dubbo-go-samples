@@ -119,7 +119,7 @@ func test() {
 
 	logger.Infof("\n\n\nstart to test jsonrpc - GetUsers")
 
-	ret1, err := userProvider.GetUsers([]interface{}{[]interface{}{"A002", "A003"}})
+	ret1, err := userProvider.GetUsers([]any{[]any{"A002", "A003"}})
 	if err != nil {
 		panic(err)
 	}

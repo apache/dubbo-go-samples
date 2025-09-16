@@ -119,7 +119,7 @@ type UserProvider struct {
 	GetUser2  func(ctx context.Context, req int32) (*User, error) `dubbo:"getUser2"`
 	GetUser3  func() error
 	GetGender func(i int32) (Gender, error)
-	Echo      func(ctx context.Context, req interface{}) (interface{}, error) // Echo represent EchoFilter will be used
+	Echo      func(ctx context.Context, req any) (any, error) // Echo represent EchoFilter will be used
 }
 
 func (u *UserProvider) Reference() string {

@@ -87,11 +87,11 @@ func (u *UserProvider2) GetUser3() error {
 	return nil
 }
 
-func (u *UserProvider2) GetUsers(req []interface{}) ([]*User, error) {
+func (u *UserProvider2) GetUsers(req []any) ([]*User, error) {
 	var err error
 
 	gxlog.CInfo("userIDs:%s", req)
-	t := req[0].([]interface{})
+	t := req[0].([]any)
 	user, err := u.getUser(t[0].(string))
 	if err != nil {
 		return nil, err

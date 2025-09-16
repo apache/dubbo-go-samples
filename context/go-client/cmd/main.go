@@ -47,7 +47,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{
+	ctx = context.WithValue(ctx, constant.AttachmentKey, map[string]any{
 		"key1": "user defined value 1",
 		"key2": "user defined value 2",
 	})

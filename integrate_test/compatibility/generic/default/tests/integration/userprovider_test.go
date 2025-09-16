@@ -39,8 +39,8 @@ func TestGetUser1(t *testing.T) {
 		[]hessian.Object{"A003"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp := o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp := o.(map[any]any)
 	assert.Equal(t, "Joe", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
 	assert.Equal(t, "A003", resp["iD"])
@@ -52,8 +52,8 @@ func TestGetUser1(t *testing.T) {
 		[]hessian.Object{"A003"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp = o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp = o.(map[any]any)
 	assert.Equal(t, "Joe", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
 	assert.Equal(t, "A003", resp["iD"])
@@ -67,8 +67,8 @@ func TestGetUser2(t *testing.T) {
 		[]hessian.Object{"A003", "lily"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp := o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp := o.(map[any]any)
 	assert.Equal(t, "lily", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
 	assert.Equal(t, "A003", resp["iD"])
@@ -80,8 +80,8 @@ func TestGetUser2(t *testing.T) {
 		[]hessian.Object{"A003", "lily"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp = o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp = o.(map[any]any)
 	assert.Equal(t, "lily", resp["name"])
 	assert.Equal(t, int32(48), resp["age"])
 	assert.Equal(t, "A003", resp["iD"])
@@ -95,8 +95,8 @@ func TestGetUser3(t *testing.T) {
 		[]hessian.Object{1},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp := o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp := o.(map[any]any)
 	assert.Equal(t, "Alex Stocks", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
 	assert.Equal(t, "1", resp["iD"])
@@ -108,8 +108,8 @@ func TestGetUser3(t *testing.T) {
 		[]hessian.Object{1},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp = o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp = o.(map[any]any)
 	assert.Equal(t, "Alex Stocks", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
 	assert.Equal(t, "1", resp["iD"])
@@ -123,8 +123,8 @@ func TestGetUser4(t *testing.T) {
 		[]hessian.Object{1, "zhangsan"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp := o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp := o.(map[any]any)
 	assert.Equal(t, "zhangsan", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
 	assert.Equal(t, "1", resp["iD"])
@@ -136,8 +136,8 @@ func TestGetUser4(t *testing.T) {
 		[]hessian.Object{1, "zhangsan"},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp = o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp = o.(map[any]any)
 	assert.Equal(t, "zhangsan", resp["name"])
 	assert.Equal(t, int32(18), resp["age"])
 	assert.Equal(t, "1", resp["iD"])
@@ -173,12 +173,12 @@ func TestGetUsers(t *testing.T) {
 		},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp := o.(map[interface{}]interface{})
-	assert.Equal(t, "other-zhangsan", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
-	assert.Equal(t, "other-lisi", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
-	assert.Equal(t, "other-lily", resp["users"].([]interface{})[2].(map[interface{}]interface{})["name"])
-	assert.Equal(t, "other-lisa", resp["users"].([]interface{})[3].(map[interface{}]interface{})["name"])
+	assert.IsType(t, make(map[any]any), o)
+	resp := o.(map[any]any)
+	assert.Equal(t, "other-zhangsan", resp["users"].([]any)[0].(map[any]any)["name"])
+	assert.Equal(t, "other-lisi", resp["users"].([]any)[1].(map[any]any)["name"])
+	assert.Equal(t, "other-lily", resp["users"].([]any)[2].(map[any]any)["name"])
+	assert.Equal(t, "other-lisa", resp["users"].([]any)[3].(map[any]any)["name"])
 
 	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
@@ -191,12 +191,12 @@ func TestGetUsers(t *testing.T) {
 		},
 	)
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp = o.(map[interface{}]interface{})
-	assert.Equal(t, "other-zhangsan", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
-	assert.Equal(t, "other-lisi", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
-	assert.Equal(t, "other-lily", resp["users"].([]interface{})[2].(map[interface{}]interface{})["name"])
-	assert.Equal(t, "other-lisa", resp["users"].([]interface{})[3].(map[interface{}]interface{})["name"])
+	assert.IsType(t, make(map[any]any), o)
+	resp = o.(map[any]any)
+	assert.Equal(t, "other-zhangsan", resp["users"].([]any)[0].(map[any]any)["name"])
+	assert.Equal(t, "other-lisi", resp["users"].([]any)[1].(map[any]any)["name"])
+	assert.Equal(t, "other-lily", resp["users"].([]any)[2].(map[any]any)["name"])
+	assert.Equal(t, "other-lisa", resp["users"].([]any)[3].(map[any]any)["name"])
 }
 
 func TestQueryUser(t *testing.T) {
@@ -213,8 +213,8 @@ func TestQueryUser(t *testing.T) {
 	)
 
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp := o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp := o.(map[any]any)
 	assert.Equal(t, "panty", resp["name"])
 	assert.Equal(t, int32(25), resp["age"])
 	assert.Equal(t, "3213", resp["iD"])
@@ -232,8 +232,8 @@ func TestQueryUser(t *testing.T) {
 	)
 
 	assert.Nil(t, err)
-	assert.IsType(t, make(map[interface{}]interface{}), o)
-	resp = o.(map[interface{}]interface{})
+	assert.IsType(t, make(map[any]any), o)
+	resp = o.(map[any]any)
 	assert.Equal(t, "panty", resp["name"])
 	assert.Equal(t, int32(25), resp["age"])
 	assert.Equal(t, "3213", resp["iD"])
@@ -265,10 +265,10 @@ func TestQueryUsers(t *testing.T) {
 	)
 
 	assert.Nil(t, err)
-	resp, ok := o.(map[interface{}]interface{})
+	resp, ok := o.(map[any]any)
 	assert.True(t, ok)
-	assert.Equal(t, "XavierNiu", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
-	assert.Equal(t, "zhangsan", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "XavierNiu", resp["users"].([]any)[0].(map[any]any)["name"])
+	assert.Equal(t, "zhangsan", resp["users"].([]any)[1].(map[any]any)["name"])
 
 	o, err = tripleRefConf.GetRPCService().(*generic.GenericService).Invoke(
 		context.TODO(),
@@ -295,10 +295,10 @@ func TestQueryUsers(t *testing.T) {
 	)
 
 	assert.Nil(t, err)
-	resp, ok = o.(map[interface{}]interface{})
+	resp, ok = o.(map[any]any)
 	assert.True(t, ok)
-	assert.Equal(t, "XavierNiu", resp["users"].([]interface{})[0].(map[interface{}]interface{})["name"])
-	assert.Equal(t, "zhangsan", resp["users"].([]interface{})[1].(map[interface{}]interface{})["name"])
+	assert.Equal(t, "XavierNiu", resp["users"].([]any)[0].(map[any]any)["name"])
+	assert.Equal(t, "zhangsan", resp["users"].([]any)[1].(map[any]any)["name"])
 }
 
 // TODO: Waiting for hessian-go bugfix

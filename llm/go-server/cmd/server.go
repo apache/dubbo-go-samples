@@ -23,22 +23,16 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
-)
 
-import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
-
+	"github.com/apache/dubbo-go-samples/llm/config"
 	"github.com/dubbogo/gost/log/logger"
-
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/ollama"
-)
 
-import (
-	"github.com/apache/dubbo-go-samples/llm/config"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
@@ -101,11 +95,11 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 			},
 		}
 
-		if msg.Bin != nil && len(msg.Bin) != 0 {
-			decodeByte, err := base64.StdEncoding.DecodeString(string(msg.Bin))
-			if err != nil {
-				logger.Errorf("GenerateContent failed: %v\n", err)
-				return fmt.Errorf("GenerateContent failed: %v", err)
+		if len(msg.Bin) != 0 {
+			decodeByte, decErr := base64.StdEncoding.DecodeString(string(msg.Bin))
+			if decErr != nil {
+				logger.Errorf("GenerateContent failed: %v\n", decErr)
+				return fmt.Errorf("GenerateContent failed: %v", decErr)
 			}
 			imgType := http.DetectContentType(decodeByte)
 			messageContent.Parts = append(messageContent.Parts, llms.BinaryPart(imgType, decodeByte))

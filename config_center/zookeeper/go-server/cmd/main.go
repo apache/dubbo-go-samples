@@ -21,21 +21,16 @@ import (
 	"context"
 	"strings"
 	"time"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
 	"github.com/dubbogo/go-zookeeper/zk"
-
 	"github.com/dubbogo/gost/log/logger"
 
 	perrors "github.com/pkg/errors"
-)
 
-import (
 	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
 )
 
@@ -93,10 +88,7 @@ dubbo:
         interface: com.apache.dubbo.sample.basic.IGreeter
 `
 
-func ensurePath(c *zk.Conn, path string, data []byte, flags int32, acl []zk.ACL) error {
-	_, err := c.Create(path, data, flags, acl)
-	return err
-}
+// removed unused ensurePath function
 
 func writeRuleToConfigCenter() error {
 	c, _, err := zk.Connect([]string{"127.0.0.1:2181"}, time.Second*10)
