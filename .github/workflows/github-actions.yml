@@ -48,7 +48,6 @@ jobs:
 
       - name: Get dependencies
         run: |
-          go mod tidy
           # for imports-formatter
           go install github.com/dubbogo/tools/cmd/imports-formatter@latest
 
