@@ -20,11 +20,16 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"github.com/dubbogo/grpc-go/codes"
-	"github.com/dubbogo/grpc-go/status"
 	"math"
 	"os"
+)
 
+import (
+	"github.com/dubbogo/grpc-go/codes"
+	"github.com/dubbogo/grpc-go/status"
+)
+
+import (
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/currencyservice/proto"
 )
 

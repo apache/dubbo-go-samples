@@ -20,9 +20,14 @@ package integration
 import (
 	"context"
 	"testing"
+)
 
-	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
+import (
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
 )
 
 func TestSayHello(t *testing.T) {

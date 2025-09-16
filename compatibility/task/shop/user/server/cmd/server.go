@@ -21,10 +21,14 @@ import (
 	"context"
 	"fmt"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/task/shop/user/api"
 )
 

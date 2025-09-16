@@ -17,7 +17,9 @@
 
 package model
 
-import "regexp"
+import (
+	"regexp"
+)
 
 func RemoveThink(text string) string {
 	re := regexp.MustCompile(`<think>[\s\S]*</think>`)

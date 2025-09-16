@@ -1,5 +1,7 @@
 module github.com/apache/dubbo-go-samples
 
+go 1.23.0
+
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.0
 	github.com/SkyAPM/go2sky v1.5.0
@@ -21,6 +23,7 @@ require (
 	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.4.2
 	github.com/pkg/errors v0.9.1
+	github.com/prometheus/client_golang v1.13.0
 	github.com/seata/seata-go v0.1.0-rc1
 	github.com/stretchr/testify v1.9.0
 	github.com/tmc/langchaingo v0.1.13
@@ -50,7 +53,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
-	github.com/cncf/udpa/go v0.0.0-20210930031921-04548b0d99d4 // indirect
+	github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe // indirect
 	github.com/cncf/xds/go v0.0.0-20240318125728-8a4994d93e50 // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534 // indirect
@@ -116,7 +119,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/polarismesh/polaris-go v1.3.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
-	github.com/prometheus/client_golang v1.13.0 // indirect
 	github.com/prometheus/client_model v0.5.0 // indirect
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
@@ -148,7 +150,7 @@ require (
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/oauth2 v0.21.0 // indirect
+	golang.org/x/oauth2 v0.27.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
@@ -169,5 +171,3 @@ replace (
 	go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v1.21.0
 	go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v1.21.0
 )
-
-go 1.23

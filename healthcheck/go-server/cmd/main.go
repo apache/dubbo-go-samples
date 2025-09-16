@@ -19,36 +19,49 @@ package main
 
 import (
 	"context"
+)
 
-	"dubbo.apache.org/dubbo-go/v3/client"
+import (
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	health "dubbo.apache.org/dubbo-go/v3/protocol/triple/health/triple_health"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+
 	"github.com/dubbogo/gost/log/logger"
 )
 
+import (
+	greet "github.com/apache/dubbo-go-samples/healthcheck/proto"
+)
+
+type GreetTripleServer struct {
+}
+
+func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	resp := &greet.GreetResponse{Greeting: req.Name}
+	return resp, nil
+}
+
 func main() {
-	cli, err := client.NewClient(
-		client.WithClientURL("tri://127.0.0.1:20000"),
+
+	// global conception
+	// configure global configurations and common modules
+	ins, err := dubbo.NewInstance(
+		dubbo.WithProtocol(
+			protocol.WithTriple(),
+			protocol.WithPort(20000),
+		),
 	)
 	if err != nil {
-		panic(err)
+		logger.Fatalf("failed to create dubbo instance: %v", err)
 	}
-	svc, err := health.NewHealth(cli)
+	srv, err := ins.NewServer()
 	if err != nil {
-		panic(err)
+		logger.Fatalf("failed to create server: %v", err)
 	}
-	check, err := svc.Check(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
-	if err != nil {
-		logger.Error(err)
-	} else {
-		logger.Info("greet.GreetService's health", check.String())
+	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
+		logger.Fatalf("failed to register greet service handler: %v", err)
 	}
-	watch, err := svc.Watch(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
-	if err != nil {
-		logger.Error(err)
-	} else {
-		if watch.Recv() {
-			logger.Info("greet.GreetService's health", watch.Msg().String())
-		}
+	if err = srv.Serve(); err != nil {
+		logger.Fatalf("failed to serve: %v", err)
 	}
 }

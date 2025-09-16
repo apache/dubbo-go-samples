@@ -19,8 +19,14 @@ package handler
 
 import (
 	"context"
-	email "github.com/apache/dubbo-go-samples/online_boutique_demo/emailservice/proto"
+)
+
+import (
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	email "github.com/apache/dubbo-go-samples/online_boutique_demo/emailservice/proto"
 )
 
 type EmailService struct{}

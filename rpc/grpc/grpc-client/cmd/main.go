@@ -20,12 +20,17 @@ package main
 import (
 	"context"
 	"time"
+)
 
+import (
 	"github.com/dubbogo/gost/log/logger"
 
-	pb "github.com/apache/dubbo-go-samples/rpc/grpc/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+)
+
+import (
+	pb "github.com/apache/dubbo-go-samples/rpc/grpc/proto"
 )
 
 func main() {

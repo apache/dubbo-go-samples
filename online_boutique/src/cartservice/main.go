@@ -18,15 +18,22 @@
 package main
 
 import (
+	"os"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/handler"
-	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/proto"
+
 	"github.com/dubbogo/gost/log/logger"
 	_ "github.com/dubbogo/gost/log/logger"
-	"os"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/handler"
+	hipstershop "github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/proto"
 )
 
 func main() {

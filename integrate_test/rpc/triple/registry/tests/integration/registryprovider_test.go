@@ -23,11 +23,11 @@ import (
 )
 
 import (
-	greet "github.com/apache/dubbo-go-samples/rpc/triple/registry/proto"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
-	"github.com/stretchr/testify/assert"
+	greet "github.com/apache/dubbo-go-samples/rpc/triple/registry/proto"
 )
 
 func TestSayHello(t *testing.T) {

@@ -19,69 +19,161 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/registry"
-	"github.com/dubbogo/gost/log/logger"
+	"flag"
+	"fmt"
+	"net/http"
+	"net/url"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/metrics"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/metrics"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+
+	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/prometheus/client_golang/prometheus"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
-func main() {
-	zookeeper := os.Getenv("ZOOKEEPER_ADDRESS")
-	if zookeeper == "" {
-		zookeeper = "localhost"
+// Config structure for application settings
+type Config struct {
+	PushGatewayURL  string // PushGateway URL for metrics
+	PushGatewayUser string // Username for PushGateway authentication
+	PushGatewayPass string // Password for PushGateway authentication
+	JobName         string // Job name for PushGateway
+	ZkAddress       string // ZooKeeper address for service registry
+	UsePush         bool   // Flag to enable/disable push mode
+}
+
+var config Config
+
+// Initialize configuration from environment variables and flags
+func init() {
+	flag.BoolVar(&config.UsePush, "push", true, "use push mode")
+	config.PushGatewayURL = getEnv("PUSHGATEWAY_URL", "127.0.0.1:9091")
+	config.PushGatewayUser = getEnv("PUSHGATEWAY_USER", "username")
+	config.PushGatewayPass = getEnv("PUSHGATEWAY_PASS", "1234")
+	config.JobName = getEnv("JOB_NAME", "dubbo_client")
+	config.ZkAddress = getEnv("ZK_ADDRESS", "127.0.0.1:2181")
+}
+
+func getEnv(k, d string) string {
+	if v := os.Getenv(k); v != "" {
+		return v
 	}
+	return d
+}
+
+func main() {
+	flag.Parse()
+
+	// Prometheus metric
+	pushedAt := prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: "job_pushed_at_seconds",
+		Help: "Unix seconds of last push to Pushgateway",
+	})
+	prometheus.MustRegister(pushedAt)
+
+	// Dubbo instance
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
-			registry.WithAddress("zookeeper://"+zookeeper+":2181"),
+			registry.WithZookeeper(),
+			registry.WithAddress(config.ZkAddress),
 		),
 		dubbo.WithMetrics(
 			metrics.WithEnabled(),
-			metrics.WithPrometheus(),                // set prometheus metric
-			metrics.WithPrometheusExporterEnabled(), // enable prometheus exporter
-			metrics.WithPort(9097),                  // prometheus http exporter listen at 9097
-			metrics.WithPath("/prometheus"),         // prometheus http exporter url path
-			metrics.WithMetadataEnabled(),           // enable metadata center metrics
-			metrics.WithRegistryEnabled(),           // enable registry metrics
-			metrics.WithConfigCenterEnabled(),       // enable config center metrics
+			metrics.WithPrometheus(),
+			metrics.WithPrometheusExporterEnabled(),
+			metrics.WithPort(9097),
+			metrics.WithPath("/prometheus"),
+			metrics.WithMetadataEnabled(),
+			metrics.WithRegistryEnabled(),
+			metrics.WithConfigCenterEnabled(),
 
-			metrics.WithPrometheusPushgatewayEnabled(), // enable prometheus pushgateway
-			metrics.WithPrometheusGatewayUsername("username"),
-			metrics.WithPrometheusGatewayPassword("1234"),
-			metrics.WithPrometheusGatewayUrl("127.0.0.1:9091"), // host:port or ip:port,“http://” is added automatically,do not include the “/metrics/jobs/…” part
-			metrics.WithPrometheusGatewayInterval(time.Second*10),
-			metrics.WithPrometheusGatewayJob("push"), // set a metric job label, job=push to metric
-
-			metrics.WithAggregationEnabled(), // enable rpc metrics aggregations，Most of the time there is no need to turn it on
-			metrics.WithAggregationTimeWindowSeconds(30),
-			metrics.WithAggregationBucketNum(10), // agg bucket num
+			metrics.WithPrometheusPushgatewayEnabled(),
+			metrics.WithPrometheusGatewayUsername(config.PushGatewayUser),
+			metrics.WithPrometheusGatewayPassword(config.PushGatewayPass),
+			metrics.WithPrometheusGatewayUrl(config.PushGatewayURL),
+			metrics.WithPrometheusGatewayInterval(10*time.Second),
+			metrics.WithPrometheusGatewayJob(config.JobName),
 		),
 	)
 	if err != nil {
 		panic(err)
 	}
+
 	cli, err := ins.NewClient()
 	if err != nil {
 		panic(err)
 	}
-
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
 		panic(err)
 	}
 
-	for true {
-		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-		if err != nil {
-			logger.Error(err)
-		} else {
-			logger.Infof("Greet response: %s", resp.Greeting)
+	// Handle graceful shutdown
+	stopCh := make(chan os.Signal, 1)
+	signal.Notify(stopCh, syscall.SIGINT, syscall.SIGTERM)
+
+	// Dead loop, can be stopped by signal
+	go func() {
+		for {
+			resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+			if err != nil {
+				logger.Error(err)
+			} else {
+				logger.Infof("Greet response: %s", resp.Greeting)
+			}
+
+			pushedAt.Set(float64(time.Now().Unix()))
+			time.Sleep(1 * time.Second)
 		}
-		time.Sleep(100 * time.Millisecond)
+	}()
+
+	// Wait for signal
+	<-stopCh
+	logger.Info("Received shutdown signal, cleaning up...")
+
+	// Cleanup: delete job from Pushgateway if push mode enabled
+	if config.UsePush {
+		path := fmt.Sprintf("http://%s", config.PushGatewayURL)
+		if err := deletePushgatewayJob(path, config.JobName); err != nil {
+			logger.Errorf("Delete pushgateway job failed: %v", err)
+		} else {
+			logger.Infof("Deleted job from Pushgateway: job=%s", config.JobName)
+		}
 	}
+}
+
+// delete Pushgateway job
+func deletePushgatewayJob(pushgw, job string) error {
+	u, err := url.Parse(pushgw)
+	if err != nil {
+		return err
+	}
+	u.Path = fmt.Sprintf("/metrics/job/%s", url.PathEscape(job))
+	req, err := http.NewRequest(http.MethodDelete, u.String(), nil)
+	if err != nil {
+		return err
+	}
+	req.SetBasicAuth(config.PushGatewayUser, config.PushGatewayPass)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		return nil
+	}
+	return fmt.Errorf("unexpected status: %s", resp.Status)
 }

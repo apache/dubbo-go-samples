@@ -31,8 +31,11 @@ import (
 
 	"github.com/dubbogo/gost/log/logger"
 
-	"github.com/apache/dubbo-go-samples/compatibility/rpc/triple/pb2/go-server/pkg"
 	_ "github.com/dubbogo/triple/pkg/triple"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/compatibility/rpc/triple/pb2/go-server/pkg"
 )
 
 var (

@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
+	"github.com/apache/dubbo-go-samples/compatibility/mesh/go-client/api"
 )
 
 var grpcGreeterImpl = new(api.GreeterClientImpl)
