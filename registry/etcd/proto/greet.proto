@@ -19,7 +19,7 @@ syntax = "proto3";
 
 package greet;
 
-option go_package = "github.com/apache/dubbo-go-samples/registry/nacos/proto;greet";
+option go_package = "github.com/apache/dubbo-go-samples/registry/etcd/proto;greet";
 
 message GreetRequest {
   string name = 1;
