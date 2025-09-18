@@ -26,9 +26,11 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 
-	greet "github.com/apache/dubbo-go-samples/registry/etcd/proto"
-
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/registry/etcd/proto"
 )
 
 func main() {
