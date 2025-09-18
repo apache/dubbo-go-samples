@@ -23,19 +23,23 @@ import (
 	"os"
 	"testing"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/otel/trace"
 
-	greetpb "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
 	"github.com/dubbogo/gost/log/logger"
 )
 
-// ---- Test configuration ----
+import (
+	greetpb "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
+)
 
+// ---- Test configuration ----
 const (
 	defaultOtelEndpoint = "127.0.0.1:4318"
 

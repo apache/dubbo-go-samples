@@ -20,16 +20,7 @@ package main
 import (
 	"compress/gzip"
 	"context"
-	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/common"
-	"dubbo.apache.org/dubbo-go/v3/otel/trace"
-	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/server"
 	"errors"
-	greet "github.com/apache/dubbo-go-samples/otel/tracing/stdout/proto"
-	"github.com/dubbogo/gost/log/logger"
-	"github.com/golang/protobuf/proto"
-	collecttracepb "go.opentelemetry.io/proto/otlp/collector/trace/v1"
 	"io"
 	"net/http"
 	"strings"
@@ -37,7 +28,22 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/common"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/otel/trace"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
+
+	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/golang/protobuf/proto"
+
+	collecttracepb "go.opentelemetry.io/proto/otlp/collector/trace/v1"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/otel/tracing/stdout/proto"
 )
 
 type GreetMultiRPCServer struct {
