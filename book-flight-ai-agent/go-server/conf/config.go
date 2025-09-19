@@ -65,7 +65,7 @@ func loadEnvironment() {
 	configEnv.PortClient = AtoiWithDefault("CLIENT_PORT", 20000)
 	configEnv.UrlClient = fmt.Sprintf("%s:%d", configEnv.HostClient, configEnv.PortClient)
 	configEnv.PortWeb = AtoiWithDefault("WEB_PORT", 8080)
-	configEnv.TimeOut = AtoiWithDefault("TIMEOUT_SECONDS", 300)
+	configEnv.TimeOut = AtoiWithDefault("TIMEOUT_SECONDS", 120) // 默认 120 秒（2分钟）
 }
 
 func GetEnvironment() Environment {

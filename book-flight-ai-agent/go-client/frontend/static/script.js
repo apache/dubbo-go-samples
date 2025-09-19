@@ -11,6 +11,35 @@ const inputInitHeight = chatInput.scrollHeight;
 let fileBlobArr = [];
 let fileArr = [];
 
+// 1. 页面初始化时请求后端配置（新增）
+async function loadConfig() {
+    try {
+        const res = await fetch("/api/config"); // 后端新增接口返回配置
+        window.CONFIG = await res.json();
+        // 统一超时字段名：使用与后端一致的 TIMEOUT_SECONDS（原 TIME_OUT_SECOND 废弃）
+        window.CONFIG.TIMEOUT_MS = window.CONFIG.TIMEOUT_SECONDS * 1000; // 转为毫秒（方便定时器使用）
+    } catch (err) {
+        console.error("加载配置失败，使用默认超时（2分钟）", err);
+        window.CONFIG = window.CONFIG || {};
+        window.CONFIG.TIMEOUT_SECONDS = 120;
+        window.CONFIG.TIMEOUT_MS = 120 * 1000;
+    }
+}
+
+// 2. 页面加载完成后执行配置加载
+window.onload = async () => {
+    // 确保window.CONFIG已经存在，如果不存在则初始化
+    if (!window.CONFIG) {
+        await loadConfig();
+    } else {
+        // 确保window.CONFIG有TIMEOUT_MS属性
+        if (!window.CONFIG.TIMEOUT_MS && window.CONFIG.TIME_OUT_SECOND) {
+            window.CONFIG.TIMEOUT_MS = window.CONFIG.TIME_OUT_SECOND;
+        }
+    }
+    // 其他初始化逻辑（如绑定按钮事件）
+};
+
 const createChatLi = (content, className, targetBox = chatbox) => {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", `${className}`);
@@ -64,17 +93,40 @@ const handleChat = () => {
     const incomingChatLi = createChatLi("Thinking...", "incoming", chatbox);
     const incomingRecordLi = createChatLi("Thinking...", "incoming", recordbox); // Add to recordbox
 
-    // timeout
-    const TIMEOUT_MS = CONFIG.TIME_OUT_SECOND;
-    let isTimeout = false;
-    const timeoutId = setTimeout(() => {
-        isTimeout = true;
-        incomingRecordLi.querySelector("p").textContent = "Request timed out. Please try again.";
-    }, TIMEOUT_MS);
 
-    // send request
+    // 超时逻辑优化
+    let timeoutId;
+    const startTimeout = () => {
+        // 清除已有定时器（避免重复）
+        if (timeoutId) clearTimeout(timeoutId);
+        // 启动新定时器（使用同步后的 window.CONFIG.TIMEOUT_MS）
+        timeoutId = setTimeout(() => {
+            const timeoutMsg = `
+        <div>
+          <p>请求超时（当前超时时间：${window.CONFIG.TIMEOUT_SECONDS || window.CONFIG.TIME_OUT_SECOND/1000}秒）</p>
+          <button class="retry-btn" style="margin-top:8px;padding:4px 8px;">点击重试</button>
+        </div>
+      `;
+            // 更新超时提示（带重试按钮）
+            incomingChatLi.querySelector("p").innerHTML = timeoutMsg;
+            incomingRecordLi.querySelector("p").textContent = `请求超时（${window.CONFIG.TIMEOUT_SECONDS || window.CONFIG.TIME_OUT_SECOND/1000}秒）`;
+            // 绑定重试事件（复用原有 generateResponse 逻辑）
+            incomingChatLi.querySelector(".retry-btn").addEventListener("click", () => {
+                incomingChatLi.querySelector("p").textContent = "Thinking...";
+                incomingRecordLi.querySelector("p").textContent = "Thinking...";
+                generateResponse(incomingChatLi, incomingRecordLi, () => {
+                    clearTimeout(timeoutId); // 重试成功后清除超时
+                });
+            });
+        }, window.CONFIG.TIMEOUT_MS || window.CONFIG.TIME_OUT_SECOND);
+    };
+
+    // 启动超时定时器
+    startTimeout();
+
+    // 发送请求（原有逻辑，补充超时清除）
     generateResponse(incomingChatLi, incomingRecordLi, () => {
-        if (!isTimeout) clearTimeout(timeoutId);
+        clearTimeout(timeoutId); // 请求成功/失败时清除超时
     });
 }
 
@@ -127,6 +179,24 @@ const generateResponse = (chatElement, recordElement, callback) => {
                                     accumulatedChatResponse += data.content;
                                     chatMessageElement.innerHTML = marked.parse(styleMatch(accumulatedChatResponse)); // Render Markdown
                                     chatbox.scrollTo(0, chatbox.scrollHeight);
+                                    
+                                    // 检查content中是否包含航班信息
+                                    try {
+                                        // 尝试解析content中的JSON数据
+                                        if (data.content.includes("flight_number")) {
+                                            // 提取JSON部分
+                                            const jsonMatch = data.content.match(/\{[\s\S]*?\}/);
+                                            if (jsonMatch) {
+                                                const flightData = JSON.parse(jsonMatch[0]);
+                                                if (flightData.flight_number) {
+                                                    // 将单个航班信息转换为数组格式
+                                                    renderFlightInfo([flightData]);
+                                                }
+                                            }
+                                        }
+                                    } catch (e) {
+                                        console.log("No valid flight info in content", e);
+                                    }
                                 }
                                 if (data.record) {
                                     accumulatedRecordResponse += data.record;
@@ -162,29 +232,50 @@ const generateResponse = (chatElement, recordElement, callback) => {
     });
 };
 
-// 渲染航班信息的函数,需要在generateResponse函数中当机票预定成功调用renderFlightInfo渲染，这里假如返回data.flightinfo
-const renderFlightInfo = (flightInfo) => {
+// 渲染航班信息的函数
+const renderFlightInfo = (flightInfos) => {
+    console.log("Rendering flight info:", flightInfos);
     const flightInfoContainer = document.getElementById('flight-info');
-    // 清空提示信息
-    flightInfoContainer.innerHTML = `<h3>航班信息</h3><p>正在加载航班信息...</p>`;
-    // 返回为空
-    if (flightInfos.length === 0) {
+    // 清空容器并初始化基础结构（标题只显示一次）
+    flightInfoContainer.innerHTML = `<h3>航班信息</h3>`;
+
+    // 判断参数（数组）是否为空
+    if (!flightInfos || flightInfos.length === 0) {
         flightInfoContainer.innerHTML += "<p>没有航班信息可显示</p>";
         return;
     }
-    flightInfos.forEach(flightInfo => {
+
+    // 循环渲染每一条航班数据
+    flightInfos.forEach(flight => {
+        // 确保flight是对象
+        if (typeof flight === 'string') {
+            try {
+                flight = JSON.parse(flight);
+            } catch (e) {
+                console.error("Failed to parse flight info string:", e);
+                return;
+            }
+        }
+        
         const flightInfoHTML = `
-            <h3>航班信息</h3>
-            <p>航班号: ${flightInfo.flightNumber}</p>
-            <p>乘客姓名: ${flightInfo.passengerName}</p>
-            <p>出发城市: ${flightInfo.departureCity}</p>
-            <p>到达城市: ${flightInfo.arrivalCity}</p>
-            <p>出发时间: ${flightInfo.departureTime}</p>
-            <p>到达时间: ${flightInfo.arrivalTime}</p>
-            <hr />
+            <div class="flight-item">
+                <p>航班号: ${flight.flight_number || '未知'}</p>
+                <p>乘客姓名: ${flight.passengerName || '未填写'}</p>
+                <p>出发城市: ${flight.origin || '未知'}</p>
+                <p>到达城市: ${flight.destination || '未知'}</p>
+                <p>出发时间: ${flight.departure_time || '未知'}</p>
+                <p>到达时间: ${flight.arrival_time || '未知'}</p>
+                <p>票价: ${flight.price || '未知'}</p>
+                <p>座位类型: ${flight.seat_type || '未知'}</p>
+                ${flight.message ? `<p class="success-message">状态: ${flight.message}</p>` : ''}
+                <hr />
+            </div>
         `;
         flightInfoContainer.innerHTML += flightInfoHTML;
     });
+    
+    // 显示航班信息区域
+    flightInfoContainer.style.display = "block";
 };
 
 chatInput.addEventListener("input", () => {
