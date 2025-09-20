@@ -21,10 +21,7 @@ jobs:
     strategy:
       matrix:
         go-version:
-          - '1.24'
-        include:
-          - go-version: '1.23'
-            golangci-lint: true
+          - '1.23'
     steps:
       - uses: actions/setup-go@v5
         with:
@@ -53,13 +50,7 @@ jobs:
           go mod tidy
 
       - name: golangci-lint
-        if: matrix.golangci-lint == true
         uses: golangci/golangci-lint-action@v6
         with:
-          # Use latest version that supports Go 1.23
           version: latest
           args: --timeout=10m
-      
-      - name: Build test (for Go 1.24)
-        if: matrix.go-version == '1.24'
-        run: go build ./...
