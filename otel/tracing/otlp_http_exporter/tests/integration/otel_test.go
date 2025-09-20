@@ -36,7 +36,7 @@ import (
 )
 
 import (
-	greetpb "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
+	greetpb "github.com/apache/dubbo-go-samples/otel/tracing/stdout/proto"
 )
 
 // ---- Test configuration ----
