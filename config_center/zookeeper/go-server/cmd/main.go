@@ -43,12 +43,20 @@ type GreetTripleServer struct {
 }
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	// reference ctx to avoid unused parameter warning
+	_ = ctx
 	resp := &greet.GreetResponse{Greeting: req.Name}
 	return resp, nil
 }
 
 func main() {
-	_ = writeRuleToConfigCenter()
+	// Write configuration to the config center
+	if err := writeRuleToConfigCenter(); err != nil {
+		logger.Errorf("Failed to write config to config center: %v", err)
+		panic(err)
+	}
+
+	// Wait for the configuration to take effect
 	time.Sleep(time.Second * 10)
 
 	ins, err := dubbo.NewInstance(
@@ -60,19 +68,24 @@ func main() {
 		),
 	)
 	if err != nil {
+		logger.Errorf("Failed to create dubbo instance: %v", err)
 		panic(err)
 	}
+
 	srv, err := ins.NewServer()
 	if err != nil {
+		logger.Errorf("Failed to create server: %v", err)
 		panic(err)
 	}
 
 	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
+		logger.Errorf("Failed to register service: %v", err)
 		panic(err)
 	}
 
+	logger.Info("Starting Dubbo-Go server...")
 	if err = srv.Serve(); err != nil {
-		logger.Error(err)
+		logger.Errorf("Server failed to serve: %v", err)
 	}
 }
 
@@ -93,42 +106,62 @@ dubbo:
         interface: com.apache.dubbo.sample.basic.IGreeter
 `
 
-func ensurePath(c *zk.Conn, path string, data []byte, flags int32, acl []zk.ACL) error {
-	_, err := c.Create(path, data, flags, acl)
-	return err
-}
+// ensurePath Ensure the path exists (removed because it is unused)
 
 func writeRuleToConfigCenter() error {
+	// Connect to Zookeeper
 	c, _, err := zk.Connect([]string{"127.0.0.1:2181"}, time.Second*10)
 	if err != nil {
-		panic(err)
+		return perrors.Wrap(err, "failed to connect to zookeeper")
 	}
+	defer c.Close() // Ensure the connection is closed
 
 	valueBytes := []byte(configCenterZKServerConfig)
 	path := "/dubbo/config/dubbogo/dubbo-go-samples-configcenter-zookeeper-server"
+
+	// Ensure the path starts with '/'
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
-	paths := strings.Split(path, "/")
-	for idx := 2; idx < len(paths); idx++ {
-		tmpPath := strings.Join(paths[:idx], "/")
-		_, err = c.Create(tmpPath, []byte{}, 0, zk.WorldACL(zk.PermAll))
-		if err != nil && err != zk.ErrNodeExists {
-			panic(err)
-		}
+
+	// Create parent paths
+	if err := createParentPaths(c, path); err != nil {
+		return perrors.Wrap(err, "failed to create parent paths")
 	}
 
+	// Create or update configuration node
 	_, err = c.Create(path, valueBytes, 0, zk.WorldACL(zk.PermAll))
 	if err != nil {
 		if perrors.Is(err, zk.ErrNodeExists) {
-			_, stat, _ := c.Get(path)
+			// Node already exists, update configuration
+			_, stat, getErr := c.Get(path)
+			if getErr != nil {
+				return perrors.Wrap(getErr, "failed to get existing node")
+			}
 			_, setErr := c.Set(path, valueBytes, stat.Version)
 			if setErr != nil {
-				panic(err)
+				return perrors.Wrap(setErr, "failed to update existing node")
 			}
+			logger.Info("Updated existing configuration in config center")
 		} else {
-			panic(err)
+			return perrors.Wrap(err, "failed to create configuration node")
+		}
+	} else {
+		logger.Info("Created new configuration in config center")
+	}
+
+	return nil
+}
+
+// createParentPaths Create parent paths
+func createParentPaths(c *zk.Conn, path string) error {
+	paths := strings.Split(path, "/")
+	for idx := 2; idx < len(paths); idx++ {
+		tmpPath := strings.Join(paths[:idx], "/")
+		_, err := c.Create(tmpPath, []byte{}, 0, zk.WorldACL(zk.PermAll))
+		if err != nil && !perrors.Is(err, zk.ErrNodeExists) {
+			return perrors.Wrapf(err, "failed to create parent path: %s", tmpPath)
 		}
 	}
-	return err
+	return nil
 }
