@@ -99,7 +99,7 @@ func mockOtlpReceiver() {
 		} else if strings.Contains(reqStr, "dubbo_otel_client") {
 			clientReceivesChan <- true
 		} else {
-			errChan <- errors.New("unknown trace" + reqStr)
+			errChan <- errors.New("unknown trace: " + reqStr)
 		}
 	})
 
