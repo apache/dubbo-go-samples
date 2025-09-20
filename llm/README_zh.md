@@ -39,7 +39,30 @@ $ ollama pull qwen2.5:7b  # 可选：下载其他模型
 
 ### **安装 Nacos**
 
+Nacos 作为 Dubbo-go 服务的注册中心是必需的。您可以使用 Docker（推荐）或手动安装并启动 Nacos。
+
+**Docker 安装（推荐）**：
+
+```shell
+# 以单机模式启动 Nacos
+$ docker run -d --name nacos -p 8848:8848 -p 9848:9848 -e MODE=standalone nacos/nacos-server:v2.2.3
+
+# 验证 Nacos 是否运行
+$ curl http://localhost:8848/nacos/v1/ns/instance/list?serviceName=nacos.naming.service
+```
+
+**手动安装**：
+
 按照此说明[安装并运行 Nacos](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/integrations/nacos/).
+
+**验证 Nacos 安装**：
+
+```shell
+# 检查 Nacos 是否可访问
+$ curl http://localhost:8848/nacos/v1/ns/instance/list?serviceName=nacos.naming.service
+
+# 预期响应：{"name":"DEFAULT_GROUP@@nacos.naming.service",...}
+```
 
 ## **3. 运行示例**
 

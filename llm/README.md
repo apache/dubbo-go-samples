@@ -39,7 +39,30 @@ You can pull your preferred models and configure them in the `.env` file.
 
 ### **Install Nacos**
 
+Nacos is required as the service registry for Dubbo-go services. You can install and start Nacos using Docker (recommended) or manually.
+
+**Docker Installation (Recommended)**:
+
+```shell
+# Start Nacos in standalone mode
+$ docker run -d --name nacos -p 8848:8848 -p 9848:9848 -e MODE=standalone nacos/nacos-server:v2.2.3
+
+# Verify Nacos is running
+$ curl http://localhost:8848/nacos/v1/ns/instance/list?serviceName=nacos.naming.service
+```
+
+**Manual Installation**:
+
 Follow this instruction to [install and start Nacos server](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/integrations/nacos/).
+
+**Verify Nacos Installation**:
+
+```shell
+# Check if Nacos is accessible
+$ curl http://localhost:8848/nacos/v1/ns/instance/list?serviceName=nacos.naming.service
+
+# Expected response: {"name":"DEFAULT_GROUP@@nacos.naming.service",...}
+```
 
 ## 3. **Run the Example**
 
