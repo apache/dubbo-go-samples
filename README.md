@@ -50,6 +50,8 @@
 * metrics: How to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes , it also includes the tool (pgw-cleaner) used to clear zombie metrics in Push mode.
 * online_boutique: Microservices online boutique demo using Dubbo-go
 * otel/tracing: Distributed tracing example using OpenTelemetry
+  * stdout: use stdout exporter to export tracing data example
+  * otlp_http_exporter: use otlpHttpExporter to export tracing data example, including dubbo/triple/jsonrpc protocols
 * registry: Examples of using different service registries (e.g., nacos, zookeeper)
 * retry: Demonstrates retry mechanisms in Dubbo-go RPC calls
 * rpc: Various RPC protocol examples with Dubbo-go

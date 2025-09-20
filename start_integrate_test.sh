@@ -37,6 +37,7 @@ array+=("compatibility/metrics")
 
 # tracing
 array+=("otel/tracing/stdout")
+array+=("otel/tracing/otlp_http_exporter")
 
 # direct
 array+=("compatibility/direct")
