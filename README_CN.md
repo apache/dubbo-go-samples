@@ -46,6 +46,8 @@
 * metrics：Dubbo-go 服务指标采集与暴露示例，支持 Prometheus Push 模式和 Pull 模式, 同时包含 Push 模式下僵尸指标清理工具 “pgw-cleaner”
 * online_boutique：Dubbo-go 微服务电商示例
 * otel/tracing：基于 OpenTelemetry 的分布式链路追踪示例
+  * stdout: 使用 stdout exporter 输出追踪数据示例
+  * otlp_http_exporter: 使用 otlpHttpExporter 输出追踪数据示例，含 dubbo/triple/jsonrpc 协议
 * registry：多种服务注册中心（如 nacos、zookeeper）用法示例
 * retry：Dubbo-go RPC 调用重试机制示例
 * rpc：多种 RPC 协议示例
