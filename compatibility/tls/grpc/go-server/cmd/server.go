@@ -48,7 +48,7 @@ func (g *GreeterProvider) SayHello(ctx context.Context, req *pb.HelloRequest) (r
 	return &pb.HelloReply{Message: "this is message from reply"}, nil
 }
 
-// need to setup environment variable "CONF_PROVIDER_FILE_PATH" to "conf/server.yml" before run
+// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/server.yml" before run
 func main() {
 	config.SetProviderService(&GreeterProvider{})
 	if err := config.Load(); err != nil {

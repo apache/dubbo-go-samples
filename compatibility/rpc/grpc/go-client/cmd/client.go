@@ -26,6 +26,8 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	"github.com/dubbogo/gost/log"
+
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
 )
 
 import (
