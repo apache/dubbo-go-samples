@@ -30,8 +30,17 @@ import (
 )
 
 type Config struct {
+	// LLM Provider Configuration
+	LLMProvider     string   // ollama, openai, anthropic, azure-openai
+	LLMModels       []string // List of available models
+	LLMBaseURL      string   // Base URL for LLM service
+	LLMAPIKey       string   // API key for LLM service
+	
+	// Legacy Ollama fields (for backward compatibility)
 	OllamaModels    []string
 	OllamaURL       string
+	
+	// Common Configuration
 	TimeoutSeconds  int
 	NacosURL        string
 	MaxContextCount int
@@ -57,10 +66,23 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 
-		modelsEnv := os.Getenv("OLLAMA_MODELS")
+		// Load LLM provider configuration
+		llmProvider := os.Getenv("LLM_PROVIDER")
+		if llmProvider == "" {
+			// Fallback to legacy Ollama configuration
+			llmProvider = "ollama"
+		}
+		config.LLMProvider = strings.ToLower(strings.TrimSpace(llmProvider))
+
+		// Load models - try LLM_MODELS first, then fallback to OLLAMA_MODELS for backward compatibility
+		modelsEnv := os.Getenv("LLM_MODELS")
 		if modelsEnv == "" {
-			configErr = fmt.Errorf("error: OLLAMA_MODELS environment variable is not set")
-			return
+			// Backward compatibility: try OLLAMA_MODELS
+			modelsEnv = os.Getenv("OLLAMA_MODELS")
+			if modelsEnv == "" {
+				configErr = fmt.Errorf("error: LLM_MODELS or OLLAMA_MODELS environment variable is not set")
+				return
+			}
 		}
 
 		modelsList := strings.Split(modelsEnv, ",")
@@ -72,7 +94,12 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 
-		config.OllamaModels = modelsList
+		config.LLMModels = modelsList
+		
+		// For backward compatibility, also set OllamaModels
+		if config.LLMProvider == "ollama" {
+			config.OllamaModels = modelsList
+		}
 
 		modelName := os.Getenv("MODEL_NAME")
 		if modelName == "" {
@@ -104,12 +131,36 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 
+		// Load LLM base URL and API key
+		llmBaseURL := os.Getenv("LLM_BASE_URL")
+		llmAPIKey := os.Getenv("LLM_API_KEY")
+		
+		// For backward compatibility with Ollama
 		ollamaURL := os.Getenv("OLLAMA_URL")
-		if ollamaURL == "" {
-			configErr = fmt.Errorf("OLLAMA_URL is not set")
+		if llmBaseURL == "" && ollamaURL != "" {
+			// Use OLLAMA_URL as fallback for LLM_BASE_URL
+			llmBaseURL = ollamaURL
+		}
+		
+		// Set default URL for Ollama if not configured
+		if llmBaseURL == "" && config.LLMProvider == "ollama" {
+			llmBaseURL = "http://localhost:11434"
+		}
+		
+		// Validate configuration based on provider
+		if config.LLMProvider != "ollama" && llmBaseURL == "" {
+			configErr = fmt.Errorf("LLM_BASE_URL is required for %s provider", config.LLMProvider)
 			return
 		}
-		config.OllamaURL = ollamaURL
+		
+		// Set URLs and API key
+		config.LLMBaseURL = llmBaseURL
+		config.LLMAPIKey = llmAPIKey
+		
+		// For backward compatibility, also set OllamaURL
+		if config.LLMProvider == "ollama" {
+			config.OllamaURL = llmBaseURL
+		}
 
 		timeoutStr := os.Getenv("TIME_OUT_SECOND")
 		if timeoutStr == "" {
