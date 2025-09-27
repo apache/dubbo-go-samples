@@ -31,15 +31,15 @@ import (
 
 type Config struct {
 	// LLM Provider Configuration
-	LLMProvider     string   // ollama, openai, anthropic, azure-openai
-	LLMModels       []string // List of available models
-	LLMBaseURL      string   // Base URL for LLM service
-	LLMAPIKey       string   // API key for LLM service
-	
+	LLMProvider string   // ollama, openai, anthropic, azure-openai
+	LLMModels   []string // List of available models
+	LLMBaseURL  string   // Base URL for LLM service
+	LLMAPIKey   string   // API key for LLM service
+
 	// Legacy Ollama fields (for backward compatibility)
-	OllamaModels    []string
-	OllamaURL       string
-	
+	OllamaModels []string
+	OllamaURL    string
+
 	// Common Configuration
 	TimeoutSeconds  int
 	NacosURL        string
@@ -95,7 +95,7 @@ func Load(envFile string) (*Config, error) {
 		}
 
 		config.LLMModels = modelsList
-		
+
 		// For backward compatibility, also set OllamaModels
 		if config.LLMProvider == "ollama" {
 			config.OllamaModels = modelsList
@@ -134,29 +134,29 @@ func Load(envFile string) (*Config, error) {
 		// Load LLM base URL and API key
 		llmBaseURL := os.Getenv("LLM_BASE_URL")
 		llmAPIKey := os.Getenv("LLM_API_KEY")
-		
+
 		// For backward compatibility with Ollama
 		ollamaURL := os.Getenv("OLLAMA_URL")
 		if llmBaseURL == "" && ollamaURL != "" {
 			// Use OLLAMA_URL as fallback for LLM_BASE_URL
 			llmBaseURL = ollamaURL
 		}
-		
+
 		// Set default URL for Ollama if not configured
 		if llmBaseURL == "" && config.LLMProvider == "ollama" {
 			llmBaseURL = "http://localhost:11434"
 		}
-		
+
 		// Validate configuration based on provider
 		if config.LLMProvider != "ollama" && llmBaseURL == "" {
 			configErr = fmt.Errorf("LLM_BASE_URL is required for %s provider", config.LLMProvider)
 			return
 		}
-		
+
 		// Set URLs and API key
 		config.LLMBaseURL = llmBaseURL
 		config.LLMAPIKey = llmAPIKey
-		
+
 		// For backward compatibility, also set OllamaURL
 		if config.LLMProvider == "ollama" {
 			config.OllamaURL = llmBaseURL

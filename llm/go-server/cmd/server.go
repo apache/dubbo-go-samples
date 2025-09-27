@@ -63,7 +63,7 @@ func NewChatServer() (*ChatServer, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize LLM service for model %s: %v", cfg.ModelName, err)
 	}
-	
+
 	logger.Infof("Initialized %s model: %s", cfg.LLMProvider, cfg.ModelName)
 
 	return &ChatServer{llmService: llmService}, nil

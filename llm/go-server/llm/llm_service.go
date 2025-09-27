@@ -19,7 +19,6 @@ package llm
 
 import (
 	"context"
-	"encoding/base64"
 	"fmt"
 	"os"
 )
@@ -73,7 +72,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 		if apiKey == "" {
 			return nil, fmt.Errorf("OpenAI API key is required")
 		}
-		
+
 		opts := []openai.Option{
 			openai.WithModel(model),
 			openai.WithToken(apiKey),
@@ -81,7 +80,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 		if baseURL != "" {
 			opts = append(opts, openai.WithBaseURL(baseURL))
 		}
-		
+
 		llm, err = openai.New(opts...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to initialize OpenAI model %s: %v", model, err)
@@ -94,7 +93,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 		if apiKey == "" {
 			return nil, fmt.Errorf("Anthropic API key is required")
 		}
-		
+
 		opts := []anthropic.Option{
 			anthropic.WithModel(model),
 			anthropic.WithToken(apiKey),
@@ -102,7 +101,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 		if baseURL != "" {
 			opts = append(opts, anthropic.WithBaseURL(baseURL))
 		}
-		
+
 		llm, err = anthropic.New(opts...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to initialize Anthropic model %s: %v", model, err)
@@ -115,7 +114,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 		if apiKey == "" {
 			return nil, fmt.Errorf("Azure OpenAI API key is required")
 		}
-		
+
 		// Azure OpenAI uses OpenAI client with specific configuration
 		opts := []openai.Option{
 			openai.WithModel(model),
@@ -124,7 +123,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 		if baseURL != "" {
 			opts = append(opts, openai.WithBaseURL(baseURL))
 		}
-		
+
 		llm, err = openai.New(opts...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to initialize Azure OpenAI model %s: %v", model, err)
