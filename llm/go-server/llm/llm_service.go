@@ -22,7 +22,9 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+)
 
+import (
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/anthropic"
 	"github.com/tmc/langchaingo/llms/ollama"
