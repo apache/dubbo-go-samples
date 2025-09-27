@@ -6,18 +6,19 @@
 
 ## 2. **准备工作**
 
-### **安装 Ollama**
+### **选择您的 LLM 提供商**
 
+本案例支持多种 LLM 提供商。根据您的需求选择：
+
+#### **选项 1: Ollama (本地，免费)**
 Ollama 是一个本地运行的大语言模型平台，支持快速推理。
 
 **快速安装**：
-
 ```shell
 $ curl -fsSL https://ollama.com/install.sh | sh
 ```
 
 **手动安装**：
-
 ```shell
 $ mkdir -p ~/ollama
 $ cd ~/ollama
@@ -28,14 +29,20 @@ $ source ~/.bashrc
 $ ollama serve
 ```
 
-### 下载模型
-
+**下载模型**：
 ```shell
 $ ollama pull llava:7b
 $ ollama pull qwen2.5:7b  # 可选：下载其他模型
 ```
 
-您可以自行 pull 需要的模型，并在 `.env` 文件中配置要使用的模型列表。
+#### **选项 2: OpenAI API (云端，付费)**
+需要 OpenAI API 密钥。从 [OpenAI Platform](https://platform.openai.com/) 获取。
+
+#### **选项 3: Anthropic Claude API (云端，付费)**
+需要 Anthropic API 密钥。从 [Anthropic Console](https://console.anthropic.com/) 获取。
+
+#### **选项 4: Azure OpenAI (云端，付费)**
+需要 Azure OpenAI 资源。在 [Azure Portal](https://portal.azure.com/) 设置。
 
 ### **安装 Nacos**
 
@@ -81,12 +88,50 @@ $ cp .env.example .env
 
 ### **配置说明**
 
-`.env` 文件支持配置多个模型，示例：
+`.env` 文件支持多种 LLM 提供商。以下是各提供商的配置示例：
 
+#### **Ollama 配置**：
 ```text
-# 支持配置多个模型，使用逗号分隔，支持带空格
-OLLAMA_MODELS = llava:7b, qwen2.5:7b
-OLLAMA_URL = http://localhost:11434
+LLM_PROVIDER = ollama
+LLM_MODELS = llava:7b, qwen2.5:7b
+LLM_BASE_URL = http://localhost:11434
+MODEL_NAME = llava:7b
+NACOS_URL = nacos://localhost:8848
+TIME_OUT_SECOND = 300
+MAX_CONTEXT_COUNT = 3
+```
+
+#### **OpenAI 配置**：
+```text
+LLM_PROVIDER = openai
+LLM_MODELS = gpt-4, gpt-3.5-turbo
+LLM_BASE_URL = https://api.openai.com/v1
+LLM_API_KEY = your-openai-api-key
+MODEL_NAME = gpt-4
+NACOS_URL = nacos://localhost:8848
+TIME_OUT_SECOND = 300
+MAX_CONTEXT_COUNT = 3
+```
+
+#### **Anthropic 配置**：
+```text
+LLM_PROVIDER = anthropic
+LLM_MODELS = claude-3-sonnet-20240229, claude-3-haiku-20240307
+LLM_BASE_URL = https://api.anthropic.com/v1
+LLM_API_KEY = your-anthropic-api-key
+MODEL_NAME = claude-3-sonnet-20240229
+NACOS_URL = nacos://localhost:8848
+TIME_OUT_SECOND = 300
+MAX_CONTEXT_COUNT = 3
+```
+
+#### **Azure OpenAI 配置**：
+```text
+LLM_PROVIDER = azure-openai
+LLM_MODELS = gpt-4, gpt-35-turbo
+LLM_BASE_URL = https://your-resource.openai.azure.com/openai/deployments/your-deployment
+LLM_API_KEY = your-azure-openai-api-key
+MODEL_NAME = gpt-4
 NACOS_URL = nacos://localhost:8848
 TIME_OUT_SECOND = 300
 MAX_CONTEXT_COUNT = 3
