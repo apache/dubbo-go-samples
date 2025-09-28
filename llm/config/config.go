@@ -29,14 +29,23 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// LLMConfig represents configuration for a specific LLM model
+type LLMConfig struct {
+	Model    string // Model name (e.g., "gpt-4", "claude-3-sonnet", "llava:7b")
+	Provider string // Provider type (e.g., "openai", "anthropic", "ollama")
+	BaseURL  string // Base URL for the model service
+	APIKey   string // API key for the model service
+}
+
 type Config struct {
-	// LLM Provider Configuration
-	LLMProvider string   // ollama, openai, anthropic, azure-openai
-	LLMModels   []string // List of available models
+	// LLM Models Configuration - Each model has its own complete configuration
+	LLMModels []LLMConfig // Array of LLM models, each with its own provider, URL, and key
+
+	// Legacy fields (for backward compatibility)
+	LLMProvider string   // Single provider for all models
+	LLMModelsList []string // List of model names only
 	LLMBaseURL  string   // Base URL for LLM service
 	LLMAPIKey   string   // API key for LLM service
-
-	// Legacy Ollama fields (for backward compatibility)
 	OllamaModels []string
 	OllamaURL    string
 
@@ -94,7 +103,8 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 
-		config.LLMModels = modelsList
+		// Keep legacy fields for backward compatibility
+		config.LLMModelsList = modelsList
 
 		// For backward compatibility, also set OllamaModels
 		if config.LLMProvider == "ollama" {
@@ -165,6 +175,19 @@ func Load(envFile string) (*Config, error) {
 			config.OllamaURL = llmBaseURL
 		}
 
+		// Now create LLMConfig array with the properly set values
+		config.LLMModels = make([]LLMConfig, len(modelsList))
+		for i, model := range modelsList {
+			// Each model can have its own provider, URL, and key
+			// For now, they inherit from the global settings, but this can be extended
+			config.LLMModels[i] = LLMConfig{
+				Model:    model,
+				Provider: config.LLMProvider,
+				BaseURL:  config.LLMBaseURL,
+				APIKey:   config.LLMAPIKey,
+			}
+		}
+
 		timeoutStr := os.Getenv("TIME_OUT_SECOND")
 		if timeoutStr == "" {
 			config.TimeoutSeconds = defaultTimeoutSeconds
@@ -205,6 +228,10 @@ func GetConfig() (*Config, error) {
 }
 
 func (c *Config) DefaultModel() string {
+	if len(c.LLMModels) > 0 {
+		return c.LLMModels[0].Model
+	}
+	// Fallback to legacy OllamaModels for backward compatibility
 	if len(c.OllamaModels) > 0 {
 		return c.OllamaModels[0]
 	}
