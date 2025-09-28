@@ -142,13 +142,16 @@ func Load(envFile string) (*Config, error) {
 			llmBaseURL = ollamaURL
 		}
 
-		// Set default URL for Ollama if not configured
+		// Set default URL for providers if not configured
 		if llmBaseURL == "" && config.LLMProvider == "ollama" {
 			llmBaseURL = "http://localhost:11434"
 		}
+		if llmBaseURL == "" && config.LLMProvider == "openai" {
+			llmBaseURL = "https://api.openai.com/v1"
+		}
 
 		// Validate configuration based on provider
-		if config.LLMProvider != "ollama" && llmBaseURL == "" {
+		if config.LLMProvider != "ollama" && config.LLMProvider != "openai" && llmBaseURL == "" {
 			configErr = fmt.Errorf("LLM_BASE_URL is required for %s provider", config.LLMProvider)
 			return
 		}
