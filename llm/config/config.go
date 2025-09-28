@@ -42,12 +42,12 @@ type Config struct {
 	LLMModels []LLMConfig // Array of LLM models, each with its own provider, URL, and key
 
 	// Legacy fields (for backward compatibility)
-	LLMProvider string   // Single provider for all models
+	LLMProvider   string   // Single provider for all models
 	LLMModelsList []string // List of model names only
-	LLMBaseURL  string   // Base URL for LLM service
-	LLMAPIKey   string   // API key for LLM service
-	OllamaModels []string
-	OllamaURL    string
+	LLMBaseURL    string   // Base URL for LLM service
+	LLMAPIKey     string   // API key for LLM service
+	OllamaModels  []string
+	OllamaURL     string
 
 	// Common Configuration
 	TimeoutSeconds  int
