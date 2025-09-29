@@ -24,11 +24,14 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/llm/config"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/anthropic"
 	"github.com/tmc/langchaingo/llms/ollama"
 	"github.com/tmc/langchaingo/llms/openai"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/llm/config"
 )
 
 // LLMProvider represents different LLM service providers
