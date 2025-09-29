@@ -38,8 +38,8 @@ type LLMConfig struct {
 }
 
 type Config struct {
-	// LLM Models Configuration - Each model has its own complete configuration
-	LLMModels []LLMConfig // Array of LLM models, each with its own provider, URL, and key
+	// LLM Models Configuration - Each model inherits global provider settings
+	LLMModels []LLMConfig // Array of LLM models, all sharing the same provider, URL, and key
 
 	// Legacy fields (for backward compatibility)
 	LLMProvider   string   // Single provider for all models
@@ -75,7 +75,7 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 
-		// Load LLM provider configuration
+		// Load default LLM provider (for backward compatibility)
 		llmProvider := os.Getenv("LLM_PROVIDER")
 		if llmProvider == "" {
 			// Fallback to legacy Ollama configuration
@@ -175,11 +175,10 @@ func Load(envFile string) (*Config, error) {
 			config.OllamaURL = llmBaseURL
 		}
 
-		// Now create LLMConfig array with the properly set values
+		// Create LLMConfig array - simple and practical
 		config.LLMModels = make([]LLMConfig, len(modelsList))
 		for i, model := range modelsList {
-			// Each model can have its own provider, URL, and key
-			// For now, they inherit from the global settings, but this can be extended
+			// Each model inherits the global provider settings
 			config.LLMModels[i] = LLMConfig{
 				Model:    model,
 				Provider: config.LLMProvider,
@@ -226,6 +225,8 @@ func Load(envFile string) (*Config, error) {
 func GetConfig() (*Config, error) {
 	return Load(".env")
 }
+
+
 
 func (c *Config) DefaultModel() string {
 	if len(c.LLMModels) > 0 {
