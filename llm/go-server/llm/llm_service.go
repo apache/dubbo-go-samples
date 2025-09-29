@@ -119,6 +119,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 		opts := []openai.Option{
 			openai.WithModel(model),
 			openai.WithToken(apiKey),
+			openai.WithAPIType(openai.APITypeAzure),
 		}
 		if baseURL != "" {
 			opts = append(opts, openai.WithBaseURL(baseURL))
