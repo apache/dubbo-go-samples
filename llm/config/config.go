@@ -226,8 +226,6 @@ func GetConfig() (*Config, error) {
 	return Load(".env")
 }
 
-
-
 func (c *Config) DefaultModel() string {
 	if len(c.LLMModels) > 0 {
 		return c.LLMModels[0].Model
