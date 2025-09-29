@@ -29,6 +29,12 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Default URLs for different LLM providers
+const (
+	DefaultOllamaURL = "http://localhost:11434"
+	DefaultOpenAIURL = "https://api.openai.com/v1"
+)
+
 // LLMConfig represents configuration for a specific LLM model
 type LLMConfig struct {
 	Model    string // Model name (e.g., "gpt-4", "claude-3-sonnet", "llava:7b")
@@ -154,10 +160,10 @@ func Load(envFile string) (*Config, error) {
 
 		// Set default URL for providers if not configured
 		if llmBaseURL == "" && config.LLMProvider == "ollama" {
-			llmBaseURL = "http://localhost:11434"
+			llmBaseURL = DefaultOllamaURL
 		}
 		if llmBaseURL == "" && config.LLMProvider == "openai" {
-			llmBaseURL = "https://api.openai.com/v1"
+			llmBaseURL = DefaultOpenAIURL
 		}
 
 		// Validate configuration based on provider

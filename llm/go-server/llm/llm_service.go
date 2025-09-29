@@ -24,6 +24,7 @@ import (
 )
 
 import (
+	"github.com/apache/dubbo-go-samples/llm/config"
 	"github.com/tmc/langchaingo/llms"
 	"github.com/tmc/langchaingo/llms/anthropic"
 	"github.com/tmc/langchaingo/llms/ollama"
@@ -55,7 +56,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 	switch provider {
 	case ProviderOllama:
 		if baseURL == "" {
-			baseURL = "http://localhost:11434"
+			baseURL = config.DefaultOllamaURL
 		}
 		llm, err = ollama.New(
 			ollama.WithModel(model),
