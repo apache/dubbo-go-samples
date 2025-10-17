@@ -63,7 +63,7 @@ func NewCurrencyService(cli *client.Client, opts ...client.ReferenceOption) (Cur
 	}, nil
 }
 
-func SetConsumerService(srv common.RPCService) {
+func SetConsumerCurrencyService(srv common.RPCService) {
 	dubbo.SetConsumerServiceWithInfo(srv, &CurrencyService_ClientInfo)
 }
 
@@ -107,7 +107,7 @@ func RegisterCurrencyServiceHandler(srv *server.Server, hdlr CurrencyServiceHand
 	return srv.Register(hdlr, &CurrencyService_ServiceInfo, opts...)
 }
 
-func SetProviderService(srv common.RPCService) {
+func SetProviderCurrencyService(srv common.RPCService) {
 	dubbo.SetProviderServiceWithInfo(srv, &CurrencyService_ServiceInfo)
 }
 

@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"time"
 )
 
 import (
@@ -58,6 +59,8 @@ func main() {
 	if err = dynamicConfig.PublishConfig("dubbo-go-samples-configcenter-nacos-client", "dubbo", configCenterNacosClientConfig); err != nil {
 		panic(err)
 	}
+
+	time.Sleep(10 * time.Second)
 
 	config.SetConsumerService(grpcGreeterImpl)
 

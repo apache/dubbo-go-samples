@@ -3,10 +3,6 @@ dubbo:
     demoZK:
       protocol: zookeeper
       address: 127.0.0.1:2181
-  protocols:
-    dubbo:
-      name: dubbo
-      port: 20000
   consumer:
     references:
       UserProvider:

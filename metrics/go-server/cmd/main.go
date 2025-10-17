@@ -19,7 +19,14 @@ package main
 
 import (
 	"context"
+	"flag"
+	"fmt"
 	"math/rand"
+	"net/http"
+	"net/url"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -34,14 +41,44 @@ import (
 	"github.com/dubbogo/gost/log/logger"
 
 	"github.com/pkg/errors"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 import (
 	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
-type GreetTripleServer struct {
+// Config structure for application settings
+type Config struct {
+	PushGatewayURL  string // PushGateway URL for metrics
+	PushGatewayUser string // Username for PushGateway authentication
+	PushGatewayPass string // Password for PushGateway authentication
+	JobName         string // Job name for PushGateway
+	ZkAddress       string // ZooKeeper address for service registry
+	UsePush         bool   // Flag to enable/disable push mode
 }
+
+var config Config
+
+// Initialize configuration from environment variables and flags
+func init() {
+	flag.BoolVar(&config.UsePush, "push", true, "use push mode")
+	config.PushGatewayURL = getEnv("PUSHGATEWAY_URL", "127.0.0.1:9091")
+	config.PushGatewayUser = getEnv("PUSHGATEWAY_USER", "username")
+	config.PushGatewayPass = getEnv("PUSHGATEWAY_PASS", "1234")
+	config.JobName = getEnv("JOB_NAME", "dubbo_server")
+	config.ZkAddress = getEnv("ZK_ADDRESS", "127.0.0.1:2181")
+}
+
+func getEnv(k, d string) string {
+	if v := os.Getenv(k); v != "" {
+		return v
+	}
+	return d
+}
+
+type GreetTripleServer struct{}
 
 func (srv *GreetTripleServer) Greet(_ context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	resp := &greet.GreetResponse{Greeting: req.Name}
@@ -55,39 +92,48 @@ func (srv *GreetTripleServer) Greet(_ context.Context, req *greet.GreetRequest) 
 }
 
 func main() {
+	flag.Parse()
+
+	pushedAt := prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: "job_pushed_at_seconds",
+		Help: "Unix seconds of last push to Pushgateway",
+	})
+	prometheus.MustRegister(pushedAt)
+
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
+			registry.WithAddress(config.ZkAddress),
 		),
 		dubbo.WithMetrics(
-			metrics.WithEnabled(),                   // default false
-			metrics.WithPrometheus(),                // set prometheus metric, default prometheus
-			metrics.WithPrometheusExporterEnabled(), // enable prometheus exporter default false
-			metrics.WithPort(9099),                  // prometheus http exporter listen at 9099,default 9090
-			metrics.WithPath("/prometheus"),         // prometheus http exporter url path, default /metrics
-			metrics.WithMetadataEnabled(),           // enable metadata center metrics, default true
-			metrics.WithRegistryEnabled(),           // enable registry metrics, default true
-			metrics.WithConfigCenterEnabled(),       // enable config center metrics, default true
+			metrics.WithEnabled(),
+			metrics.WithPrometheus(),
+			metrics.WithPrometheusExporterEnabled(),
+			metrics.WithPort(9099),
+			metrics.WithPath("/prometheus"),
+			metrics.WithMetadataEnabled(),
+			metrics.WithRegistryEnabled(),
+			metrics.WithConfigCenterEnabled(),
 
-			metrics.WithPrometheusPushgatewayEnabled(), // enable prometheus pushgateway
-			metrics.WithPrometheusGatewayUsername("username"),
-			metrics.WithPrometheusGatewayPassword("1234"),
-			metrics.WithPrometheusGatewayUrl("127.0.0.1:9091"), // host:port or ip:port,“http://” is added automatically,do not include the “/metrics/jobs/…” part
-			metrics.WithPrometheusGatewayInterval(time.Second*10),
-			metrics.WithPrometheusGatewayJob("push"), // set a metric job label, job=push to metric
+			metrics.WithPrometheusPushgatewayEnabled(),
+			metrics.WithPrometheusGatewayUsername(config.PushGatewayUser),
+			metrics.WithPrometheusGatewayPassword(config.PushGatewayPass),
+			metrics.WithPrometheusGatewayUrl(config.PushGatewayURL),
+			metrics.WithPrometheusGatewayInterval(10*time.Second),
+			metrics.WithPrometheusGatewayJob(config.JobName),
 
-			metrics.WithAggregationEnabled(), // enable rpc metrics aggregations，Most of the time there is no need to turn it on, default false
+			metrics.WithAggregationEnabled(),
 			metrics.WithAggregationTimeWindowSeconds(30),
-			metrics.WithAggregationBucketNum(10), // agg bucket num
+			metrics.WithAggregationBucketNum(10),
 		),
 	)
 	if err != nil {
 		panic(err)
 	}
+
 	srv, err := ins.NewServer(
 		server.WithServerProtocol(
-			protocol.WithPort(20000), // triple protocol port
+			protocol.WithPort(20000),
 			protocol.WithTriple(),
 		),
 	)
@@ -99,7 +145,66 @@ func main() {
 		panic(err)
 	}
 
-	if err := srv.Serve(); err != nil {
-		logger.Error(err)
+	// Custom pushedAt metric goroutine
+	go func() {
+		ticker := time.NewTicker(10 * time.Second)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-ticker.C:
+				pushedAt.Set(float64(time.Now().Unix()))
+			}
+		}
+	}()
+
+	// Handle graceful shutdown
+	stopCh := make(chan os.Signal, 1)
+	signal.Notify(stopCh, syscall.SIGINT, syscall.SIGTERM)
+
+	// Run server
+	go func() {
+		logger.Info("Starting server...")
+		if err := srv.Serve(); err != nil {
+			logger.Error("Server error:", err)
+		}
+	}()
+
+	// Wait for signal
+	<-stopCh
+	logger.Info("Received shutdown signal, cleaning up...")
+
+	// Cleanup: delete job from Pushgateway if push mode enabled
+	if config.UsePush {
+		path := fmt.Sprintf("http://%s", config.PushGatewayURL)
+		if err := deletePushgatewayJob(path, config.JobName); err != nil {
+			logger.Errorf("Delete pushgateway job failed: %v", err)
+		} else {
+			logger.Infof("Deleted job from Pushgateway: job=%s", config.JobName)
+		}
 	}
+}
+
+// delete Pushgateway job
+func deletePushgatewayJob(pushgw, job string) error {
+	u, err := url.Parse(pushgw)
+	if err != nil {
+		return err
+	}
+	u.Path = fmt.Sprintf("/metrics/job/%s", url.PathEscape(job))
+	req, err := http.NewRequest(http.MethodDelete, u.String(), nil)
+	if err != nil {
+		return err
+	}
+	req.SetBasicAuth(config.PushGatewayUser, config.PushGatewayPass)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		return nil
+	}
+	return fmt.Errorf("unexpected status: %s", resp.Status)
 }
