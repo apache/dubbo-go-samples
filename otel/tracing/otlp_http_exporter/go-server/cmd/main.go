@@ -160,11 +160,12 @@ func main() {
 		panic(err)
 	}
 
-	//Triple
 	srv, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}
+
+	//Triple
 	if err = greet.RegisterGreetServiceHandler(srv, &GreetMultiRPCServer{}); err != nil {
 		panic(err)
 	}
@@ -173,6 +174,7 @@ func main() {
 	if err = srv.Register(&GreetProvider{}, &common.ServiceInfo{}, server.WithInterface("GreetProvider")); err != nil {
 		panic(err)
 	}
+
 	if err = srv.Serve(); err != nil {
 		logger.Error(err)
 	}
