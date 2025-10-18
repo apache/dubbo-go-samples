@@ -70,62 +70,54 @@ var (
 	errChan            = make(chan error, 6)
 )
 
-func startMockOtlpReceiver(addr string) (ready <-chan struct{}, stop func(context.Context) error, err error) {
-	rch := make(chan struct{})
+func mockOtlpReceiver() {
 	mux := http.NewServeMux()
-
-	// 仅注册我们需要的路径，避免 DefaultServeMux 污染
 	mux.HandleFunc("/v1/traces", func(w http.ResponseWriter, r *http.Request) {
-		// 方法校验
 		if r.Method != http.MethodPost {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
-
-		// Content-Type（OTLP/HTTP Protobuf）
-		ct := r.Header.Get("Content-Type")
-		// 常见值：application/x-protobuf 或 application/x-protobuf; proto=...
-		if !strings.HasPrefix(strings.ToLower(ct), "application/x-protobuf") {
+		ct := strings.ToLower(r.Header.Get("Content-Type"))
+		if ct != "" && !strings.HasPrefix(ct, "application/x-protobuf") {
 			http.Error(w, "unsupported content type", http.StatusUnsupportedMediaType)
 			return
 		}
 
-		// 限制请求体大小（防御性编程）
-		body := http.MaxBytesReader(w, r.Body, 10<<20) // 10 MiB
+		body := http.MaxBytesReader(w, r.Body, 10<<20) // 10MiB
 		defer body.Close()
 
 		var reader io.Reader = body
 		if strings.EqualFold(r.Header.Get("Content-Encoding"), "gzip") {
-			gr, zerr := gzip.NewReader(body)
-			if zerr != nil {
+			gr, err := gzip.NewReader(body)
+			if err != nil {
 				select {
-				case errChan <- zerr:
+				case errChan <- err:
 				default:
 				}
-				http.Error(w, fmt.Sprintf("bad gzip: %v", zerr), http.StatusBadRequest)
+				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
 			defer gr.Close()
 			reader = gr
 		}
 
-		raw, rerr := io.ReadAll(reader)
-		if rerr != nil {
+		raw, err := io.ReadAll(reader)
+		if err != nil {
 			select {
-			case errChan <- rerr:
+			case errChan <- err:
 			default:
 			}
-			http.Error(w, fmt.Sprintf("read body error: %v", rerr), http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		var req collecttracepb.ExportTraceServiceRequest
-		if uerr := proto.Unmarshal(raw, &req); uerr != nil {
+		if err := proto.Unmarshal(raw, &req); err != nil {
 			select {
-			case errChan <- uerr:
+			case errChan <- err:
 			default:
 			}
-			http.Error(w, fmt.Sprintf("unmarshal error: %v", uerr), http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
@@ -136,25 +128,21 @@ func startMockOtlpReceiver(addr string) (ready <-chan struct{}, stop func(contex
 		case strings.Contains(reqStr, "dubbo_otel_client"):
 			clientReceivesChan <- true
 		default:
-			unk := errors.New("unknown trace: " + reqStr)
 			select {
-			case errChan <- unk:
+			case errChan <- errors.New("unknown trace: " + reqStr):
 			default:
 			}
-			// 仍然返回 200，避免客户端把“服务错误”当成网络/连接错误；测试逻辑会从 errChan 感知异常
 		}
 
-		// 按 OTLP 要求回一个空响应体（protobuf）
 		respBytes, _ := proto.Marshal(&collecttracepb.ExportTraceServiceResponse{})
 		w.Header().Set("Content-Type", "application/x-protobuf")
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write(respBytes)
 	})
 
-	// 先绑定端口，保证“就绪”语义可靠
-	ln, lerr := net.Listen("tcp", addr)
-	if lerr != nil {
-		return nil, nil, lerr
+	ln, err := net.Listen("tcp", "127.0.0.1:4318")
+	if err != nil {
+		panic(fmt.Errorf("mock OTLP receiver listen failed: %w", err))
 	}
 
 	srv := &http.Server{
@@ -162,18 +150,8 @@ func startMockOtlpReceiver(addr string) (ready <-chan struct{}, stop func(contex
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
-	stop = func(ctx context.Context) error {
-		// 优雅关闭
-		sderr := srv.Shutdown(ctx)
-		if sderr != nil && !errors.Is(sderr, http.ErrServerClosed) {
-			return sderr
-		}
-		return nil
-	}
-
-	// 端口已绑定，通知“就绪”，再异步 Serve
 	go func() {
-		close(rch)
+		logger.Infof("[mock-otlp] listening on %s", ln.Addr().String())
 		if err := srv.Serve(ln); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			select {
 			case errChan <- err:
@@ -182,17 +160,22 @@ func startMockOtlpReceiver(addr string) (ready <-chan struct{}, stop func(contex
 		}
 	}()
 
-	return rch, stop, nil
+	deadline := time.Now().Add(5 * time.Second)
+	for {
+		conn, dErr := net.DialTimeout("tcp", "127.0.0.1:4318", 500*time.Millisecond)
+		if dErr == nil {
+			_ = conn.Close()
+			break
+		}
+		if time.Now().After(deadline) {
+			panic(fmt.Errorf("mock OTLP not ready in time: %w", dErr))
+		}
+		time.Sleep(100 * time.Millisecond)
+	}
 }
 
 func main() {
-	ready, stop, err := startMockOtlpReceiver("127.0.0.1:4318")
-	if err != nil {
-		panic(err)
-	}
-	defer stop(context.Background())
-	<-ready
-
+	mockOtlpReceiver()
 	go func() {
 		var (
 			serverCount = 0
