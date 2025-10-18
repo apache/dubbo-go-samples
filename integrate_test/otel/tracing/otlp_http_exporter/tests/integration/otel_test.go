@@ -20,6 +20,7 @@ package integration
 import (
 	"context"
 	"fmt"
+	"net"
 	"os"
 	"testing"
 	"time"
@@ -85,7 +86,32 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
+func waitPort(addr string, deadline time.Duration) error {
+	end := time.Now().Add(deadline)
+	for {
+		c, err := net.DialTimeout("tcp", addr, 1*time.Second)
+		if err == nil {
+			c.Close()
+			return nil
+		}
+		if time.Now().After(end) {
+			return fmt.Errorf("port %s not ready: %w", addr, err)
+		}
+		time.Sleep(200 * time.Millisecond)
+	}
+}
+
 func TestMultiProtocols(t *testing.T) {
+
+	must := func(err error) {
+		if err != nil {
+			panic(err)
+		}
+	}
+	must(waitPort("127.0.0.1:20000", 6*time.Second)) // triple
+	must(waitPort("127.0.0.1:20001", 3*time.Second)) // dubbo(getty)
+	must(waitPort("127.0.0.1:20002", 3*time.Second)) // jsonrpc
+
 	t.Run("triple", testTriple)
 	t.Run("dubbo", testDubbo)
 	t.Run("jsonrpc", testJSONRPC)
