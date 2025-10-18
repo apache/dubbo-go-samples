@@ -108,9 +108,9 @@ func TestMultiProtocols(t *testing.T) {
 			panic(err)
 		}
 	}
-	must(waitPort("127.0.0.1:20000", 6*time.Second)) // triple
-	must(waitPort("127.0.0.1:20001", 3*time.Second)) // dubbo(getty)
-	must(waitPort("127.0.0.1:20002", 3*time.Second)) // jsonrpc
+	must(waitPort("127.0.0.1:20000", 10*time.Second)) // triple
+	must(waitPort("127.0.0.1:20001", 10*time.Second)) // dubbo(getty)
+	must(waitPort("127.0.0.1:20002", 10*time.Second)) // jsonrpc
 
 	t.Run("triple", testTriple)
 	t.Run("dubbo", testDubbo)

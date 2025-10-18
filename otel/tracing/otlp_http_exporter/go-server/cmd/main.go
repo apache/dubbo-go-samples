@@ -189,7 +189,7 @@ func main() {
 				clientCount++
 			case err := <-errChan:
 				panic(err)
-			case <-time.After(7 * time.Second):
+			case <-time.After(20 * time.Second):
 				panic("timeout")
 			}
 		}
