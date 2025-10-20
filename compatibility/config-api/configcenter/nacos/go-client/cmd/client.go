@@ -32,7 +32,7 @@ import (
 	"github.com/apache/dubbo-go-samples/compatibility/api"
 )
 
-const configCenterNacosClientConfig = `## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default
+const configCenterNacosClientConfig = `
 dubbo:
   registries:
     demoZK:
