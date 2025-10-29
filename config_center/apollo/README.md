@@ -42,7 +42,7 @@ ins, err := dubbo.NewInstance(
     ),
 )
 if err != nil {
-    panic(err)
+    logger.Fatal(err)
 }
 ```
 
@@ -51,11 +51,11 @@ if err != nil {
 ```go
 srv, err := ins.NewServer()
 if err != nil {
-    panic(err)
+    logger.Fatal(err)
 }
 
 if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-    panic(err)
+    logger.Fatal(err)
 }
 
 if err := srv.Serve(); err != nil {

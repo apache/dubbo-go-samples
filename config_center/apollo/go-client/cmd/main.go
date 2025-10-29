@@ -55,19 +55,19 @@ func main() {
 		),
 	)
 	if err != nil {
-		panic(err)
+		logger.Fatal(err)
 	}
 
 	// Configure client parameters
 	cli, err := ins.NewClient()
 	if err != nil {
-		panic(err)
+		logger.Fatal(err)
 	}
 
 	// Create service client
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
-		panic(err)
+		logger.Fatal(err)
 	}
 
 	// Call remote service

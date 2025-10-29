@@ -62,16 +62,16 @@ func main() {
 		),
 	)
 	if err != nil {
-		panic(err)
+		logger.Fatal(err)
 	}
 
 	srv, err := ins.NewServer()
 	if err != nil {
-		panic(err)
+		logger.Fatal(err)
 	}
 
 	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-		panic(err)
+		logger.Fatal(err)
 	}
 
 	if err = srv.Serve(); err != nil {
