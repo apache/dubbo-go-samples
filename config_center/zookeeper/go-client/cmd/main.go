@@ -21,84 +21,131 @@ import (
 	"context"
 	"strings"
 	"time"
+)
 
-	perrors "github.com/pkg/errors"
-
-	"github.com/dubbogo/go-zookeeper/zk"
-
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
+
+	"github.com/dubbogo/go-zookeeper/zk"
+
 	"github.com/dubbogo/gost/log/logger"
+
+	perrors "github.com/pkg/errors"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
 )
 
 func main() {
-	_ = writeRuleToConfigCenter()
+	// write configuration to config center
+	if err := writeRuleToConfigCenter(); err != nil {
+		logger.Errorf("Failed to write config to config center: %v", err)
+		panic(err)
+	}
+	logger.Info("Successfully wrote config to ZooKeeper")
 
-	time.Sleep(time.Second * 10)
+	// wait for config write to finish
+	time.Sleep(time.Second * 3)
 
+	// configure Dubbo instance
 	zkOption := config_center.WithZookeeper()
 	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-client")
 	addressOption := config_center.WithAddress("127.0.0.1:2181")
 	groupOption := config_center.WithGroup("dubbogo")
+
 	ins, err := dubbo.NewInstance(
 		dubbo.WithConfigCenter(zkOption, dataIdOption, addressOption, groupOption),
 	)
 	if err != nil {
+		logger.Errorf("Failed to create Dubbo instance: %v", err)
 		panic(err)
 	}
-	// configure the params that only client layer cares
+
+	// create client
 	cli, err := ins.NewClient()
 	if err != nil {
+		logger.Errorf("Failed to create Dubbo client: %v", err)
 		panic(err)
 	}
 
+	// create service proxy
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
+		logger.Errorf("Failed to create GreetService: %v", err)
 		panic(err)
 	}
 
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	// call remote service
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("Failed to call Greet service: %v", err)
+		return
 	}
 	logger.Infof("Greet response: %s", resp)
 }
 
 func writeRuleToConfigCenter() error {
+	// connect to ZooKeeper
 	c, _, err := zk.Connect([]string{"127.0.0.1:2181"}, time.Second*10)
 	if err != nil {
-		panic(err)
+		return perrors.Wrap(err, "failed to connect to ZooKeeper")
 	}
+	defer c.Close() // ensure resource cleanup
 
 	valueBytes := []byte(configCenterZKClientConfig)
 	path := "/dubbo/config/dubbogo/dubbo-go-samples-configcenter-zookeeper-client"
+
+	// ensure path starts with '/'
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
-	paths := strings.Split(path, "/")
-	for idx := 2; idx < len(paths); idx++ {
-		tmpPath := strings.Join(paths[:idx], "/")
-		_, err = c.Create(tmpPath, []byte{}, 0, zk.WorldACL(zk.PermAll))
-		if err != nil && err != zk.ErrNodeExists {
-			panic(err)
-		}
+
+	// create parent paths
+	if err := createParentPaths(c, path); err != nil {
+		return perrors.Wrap(err, "failed to create parent paths")
 	}
 
+	// create or update config node
 	_, err = c.Create(path, valueBytes, 0, zk.WorldACL(zk.PermAll))
 	if err != nil {
 		if perrors.Is(err, zk.ErrNodeExists) {
-			_, stat, _ := c.Get(path)
+			// node exists, update its content
+			_, stat, getErr := c.Get(path)
+			if getErr != nil {
+				return perrors.Wrap(getErr, "failed to get existing node")
+			}
 			_, setErr := c.Set(path, valueBytes, stat.Version)
 			if setErr != nil {
-				panic(err)
+				return perrors.Wrap(setErr, "failed to update existing node")
 			}
+			logger.Info("Updated existing config node")
 		} else {
-			panic(err)
+			return perrors.Wrap(err, "failed to create config node")
+		}
+	} else {
+		logger.Info("Created new config node")
+	}
+
+	return nil
+}
+
+// helper function to create parent paths
+func createParentPaths(c *zk.Conn, path string) error {
+	paths := strings.Split(path, "/")
+	for idx := 2; idx < len(paths); idx++ {
+		tmpPath := strings.Join(paths[:idx], "/")
+		_, err := c.Create(tmpPath, []byte{}, 0, zk.WorldACL(zk.PermAll))
+		if err != nil && !perrors.Is(err, zk.ErrNodeExists) {
+			return perrors.Wrapf(err, "failed to create path: %s", tmpPath)
 		}
 	}
-	return err
+	return nil
 }
 
 const configCenterZKClientConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-client', namespace is default

@@ -20,8 +20,11 @@ package integration
 import (
 	"context"
 	"testing"
+)
 
+import (
 	health "dubbo.apache.org/dubbo-go/v3/protocol/triple/health/triple_health"
+
 	"github.com/stretchr/testify/assert"
 )
 

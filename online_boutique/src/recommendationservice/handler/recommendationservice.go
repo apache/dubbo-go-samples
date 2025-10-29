@@ -19,9 +19,14 @@ package handler
 
 import (
 	"context"
-	"github.com/dubbogo/gost/log/logger"
 	"math/rand"
+)
 
+import (
+	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
 	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/recommendationservice/proto"
 )
 

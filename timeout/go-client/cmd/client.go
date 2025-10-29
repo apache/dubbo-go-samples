@@ -20,11 +20,17 @@ package main
 import (
 	"context"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/timeout/proto"
+
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/timeout/proto"
 )
 
 func main() {
@@ -32,6 +38,8 @@ func main() {
 		client.WithClientURL("127.0.0.1:20000"),
 		client.WithClientProtocolTriple(),
 		client.WithClientRequestTimeout(3*time.Second),
+		client.WithClientClusterFailFast(),
+		client.WithClientRetries(0),
 	)
 	if err != nil {
 		panic(err)
@@ -45,8 +53,8 @@ func main() {
 	// test timeout
 	resp, err := svc.GreetTimeout(context.Background(), &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
-		logger.Error("call [greet.GreetService.GreetTimeout] service timeout")
-		logger.Error(err)
+		logger.Info("call [greet.GreetService.GreetTimeout] service timeout")
+		logger.Info(err)
 	} else {
 		logger.Infof("Greet response: %s", resp.Greeting)
 	}

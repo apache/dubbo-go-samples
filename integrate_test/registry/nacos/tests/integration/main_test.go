@@ -20,13 +20,16 @@ package integration
 import (
 	"os"
 	"testing"
+)
 
-	greet "github.com/apache/dubbo-go-samples/registry/nacos/proto"
-
+import (
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/registry"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/registry/nacos/proto"
 )
 
 var greetService greet.GreetService

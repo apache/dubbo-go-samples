@@ -19,11 +19,17 @@ package integration
 
 import (
 	"context"
-	greet "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
-	"github.com/dubbogo/gost/log/logger"
 	"testing"
+)
+
+import (
+	"github.com/dubbogo/gost/log/logger"
 
 	"github.com/stretchr/testify/assert"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/rpc/multi-protocols/proto"
 )
 
 func TestSayHello(t *testing.T) {

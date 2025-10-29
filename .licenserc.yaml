@@ -39,6 +39,7 @@ header:
     - '**/*.javascript'
     - '**/*.properties'
     - '**/*.thrift'
+    - '**/*.triple.go'
     - '**/*.sh'
     - '**/*.bat'
     - '**/*.md'

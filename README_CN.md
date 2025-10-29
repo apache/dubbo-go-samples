@@ -36,15 +36,18 @@
 * context：通过 go context 传递用户数据（attachments）的示例
 * error：Dubbo-go 错误处理示例
 * filter：内置及自定义 filter 用法示例
+  * polaris/limit: 使用Polaris的服务限流功能示例
 * healthcheck：服务健康检查示例
 * helloworld：Dubbo-go 入门 Hello World 示例
 * integrate_test：Dubbo-go 示例集成测试用例
 * java_interop：Java 与 Go Dubbo 实现互操作示例
 * llm：集成大语言模型（LLM）与 Dubbo-go 示例
 * logger：Dubbo-go 日志功能示例
-* metrics：Dubbo-go 服务指标采集与暴露示例
+* metrics：Dubbo-go 服务指标采集与暴露示例，支持 Prometheus Push 模式和 Pull 模式, 同时包含 Push 模式下僵尸指标清理工具 “pgw-cleaner”
 * online_boutique：Dubbo-go 微服务电商示例
 * otel/tracing：基于 OpenTelemetry 的分布式链路追踪示例
+  * stdout: 使用 stdout exporter 输出追踪数据示例
+  * otlp_http_exporter: 使用 otlpHttpExporter 输出追踪数据示例，含 dubbo/triple/jsonrpc 协议
 * registry：多种服务注册中心（如 nacos、zookeeper）用法示例
 * retry：Dubbo-go RPC 调用重试机制示例
 * rpc：多种 RPC 协议示例
@@ -56,6 +59,9 @@
 * task：任务调度与执行示例
 * timeout：Dubbo-go 超时处理示例
 * transaction/seata-go：基于 seata-go 的分布式事务示例
+
+### 工具
+* pgw-cleaner：Prometheus Push 模式下清理僵尸指标的运维工具示例
 
 ## 如何运行
 

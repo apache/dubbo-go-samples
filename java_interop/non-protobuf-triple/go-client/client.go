@@ -19,19 +19,22 @@ package main
 
 import (
 	"context"
+)
+
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	// 	"github.com/apache/dubbo-go-hessian2/java8_time"
-	// 	"github.com/apache/dubbo-go-hessian2/java_exception"
-	// 	"github.com/apache/dubbo-go-hessian2/java_sql_time"
-	// 	"github.com/apache/dubbo-go-hessian2/java_util"
-	greet "github.com/apache/dubbo-go-samples/java_interop/non-protobuf-triple/proto"
+
 	"github.com/dubbogo/gost/log/logger"
-	//	java_math "github.com/dubbogo/gost/math/big"
 )
 
+import (
+	greet "github.com/apache/dubbo-go-samples/java_interop/non-protobuf-triple/proto"
+)
+
+// java_math "github.com/dubbogo/gost/math/big"
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("dubbo_interop_non_idl_triple_client"),

@@ -66,7 +66,7 @@ func NewCartService(cli *client.Client, opts ...client.ReferenceOption) (CartSer
 	}, nil
 }
 
-func SetConsumerService(srv common.RPCService) {
+func SetConsumerCartService(srv common.RPCService) {
 	dubbo.SetConsumerServiceWithInfo(srv, &CartService_ClientInfo)
 }
 
@@ -119,7 +119,7 @@ func RegisterCartServiceHandler(srv *server.Server, hdlr CartServiceHandler, opt
 	return srv.Register(hdlr, &CartService_ServiceInfo, opts...)
 }
 
-func SetProviderService(srv common.RPCService) {
+func SetProviderCartService(srv common.RPCService) {
 	dubbo.SetProviderServiceWithInfo(srv, &CartService_ServiceInfo)
 }
 

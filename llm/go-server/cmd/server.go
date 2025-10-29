@@ -30,20 +30,22 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
+
 	"github.com/dubbogo/gost/log/logger"
+
 	"github.com/tmc/langchaingo/llms"
-	"github.com/tmc/langchaingo/llms/ollama"
 )
 
 import (
 	"github.com/apache/dubbo-go-samples/llm/config"
+	"github.com/apache/dubbo-go-samples/llm/go-server/llm"
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 
 var cfg *config.Config
 
 type ChatServer struct {
-	llm *ollama.LLM
+	llmService *llm.LLMService
 }
 
 func NewChatServer() (*ChatServer, error) {
@@ -51,16 +53,20 @@ func NewChatServer() (*ChatServer, error) {
 		return nil, fmt.Errorf("MODEL_NAME environment variable is not set")
 	}
 
-	llm, err := ollama.New(
-		ollama.WithModel(cfg.ModelName),
-		ollama.WithServerURL(cfg.OllamaURL),
+	// Create LLM service based on provider
+	llmService, err := llm.NewLLMService(
+		llm.LLMProvider(cfg.LLMProvider),
+		cfg.ModelName,
+		cfg.LLMBaseURL,
+		cfg.LLMAPIKey,
 	)
 	if err != nil {
-		return nil, fmt.Errorf("failed to initialize model %s: %v", cfg.ModelName, err)
+		return nil, fmt.Errorf("failed to initialize LLM service for model %s: %v", cfg.ModelName, err)
 	}
-	logger.Infof("Initialized model: %s", cfg.ModelName)
 
-	return &ChatServer{llm: llm}, nil
+	logger.Infof("Initialized %s model: %s", cfg.LLMProvider, cfg.ModelName)
+
+	return &ChatServer{llmService: llmService}, nil
 }
 
 func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream chat.ChatService_ChatServer) (err error) {
@@ -71,8 +77,8 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		}
 	}()
 
-	if s.llm == nil {
-		return fmt.Errorf("LLM model is not initialized")
+	if s.llmService == nil {
+		return fmt.Errorf("LLM service is not initialized")
 	}
 
 	if len(req.Messages) == 0 {
@@ -112,10 +118,10 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 		messages = append(messages, messageContent)
 	}
 
-	_, err = s.llm.GenerateContent(
+	err = s.llmService.GenerateContent(
 		ctx,
 		messages,
-		llms.WithStreamingFunc(func(ctx context.Context, chunk []byte) error {
+		func(ctx context.Context, chunk []byte) error {
 			if chunk == nil {
 				return nil
 			}
@@ -123,7 +129,7 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 				Content: string(chunk),
 				Model:   cfg.ModelName,
 			})
-		}),
+		},
 	)
 	if err != nil {
 		logger.Errorf("GenerateContent failed with model %s: %v\n", cfg.ModelName, err)

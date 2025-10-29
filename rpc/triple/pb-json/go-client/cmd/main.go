@@ -27,9 +27,11 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	greet "github.com/apache/dubbo-go-samples/rpc/triple/pb-json/proto"
-
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/rpc/triple/pb-json/proto"
 )
 
 func main() {

@@ -19,16 +19,24 @@ package handler
 
 import (
 	"context"
-	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/productcatalogservice/proto"
-	"github.com/dubbogo/gost/log/logger"
-	"github.com/dubbogo/grpc-go/codes"
-	"github.com/dubbogo/grpc-go/status"
-	"google.golang.org/protobuf/encoding/protojson"
 	"os"
 	"os/signal"
 	"strings"
 	"sync"
 	"syscall"
+)
+
+import (
+	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/dubbogo/grpc-go/codes"
+	"github.com/dubbogo/grpc-go/status"
+
+	"google.golang.org/protobuf/encoding/protojson"
+)
+
+import (
+	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/productcatalogservice/proto"
 )
 
 var reloadCatalog bool

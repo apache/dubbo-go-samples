@@ -2,22 +2,23 @@
 
 ## 1. **Introduction**
 
-This sample demonstrates how to integrate **large language models (LLM)** in **Dubbo-go**, allowing the server to invoke the Ollama model for inference and return the results to the client via Dubbo RPC. It supports multiple model deployment with multiple instances per model.
+This sample demonstrates how to integrate **large language models (LLM)** in **Dubbo-go**, allowing the server to invoke various LLM providers for inference and return the results to the client via Dubbo RPC. It supports multiple LLM providers including Ollama, OpenAI, Anthropic Claude, and Azure OpenAI, with multiple model deployment and multiple instances per model.
 
 ## 2. **Preparation**
 
-### **Install Ollama**
+### **Choose Your LLM Provider**
 
+This sample supports multiple LLM providers. Choose one based on your needs:
+
+#### **Option 1: Ollama (Local, Free)**
 Ollama is a local language model platform that supports fast inference.
 
 **Quick Installation**:
-
 ```shell
 $ curl -fsSL https://ollama.com/install.sh | sh
 ```
 
 **Manual Installation**:
-
 ```shell
 $ mkdir -p ~/ollama
 $ cd ~/ollama
@@ -28,18 +29,47 @@ $ source ~/.bashrc
 $ ollama serve
 ```
 
-### **Download Models**
-
+**Download Models**:
 ```shell
 $ ollama pull llava:7b
 $ ollama pull qwen2.5:7b  # Optional: download additional models
 ```
 
-You can pull your preferred models and configure them in the `.env` file.
+#### **Option 2: OpenAI API (Cloud, Paid)**
+Requires an OpenAI API key. Get one from [OpenAI Platform](https://platform.openai.com/).
+
+#### **Option 3: Anthropic Claude API (Cloud, Paid)**
+Requires an Anthropic API key. Get one from [Anthropic Console](https://console.anthropic.com/).
+
+#### **Option 4: Azure OpenAI (Cloud, Paid)**
+Requires an Azure OpenAI resource. Set up at [Azure Portal](https://portal.azure.com/).
 
 ### **Install Nacos**
 
+Nacos is required as the service registry for Dubbo-go services. You can install and start Nacos using Docker (recommended) or manually.
+
+**Docker Installation (Recommended)**:
+
+```shell
+# Start Nacos in standalone mode
+$ docker run -d --name nacos -p 8848:8848 -p 9848:9848 -e MODE=standalone nacos/nacos-server:v2.2.3
+
+# Verify Nacos is running
+$ curl http://localhost:8848/nacos/v1/ns/instance/list?serviceName=nacos.naming.service
+```
+
+**Manual Installation**:
+
 Follow this instruction to [install and start Nacos server](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/integrations/nacos/).
+
+**Verify Nacos Installation**:
+
+```shell
+# Check if Nacos is accessible
+$ curl http://localhost:8848/nacos/v1/ns/instance/list?serviceName=nacos.naming.service
+
+# Expected response: {"name":"DEFAULT_GROUP@@nacos.naming.service",...}
+```
 
 ## 3. **Run the Example**
 
@@ -59,12 +89,50 @@ $ cp .env.example .env
 
 ### **Configuration**
 
-The `.env` file supports multiple model configurations, example:
+The `.env` file supports multiple LLM providers. Here are examples for each provider:
 
+#### **Ollama Configuration**:
 ```text
-# Configure multiple models, comma-separated, spaces allowed
-OLLAMA_MODELS = llava:7b, qwen2.5:7b
-OLLAMA_URL = http://localhost:11434
+LLM_PROVIDER = ollama
+LLM_MODELS = llava:7b, qwen2.5:7b
+LLM_BASE_URL = http://localhost:11434
+MODEL_NAME = llava:7b
+NACOS_URL = nacos://localhost:8848
+TIME_OUT_SECOND = 300
+MAX_CONTEXT_COUNT = 3
+```
+
+#### **OpenAI Configuration**:
+```text
+LLM_PROVIDER = openai
+LLM_MODELS = gpt-4, gpt-3.5-turbo
+LLM_BASE_URL = https://api.openai.com/v1
+LLM_API_KEY = your-openai-api-key
+MODEL_NAME = gpt-4
+NACOS_URL = nacos://localhost:8848
+TIME_OUT_SECOND = 300
+MAX_CONTEXT_COUNT = 3
+```
+
+#### **Anthropic Configuration**:
+```text
+LLM_PROVIDER = anthropic
+LLM_MODELS = claude-3-sonnet-20240229, claude-3-haiku-20240307
+LLM_BASE_URL = https://api.anthropic.com/v1
+LLM_API_KEY = your-anthropic-api-key
+MODEL_NAME = claude-3-sonnet-20240229
+NACOS_URL = nacos://localhost:8848
+TIME_OUT_SECOND = 300
+MAX_CONTEXT_COUNT = 3
+```
+
+#### **Azure OpenAI Configuration**:
+```text
+LLM_PROVIDER = azure-openai
+LLM_MODELS = gpt-4, gpt-35-turbo
+LLM_BASE_URL = https://your-resource.openai.azure.com/openai/deployments/your-deployment
+LLM_API_KEY = your-azure-openai-api-key
+MODEL_NAME = gpt-4
 NACOS_URL = nacos://localhost:8848
 TIME_OUT_SECOND = 300
 MAX_CONTEXT_COUNT = 3

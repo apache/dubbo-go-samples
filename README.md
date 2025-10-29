@@ -40,15 +40,18 @@
 * context: Example of passing user data (attachments) via Go context between client and server
 * error: Error handling examples in Dubbo-go
 * filter: Demonstrates the use of built-in and custom filters in Dubbo-go
+  * polaris/limit: Use Polaris as tps limiter
 * healthcheck: Service health check example
 * helloworld: Basic hello world example for Dubbo-go
 * integrate_test: Integration test cases for Dubbo-go samples
 * java_interop: Demonstrates interoperability between Java and Go Dubbo implementations
 * llm: Example of integrating large language models (LLM) with Dubbo-go
 * logger: Logging examples for Dubbo-go applications
-* metrics: How to collect and expose metrics from Dubbo-go services
+* metrics: How to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes , it also includes the tool (pgw-cleaner) used to clear zombie metrics in Push mode.
 * online_boutique: Microservices online boutique demo using Dubbo-go
 * otel/tracing: Distributed tracing example using OpenTelemetry
+  * stdout: use stdout exporter to export tracing data example
+  * otlp_http_exporter: use otlpHttpExporter to export tracing data example, including dubbo/triple/jsonrpc protocols
 * registry: Examples of using different service registries (e.g., nacos, zookeeper)
 * retry: Demonstrates retry mechanisms in Dubbo-go RPC calls
 * rpc: Various RPC protocol examples with Dubbo-go
@@ -60,6 +63,10 @@
 * task: Task scheduling and execution example
 * timeout: Demonstrates timeout handling in Dubbo-go
 * transaction/seata-go: Distributed transaction example using seata-go
+
+### Tools
+* pgw-cleaner: Operation and maintenance tool for cleaning up zombie metrics in Prometheus Push mode
+
 
 ## How To Run
 
