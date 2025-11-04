@@ -32,9 +32,6 @@ array+=("compatibility/config-api/config-merge")
 array+=("compatibility/error/triple/hessian2")
 array+=("compatibility/error/triple/pb")
 
-# metrics
-array+=("compatibility/metrics")
-
 # tracing
 array+=("otel/tracing/stdout")
 array+=("otel/tracing/otlp_http_exporter")
@@ -45,7 +42,6 @@ array+=("compatibility/direct")
 # filer
 array+=("filter/token")
 array+=("compatibility/filter/custom")
-array+=("compatibility/filter/token")
 
 # context
 array+=("compatibility/context/dubbo")

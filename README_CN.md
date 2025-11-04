@@ -13,9 +13,7 @@
 * compatibility/filter：内置及自定义 filter 示例（如 custom_filter、tpslimit）
 * compatibility/game：游戏服务示例
 * compatibility/generic：泛化调用示例
-* compatibility/logger：Dubbo-go 日志功能示例
 * compatibility/mesh：基于 Envoy 的服务网格部署示例
-* compatibility/metrics：Prometheus 指标采集示例
 * compatibility/otel：OpenTelemetry 链路追踪示例
 * compatibility/proxyless：Kubernetes 下 proxyless 服务网格示例
 * compatibility/registry：多种注册中心（etcd/nacos/zookeeper）用法
