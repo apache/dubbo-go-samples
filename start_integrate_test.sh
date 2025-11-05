@@ -91,9 +91,6 @@ array+=("config_center/zookeeper")
 
 # compatibility
 ## registry
-array+=("compatibility/registry/zookeeper")
-array+=("compatibility/registry/nacos")
-array+=("compatibility/registry/etcd")
 array+=("compatibility/registry/servicediscovery/zookeeper")
 array+=("compatibility/registry/servicediscovery/nacos")
 array+=("compatibility/registry/all/zookeeper")
