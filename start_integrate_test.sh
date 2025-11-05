@@ -43,11 +43,6 @@ array+=("compatibility/direct")
 array+=("filter/token")
 array+=("compatibility/filter/custom")
 
-# context
-array+=("compatibility/context/dubbo")
-array+=("compatibility/context/triple")
-array+=("context")
-
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
