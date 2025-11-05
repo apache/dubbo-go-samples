@@ -28,10 +28,6 @@ array+=("compatibility/config-api/rpc/triple")
 array+=("compatibility/config-api/configcenter/zookeeper")
 array+=("compatibility/config-api/config-merge")
 
-# error
-array+=("compatibility/error/triple/hessian2")
-array+=("compatibility/error/triple/pb")
-
 # tracing
 array+=("otel/tracing/stdout")
 array+=("otel/tracing/otlp_http_exporter")

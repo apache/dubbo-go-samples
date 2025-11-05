@@ -8,7 +8,6 @@
 * compatibility/config-api：无需配置文件，使用 API 启动 Dubbo-go 服务
 * compatibility/configcenter：多种配置中心（如 zookeeper、nacos、apollo）用法示例
 * compatibility/direct：直连调用示例，无需注册中心
-* compatibility/error：错误处理与 triple 协议示例
 * compatibility/filter：内置及自定义 filter 示例（如 custom_filter、tpslimit）
 * compatibility/game：游戏服务示例
 * compatibility/generic：泛化调用示例

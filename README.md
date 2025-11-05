@@ -12,7 +12,6 @@
 * compatibility/config-api: How to use Dubbo-go by APIs without configuration files
 * compatibility/configcenter: Usage of different config centers, including zookeeper, nacos and apollo
 * compatibility/direct: Direct invocation example
-* compatibility/error: Error handling and triple protocol examples
 * compatibility/filter: Examples of different filters, including custom_filter and tpslimit
 * compatibility/game: Game service example
 * compatibility/generic: Generic invocation example
