@@ -38,20 +38,30 @@ get_env_value() {
     echo "$value"
 }
 
-# Get models from .env file
-OLLAMA_MODELS=$(get_env_value "OLLAMA_MODELS")
+# Get LLM provider and models from .env file
+LLM_PROVIDER=$(get_env_value "LLM_PROVIDER")
+if [ -z "$LLM_PROVIDER" ]; then
+    LLM_PROVIDER="ollama"  # Default provider for backward compatibility
+fi
 
-# Check if OLLAMA_MODELS is empty
-if [ -z "$OLLAMA_MODELS" ]; then
-    echo "Error: OLLAMA_MODELS not found in .env file"
-    echo "Please make sure .env file contains a line like: OLLAMA_MODELS = llava:7b, qwen2.5:7b"
+# Get models - try LLM_MODELS first, then fallback to OLLAMA_MODELS for backward compatibility
+MODELS=$(get_env_value "LLM_MODELS")
+if [ -z "$MODELS" ]; then
+    # Backward compatibility: try OLLAMA_MODELS
+    MODELS=$(get_env_value "OLLAMA_MODELS")
+fi
+
+if [ -z "$MODELS" ]; then
+    echo "Error: LLM_MODELS or OLLAMA_MODELS not found in .env file"
+    echo "Please make sure .env file contains a line like: LLM_MODELS = llava:7b, qwen2.5:7b"
     exit 1
 fi
 
-echo "Found models: $OLLAMA_MODELS"
+echo "Found LLM provider: $LLM_PROVIDER"
+echo "Found models: $MODELS"
 
 # Convert comma-separated string to array, handling spaces
-IFS=',' read -ra MODELS <<< "$OLLAMA_MODELS"
+IFS=',' read -ra MODELS <<< "$MODELS"
 
 current_port=$START_PORT
 
@@ -84,4 +94,4 @@ echo "All servers started. Total instances: $((${#MODELS[@]} * INSTANCES_PER_MOD
 echo "Use Ctrl+C to stop all servers."
 
 # Wait for all background processes
-wait 
+wait

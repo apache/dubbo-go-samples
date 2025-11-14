@@ -49,14 +49,14 @@ func main() {
 		),
 	)
 	if err != nil {
-		panic(err)
+		logger.Fatalf("failed to create server: %v", err)
 	}
 
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-		panic(err)
+		logger.Fatalf("failed to register greet service handler: %v", err)
 	}
 
 	if err := srv.Serve(); err != nil {
-		logger.Error(err)
+		logger.Fatalf("failed to serve: %v", err)
 	}
 }

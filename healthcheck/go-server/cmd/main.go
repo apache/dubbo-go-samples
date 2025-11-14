@@ -25,11 +25,21 @@ import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
+
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
 	greet "github.com/apache/dubbo-go-samples/healthcheck/proto"
 )
+
+type GreetTripleServer struct {
+}
+
+func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	resp := &greet.GreetResponse{Greeting: req.Name}
+	return resp, nil
+}
 
 func main() {
 
@@ -42,24 +52,16 @@ func main() {
 		),
 	)
 	if err != nil {
-		panic(err)
+		logger.Fatalf("failed to create dubbo instance: %v", err)
 	}
 	srv, err := ins.NewServer()
 	if err != nil {
-		panic(err)
+		logger.Fatalf("failed to create server: %v", err)
 	}
 	if err = greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-		panic(err)
+		logger.Fatalf("failed to register greet service handler: %v", err)
 	}
 	if err = srv.Serve(); err != nil {
-		panic(err)
+		logger.Fatalf("failed to serve: %v", err)
 	}
-}
-
-type GreetTripleServer struct {
-}
-
-func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	resp := &greet.GreetResponse{Greeting: req.Name}
-	return resp, nil
 }

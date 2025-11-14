@@ -63,7 +63,7 @@ func NewShippingService(cli *client.Client, opts ...client.ReferenceOption) (Shi
 	}, nil
 }
 
-func SetConsumerService(srv common.RPCService) {
+func SetConsumerShippingService(srv common.RPCService) {
 	dubbo.SetConsumerServiceWithInfo(srv, &ShippingService_ClientInfo)
 }
 
@@ -107,7 +107,7 @@ func RegisterShippingServiceHandler(srv *server.Server, hdlr ShippingServiceHand
 	return srv.Register(hdlr, &ShippingService_ServiceInfo, opts...)
 }
 
-func SetProviderService(srv common.RPCService) {
+func SetProviderShippingService(srv common.RPCService) {
 	dubbo.SetProviderServiceWithInfo(srv, &ShippingService_ServiceInfo)
 }
 

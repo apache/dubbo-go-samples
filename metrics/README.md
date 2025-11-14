@@ -24,6 +24,43 @@ The monitoring data flow is as follows:
 | **go-server** | N/A | Dubbo-Go service provider (Provider) example. |
 | **go-client** | N/A | Dubbo-Go service consumer (Consumer) example that continuously calls the server. |
 
+## Configuration Instructions
+
+### Environment Variables
+
+Both client and server use the same configuration method:
+
+
+```bash
+# Pushgateway address (required)
+export PUSHGATEWAY_URL="127.0.0.1:9091"
+
+# Job name identifier (required)
+export JOB_NAME="dubbo-service"
+
+# Pushgateway authentication username (optional)
+export PUSHGATEWAY_USER="username"
+
+# Pushgateway authentication password (optional)
+export PUSHGATEWAY_PASS="1234"
+
+# ZooKeeper address (required)
+export ZK_ADDRESS="127.0.0.1:2181"
+```
+
+### Command Line Parameters
+
+```bash
+# Use Push mode (default)
+go run ./go-client/cmd/main.go
+go run ./go-server/cmd/main.go
+
+
+# Use Pull mode (do not push metrics to Pushgateway)
+go run ./go-client/cmd/main.go --push=false
+go run ./go-server/cmd/main.go --push=false
+```
+
 ## 🚀 Quick Start
 
 Please follow the steps below to run this example.
@@ -98,17 +135,40 @@ After a successful import, you will see a complete Dubbo observability dashboard
 
 Enjoy\!
 
+
+## Zombie Metrics in Pushgateway
+
+### Problem Description
+
+Original design purpose of Pushgateway:Provide a temporary metric transit point for short-lived processes (batch jobs, cron jobs) to facilitate Prometheus scraping.
+
+Default behavior: Pushgateway does not automatically delete metrics that have been reported but are no longer updated.  
+That is, once a job reports metrics, even if the job stops, the metrics corresponding to that set of labels (job/instance) will persist.
+
+### Solution 1: Automatic Cleanup on Application Side (Implemented)
+
+**Implementation Principle**:
+
+-   The application registers the`job_pushed_at_seconds`timestamp metric on startup
+-   The application periodically updates the timestamp during operation
+-   The application automatically calls the Pushgateway DELETE API to clean up its own metrics on graceful exit
+
+### Solution 2: Production-grade Cleaner on Operations Side (pgw-cleaner)
+
+For details:[tools/pgw-cleaner](../tools/pgw-cleaner/README.md)
+
+
 ## Troubleshooting
 
 - **Grafana dashboard shows "No Data"**
 
-   - Verify that the Prometheus data source URL (`http://host.docker.internal:9090`) is correct and that the connection test was successful.
-   - Go to the Prometheus UI (`http://localhost:9090`), and check the `Status -> Targets` page to ensure the `pushgateway` job has a status of **UP**.
-   - In the Prometheus query bar, enter `dubbo_consumer_requests_succeed_total` to confirm that data can be queried.
+    - Verify that the Prometheus data source URL (`http://host.docker.internal:9090`) is correct and that the connection test was successful.
+    - Go to the Prometheus UI (`http://localhost:9090`), and check the `Status -> Targets` page to ensure the `pushgateway` job has a status of **UP**.
+    - In the Prometheus query bar, enter `dubbo_consumer_requests_succeed_total` to confirm that data can be queried.
 
 - **Cannot connect to `host.docker.internal`**
 
-   - `host.docker.internal` is a built-in feature of Docker. If this address is not accessible, replace the IP address in `metrics/prometheus.yml` and the Grafana data source address with your actual IP address.
+    - `host.docker.internal` is a built-in feature of Docker. If this address is not accessible, replace the IP address in `metrics/prometheus.yml` and the Grafana data source address with your actual IP address.
 
 -----
 

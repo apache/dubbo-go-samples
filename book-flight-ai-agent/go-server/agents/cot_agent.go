@@ -32,32 +32,32 @@ import (
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/tools"
 )
 
-type CotAgentRunner struct {
+type ReactAgentRunner struct {
 	llm             model.LLM
 	tools           tools.Tools
 	maxThoughtSteps int32
-	cotPrompts      conf.CfgPrompts
+	reactPrompts    conf.CfgPrompts
 	memoryAgent     []map[string]any
 	memoryMsg       []map[string]any
 }
 
-func NewCotAgentRunner(
+func NewReactAgentRunner(
 	llm model.LLM,
 	tools tools.Tools,
 	maxSteps int32,
-	cotPrompts conf.CfgPrompts,
-) CotAgentRunner {
-	return CotAgentRunner{
+	reactPrompts conf.CfgPrompts,
+) ReactAgentRunner {
+	return ReactAgentRunner{
 		llm:             llm,
 		tools:           tools,
 		maxThoughtSteps: maxSteps,
-		cotPrompts:      cotPrompts,
+		reactPrompts:    reactPrompts,
 		memoryAgent:     []map[string]any{},
 		memoryMsg:       []map[string]any{},
 	}
 }
 
-func (cot *CotAgentRunner) Run(
+func (react *ReactAgentRunner) Run(
 	ctx context.Context,
 	input string,
 	callopt model.Option,
@@ -67,28 +67,32 @@ func (cot *CotAgentRunner) Run(
 	opts := model.NewOptions(callopt)
 
 	// Init Memory
-	cot.memoryAgent = []map[string]any{}
-	cot.memoryMsg = cot.updateMessage(cot.memoryMsg, input, "")
+	react.memoryAgent = []map[string]any{}
+	react.memoryMsg = react.updateMessage(react.memoryMsg, input, "")
 
 	var task string
-	if len(cot.memoryMsg) > 0 {
-		task = cot.summaryIntent(timeNow, callopt)
+	if len(react.memoryMsg) > 0 {
+		task = react.summaryIntent(timeNow, callopt)
 	} else {
 		task = input
 	}
 
-	// Runner
+	// ReAct Loop: Reasoning -> Acting -> Observation
 	var response string
 	var action actions.Action
 
 	var idxThoughtStep int32
 	var taskState TaskState
-	for idxThoughtStep < cot.maxThoughtSteps {
-		action, response = cot.thinkStep(task, timeNow, callopt, opts)
+	for idxThoughtStep < react.maxThoughtSteps {
+		// Reasoning: Think about what to do next
+		action, response = react.reasoningStep(task, timeNow, callopt, opts)
 		taskState = InitTaskState(action.Method)
 
-		observation := cot.execAction(action, opts)
-		cot.memoryAgent = cot.updateMemory(cot.memoryAgent, response, observation)
+		// Acting: Execute the action
+		observation := react.execAction(action, opts)
+
+		// Observation: Update memory with the result
+		react.memoryAgent = react.updateMemory(react.memoryAgent, response, observation)
 
 		if InterruptTask(taskState) {
 			break
@@ -99,21 +103,21 @@ func (cot *CotAgentRunner) Run(
 
 	var err error
 	reply := "Sorry, failed to complete your task."
-	if idxThoughtStep < cot.maxThoughtSteps {
-		reply, err = cot.finalStep(task, input, timeNow, taskState, callopt, callrst)
+	if idxThoughtStep < react.maxThoughtSteps {
+		reply, err = react.finalStep(task, input, timeNow, taskState, callopt, callrst)
 
-		cot.memoryMsg = cot.updateMessage(cot.memoryMsg, task, reply)
+		react.memoryMsg = react.updateMessage(react.memoryMsg, task, reply)
 		if taskState == TaskCompleted || taskState == TaskUnrelated {
-			cot.memoryMsg = []map[string]any{}
+			react.memoryMsg = []map[string]any{}
 		}
 	}
 
 	return reply, err
 }
 
-func (cot *CotAgentRunner) GetInputCtx(input string) string {
+func (react *ReactAgentRunner) GetInputCtx(input string) string {
 	var respBuilder strings.Builder // Use strings.Builder
-	for _, msg := range cot.memoryAgent {
+	for _, msg := range react.memoryAgent {
 		if val, ok := msg["user"]; ok {
 			respBuilder.WriteString(fmt.Sprintf("\n%v", val))
 		}
@@ -123,41 +127,41 @@ func (cot *CotAgentRunner) GetInputCtx(input string) string {
 	return strings.TrimSpace(respBuilder.String())
 }
 
-func (cot *CotAgentRunner) summaryIntent(timeNow string, callopt model.Option) string {
+func (react *ReactAgentRunner) summaryIntent(timeNow string, callopt model.Option) string {
 	prompt := prompts.CreatePrompt(
-		cot.cotPrompts.IntentPrompt,
+		react.reactPrompts.IntentPrompt,
 		map[string]any{
-			"memory": cot.memoryMsg,
+			"memory": react.memoryMsg,
 			"time":   timeNow,
 		},
 	)
-	response, _ := cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
+	response, _ := react.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
 	return model.RemoveThink(response)
 }
 
-func (cot *CotAgentRunner) thinkStep(
+func (react *ReactAgentRunner) reasoningStep(
 	task string,
 	now string,
 	callopt model.Option,
 	opts model.Options,
 ) (actions.Action, string) {
 	prompt := prompts.CreatePrompt(
-		cot.cotPrompts.ReactPrompt,
+		react.reactPrompts.ReactPrompt,
 		map[string]any{
 			"task":                task,
-			"memory":              cot.memoryAgent,
+			"memory":              react.memoryAgent,
 			"time":                now,
-			"tools":               cot.tools.ToolsDescription(),
+			"tools":               react.tools.ToolsDescription(),
 			"format_instructions": conf.GetConfigPrompts().FormatInstructions,
 		},
 	)
-	response, _ := cot.llm.Invoke(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
+	response, _ := react.llm.Invoke(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
 	opts.CallOpt("\n")
 	response = model.RemoveThink(response)
 	return actions.NewAction(response), response
 }
 
-func (cot *CotAgentRunner) finalStep(
+func (react *ReactAgentRunner) finalStep(
 	task string,
 	input string,
 	date string,
@@ -166,31 +170,31 @@ func (cot *CotAgentRunner) finalStep(
 	callrst model.CallFunc,
 ) (string, error) {
 	config := map[string]any{"task": task}
-	promptTemplate := cot.cotPrompts.FinalPrompt
+	promptTemplate := react.reactPrompts.FinalPrompt
 	switch taskState {
 	case TaskUnrelated:
-		promptTemplate = cot.cotPrompts.UnrelatedPrompt
+		promptTemplate = react.reactPrompts.UnrelatedPrompt
 		config["task"] = input
 	case TaskInputRequired:
-		promptTemplate = cot.cotPrompts.InputPrompt
-		config["memory"] = cot.memoryAgent
+		promptTemplate = react.reactPrompts.InputPrompt
+		config["memory"] = react.memoryAgent
 	default:
-		config["memory"] = cot.memoryAgent
+		config["memory"] = react.memoryAgent
 		config["time"] = date
 	}
 
 	prompt := prompts.CreatePrompt(promptTemplate, config)
-	reply, err := cot.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
+	reply, err := react.llm.Call(context.Background(), prompt, callopt, ollama.WithTemperature(0.0))
 	reply = model.RemoveThink(reply)
 
 	callrst(reply)
 	return reply, err
 }
 
-func (cot *CotAgentRunner) execAction(action actions.Action, opts model.Options) string {
+func (react *ReactAgentRunner) execAction(action actions.Action, opts model.Options) string {
 	var err error
-	observation := fmt.Sprintf("Can't find tool: %v.", action.Method)
-	tool := cot.tools.QueryTool(action.Method)
+	var observation string = fmt.Sprintf("Can't find tool: %v.", action.Method)
+	tool := react.tools.QueryTool(action.Method)
 	if tool != nil {
 		strArgs, _ := json.Marshal(action.Params)
 		observation, err = tool.Call(context.Background(), string(strArgs))
@@ -202,13 +206,13 @@ func (cot *CotAgentRunner) execAction(action actions.Action, opts model.Options)
 	return observation
 }
 
-func (cot *CotAgentRunner) updateMemory(memory []map[string]any, response string, observation string) []map[string]any {
+func (react *ReactAgentRunner) updateMemory(memory []map[string]any, response string, observation string) []map[string]any {
 	return append(memory,
 		map[string]any{"input": response, "output": "\nResult:\n" + observation},
 	)
 }
 
-func (cot *CotAgentRunner) updateMessage(memory []map[string]any, msgUser string, msgAgent string) []map[string]any {
+func (react *ReactAgentRunner) updateMessage(memory []map[string]any, msgUser string, msgAgent string) []map[string]any {
 	if msgUser != "" {
 		memory = append(memory, map[string]any{"Human": msgUser})
 	}

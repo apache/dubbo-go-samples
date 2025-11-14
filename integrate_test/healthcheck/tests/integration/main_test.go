@@ -33,6 +33,8 @@ var healthProvider health.Health
 func TestMain(m *testing.M) {
 	cli, err := client.NewClient(
 		client.WithClientURL("tri://127.0.0.1:20000"),
+		client.WithClientClusterFailFast(),
+		client.WithClientRetries(0),
 	)
 	if err != nil {
 		panic(err)
