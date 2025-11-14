@@ -29,9 +29,33 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Default URLs for different LLM providers
+const (
+	DefaultOllamaURL = "http://localhost:11434"
+	DefaultOpenAIURL = "https://api.openai.com/v1"
+)
+
+// LLMConfig represents configuration for a specific LLM model
+type LLMConfig struct {
+	Model    string // Model name (e.g., "gpt-4", "claude-3-sonnet", "llava:7b")
+	Provider string // Provider type (e.g., "openai", "anthropic", "ollama")
+	BaseURL  string // Base URL for the model service
+	APIKey   string // API key for the model service
+}
+
 type Config struct {
-	OllamaModels    []string
-	OllamaURL       string
+	// LLM Models Configuration - Each model inherits global provider settings
+	LLMModels []LLMConfig // Array of LLM models, all sharing the same provider, URL, and key
+
+	// Legacy fields (for backward compatibility)
+	LLMProvider   string   // Single provider for all models
+	LLMModelsList []string // List of model names only
+	LLMBaseURL    string   // Base URL for LLM service
+	LLMAPIKey     string   // API key for LLM service
+	OllamaModels  []string
+	OllamaURL     string
+
+	// Common Configuration
 	TimeoutSeconds  int
 	NacosURL        string
 	MaxContextCount int
@@ -57,10 +81,23 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 
-		modelsEnv := os.Getenv("OLLAMA_MODELS")
+		// Load default LLM provider (for backward compatibility)
+		llmProvider := os.Getenv("LLM_PROVIDER")
+		if llmProvider == "" {
+			// Fallback to legacy Ollama configuration
+			llmProvider = "ollama"
+		}
+		config.LLMProvider = strings.ToLower(strings.TrimSpace(llmProvider))
+
+		// Load models - try LLM_MODELS first, then fallback to OLLAMA_MODELS for backward compatibility
+		modelsEnv := os.Getenv("LLM_MODELS")
 		if modelsEnv == "" {
-			configErr = fmt.Errorf("error: OLLAMA_MODELS environment variable is not set")
-			return
+			// Backward compatibility: try OLLAMA_MODELS
+			modelsEnv = os.Getenv("OLLAMA_MODELS")
+			if modelsEnv == "" {
+				configErr = fmt.Errorf("error: LLM_MODELS or OLLAMA_MODELS environment variable is not set")
+				return
+			}
 		}
 
 		modelsList := strings.Split(modelsEnv, ",")
@@ -72,7 +109,13 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 
-		config.OllamaModels = modelsList
+		// Keep legacy fields for backward compatibility
+		config.LLMModelsList = modelsList
+
+		// For backward compatibility, also set OllamaModels
+		if config.LLMProvider == "ollama" {
+			config.OllamaModels = modelsList
+		}
 
 		modelName := os.Getenv("MODEL_NAME")
 		if modelName == "" {
@@ -104,12 +147,51 @@ func Load(envFile string) (*Config, error) {
 			return
 		}
 
+		// Load LLM base URL and API key
+		llmBaseURL := os.Getenv("LLM_BASE_URL")
+		llmAPIKey := os.Getenv("LLM_API_KEY")
+
+		// For backward compatibility with Ollama
 		ollamaURL := os.Getenv("OLLAMA_URL")
-		if ollamaURL == "" {
-			configErr = fmt.Errorf("OLLAMA_URL is not set")
+		if llmBaseURL == "" && ollamaURL != "" {
+			// Use OLLAMA_URL as fallback for LLM_BASE_URL
+			llmBaseURL = ollamaURL
+		}
+
+		// Set default URL for providers if not configured
+		if llmBaseURL == "" && config.LLMProvider == "ollama" {
+			llmBaseURL = DefaultOllamaURL
+		}
+		if llmBaseURL == "" && config.LLMProvider == "openai" {
+			llmBaseURL = DefaultOpenAIURL
+		}
+
+		// Validate configuration based on provider
+		if config.LLMProvider != "ollama" && config.LLMProvider != "openai" && llmBaseURL == "" {
+			configErr = fmt.Errorf("LLM_BASE_URL is required for %s provider", config.LLMProvider)
 			return
 		}
-		config.OllamaURL = ollamaURL
+
+		// Set URLs and API key
+		config.LLMBaseURL = llmBaseURL
+		config.LLMAPIKey = llmAPIKey
+
+		// For backward compatibility, also set OllamaURL
+		if config.LLMProvider == "ollama" {
+			config.OllamaURL = llmBaseURL
+		}
+
+		// Create LLMConfig array - simple and practical
+		config.LLMModels = make([]LLMConfig, len(modelsList))
+		for i, model := range modelsList {
+			// Each model inherits the global provider settings
+			config.LLMModels[i] = LLMConfig{
+				Model:    model,
+				Provider: config.LLMProvider,
+				BaseURL:  config.LLMBaseURL,
+				APIKey:   config.LLMAPIKey,
+			}
+		}
 
 		timeoutStr := os.Getenv("TIME_OUT_SECOND")
 		if timeoutStr == "" {
@@ -151,6 +233,10 @@ func GetConfig() (*Config, error) {
 }
 
 func (c *Config) DefaultModel() string {
+	if len(c.LLMModels) > 0 {
+		return c.LLMModels[0].Model
+	}
+	// Fallback to legacy OllamaModels for backward compatibility
 	if len(c.OllamaModels) > 0 {
 		return c.OllamaModels[0]
 	}
