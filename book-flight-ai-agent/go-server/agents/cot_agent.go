@@ -23,7 +23,9 @@ import (
 	"fmt"
 	"strings"
 	"time"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/actions"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/conf"
 	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model"

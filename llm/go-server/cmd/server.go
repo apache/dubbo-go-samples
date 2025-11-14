@@ -23,12 +23,16 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+)
 
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
+
 	"github.com/dubbogo/gost/log/logger"
+
 	"github.com/tmc/langchaingo/llms"
 )
 

@@ -25,13 +25,19 @@ import (
 	"regexp"
 	"runtime/debug"
 	"time"
+)
 
+import (
+	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/gin-contrib/sessions"
+
+	"github.com/gin-gonic/gin"
+)
+
+import (
 	"github.com/apache/dubbo-go-samples/llm/config"
 	"github.com/apache/dubbo-go-samples/llm/go-client/frontend/service"
-	"github.com/dubbogo/gost/log/logger"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
-
 	chat "github.com/apache/dubbo-go-samples/llm/proto"
 )
 

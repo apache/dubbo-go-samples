@@ -21,20 +21,25 @@ import (
 	"context"
 	"math/rand"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
+
 	"github.com/alibaba/sentinel-golang/core/flow"
 	"github.com/alibaba/sentinel-golang/core/isolation"
-	"github.com/dubbogo/gost/log/logger"
-	"github.com/pkg/errors"
 
-	greet "github.com/apache/dubbo-go-samples/filter/proto/sentinel"
+	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/pkg/errors"
 )
 
+import (
+	greet "github.com/apache/dubbo-go-samples/filter/proto/sentinel"
+)
 
 type GreetTripleServer struct {
 }

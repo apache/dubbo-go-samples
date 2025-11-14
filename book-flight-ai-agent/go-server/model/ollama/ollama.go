@@ -22,9 +22,14 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+)
 
-	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model"
+import (
 	"github.com/ollama/ollama/api"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/book-flight-ai-agent/go-server/model"
 )
 
 type (

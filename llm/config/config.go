@@ -23,7 +23,9 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+)
 
+import (
 	"github.com/joho/godotenv"
 )
 
