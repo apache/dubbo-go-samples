@@ -104,7 +104,7 @@ func callDubboService(ins *dubbo.Instance) error {
 	}
 
 	var resp string
-	if err := conn.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &resp, "SayHello"); err != nil {
+	if err := conn.CallUnary(context.Background(), []any{"hello", "new", "dubbo"}, &resp, "SayHello"); err != nil {
 		return fmt.Errorf("dubbo service call failed: %w", err)
 	}
 
@@ -128,7 +128,7 @@ func callJsonRpcService(ins *dubbo.Instance) error {
 	}
 
 	var resp string
-	if err := conn.CallUnary(context.Background(), []interface{}{"hello", "new", "jsonrpc"}, &resp, "SayHello"); err != nil {
+	if err := conn.CallUnary(context.Background(), []any{"hello", "new", "jsonrpc"}, &resp, "SayHello"); err != nil {
 		return fmt.Errorf("jsonrpc service call failed: %w", err)
 	}
 

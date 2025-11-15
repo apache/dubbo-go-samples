@@ -40,7 +40,7 @@ type GreetTripleServer struct {
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	// map must be assert to map[string]interface, because of dubbo limitation
-	attachments := ctx.Value(constant.AttachmentKey).(map[string]interface{})
+	attachments := ctx.Value(constant.AttachmentKey).(map[string]any)
 	// value must be assert to []string[0], because of http2 header limitation
 	var value1, value2 string
 	if v, ok := attachments["key1"]; ok {

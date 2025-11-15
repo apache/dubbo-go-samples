@@ -39,7 +39,7 @@ func (u JsonRPCUser) String() string {
 }
 
 type UserProvider struct {
-	GetUsers func(ids []interface{}) ([]*JsonRPCUser, error)
+	GetUsers func(ids []any) ([]*JsonRPCUser, error)
 	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
 	GetUser0 func(id string, name string) (*JsonRPCUser, error)
 	GetUser1 func(ctx context.Context, id string) (*JsonRPCUser, error)
@@ -49,7 +49,7 @@ type UserProvider struct {
 }
 
 type UserProvider1 struct {
-	GetUsers func(ids []interface{}) ([]*JsonRPCUser, error)
+	GetUsers func(ids []any) ([]*JsonRPCUser, error)
 	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
 	GetUser0 func(id string, name string) (*JsonRPCUser, error)
 	GetUser1 func(ctx context.Context, id string) (*JsonRPCUser, error)
@@ -59,7 +59,7 @@ type UserProvider1 struct {
 }
 
 type UserProvider2 struct {
-	GetUsers func(ids []interface{}) ([]*JsonRPCUser, error)
+	GetUsers func(ids []any) ([]*JsonRPCUser, error)
 	GetUser  func(ctx context.Context, id string) (*JsonRPCUser, error)
 	GetUser0 func(id string, name string) (*JsonRPCUser, error)
 	GetUser1 func(ctx context.Context, id string) (*JsonRPCUser, error)

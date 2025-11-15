@@ -55,7 +55,7 @@ func (b *BaseTool) RequestParams() string {
 func (b *BaseTool) ResponseParams() string { return b.responseParams }
 func (b BaseTool) Introduction() string    { return b.introduction }
 
-func scanStructKeys(obj interface{}) string {
+func scanStructKeys(obj any) string {
 	if obj == nil {
 		return "()"
 	}

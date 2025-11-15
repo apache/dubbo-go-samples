@@ -77,19 +77,14 @@ Options:
 	num_thread:
 */
 type LLMOllama struct {
-	llmUrl    LLMUrl
-	Model     string
-	Url       string
-	Prompt    string
-	stream    *bool
-	suffix    string
-	images    []ImageData
-	format    string
-	system    string
-	template  string
-	raw       bool
-	keepAlive string
-	options   []any
+	llmUrl LLMUrl
+	Model  string
+	Url    string
+	Prompt string
+	stream *bool
+	suffix string
+	images []ImageData
+	system string
 }
 
 func NewLLMOllama(model string, url string) *LLMOllama {

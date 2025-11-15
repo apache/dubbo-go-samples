@@ -172,7 +172,7 @@ func testDubbo(t *testing.T) {
 	defer cancel()
 
 	var resp string
-	if err = conn.CallUnary(ctx, []interface{}{"hello", "new", "dubbo"}, &resp, "SayHello"); err != nil {
+	if err = conn.CallUnary(ctx, []any{"hello", "new", "dubbo"}, &resp, "SayHello"); err != nil {
 		t.Fatalf("dubbo call failed: %v", err)
 	}
 	if resp == "" {
@@ -204,7 +204,7 @@ func testJSONRPC(t *testing.T) {
 	defer cancel()
 
 	var resp string
-	if err = conn.CallUnary(ctx, []interface{}{"hello", "new", "jsonrpc"}, &resp, "SayHello"); err != nil {
+	if err = conn.CallUnary(ctx, []any{"hello", "new", "jsonrpc"}, &resp, "SayHello"); err != nil {
 		t.Fatalf("jsonrpc call failed: %v", err)
 	}
 	if resp == "" {

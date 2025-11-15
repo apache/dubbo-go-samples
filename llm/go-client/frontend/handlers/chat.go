@@ -123,8 +123,8 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 		return
 	}
 	defer func() {
-		if err := stream.Close(); err != nil {
-			logger.Errorf("Error closing stream: %v", err)
+		if cerr := stream.Close(); cerr != nil {
+			logger.Errorf("Error closing stream: %v", cerr)
 		}
 	}()
 
@@ -150,9 +150,9 @@ func (h *ChatHandler) Chat(c *gin.Context) {
 				return
 			default:
 				if !stream.Recv() {
-					if err := stream.Err(); err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-						logger.Errorf("Stream receive error: %v", err)
+					if rerr := stream.Err(); rerr != nil {
+						c.JSON(http.StatusInternalServerError, gin.H{"error": rerr.Error()})
+						logger.Errorf("Stream receive error: %v", rerr)
 					}
 					h.ctxManager.AppendMessage(ctxID, &chat.ChatMessage{
 						Role:    "ai",

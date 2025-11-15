@@ -56,7 +56,7 @@ func (p *BasketballService) Login(ctx context.Context, uid string) (*pojo.Result
 		info.Name = uid
 		userMap[uid] = info
 	}
-	return &pojo.Result{Code: 0, Msg: info.Name + ", your score is " + strconv.Itoa(info.Score), Data: map[string]interface{}{"to": uid, "score": info.Score}}, nil
+	return &pojo.Result{Code: 0, Msg: info.Name + ", your score is " + strconv.Itoa(info.Score), Data: map[string]any{"to": uid, "score": info.Score}}, nil
 }
 
 func (p *BasketballService) Score(ctx context.Context, uid, score string) (*pojo.Result, error) {
@@ -81,7 +81,7 @@ func (p *BasketballService) Score(ctx context.Context, uid, score string) (*pojo
 		}
 		userMap[uid] = info
 		logger.Error("user data not found")
-		return &pojo.Result{Code: 1, Msg: "user data not found", Data: map[string]interface{}{}}, nil
+		return &pojo.Result{Code: 1, Msg: "user data not found", Data: map[string]any{}}, nil
 	}
 	intSource, err := strconv.Atoi(score)
 	if err != nil {
@@ -89,7 +89,7 @@ func (p *BasketballService) Score(ctx context.Context, uid, score string) (*pojo
 	}
 	info.Score += intSource
 
-	return &pojo.Result{Code: 0, Msg: "进球成功", Data: map[string]interface{}{"to": uid, "score": info.Score}}, nil
+	return &pojo.Result{Code: 0, Msg: "进球成功", Data: map[string]any{"to": uid, "score": info.Score}}, nil
 }
 
 func (p *BasketballService) Rank(ctx context.Context, uid string) (*pojo.Result, error) {
@@ -110,7 +110,7 @@ func (p *BasketballService) Rank(ctx context.Context, uid string) (*pojo.Result,
 
 	if info, ok = userMap[uid]; !ok {
 		logger.Error("no user found")
-		return &pojo.Result{Code: 1, Msg: "no user found", Data: map[string]interface{}{"to": uid, "rank": rank}}, nil
+		return &pojo.Result{Code: 1, Msg: "no user found", Data: map[string]any{"to": uid, "rank": rank}}, nil
 	}
 
 	for _, v := range userMap {
@@ -119,7 +119,7 @@ func (p *BasketballService) Rank(ctx context.Context, uid string) (*pojo.Result,
 		}
 	}
 
-	return &pojo.Result{Code: 0, Msg: "success", Data: map[string]interface{}{"to": uid, "rank": rank}}, nil
+	return &pojo.Result{Code: 0, Msg: "success", Data: map[string]any{"to": uid, "rank": rank}}, nil
 }
 
 func (p *BasketballService) Reference() string {

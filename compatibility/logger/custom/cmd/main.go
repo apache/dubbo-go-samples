@@ -42,44 +42,44 @@ type GreeterProvider struct {
 type customLogger struct {
 }
 
-func (c *customLogger) Info(args ...interface{}) {
+func (c *customLogger) Info(args ...any) {
 	fmt.Printf("\033[1;32;40m%s\033[0m\n", args)
 }
 
-func (c *customLogger) Warn(args ...interface{}) {
+func (c *customLogger) Warn(args ...any) {
 	fmt.Printf("\033[1;33;40m%s\033[0m\n", args)
 }
 
-func (c *customLogger) Error(args ...interface{}) {
+func (c *customLogger) Error(args ...any) {
 	fmt.Printf("\033[1;31;40m%s\033[0m\n", args)
 }
 
-func (c *customLogger) Debug(args ...interface{}) {
+func (c *customLogger) Debug(args ...any) {
 	fmt.Printf("\033[1;34;40m%s\033[0m\n", args)
 }
 
-func (c *customLogger) Fatal(args ...interface{}) {
+func (c *customLogger) Fatal(args ...any) {
 	fmt.Printf("\033[1;31;40m%s\033[0m\n", args)
 	os.Exit(1)
 }
 
-func (c *customLogger) Infof(fmts string, args ...interface{}) {
+func (c *customLogger) Infof(fmts string, args ...any) {
 	fmt.Printf("\033[1;32;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 }
 
-func (c *customLogger) Warnf(fmts string, args ...interface{}) {
+func (c *customLogger) Warnf(fmts string, args ...any) {
 	fmt.Printf("\033[1;33;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 }
 
-func (c *customLogger) Errorf(fmts string, args ...interface{}) {
+func (c *customLogger) Errorf(fmts string, args ...any) {
 	fmt.Printf("\033[1;31;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 }
 
-func (c *customLogger) Debugf(fmts string, args ...interface{}) {
+func (c *customLogger) Debugf(fmts string, args ...any) {
 	fmt.Printf("\033[1;34;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 }
 
-func (c *customLogger) Fatalf(fmts string, args ...interface{}) {
+func (c *customLogger) Fatalf(fmts string, args ...any) {
 	fmt.Printf("\033[1;31;40m%s\033[0m\n", fmt.Sprintf(fmts, args...))
 	os.Exit(1)
 }

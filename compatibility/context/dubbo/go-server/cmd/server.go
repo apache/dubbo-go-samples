@@ -62,7 +62,7 @@ type UserProvider struct {
 }
 
 func (u *UserProvider) GetContext(ctx context.Context) (*ContextContent, error) {
-	ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]interface{})
+	ctxAtta := ctx.Value(constant.DubboCtxKey("attachment")).(map[string]any)
 	userDefinedval := ctxAtta["user-defined-value"].(*ContextContent)
 	gxlog.CInfo("get user defined struct:%#v", userDefinedval)
 	rsp := ContextContent{

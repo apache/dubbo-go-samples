@@ -105,11 +105,11 @@ func (s *ChatServer) Chat(ctx context.Context, req *chat.ChatRequest, stream cha
 			},
 		}
 
-		if msg.Bin != nil && len(msg.Bin) != 0 {
-			decodeByte, err := base64.StdEncoding.DecodeString(string(msg.Bin))
-			if err != nil {
-				logger.Errorf("GenerateContent failed: %v\n", err)
-				return fmt.Errorf("GenerateContent failed: %v", err)
+		if len(msg.Bin) != 0 {
+			decodeByte, decErr := base64.StdEncoding.DecodeString(string(msg.Bin))
+			if decErr != nil {
+				logger.Errorf("GenerateContent failed: %v\n", decErr)
+				return fmt.Errorf("GenerateContent failed: %v", decErr)
 			}
 			imgType := http.DetectContentType(decodeByte)
 			messageContent.Parts = append(messageContent.Parts, llms.BinaryPart(imgType, decodeByte))

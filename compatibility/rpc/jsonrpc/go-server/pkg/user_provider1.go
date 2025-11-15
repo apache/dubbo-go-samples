@@ -87,7 +87,7 @@ func (u *UserProvider1) GetUser3() error {
 	return nil
 }
 
-func (u *UserProvider1) GetUsers(req []interface{}) ([]*User, error) {
+func (u *UserProvider1) GetUsers(req []any) ([]*User, error) {
 	return []*User{}, nil
 }
 

@@ -38,7 +38,7 @@ func (u JsonRPCUser) String() string {
 }
 
 type UserProvider struct {
-	GetUser func(ctx context.Context, req []interface{}) (*JsonRPCUser, error)
+	GetUser func(ctx context.Context, req []any) (*JsonRPCUser, error)
 }
 
 func (u *UserProvider) Reference() string {

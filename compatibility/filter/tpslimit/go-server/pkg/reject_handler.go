@@ -75,7 +75,7 @@ func (mh *DefaultValueRejectedExecutionHandler) RejectedExecution(url *common.UR
 	if !loaded {
 		// we didn't configure any default value for this invocation
 		return &protocol.RPCResult{
-			Err: errors.New("The request is rejected and doesn't have any default value. "),
+			Err: errors.New("the request is rejected and doesn't have any default value"),
 		}
 	}
 	return result.(*protocol.RPCResult)

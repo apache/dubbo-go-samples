@@ -63,7 +63,7 @@ func main() {
 	//initZipkin()
 	gxlog.CInfo("start to test jsonrpc")
 	span, spanCtx := opentracing.StartSpanFromContext(context.Background(), "Dubbogo-Client-Service")
-	user, err := userProvider.GetUser(spanCtx, []interface{}{"A003"})
+	user, err := userProvider.GetUser(spanCtx, []any{"A003"})
 	span.Finish()
 	if err != nil {
 		gxlog.CInfo("response result: %v", err)

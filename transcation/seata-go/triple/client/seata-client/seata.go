@@ -40,7 +40,7 @@ import (
 	"github.com/apache/dubbo-go-samples/transcation/seata-go/triple/proto"
 )
 
-func Prepare(t *tcc.TCCServiceProxy, ctx context.Context, conn proto.UserProvider, param ...interface{}) (resp interface{}, err error) {
+func Prepare(t *tcc.TCCServiceProxy, ctx context.Context, conn proto.UserProvider, param ...any) (resp any, err error) {
 	if tm.IsTransactionOpened(ctx) {
 		err := registeBranch(t, ctx)
 		if err != nil {
@@ -96,10 +96,10 @@ func registeBranch(t *tcc.TCCServiceProxy, ctx context.Context) error {
 		logger.Errorf(err.Error())
 		return err
 	}
-	tccContext := make(map[string]interface{}, 0)
+	tccContext := make(map[string]any, 0)
 	tccContext[common.StartTime] = time.Now().UnixNano() / 1e6
 	tccContext[common.HostName] = net.GetLocalIp()
-	tccContextStr, _ := json.Marshal(map[string]interface{}{
+	tccContextStr, _ := json.Marshal(map[string]any{
 		common.ActionContext: tccContext,
 	})
 
