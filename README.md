@@ -11,15 +11,11 @@
 * compatibility/async: Callback (asynchronous) and one-way RPC example
 * compatibility/config-api: How to use Dubbo-go by APIs without configuration files
 * compatibility/configcenter: Usage of different config centers, including zookeeper, nacos and apollo
-* compatibility/context: How to transfer request context between multiple producers/consumers
 * compatibility/direct: Direct invocation example
-* compatibility/error: Error handling and triple protocol examples
 * compatibility/filter: Examples of different filters, including custom_filter and tpslimit
 * compatibility/game: Game service example
 * compatibility/generic: Generic invocation example
-* compatibility/logger: Dubbo-go logging examples
 * compatibility/mesh: Proxy service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes
-* compatibility/metrics: How to collect Dubbo-go Prometheus metrics
 * compatibility/otel: How to use OpenTelemetry as Dubbo-go tracing tool
 * compatibility/proxyless: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes
 * compatibility/registry: How to use etcd/nacos/zookeeper as Dubbo-go registry
