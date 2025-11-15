@@ -58,6 +58,7 @@
 * streaming: Streaming RPC example
 * task: Task scheduling and execution example
 * timeout: Demonstrates timeout handling in Dubbo-go
+* tls: Demonstrates how to use TLS (based on X.509 certificates) in Dubbo-Go to enable encrypted communication and/or mutual authentication between a client and a server.
 * transaction/seata-go: Distributed transaction example using seata-go
 
 ### Tools

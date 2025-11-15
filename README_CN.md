@@ -54,6 +54,7 @@
 * streaming：流式 RPC 通信示例
 * task：任务调度与执行示例
 * timeout：Dubbo-go 超时处理示例
+* tls：演示了如何在 Dubbo-Go 中使用 TLS（基于 X.509 证书）实现客户端与服务端之间的加密通信和/或双向认证
 * transaction/seata-go：基于 seata-go 的分布式事务示例
 
 ### 工具
