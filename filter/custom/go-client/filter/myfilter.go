@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package integration
+package filter
 
 import (
 	"context"
@@ -41,9 +41,12 @@ type MyClientFilter struct {
 
 func (f *MyClientFilter) Invoke(ctx context.Context, invoker protocol.Invoker, invocation protocol.Invocation) protocol.Result {
 	fmt.Println("MyClientFilter Invoke is called, method Name = ", invocation.MethodName())
+	invocation.SetAttachment("request-key1", "request-value1")
+	invocation.SetAttachment("request-key2", []string{"request-value2.1", "request-value2.2"})
 	return invoker.Invoke(ctx, invocation)
 }
 func (f *MyClientFilter) OnResponse(ctx context.Context, result protocol.Result, invoker protocol.Invoker, protocol protocol.Invocation) protocol.Result {
 	fmt.Println("MyClientFilter OnResponse is called")
+	fmt.Println("result attachment = ", result.Attachments())
 	return result
 }

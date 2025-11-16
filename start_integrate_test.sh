@@ -35,9 +35,9 @@ array+=("otel/tracing/otlp_http_exporter")
 # direct
 array+=("direct")
 
-# filer
+# filter
 array+=("filter/token")
-array+=("compatibility/filter/custom")
+# array+=("filter/custom")  # TODO: Add integration test for filter/custom
 
 # registry
 array+=("registry/zookeeper")

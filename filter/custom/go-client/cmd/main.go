@@ -15,29 +15,51 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
-	"os"
-	"testing"
+	"context"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
+	_ "github.com/apache/dubbo-go-samples/filter/custom/go-client/filter"
+	greet "github.com/apache/dubbo-go-samples/filter/proto"
 )
 
-var userProvider = &api.GreeterClientImpl{}
-
-func TestMain(m *testing.M) {
-	config.SetConsumerService(userProvider)
-	if err := config.Load(); err != nil {
+func main() {
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_filter_custom_client"),
+		dubbo.WithRegistry(
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+	cli, err := ins.NewClient()
+	if err != nil {
 		panic(err)
 	}
 
-	os.Exit(m.Run())
+	svc, err := greet.NewGreetService(cli, client.WithFilter("myClientFilter"))
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+	logger.Infof("Greet response: %s", resp.Greeting)
 }

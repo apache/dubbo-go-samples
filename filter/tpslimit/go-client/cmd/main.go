@@ -19,33 +19,54 @@ package main
 
 import (
 	"context"
+	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
+	greet "github.com/apache/dubbo-go-samples/filter/proto"
 )
 
-type GreeterProvider struct {
-	api.UnimplementedGreeterServer
-}
-
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
-
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-server/conf/dubbogo.yml
 func main() {
-	config.SetProviderService(&GreeterProvider{})
-	if err := config.Load(); err != nil {
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_filter_tpslimit_client"),
+		dubbo.WithRegistry(
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+		),
+	)
+	if err != nil {
 		panic(err)
 	}
-	select {}
+	cli, err := ins.NewClient()
+	if err != nil {
+		panic(err)
+	}
+
+	svc, err := greet.NewGreetService(cli)
+	if err != nil {
+		panic(err)
+	}
+
+	var successCount, failCount int64
+	logger.Infof("\n\n\nstart to test tpslimit")
+	for i := 0; i < 60; i++ {
+		time.Sleep(200 * time.Millisecond)
+		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+		if err != nil {
+			failCount++
+			logger.Infof("error: %v\n", err)
+		} else {
+			successCount++
+			logger.Infof("response: %v\n", resp.Greeting)
+		}
+	}
+	logger.Infof("successCount=%v, failCount=%v\n", successCount, failCount)
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package main
+package filter
 
 import (
 	"context"
@@ -29,24 +29,26 @@ import (
 )
 
 func init() {
-	extension.SetFilter("myClientFilter", NewMyClientFilter)
+	extension.SetFilter("myServerFilter", NewMyServerFilter)
 }
 
-func NewMyClientFilter() filter.Filter {
-	return &MyClientFilter{}
+func NewMyServerFilter() filter.Filter {
+	return &MyServerFilter{}
 }
 
-type MyClientFilter struct {
+type MyServerFilter struct {
 }
 
-func (f *MyClientFilter) Invoke(ctx context.Context, invoker protocol.Invoker, invocation protocol.Invocation) protocol.Result {
-	fmt.Println("MyClientFilter Invoke is called, method Name = ", invocation.MethodName())
-	invocation.SetAttachment("request-key1", "request-value1")
-	invocation.SetAttachment("request-key2", []string{"request-value2.1", "request-value2.2"})
+func (f *MyServerFilter) Invoke(ctx context.Context, invoker protocol.Invoker, invocation protocol.Invocation) protocol.Result {
+	fmt.Println("MyServerFilter Invoke is called, method Name = ", invocation.MethodName())
+	fmt.Printf("request attachments = %s\n", invocation.Attachments())
 	return invoker.Invoke(ctx, invocation)
 }
-func (f *MyClientFilter) OnResponse(ctx context.Context, result protocol.Result, invoker protocol.Invoker, protocol protocol.Invocation) protocol.Result {
-	fmt.Println("MyClientFilter OnResponse is called")
-	fmt.Println("result attachment = ", result.Attachments())
+func (f *MyServerFilter) OnResponse(ctx context.Context, result protocol.Result, invoker protocol.Invoker, protocol protocol.Invocation) protocol.Result {
+	fmt.Println("MyServerFilter OnResponse is called")
+	myAttachmentMap := make(map[string]interface{})
+	myAttachmentMap["key1"] = "value1"
+	myAttachmentMap["key2"] = []string{"value1", "value2"}
+	result.SetAttachments(myAttachmentMap)
 	return result
 }

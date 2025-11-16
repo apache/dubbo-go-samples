@@ -1,5 +1,7 @@
 # Filter 示例
 
+[English](README.md) | [中文](README_zh.md)
+
 ## 背景
 
 Dubbo-go 设计实现了过滤器模式，帮助客户端/服务端在发送/处理请求前置处理一些动作，dubbo-go 内置了一些过滤器实现，如 tps limiter、token 等，也支持用户自定义实现 filter，可参考 custom 模块。
@@ -26,7 +28,7 @@ Consumer 端：
 更多 filter 内置实现可参考 dubbo-go 的 filter 模块。
 
 #### 1.2 Filter 配置
-只需在对应 provider 或 consumer 下配置该 filter 的名字即可，参考 2.2 节。
+在服务端使用 `server.WithFilter()`，在客户端使用 `client.WithFilter()`。可参考 token、sentinel 和 custom 模块的示例。
 
 ### 2. 自定义 Filter
 以 Client 端为例，更具体的代码参考 custom 模块。
@@ -69,31 +71,30 @@ func (f *MyClientFilter) OnResponse(ctx context.Context, result protocol.Result,
 
 #### 2.2 Filter 配置
 
-```yaml
-# service config
-dubbo:
-  registries:
-    demoZK:
-      protocol: zookeeper
-      timeout: 3s
-      address: 127.0.0.1:2181
-  consumer:
-    filter: myClientFilter
-    check: true
-    request_timeout: 3s
-    connect_timeout: 3s
-    references:
-      GreeterClientImpl:
-        protocol: tri
+服务端配置：
+```go
+if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
+	server.WithFilter("myServerFilter"),
+); err != nil {
+	panic(err)
+}
 ```
 
-### 3. 运行
-
-请参阅根目录中的 [HOWTO.md](../../HOWTO_zh.md) 来运行本例。
-
-观察客户端的输出：
-
-```bash
-MyClientFilter Invoke is called, method Name =  SayHello
-MyClientFilter OnResponse is called
+客户端配置：
+```go
+svc, err := greet.NewGreetService(cli, client.WithFilter("myClientFilter"))
+if err != nil {
+	panic(err)
+}
 ```
+
+## 示例
+
+本目录包含以下过滤器示例：
+
+- **custom**: 自定义过滤器实现示例（客户端和服务端）
+- **token**: Token 过滤器示例
+- **sentinel**: Sentinel 过滤器示例（流量控制和熔断）
+- **polaris/limit**: Polaris TPS 限流器示例
+- **tpslimit**: 自定义 TPS 限流策略和拒绝执行处理器示例
+

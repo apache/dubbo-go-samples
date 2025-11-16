@@ -48,7 +48,6 @@
 * `compatibility/async`：回调（异步）与单向 RPC 调用示例。
 * `compatibility/config-api`：演示如何在不使用配置文件的情况下，通过 API 使用 Dubbo-go。
 * `compatibility/configcenter`：不同配置中心的使用示例，包括 Zookeeper、Nacos 和 Apollo。
-* `compatibility/filter`：多种 Filter 示例，包括 `custom_filter` 和 `tpslimit`。
 * `compatibility/game`：游戏服务示例。
 * `compatibility/generic`：泛化调用示例。
 * `compatibility/mesh`：基于代理的服务网格示例，展示如何在 Kubernetes 上结合 Envoy 部署 Dubbo-go 服务。
