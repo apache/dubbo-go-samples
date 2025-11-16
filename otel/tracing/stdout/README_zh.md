@@ -1,24 +1,24 @@
-# Stdout tracing exporter
+# Stdout 链路追踪导出器
 
 [English](README.md) | [中文](README_zh.md)
 
-This example shows dubbo-go's tracing feature with stdout exporter.
+本示例展示了 dubbo-go 使用 stdout 导出器的链路追踪功能。
 
-## How to run
+## 运行方法
 
-### Run server
+### 启动服务端
 
 ```shell
 $ go run ./go-server/cmd/main.go
 ```
 
-### Run client
+### 启动客户端
 
 ```shell
 $ go run ./go-client/cmd/main.go
 ```
 
-In the server's console, you will see the tracing log like this:
+在服务端的控制台中，你将看到类似以下的链路追踪日志：
 
 ```shell
 INFO tracing/tracing.go:53 tracing enabled, exporter: stdout
@@ -106,4 +106,5 @@ INFO tracing/tracing.go:54 tracing enabled, sampler: always_on
         }
 }
 
+```
 

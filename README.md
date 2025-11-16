@@ -16,7 +16,6 @@
 * compatibility/game: Game service example
 * compatibility/generic: Generic invocation example
 * compatibility/mesh: Proxy service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes
-* compatibility/otel: How to use OpenTelemetry as Dubbo-go tracing tool
 * compatibility/proxyless: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes
 * compatibility/registry: How to use etcd/nacos/zookeeper as Dubbo-go registry
 * compatibility/rpc: Dubbo protocol communication examples
