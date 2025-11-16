@@ -22,32 +22,56 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+	"dubbo.apache.org/dubbo-go/v3/server"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
+	_ "github.com/apache/dubbo-go-samples/filter/custom/go-server/filter"
+	greet "github.com/apache/dubbo-go-samples/filter/proto"
 )
 
-var userProvider = &api.GreeterClientImpl{}
+type GreetTripleServer struct {
+}
 
-func init() {
-	config.SetConsumerService(userProvider)
+func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	resp := &greet.GreetResponse{Greeting: req.Name}
+	return resp, nil
 }
 
 func main() {
-	err := config.Load()
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_filter_custom_server"),
+		dubbo.WithRegistry(
+			registry.WithZookeeper(),
+			registry.WithAddress("127.0.0.1:2181"),
+		),
+		dubbo.WithProtocol(
+			protocol.WithTriple(),
+			protocol.WithPort(20000),
+		),
+	)
 	if err != nil {
 		panic(err)
 	}
 
-	logger.Infof("\n\n\nstart to test")
-	user, err := userProvider.SayHello(context.TODO(), &api.HelloRequest{Name: "laurence"})
+	srv, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("get user = %+v", user)
+
+	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
+		server.WithFilter("myServerFilter"),
+	); err != nil {
+		panic(err)
+	}
+
+	if err := srv.Serve(); err != nil {
+		logger.Error(err)
+	}
 }

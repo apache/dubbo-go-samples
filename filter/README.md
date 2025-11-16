@@ -1,5 +1,7 @@
 # Dubbo-go Filter Samples
 
+[English](README.md) | [中文](README_zh.md)
+
 ## Background
 
 Dubbo-go designs and implements the filter mode, which helps the provider/consumer to process some actions before sending/processing requests. Dubbo-go has some built-in filter implementations, such as tps limiter, token, etc., and also supports user-defined implementations filter, please refer to the custom module.
@@ -26,9 +28,9 @@ Consumer：
 
 For more built-in implementations of filter, please refer to the filter module of dubbo-go.
 
-#### 1.2 Filter Confugration
+#### 1.2 Filter Configuration
 
-Just configure the name of the filter under the corresponding provider or consumer, refer to Section 2.2.
+Use `server.WithFilter()` for provider side or `client.WithFilter()` for consumer side. See examples in the token, sentinel, and custom modules.
 
 ### 2. Custom Filter
 
@@ -70,33 +72,32 @@ func (f *MyClientFilter) OnResponse(ctx context.Context, result protocol.Result,
 }
 ```
 
-#### 2.2 Filter Confugration
+#### 2.2 Filter Configuration
 
-```yaml
-# service config
-dubbo:
-  registries:
-    demoZK:
-      protocol: zookeeper
-      timeout: 3s
-      address: 127.0.0.1:2181
-  consumer:
-    filter: myClientFilter
-    check: true
-    request_timeout: 3s
-    connect_timeout: 3s
-    references:
-      GreeterClientImpl:
-        protocol: tri
+For provider side:
+```go
+if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
+	server.WithFilter("myServerFilter"),
+); err != nil {
+	panic(err)
+}
 ```
 
-### 3. Running
-
-See [HOWTO.md](../HOWTO_en.md) in the root directory to run this example.
-
-Observe the output of the client:
-
-```bash
-MyClientFilter Invoke is called, method Name =  SayHello
-MyClientFilter OnResponse is called
+For consumer side:
+```go
+svc, err := greet.NewGreetService(cli, client.WithFilter("myClientFilter"))
+if err != nil {
+	panic(err)
+}
 ```
+
+## Examples
+
+This directory contains the following filter examples:
+
+- **custom**: Custom filter implementation example (client and server)
+- **token**: Token filter example
+- **sentinel**: Sentinel filter example for flow control and circuit breaking
+- **polaris/limit**: Polaris TPS limiter example
+- **tpslimit**: Custom TPS limit strategy and rejected execution handler example
+
