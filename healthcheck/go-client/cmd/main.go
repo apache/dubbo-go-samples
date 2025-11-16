@@ -34,11 +34,11 @@ func main() {
 		client.WithClientURL("tri://127.0.0.1:20000"),
 	)
 	if err != nil {
-		panic(err)
+		logger.Fatalf("failed to create client: %v", err)
 	}
 	svc, err := health.NewHealth(cli)
 	if err != nil {
-		panic(err)
+		logger.Fatalf("failed to create health service: %v", err)
 	}
 	check, err := svc.Check(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
 	if err != nil {
@@ -48,7 +48,7 @@ func main() {
 	}
 	watch, err := svc.Watch(context.Background(), &health.HealthCheckRequest{Service: "greet.GreetService"})
 	if err != nil {
-		logger.Error(err)
+		logger.Errorf("failed to watch health: %v", err)
 	} else {
 		if watch.Recv() {
 			logger.Info("greet.GreetService's health", watch.Msg().String())
