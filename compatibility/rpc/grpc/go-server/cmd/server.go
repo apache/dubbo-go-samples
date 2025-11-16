@@ -24,12 +24,12 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
+
 	"github.com/dubbogo/gost/log/logger"
 )
 
