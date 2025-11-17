@@ -19,14 +19,18 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/otel/trace"
-	"github.com/dubbogo/gost/log/logger"
 
+	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/otel/tracing/jaeger/proto"
 )
 
