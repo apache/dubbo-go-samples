@@ -19,12 +19,17 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	"github.com/dubbogo/gost/log/logger"
 
+	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
