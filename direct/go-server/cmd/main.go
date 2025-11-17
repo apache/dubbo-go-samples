@@ -15,30 +15,42 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
-	"os"
-	"testing"
-)
+	"context"
 
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
+	"github.com/dubbogo/gost/log/logger"
+
+	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
-import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/compatibility/api"
-)
+type DirectGreetServer struct{}
 
-var greeterProvider = new(dubbo3pb.GreeterClientImpl)
+func (s *DirectGreetServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	logger.Infof("Direct server received name = %s", req.Name)
+	return &greet.GreetResponse{Greeting: "hello " + req.Name}, nil
+}
 
-func TestMain(m *testing.M) {
-	config.SetConsumerService(greeterProvider)
-	err := config.Load()
+func main() {
+	srv, err := server.NewServer(
+		server.WithServerProtocol(
+			protocol.WithTriple(),
+			protocol.WithPort(20000),
+		),
+	)
 	if err != nil {
 		panic(err)
 	}
 
-	os.Exit(m.Run())
+	if err := greet.RegisterGreetServiceHandler(srv, &DirectGreetServer{}); err != nil {
+		panic(err)
+	}
+
+	if err := srv.Serve(); err != nil {
+		logger.Errorf("direct server stopped: %v", err)
+	}
 }

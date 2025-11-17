@@ -33,7 +33,7 @@ array+=("otel/tracing/stdout")
 array+=("otel/tracing/otlp_http_exporter")
 
 # direct
-array+=("compatibility/direct")
+array+=("direct")
 
 # filer
 array+=("filter/token")

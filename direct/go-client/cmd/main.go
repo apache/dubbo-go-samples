@@ -15,32 +15,36 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
 	"context"
-	"testing"
+
+	"dubbo.apache.org/dubbo-go/v3/client"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"github.com/dubbogo/gost/log/logger"
+
+	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
-import (
-	"github.com/stretchr/testify/assert"
-)
-
-import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/compatibility/api"
-)
-
-func TestSayHello(t *testing.T) {
-	req := &dubbo3pb.HelloRequest{
-		Name: "laurence",
+func main() {
+	cli, err := client.NewClient(
+		client.WithClientURL("tri://127.0.0.1:20000"),
+	)
+	if err != nil {
+		panic(err)
 	}
 
-	ctx := context.Background()
+	greetService, err := greet.NewGreetService(cli)
+	if err != nil {
+		panic(err)
+	}
 
-	reply, err := greeterProvider.SayHello(ctx, req)
-
-	assert.Nil(t, err)
-	assert.Equal(t, "Hello laurence", reply.Name)
-	assert.Equal(t, "12345", reply.Id)
-	assert.Equal(t, int32(21), reply.Age)
+	req := &greet.GreetRequest{Name: "dubbo-go"}
+	resp, err := greetService.Greet(context.Background(), req)
+	if err != nil {
+		logger.Errorf("direct call failed: %v", err)
+		return
+	}
+	logger.Infof("direct call response: %s", resp.Greeting)
 }

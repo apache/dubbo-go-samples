@@ -15,37 +15,24 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/dubbogo/gost/log/logger"
-)
-
-import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
-)
-
-type GreeterProvider struct {
-	api.UnimplementedGreeterServer
-}
-
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
-
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/direct/go-server/conf/dubbogo.yml
-func main() {
-	config.SetProviderService(&GreeterProvider{})
-	if err := config.Load(); err != nil {
-		panic(err)
+func TestGreet(t *testing.T) {
+	req := &greet.GreetRequest{
+		Name: "integration",
 	}
-	select {}
+
+	resp, err := greetService.Greet(context.Background(), req)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "hello integration", resp.Greeting)
 }
