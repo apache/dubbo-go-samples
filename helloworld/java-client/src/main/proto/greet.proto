@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package greet;
+
+option go_package = "./greet";
+option java_package = "greet";
+option java_multiple_files = true;
+
+message GreetRequest {
+  string name = 1;
+}
+
+message GreetResponse {
+  string greeting = 1;
+}
+
+service GreetService {
+  rpc Greet(GreetRequest) returns (GreetResponse);
+}

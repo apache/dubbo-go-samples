@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package greet;
+
+option go_package = "github.com/apache/dubbo-go-samples/helloworld/proto;greet";
+option java_package = "greet";
+option java_multiple_files = true;
+
+message GreetRequest {
+  string name = 1;
+}
+
+message GreetResponse {
+  string greeting = 1;
+}
+
+// gRPC/Dubbo-Triple
+service GreetService {
+  rpc Greet(GreetRequest) returns (GreetResponse);
+}
