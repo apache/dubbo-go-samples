@@ -28,36 +28,23 @@ array+=("compatibility/config-api/rpc/triple")
 array+=("compatibility/config-api/configcenter/zookeeper")
 array+=("compatibility/config-api/config-merge")
 
-# error
-array+=("compatibility/error/triple/hessian2")
-array+=("compatibility/error/triple/pb")
-
-# metrics
-array+=("compatibility/metrics")
-
 # tracing
 array+=("otel/tracing/stdout")
 array+=("otel/tracing/otlp_http_exporter")
 
 # direct
-array+=("compatibility/direct")
+array+=("direct")
 
 # filer
 array+=("filter/token")
 array+=("compatibility/filter/custom")
-array+=("compatibility/filter/token")
-
-# context
-array+=("compatibility/context/dubbo")
-array+=("compatibility/context/triple")
-array+=("context")
 
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
 
 # generic
-#array+=("compatibility/generic/default") # illegal service type registered
+array+=("compatibility/generic/default")
 
 #timeout
 array+=("timeout")
@@ -104,9 +91,6 @@ array+=("config_center/zookeeper")
 
 # compatibility
 ## registry
-array+=("compatibility/registry/zookeeper")
-array+=("compatibility/registry/nacos")
-array+=("compatibility/registry/etcd")
 array+=("compatibility/registry/servicediscovery/zookeeper")
 array+=("compatibility/registry/servicediscovery/nacos")
 array+=("compatibility/registry/all/zookeeper")

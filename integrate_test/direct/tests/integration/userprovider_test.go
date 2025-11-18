@@ -15,43 +15,28 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
 	"context"
+	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
-
-	"github.com/dubbogo/gost/log"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/compatibility/rpc/grpc/protobuf"
+	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
-var grpcGreeterImpl = new(pb.GreeterClientImpl)
-
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
-}
-
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
-func main() {
-	if err := config.Load(); err != nil {
-		panic(err)
+func TestGreet(t *testing.T) {
+	req := &greet.GreetRequest{
+		Name: "integration",
 	}
 
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
-		Name: "xujianhai",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("client response result: %v\n", reply)
+	resp, err := greetService.Greet(context.Background(), req)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "hello integration", resp.Greeting)
 }

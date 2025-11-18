@@ -15,43 +15,21 @@
  * limitations under the License.
  */
 
-package main
+syntax = "proto3";
 
-import (
-	"context"
-)
+package greet;
 
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
+option go_package = "github.com/apache/dubbo-go-samples/otel/tracing/jaeger/proto;greet";
 
-	"github.com/dubbogo/gost/log"
-)
-
-import (
-	pb "github.com/apache/dubbo-go-samples/compatibility/rpc/grpc/protobuf"
-)
-
-var grpcGreeterImpl = new(pb.GreeterClientImpl)
-
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
+message GreetRequest {
+  string name = 1;
 }
 
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
-func main() {
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
-		Name: "xujianhai",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
-	if err != nil {
-		panic(err)
-	}
-	gxlog.CInfo("client response result: %v\n", reply)
+message GreetResponse {
+  string greeting = 1;
 }
+
+service GreetService {
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
+}
+

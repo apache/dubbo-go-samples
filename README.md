@@ -11,16 +11,10 @@
 * compatibility/async: Callback (asynchronous) and one-way RPC example
 * compatibility/config-api: How to use Dubbo-go by APIs without configuration files
 * compatibility/configcenter: Usage of different config centers, including zookeeper, nacos and apollo
-* compatibility/context: How to transfer request context between multiple producers/consumers
-* compatibility/direct: Direct invocation example
-* compatibility/error: Error handling and triple protocol examples
 * compatibility/filter: Examples of different filters, including custom_filter and tpslimit
 * compatibility/game: Game service example
 * compatibility/generic: Generic invocation example
-* compatibility/logger: Dubbo-go logging examples
 * compatibility/mesh: Proxy service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes
-* compatibility/metrics: How to collect Dubbo-go Prometheus metrics
-* compatibility/otel: How to use OpenTelemetry as Dubbo-go tracing tool
 * compatibility/proxyless: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes
 * compatibility/registry: How to use etcd/nacos/zookeeper as Dubbo-go registry
 * compatibility/rpc: Dubbo protocol communication examples
@@ -28,7 +22,6 @@
   * compatibility/rpc/grpc: Dubbo-go RPC example based on gRPC
   * compatibility/rpc/jsonrpc: Dubbo-go RPC example based on JSON-RPC
   * compatibility/rpc/triple: Dubbo-go RPC example based on hessian2/msgpack/pb(protobuf-v3)/pb2(protobuf-v2)/self-defined-serialization
-* compatibility/seata-go: Seata-go distributed transaction example
 * compatibility/skywalking: How to integrate SkyWalking into Dubbo-go
 * compatibility/tls: Use TLS encryption in getty (tcp)/triple/gRPC communication mode
 * compatibility/tracing: Tracing example
@@ -43,6 +36,8 @@
   * polaris/limit: Use Polaris as tps limiter
 * healthcheck: Service health check example
 * helloworld: Basic Dubbo-Go and Java interoperability example
+* direct: Triple point-to-point invocation sample without registry
+* helloworld: Basic hello world example for Dubbo-go
 * integrate_test: Integration test cases for Dubbo-go samples
 * java_interop: Demonstrates interoperability between Java and Go Dubbo implementations
 * llm: Example of integrating large language models (LLM) with Dubbo-go
@@ -62,6 +57,7 @@
 * streaming: Streaming RPC example
 * task: Task scheduling and execution example
 * timeout: Demonstrates timeout handling in Dubbo-go
+* tls: Demonstrates how to use TLS (based on X.509 certificates) in Dubbo-Go to enable encrypted communication and/or mutual authentication between a client and a server.
 * transaction/seata-go: Distributed transaction example using seata-go
 
 ### Tools

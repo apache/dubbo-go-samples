@@ -32,6 +32,7 @@ header:
     - '**/resources/mockito-extensions/**'
     - '**/*.proto'
     - '**/*.cache'
+    - '**/*.cnf'
     - '**/*.txt'
     - '**/*.load'
     - '**/*.flex'

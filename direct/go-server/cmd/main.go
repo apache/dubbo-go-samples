@@ -22,36 +22,40 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
 
-	"github.com/dubbogo/gost/log"
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/compatibility/rpc/grpc/protobuf"
+	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
-var grpcGreeterImpl = new(pb.GreeterClientImpl)
+type DirectGreetServer struct{}
 
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
+func (s *DirectGreetServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	logger.Infof("Direct server received name = %s", req.Name)
+	return &greet.GreetResponse{Greeting: "hello " + req.Name}, nil
 }
 
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
-		Name: "xujianhai",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
+	srv, err := server.NewServer(
+		server.WithServerProtocol(
+			protocol.WithTriple(),
+			protocol.WithPort(20000),
+		),
+	)
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("client response result: %v\n", reply)
+
+	if err := greet.RegisterGreetServiceHandler(srv, &DirectGreetServer{}); err != nil {
+		panic(err)
+	}
+
+	if err := srv.Serve(); err != nil {
+		logger.Errorf("direct server stopped: %v", err)
+	}
 }

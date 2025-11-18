@@ -22,36 +22,48 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
+	"dubbo.apache.org/dubbo-go/v3/otel/trace"
 
-	"github.com/dubbogo/gost/log"
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/compatibility/rpc/grpc/protobuf"
+	greet "github.com/apache/dubbo-go-samples/otel/tracing/jaeger/proto"
 )
 
-var grpcGreeterImpl = new(pb.GreeterClientImpl)
-
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
-}
-
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
-		Name: "xujianhai",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_otel_jaeger_client"),
+		dubbo.WithTracing(
+			trace.WithEnabled(),
+			trace.WithJaegerExporter(),
+			trace.WithW3cPropagator(),
+			trace.WithAlwaysMode(),
+			trace.WithEndpoint("http://localhost:14268/api/traces"),
+		),
+	)
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("client response result: %v\n", reply)
+
+	cli, err := ins.NewClient(
+		client.WithClientURL("127.0.0.1:20000"),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	svc, err := greet.NewGreetService(cli)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("Greet response: %s", resp)
 }

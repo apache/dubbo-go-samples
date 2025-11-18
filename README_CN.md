@@ -7,16 +7,10 @@
 * compatibility/async：通过 callback 方式进行异步 RPC 及单向调用示例
 * compatibility/config-api：无需配置文件，使用 API 启动 Dubbo-go 服务
 * compatibility/configcenter：多种配置中心（如 zookeeper、nacos、apollo）用法示例
-* compatibility/context：多生产者/消费者间传递请求 context 示例
-* compatibility/direct：直连调用示例，无需注册中心
-* compatibility/error：错误处理与 triple 协议示例
 * compatibility/filter：内置及自定义 filter 示例（如 custom_filter、tpslimit）
 * compatibility/game：游戏服务示例
 * compatibility/generic：泛化调用示例
-* compatibility/logger：Dubbo-go 日志功能示例
 * compatibility/mesh：基于 Envoy 的服务网格部署示例
-* compatibility/metrics：Prometheus 指标采集示例
-* compatibility/otel：OpenTelemetry 链路追踪示例
 * compatibility/proxyless：Kubernetes 下 proxyless 服务网格示例
 * compatibility/registry：多种注册中心（etcd/nacos/zookeeper）用法
 * compatibility/rpc：Dubbo 协议通信示例
@@ -24,7 +18,6 @@
   * compatibility/rpc/grpc：基于 gRPC 的 Dubbo-go RPC 示例
   * compatibility/rpc/jsonrpc：基于 JSON-RPC 的 Dubbo-go RPC 示例
   * compatibility/rpc/triple：支持多种序列化（hessian2/msgpack/pb/pb2/自定义）的 triple 协议示例
-* compatibility/seata-go：seata-go 分布式事务示例
 * compatibility/skywalking：集成 SkyWalking 的 Dubbo-go 示例
 * compatibility/tls：getty(tcp)/triple/gRPC 全链路 TLS 加密通信示例
 * compatibility/tracing：链路追踪示例
@@ -38,6 +31,7 @@
 * filter：内置及自定义 filter 用法示例
   * polaris/limit: 使用Polaris的服务限流功能示例
 * healthcheck：服务健康检查示例
+* direct：Triple 直连示例，无需注册中心
 * helloworld：Dubbo-go 入门 Hello World 示例
 * integrate_test：Dubbo-go 示例集成测试用例
 * java_interop：Java 与 Go Dubbo 实现互操作示例
@@ -58,6 +52,7 @@
 * streaming：流式 RPC 通信示例
 * task：任务调度与执行示例
 * timeout：Dubbo-go 超时处理示例
+* tls：演示了如何在 Dubbo-Go 中使用 TLS（基于 X.509 证书）实现客户端与服务端之间的加密通信和/或双向认证
 * transaction/seata-go：基于 seata-go 的分布式事务示例
 
 ### 工具

@@ -22,36 +22,34 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	_ "dubbo.apache.org/dubbo-go/v3/protocol/grpc"
 
-	"github.com/dubbogo/gost/log"
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	pb "github.com/apache/dubbo-go-samples/compatibility/rpc/grpc/protobuf"
+	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
-var grpcGreeterImpl = new(pb.GreeterClientImpl)
-
-func init() {
-	config.SetConsumerService(grpcGreeterImpl)
-}
-
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
-	if err := config.Load(); err != nil {
-		panic(err)
-	}
-
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	req := &pb.HelloRequest{
-		Name: "xujianhai",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.TODO(), req)
+	cli, err := client.NewClient(
+		client.WithClientURL("tri://127.0.0.1:20000"),
+	)
 	if err != nil {
 		panic(err)
 	}
-	gxlog.CInfo("client response result: %v\n", reply)
+
+	greetService, err := greet.NewGreetService(cli)
+	if err != nil {
+		panic(err)
+	}
+
+	req := &greet.GreetRequest{Name: "dubbo-go"}
+	resp, err := greetService.Greet(context.Background(), req)
+	if err != nil {
+		logger.Errorf("direct call failed: %v", err)
+		return
+	}
+	logger.Infof("direct call response: %s", resp.Greeting)
 }
