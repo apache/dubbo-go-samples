@@ -15,39 +15,38 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
+	"os"
+	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
+	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
-var grpcGreeterImpl = new(api.GreeterClientImpl)
+var greetService greet.GreetService
 
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/direct/go-client/conf/dubbogo.yml
-func main() {
-	config.SetConsumerService(grpcGreeterImpl)
-	if err := config.Load(); err != nil {
+func TestMain(m *testing.M) {
+	cli, err := client.NewClient(
+		client.WithClientURL("tri://127.0.0.1:20000"),
+		client.WithClientClusterFailFast(),
+		client.WithClientRetries(0),
+	)
+	if err != nil {
 		panic(err)
 	}
 
-	logger.Info("start to test dubbo")
-	req := &api.HelloRequest{
-		Name: "laurence",
-	}
-	reply, err := grpcGreeterImpl.SayHello(context.Background(), req)
+	greetService, err = greet.NewGreetService(cli)
 	if err != nil {
-		logger.Error(err)
+		panic(err)
 	}
-	logger.Infof("client response result: %v\n", reply)
+
+	os.Exit(m.Run())
 }

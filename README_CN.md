@@ -7,7 +7,6 @@
 * compatibility/async：通过 callback 方式进行异步 RPC 及单向调用示例
 * compatibility/config-api：无需配置文件，使用 API 启动 Dubbo-go 服务
 * compatibility/configcenter：多种配置中心（如 zookeeper、nacos、apollo）用法示例
-* compatibility/direct：直连调用示例，无需注册中心
 * compatibility/filter：内置及自定义 filter 示例（如 custom_filter、tpslimit）
 * compatibility/game：游戏服务示例
 * compatibility/generic：泛化调用示例
@@ -32,6 +31,7 @@
 * filter：内置及自定义 filter 用法示例
   * polaris/limit: 使用Polaris的服务限流功能示例
 * healthcheck：服务健康检查示例
+* direct：Triple 直连示例，无需注册中心
 * helloworld：Dubbo-go 入门 Hello World 示例
 * integrate_test：Dubbo-go 示例集成测试用例
 * java_interop：Java 与 Go Dubbo 实现互操作示例

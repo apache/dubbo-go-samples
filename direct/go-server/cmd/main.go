@@ -22,30 +22,40 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
+	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
-type GreeterProvider struct {
-	api.UnimplementedGreeterServer
+type DirectGreetServer struct{}
+
+func (s *DirectGreetServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	logger.Infof("Direct server received name = %s", req.Name)
+	return &greet.GreetResponse{Greeting: "hello " + req.Name}, nil
 }
 
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
-
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/direct/go-server/conf/dubbogo.yml
 func main() {
-	config.SetProviderService(&GreeterProvider{})
-	if err := config.Load(); err != nil {
+	srv, err := server.NewServer(
+		server.WithServerProtocol(
+			protocol.WithTriple(),
+			protocol.WithPort(20000),
+		),
+	)
+	if err != nil {
 		panic(err)
 	}
-	select {}
+
+	if err := greet.RegisterGreetServiceHandler(srv, &DirectGreetServer{}); err != nil {
+		panic(err)
+	}
+
+	if err := srv.Serve(); err != nil {
+		logger.Errorf("direct server stopped: %v", err)
+	}
 }

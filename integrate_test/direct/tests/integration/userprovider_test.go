@@ -27,20 +27,16 @@ import (
 )
 
 import (
-	dubbo3pb "github.com/apache/dubbo-go-samples/compatibility/api"
+	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
-func TestSayHello(t *testing.T) {
-	req := &dubbo3pb.HelloRequest{
-		Name: "laurence",
+func TestGreet(t *testing.T) {
+	req := &greet.GreetRequest{
+		Name: "integration",
 	}
 
-	ctx := context.Background()
-
-	reply, err := greeterProvider.SayHello(ctx, req)
+	resp, err := greetService.Greet(context.Background(), req)
 
 	assert.Nil(t, err)
-	assert.Equal(t, "Hello laurence", reply.Name)
-	assert.Equal(t, "12345", reply.Id)
-	assert.Equal(t, int32(21), reply.Age)
+	assert.Equal(t, "hello integration", resp.Greeting)
 }

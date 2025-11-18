@@ -11,7 +11,6 @@
 * compatibility/async: Callback (asynchronous) and one-way RPC example
 * compatibility/config-api: How to use Dubbo-go by APIs without configuration files
 * compatibility/configcenter: Usage of different config centers, including zookeeper, nacos and apollo
-* compatibility/direct: Direct invocation example
 * compatibility/filter: Examples of different filters, including custom_filter and tpslimit
 * compatibility/game: Game service example
 * compatibility/generic: Generic invocation example
@@ -36,6 +35,7 @@
 * filter: Demonstrates the use of built-in and custom filters in Dubbo-go
   * polaris/limit: Use Polaris as tps limiter
 * healthcheck: Service health check example
+* direct: Triple point-to-point invocation sample without registry
 * helloworld: Basic hello world example for Dubbo-go
 * integrate_test: Integration test cases for Dubbo-go samples
 * java_interop: Demonstrates interoperability between Java and Go Dubbo implementations
