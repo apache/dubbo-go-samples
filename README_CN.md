@@ -12,7 +12,7 @@
 * compatibility/generic：泛化调用示例
 * compatibility/mesh：基于 Envoy 的服务网格部署示例
 * compatibility/proxyless：Kubernetes 下 proxyless 服务网格示例
-* compatibility/registry：多种注册中心（etcd/nacos/zookeeper）用法
+* compatibility/registry：多种注册中心（etcd/nacos/polaris/zookeeper）用法
 * compatibility/rpc：Dubbo 协议通信示例
   * compatibility/rpc/dubbo：Dubbo-go 3.0 Java/Go 跨语言 RPC 示例
   * compatibility/rpc/grpc：基于 gRPC 的 Dubbo-go RPC 示例

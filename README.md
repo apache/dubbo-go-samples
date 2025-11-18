@@ -16,7 +16,7 @@
 * compatibility/generic: Generic invocation example
 * compatibility/mesh: Proxy service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes
 * compatibility/proxyless: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes
-* compatibility/registry: How to use etcd/nacos/zookeeper as Dubbo-go registry
+* compatibility/registry: How to use etcd/nacos/polaris/zookeeper as Dubbo-go registry
 * compatibility/rpc: Dubbo protocol communication examples
   * compatibility/rpc/dubbo: Dubbo-go 3.0 RPC example between Java and Go
   * compatibility/rpc/grpc: Dubbo-go RPC example based on gRPC
