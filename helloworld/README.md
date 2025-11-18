@@ -58,13 +58,33 @@ go run ./go-client/cmd/main.go
 ```
 
 ### Run Java server
+
+Build all Java modules from the root directory:
+```shell
+mvn clean compile
+```
+
+Run the Java server:
+
+**On Linux/Mac/Git Bash:**
 ```shell
 cd java-server
-mvn clean package
 mvn exec:java -Dexec.mainClass=org.example.server.JavaServerApp
 ```
 
-test server work as expected:
+**On Windows PowerShell:**
+```powershell
+cd java-server
+mvn exec:java "-Dexec.mainClass=org.example.server.JavaServerApp"
+```
+
+**Or use the provided script (Linux/Mac):**
+```shell
+cd java-server
+./run.sh
+```
+
+Test server works as expected:
 ```shell
 curl \
     --header "Content-Type: application/json" \
@@ -73,10 +93,25 @@ curl \
 ```
 
 ### Run Java client
+
+Run the Java client:
+
+**On Linux/Mac/Git Bash:**
 ```shell
 cd java-client
-mvn clean package
 mvn exec:java -Dexec.mainClass=org.example.client.JavaClientApp
+```
+
+**On Windows PowerShell:**
+```powershell
+cd java-client
+mvn exec:java "-Dexec.mainClass=org.example.client.JavaClientApp"
+```
+
+**Or use the provided script (Linux/Mac):**
+```shell
+cd java-client
+./run.sh
 ```
 ## Attention
 Do NOT Start Go Server and Java Server at the Same Time. Both the Go server and Java server listen on the same port: 20000 and expose the same Triple service path:greet.GreetService/Greet

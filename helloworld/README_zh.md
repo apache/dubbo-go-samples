@@ -58,10 +58,30 @@ go run ./go-client/cmd/main.go
 ```
 
 ### 启动Java服务端
+
+从根目录构建所有 Java 模块：
+```shell
+mvn clean compile
+```
+
+启动 Java 服务端：
+
+**在 Linux/Mac/Git Bash 上：**
 ```shell
 cd java-server
-mvn clean package
 mvn exec:java -Dexec.mainClass=org.example.server.JavaServerApp
+```
+
+**在 Windows PowerShell 上：**
+```powershell
+cd java-server
+mvn exec:java "-Dexec.mainClass=org.example.server.JavaServerApp"
+```
+
+**或使用提供的脚本（Linux/Mac）：**
+```shell
+cd java-server
+./run.sh
 ```
 
 测试服务端是否正常：
@@ -73,10 +93,25 @@ curl \
 ```
 
 ### 启动Java客户端
+
+启动 Java 客户端：
+
+**在 Linux/Mac/Git Bash 上：**
 ```shell
 cd java-client
-mvn clean package
 mvn exec:java -Dexec.mainClass=org.example.client.JavaClientApp
+```
+
+**在 Windows PowerShell 上：**
+```powershell
+cd java-client
+mvn exec:java "-Dexec.mainClass=org.example.client.JavaClientApp"
+```
+
+**或使用提供的脚本（Linux/Mac）：**
+```shell
+cd java-client
+./run.sh
 ```
 ## 注意
 不能同时启动 Go 和 Java 服务端,Go 服务端 和 Java 服务端 都监听 相同的端口：20000，并暴露 相同的 Triple 服务路径：greet.GreetService/Greet
