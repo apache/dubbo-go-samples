@@ -42,7 +42,7 @@
 * filter: Demonstrates the use of built-in and custom filters in Dubbo-go
   * polaris/limit: Use Polaris as tps limiter
 * healthcheck: Service health check example
-* helloworld: Basic hello world example for Dubbo-go
+* helloworld: Basic Dubbo-Go and Java interoperability example
 * integrate_test: Integration test cases for Dubbo-go samples
 * java_interop: Demonstrates interoperability between Java and Go Dubbo implementations
 * llm: Example of integrating large language models (LLM) with Dubbo-go
