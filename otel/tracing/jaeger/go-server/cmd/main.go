@@ -19,41 +19,57 @@ package main
 
 import (
 	"context"
-	"log"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/otel/trace"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
-	otelconfig "github.com/apache/dubbo-go-samples/compatibility/otel/trace/config"
+	greet "github.com/apache/dubbo-go-samples/otel/tracing/jaeger/proto"
 )
 
-var userProvider = &api.GreeterClientImpl{}
+type GreetTripleServer struct {
+}
 
-func init() {
-	config.SetConsumerService(userProvider)
+func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	resp := &greet.GreetResponse{Greeting: req.Name}
+	return resp, nil
 }
 
 func main() {
-	tp := otelconfig.Init()
-	defer func() {
-		if err := tp.Shutdown(context.Background()); err != nil {
-			log.Printf("Error shutting down tracer provider: %v", err)
-		}
-	}()
-	err := config.Load()
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_otel_jaeger_server"),
+		dubbo.WithTracing(
+			trace.WithEnabled(),
+			trace.WithJaegerExporter(),
+			trace.WithW3cPropagator(),
+			trace.WithAlwaysMode(),
+			trace.WithEndpoint("http://localhost:14268/api/traces"),
+		),
+	)
 	if err != nil {
 		panic(err)
 	}
-	user, err := userProvider.SayHello(context.TODO(), &api.HelloRequest{Name: "zheyu"})
+
+	srv, err := ins.NewServer(
+		server.WithServerProtocol(protocol.WithPort(20000), protocol.WithTriple()),
+	)
 	if err != nil {
 		panic(err)
 	}
-	logger.Infof("get user = %+v", user)
+
+	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
+		panic(err)
+	}
+
+	if err := srv.Serve(); err != nil {
+		logger.Error(err)
+	}
 }

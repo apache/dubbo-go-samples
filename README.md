@@ -16,7 +16,6 @@
 * compatibility/game: Game service example
 * compatibility/generic: Generic invocation example
 * compatibility/mesh: Proxy service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes
-* compatibility/otel: How to use OpenTelemetry as Dubbo-go tracing tool
 * compatibility/proxyless: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes
 * compatibility/registry: How to use etcd/nacos/zookeeper as Dubbo-go registry
 * compatibility/rpc: Dubbo protocol communication examples
@@ -24,7 +23,6 @@
   * compatibility/rpc/grpc: Dubbo-go RPC example based on gRPC
   * compatibility/rpc/jsonrpc: Dubbo-go RPC example based on JSON-RPC
   * compatibility/rpc/triple: Dubbo-go RPC example based on hessian2/msgpack/pb(protobuf-v3)/pb2(protobuf-v2)/self-defined-serialization
-* compatibility/seata-go: Seata-go distributed transaction example
 * compatibility/skywalking: How to integrate SkyWalking into Dubbo-go
 * compatibility/tls: Use TLS encryption in getty (tcp)/triple/gRPC communication mode
 * compatibility/tracing: Tracing example

@@ -19,41 +19,51 @@ package main
 
 import (
 	"context"
-	"log"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/otel/trace"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
-	otelconfig "github.com/apache/dubbo-go-samples/compatibility/otel/trace/config"
+	greet "github.com/apache/dubbo-go-samples/otel/tracing/jaeger/proto"
 )
 
-type GreeterProvider struct {
-	api.UnimplementedGreeterServer
-}
-
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
-	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
-}
-
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-server/conf/dubbogo.yml
 func main() {
-	tp := otelconfig.Init()
-	defer func() {
-		if err := tp.Shutdown(context.Background()); err != nil {
-			log.Printf("Error shutting down tracer provider: %v", err)
-		}
-	}()
-	config.SetProviderService(&GreeterProvider{})
-	if err := config.Load(); err != nil {
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_otel_jaeger_client"),
+		dubbo.WithTracing(
+			trace.WithEnabled(),
+			trace.WithJaegerExporter(),
+			trace.WithW3cPropagator(),
+			trace.WithAlwaysMode(),
+			trace.WithEndpoint("http://localhost:14268/api/traces"),
+		),
+	)
+	if err != nil {
 		panic(err)
 	}
-	select {}
+
+	cli, err := ins.NewClient(
+		client.WithClientURL("127.0.0.1:20000"),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	svc, err := greet.NewGreetService(cli)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Infof("Greet response: %s", resp)
 }

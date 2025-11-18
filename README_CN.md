@@ -12,7 +12,6 @@
 * compatibility/game：游戏服务示例
 * compatibility/generic：泛化调用示例
 * compatibility/mesh：基于 Envoy 的服务网格部署示例
-* compatibility/otel：OpenTelemetry 链路追踪示例
 * compatibility/proxyless：Kubernetes 下 proxyless 服务网格示例
 * compatibility/registry：多种注册中心（etcd/nacos/zookeeper）用法
 * compatibility/rpc：Dubbo 协议通信示例
@@ -20,7 +19,6 @@
   * compatibility/rpc/grpc：基于 gRPC 的 Dubbo-go RPC 示例
   * compatibility/rpc/jsonrpc：基于 JSON-RPC 的 Dubbo-go RPC 示例
   * compatibility/rpc/triple：支持多种序列化（hessian2/msgpack/pb/pb2/自定义）的 triple 协议示例
-* compatibility/seata-go：seata-go 分布式事务示例
 * compatibility/skywalking：集成 SkyWalking 的 Dubbo-go 示例
 * compatibility/tls：getty(tcp)/triple/gRPC 全链路 TLS 加密通信示例
 * compatibility/tracing：链路追踪示例
