@@ -1,11 +1,13 @@
 # Helloworld for dubbo-go
 
-This example demonstrates the basic usage of dubbo-go as an RPC framework. Check [Quick Start](https://dubbo.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/) on our official website for detailed explanation.
+This example demonstrates the basic usage of dubbo-go as an RPC framework,and shows Dubbo-Go with Java Interoperability. Check [Quick Start](https://dubbo.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/) on our official website for detailed explanation.
 
 ## Contents
 
 - go-server/cmd/main.go - is the main definition of the service, handler and rpc server
 - go-client/cmd/main.go - is the rpc client
+- java-server/src/main/java/org/example/server/JavaServerApp.java - is the Java server
+- java-client/src/main/java/org/example/client/JavaClientApp.java - is the Java client
 - proto - contains the protobuf definition of the API
 
 ## How to run
@@ -34,9 +36,10 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
     ```shell
     protoc --go_out=. --go_opt=paths=source_relative --go-triple_out=. --go-triple_opt=paths=source_relative ./proto/greet.proto
     ```
+   
+4. Install `Maven` [Maven][]
 
-
-### Run server
+### Run Golang server
 ```shell
 go run ./go-server/cmd/main.go
 ```
@@ -49,11 +52,70 @@ curl \
     http://localhost:20000/greet.GreetService/Greet
 ```
 
-### Run client
+### Run Golang client
 ```shell
 go run ./go-client/cmd/main.go
 ```
 
-[Quick Start]: https://dubbo-next.staged.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/
+### Run Java server
+
+Build all Java modules from the root directory:
+```shell
+mvn clean compile
+```
+
+Run the Java server:
+
+**On Linux/Mac/Git Bash:**
+```shell
+cd java-server
+mvn exec:java -Dexec.mainClass=org.example.server.JavaServerApp
+```
+
+**On Windows PowerShell:**
+```powershell
+cd java-server
+mvn exec:java "-Dexec.mainClass=org.example.server.JavaServerApp"
+```
+
+**Or use the provided script (Linux/Mac):**
+```shell
+cd java-server
+./run.sh
+```
+
+Test server works as expected:
+```shell
+curl \
+    --header "Content-Type: application/json" \
+    --data '{"name": "Dubbo"}' \
+    http://localhost:20000/greet.GreetService/Greet
+```
+
+### Run Java client
+
+Run the Java client:
+
+**On Linux/Mac/Git Bash:**
+```shell
+cd java-client
+mvn exec:java -Dexec.mainClass=org.example.client.JavaClientApp
+```
+
+**On Windows PowerShell:**
+```powershell
+cd java-client
+mvn exec:java "-Dexec.mainClass=org.example.client.JavaClientApp"
+```
+
+**Or use the provided script (Linux/Mac):**
+```shell
+cd java-client
+./run.sh
+```
+## Attention
+Do NOT Start Go Server and Java Server at the Same Time. Both the Go server and Java server listen on the same port: 20000 and expose the same Triple service path:greet.GreetService/Greet
+
 [version3]: https://protobuf.dev/programming-guides/proto3/
 [Protocol Buffer Compiler Installation]: https://dubbo-next.staged.apache.org/zh-cn/overview/reference/protoc-installation/
+[Maven]: https://maven.apache.org/download.cgi
