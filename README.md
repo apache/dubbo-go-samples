@@ -48,7 +48,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `compatibility/async`: Callback (asynchronous) and one-way RPC examples.
 * `compatibility/config-api`: Shows how to use Dubbo-go via APIs without configuration files.
 * `compatibility/configcenter`: Usage of different config centers, including Zookeeper, Nacos, and Apollo.
-* `compatibility/filter`: Examples of different filters, including `custom_filter` and `tpslimit`.
 * `compatibility/game`: Game service example.
 * `compatibility/generic`: Generic invocation example.
 * `compatibility/mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
