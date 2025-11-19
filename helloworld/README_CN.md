@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-本示例演示了 dubbo-go 作为 RPC 框架的基本用法,并展示了 Java ↔ Go 之间的跨语言调用。详细说明请参考[官方文档-快速开始](https://dubbo.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/)。
+本示例演示了 dubbo-go 作为 RPC 框架的基本用法，并展示了 Java 和 Go 之间的跨语言调用。详细说明请参考[官方文档-快速开始](https://dubbo.apache.org/zh-cn/overview/mannual/golang-sdk/quickstart/)。
 
 ## 目录结构
 
