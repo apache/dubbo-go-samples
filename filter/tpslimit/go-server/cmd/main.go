@@ -23,17 +23,16 @@ import (
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
 
-	"github.com/dubbogo/gost/log/logger"
-)
-
-import (
 	greet "github.com/apache/dubbo-go-samples/filter/proto"
 	_ "github.com/apache/dubbo-go-samples/filter/tpslimit/go-server/pkg"
+
+	"github.com/dubbogo/gost/log/logger"
 )
 
 type GreetTripleServer struct {
@@ -67,6 +66,13 @@ func main() {
 
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
 		server.WithTpsLimiter("method-service"),
+		server.WithMethod(
+			config.WithName("Greet"),
+			config.WithTpsLimitRate(5),
+			config.WithTpsLimitInterval(1000),
+			config.WithTpsLimitStrategy("RandomLimitStrategy"),
+		),
+		server.WithTpsLimitRejectedHandler("DefaultValueHandler"),
 	); err != nil {
 		panic(err)
 	}
