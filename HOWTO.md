@@ -1,6 +1,6 @@
 # How To Run
 
-English | [中文](README_CN.md)
+English | [中文](HOWTO_CN.md)
 
 There are three ways to run dubbo-go samples:
 
