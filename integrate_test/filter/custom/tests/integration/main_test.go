@@ -15,71 +15,50 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
-	"context"
+	"os"
+	"strings"
+	"testing"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	"dubbo.apache.org/dubbo-go/v3/server"
-
-	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
+	_ "github.com/apache/dubbo-go-samples/filter/custom/go-client/filter"
 	greet "github.com/apache/dubbo-go-samples/filter/proto"
-	_ "github.com/apache/dubbo-go-samples/filter/tpslimit/go-server/pkg"
 )
 
-type GreetTripleServer struct {
-}
+var greetService greet.GreetService
 
-func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	resp := &greet.GreetResponse{Greeting: req.Name}
-	return resp, nil
-}
-
-func main() {
+func TestMain(m *testing.M) {
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_filter_tpslimit_server"),
+		dubbo.WithName("dubbo_filter_custom_client_integration"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
-		),
-		dubbo.WithProtocol(
-			protocol.WithTriple(),
-			protocol.WithPort(20000),
 		),
 	)
 	if err != nil {
 		panic(err)
 	}
 
-	srv, err := ins.NewServer()
+	cli, err := ins.NewClient()
 	if err != nil {
 		panic(err)
 	}
 
-	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
-		server.WithTpsLimiter("method-service"),
-		server.WithMethod(
-			config.WithName("Greet"),
-			config.WithTpsLimitRate(5),
-			config.WithTpsLimitInterval(1000),
-			config.WithTpsLimitStrategy("RandomLimitStrategy"),
-		),
-		server.WithTpsLimitRejectedHandler("DefaultValueHandler"),
-	); err != nil {
+	filterChain := strings.Join([]string{"myClientFilter", clientAssertFilterName}, ",")
+	greetService, err = greet.NewGreetService(cli, client.WithFilter(filterChain))
+	if err != nil {
 		panic(err)
 	}
 
-	if err := srv.Serve(); err != nil {
-		logger.Error(err)
-	}
+	os.Exit(m.Run())
 }

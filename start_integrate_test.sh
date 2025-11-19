@@ -37,7 +37,7 @@ array+=("direct")
 
 # filter
 array+=("filter/token")
-# array+=("filter/custom")  # TODO: Add integration test for filter/custom
+array+=("filter/custom")
 
 # registry
 array+=("registry/zookeeper")
