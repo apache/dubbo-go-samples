@@ -23,12 +23,23 @@ B) 自定义拒绝访问处理：
 在服务端代码中使用 v3 API 启用 tpslimit filter：
 
 ```go
+import "dubbo.apache.org/dubbo-go/v3/config"
+
 if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
 	server.WithTpsLimiter("method-service"),
+	server.WithMethod(
+		config.WithName("Greet"),
+		config.WithTpsLimitRate(5),        // 需要配置为正数，否则默认值 -1 会导致限流器被忽略
+		config.WithTpsLimitInterval(1000), // 单位 ms
+		config.WithTpsLimitStrategy("RandomLimitStrategy"),
+	),
+	server.WithTpsLimitRejectedHandler("DefaultValueHandler"),
 ); err != nil {
 	panic(err)
 }
 ```
+
+> **注意**：如果只在服务级别设置 `tps.limit.rate`，Provider 默认配置可能会覆盖该值为 `-1`。因此示例通过 `server.WithMethod` 在方法级别写入正确的速率与时间窗口，确保 `greet.GreetService#Greet` 能被限流。
 
 自定义的 TPS 限流策略和拒绝执行处理器通过各自包的 `init()` 函数中的 `extension.SetTpsLimitStrategy()` 和 `extension.SetRejectedExecutionHandler()` 进行注册。
 
