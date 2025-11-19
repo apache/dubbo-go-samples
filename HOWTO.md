@@ -1,5 +1,7 @@
 # How To Run
 
+English | [中文](README_CN.md)
+
 There are three ways to run dubbo-go samples:
 
 1. Quick start with bash command: start the sample and perform unit testing through a simple command line
