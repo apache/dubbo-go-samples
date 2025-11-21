@@ -18,32 +18,25 @@
 package integration
 
 import (
-	"os"
+	"context"
 	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/stretchr/testify/assert"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/game/go-server-game/pkg"
-	"github.com/apache/dubbo-go-samples/compatibility/game/pkg/pojo"
+	gate "github.com/apache/dubbo-go-samples/game/proto/gate"
 )
 
-var gameProvider = pkg.BasketballService{}
-
-func TestMain(m *testing.M) {
-	config.SetConsumerService(gameProvider)
-
-	hessian.RegisterPOJO(&pojo.Result{})
-	err := config.Load()
-	if err != nil {
-		panic(err)
-	}
-
-	os.Exit(m.Run())
+func TestSend(t *testing.T) {
+	uid := t.Name()
+	res, err := gateService.Send(context.TODO(), &gate.SendRequest{Uid: uid, Data: "hello"})
+	assert.Nil(t, err)
+	assert.NotNil(t, res)
+	assert.Equal(t, int32(0), res.Code)
+	data := res.Data.AsMap()
+	assert.Equal(t, uid, data["to"])
+	assert.Equal(t, "hello", data["message"])
 }

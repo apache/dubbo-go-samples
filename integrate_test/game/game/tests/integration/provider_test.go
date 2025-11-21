@@ -26,26 +26,53 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+import (
+	game "github.com/apache/dubbo-go-samples/game/proto/game"
+)
+
 func TestLogin(t *testing.T) {
-	res, err := gameProvider.Login(context.TODO(), "A001")
-	assert.Nil(t, err)
-	assert.NotNil(t, res)
-	assert.Equal(t, int32(0), res.Code)
-	assert.NotNil(t, res.Data)
-	assert.Equal(t, "A001", res.Data["to"])
-	assert.Equal(t, 0, res.Data["score"])
+	uid := t.Name()
+	res := login(t, uid)
+	data := res.Data.AsMap()
+	assert.Equal(t, uid, data["to"])
+	assert.EqualValues(t, 0, data["score"])
 }
 
 func TestScore(t *testing.T) {
-	res, err := gameProvider.Score(context.TODO(), "A001", "1")
+	uid := t.Name()
+	_ = login(t, uid)
+
+	res, err := gameService.Score(context.TODO(), &game.ScoreRequest{Uid: uid, Score: "1"})
 	assert.Nil(t, err)
 	assert.NotNil(t, res)
 	assert.Equal(t, int32(0), res.Code)
+	data := res.Data.AsMap()
+	assert.Equal(t, uid, data["to"])
+	assert.EqualValues(t, 1, data["score"])
 }
 
 func TestRank(t *testing.T) {
-	res, err := gameProvider.Rank(context.TODO(), "A001")
+	uid := t.Name()
+	_ = login(t, uid)
+
+	// boost score so this user ranks first regardless of previous tests
+	_, err := gameService.Score(context.TODO(), &game.ScoreRequest{Uid: uid, Score: "100"})
+	assert.Nil(t, err)
+
+	res, err := gameService.Rank(context.TODO(), &game.RankRequest{Uid: uid})
 	assert.Nil(t, err)
 	assert.NotNil(t, res)
 	assert.Equal(t, int32(0), res.Code)
+	data := res.Data.AsMap()
+	assert.Equal(t, uid, data["to"])
+	assert.EqualValues(t, 1, data["rank"])
+}
+
+func login(t *testing.T, uid string) *game.Result {
+	t.Helper()
+	res, err := gameService.Login(context.TODO(), &game.LoginRequest{Uid: uid})
+	assert.Nil(t, err)
+	assert.NotNil(t, res)
+	assert.Equal(t, int32(0), res.Code)
+	return res
 }

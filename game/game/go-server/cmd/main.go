@@ -15,34 +15,44 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
-	"os"
-	"testing"
-)
-
-import (
-	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
 
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/game/go-server-gate/pkg"
-	"github.com/apache/dubbo-go-samples/compatibility/game/pkg/pojo"
+	"github.com/apache/dubbo-go-samples/game/game/pkg"
+	game "github.com/apache/dubbo-go-samples/game/proto/game"
 )
 
-var gateProvider = pkg.BasketballService{}
-
-func TestMain(m *testing.M) {
-	config.SetConsumerService(gateProvider)
-
-	hessian.RegisterPOJO(&pojo.Result{})
-	if err := config.Load(); err != nil {
-		panic(err)
+func main() {
+	srv, err := server.NewServer(
+		server.WithServerProtocol(
+			protocol.WithPort(20000),
+			protocol.WithTriple(),
+		),
+	)
+	if err != nil {
+		logger.Fatalf("failed to create server: %v", err)
 	}
 
-	os.Exit(m.Run())
+	// Initialize gate client
+	cli, err := pkg.InitGateClient()
+	if err != nil {
+		logger.Fatalf("failed to create gate client: %v", err)
+	}
+	pkg.SetGateClient(cli)
+
+	if err := game.RegisterGameServiceHandler(srv, &pkg.GameServiceHandler{}); err != nil {
+		logger.Fatalf("failed to register game service handler: %v", err)
+	}
+
+	if err := srv.Serve(); err != nil {
+		logger.Fatalf("failed to serve: %v", err)
+	}
 }

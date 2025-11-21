@@ -39,7 +39,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/game/go-server-gate/pkg"
+	"github.com/apache/dubbo-go-samples/game/gate/pkg"
 	gateProto "github.com/apache/dubbo-go-samples/game/proto/gate"
 )
 
@@ -163,16 +163,17 @@ func startHttp() {
 	})
 
 	// Serve static files from website directory (after API endpoints)
-	// Get the game directory (two levels up from cmd/)
-	workDir, _ := os.Getwd()
-	gameDir := workDir
-	// If running from go-server-gate/cmd/, go up two levels to game/
-	if filepath.Base(workDir) == "cmd" {
-		gameDir = filepath.Dir(workDir) // go from cmd to go-server-gate
-		gameDir = filepath.Dir(gameDir) // go from go-server-gate to game
+	websiteDir := resolveWebsiteDir()
+	var fs http.Handler
+	if websiteDir != "" {
+		logger.Infof("serving static files from %s", websiteDir)
+		fs = http.FileServer(http.Dir(websiteDir))
+	} else {
+		logger.Warnf("website directory not found, static files disabled")
+		fs = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			http.NotFound(w, r)
+		})
 	}
-	websiteDir := filepath.Join(gameDir, "website")
-	fs := http.FileServer(http.Dir(websiteDir))
 	// Only serve static files for non-API paths
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Check if it's an API endpoint
@@ -199,4 +200,42 @@ func responseWithOrigin(w http.ResponseWriter, r *http.Request, code int, json [
 	if err != nil {
 		panic(err)
 	}
+}
+
+func resolveWebsiteDir() string {
+	if dir := os.Getenv("GAME_WEBSITE_DIR"); dir != "" {
+		return dir
+	}
+
+	var roots []string
+	if wd, err := os.Getwd(); err == nil {
+		roots = append(roots, wd)
+	}
+	if exe, err := os.Executable(); err == nil {
+		roots = append(roots, filepath.Dir(exe))
+	}
+
+	seen := make(map[string]struct{})
+	for _, root := range roots {
+		cur := root
+		for i := 0; i < 6; i++ {
+			if _, ok := seen[cur]; ok {
+				break
+			}
+			seen[cur] = struct{}{}
+
+			candidate := filepath.Join(cur, "website")
+			if info, err := os.Stat(candidate); err == nil && info.IsDir() {
+				return candidate
+			}
+
+			parent := filepath.Dir(cur)
+			if parent == cur {
+				break
+			}
+			cur = parent
+		}
+	}
+
+	return ""
 }

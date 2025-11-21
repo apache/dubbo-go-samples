@@ -15,44 +15,44 @@
  * limitations under the License.
  */
 
-package main
+package integration
 
 import (
+	"os"
+	"testing"
+)
+
+import (
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/server"
-
-	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/game/go-server-game/pkg"
-	game "github.com/apache/dubbo-go-samples/game/proto/game"
+	gate "github.com/apache/dubbo-go-samples/game/proto/gate"
 )
 
-func main() {
-	srv, err := server.NewServer(
-		server.WithServerProtocol(
-			protocol.WithPort(20000),
-			protocol.WithTriple(),
-		),
+var gateService gate.GateService
+
+func TestMain(m *testing.M) {
+	var err error
+	cli, err := client.NewClient(
+		client.WithClientURL(envOrDefault("GATE_SERVER_ADDR", "127.0.0.1:20001")),
 	)
 	if err != nil {
-		logger.Fatalf("failed to create server: %v", err)
+		panic(err)
 	}
 
-	// Initialize gate client
-	cli, err := pkg.InitGateClient()
+	gateService, err = gate.NewGateService(cli)
 	if err != nil {
-		logger.Fatalf("failed to create gate client: %v", err)
-	}
-	pkg.SetGateClient(cli)
-
-	if err := game.RegisterGameServiceHandler(srv, &pkg.GameServiceHandler{}); err != nil {
-		logger.Fatalf("failed to register game service handler: %v", err)
+		panic(err)
 	}
 
-	if err := srv.Serve(); err != nil {
-		logger.Fatalf("failed to serve: %v", err)
+	os.Exit(m.Run())
+}
+
+func envOrDefault(key, fallback string) string {
+	if val := os.Getenv(key); val != "" {
+		return val
 	}
+	return fallback
 }

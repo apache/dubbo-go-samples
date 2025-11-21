@@ -6,18 +6,18 @@ This example demonstrates a football game application using dubbo-go as an RPC f
 
 ## Architecture
 
-- **go-server-game**: Game service that handles game logic (Login, Score, Rank)
-- **go-server-gate**: Gate service that provides HTTP API for web frontend and RPC service for game service
+- **game**: Game service that handles game logic (Login, Score, Rank)
+- **gate**: Gate service that provides HTTP API for web frontend and RPC service for game service
 - **website**: Web frontend for the football game
 - **proto**: Protocol buffer definitions for game and gate services
 
 ## Contents
 
-- `go-server-game/cmd/main.go` - Game service server implementation
-- `go-server-game/pkg/provider.go` - Game service handler implementation
-- `go-server-gate/cmd/main.go` - Gate service server with HTTP and RPC
-- `go-server-gate/pkg/provider.go` - Gate service handler implementation
-- `go-server-gate/pkg/consumer.go` - Game service client for gate service
+- `game/go-server/cmd/main.go` - Game service server implementation
+- `game/pkg/provider.go` - Game service handler implementation
+- `gate/go-server/cmd/main.go` - Gate service server with HTTP and RPC
+- `gate/pkg/provider.go` - Gate service handler implementation
+- `gate/pkg/consumer.go` - Game service client for gate service
 - `proto/` - Protocol buffer definitions and generated code
 - `website/` - Web frontend files
 
@@ -28,7 +28,7 @@ This example demonstrates a football game application using dubbo-go as an RPC f
 Start the game service server (listens on port 20000):
 
 ```shell
-go run ./go-server-game/cmd/main.go
+go run ./game/go-server/cmd/main.go
 ```
 
 ### Run Gate Server
@@ -36,7 +36,7 @@ go run ./go-server-game/cmd/main.go
 Start the gate service server (listens on port 20001 for RPC and 8089 for HTTP):
 
 ```shell
-go run ./go-server-gate/cmd/main.go
+go run ./gate/go-server/cmd/main.go
 ```
 
 ### Access Web Frontend
