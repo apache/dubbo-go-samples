@@ -18,35 +18,44 @@
 package integration
 
 import (
+	"os"
 	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/async/go-client/pkg"
+	user "github.com/apache/dubbo-go-samples/async/proto"
 )
 
 var (
-	userProvider   = &pkg.UserProvider{}
-	userProviderV2 = &pkg.UserProviderV2{}
+	userProvider   user.UserProvider
+	userProviderV2 user.UserProviderV2
 )
 
 func TestMain(m *testing.M) {
-	hessian.RegisterJavaEnum(pkg.MAN)
-	hessian.RegisterJavaEnum(pkg.WOMAN)
-	hessian.RegisterPOJO(&pkg.User{})
-
-	config.SetConsumerService(userProvider)
-	config.SetConsumerService(userProviderV2)
-
-	err := config.Load()
+	cli, err := client.NewClient(
+		client.WithClientProtocolTriple(),
+		client.WithClientURL("tri://127.0.0.1:20000"),
+		client.WithClientSerialization(constant.ProtobufSerialization),
+	)
 	if err != nil {
 		panic(err)
 	}
+
+	userProvider, err = user.NewUserProvider(cli, client.WithAsync())
+	if err != nil {
+		panic(err)
+	}
+
+	userProviderV2, err = user.NewUserProviderV2(cli, client.WithAsync())
+	if err != nil {
+		panic(err)
+	}
+
+	os.Exit(m.Run())
 }
