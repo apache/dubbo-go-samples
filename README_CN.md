@@ -10,6 +10,7 @@
 
 ### 示例
 
+* `async`：回调（异步）与单向 RPC 调用示例。
 * `book-flight-ai-agent`：使用 AI Agent 实现机票预订的示例。
 * `config_center`：演示如何使用不同配置中心（如 Nacos、Zookeeper）进行配置管理。
 * `config_yaml`：展示如何使用 YAML 文件配置 Dubbo-go 应用。
@@ -45,7 +46,6 @@
 ### compatibility（旧版 Dubbo-go 示例）
 
 * `compatibility/apisix`：Dubbo-go 集成 Apache APISIX 的示例。
-* `compatibility/async`：回调（异步）与单向 RPC 调用示例。
 * `compatibility/config-api`：演示如何在不使用配置文件的情况下，通过 API 使用 Dubbo-go。
 * `compatibility/configcenter`：不同配置中心的使用示例，包括 Zookeeper、Nacos 和 Apollo。
 * `compatibility/filter`：多种 Filter 示例，包括 `custom_filter` 和 `tpslimit`。

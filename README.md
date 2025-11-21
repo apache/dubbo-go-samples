@@ -10,6 +10,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 
 ### Samples
 
+* `async`: Callback (asynchronous) and one-way RPC examples.
 * `book-flight-ai-agent`: Example of booking flights using an AI agent.
 * `config_center`: Demonstrates how to use different config centers (e.g., Nacos, Zookeeper) for configuration management.
 * `config_yaml`: Shows how to configure Dubbo-go applications using YAML files.
@@ -45,7 +46,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 ### compatibility (legacy Dubbo-go samples)
 
 * `compatibility/apisix`: Example integrating Apache APISIX with Dubbo-go.
-* `compatibility/async`: Callback (asynchronous) and one-way RPC examples.
 * `compatibility/config-api`: Shows how to use Dubbo-go via APIs without configuration files.
 * `compatibility/configcenter`: Usage of different config centers, including Zookeeper, Nacos, and Apollo.
 * `compatibility/filter`: Examples of different filters, including `custom_filter` and `tpslimit`.
