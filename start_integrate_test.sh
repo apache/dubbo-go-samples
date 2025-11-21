@@ -19,8 +19,8 @@
 array+=("helloworld")
 
 # game
-#array+=("game/go-server-game")
-#array+=("game/go-server-gate")
+#array+=("game/game")
+#array+=("game/gate")
 
 # config-api
 array+=("compatibility/config-api/rpc/triple")
