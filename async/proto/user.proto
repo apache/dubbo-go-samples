@@ -15,38 +15,53 @@
  * limitations under the License.
  */
 
-package pkg
+syntax = "proto3";
 
-import (
-	"context"
-	"fmt"
-)
+package user;
 
-import (
-	gxlog "github.com/dubbogo/gost/log"
-)
+option go_package = "github.com/apache/dubbo-go-samples/async/proto;user";
 
-type UserProvider struct {
+// Gender enumeration
+enum Gender {
+  MAN = 0;
+  WOMAN = 1;
 }
 
-func (u *UserProvider) getUser(userID string) (*User, error) {
-	if user, ok := userMap[userID]; ok {
-		return &user, nil
-	}
-
-	return nil, fmt.Errorf("invalid user id:%s", userID)
+// User message
+message User {
+  string id = 1;
+  string name = 2;
+  int32 age = 3;
+  int64 time = 4; // Unix timestamp in seconds
+  Gender sex = 5;
 }
 
-func (u *UserProvider) GetUser(ctx context.Context, req *User) (*User, error) {
-	var (
-		err  error
-		user *User
-	)
-
-	gxlog.CInfo("req:%#v", req)
-	user, err = u.getUser(req.ID)
-	if err == nil {
-		gxlog.CInfo("rsp:%#v", user)
-	}
-	return user, err
+// GetUser request
+message GetUserRequest {
+  string id = 1;
 }
+
+// GetUser response
+message GetUserResponse {
+  User user = 1;
+}
+
+// SayHello request
+message SayHelloRequest {
+  string user_id = 1;
+}
+
+// SayHello response (empty for one-way call)
+message SayHelloResponse {
+}
+
+// UserProvider service
+service UserProvider {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+}
+
+// UserProviderV2 service
+service UserProviderV2 {
+  rpc SayHello(SayHelloRequest) returns (SayHelloResponse);
+}
+

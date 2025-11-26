@@ -15,33 +15,50 @@
  * limitations under the License.
  */
 
-package integration
+package user
 
 import (
-	"context"
-	"testing"
 	"time"
 )
 
-import (
-	"github.com/stretchr/testify/assert"
+var (
+	// UserMap stores user data
+	UserMap = make(map[string]*User)
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/compatibility/async/go-client/pkg"
-)
-
-func TestAsync(t *testing.T) {
-	reqUser := &pkg.User{}
-	reqUser.ID = "003"
-	_, err := userProvider.GetUser(context.TODO(), reqUser)
-	assert.Nil(t, err)
-	// Mock do something else
-	// Wait for Callback
-	time.Sleep(time.Second)
+func init() {
+	UserMap["000"] = &User{
+		Id:   "000",
+		Name: "Alex Stocks",
+		Age:  31,
+		Time: time.Now().Unix(),
+		Sex:  Gender_MAN,
+	}
+	UserMap["001"] = &User{
+		Id:   "001",
+		Name: "ZhangSheng",
+		Age:  18,
+		Time: time.Now().Unix(),
+		Sex:  Gender_MAN,
+	}
+	UserMap["002"] = &User{
+		Id:   "002",
+		Name: "Lily",
+		Age:  20,
+		Time: time.Now().Unix(),
+		Sex:  Gender_WOMAN,
+	}
+	UserMap["003"] = &User{
+		Id:   "003",
+		Name: "Moorse",
+		Age:  30,
+		Time: time.Now().Unix(),
+		Sex:  Gender_WOMAN,
+	}
 }
 
-func TestAsyncOneWay(t *testing.T) {
-	err := userProviderV2.SayHello(context.TODO(), "003")
-	assert.Nil(t, err)
+// GetUserByID returns user by id
+func GetUserByID(id string) (*User, bool) {
+	user, ok := UserMap[id]
+	return user, ok
 }

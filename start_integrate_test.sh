@@ -80,7 +80,7 @@ array+=("rpc/multi-protocols")
 #array+=("compatibility/tls/grpc")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
 
 # async
-array+=("compatibility/async")
+array+=("async")
 
 # error
 array+=("error")

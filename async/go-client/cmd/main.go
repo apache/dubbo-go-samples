@@ -23,33 +23,38 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/async/go-client/pkg"
+	user "github.com/apache/dubbo-go-samples/async/proto"
 )
 
 var (
-	userProvider   = &pkg.UserProvider{}
-	userProviderV2 = &pkg.UserProviderV2{}
+	userProvider   user.UserProvider
+	userProviderV2 user.UserProviderV2
 )
 
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "conf/dubbogo.yml" before run
 func main() {
-	hessian.RegisterJavaEnum(pkg.MAN)
-	hessian.RegisterJavaEnum(pkg.WOMAN)
-	hessian.RegisterPOJO(&pkg.User{})
+	cli, err := client.NewClient(
+		client.WithClientProtocolTriple(),
+		client.WithClientURL("tri://127.0.0.1:20000"),
+		client.WithClientSerialization(constant.ProtobufSerialization),
+	)
+	if err != nil {
+		panic(err)
+	}
 
-	config.SetConsumerService(userProvider)
-	config.SetConsumerService(userProviderV2)
+	userProvider, err = user.NewUserProvider(cli, client.WithAsync())
+	if err != nil {
+		panic(err)
+	}
 
-	err := config.Load()
+	userProviderV2, err = user.NewUserProviderV2(cli, client.WithAsync())
 	if err != nil {
 		panic(err)
 	}
@@ -58,25 +63,21 @@ func main() {
 	testAsyncOneWay()
 }
 
-// two-way
 func testAsync() {
-	reqUser := &pkg.User{}
-	reqUser.ID = "003"
-	_, err := userProvider.GetUser(context.TODO(), reqUser)
+	req := &user.GetUserRequest{Id: "003"}
+	_, err := userProvider.GetUser(context.Background(), req)
 	if err != nil {
 		panic(err)
 	}
 
-	// Mock do something else
 	logger.Info("non-blocking before async callback resp: do something ... ")
 
-	// Wait for Callback
 	time.Sleep(time.Second)
 }
 
-// one-way
 func testAsyncOneWay() {
-	err := userProviderV2.SayHello(context.TODO(), "003")
+	req := &user.SayHelloRequest{UserId: "003"}
+	_, err := userProviderV2.SayHello(context.Background(), req)
 	if err != nil {
 		panic(err)
 	}

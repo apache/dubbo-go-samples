@@ -15,39 +15,32 @@
  * limitations under the License.
  */
 
-package pkg
+package integration
 
 import (
 	"context"
-	"fmt"
+	"testing"
+	"time"
 )
 
 import (
-	gxlog "github.com/dubbogo/gost/log"
+	"github.com/stretchr/testify/assert"
 )
 
-type UserProviderV2 struct {
+import (
+	user "github.com/apache/dubbo-go-samples/async/proto"
+)
+
+func TestAsync(t *testing.T) {
+	req := &user.GetUserRequest{Id: "003"}
+	_, err := userProvider.GetUser(context.Background(), req)
+	assert.Nil(t, err)
+
+	time.Sleep(time.Second)
 }
 
-func (u *UserProviderV2) getUser(userID string) (*User, error) {
-	if user, ok := userMap[userID]; ok {
-		return &user, nil
-	}
-
-	return nil, fmt.Errorf("invalid user id:%s", userID)
-}
-
-func (u *UserProviderV2) SayHello(ctx context.Context, userID string) error {
-	var (
-		err  error
-		user *User
-	)
-
-	user, err = u.getUser(userID)
-	if err != nil {
-		panic(err)
-	}
-
-	gxlog.CInfo("hello, %s", user.Name)
-	return nil
+func TestAsyncOneWay(t *testing.T) {
+	req := &user.SayHelloRequest{UserId: "003"}
+	_, err := userProviderV2.SayHello(context.Background(), req)
+	assert.Nil(t, err)
 }
