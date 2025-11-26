@@ -44,6 +44,3 @@ Consumer log:
 ```
 INFO ... direct call response: hello dubbo-go
 ```
-
-That's it—this sample shows the minimal code you need to stand up a direct triple connection with Dubbo-Go.
-

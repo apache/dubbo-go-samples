@@ -44,5 +44,3 @@ INFO ... Direct server received name = dubbo-go
 ```
 INFO ... direct call response: hello dubbo-go
 ```
-
-以上就是使用 Dubbo-Go 实现 Triple 直连的全部步骤。
