@@ -1,6 +1,6 @@
 # Game Example for dubbo-go
 
-English | [中文](README_CN.md)
+English | [中文](README_zh.md)
 
 This example demonstrates a football game application using dubbo-go as an RPC framework. It consists of two services: a game service that handles game logic (login, scoring, ranking) and a gate service that provides HTTP endpoints for the web frontend and acts as a gateway between the frontend and game service.
 
@@ -70,4 +70,3 @@ curl "http://127.0.0.1:8089/rank?name=player1"
 
 - Make sure both game server and gate server are running before accessing the web frontend
 - The game server must be started before the gate server, as the gate server needs to connect to the game service
-- Both services use Triple protocol for RPC communication

@@ -175,7 +175,7 @@ createApp({
             }
 
             // Get initial marginLeft (set to -4rem in CSS, which is -64px)
-            const initialMargin = -64; // 8rem / 2 = 4rem = 64px
+            const initialMargin = -64; // 4rem = 64px
             let tempValue = 0;
             let increase = 1;
 

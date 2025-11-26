@@ -36,9 +36,6 @@ go run ./game/go-server/cmd/main.go
 启动网关服务服务器（监听端口 20001 用于 RPC，8089 用于 HTTP）：
 
 ```shell
-[version3]: https://protobuf.dev/programming-guides/proto3/
-[Protocol Buffer Compiler Installation]: https://dubbo-next.staged.apache.org/zh-cn/overview/reference/protoc-installation/
-
 go run ./gate/go-server/cmd/main.go
 ```
 
@@ -74,3 +71,5 @@ curl "http://127.0.0.1:8089/rank?name=player1"
 - 在访问 Web 前端之前，请确保游戏服务器和网关服务器都在运行
 - 游戏服务器必须在网关服务器之前启动，因为网关服务器需要连接到游戏服务
 
+[version3]: https://protobuf.dev/programming-guides/proto3/
+[Protocol Buffer Compiler Installation]: https://dubbo-next.staged.apache.org/zh-cn/overview/reference/protoc-installation/
