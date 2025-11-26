@@ -21,6 +21,7 @@
 * `healthcheck`：服务健康检查示例。
 * `helloworld`：Dubbo-go 最基础的 “Hello World” 示例，同时包含 Go 与 Java 的互操作示例。
 * `direct`：不依赖注册中心的 Triple 点对点调用示例。
+* `game`：游戏服务示例。
 * `integrate_test`：Dubbo-go 示例的集成测试用例。
 * `java_interop`：展示 Java 与 Go Dubbo 实现之间的互操作能力。
 * `llm`：将大模型（LLM）集成到 Dubbo-go 中的示例。
@@ -49,7 +50,6 @@
 * `compatibility/config-api`：演示如何在不使用配置文件的情况下，通过 API 使用 Dubbo-go。
 * `compatibility/configcenter`：不同配置中心的使用示例，包括 Zookeeper、Nacos 和 Apollo。
 * `compatibility/filter`：多种 Filter 示例，包括 `custom_filter` 和 `tpslimit`。
-* `compatibility/game`：游戏服务示例。
 * `compatibility/generic`：泛化调用示例。
 * `compatibility/mesh`：基于代理的服务网格示例，展示如何在 Kubernetes 上结合 Envoy 部署 Dubbo-go 服务。
 * `compatibility/proxyless`：无 Sidecar 的服务网格示例，展示在 Kubernetes 上的部署方式。

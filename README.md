@@ -21,6 +21,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `healthcheck`: Service health check example.
 * `helloworld`: Basic “Hello World” example for Dubbo-go, also includes Go–Java interoperability.
 * `direct`: Triple point-to-point invocation sample without a registry.
+* `game`: Game service example.
 * `integrate_test`: Integration test cases for Dubbo-go samples.
 * `java_interop`: Demonstrates interoperability between Java and Go Dubbo implementations.
 * `llm`: Example of integrating Large Language Models (LLMs) with Dubbo-go.
@@ -49,7 +50,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `compatibility/config-api`: Shows how to use Dubbo-go via APIs without configuration files.
 * `compatibility/configcenter`: Usage of different config centers, including Zookeeper, Nacos, and Apollo.
 * `compatibility/filter`: Examples of different filters, including `custom_filter` and `tpslimit`.
-* `compatibility/game`: Game service example.
 * `compatibility/generic`: Generic invocation example.
 * `compatibility/mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `compatibility/proxyless`: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes.
