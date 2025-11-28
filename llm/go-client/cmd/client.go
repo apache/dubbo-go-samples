@@ -22,6 +22,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -142,13 +143,51 @@ func main() {
 		return
 	}
 
-	availableModels = cfg.OllamaModels
-	currentModel = cfg.DefaultModel()
+	// Use the configured LLM models list and the configured model name
+	availableModels = cfg.LLMModelsList
+	currentModel = cfg.ModelName
 	maxContextCount = cfg.MaxContextCount
 
-	currentCtxID = createContext()
+	// Interactive model selection at startup
+	if len(availableModels) > 1 {
+		fmt.Println("Available models:")
+		for i, m := range availableModels {
+			marker := " "
+			if m == currentModel {
+				marker = "*"
+			}
+			fmt.Printf("%d) %s %s\n", i+1, marker, m)
+		}
+		fmt.Printf("Select model by number or name (press Enter to keep default '%s'): ", currentModel)
+		reader := bufio.NewReader(os.Stdin)
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+		if input != "" {
+			if idx, err := strconv.Atoi(input); err == nil {
+				if idx >= 1 && idx <= len(availableModels) {
+					currentModel = availableModels[idx-1]
+				} else {
+					fmt.Printf("Invalid selection index, keeping default: %s\n", currentModel)
+				}
+			} else {
+				// treat input as model name
+				found := false
+				for _, m := range availableModels {
+					if m == input {
+						currentModel = m
+						found = true
+						break
+					}
+				}
+				if !found {
+					fmt.Printf("Model '%s' not found, keeping default: %s\n", input, currentModel)
+				}
+			}
+		}
+		fmt.Printf("Using model: %s\n", currentModel)
+	}
 
-	// TODO: support selecting model
+	currentCtxID = createContext()
 	ins, err := dubbo.NewInstance(
 		dubbo.WithRegistry(
 			registry.WithNacos(),
