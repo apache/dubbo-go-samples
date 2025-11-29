@@ -23,241 +23,134 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	"dubbo.apache.org/dubbo-go/v3/config/generic"
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-
-	"github.com/dubbogo/gost/log/logger"
-
-	tpconst "github.com/dubbogo/triple/pkg/common/constant"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+	"github.com/apache/dubbo-go-samples/generic/go-client/pkg"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/generic/default/go-client/pkg"
+	hessian "github.com/apache/dubbo-go-hessian2"
+	"github.com/dubbogo/gost/log/logger"
 )
 
-const appName = "dubbo.io"
+const (
+	RegistryAddress    = "127.0.0.1:2181"
+	UserProvider       = "org.apache.dubbo.samples.UserProvider"
+	ServiceVersion     = "1.0.0"
+	ServiceGroupTriple = "dubbo"
+)
 
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/generic/default/go-client/conf/dubbogo.yml
+func createServiceConnection(cli *client.Client, serviceInterface string) (*client.Connection, error) {
+	return cli.Dial(
+		serviceInterface,
+		client.WithGeneric(),
+		client.WithVersion(ServiceVersion),
+		client.WithGroup(ServiceGroupTriple),
+	)
+}
+
 func main() {
-	// register POJOs
 	hessian.RegisterPOJO(&pkg.User{})
 
-	// generic invocation samples using hessian serialization on Dubbo protocol
-	dubboRefConf := newRefConf("org.apache.dubbo.samples.UserProvider", dubbo.DUBBO)
-	callGetUser(dubboRefConf)
-	//callGetOneUser(dubboRefConf)
-	callGetUsers(dubboRefConf)
-	callGetUsersMap(dubboRefConf)
-	callQueryUser(dubboRefConf)
-	callQueryUsers(dubboRefConf)
-	//callQueryAll(dubboRefConf)
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("generic-dubbo-client"),
+		dubbo.WithRegistry(
+			registry.WithZookeeper(),
+			registry.WithAddress(RegistryAddress),
+		),
+	)
+	if err != nil {
+		logger.Fatalf("Failed to create Dubbo instance: %v", err)
+	}
 
-	// generic invocation samples using hessian serialization on Triple protocol
-	tripleRefConf := newRefConf("org.apache.dubbo.samples.UserProviderTriple", tpconst.TRIPLE)
-	callGetUser(tripleRefConf)
-	//callGetOneUser(tripleRefConf)
-	callGetUsers(tripleRefConf)
-	callGetUsersMap(tripleRefConf)
-	callQueryUser(tripleRefConf)
-	callQueryUsers(tripleRefConf)
-	//callQueryAll(tripleRefConf)
+	tripleCli, err := ins.NewClient(
+		client.WithClientProtocolDubbo(),
+		client.WithClientSerialization(constant.Hessian2Serialization),
+	)
+	if err != nil {
+		logger.Fatalf("Failed to create Dubbo client: %v", err)
+	}
 
+	tripleConn, err := createServiceConnection(tripleCli, UserProvider)
+	if err != nil {
+		logger.Fatalf("Failed to create Dubbo connection: %v", err)
+	}
+
+	logger.Info("\n=== Testing Dubbo Protocol ===")
+	testUserService(tripleConn)
 }
 
-func callGetUser(refConf config.ReferenceConfig) {
-	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"GetUser1",
-		[]string{"java.lang.String"},
-		[]hessian.Object{"A003"},
-	)
-
-	if err != nil {
-		panic(err)
+func testUserService(conn *client.Connection) {
+	call := func(methodName string, params []interface{}) (interface{}, error) {
+		var result interface{}
+		err := conn.CallUnary(
+			context.TODO(),
+			params,
+			&result,
+			methodName,
+		)
+		return result, err
 	}
-	logger.Infof("GetUser1(userId string) res: %+v", resp)
 
-	resp, err = refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"GetUser2",
-		[]string{"java.lang.String", "java.lang.String"},
-		[]hessian.Object{"A003", "lily"},
-	)
-	if err != nil {
-		panic(err)
+	testUserID := "A003"
+	testUserName := "lily"
+	testUserCode := int32(1)
+	testUserIDs := []string{"001", "002", "003", "004"}
+
+	testUser := &pkg.User{
+		ID:   "3213",
+		Name: "panty",
+		Age:  25,
+		Time: time.Now(),
 	}
-	logger.Infof("GetUser2(userId string, name string) res: %+v", resp)
 
-	resp, err = refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"GetUser3",
-		[]string{"int"},
-		[]hessian.Object{1},
-	)
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("GetUser3(userCode int) res: %+v", resp)
-
-	resp, err = refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"GetUser4",
-		[]string{"int", "java.lang.String"},
-		[]hessian.Object{1, "zhangsan"},
-	)
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("GetUser4(userCode int, name string) res: %+v", resp)
-}
-
-// nolint
-func callGetOneUser(refConf config.ReferenceConfig) {
-	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"GetOneUser",
-		[]string{},
-		// TODO go-go []hessian.Object{}, go-java []string{}
-		[]hessian.Object{},
-	)
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("GetOneUser() res: %+v", resp)
-}
-
-func callGetUsers(refConf config.ReferenceConfig) {
-	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"GetUsers",
-		[]string{"java.util.List"},
-		[]hessian.Object{
-			[]hessian.Object{
-				"001", "002", "003", "004",
-			},
+	testUsers := []*pkg.User{
+		{
+			ID:   "3212",
+			Name: "XavierNiu",
+			Age:  24,
+			Time: time.Now().Add(4),
 		},
-	)
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("GetUsers1(userIdList []*string) res: %+v", resp)
-}
-
-func callGetUsersMap(refConf config.ReferenceConfig) {
-	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"GetUsersMap",
-		[]string{"java.util.List"},
-		[]hessian.Object{
-			[]hessian.Object{
-				"001", "002", "003", "004",
-			},
+		{
+			ID:   "3213",
+			Name: "zhangsan",
+			Age:  21,
+			Time: time.Now().Add(4),
 		},
-	)
-	if err != nil {
-		panic(err)
 	}
-	logger.Infof("GetUserMap(userIdList []*string) res: %+v", resp)
+
+	result, err := call("GetUser1", []interface{}{testUserID})
+	logResult("GetUser1", result, err)
+
+	result, err = call("GetUser2", []interface{}{testUserID, testUserName})
+	logResult("GetUser2", result, err)
+
+	result, err = call("GetUser3", []interface{}{testUserCode})
+	logResult("GetUser3", result, err)
+
+	result, err = call("GetUser4", []interface{}{testUserCode, "zhangsan"})
+	logResult("GetUser4", result, err)
+
+	result, err = call("GetUsers", []interface{}{testUserIDs})
+	logResult("GetUsers", result, err)
+
+	result, err = call("GetUsersMap", []interface{}{testUserIDs})
+	logResult("GetUsersMap", result, err)
+
+	result, err = call("QueryUser", []interface{}{testUser})
+	logResult("QueryUser", result, err)
+
+	result, err = call("QueryUsers", []interface{}{testUsers})
+	logResult("QueryUsers", result, err)
 }
 
-func callQueryUser(refConf config.ReferenceConfig) {
-	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"queryUser",
-		[]string{"org.apache.dubbo.samples.User"},
-		// the map represents a User object:
-		// &User {
-		// 		ID: "3213",
-		// 		Name: "panty",
-		// 		Age: 25,
-		// 		Time: time.Now(),
-		// }
-		[]hessian.Object{
-			map[string]hessian.Object{
-				"iD":   "3213",
-				"name": "panty",
-				"age":  25,
-				"time": time.Now(),
-			}},
-	)
+func logResult(methodName string, result interface{}, err error) {
 	if err != nil {
-		panic(err)
+		logger.Errorf("❌ %s failed: %v", methodName, err)
+	} else {
+		logger.Infof("✅ %s succeeded: %+v", methodName, result)
 	}
-	logger.Infof("queryUser(user *User) res: %+v", resp)
-}
-
-func callQueryUsers(refConf config.ReferenceConfig) {
-	var resp, err = refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"queryUsers",
-		[]string{"java.util.ArrayList"},
-		[]hessian.Object{
-			[]hessian.Object{
-				map[string]hessian.Object{
-					"id":    "3212",
-					"name":  "XavierNiu",
-					"age":   24,
-					"time":  time.Now().Add(4),
-					"class": "org.apache.dubbo.samples.User",
-				},
-				map[string]hessian.Object{
-					"iD":    "3213",
-					"name":  "zhangsan",
-					"age":   21,
-					"time":  time.Now().Add(4),
-					"class": "org.apache.dubbo.samples.User",
-				},
-			},
-		},
-	)
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("queryUsers(users []*User) res: %+v", resp)
-}
-
-// nolint
-func callQueryAll(refConf config.ReferenceConfig) {
-	resp, err := refConf.GetRPCService().(*generic.GenericService).Invoke(
-		context.TODO(),
-		"queryAll",
-		[]string{},
-		// TODO go-go []hessian.Object{}, go-java []string{}
-		//[]hessian.Object{},
-		[]hessian.Object{},
-	)
-	if err != nil {
-		panic(err)
-	}
-	logger.Infof("queryAll() res: %+v", resp)
-}
-
-func newRefConf(iface, protocol string) config.ReferenceConfig {
-	registryConfig := &config.RegistryConfig{
-		Protocol: "zookeeper",
-		Address:  "127.0.0.1:2181",
-	}
-
-	refConf := config.ReferenceConfig{
-		InterfaceName: iface,
-		Cluster:       "failover",
-		RegistryIDs:   []string{"zk"},
-		Protocol:      protocol,
-		Generic:       "true",
-	}
-
-	rootConfig := config.NewRootConfigBuilder().
-		AddRegistry("zk", registryConfig).
-		Build()
-	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
-		panic(err)
-	}
-	_ = refConf.Init(rootConfig)
-	refConf.GenericLoad(appName)
-
-	return refConf
 }

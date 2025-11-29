@@ -56,7 +56,7 @@ array+=("registry/zookeeper")
 array+=("registry/nacos")
 
 # generic
-#array+=("compatibility/generic/default") # illegal service type registered
+array+=("generic")
 
 #timeout
 array+=("timeout")

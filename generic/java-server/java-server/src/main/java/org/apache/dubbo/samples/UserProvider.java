@@ -20,13 +20,9 @@ package org.apache.dubbo.samples;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-//import org.apache.dubbo.rpc.filter.GenericFilter;
 
 public interface UserProvider {
-
-    boolean isLimit(Gender gender, String name);
-
-    User GetUser1(String userId); // the first alpha is Upper case to compatible with golang.
+    User GetUser1(String userId);
 
     User GetUser2(String userId, String name);
 
@@ -36,19 +32,13 @@ public interface UserProvider {
 
     User GetOneUser();
 
-    List<User> GetUsers(List<String> userIdList);
+    List<User> GetUsers(String[] userIdList);
 
-    Map<String, User> GetUsersMap(List<String> userIdList);
+    Map<String, User> GetUsersMap(String[] userIdList);
 
-    User queryUser(User user);
+    User QueryUser(User user);
 
-    List<User> queryUsers(ArrayList<User> userObjectList);
+    List<User> QueryUsers(List<User> userObjectList);
 
-    Map<String, User> queryAll();
-
-    User GetErr(String userId) throws Exception;
-
-    int Calc(int a, int b);
-
-    Response<Integer> Sum(int a, int b);
+    Map<String, User> QueryAll();
 }

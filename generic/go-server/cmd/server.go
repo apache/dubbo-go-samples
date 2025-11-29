@@ -18,56 +18,114 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/common"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/registry"
+	"dubbo.apache.org/dubbo-go/v3/server"
+	pkg2 "github.com/apache/dubbo-go-samples/generic/go-server/pkg"
+)
 
+import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-
 	"github.com/dubbogo/gost/log/logger"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/compatibility/generic/default/go-server/pkg"
+const (
+	RegistryAddress = "127.0.0.1:2181"
+	ServerName      = "generic-server"
+	DubboServerPort = 20004
 )
 
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/generic/default/go-server/conf/dubbogo.yml
 func main() {
-	hessian.RegisterPOJO(&pkg.User{})
-	config.SetProviderService(&pkg.User{})
-	if err := config.Load(); err != nil {
-		panic(err)
+	hessian.RegisterPOJO(&pkg2.User{})
+
+	ins := createDubboInstance()
+
+	srv, err := ins.NewServer()
+	if err != nil {
+		logger.Fatalf("Failed to create server: %v", err)
 	}
-	initSignal()
+
+	registerService(srv, &pkg2.UserProvider{})
+
+	go func() {
+		logger.Info("Starting Dubbo Protocol Server...")
+		if err := srv.Serve(); err != nil {
+			logger.Errorf("Dubbo server failed: %v", err)
+		}
+	}()
+
+	waitForShutdown()
 }
 
-func initSignal() {
-	signals := make(chan os.Signal, 1)
-	// It is not possible to block SIGKILL or syscall.SIGSTOP
-	signal.Notify(signals, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP,
-		syscall.SIGQUIT, syscall.SIGTERM)
-	for {
-		sig := <-signals
-		logger.Infof("get signal %s", sig.String())
-		switch sig {
-		case syscall.SIGHUP:
-			// reload()
-		default:
-			time.AfterFunc(10*time.Second, func() {
-				logger.Warnf("app exit now by force...")
-				os.Exit(1)
-			})
-
-			// The program exits normally or timeout forcibly exits.
-			fmt.Println("app exit now...")
-			return
-		}
+func createDubboInstance() *dubbo.Instance {
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName(ServerName),
+		dubbo.WithRegistry(
+			registry.WithZookeeper(),
+			registry.WithAddress(RegistryAddress),
+		),
+		dubbo.WithProtocol(
+			protocol.WithID("dubbo"),
+			protocol.WithDubbo(),
+			protocol.WithPort(DubboServerPort),
+		),
+	)
+	if err != nil {
+		logger.Fatalf("Failed to create instance: %v", err)
 	}
+	return ins
+}
+
+func registerService(srv *server.Server, service *pkg2.UserProvider) {
+	serviceInfo := &common.ServiceInfo{
+		InterfaceName: "org.apache.dubbo.samples.UserProvider",
+		ServiceType:   service,
+		Methods: []common.MethodInfo{
+			{Name: "GetUser1", Type: "normal", Meta: map[string]interface{}{"params": []string{"java.lang.String"}}},
+			{Name: "GetUser2", Type: "normal", Meta: map[string]interface{}{"params": []string{"java.lang.String", "java.lang.String"}}},
+			{Name: "GetUser3", Type: "normal", Meta: map[string]interface{}{"params": []string{"int"}}},
+			{Name: "GetUser4", Type: "normal", Meta: map[string]interface{}{"params": []string{"int", "java.lang.String"}}},
+			{Name: "GetOneUser", Type: "normal", Meta: map[string]interface{}{"params": []string{}}},
+
+			{Name: "GetUsers", Type: "normal", Meta: map[string]interface{}{"params": []string{"[Ljava.lang.String;"}}},
+			{Name: "GetUsersMap", Type: "normal", Meta: map[string]interface{}{"params": []string{"[Ljava.lang.String;"}}},
+
+			{Name: "QueryUser", Type: "normal", Meta: map[string]interface{}{"params": []string{"org.apache.dubbo.samples.User"}}},
+			{Name: "QueryUsers", Type: "normal", Meta: map[string]interface{}{"params": []string{"[]org.apache.dubbo.samples.User"}}},
+			{Name: "QueryAll", Type: "normal", Meta: map[string]interface{}{"params": []string{}}},
+		},
+		Meta: map[string]interface{}{
+			"version":  "1.0.0",
+			"group":    "dubbo",
+			"protocol": "dubbo",
+		},
+	}
+
+	serviceOpts := []server.ServiceOption{
+		server.WithInterface("org.apache.dubbo.samples.UserProvider"),
+		server.WithVersion("1.0.0"),
+		server.WithGroup("dubbo"),
+		server.WithProtocolIDs([]string{"dubbo"}),
+	}
+
+	if err := srv.Register(service, serviceInfo, serviceOpts...); err != nil {
+		logger.Fatalf("Failed to register Dubbo service: %v", err)
+	}
+}
+
+func waitForShutdown() {
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT)
+	sig := <-sigChan
+	logger.Infof("Received signal: %s, shutting down...", sig.String())
+	os.Exit(0)
 }

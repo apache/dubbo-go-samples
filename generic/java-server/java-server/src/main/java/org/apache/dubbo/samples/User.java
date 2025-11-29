@@ -21,15 +21,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class User implements Serializable {
-
     private String id;
-
     private String name;
-
     private int age;
-
     private Date time = new Date();
-
     private Gender sex = Gender.MAN;
 
     public User() {

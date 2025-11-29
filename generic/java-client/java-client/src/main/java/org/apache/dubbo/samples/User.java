@@ -17,28 +17,31 @@
 
 package org.apache.dubbo.samples;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 public class User implements Serializable {
-
     private String id;
-
     private String name;
-
     private int age;
-
     private Date time = new Date();
-
+    private Gender sex = Gender.MAN;
 
     public User() {
     }
-
 
     public User(String id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
+    }
+
+    public User(String id, String name, int age, Date time, Gender sex) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.time = time;
+        this.sex = sex;
     }
 
     public String getId() {
@@ -73,5 +76,15 @@ public class User implements Serializable {
         this.time = time;
     }
 
+    public Gender getSex() {
+        return sex;
+    }
 
+    public void setSex(Gender sex) {
+        this.sex = sex;
+    }
+
+    public String toString() {
+        return "User{id:" + id + ", name:" + name + ", age:" + age + ", time:" + time + ", gender:" + sex + "}";
+    }
 }

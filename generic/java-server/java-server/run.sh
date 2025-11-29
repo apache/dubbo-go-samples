@@ -1,1 +1,1 @@
-mvn -e clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.ApiProvider"
+mvn -e clean package && java -jar target/generic-dubbo-java-server-1.0-SNAPSHOT.jar

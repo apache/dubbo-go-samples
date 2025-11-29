@@ -17,37 +17,25 @@
 
 package org.apache.dubbo.samples;
 
-import org.apache.dubbo.common.constants.CommonConstants;
-import org.apache.dubbo.config.*;
+import org.apache.dubbo.config.ServiceConfig;
+import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
 import java.util.concurrent.CountDownLatch;
 
 public class ApiProvider {
     public static void main(String[] args) throws InterruptedException {
-        exportUserProvider();
-        exportUserProviderTriple();
-        System.out.println("dubbo service started");
-        new CountDownLatch(1).await();
-    }
-    
-    public static void exportUserProvider() {
-        ServiceConfig<UserProvider> service = new ServiceConfig<UserProvider>();
+        DubboBootstrap bootstrap = DubboBootstrap.getInstance();
+
+        ServiceConfig<UserProvider> service = new ServiceConfig<>();
         service.setInterface(UserProvider.class);
         service.setRef(new UserProviderImpl());
-        service.setProtocol(new ProtocolConfig(CommonConstants.DUBBO, 20000));
-        service.setApplication(new ApplicationConfig("user-info-server"));
-        service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
-        service.export();
-    }
+        service.setGroup("dubbo");
+        service.setVersion("1.0.0");
 
-    public static void exportUserProviderTriple() {
-        ServiceConfig<UserProviderTriple> service = new ServiceConfig<UserProviderTriple>();
-        service.setInterface(UserProviderTriple.class);
-        service.setRef(new UserProviderTripleImpl());
-        service.setProtocol(new ProtocolConfig(CommonConstants.TRIPLE, 50051));
-        service.setSerialization("hessian2");
-        service.setApplication(new ApplicationConfig("user-info-server"));
-        service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
-        service.export();
+        bootstrap.service(service);
+
+        bootstrap.start();
+        System.out.println("dubbo service started");
+        new CountDownLatch(1).await();
     }
 }
