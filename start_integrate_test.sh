@@ -43,8 +43,7 @@ array+=("filter/custom")
 array+=("registry/zookeeper")
 array+=("registry/nacos")
 
-# generic
-array+=("compatibility/generic/default")
+array+=("generic")
 
 #timeout
 array+=("timeout")
