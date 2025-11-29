@@ -30,12 +30,14 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	pkg2 "github.com/apache/dubbo-go-samples/generic/go-server/pkg"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
+
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/dubbogo/gost/log/logger"
+	pkg2 "github.com/apache/dubbo-go-samples/generic/go-server/pkg"
 )
 
 const (
