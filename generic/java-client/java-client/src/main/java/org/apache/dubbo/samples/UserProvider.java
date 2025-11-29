@@ -27,7 +27,6 @@ public interface UserProvider {
     User GetUser4(int userCode, String name);
     User GetOneUser();
 
-    // ✅ 这里必须是 String[]，不能是 List
     List<User> GetUsers(String[] userIdList);
     Map<String, User> GetUsersMap(String[] userIdList);
 
