@@ -18,35 +18,28 @@
 package integration
 
 import (
-	"os"
+	"context"
 	"testing"
+	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"github.com/stretchr/testify/assert"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
-)
+func TestPolarisLimit(t *testing.T) {
 
-var greeterProvider = new(api.GreeterClientImpl)
-
-func TestMain(m *testing.M) {
-	config.SetConsumerService(greeterProvider)
-	rootConfig := config.NewRootConfigBuilder().
-		SetConsumer(config.NewConsumerConfigBuilder().
-			AddReference("GreeterClientImpl", config.NewReferenceConfigBuilder().
-				SetProtocol("tri").
-				Build()).
-			Build()).
-		AddRegistry("zkRegistryKey", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).
-		Build()
-
-	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
-		panic(err)
+	var successCount, failCount int64
+	for i := 0; i < 10; i++ {
+		time.Sleep(50 * time.Millisecond)
+		_, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex03"})
+		if err != nil {
+			failCount++
+		} else {
+			successCount++
+		}
 	}
-	os.Exit(m.Run())
+	//current limiting effect
+	assert.Equal(t, true, failCount > 0)
 
 }

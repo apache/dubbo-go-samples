@@ -31,7 +31,7 @@
 * `otel/tracing`：使用 OpenTelemetry 的分布式链路追踪示例。
   * `stdout`：使用 stdout exporter 输出追踪数据。
   * `otlp_http_exporter`：使用 `otlpHttpExporter` 导出追踪数据，覆盖 `dubbo` / `triple` / `jsonrpc` 协议。
-* `registry`：使用不同服务注册中心（如 Nacos、Zookeeper）的示例。
+* `registry`：使用不同服务注册中心（如 Nacos、Zookeeper、Polaris）的示例。
 * `retry`：Dubbo-go RPC 调用重试机制示例。
 * `rpc`：Dubbo-go 支持的多种 RPC 协议示例。
   * `rpc/dubbo`：Dubbo 协议示例，包含 Java–Go 互操作。

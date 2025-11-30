@@ -31,7 +31,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `otel/tracing`: Distributed tracing examples using OpenTelemetry.
   * `stdout`: Uses stdout exporter to export tracing data.
   * `otlp_http_exporter`: Uses `otlpHttpExporter` to export tracing data, covering `dubbo`/`triple`/`jsonrpc` protocols.
-* `registry`: Examples of using different service registries (e.g., Nacos, Zookeeper).
+* `registry`: Examples of using different service registries (e.g., Nacos, Zookeeper, Polaris).
 * `retry`: Demonstrates retry mechanisms in Dubbo-go RPC calls.
 * `rpc`: Various RPC protocol examples with Dubbo-go.
   * `rpc/dubbo`: Dubbo protocol example, including Java–Go interop.

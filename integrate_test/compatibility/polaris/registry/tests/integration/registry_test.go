@@ -18,35 +18,24 @@
 package integration
 
 import (
-	"os"
+	"context"
 	"testing"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"github.com/stretchr/testify/assert"
 )
 
-import (
-	"github.com/apache/dubbo-go-samples/compatibility/api"
-)
+func TestPolarisRegistry(t *testing.T) {
+	user, err := userProvider.GetUser(context.TODO(), &User{Name: "Alex001"})
+	assert.Nil(t, err)
+	assert.NotNil(t, user)
+	assert.Equal(t, user.ID, "A001")
+	assert.Equal(t, user.Name, "Alex Stocks")
+	assert.Equal(t, user.Age, 18)
 
-var greeterProvider = new(api.GreeterClientImpl)
-
-func TestMain(m *testing.M) {
-	config.SetConsumerService(greeterProvider)
-	rootConfig := config.NewRootConfigBuilder().
-		SetConsumer(config.NewConsumerConfigBuilder().
-			AddReference("GreeterClientImpl", config.NewReferenceConfigBuilder().
-				SetProtocol("tri").
-				Build()).
-			Build()).
-		AddRegistry("zkRegistryKey", config.NewRegistryConfigWithProtocolDefaultPort("zookeeper")).
-		Build()
-
-	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
-		panic(err)
-	}
-	os.Exit(m.Run())
-
+	user, err = userProviderWithCustomRegistryGroupAndVersion.GetUser(context.TODO(), &User{Name: "Alex001"})
+	assert.Nil(t, err)
+	assert.Equal(t, user.Name, "Alex Stocks from UserProviderWithCustomGroupAndVersion")
+	assert.Equal(t, user.Age, 18)
 }
