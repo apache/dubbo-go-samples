@@ -1,5 +1,7 @@
 # Stdout tracing exporter
 
+[English](README.md) | [中文](README_zh.md)
+
 This example shows dubbo-go's tracing feature with stdout exporter.
 
 ## How to run
@@ -7,13 +9,13 @@ This example shows dubbo-go's tracing feature with stdout exporter.
 ### Run server
 
 ```shell
-$ go run ./go-server/cmd/server.go
+$ go run ./go-server/cmd/main.go
 ```
 
 ### Run client
 
 ```shell
-$ go run ./go-client/cmd/client.go
+$ go run ./go-client/cmd/main.go
 ```
 
 In the server's console, you will see the tracing log like this:
@@ -88,6 +90,8 @@ INFO tracing/tracing.go:54 tracing enabled, sampler: always_on
                                 "Type": "STRING",
                                 "Value": "dubbo-go"
                         }
+                },
+                {
                         "Key": "service.version",
                         "Value": {
                                 "Type": "STRING",

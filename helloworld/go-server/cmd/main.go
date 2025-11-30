@@ -19,12 +19,18 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
+
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/helloworld/proto"
 )
 
 type GreetTripleServer struct {
@@ -43,14 +49,14 @@ func main() {
 		),
 	)
 	if err != nil {
-		panic(err)
+		logger.Fatalf("failed to create server: %v", err)
 	}
 
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-		panic(err)
+		logger.Fatalf("failed to register greet service handler: %v", err)
 	}
 
 	if err := srv.Serve(); err != nil {
-		logger.Error(err)
+		logger.Fatalf("failed to serve: %v", err)
 	}
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootBall Game</title>
+    
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+</head>
+
+<body>
+    <div id="app" class="background">
+        <div id="myProgress" v-if="loadingProgress < 100">
+            <div id="myBar">{{ loadingProgress }}%</div>
+        </div>
+        
+        <div class="info" v-if="!dialogVisible">
+            <div class="info-item">
+                <span class="info-label">用户：</span>
+                <span class="info-value">{{ info.name }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">分数：</span>
+                <span class="info-value">{{ info.score }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">排名：</span>
+                <span class="info-value">{{ info.rank }}</span>
+            </div>
+        </div>
+        
+        <img id="gate" src="img/gate.svg" alt="球门" class="gate" />
+        
+        <img id="ball" src="img/ball.svg" alt="足球" class="ball" />
+        
+        <img class="people" src="img/people.svg" alt="球员" @click="clickPeople" />
+        
+        <el-dialog
+            v-model="dialogVisible"
+            title="输入姓名"
+            width="30%"
+            :show-close="false"
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+        >
+            <el-form :model="info">
+                <el-form-item label="姓名">
+                    <el-input 
+                        v-model="info.name" 
+                        placeholder="请输入您的姓名"
+                        @keyup.enter="submitInfo"
+                        autofocus
+                    ></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="submitInfo">确 定</el-button>
+                </span>
+            </template>
+        </el-dialog>
+    </div>
+    
+    <script src="js/api.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>

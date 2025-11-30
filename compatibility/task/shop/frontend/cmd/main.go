@@ -17,7 +17,9 @@
 
 package main
 
-import "github.com/apache/dubbo-go-samples/task/shop/frontend/pages"
+import (
+	"github.com/apache/dubbo-go-samples/task/shop/frontend/pages"
+)
 
 // export DUBBO_GO_CONFIG_PATH=../conf/dubbogo.yaml
 func main() {

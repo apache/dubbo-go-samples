@@ -18,7 +18,7 @@ jobs:
       # If you want to matrix build, you can append the following list.
       matrix:
         go_version:
-          - '1.23'
+          - '1.24'
         os:
           - ubuntu-latest
 
@@ -50,10 +50,12 @@ jobs:
       - name: Get dependencies
         run: |
           go mod tidy
+          # for imports-formatter
+          go install github.com/dubbogo/tools/cmd/imports-formatter@latest
 
-      - name: Go Fmt
+      - name: Format Code
         run: |
-          go fmt ./... && git status && [[ -z `git status -s` ]]
+          go fmt ./... && GOROOT=$(go env GOROOT) imports-formatter && git status && [[ -z `git status -s` ]]
           # diff -u <(echo -n) <(gofmt -d -s .)
 
       - name: Check License Header

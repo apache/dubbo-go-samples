@@ -23,6 +23,10 @@ import (
 	"errors"
 	"fmt"
 	"time"
+)
+
+import (
+	"github.com/dubbogo/gost/log/logger"
 
 	"github.com/seata/seata-go/pkg/common"
 	"github.com/seata/seata-go/pkg/common/net"
@@ -30,9 +34,9 @@ import (
 	"github.com/seata/seata-go/pkg/rm"
 	"github.com/seata/seata-go/pkg/rm/tcc"
 	"github.com/seata/seata-go/pkg/tm"
+)
 
-	"github.com/dubbogo/gost/log/logger"
-
+import (
 	"github.com/apache/dubbo-go-samples/transcation/seata-go/triple/proto"
 )
 

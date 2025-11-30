@@ -19,17 +19,23 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
+
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/config_yaml/proto"
 )
 
 var svc = new(greet.GreetServiceImpl)
 
 func main() {
-	greet.SetConsumerService(svc)
+	greet.SetConsumerGreetService(svc)
 	if err := dubbo.Load(); err != nil {
 		panic(err)
 	}

@@ -19,8 +19,11 @@ package cartstore
 
 import (
 	"context"
-	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/proto"
 	"sync"
+)
+
+import (
+	pb "github.com/apache/dubbo-go-samples/online_boutique_demo/cartservice/proto"
 )
 
 type memoryCartStore struct {

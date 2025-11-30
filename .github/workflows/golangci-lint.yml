@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         go-version:
-          - '1.23'
+          - '1.24'
     steps:
       - uses: actions/setup-go@v5
         with:
@@ -52,6 +52,5 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          # golangci-lint version
-          version: v1.61
+          version: latest
           args: --timeout=10m

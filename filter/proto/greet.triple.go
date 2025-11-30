@@ -60,7 +60,7 @@ func NewGreetService(cli *client.Client, opts ...client.ReferenceOption) (GreetS
 	}, nil
 }
 
-func SetConsumerService(srv common.RPCService) {
+func SetConsumerGreetService(srv common.RPCService) {
 	dubbo.SetConsumerServiceWithInfo(srv, &GreetService_ClientInfo)
 }
 
@@ -95,7 +95,7 @@ func RegisterGreetServiceHandler(srv *server.Server, hdlr GreetServiceHandler, o
 	return srv.Register(hdlr, &GreetService_ServiceInfo, opts...)
 }
 
-func SetProviderService(srv common.RPCService) {
+func SetProviderGreetService(srv common.RPCService) {
 	dubbo.SetProviderServiceWithInfo(srv, &GreetService_ServiceInfo)
 }
 

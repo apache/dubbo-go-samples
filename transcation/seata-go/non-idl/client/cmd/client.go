@@ -19,7 +19,9 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
@@ -31,13 +33,14 @@ import (
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
 	"github.com/seata/seata-go/pkg/tm"
+)
 
+import (
 	SeataClient "github.com/apache/dubbo-go-samples/transcation/seata-go/non-idl/client/seata-client"
 	"github.com/apache/dubbo-go-samples/transcation/seata-go/non-idl/client/service"
 )
 
-// need to setup environment variable "DUBBO_GO_CONFIG_PATH" to "seata-go/tcc/client/conf/dubbogo.yml"
-// and run "seata-go/tcc/server/cmd/server.go" before run
+// need to run "transcation/seata-go/non-idl/server/cmd/server.go" before run
 func main() {
 	integration.UseDubbo()
 	ins, err := dubbo.NewInstance(

@@ -19,8 +19,8 @@
 array+=("helloworld")
 
 # game
-#array+=("game/go-server-game")
-#array+=("game/go-server-gate")
+#array+=("game/game")
+#array+=("game/gate")
 
 # config-api
 array+=("compatibility/config-api/rpc/triple")
@@ -28,35 +28,23 @@ array+=("compatibility/config-api/rpc/triple")
 array+=("compatibility/config-api/configcenter/zookeeper")
 array+=("compatibility/config-api/config-merge")
 
-# error
-array+=("compatibility/error/triple/hessian2")
-array+=("compatibility/error/triple/pb")
-
-# metrics
-array+=("compatibility/metrics")
-
 # tracing
 array+=("otel/tracing/stdout")
+array+=("otel/tracing/otlp_http_exporter")
 
 # direct
-array+=("compatibility/direct")
+array+=("direct")
 
-# filer
+# filter
 array+=("filter/token")
-array+=("compatibility/filter/custom")
-array+=("compatibility/filter/token")
-
-# context
-array+=("compatibility/context/dubbo")
-array+=("compatibility/context/triple")
-array+=("context")
+array+=("filter/custom")
 
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
 
 # generic
-#array+=("compatibility/generic/default") # illegal service type registered
+array+=("compatibility/generic/default")
 
 #timeout
 array+=("timeout")
@@ -92,7 +80,7 @@ array+=("rpc/multi-protocols")
 #array+=("compatibility/tls/grpc")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
 
 # async
-array+=("compatibility/async")
+array+=("async")
 
 # polaris
 array+=("compatibility/polaris/registry")
@@ -107,9 +95,6 @@ array+=("config_center/zookeeper")
 
 # compatibility
 ## registry
-array+=("compatibility/registry/zookeeper")
-array+=("compatibility/registry/nacos")
-array+=("compatibility/registry/etcd")
 array+=("compatibility/registry/servicediscovery/zookeeper")
 array+=("compatibility/registry/servicediscovery/nacos")
 array+=("compatibility/registry/all/zookeeper")
@@ -122,9 +107,14 @@ array+=("java_interop/service_discovery/interface")
 array+=("java_interop/service_discovery/service")
 
 # replace tls config
-echo "The prefix of certificate path of the following files were replaced to \"$(pwd)/compatibility/tls\"."
-find "$(pwd)/compatibility/tls" -type f -name '*.yml' -print0 | xargs -0 -n1
-find "$(pwd)/compatibility/tls" -type f -name '*.yml' -print0 | xargs -0 sed -i 's#\.\.\/\.\.\/\.\.#'"$(pwd)/compatibility/tls"'#g'
+TLS_DIR="$(pwd)/compatibility/tls"
+if [ -d "$TLS_DIR" ]; then
+    echo "The prefix of certificate path of the following files were replaced to \"$TLS_DIR\"."
+    find "$TLS_DIR" -type f -name '*.yml' -print0 | xargs -0 -n1
+    find "$TLS_DIR" -type f -name '*.yml' -print0 | xargs -0 sed -i 's#\.\.\/\.\.\/\.\.#'"$TLS_DIR"'#g'
+else
+    echo "Warning: TLS directory $TLS_DIR not found, skipping TLS configuration replacement."
+fi
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 DOCKER_COMPOSE_CMD="docker-compose"

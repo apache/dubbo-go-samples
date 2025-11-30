@@ -29,7 +29,9 @@ import (
 	_ "github.com/seata/seata-go/pkg/imports"
 	"github.com/seata/seata-go/pkg/integration"
 	"github.com/seata/seata-go/pkg/rm/tcc"
+)
 
+import (
 	"github.com/apache/dubbo-go-samples/transcation/seata-go/non-idl/server/service"
 )
 

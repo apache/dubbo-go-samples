@@ -19,11 +19,17 @@ package main
 
 import (
 	"context"
-	"github.com/dubbogo/gost/log/logger"
 	"net"
+)
 
-	pb "github.com/apache/dubbo-go-samples/rpc/grpc/proto"
+import (
+	"github.com/dubbogo/gost/log/logger"
+
 	"google.golang.org/grpc"
+)
+
+import (
+	pb "github.com/apache/dubbo-go-samples/rpc/grpc/proto"
 )
 
 type server struct {

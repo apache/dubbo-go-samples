@@ -1,0 +1,67 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/apache/dubbo-go-samples/async/proto;user";
+
+// Gender enumeration
+enum Gender {
+  MAN = 0;
+  WOMAN = 1;
+}
+
+// User message
+message User {
+  string id = 1;
+  string name = 2;
+  int32 age = 3;
+  int64 time = 4; // Unix timestamp in seconds
+  Gender sex = 5;
+}
+
+// GetUser request
+message GetUserRequest {
+  string id = 1;
+}
+
+// GetUser response
+message GetUserResponse {
+  User user = 1;
+}
+
+// SayHello request
+message SayHelloRequest {
+  string user_id = 1;
+}
+
+// SayHello response (empty for one-way call)
+message SayHelloResponse {
+}
+
+// UserProvider service
+service UserProvider {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+}
+
+// UserProviderV2 service
+service UserProviderV2 {
+  rpc SayHello(SayHelloRequest) returns (SayHelloResponse);
+}
+

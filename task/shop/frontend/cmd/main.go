@@ -17,7 +17,9 @@
 
 package main
 
-import "github.com/apache/dubbo-go-samples/task/shop/frontend/pages"
+import (
+	"github.com/apache/dubbo-go-samples/task/shop/frontend/pages"
+)
 
 func main() {
 	router := pages.InitRouter()
