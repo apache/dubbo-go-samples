@@ -31,7 +31,7 @@
 * `otel/tracing`：使用 OpenTelemetry 的分布式链路追踪示例。
   * `stdout`：使用 stdout exporter 输出追踪数据。
   * `otlp_http_exporter`：使用 `otlpHttpExporter` 导出追踪数据，覆盖 `dubbo` / `triple` / `jsonrpc` 协议。
-* `registry`：使用不同服务注册中心（如 Nacos、Zookeeper、Polaris）的示例。
+* `registry`：使用不同服务注册中心（如 Nacos、Zookeeper）的示例。
 * `retry`：Dubbo-go RPC 调用重试机制示例。
 * `rpc`：Dubbo-go 支持的多种 RPC 协议示例。
   * `rpc/dubbo`：Dubbo 协议示例，包含 Java–Go 互操作。
@@ -52,6 +52,10 @@
 * `compatibility/generic`：泛化调用示例。
 * `compatibility/mesh`：基于代理的服务网格示例，展示如何在 Kubernetes 上结合 Envoy 部署 Dubbo-go 服务。
 * `compatibility/proxyless`：无 Sidecar 的服务网格示例，展示在 Kubernetes 上的部署方式。
+* `compatibility/polaris`:  Dubbo-go 与 polaris 集成示例.
+    * `compatibility/polaris/limit`: 在 dubbogo 中快速体验北极星的服务限流能力
+    * `compatibility/polaris/registry`: 在 dubbogo 中快速体验北极星的服务注册以及服务发现能力
+    * `compatibility/polaris/router`: 在 dubbogo 中快速体验北极星的服务路由能力
 * `compatibility/registry`：演示将 `etcd` / `Nacos` / `Zookeeper` 作为 Dubbo-go 注册中心的使用方法。
 * `compatibility/rpc`：Dubbo 协议通信示例。
   * `compatibility/rpc/dubbo`：Dubbo-go 3.0 下 Java 与 Go 的 RPC 示例。

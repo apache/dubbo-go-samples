@@ -31,7 +31,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `otel/tracing`: Distributed tracing examples using OpenTelemetry.
   * `stdout`: Uses stdout exporter to export tracing data.
   * `otlp_http_exporter`: Uses `otlpHttpExporter` to export tracing data, covering `dubbo`/`triple`/`jsonrpc` protocols.
-* `registry`: Examples of using different service registries (e.g., Nacos, Zookeeper, Polaris).
+* `registry`: Examples of using different service registries (e.g., Nacos, Zookeeper).
 * `retry`: Demonstrates retry mechanisms in Dubbo-go RPC calls.
 * `rpc`: Various RPC protocol examples with Dubbo-go.
   * `rpc/dubbo`: Dubbo protocol example, including Java–Go interop.
@@ -52,6 +52,10 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `compatibility/generic`: Generic invocation example.
 * `compatibility/mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `compatibility/proxyless`: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes.
+* `compatibility/polaris`:  Dubbo-go integrate with polaris samples.
+    * `compatibility/polaris/limit`: Quickly experience Polaris' service current limiting capabilities in dubbogo
+    * `compatibility/polaris/registry`: Quickly experience Polaris' service registration and service discovery capabilities in dubbogo
+    * `compatibility/polaris/router`: Quickly experience Polaris' service routing capabilities in dubbogo
 * `compatibility/registry`: Shows how to use `etcd`/`Nacos`/`Zookeeper` as Dubbo-go registries.
 * `compatibility/rpc`: Dubbo protocol communication examples.
   * `compatibility/rpc/dubbo`: Dubbo-go 3.0 RPC example between Java and Go.
