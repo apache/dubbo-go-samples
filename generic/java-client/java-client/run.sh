@@ -1,0 +1,1 @@
+mvn -e clean package && java -jar target/generic-dubbo-java-client-1.0-SNAPSHOT.jar
