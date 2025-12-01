@@ -37,7 +37,7 @@ type DirectGreetServer struct{}
 
 func (s *DirectGreetServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	logger.Infof("Direct server form Golang received name = %s", req.Name)
-	return &greet.GreetResponse{Greeting: "Hello from Golang Server" + req.Name}, nil
+	return &greet.GreetResponse{Greeting: "hello " + req.Name}, nil
 }
 
 func main() {
