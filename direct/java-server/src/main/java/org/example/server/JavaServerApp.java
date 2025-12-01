@@ -41,7 +41,7 @@ public class JavaServerApp {
                         System.out.println("Direct server form Java received name ="+ name);
 
                         GreetResponse resp = GreetResponse.newBuilder()
-                                .setGreeting("Hello from Java Server, " + name)
+                                .setGreeting("hello from java server, " + name)
                                 .build();
 
                         respObserver.onNext(resp);
