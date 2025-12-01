@@ -22,6 +22,7 @@
 * `helloworld`：Dubbo-go 最基础的 “Hello World” 示例，同时包含 Go 与 Java 的互操作示例。
 * `direct`：不依赖注册中心的 Triple 点对点调用示例。
 * `game`：游戏服务示例。
+* `generic`：泛化调用示例，支持 Dubbo-Go 与 Dubbo Java 服务互操作，适用于无接口信息场景。
 * `integrate_test`：Dubbo-go 示例的集成测试用例。
 * `java_interop`：展示 Java 与 Go Dubbo 实现之间的互操作能力。
 * `llm`：将大模型（LLM）集成到 Dubbo-go 中的示例。

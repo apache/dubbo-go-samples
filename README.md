@@ -22,6 +22,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `helloworld`: Basic “Hello World” example for Dubbo-go, also includes Go–Java interoperability.
 * `direct`: Triple point-to-point invocation sample without a registry.
 * `game`: Game service example.
+* `generic`: Generic invocation examples supporting interoperability between Dubbo-Go and Dubbo Java services, suitable for scenarios without interface information.
 * `integrate_test`: Integration test cases for Dubbo-go samples.
 * `java_interop`: Demonstrates interoperability between Java and Go Dubbo implementations.
 * `llm`: Example of integrating Large Language Models (LLMs) with Dubbo-go.
