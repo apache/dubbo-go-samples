@@ -93,7 +93,7 @@ func (srv *GreetTripleServer) GreetClientStream(ctx context.Context, stream gree
 }
 
 func (srv *GreetTripleServer) GreetServerStream(ctx context.Context, req *greet.GreetServerStreamRequest, stream greet.GreetService_GreetServerStreamServer) error {
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 10; i++ {
 		if err := stream.Send(&greet.GreetServerStreamResponse{Greeting: req.Name}); err != nil {
 			return fmt.Errorf("triple ServerStream send err: %s", err)
 		}
