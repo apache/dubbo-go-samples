@@ -20,7 +20,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
   * `polaris/limit`: Uses Polaris as a TPS limiter.
 * `healthcheck`: Service health check example.
 * `helloworld`: Basic “Hello World” example for Dubbo-go, also includes Go–Java interoperability.
-* `direct`: Triple point-to-point invocation sample without a registry.
+* `direct`: Triple point-to-point invocation sample without a registry , also includes Go–Java interoperability.
 * `game`: Game service example.
 * `generic`: Generic invocation examples supporting interoperability between Dubbo-Go and Dubbo Java services, suitable for scenarios without interface information.
 * `integrate_test`: Integration test cases for Dubbo-go samples.
