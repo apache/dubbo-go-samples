@@ -8,10 +8,10 @@
 - Go 与 Java 之间的互通性验证
 
 支持的流式模式：
-- 一元调用 (Unary)**: 单个请求，单个响应
-- **双向流 (Bidirectional Stream)**: 多个请求，多个响应
-- **客户端流 (Client Stream)**: 多个请求，单个响应
-- **服务端流 (Server Stream)**: 单个请求，多个响应
+- 一元调用 (Unary): 单个请求，单个响应
+- 双向流 (Bidirectional Stream): 多个请求，多个响应
+- *客户端流 (Client Stream): 多个请求，单个响应
+- 服务端流 (Server Stream): 单个请求，多个响应
 
 ## 2. Proto 定义
 
@@ -305,49 +305,49 @@ mvn compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.tri.streaming.S
 
 ```
 ======================================================================
-🚀 Starting Dubbo Streaming Client Tests
+ Starting Dubbo Streaming Client Tests
 ======================================================================
-✅ Connected to server: tri://127.0.0.1:20000
+ Connected to server: tri://127.0.0.1:20000
 ======================================================================
 
 ======================================================================
-📡 TEST 1: Bidirectional Streaming
+ TEST 1: Bidirectional Streaming
 ======================================================================
-  ➡️  Sending request #0: Client-0
-  ⬅️  Received response #1: Echo from biStream: Client-0
-  ➡️  Sending request #1: Client-1
-  ⬅️  Received response #2: Echo from biStream: Client-1
-  ➡️  Sending request #2: Client-2
-  ⬅️  Received response #3: Echo from biStream: Client-2
-  ➡️  Sending request #3: Client-3
-  ⬅️  Received response #4: Echo from biStream: Client-3
-  ➡️  Sending request #4: Client-4
-  ⬅️  Received response #5: Echo from biStream: Client-4
+    Sending request #0: Client-0
+    Received response #1: Echo from biStream: Client-0
+    Sending request #1: Client-1
+    Received response #2: Echo from biStream: Client-1
+    Sending request #2: Client-2
+    Received response #3: Echo from biStream: Client-2
+    Sending request #3: Client-3
+    Received response #4: Echo from biStream: Client-3
+    Sending request #4: Client-4
+    Received response #5: Echo from biStream: Client-4
 
-  📤 All requests sent, waiting for responses...
+   All requests sent, waiting for responses...
 
-  ✅ BiStream completed - Received 5 responses
+   BiStream completed - Received 5 responses
 
 ======================================================================
-📡 TEST 2: Server Streaming
+ TEST 2: Server Streaming
 ======================================================================
-  ➡️  Sending request: StreamingClient
-  📥 Waiting for server stream responses...
+    Sending request: StreamingClient
+    Waiting for server stream responses...
 
-  ⬅️  Received response #1: Response 0 from serverStream for StreamingClient
-  ⬅️  Received response #2: Response 1 from serverStream for StreamingClient
+    Received response #1: Response 0 from serverStream for StreamingClient
+    Received response #2: Response 1 from serverStream for StreamingClient
   ...
-  ⬅️  Received response #10: Response 9 from serverStream for StreamingClient
+    Received response #10: Response 9 from serverStream for StreamingClient
 
-  ✅ ServerStream completed - Received 10 responses
+   ServerStream completed - Received 10 responses
 
 ======================================================================
-📊 TEST RESULTS SUMMARY
+ TEST RESULTS SUMMARY
 ======================================================================
-  Bidirectional Streaming: ✅ PASSED
-  Server Streaming: ✅ PASSED
+  Bidirectional Streaming:  PASSED
+  Server Streaming:  PASSED
 ----------------------------------------------------------------------
-  🎉 Overall: ALL TESTS PASSED!
+   Overall: ALL TESTS PASSED!
 ======================================================================
 ```
 
@@ -370,16 +370,8 @@ INFO    cmd/client.go:127   TRIPLE server stream resp: Response 1 from serverStr
 INFO    cmd/client.go:127   TRIPLE server stream resp: Response 9 from serverStream for triple
 ```
 
-## 7. 互通性测试
+## 注意
 
-本案例完全支持 Go 和 Java 之间的互通性：
+由于Golang-server和Java-server同时监听localhost:20000端口,你不能同时启动两个服务端
 
-| 服务端 | 客户端 | 一元调用 | 双向流 | 客户端流 | 服务端流 |
-|--------|--------|----------|--------|----------|----------|
-| Go     | Go     | ✅       | ✅     | ✅       | ✅       |
-| Go     | Java   | ✅       | ✅     | ✅       | ✅       |
-| Java   | Go     | ✅       | ✅     | ✅       | ✅       |
-| Java   | Java   | ✅       | ✅     | ✅       | ✅       |
-
-所有组合都经过测试验证，证明了 Dubbo Triple 协议在不同语言实现之间的完全兼容性。
 

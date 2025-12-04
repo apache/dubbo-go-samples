@@ -9,9 +9,9 @@ This sample demonstrates how to use streaming communication in Dubbo, including:
 
 Supported streaming modes:
 - Unary Call: Single request, single response
-- Bidirectional Stream**: Multiple requests, multiple responses
-- **Client Stream**: Multiple requests, single response
-- **Server Stream**: Single request, multiple responses
+- Bidirectional Stream: Multiple requests, multiple responses
+- Client Stream: Multiple requests, single response
+- Server Stream: Single request, multiple responses
 
 ## 2. Proto Definition
 
@@ -307,49 +307,49 @@ mvn compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.tri.streaming.S
 
 ```
 ======================================================================
-🚀 Starting Dubbo Streaming Client Tests
+ Starting Dubbo Streaming Client Tests
 ======================================================================
-✅ Connected to server: tri://127.0.0.1:20000
+ Connected to server: tri://127.0.0.1:20000
 ======================================================================
 
 ======================================================================
-📡 TEST 1: Bidirectional Streaming
+ TEST 1: Bidirectional Streaming
 ======================================================================
-  ➡️  Sending request #0: Client-0
-  ⬅️  Received response #1: Echo from biStream: Client-0
-  ➡️  Sending request #1: Client-1
-  ⬅️  Received response #2: Echo from biStream: Client-1
-  ➡️  Sending request #2: Client-2
-  ⬅️  Received response #3: Echo from biStream: Client-2
-  ➡️  Sending request #3: Client-3
-  ⬅️  Received response #4: Echo from biStream: Client-3
-  ➡️  Sending request #4: Client-4
-  ⬅️  Received response #5: Echo from biStream: Client-4
+    Sending request #0: Client-0
+    Received response #1: Echo from biStream: Client-0
+    Sending request #1: Client-1
+    Received response #2: Echo from biStream: Client-1
+    Sending request #2: Client-2
+    Received response #3: Echo from biStream: Client-2
+    Sending request #3: Client-3
+    Received response #4: Echo from biStream: Client-3
+    Sending request #4: Client-4
+    Received response #5: Echo from biStream: Client-4
 
-  📤 All requests sent, waiting for responses...
+   All requests sent, waiting for responses...
 
-  ✅ BiStream completed - Received 5 responses
+   BiStream completed - Received 5 responses
 
 ======================================================================
-📡 TEST 2: Server Streaming
+ TEST 2: Server Streaming
 ======================================================================
-  ➡️  Sending request: StreamingClient
-  📥 Waiting for server stream responses...
+  Sending request: StreamingClient
+  Waiting for server stream responses...
 
-  ⬅️  Received response #1: Response 0 from serverStream for StreamingClient
-  ⬅️  Received response #2: Response 1 from serverStream for StreamingClient
+  Received response #1: Response 0 from serverStream for StreamingClient
+  Received response #2: Response 1 from serverStream for StreamingClient
   ...
-  ⬅️  Received response #10: Response 9 from serverStream for StreamingClient
+  Received response #10: Response 9 from serverStream for StreamingClient
 
-  ✅ ServerStream completed - Received 10 responses
+  ServerStream completed - Received 10 responses
 
 ======================================================================
-📊 TEST RESULTS SUMMARY
+ TEST RESULTS SUMMARY
 ======================================================================
-  Bidirectional Streaming: ✅ PASSED
-  Server Streaming: ✅ PASSED
+  Bidirectional Streaming:  PASSED
+  Server Streaming:  PASSED
 ----------------------------------------------------------------------
-  🎉 Overall: ALL TESTS PASSED!
+   Overall: ALL TESTS PASSED!
 ======================================================================
 ```
 
@@ -372,16 +372,6 @@ INFO    cmd/client.go:127   TRIPLE server stream resp: Response 1 from serverStr
 INFO    cmd/client.go:127   TRIPLE server stream resp: Response 9 from serverStream for triple
 ```
 
-## 7. Interoperability Testing
-
-This sample fully supports interoperability between Go and Java:
-
-| Server | Client | Unary | Bidirectional | Client Stream | Server Stream |
-|--------|--------|-------|---------------|---------------|---------------|
-| Go     | Go     | ✅    | ✅            | ✅            | ✅            |
-| Go     | Java   | ✅    | ✅            | ✅            | ✅            |
-| Java   | Go     | ✅    | ✅            | ✅            | ✅            |
-| Java   | Java   | ✅    | ✅            | ✅            | ✅            |
-
-All combinations have been tested and verified, demonstrating full compatibility of the Dubbo Triple protocol across different language implementations.
+## Attention
+YOU CAN NOT run both Golang Server and Java Server at the same time for they both listen to the same port 20000.
 
