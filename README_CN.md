@@ -20,7 +20,7 @@
   * `polaris/limit`：使用 Polaris 实现 TPS 限流。
 * `healthcheck`：服务健康检查示例。
 * `helloworld`：Dubbo-go 最基础的 “Hello World” 示例，同时包含 Go 与 Java 的互操作示例。
-* `direct`：不依赖注册中心的 Triple 点对点调用示例,并包含 Go 与 Java 的互操作示例。
+* `direct`：不依赖注册中心的 Triple 点对点调用示例，并包含 Go 与 Java 的互操作示例。
 * `game`：游戏服务示例。
 * `generic`：泛化调用示例，支持 Dubbo-Go 与 Dubbo Java 服务互操作，适用于无接口信息场景。
 * `integrate_test`：Dubbo-go 示例的集成测试用例。
