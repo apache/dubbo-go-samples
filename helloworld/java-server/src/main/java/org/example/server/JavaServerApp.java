@@ -17,39 +17,45 @@
 
 package org.example.server;
 
+import org.apache.dubbo.common.constants.CommonConstants;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ProtocolConfig;
+import org.apache.dubbo.config.ServiceConfig;
+import org.apache.dubbo.config.bootstrap.DubboBootstrap;
+
+import greet.DubboGreetServiceTriple;
 import greet.GreetRequest;
 import greet.GreetResponse;
-import greet.GreetServiceGrpc;
-
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
-import io.grpc.stub.StreamObserver;
+import greet.GreetService;
 
 public class JavaServerApp {
 
     public static void main(String[] args) throws Exception {
 
-        Server server = ServerBuilder.forPort(20000)
-                .addService(new GreetServiceGrpc.GreetServiceImplBase() {
+        ServiceConfig<GreetService> serviceConfig = new ServiceConfig<>();
+        serviceConfig.setInterface(GreetService.class);
+        serviceConfig.setRef(new GreetServiceImpl());
 
-                    @Override
-                    public void greet(GreetRequest request,
-                                      StreamObserver<GreetResponse> respObserver) {
+        DubboBootstrap bootstrap = DubboBootstrap.getInstance();
+        bootstrap.application(new ApplicationConfig("java-greet-server"))
+                .protocol(new ProtocolConfig(CommonConstants.TRIPLE, 20000))
+                .service(serviceConfig)
+                .start();
 
-                        String name = request.getName();
+        System.out.println("Dubbo Triple Java server started on port 20000");
+        System.in.read();
+    }
 
-                        GreetResponse resp = GreetResponse.newBuilder()
-                                .setGreeting("Hello from Java Server, " + name)
-                                .build();
+    /**
+     * Dubbo triple service implementation generated from proto.
+     */
+    static class GreetServiceImpl extends DubboGreetServiceTriple.GreetServiceImplBase {
 
-                        respObserver.onNext(resp);
-                        respObserver.onCompleted();
-                    }
-                })
-                .build();
-
-        server.start();
-        System.out.println("Java Triple Server started on port 20000");
-        server.awaitTermination();
+        @Override
+        public GreetResponse greet(GreetRequest request) {
+            return GreetResponse.newBuilder()
+                    .setGreeting("Hello from Dubbo Triple Java Server, " + request.getName())
+                    .build();
+        }
     }
 }
