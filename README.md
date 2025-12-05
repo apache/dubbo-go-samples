@@ -39,7 +39,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
   * `rpc/grpc`: gRPC protocol example.
   * `rpc/jsonrpc`: JSON-RPC protocol example.
   * `rpc/triple`: Triple protocol example with multiple serialization formats.
-* `streaming`: Streaming RPC example.
+* `streaming`: Streaming RPC example, also includes Go–Java interoperability when both use streaming.
 * `task`: Task scheduling and execution example.
 * `timeout`: Demonstrates timeout handling in Dubbo-go.
 * `tls`: Demonstrates how to use TLS (based on X.509 certificates) in Dubbo-go to enable encrypted communication and/or mutual authentication between client and server.
