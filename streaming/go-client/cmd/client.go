@@ -65,6 +65,7 @@ func TestClient(cli greet.GreetService) {
 	}
 }
 
+// testUnary: 1 request -> 1 response
 func testUnary(cli greet.GreetService) error {
 	logger.Info("start to test TRIPLE unary call")
 	resp, err := cli.Greet(context.Background(), &greet.GreetRequest{Name: "triple"})
@@ -75,6 +76,7 @@ func testUnary(cli greet.GreetService) error {
 	return nil
 }
 
+// testBidiStream: N requests -> N responses (1:1)
 func testBidiStream(cli greet.GreetService) error {
 	logger.Info("start to test TRIPLE bidi stream")
 	stream, err := cli.GreetStream(context.Background())
@@ -82,7 +84,7 @@ func testBidiStream(cli greet.GreetService) error {
 		return err
 	}
 	if sendErr := stream.Send(&greet.GreetStreamRequest{Name: "triple"}); sendErr != nil {
-		return err
+		return sendErr
 	}
 	resp, err := stream.Recv()
 	if err != nil {
@@ -98,6 +100,7 @@ func testBidiStream(cli greet.GreetService) error {
 	return nil
 }
 
+// testClientStream: 5 requests -> 1 response
 func testClientStream(cli greet.GreetService) error {
 	logger.Info("start to test TRIPLE client stream")
 	stream, err := cli.GreetClientStream(context.Background())
@@ -106,7 +109,7 @@ func testClientStream(cli greet.GreetService) error {
 	}
 	for i := 0; i < 5; i++ {
 		if sendErr := stream.Send(&greet.GreetClientStreamRequest{Name: "triple"}); sendErr != nil {
-			return err
+			return sendErr
 		}
 	}
 	resp, err := stream.CloseAndRecv()
@@ -117,6 +120,7 @@ func testClientStream(cli greet.GreetService) error {
 	return nil
 }
 
+// testServerStream: 1 request -> 10 responses
 func testServerStream(cli greet.GreetService) error {
 	logger.Info("start to test TRIPLE server stream")
 	stream, err := cli.GreetServerStream(context.Background(), &greet.GreetServerStreamRequest{Name: "triple"})
@@ -127,7 +131,7 @@ func testServerStream(cli greet.GreetService) error {
 		logger.Infof("TRIPLE server stream resp: %s", stream.Msg().Greeting)
 	}
 	if stream.Err() != nil {
-		return err
+		return stream.Err()
 	}
 	if err := stream.Close(); err != nil {
 		return err

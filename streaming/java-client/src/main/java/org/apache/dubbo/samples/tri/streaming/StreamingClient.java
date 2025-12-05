@@ -91,6 +91,7 @@ public class StreamingClient {
         }
     }
     
+    // BiStream test: send 5 requests, expect 5 responses
     private static boolean testBidiStream(GreetService greeter) {
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicInteger responseCount = new AtomicInteger(0);
@@ -103,13 +104,13 @@ public class StreamingClient {
                 @Override
                 public void onNext(GreetStreamResponse response) {
                     int count = responseCount.incrementAndGet();
-                    System.out.println("  Received response #" + count + ": " + response.getGreeting());
+                    System.out.println("    Received response #" + count + ": " + response.getGreeting());
                 }
                 
                 @Override
                 public void onError(Throwable throwable) {
-                    System.err.println("  BiStream error: " + throwable.getMessage());
-                    latch.countDown(); // Ensure latch is counted down on error
+                    System.err.println("   BiStream error: " + throwable.getMessage());
+                    latch.countDown();
                 }
                 
                 @Override
@@ -154,6 +155,7 @@ public class StreamingClient {
         }
     }
     
+    // ServerStream test: send 1 request, expect 10 responses
     private static boolean testServerStream(GreetService greeter) {
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicInteger responseCount = new AtomicInteger(0);
@@ -174,7 +176,7 @@ public class StreamingClient {
                 @Override
                 public void onNext(GreetServerStreamResponse response) {
                     int count = responseCount.incrementAndGet();
-                    System.out.println("  ⬅️  Received response #" + count + ": " + response.getGreeting());
+                    System.out.println("    Received response #" + count + ": " + response.getGreeting());
                 }
                 
                 @Override
@@ -212,7 +214,8 @@ public class StreamingClient {
     /**
      * Print test results summary.
      * 
-     * Requirements: 3.4
+     * ASSERT POINT for integration testing:
+     * - Integration test can check exit behavior based on bidiStreamSuccess && serverStreamSuccess
      * 
      * @param bidiStreamSuccess whether bidirectional streaming test passed
      * @param serverStreamSuccess whether server streaming test passed

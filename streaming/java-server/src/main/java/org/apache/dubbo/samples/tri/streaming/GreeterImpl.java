@@ -37,6 +37,7 @@ import java.util.List;
 public class GreeterImpl extends DubboGreetServiceTriple.GreetServiceImplBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(GreeterImpl.class);
 
+    // Unary: 1 request -> 1 response, returns "Hello {name}"
     @Override
     public GreetResponse greet(GreetRequest request) {
         LOGGER.info("Received unary request: {}", request.getName());
@@ -49,6 +50,7 @@ public class GreeterImpl extends DubboGreetServiceTriple.GreetServiceImplBase {
         return response;
     }
 
+    // BiStream: N requests -> N responses (1:1), returns "Echo from biStream: {name}"
     @Override
     public StreamObserver<GreetStreamRequest> greetStream(StreamObserver<GreetStreamResponse> responseObserver) {
         return new StreamObserver<GreetStreamRequest>() {
@@ -82,6 +84,7 @@ public class GreeterImpl extends DubboGreetServiceTriple.GreetServiceImplBase {
         };
     }
 
+    // ClientStream: N requests -> 1 response, returns "Received {count} names: {name1}, {name2}, ..."
     @Override
     public StreamObserver<GreetClientStreamRequest> greetClientStream(
             StreamObserver<GreetClientStreamResponse> responseObserver) {
@@ -114,6 +117,7 @@ public class GreeterImpl extends DubboGreetServiceTriple.GreetServiceImplBase {
         };
     }
 
+    // ServerStream: 1 request -> 10 responses, returns "Response {i} from serverStream for {name}"
     @Override
     public void greetServerStream(GreetServerStreamRequest request, StreamObserver<GreetServerStreamResponse> responseObserver) {
         try {
