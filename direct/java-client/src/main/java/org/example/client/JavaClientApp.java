@@ -36,6 +36,7 @@ public class JavaClientApp {
         GreetServiceGrpc.GreetServiceBlockingStub client =
                 GreetServiceGrpc.newBlockingStub(channel);
 
+        // Direct call: 1 request -> 1 response
         GreetRequest req = GreetRequest.newBuilder()
                 .setName("Java Client Dubbo")
                 .build();

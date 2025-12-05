@@ -32,6 +32,7 @@ public class JavaServerApp {
         Server server = ServerBuilder.forPort(20000)
                 .addService(new GreetServiceGrpc.GreetServiceImplBase() {
 
+                    // Greet: 1 request -> 1 response, returns "hello from java server, {name}"
                     @Override
                     public void greet(GreetRequest request,
                                       StreamObserver<GreetResponse> respObserver) {

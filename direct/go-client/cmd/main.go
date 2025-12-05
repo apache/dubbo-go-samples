@@ -45,6 +45,7 @@ func main() {
 		panic(err)
 	}
 
+	// Direct call: 1 request -> 1 response
 	req := &greet.GreetRequest{Name: "Golang Client dubbo-go"}
 	resp, err := greetService.Greet(context.Background(), req)
 	if err != nil {
