@@ -10,7 +10,7 @@
 支持的流式模式：
 - 一元调用 (Unary): 单个请求，单个响应
 - 双向流 (Bidirectional Stream): 多个请求，多个响应
-- *客户端流 (Client Stream): 多个请求，单个响应
+- 客户端流 (Client Stream): 多个请求，单个响应
 - 服务端流 (Server Stream): 单个请求，多个响应
 
 ## 2. Proto 定义
