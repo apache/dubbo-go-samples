@@ -17,24 +17,28 @@
 
 package org.example.client;
 
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.bootstrap.DubboBootstrap;
+
 import greet.GreetRequest;
 import greet.GreetResponse;
-import greet.GreetServiceGrpc;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
+import greet.GreetService;
 
 public class JavaClientApp {
 
     public static void main(String[] args) {
 
-        ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("127.0.0.1", 20000)
-                .usePlaintext()
-                .build();
+        ReferenceConfig<GreetService> reference = new ReferenceConfig<>();
+        reference.setInterface(GreetService.class);
+        reference.setUrl("tri://127.0.0.1:20000");
 
-        GreetServiceGrpc.GreetServiceBlockingStub client =
-                GreetServiceGrpc.newBlockingStub(channel);
+        DubboBootstrap bootstrap = DubboBootstrap.getInstance();
+        bootstrap.application(new ApplicationConfig("java-greet-client"))
+                .reference(reference)
+                .start();
+
+        GreetService client = reference.get();
 
         GreetRequest req = GreetRequest.newBuilder()
                 .setName("Java Client")
@@ -43,7 +47,5 @@ public class JavaClientApp {
         GreetResponse resp = client.greet(req);
 
         System.out.println("Response: " + resp.getGreeting());
-
-        channel.shutdown();
     }
 }
