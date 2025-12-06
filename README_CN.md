@@ -57,7 +57,6 @@
     * `compatibility/polaris/limit`: 在 dubbogo 中快速体验北极星的服务限流能力
     * `compatibility/polaris/registry`: 在 dubbogo 中快速体验北极星的服务注册以及服务发现能力
     * `compatibility/polaris/router`: 在 dubbogo 中快速体验北极星的服务路由能力
-* `compatibility/registry`：演示将 `etcd` / `Nacos` / `Zookeeper` 作为 Dubbo-go 注册中心的使用方法。
 * `compatibility/rpc`：Dubbo 协议通信示例。
   * `compatibility/rpc/dubbo`：Dubbo-go 3.0 下 Java 与 Go 的 RPC 示例。
   * `compatibility/rpc/grpc`：基于 gRPC 的 Dubbo-go RPC 示例。
