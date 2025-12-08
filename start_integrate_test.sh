@@ -92,13 +92,6 @@ array+=("error")
 array+=("config_center/nacos")
 array+=("config_center/zookeeper")
 
-# compatibility
-## registry
-array+=("compatibility/registry/servicediscovery/zookeeper")
-array+=("compatibility/registry/servicediscovery/nacos")
-array+=("compatibility/registry/all/zookeeper")
-array+=("compatibility/registry/all/nacos")
-
 # config yaml
 array+=("config_yaml")
 # service_discovery
