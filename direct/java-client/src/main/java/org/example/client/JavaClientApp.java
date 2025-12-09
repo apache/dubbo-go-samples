@@ -43,6 +43,12 @@ public class JavaClientApp {
 
         GreetResponse resp = client.greet(req);
 
+        String expectedGo = "hello " + req.getName();
+        String expectedJava = "hello from java server, " + req.getName();
+        if (resp == null || (!expectedGo.equals(resp.getGreeting()) && !expectedJava.equals(resp.getGreeting()))) {
+            throw new IllegalStateException("Unexpected greeting: " + resp);
+        }
+
         System.out.println("Response: " + resp.getGreeting());
 
         channel.shutdown();
