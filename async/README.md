@@ -21,15 +21,7 @@ and Java-to-Go async interoperability.
    go run ./async/go-server/cmd/main.go
    ```
 
-2. **Start the Go client** (connects to Go server on port 20000)
-
-   To test Go-to-Go communication, modify the client URL in `go-client/cmd/main.go`:
-
-   ```go
-   client.WithClientURL("tri://127.0.0.1:20000"),
-   ```
-
-   Then run:
+2. **Start the Go client** (connects to Go server by default)
 
    ```bash
    go run ./async/go-client/cmd/main.go
@@ -41,7 +33,7 @@ The client prints "non-blocking before async callback resp: do something ... " a
 
 This demonstrates **cross-language async calls**:
 
-- **Go client** → **Java server** (default)
+- **Go client** → **Java server**
 - **Java client** → **Go server**
 
 ### Prerequisites
@@ -59,14 +51,20 @@ mvn clean compile
 
 ### Test: Go client → Java server
 
-1. **Start the Java server** (port 50051)
+1. **Modify the Go client URL** in `go-client/cmd/main.go`:
+
+   ```go
+   client.WithClientURL("tri://127.0.0.1:50051"),
+   ```
+
+2. **Start the Java server** (port 50051)
 
    ```bash
    cd java-server
    ./run.sh
    ```
 
-2. **Start the Go client** (connects to Java server by default)
+3. **Start the Go client**
 
    ```bash
    go run ./async/go-client/cmd/main.go

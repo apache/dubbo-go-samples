@@ -20,15 +20,7 @@
    go run ./async/go-server/cmd/main.go
    ```
 
-2. **启动 Go 客户端**（连接 Go 服务端的 20000 端口）
-
-   如需测试 Go 到 Go 的通信，需修改 `go-client/cmd/main.go` 中的客户端 URL：
-
-   ```go
-   client.WithClientURL("tri://127.0.0.1:20000"),
-   ```
-
-   然后运行：
+2. **启动 Go 客户端**（默认连接 Go 服务端）
 
    ```bash
    go run ./async/go-client/cmd/main.go
@@ -40,7 +32,7 @@
 
 演示**跨语言异步调用**：
 
-- **Go 客户端** → **Java 服务端**（默认配置）
+- **Go 客户端** → **Java 服务端**
 - **Java 客户端** → **Go 服务端**
 
 ### 前置条件
@@ -58,14 +50,20 @@ mvn clean compile
 
 ### 测试：Go 客户端 → Java 服务端
 
-1. **启动 Java 服务端**（端口 50051）
+1. **修改 Go 客户端 URL**，在 `go-client/cmd/main.go` 中修改：
+
+   ```go
+   client.WithClientURL("tri://127.0.0.1:50051"),
+   ```
+
+2. **启动 Java 服务端**（端口 50051）
 
    ```bash
    cd java-server
    ./run.sh
    ```
 
-2. **启动 Go 客户端**（默认连接到 Java 服务端）
+3. **启动 Go 客户端**
 
    ```bash
    go run ./async/go-client/cmd/main.go
