@@ -42,7 +42,7 @@ var (
 func main() {
 	cli, err := client.NewClient(
 		client.WithClientProtocolTriple(),
-		client.WithClientURL("tri://127.0.0.1:20000"),
+		client.WithClientURL("tri://127.0.0.1:50051"),
 		client.WithClientSerialization(constant.ProtobufSerialization),
 	)
 	if err != nil {
