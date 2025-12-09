@@ -73,10 +73,10 @@ func testUnary(cli greet.GreetService) error {
 	if err != nil {
 		return err
 	}
-	logger.Infof("TRIPLE unary call resp: %s", resp.Greeting)
 	if resp == nil {
 		return fmt.Errorf("unexpected unary resp: <nil>")
 	}
+	logger.Infof("TRIPLE unary call resp: %s", resp.Greeting)
 	if resp.Greeting != "triple" && resp.Greeting != "Hello triple" {
 		return fmt.Errorf("unexpected unary resp: %+v", resp)
 	}
@@ -133,10 +133,10 @@ func testClientStream(cli greet.GreetService) error {
 	if err != nil {
 		return err
 	}
-	logger.Infof("TRIPLE client stream resp: %s", resp.Greeting)
 	if resp == nil {
 		return fmt.Errorf("unexpected client stream resp: <nil>")
 	}
+	logger.Infof("TRIPLE client stream resp: %s", resp.Greeting)
 	expectedGo := "triple,triple,triple,triple,triple"
 	expectedJavaPrefix := "Received 5 names: triple, triple, triple, triple, triple"
 	if resp.Greeting != expectedGo && resp.Greeting != expectedJavaPrefix {
