@@ -77,7 +77,6 @@ func testUnary(cli greet.GreetService) error {
 	if resp == nil {
 		return fmt.Errorf("unexpected unary resp: <nil>")
 	}
-	// Go 服务返回 "triple"，Java 服务返回 "Hello {name}"，两者都视为成功
 	if resp.Greeting != "triple" && resp.Greeting != "Hello triple" {
 		return fmt.Errorf("unexpected unary resp: %+v", resp)
 	}
@@ -103,7 +102,6 @@ func testBidiStream(cli greet.GreetService) error {
 		if resp == nil {
 			return fmt.Errorf("unexpected bidi resp: <nil>")
 		}
-		// Go 服务回显 name；Java 服务回显 "Echo from biStream: {name}"
 		expectedJava := fmt.Sprintf("Echo from biStream: %s", name)
 		if resp.Greeting != name && resp.Greeting != expectedJava {
 			return fmt.Errorf("unexpected bidi resp, expect %s or %s got %+v", name, expectedJava, resp)
@@ -139,7 +137,6 @@ func testClientStream(cli greet.GreetService) error {
 	if resp == nil {
 		return fmt.Errorf("unexpected client stream resp: <nil>")
 	}
-	// Go 服务返回 "triple,triple,..."; Java 服务返回 "Received 5 names: triple, triple, ..."
 	expectedGo := "triple,triple,triple,triple,triple"
 	expectedJavaPrefix := "Received 5 names: triple, triple, triple, triple, triple"
 	if resp.Greeting != expectedGo && resp.Greeting != expectedJavaPrefix {
@@ -151,8 +148,7 @@ func testClientStream(cli greet.GreetService) error {
 // testServerStream: 1 request -> 10 responses
 func testServerStream(cli greet.GreetService) error {
 	logger.Info("start to test TRIPLE server stream")
-	reqName := "triple"
-	stream, err := cli.GreetServerStream(context.Background(), &greet.GreetServerStreamRequest{Name: reqName})
+	stream, err := cli.GreetServerStream(context.Background(), &greet.GreetServerStreamRequest{Name: "triple"})
 	if err != nil {
 		return err
 	}
@@ -162,9 +158,8 @@ func testServerStream(cli greet.GreetService) error {
 		if msg == nil {
 			return fmt.Errorf("unexpected server stream msg: <nil>")
 		}
-		// Go 服务返回 "triple"; Java 服务返回 "Response {i} from serverStream for StreamingClient"
 		expectedGo := "triple"
-		expectedJava := fmt.Sprintf("Response %d from serverStream for %s", count, reqName)
+		expectedJava := fmt.Sprintf("Response %d from serverStream for StreamingClient", count)
 		if msg.Greeting != expectedGo && msg.Greeting != expectedJava {
 			return fmt.Errorf("unexpected server stream msg: %+v", msg)
 		}
