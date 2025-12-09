@@ -25,7 +25,7 @@ const _ = triple_protocol.IsAtLeastVersion0_1_0
 
 const (
 	// UserProviderName is the fully-qualified name of the UserProvider service.
-	UserProviderName = "user.UserProvider"
+	UserProviderName = "org.apache.dubbo.samples.async.proto.UserProvider"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -37,11 +37,11 @@ const (
 // period.
 const (
 	// UserProviderGetUserProcedure is the fully-qualified name of the UserProvider's GetUser RPC.
-	UserProviderGetUserProcedure = "/user.UserProvider/GetUser"
+	UserProviderGetUserProcedure = "/org.apache.dubbo.samples.async.proto.UserProvider/GetUser"
 )
 const (
 	// UserProviderV2Name is the fully-qualified name of the UserProviderV2 service.
-	UserProviderV2Name = "user.UserProviderV2"
+	UserProviderV2Name = "org.apache.dubbo.samples.async.proto.UserProviderV2"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -53,7 +53,7 @@ const (
 // period.
 const (
 	// UserProviderV2SayHelloProcedure is the fully-qualified name of the UserProviderV2's SayHello RPC.
-	UserProviderV2SayHelloProcedure = "/user.UserProviderV2/SayHello"
+	UserProviderV2SayHelloProcedure = "/org.apache.dubbo.samples.async.proto.UserProviderV2/SayHello"
 )
 
 var (
@@ -62,19 +62,19 @@ var (
 	_ UserProviderV2 = (*UserProviderV2Impl)(nil)
 )
 
-// UserProvider is a client for the user.UserProvider service.
+// UserProvider is a client for the org.apache.dubbo.samples.async.proto.UserProvider service.
 type UserProvider interface {
 	GetUser(ctx context.Context, req *GetUserRequest, opts ...client.CallOption) (*GetUserResponse, error)
 }
 
-// UserProviderV2 is a client for the user.UserProviderV2 service.
+// UserProviderV2 is a client for the org.apache.dubbo.samples.async.proto.UserProviderV2 service.
 type UserProviderV2 interface {
 	SayHello(ctx context.Context, req *SayHelloRequest, opts ...client.CallOption) (*SayHelloResponse, error)
 }
 
 // NewUserProvider constructs a client for the user.UserProvider service.
 func NewUserProvider(cli *client.Client, opts ...client.ReferenceOption) (UserProvider, error) {
-	conn, err := cli.DialWithInfo("user.UserProvider", &UserProvider_ClientInfo, opts...)
+	conn, err := cli.DialWithInfo("org.apache.dubbo.samples.async.proto.UserProvider", &UserProvider_ClientInfo, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func (c *UserProviderImpl) GetUser(ctx context.Context, req *GetUserRequest, opt
 
 // NewUserProviderV2 constructs a client for the user.UserProviderV2 service.
 func NewUserProviderV2(cli *client.Client, opts ...client.ReferenceOption) (UserProviderV2, error) {
-	conn, err := cli.DialWithInfo("user.UserProviderV2", &UserProviderV2_ClientInfo, opts...)
+	conn, err := cli.DialWithInfo("org.apache.dubbo.samples.async.proto.UserProviderV2", &UserProviderV2_ClientInfo, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (c *UserProviderV2Impl) SayHello(ctx context.Context, req *SayHelloRequest,
 }
 
 var UserProvider_ClientInfo = client.ClientInfo{
-	InterfaceName: "user.UserProvider",
+	InterfaceName: "org.apache.dubbo.samples.async.proto.UserProvider",
 	MethodNames:   []string{"GetUser"},
 	ConnectionInjectFunc: func(dubboCliRaw interface{}, conn *client.Connection) {
 		dubboCli := dubboCliRaw.(*UserProviderImpl)
@@ -137,7 +137,7 @@ var UserProvider_ClientInfo = client.ClientInfo{
 	},
 }
 var UserProviderV2_ClientInfo = client.ClientInfo{
-	InterfaceName: "user.UserProviderV2",
+	InterfaceName: "org.apache.dubbo.samples.async.proto.UserProviderV2",
 	MethodNames:   []string{"SayHello"},
 	ConnectionInjectFunc: func(dubboCliRaw interface{}, conn *client.Connection) {
 		dubboCli := dubboCliRaw.(*UserProviderV2Impl)
@@ -145,7 +145,7 @@ var UserProviderV2_ClientInfo = client.ClientInfo{
 	},
 }
 
-// UserProviderHandler is an implementation of the user.UserProvider service.
+// UserProviderHandler is an implementation of the org.apache.dubbo.samples.async.proto.UserProvider service.
 type UserProviderHandler interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 }
@@ -158,7 +158,7 @@ func SetProviderUserProvider(srv common.RPCService) {
 	dubbo.SetProviderServiceWithInfo(srv, &UserProvider_ServiceInfo)
 }
 
-// UserProviderV2Handler is an implementation of the user.UserProviderV2 service.
+// UserProviderV2Handler is an implementation of the org.apache.dubbo.samples.async.proto.UserProviderV2 service.
 type UserProviderV2Handler interface {
 	SayHello(context.Context, *SayHelloRequest) (*SayHelloResponse, error)
 }
@@ -172,7 +172,7 @@ func SetProviderUserProviderV2(srv common.RPCService) {
 }
 
 var UserProvider_ServiceInfo = server.ServiceInfo{
-	InterfaceName: "user.UserProvider",
+	InterfaceName: "org.apache.dubbo.samples.async.proto.UserProvider",
 	ServiceType:   (*UserProviderHandler)(nil),
 	Methods: []server.MethodInfo{
 		{
@@ -193,7 +193,7 @@ var UserProvider_ServiceInfo = server.ServiceInfo{
 	},
 }
 var UserProviderV2_ServiceInfo = server.ServiceInfo{
-	InterfaceName: "user.UserProviderV2",
+	InterfaceName: "org.apache.dubbo.samples.async.proto.UserProviderV2",
 	ServiceType:   (*UserProviderV2Handler)(nil),
 	Methods: []server.MethodInfo{
 		{

@@ -17,9 +17,12 @@
 
 syntax = "proto3";
 
-package user;
+package org.apache.dubbo.samples.async.proto;
 
 option go_package = "github.com/apache/dubbo-go-samples/async/proto;user";
+option java_package = "org.apache.dubbo.samples.async.proto";
+option java_multiple_files = true;
+option java_outer_classname = "UserProto";
 
 // Gender enumeration
 enum Gender {
