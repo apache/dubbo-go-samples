@@ -26,12 +26,17 @@ import org.apache.dubbo.samples.tri.streaming.api.GreetStreamResponse;
 import org.apache.dubbo.samples.tri.streaming.api.GreetServerStreamRequest;
 import org.apache.dubbo.samples.tri.streaming.api.GreetServerStreamResponse;
 
+import org.apache.dubbo.samples.tri.streaming.api.GreetRequest;
+import org.apache.dubbo.samples.tri.streaming.api.GreetResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class StreamingClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(StreamingClient.class);
@@ -65,8 +70,15 @@ public class StreamingClient {
         // Test results tracking
         boolean bidiStreamSuccess = false;
         boolean serverStreamSuccess = false;
+        boolean unarySuccess = false;
         
         try {
+            // Unary call quick check
+            System.out.println("\n" + "=".repeat(70));
+            System.out.println("TEST 0: Unary");
+            System.out.println("=".repeat(70));
+            unarySuccess = testUnary(greeter);
+
             // Test bidirectional streaming
             System.out.println("\n" + "=".repeat(70));
             System.out.println("TEST 1: Bidirectional Streaming");
@@ -81,22 +93,43 @@ public class StreamingClient {
             
         } catch (Exception e) {
             LOGGER.error("Error during testing", e);
+            printTestSummary(unarySuccess, bidiStreamSuccess, serverStreamSuccess);
+            bootstrap.stop();
+            System.exit(1);
         } finally {
             // Print test results summary
-            printTestSummary(bidiStreamSuccess, serverStreamSuccess);
-            
+            printTestSummary(unarySuccess, bidiStreamSuccess, serverStreamSuccess);
             // Shutdown
             bootstrap.stop();
             System.out.println("\n Client shutdown complete\n");
         }
+        
+        if (!unarySuccess || !bidiStreamSuccess || !serverStreamSuccess) {
+            System.exit(1);
+        }
     }
     
-    // BiStream test: send 5 requests, expect 5 responses
-    private static boolean testBidiStream(GreetService greeter) {
+    // Unary quick check
+    private static boolean testUnary(GreetService greeter) throws Exception {
+        GreetRequest request = GreetRequest.newBuilder().setName("triple").build();
+        GreetResponse response = greeter.greet(request);
+        String expectedGreetingJava = "Hello triple";
+        String expectedGreetingGo = "triple";
+        if (response == null || (!expectedGreetingJava.equals(response.getGreeting()) && !expectedGreetingGo.equals(response.getGreeting()))) {
+            throw new IllegalStateException("Unexpected unary response, expect \"" + expectedGreetingJava + "\" or \"" + expectedGreetingGo + "\" got: " + response);
+        }
+        System.out.println("   Unary call response: " + response.getGreeting());
+        return true;
+    }
+
+    // BiStream test: send 5 requests, expect 5 matching responses
+    private static boolean testBidiStream(GreetService greeter) throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicInteger responseCount = new AtomicInteger(0);
-        final AtomicInteger expectedResponses = new AtomicInteger(5);
-        final boolean[] success = {false};
+        final int expectedResponses = 5;
+        final AtomicBoolean success = new AtomicBoolean(false);
+        final AtomicReference<Throwable> failureRef = new AtomicReference<>();
+        final String[] expectedNames = {"Client-0", "Client-1", "Client-2", "Client-3", "Client-4"};
         
         try {
             // Create response observer
@@ -104,19 +137,26 @@ public class StreamingClient {
                 @Override
                 public void onNext(GreetStreamResponse response) {
                     int count = responseCount.incrementAndGet();
+                    String name = expectedNames[count - 1];
+                    String expectedJava = "Echo from biStream: " + name;
                     System.out.println("    Received response #" + count + ": " + response.getGreeting());
+                    if (response == null || (!expectedJava.equals(response.getGreeting()) && !name.equals(response.getGreeting()))) {
+                        failureRef.set(new IllegalStateException("Unexpected bidi resp at #" + count + ", expect \"" + expectedJava + "\" or \"" + name + "\" got " + response));
+                        latch.countDown();
+                    }
                 }
                 
                 @Override
                 public void onError(Throwable throwable) {
                     System.err.println("   BiStream error: " + throwable.getMessage());
+                    failureRef.set(throwable);
                     latch.countDown();
                 }
                 
                 @Override
                 public void onCompleted() {
                     System.out.println("\n   BiStream completed - Received " + responseCount.get() + " responses");
-                    success[0] = (responseCount.get() == expectedResponses.get());
+                    success.set(responseCount.get() == expectedResponses && failureRef.get() == null);
                     latch.countDown();
                 }
             };
@@ -125,9 +165,9 @@ public class StreamingClient {
             StreamObserver<GreetStreamRequest> requestObserver = greeter.greetStream(responseObserver);
             
             // Send multiple requests
-            for (int i = 0; i < expectedResponses.get(); i++) {
+            for (int i = 0; i < expectedResponses; i++) {
                 GreetStreamRequest request = GreetStreamRequest.newBuilder()
-                        .setName("Client-" + i)
+                        .setName(expectedNames[i])
                         .build();
                 System.out.println("    Sending request #" + i + ": " + request.getName());
                 requestObserver.onNext(request);
@@ -142,25 +182,31 @@ public class StreamingClient {
             
             // Wait for responses
             if (!latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                System.err.println("   BiStream test timed out");
-                return false;
+                throw new IllegalStateException("BiStream test timed out");
             }
             
-            return success[0];
+            if (failureRef.get() != null) {
+                throw new IllegalStateException("BiStream failed", failureRef.get());
+            }
+            if (responseCount.get() != expectedResponses) {
+                throw new IllegalStateException("BiStream response count mismatch, expect " + expectedResponses + " got " + responseCount.get());
+            }
+            
+            return success.get();
             
         } catch (Exception e) {
-            System.err.println("   BiStream test exception: " + e.getMessage());
             LOGGER.error("Error in testBidiStream", e);
-            return false;
+            throw e;
         }
     }
     
     // ServerStream test: send 1 request, expect 10 responses
-    private static boolean testServerStream(GreetService greeter) {
+    private static boolean testServerStream(GreetService greeter) throws Exception {
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicInteger responseCount = new AtomicInteger(0);
         final int expectedResponses = 10;
-        final boolean[] success = {false};
+        final AtomicBoolean success = new AtomicBoolean(false);
+        final AtomicReference<Throwable> failureRef = new AtomicReference<>();
         
         try {
             // Create request
@@ -177,18 +223,25 @@ public class StreamingClient {
                 public void onNext(GreetServerStreamResponse response) {
                     int count = responseCount.incrementAndGet();
                     System.out.println("    Received response #" + count + ": " + response.getGreeting());
+                    String expectedJava = "Response " + (count - 1) + " from serverStream for " + request.getName();
+                    String expectedGo = request.getName();
+                    if (response == null || (!expectedJava.equals(response.getGreeting()) && !expectedGo.equals(response.getGreeting()))) {
+                        failureRef.set(new IllegalStateException("Unexpected server stream resp at #" + count + ", expect \"" + expectedJava + "\" or \"" + expectedGo + "\" got " + response));
+                        latch.countDown();
+                    }
                 }
                 
                 @Override
                 public void onError(Throwable throwable) {
                     System.err.println("   ServerStream error: " + throwable.getMessage());
+                    failureRef.set(throwable);
                     latch.countDown(); // Ensure latch is counted down on error
                 }
                 
                 @Override
                 public void onCompleted() {
                     System.out.println("\n   ServerStream completed - Received " + responseCount.get() + " responses");
-                    success[0] = (responseCount.get() == expectedResponses);
+                    success.set(responseCount.get() == expectedResponses && failureRef.get() == null);
                     latch.countDown();
                 }
             };
@@ -198,16 +251,21 @@ public class StreamingClient {
             
             // Wait for responses
             if (!latch.await(TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                System.err.println("   ServerStream test timed out");
-                return false;
+                throw new IllegalStateException("ServerStream test timed out");
             }
             
-            return success[0];
+            if (failureRef.get() != null) {
+                throw new IllegalStateException("ServerStream failed", failureRef.get());
+            }
+            if (responseCount.get() != expectedResponses) {
+                throw new IllegalStateException("ServerStream response count mismatch, expect " + expectedResponses + " got " + responseCount.get());
+            }
+            
+            return success.get();
             
         } catch (Exception e) {
-            System.err.println("   ServerStream test exception: " + e.getMessage());
             LOGGER.error("Error in testServerStream", e);
-            return false;
+            throw e;
         }
     }
     
@@ -220,14 +278,15 @@ public class StreamingClient {
      * @param bidiStreamSuccess whether bidirectional streaming test passed
      * @param serverStreamSuccess whether server streaming test passed
      */
-    private static void printTestSummary(boolean bidiStreamSuccess, boolean serverStreamSuccess) {
+    private static void printTestSummary(boolean unarySuccess, boolean bidiStreamSuccess, boolean serverStreamSuccess) {
         System.out.println("\n" + "=".repeat(70));
         System.out.println(" TEST RESULTS SUMMARY");
         System.out.println("=".repeat(70));
+        System.out.println("  Unary: " + (unarySuccess ? " PASSED" : " FAILED"));
         System.out.println("  Bidirectional Streaming: " + (bidiStreamSuccess ? " PASSED" : " FAILED"));
         System.out.println("  Server Streaming: " + (serverStreamSuccess ? " PASSED" : " FAILED"));
         System.out.println("-".repeat(70));
-        if (bidiStreamSuccess && serverStreamSuccess) {
+        if (unarySuccess && bidiStreamSuccess && serverStreamSuccess) {
             System.out.println("   Overall: ALL TESTS PASSED!");
         } else {
             System.out.println("    Overall: SOME TESTS FAILED");

@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 )
 
 import (
@@ -37,31 +38,31 @@ func main() {
 		client.WithClientURL("tri://127.0.0.1:20000"),
 	)
 	if err != nil {
-		panic(err)
+		panic(err) // fail fast: client not created
 	}
 
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
-		panic(err)
+		panic(err) // fail fast: service proxy not created
 	}
 	TestClient(svc)
 }
 
 func TestClient(cli greet.GreetService) {
 	if err := testUnary(cli); err != nil {
-		logger.Error(err)
+		panic(err)
 	}
 
 	if err := testBidiStream(cli); err != nil {
-		logger.Error(err)
+		panic(err)
 	}
 
 	if err := testClientStream(cli); err != nil {
-		logger.Error(err)
+		panic(err)
 	}
 
 	if err := testServerStream(cli); err != nil {
-		logger.Error(err)
+		panic(err)
 	}
 }
 
@@ -73,6 +74,13 @@ func testUnary(cli greet.GreetService) error {
 		return err
 	}
 	logger.Infof("TRIPLE unary call resp: %s", resp.Greeting)
+	if resp == nil {
+		return fmt.Errorf("unexpected unary resp: <nil>")
+	}
+	// Go 服务返回 "triple"，Java 服务返回 "Hello {name}"，两者都视为成功
+	if resp.Greeting != "triple" && resp.Greeting != "Hello triple" {
+		return fmt.Errorf("unexpected unary resp: %+v", resp)
+	}
 	return nil
 }
 
@@ -83,14 +91,25 @@ func testBidiStream(cli greet.GreetService) error {
 	if err != nil {
 		return err
 	}
-	if sendErr := stream.Send(&greet.GreetStreamRequest{Name: "triple"}); sendErr != nil {
-		return sendErr
+	names := []string{"triple-1", "triple-2", "triple-3"}
+	for _, name := range names {
+		if sendErr := stream.Send(&greet.GreetStreamRequest{Name: name}); sendErr != nil {
+			return sendErr
+		}
+		resp, recvErr := stream.Recv()
+		if recvErr != nil {
+			return recvErr
+		}
+		if resp == nil {
+			return fmt.Errorf("unexpected bidi resp: <nil>")
+		}
+		// Go 服务回显 name；Java 服务回显 "Echo from biStream: {name}"
+		expectedJava := fmt.Sprintf("Echo from biStream: %s", name)
+		if resp.Greeting != name && resp.Greeting != expectedJava {
+			return fmt.Errorf("unexpected bidi resp, expect %s or %s got %+v", name, expectedJava, resp)
+		}
+		logger.Infof("TRIPLE bidi stream resp: %s", resp.Greeting)
 	}
-	resp, err := stream.Recv()
-	if err != nil {
-		return err
-	}
-	logger.Infof("TRIPLE bidi stream resp: %s", resp.Greeting)
 	if err := stream.CloseRequest(); err != nil {
 		return err
 	}
@@ -117,21 +136,46 @@ func testClientStream(cli greet.GreetService) error {
 		return err
 	}
 	logger.Infof("TRIPLE client stream resp: %s", resp.Greeting)
+	if resp == nil {
+		return fmt.Errorf("unexpected client stream resp: <nil>")
+	}
+	// Go 服务返回 "triple,triple,..."; Java 服务返回 "Received 5 names: triple, triple, ..."
+	expectedGo := "triple,triple,triple,triple,triple"
+	expectedJavaPrefix := "Received 5 names: triple, triple, triple, triple, triple"
+	if resp.Greeting != expectedGo && resp.Greeting != expectedJavaPrefix {
+		return fmt.Errorf("unexpected client stream resp: %+v", resp)
+	}
 	return nil
 }
 
 // testServerStream: 1 request -> 10 responses
 func testServerStream(cli greet.GreetService) error {
 	logger.Info("start to test TRIPLE server stream")
-	stream, err := cli.GreetServerStream(context.Background(), &greet.GreetServerStreamRequest{Name: "triple"})
+	reqName := "triple"
+	stream, err := cli.GreetServerStream(context.Background(), &greet.GreetServerStreamRequest{Name: reqName})
 	if err != nil {
 		return err
 	}
+	count := 0
 	for stream.Recv() {
-		logger.Infof("TRIPLE server stream resp: %s", stream.Msg().Greeting)
+		msg := stream.Msg()
+		if msg == nil {
+			return fmt.Errorf("unexpected server stream msg: <nil>")
+		}
+		// Go 服务返回 "triple"; Java 服务返回 "Response {i} from serverStream for StreamingClient"
+		expectedGo := "triple"
+		expectedJava := fmt.Sprintf("Response %d from serverStream for %s", count, reqName)
+		if msg.Greeting != expectedGo && msg.Greeting != expectedJava {
+			return fmt.Errorf("unexpected server stream msg: %+v", msg)
+		}
+		count++
+		logger.Infof("TRIPLE server stream resp #%d: %s", count, msg.Greeting)
 	}
 	if stream.Err() != nil {
 		return stream.Err()
+	}
+	if count != 10 {
+		return fmt.Errorf("unexpected server stream count, expect 10 got %d", count)
 	}
 	if err := stream.Close(); err != nil {
 		return err
