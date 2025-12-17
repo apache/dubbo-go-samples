@@ -56,7 +56,7 @@ func main() {
 		panic("direct call failed: empty response")
 	}
 
-	// Go 服务返回 "hello {name}"，Java 示例服务返回 "hello from java server, {name}"
+	// Go server return "hello {name}"，Java server return "hello from java server, {name}"
 	expectGo := "hello " + name
 	expectJava := "hello from java server, " + name
 	if resp.Greeting != expectGo && resp.Greeting != expectJava {
