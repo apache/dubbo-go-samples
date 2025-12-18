@@ -42,7 +42,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `streaming`: Streaming RPC example.
 * `task`: Task scheduling and execution example.
 * `timeout`: Demonstrates timeout handling in Dubbo-go.
-* `tls`: Demonstrates how to use TLS (based on X.509 certificates) in Dubbo-go to enable encrypted communication and/or mutual authentication between client and server.
+* `tls`: Demonstrates how to use TLS (based on X.509 certificates) in Dubbo-go to enable encrypted communication and/or mutual authentication between client and server, also includes Go–Java interoperability.
 * `transaction/seata-go`: Distributed transaction example using `seata-go`.
 
 ### compatibility (legacy Dubbo-go samples)

@@ -28,14 +28,15 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/tls/proto"
+	greet "github.com/apache/dubbo-go-samples/tls/proto"
 )
 
 func main() {
 	cli, err := client.NewClient(
 		client.WithClientURL("127.0.0.1:20000"),
+		client.WithClientProtocolTriple(),
 		client.WithClientTLSOption(
-			tls.WithCACertFile("../../x509/server_ca_cert.pem"),
+			tls.WithCACertFile("x509/server_ca_cert.pem"),
 			tls.WithServerName("dubbogo.test.example.com"),
 		),
 	)

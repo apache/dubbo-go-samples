@@ -29,7 +29,7 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/tls/proto"
+	greet "github.com/apache/dubbo-go-samples/tls/proto"
 )
 
 type GreetTripleServer struct {
@@ -47,8 +47,8 @@ func main() {
 			protocol.WithTriple(),
 		),
 		server.WithServerTLSOption(
-			tls.WithCertFile("../../x509/server2_cert.pem"),
-			tls.WithKeyFile("../../x509/server2_key.pem"),
+			tls.WithCertFile("x509/server2_cert.pem"),
+			tls.WithKeyFile("x509/server2_key.pem"),
 			tls.WithServerName("dubbogo.test.example.com"),
 		),
 	)
