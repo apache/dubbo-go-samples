@@ -132,7 +132,7 @@ start: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-server/conf/dubbogo.yml
 start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@ls $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
-	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
+	@-cd $(PROJECT_DIR) && $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
 
 ## start: print application log (for server)
@@ -145,7 +145,7 @@ print-server-log:
 .PHONY: run
 run: build
 	$(info   >  Running application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
-	@-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) 2>&1 | tee $(LOG_FILE)
+	@-cd $(PROJECT_DIR) && $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) 2>&1 | tee $(LOG_FILE)
 
 ## stop: Stop running the application (for server)
 .PHONY: stop
