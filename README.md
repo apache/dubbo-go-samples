@@ -21,7 +21,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `healthcheck`: Service health check example.
 * `helloworld`: Basic “Hello World” example for Dubbo-go, also includes Go–Java interoperability.
 * `http3`: HTTP/3 (QUIC) protocol support example demonstrating how to use Triple protocol with HTTP/3 for high-performance communication between Go and Java services with TLS encryption.
-* `direct`: Triple point-to-point invocation sample without a registry.
+* `direct`: Triple point-to-point invocation sample without a registry, also includes Go–Java interoperability.
 * `game`: Game service example.
 * `generic`: Generic invocation examples supporting interoperability between Dubbo-Go and Dubbo Java services, suitable for scenarios without interface information.
 * `integrate_test`: Integration test cases for Dubbo-go samples.
@@ -40,7 +40,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
   * `rpc/grpc`: gRPC protocol example.
   * `rpc/jsonrpc`: JSON-RPC protocol example.
   * `rpc/triple`: Triple protocol example with multiple serialization formats.
-* `streaming`: Streaming RPC example.
+* `streaming`: Streaming RPC example, also includes Go–Java interoperability when both use streaming.
 * `task`: Task scheduling and execution example.
 * `timeout`: Demonstrates timeout handling in Dubbo-go.
 * `tls`: Demonstrates how to use TLS (based on X.509 certificates) in Dubbo-go to enable encrypted communication and/or mutual authentication between client and server.
@@ -50,7 +50,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 
 * `compatibility/apisix`: Example integrating Apache APISIX with Dubbo-go.
 * `compatibility/config-api`: Shows how to use Dubbo-go via APIs without configuration files.
-* `compatibility/configcenter`: Usage of different config centers, including Zookeeper, Nacos, and Apollo.
 * `compatibility/generic`: Generic invocation example.
 * `compatibility/mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `compatibility/proxyless`: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes.
@@ -58,13 +57,11 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
     * `compatibility/polaris/limit`: Quickly experience Polaris' service current limiting capabilities in dubbogo
     * `compatibility/polaris/registry`: Quickly experience Polaris' service registration and service discovery capabilities in dubbogo
     * `compatibility/polaris/router`: Quickly experience Polaris' service routing capabilities in dubbogo
-* `compatibility/registry`: Shows how to use `etcd`/`Nacos`/`Zookeeper` as Dubbo-go registries.
 * `compatibility/rpc`: Dubbo protocol communication examples.
   * `compatibility/rpc/dubbo`: Dubbo-go 3.0 RPC example between Java and Go.
   * `compatibility/rpc/grpc`: Dubbo-go RPC example based on gRPC.
   * `compatibility/rpc/jsonrpc`: Dubbo-go RPC example based on JSON-RPC.
   * `compatibility/rpc/triple`: Dubbo-go RPC examples based on `hessian2`/`msgpack`/`pb` (protobuf v3)/`pb2` (protobuf v2)/self-defined serialization.
-* `compatibility/skywalking`: How to integrate SkyWalking with Dubbo-go.
 * `compatibility/tls`: Uses TLS encryption in `getty` (TCP)/`triple`/`gRPC` communication modes.
 * `compatibility/tracing`: Tracing examples.
 

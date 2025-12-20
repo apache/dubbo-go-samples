@@ -21,7 +21,7 @@
 * `healthcheck`：服务健康检查示例。
 * `helloworld`：Dubbo-go 最基础的 “Hello World” 示例，同时包含 Go 与 Java 的互操作示例。
 * `http3`：HTTP/3（QUIC）协议支持示例，演示如何通过 Triple 协议使用 HTTP/3 实现 Go 与 Java 服务之间的高性能通信，并支持 TLS 加密。
-* `direct`：不依赖注册中心的 Triple 点对点调用示例。
+* `direct`：不依赖注册中心的 Triple 点对点调用示例，并包含 Go 与 Java 的互操作示例。
 * `game`：游戏服务示例。
 * `generic`：泛化调用示例，支持 Dubbo-Go 与 Dubbo Java 服务互操作，适用于无接口信息场景。
 * `integrate_test`：Dubbo-go 示例的集成测试用例。
@@ -40,7 +40,7 @@
   * `rpc/grpc`：基于 gRPC 协议的示例。
   * `rpc/jsonrpc`：基于 JSON-RPC 协议的示例。
   * `rpc/triple`：Triple 协议示例，涵盖多种序列化方式。
-* `streaming`：流式 RPC 调用示例。
+* `streaming`：流式 RPC 调用示例，并包含了Dubbo-go与Dubbo-java同时使用流式传输的互操作示例。
 * `task`：任务调度与执行示例。
 * `timeout`：Dubbo-go 超时处理示例。
 * `tls`：演示如何在 Dubbo-go 中使用 TLS（基于 X.509 证书），实现客户端与服务端之间的加密通信和/或双向认证。
@@ -50,7 +50,6 @@
 
 * `compatibility/apisix`：Dubbo-go 集成 Apache APISIX 的示例。
 * `compatibility/config-api`：演示如何在不使用配置文件的情况下，通过 API 使用 Dubbo-go。
-* `compatibility/configcenter`：不同配置中心的使用示例，包括 Zookeeper、Nacos 和 Apollo。
 * `compatibility/generic`：泛化调用示例。
 * `compatibility/mesh`：基于代理的服务网格示例，展示如何在 Kubernetes 上结合 Envoy 部署 Dubbo-go 服务。
 * `compatibility/proxyless`：无 Sidecar 的服务网格示例，展示在 Kubernetes 上的部署方式。
@@ -58,13 +57,11 @@
     * `compatibility/polaris/limit`: 在 dubbogo 中快速体验北极星的服务限流能力
     * `compatibility/polaris/registry`: 在 dubbogo 中快速体验北极星的服务注册以及服务发现能力
     * `compatibility/polaris/router`: 在 dubbogo 中快速体验北极星的服务路由能力
-* `compatibility/registry`：演示将 `etcd` / `Nacos` / `Zookeeper` 作为 Dubbo-go 注册中心的使用方法。
 * `compatibility/rpc`：Dubbo 协议通信示例。
   * `compatibility/rpc/dubbo`：Dubbo-go 3.0 下 Java 与 Go 的 RPC 示例。
   * `compatibility/rpc/grpc`：基于 gRPC 的 Dubbo-go RPC 示例。
   * `compatibility/rpc/jsonrpc`：基于 JSON-RPC 的 Dubbo-go RPC 示例。
   * `compatibility/rpc/triple`：基于 `hessian2` / `msgpack` / `pb`（protobuf v3）/ `pb2`（protobuf v2）/ 自定义序列化 的 Triple 协议示例。
-* `compatibility/skywalking`：如何在 Dubbo-go 中集成 SkyWalking。
 * `compatibility/tls`：在 `getty`（TCP）/`triple`/`gRPC` 通信模式下使用 TLS 加密的示例。
 * `compatibility/tracing`：链路追踪示例。
 

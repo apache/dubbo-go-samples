@@ -35,6 +35,7 @@ import (
 
 type DirectGreetServer struct{}
 
+// Greet: 1 request -> 1 response, returns "hello {name}"
 func (s *DirectGreetServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	logger.Infof("Direct server received name = %s", req.Name)
 	return &greet.GreetResponse{Greeting: "hello " + req.Name}, nil

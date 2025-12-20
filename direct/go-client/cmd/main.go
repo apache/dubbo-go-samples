@@ -37,19 +37,31 @@ func main() {
 		client.WithClientURL("tri://127.0.0.1:20000"),
 	)
 	if err != nil {
-		panic(err)
+		panic(err) // fail fast if client cannot be created
 	}
 
 	greetService, err := greet.NewGreetService(cli)
 	if err != nil {
-		panic(err)
+		panic(err) // fail fast if service proxy cannot be created
 	}
 
-	req := &greet.GreetRequest{Name: "dubbo-go"}
+	// Direct call: 1 request -> 1 response
+	name := "Golang Client dubbo-go"
+	req := &greet.GreetRequest{Name: name}
 	resp, err := greetService.Greet(context.Background(), req)
 	if err != nil {
-		logger.Errorf("direct call failed: %v", err)
-		return
+		panic(err)
 	}
+	if resp == nil {
+		panic("direct call failed: empty response")
+	}
+
+	// Go server return "hello {name}"，Java server return "hello from java server, {name}"
+	expectGo := "hello " + name
+	expectJava := "hello from java server, " + name
+	if resp.Greeting != expectGo && resp.Greeting != expectJava {
+		panic("unexpected greeting: " + resp.Greeting)
+	}
+
 	logger.Infof("direct call response: %s", resp.Greeting)
 }
