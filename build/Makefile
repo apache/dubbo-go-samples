@@ -132,7 +132,7 @@ start: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-server/conf/dubbogo.yml
 start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@ls $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
-	@-command -v lsof >/dev/null 2>&1 && lsof -ti :20000,:20001,:20002,:50051 | xargs -r kill -9 || true
+	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:4318 -iTCP:50051 | xargs -r kill -9 || true
 	@sleep 1
 	@-cd $(PROJECT_DIR) && $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
@@ -155,6 +155,7 @@ stop:
 	$(info   >  Stopping the application $(PROJECT_NAME))
 	@cat $(PID) | sed "/^/s/^/  \>  Killing PID: /"
 	@-kill `cat $(PID)` 2>/dev/null || true
+	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:4318 -iTCP:50051 | xargs -r kill -9 || true
 
 ## integration: Run integration test for this application
 .PHONY: integration
