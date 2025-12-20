@@ -26,9 +26,9 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>java-greet-server</artifactId>
-    <name>java-greet-server</name>
-    <description>Java server module for helloworld</description>
+    <artifactId>java-greet-client</artifactId>
+    <name>java-greet-client</name>
+    <description>Java client module for helloworld</description>
 
     <dependencies>
         <dependency>
@@ -37,9 +37,19 @@
             <version>${protobuf.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo</artifactId>
-            <version>${dubbo.version}</version>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty-shaded</artifactId>
+            <version>${grpc.version}</version>
         </dependency>
     </dependencies>
 
@@ -51,27 +61,10 @@
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.build.directory}/generated-sources/protobuf/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>org.example.server.JavaServerApp</mainClass>
+                    <mainClass>org.example.client.JavaClientApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>

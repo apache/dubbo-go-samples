@@ -35,7 +35,6 @@
     <properties>
         <protobuf.version>3.21.7</protobuf.version>
         <grpc.version>1.51.0</grpc.version>
-        <dubbo.version>3.3.0-beta.2</dubbo.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -48,6 +47,7 @@
             <version>1.3.2</version>
         </dependency>
     </dependencies>
+
 
     <build>
         <extensions>
@@ -64,32 +64,24 @@
                     <groupId>org.xolstice.maven.plugins</groupId>
                     <artifactId>protobuf-maven-plugin</artifactId>
                     <version>0.6.1</version>
-                    <configuration>
-                        <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
-                        <outputDirectory>${project.build.directory}/generated-sources/protobuf/java</outputDirectory>
-                        <protocPlugins>
-                            <protocPlugin>
-                                <id>dubbo</id>
-                                <groupId>org.apache.dubbo</groupId>
-                                <artifactId>dubbo-compiler</artifactId>
-                                <version>${dubbo.version}</version>
-                                <mainClass>org.apache.dubbo.gen.tri.Dubbo3TripleGenerator</mainClass>
-                            </protocPlugin>
-                        </protocPlugins>
-                        <protoSourceRoot>${project.parent.basedir}/proto</protoSourceRoot>
+                    <configuration> 
+                        <protocArtifact>
+                            com.google.protobuf:protoc:${protobuf.version}:exe:windows-x86_64
+                        </protocArtifact>
+                        <pluginId>grpc-java</pluginId>
+                        <pluginArtifact>
+                            io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:windows-x86_64
+                        </pluginArtifact>
+                        <protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>
                     </configuration>
                     <executions>
                         <execution>
                             <goals>
                                 <goal>compile</goal>
+                                <goal>compile-custom</goal>
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.3.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>

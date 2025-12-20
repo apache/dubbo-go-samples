@@ -17,35 +17,40 @@
 
 package org.example.client;
 
-import org.apache.dubbo.config.ApplicationConfig;
-import org.apache.dubbo.config.ReferenceConfig;
-import org.apache.dubbo.config.bootstrap.DubboBootstrap;
-
 import greet.GreetRequest;
 import greet.GreetResponse;
-import greet.GreetService;
+import greet.GreetServiceGrpc;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 
 public class JavaClientApp {
 
     public static void main(String[] args) {
 
-        ReferenceConfig<GreetService> reference = new ReferenceConfig<>();
-        reference.setInterface(GreetService.class);
-        reference.setUrl("tri://127.0.0.1:20000");
+        ManagedChannel channel = ManagedChannelBuilder
+                .forAddress("127.0.0.1", 20000)
+                .usePlaintext()
+                .build();
 
-        DubboBootstrap bootstrap = DubboBootstrap.getInstance();
-        bootstrap.application(new ApplicationConfig("java-greet-client"))
-                .reference(reference)
-                .start();
+        GreetServiceGrpc.GreetServiceBlockingStub client =
+                GreetServiceGrpc.newBlockingStub(channel);
 
-        GreetService client = reference.get();
-
+        // Direct call: 1 request -> 1 response
         GreetRequest req = GreetRequest.newBuilder()
-                .setName("Java Client")
+                .setName("Java Client Dubbo")
                 .build();
 
         GreetResponse resp = client.greet(req);
 
+        String expectedGo = "hello " + req.getName();
+        String expectedJava = "hello from java server, " + req.getName();
+        if (resp == null || (!expectedGo.equals(resp.getGreeting()) && !expectedJava.equals(resp.getGreeting()))) {
+            throw new IllegalStateException("Unexpected greeting: " + resp);
+        }
+
         System.out.println("Response: " + resp.getGreeting());
+
+        channel.shutdown();
     }
 }
