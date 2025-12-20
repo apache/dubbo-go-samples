@@ -56,11 +56,13 @@ func main() {
 type GreetTripleServer struct {
 }
 
+// Greet: 1 request -> 1 response, returns request name (echo)
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	resp := &greet.GreetResponse{Greeting: req.Name}
 	return resp, nil
 }
 
+// GreetStream: N requests -> N responses (1:1), returns request name (echo)
 func (srv *GreetTripleServer) GreetStream(ctx context.Context, stream greet.GreetService_GreetStreamServer) error {
 	for {
 		req, err := stream.Recv()
@@ -77,6 +79,7 @@ func (srv *GreetTripleServer) GreetStream(ctx context.Context, stream greet.Gree
 	return nil
 }
 
+// GreetClientStream: N requests -> 1 response, returns names joined by "," (e.g. "a,b,c")
 func (srv *GreetTripleServer) GreetClientStream(ctx context.Context, stream greet.GreetService_GreetClientStreamServer) (*greet.GreetClientStreamResponse, error) {
 	var reqs []string
 	for stream.Recv() {
@@ -92,8 +95,9 @@ func (srv *GreetTripleServer) GreetClientStream(ctx context.Context, stream gree
 	return resp, nil
 }
 
+// GreetServerStream: 1 request -> 10 responses, returns request name (echo)
 func (srv *GreetTripleServer) GreetServerStream(ctx context.Context, req *greet.GreetServerStreamRequest, stream greet.GreetService_GreetServerStreamServer) error {
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 10; i++ {
 		if err := stream.Send(&greet.GreetServerStreamResponse{Greeting: req.Name}); err != nil {
 			return fmt.Errorf("triple ServerStream send err: %s", err)
 		}
