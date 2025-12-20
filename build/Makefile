@@ -132,6 +132,8 @@ start: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-server/conf/dubbogo.yml
 start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@ls $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
+	@-command -v lsof >/dev/null 2>&1 && lsof -ti :20000,:20001,:20002,:50051 | xargs -r kill -9 || true
+	@sleep 1
 	@-cd $(PROJECT_DIR) && $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
 
