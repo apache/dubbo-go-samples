@@ -61,7 +61,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
   * `compatibility/rpc/grpc`: Dubbo-go RPC example based on gRPC.
   * `compatibility/rpc/jsonrpc`: Dubbo-go RPC example based on JSON-RPC.
   * `compatibility/rpc/triple`: Dubbo-go RPC examples based on `hessian2`/`msgpack`/`pb` (protobuf v3)/`pb2` (protobuf v2)/self-defined serialization.
-* `compatibility/skywalking`: How to integrate SkyWalking with Dubbo-go.
 * `compatibility/tls`: Uses TLS encryption in `getty` (TCP)/`triple`/`gRPC` communication modes.
 * `compatibility/tracing`: Tracing examples.
 
