@@ -10,7 +10,7 @@
 - go-client/cmd/main.go - RPC 客户端
 - java-server/src/main/java/org/example/server/JavaServerApp.java - Java服务端
 - java-client/src/main/java/org/example/client/JavaClientApp.java - Java客户端
-- proto - API 的 protobuf 定义
+- proto - Go 与 Java 模块共用的 API protobuf 定义
 
 ## 运行方法
 
