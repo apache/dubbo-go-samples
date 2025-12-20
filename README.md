@@ -49,7 +49,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 
 * `compatibility/apisix`: Example integrating Apache APISIX with Dubbo-go.
 * `compatibility/config-api`: Shows how to use Dubbo-go via APIs without configuration files.
-* `compatibility/configcenter`: Usage of different config centers, including Zookeeper, Nacos, and Apollo.
 * `compatibility/generic`: Generic invocation example.
 * `compatibility/mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `compatibility/proxyless`: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes.
@@ -57,7 +56,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
     * `compatibility/polaris/limit`: Quickly experience Polaris' service current limiting capabilities in dubbogo
     * `compatibility/polaris/registry`: Quickly experience Polaris' service registration and service discovery capabilities in dubbogo
     * `compatibility/polaris/router`: Quickly experience Polaris' service routing capabilities in dubbogo
-* `compatibility/registry`: Shows how to use `etcd`/`Nacos`/`Zookeeper` as Dubbo-go registries.
 * `compatibility/rpc`: Dubbo protocol communication examples.
   * `compatibility/rpc/dubbo`: Dubbo-go 3.0 RPC example between Java and Go.
   * `compatibility/rpc/grpc`: Dubbo-go RPC example based on gRPC.

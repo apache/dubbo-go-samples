@@ -49,7 +49,6 @@
 
 * `compatibility/apisix`：Dubbo-go 集成 Apache APISIX 的示例。
 * `compatibility/config-api`：演示如何在不使用配置文件的情况下，通过 API 使用 Dubbo-go。
-* `compatibility/configcenter`：不同配置中心的使用示例，包括 Zookeeper、Nacos 和 Apollo。
 * `compatibility/generic`：泛化调用示例。
 * `compatibility/mesh`：基于代理的服务网格示例，展示如何在 Kubernetes 上结合 Envoy 部署 Dubbo-go 服务。
 * `compatibility/proxyless`：无 Sidecar 的服务网格示例，展示在 Kubernetes 上的部署方式。
@@ -57,7 +56,6 @@
     * `compatibility/polaris/limit`: 在 dubbogo 中快速体验北极星的服务限流能力
     * `compatibility/polaris/registry`: 在 dubbogo 中快速体验北极星的服务注册以及服务发现能力
     * `compatibility/polaris/router`: 在 dubbogo 中快速体验北极星的服务路由能力
-* `compatibility/registry`：演示将 `etcd` / `Nacos` / `Zookeeper` 作为 Dubbo-go 注册中心的使用方法。
 * `compatibility/rpc`：Dubbo 协议通信示例。
   * `compatibility/rpc/dubbo`：Dubbo-go 3.0 下 Java 与 Go 的 RPC 示例。
   * `compatibility/rpc/grpc`：基于 gRPC 的 Dubbo-go RPC 示例。

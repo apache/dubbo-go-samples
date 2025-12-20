@@ -10,7 +10,7 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework, and s
 - go-client/cmd/main.go - is the rpc client
 - java-server/src/main/java/org/example/server/JavaServerApp.java - is the Java server
 - java-client/src/main/java/org/example/client/JavaClientApp.java - is the Java client
-- proto - contains the protobuf definition of the API
+- proto - shared protobuf definition used by both Go and Java modules
 
 ## How to run
 
