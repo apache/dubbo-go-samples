@@ -42,8 +42,8 @@ cloud.google.com/go/storage v1.14.0/go.mod h1:GrKmX003DSIwi9o29oFT7YDnHYwZoctc3f
 contrib.go.opencensus.io/exporter/prometheus v0.4.1/go.mod h1:t9wvfitlUjGXG2IXAZsuFq26mDGid/JwCEXp+gTG/9U=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 dubbo.apache.org/dubbo-go/v3 v3.0.2-0.20220508105316-b27ec53b7bab/go.mod h1:Ytn9MtmsFYkpa1bzW/3loUFBgm7eJ3M3+XWRurhbBZc=
-dubbo.apache.org/dubbo-go/v3 v3.3.1-0.20251028122905-48c55c00b702 h1:WKuiT4KrpwcnzYPY/S2ItjdOCHwMo5mtrS/68uJoutE=
-dubbo.apache.org/dubbo-go/v3 v3.3.1-0.20251028122905-48c55c00b702/go.mod h1:LB1N3QXiE1ZATzBgb899dQnSqjlQoi0DPPMyYMervSM=
+dubbo.apache.org/dubbo-go/v3 v3.3.0-20251220 h1:7b+wqUQoHdFWvBcENECy+eabgd76551sc4pedWhnG64=
+dubbo.apache.org/dubbo-go/v3 v3.3.0-20251220/go.mod h1:va59d5/A3OD41YyxJ1cijhKV5ABV1OZxgjncWV+K8Ys=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.1.0 h1:ksErzDEI1khOiGPgpwuI7x2ebx/uXQNw7xJpn9Eq1+I=
 github.com/BurntSushi/toml v1.1.0/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
@@ -225,8 +225,8 @@ github.com/dubbogo/gost v1.11.23/go.mod h1:PhJ8+qZJx+Txjx1KthNPuVkCvUca0jRLgKWj/
 github.com/dubbogo/gost v1.11.25/go.mod h1:iovrPhv0hyakhQGVr4jwiECBL9HXNuBY4VV3HWK5pM0=
 github.com/dubbogo/gost v1.12.5/go.mod h1:f0bcP1xpBUdDgiNjNYKF6F3qlA+RFKs0k980FhoEn/g=
 github.com/dubbogo/gost v1.13.1/go.mod h1:9HMXBv+WBMRWhF3SklpqDjkS/01AKWm2SrVdz/A0xJI=
-github.com/dubbogo/gost v1.14.1 h1:veA+5FqwUHvqaB5OPvsWz4iDkGGpyL4lig2rSOZANEs=
-github.com/dubbogo/gost v1.14.1/go.mod h1:m3VJVqCjQ87SwYRrxN2s4T33cOCDrMVbRh4+MAUitnQ=
+github.com/dubbogo/gost v1.14.3 h1:bInkIjdImMo9ENTDdCcs4YlQ/vz5rP/rjcnLakK5x24=
+github.com/dubbogo/gost v1.14.3/go.mod h1:WydBuEOkwKEm9mcWLlOnmsVe1ELFgrNPmC5SzXdPv4A=
 github.com/dubbogo/grpc-go v1.42.9/go.mod h1:F1T9hnUvYGW4JLK1QNriavpOkhusU677ovPzLkk6zHM=
 github.com/dubbogo/grpc-go v1.42.10 h1:CoyCdtqKJEar/3rPa6peZbDqYZ/mVsCqAxB6TfTSkhQ=
 github.com/dubbogo/grpc-go v1.42.10/go.mod h1:JMkPt1mIHL96GAFeYsMoMjew6f1ROKycikGzZQH1s5U=

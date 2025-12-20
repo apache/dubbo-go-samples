@@ -20,7 +20,7 @@
   * `polaris/limit`：使用 Polaris 实现 TPS 限流。
 * `healthcheck`：服务健康检查示例。
 * `helloworld`：Dubbo-go 最基础的 “Hello World” 示例，同时包含 Go 与 Java 的互操作示例。
-* `direct`：不依赖注册中心的 Triple 点对点调用示例。
+* `direct`：不依赖注册中心的 Triple 点对点调用示例，并包含 Go 与 Java 的互操作示例。
 * `game`：游戏服务示例。
 * `generic`：泛化调用示例，支持 Dubbo-Go 与 Dubbo Java 服务互操作，适用于无接口信息场景。
 * `integrate_test`：Dubbo-go 示例的集成测试用例。
@@ -39,7 +39,7 @@
   * `rpc/grpc`：基于 gRPC 协议的示例。
   * `rpc/jsonrpc`：基于 JSON-RPC 协议的示例。
   * `rpc/triple`：Triple 协议示例，涵盖多种序列化方式。
-* `streaming`：流式 RPC 调用示例。
+* `streaming`：流式 RPC 调用示例, 并包含了Dubbo-go与Dubbo-java同时使用流式传输的互操作示例。
 * `task`：任务调度与执行示例。
 * `timeout`：Dubbo-go 超时处理示例。
 * `tls`：演示如何在 Dubbo-go 中使用 TLS（基于 X.509 证书），实现客户端与服务端之间的加密通信和/或双向认证。
