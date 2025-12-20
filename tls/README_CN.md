@@ -6,8 +6,8 @@
 
 ## 目录结构
 
-* **client/**: Go 客户端示例程序
-* **server/**: Go 服务端示例程序
+* **go-client/**: Go 客户端示例程序
+* **go-server/**: Go 服务端示例程序
 * **java-server/**: Java 服务端示例程序（Dubbo-Java 提供者）
 * **java-client/**: Java 客户端示例程序（Dubbo-Java 消费者）
 * **proto/**: `greet` 服务的 Proto 文件及生成的代码
@@ -45,7 +45,7 @@
 在 tls 目录下执行以下命令来启动 Go 服务端：
 
 ```bash
-go run ./server/cmd  
+go run ./go-server/cmd  
 ```
 
 服务端会加载 `x509/` 目录下的服务器证书和 CA，默认监听配置中指定的地址。如果需要自定义配置，请修改 `server` 程序或源代码中的相关内容。
@@ -55,7 +55,7 @@ go run ./server/cmd
 在另一个终端于 tls 目录下执行以下命令来启动 Go 客户端：
 
 ```bash
-go run ./client/cmd  
+go run ./go-client/cmd  
 ```
 
 客户端会使用 `x509/` 目录下的证书与服务端建立 TLS 连接，并调用 `greet` 服务。
@@ -99,7 +99,7 @@ Greet response: Hello hello world from Java provider
 在 tls 目录下执行以下命令来启动 Go 服务端：
 
 ```bash
-go run ./server/cmd
+go run ./go-server/cmd
 ```
 
 Go 服务端将在 20000 端口启动，使用 TLS 证书进行加密。
@@ -132,6 +132,6 @@ Greet response: hello world
 
 ## 注意事项
 
-* 证书路径和是否启用双向认证的设置取决于示例程序中加载的文件。请查看 `tls/server/cmd/main.go` 和 `tls/client/cmd/main.go` 以了解具体行为和可用的命令行参数。
+* 证书路径和是否启用双向认证的设置取决于示例程序中加载的文件。请查看 `tls/go-server/cmd/main.go` 和 `tls/go-client/cmd/main.go` 以了解具体行为和可用的命令行参数。
 * 在 Windows 环境下运行 `create.sh` 脚本时，可能需要 WSL/Git Bash，或手动执行 OpenSSL 命令。
 * 本示例用于教学和测试目的，示例证书不应在生产环境中使用。

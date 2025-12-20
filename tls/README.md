@@ -6,8 +6,8 @@ This example demonstrates how to use TLS (based on X.509 certificates) in Dubbo-
 
 ## Directory Structure
 
-* **client/**: Go client example program
-* **server/**: Go server example program
+* **go-client/**: Go client example program
+* **go-server/**: Go server example program
 * **java-server/**: Java server example program (Dubbo-Java provider)
 * **java-client/**: Java client example program (Dubbo-Java consumer)
 * **proto/**: Proto file and generated code for the `greet` service
@@ -45,7 +45,7 @@ This example demonstrates how to use TLS (based on X.509 certificates) in Dubbo-
 In the tls directory, run the following command to start the Go server:
 
 ```bash
-go run ./server/cmd  
+go run ./go-server/cmd  
 ```
 
 The server will load the server certificates and CA from the `x509/` directory and listen on the address specified in the configuration. If you need to customize the configuration, please modify the `server` program or the relevant parts in the source code.
@@ -55,7 +55,7 @@ The server will load the server certificates and CA from the `x509/` directory a
 In another terminal in the tls directory, run the following command to start the Go client:
 
 ```bash
-go run ./client/cmd  
+go run ./go-client/cmd  
 ```
 
 The client will use the certificates from the `x509/` directory to establish a TLS connection with the server and invoke the `greet` service.
@@ -99,7 +99,7 @@ This option demonstrates the reverse interoperability—a Java client calling a 
 In the tls directory, run the following command to start the Go server:
 
 ```bash
-go run ./server/cmd
+go run ./go-server/cmd
 ```
 
 The Go server will start on port 20000 with TLS encryption enabled.
@@ -132,6 +132,6 @@ This example demonstrates **cross-language interoperability** between Dubbo-Go a
 
 ## Notes
 
-* The certificate paths and whether mutual authentication is enabled depend on the files loaded by the example programs. Please check `tls/server/cmd/main.go` and `tls/client/cmd/main.go` to understand the specific behavior and available command-line parameters.
+* The certificate paths and whether mutual authentication is enabled depend on the files loaded by the example programs. Please check `tls/go-server/cmd/main.go` and `tls/go-client/cmd/main.go` to understand the specific behavior and available command-line parameters.
 * On Windows, running the `create.sh` script may require WSL/Git Bash or manually running OpenSSL commands.
 * This example is intended for educational and testing purposes only. The example certificates should not be used in a production environment.
