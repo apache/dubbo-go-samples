@@ -48,7 +48,7 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: com.apache.dubbo.sample.basic.IGreeter 
+        interface: greet.GreetService 
 `
 
 var greeterProvider greet.GreetService
