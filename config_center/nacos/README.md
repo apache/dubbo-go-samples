@@ -80,12 +80,12 @@ $ go run ./go-client/cmd/main.go
 ```
 mvn clean compile
 ```
-### Run java server(windows)
+### Run Java server(Windows)
 ```
 mvn -pl java-server exec:java "-Dexec.mainClass=org.example.server.NacosJavaServer" 
 ```
 
-### Run java client(windows)
+### Run Java client(Windows)
 ```
 mvn -pl java-client exec:java "-Dexec.mainClass=org.example.client.NacosJavaClient"
 ```

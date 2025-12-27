@@ -32,7 +32,7 @@
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty-shaded</artifactId>
-            <version>1.75.0</version>
+            <version>${grpc.version}</version>
         </dependency>
     </dependencies>
 

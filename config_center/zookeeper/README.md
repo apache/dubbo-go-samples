@@ -29,7 +29,7 @@ dubbo:
         interface: greet.GreetService
 ```
 
-Open the local zookeeper client to see if the configuration is successful
+Open the local zookeeper client to see if the configuration is successful.
 If there is no preexisting configuration, that is fine as well, because the sample code already includes logic to first push the configuration to the config center.
 
 ### Start an instance with zookeeper as the configuration center
@@ -79,12 +79,12 @@ $ go run ./go-client/cmd/main.go
 ```
 mvn clean compile
 ```
-### Run java server(windows)
+### Run Java server(Windows)
 ```
 mvn -pl java-server exec:java "-Dexec.mainClass=org.example.server.ZookeeperJavaServer" 
 ```
 
-### Run java client(windows)
+### Run Java client(Windows)
 ```
 mvn -pl java-client exec:java "-Dexec.mainClass=org.example.client.ZookeeperJavaClient"
 ```

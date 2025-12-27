@@ -51,7 +51,7 @@ public class NacosJavaClient {
         ConfigService configService = NacosFactory.createConfigService(properties);
         boolean success = configService.publishConfig(DATA_ID, GROUP, CONFIG_CONTENT);
         if (success) {
-            System.out.println(" Succeed to publish config to Nacos, DATA_ID= " + DATA_ID);
+            System.out.println(" Succeeded to publish config to Nacos, DATA_ID= " + DATA_ID);
         } else {
             System.err.println(" Failed to publish config to Nacos ");
         }
@@ -66,7 +66,7 @@ public class NacosJavaClient {
         ReferenceConfig<GreetService> reference = new ReferenceConfig<>();
         reference.setInterface(GreetService.class);
 
-        // Create reference config, only bind interface here
+        // Start DubboBootstrap with config center and reference
         DubboBootstrap bootstrap = DubboBootstrap.getInstance()
                 .application("dubbo-java-consumer")
                 .configCenter(configCenter)
