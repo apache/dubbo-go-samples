@@ -75,9 +75,6 @@ array+=("rpc/multi-protocols")
 
 # tls
 array+=("tls")
-#array+=("compatibility/tls/dubbo")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
-#array+=("compatibility/tls/triple")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
-#array+=("compatibility/tls/grpc")# tls.LoadX509KeyPair(certs{../../../x509/server1_cert.pem}, privateKey{../../../x509/server1_key.pem}) = err:open ../../../x509/server1_cert.pem: no such file or directory
 
 # async
 array+=("async")
@@ -98,16 +95,6 @@ array+=("config_yaml")
 # service_discovery
 array+=("java_interop/service_discovery/interface")
 array+=("java_interop/service_discovery/service")
-
-# replace tls config
-TLS_DIR="$(pwd)/compatibility/tls"
-if [ -d "$TLS_DIR" ]; then
-    echo "The prefix of certificate path of the following files were replaced to \"$TLS_DIR\"."
-    find "$TLS_DIR" -type f -name '*.yml' -print0 | xargs -0 -n1
-    find "$TLS_DIR" -type f -name '*.yml' -print0 | xargs -0 sed -i 's#\.\.\/\.\.\/\.\.#'"$TLS_DIR"'#g'
-else
-    echo "Warning: TLS directory $TLS_DIR not found, skipping TLS configuration replacement."
-fi
 
 DOCKER_DIR=$(pwd)/integrate_test/dockercompose
 DOCKER_COMPOSE_CMD="docker-compose"
