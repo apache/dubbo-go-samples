@@ -53,10 +53,6 @@ func main() {
 		dubbo.WithRegistry(
 			registry.WithNacos(),
 			registry.WithAddress(nacosAddr),
-			registry.WithParams(map[string]string{
-				"grpcPort": nacosGrpcPort,
-			}),
-		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
 			protocol.WithPort(20000),
