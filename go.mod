@@ -3,7 +3,7 @@ module github.com/apache/dubbo-go-samples
 go 1.24.0
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.3.0-20251220
+	dubbo.apache.org/dubbo-go/v3 v3.3.1
 	github.com/alibaba/sentinel-golang v1.0.4
 	github.com/apache/dubbo-go-hessian2 v1.12.5
 	github.com/dubbogo/go-zookeeper v1.0.4-0.20211212162352-f9d2183d89d5
