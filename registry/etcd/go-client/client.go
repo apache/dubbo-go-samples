@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"os"
 )
 
 import (
@@ -46,19 +45,19 @@ func main() {
 	)
 	if err != nil {
 		logger.Errorf("new dubbo instance failed: %v", err)
-		os.Exit(1)
+		panic(err)
 	}
 	// configure the params that only client layer cares
 	cli, err := ins.NewClient()
 	if err != nil {
 		logger.Errorf("new client failed: %v", err)
-		os.Exit(1)
+		panic(err)
 	}
 
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
 		logger.Errorf("create greet service failed: %v", err)
-		os.Exit(1)
+		panic(err)
 	}
 
 	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})

@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"os"
 )
 
 import (
@@ -57,20 +56,20 @@ func main() {
 	)
 	if err != nil {
 		logger.Errorf("new dubbo instance failed: %v", err)
-		os.Exit(1)
+		panic(err)
 	}
 	srv, err := ins.NewServer()
 	if err != nil {
 		logger.Errorf("new server failed: %v", err)
-		os.Exit(1)
+		panic(err)
 	}
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
 		logger.Errorf("register greet handler failed: %v", err)
-		os.Exit(1)
+		panic(err)
 	}
 
 	if err := srv.Serve(); err != nil {
 		logger.Errorf("server serve failed: %v", err)
-		os.Exit(1)
+		panic(err)
 	}
 }
