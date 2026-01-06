@@ -15,12 +15,22 @@
  * limitations under the License.
  */
 
-package pkg
+package org.apache.dubbo.samples;
 
-type UserResponse struct {
-	Users []*User
-}
+import java.util.List;
+import java.util.Map;
 
-func (u *UserResponse) JavaClassName() string {
-	return "org.apache.dubbo.samples.UserResponse"
+public interface UserProvider {
+    User GetUser1(String userId);
+    User GetUser2(String userId, String name);
+    User GetUser3(int userCode);
+    User GetUser4(int userCode, String name);
+    User GetOneUser();
+
+    List<User> GetUsers(String[] userIdList);
+    Map<String, User> GetUsersMap(String[] userIdList);
+
+    User QueryUser(User user);
+    User[] QueryUsers(User[] userObjectList);
+    Map<String, User> QueryAll();
 }
