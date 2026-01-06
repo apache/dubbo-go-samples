@@ -44,16 +44,19 @@ func main() {
 		),
 	)
 	if err != nil {
+		logger.Errorf("new dubbo instance failed: %v", err)
 		panic(err)
 	}
 	// configure the params that only client layer cares
 	cli, err := ins.NewClient()
 	if err != nil {
+		logger.Errorf("new client failed: %v", err)
 		panic(err)
 	}
 
 	svc, err := greet.NewGreetService(cli)
 	if err != nil {
+		logger.Errorf("create greet service failed: %v", err)
 		panic(err)
 	}
 

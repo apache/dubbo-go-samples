@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"strings"
 )
 
 import (
@@ -43,11 +44,14 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 }
 
 func main() {
+	nacosAddr := "127.0.0.1:8848"
+	nacosGrpcPort := "9848"
+
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("dubbo_registry_nacos_server"),
 		dubbo.WithRegistry(
 			registry.WithNacos(),
-			registry.WithAddress("127.0.0.1:8848"),
+			registry.WithAddress(nacosAddr),
 		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
@@ -55,17 +59,24 @@ func main() {
 		),
 	)
 	if err != nil {
+		logger.Errorf("new dubbo instance failed: %v", err)
 		panic(err)
 	}
 	srv, err := ins.NewServer()
 	if err != nil {
+		logger.Errorf("new server failed: %v", err)
 		panic(err)
 	}
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
+		logger.Errorf("register greet handler failed: %v", err)
 		panic(err)
 	}
 
 	if err := srv.Serve(); err != nil {
-		logger.Error(err)
+		logger.Errorf("server serve failed: %v", err)
+		if strings.Contains(err.Error(), "client not connected") {
+			logger.Errorf("hint: Nacos client not connected (gRPC). Check %s is reachable and gRPC port %s is open (Nacos 2.x default).", nacosAddr, nacosGrpcPort)
+		}
+		panic(err)
 	}
 }

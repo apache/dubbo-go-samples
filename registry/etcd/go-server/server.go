@@ -55,17 +55,21 @@ func main() {
 		),
 	)
 	if err != nil {
+		logger.Errorf("new dubbo instance failed: %v", err)
 		panic(err)
 	}
 	srv, err := ins.NewServer()
 	if err != nil {
+		logger.Errorf("new server failed: %v", err)
 		panic(err)
 	}
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
+		logger.Errorf("register greet handler failed: %v", err)
 		panic(err)
 	}
 
 	if err := srv.Serve(); err != nil {
-		logger.Error(err)
+		logger.Errorf("server serve failed: %v", err)
+		panic(err)
 	}
 }
