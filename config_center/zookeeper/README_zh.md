@@ -5,7 +5,10 @@
 本示例演示Dubbo-Go以ZooKeeper为配置中心来实现动态配置功能
 
 ## 2. 如何运行
-
+### 在 `integrate_test/dockercompose` 目录下执行：
+```
+docker compose up -d zookeeper
+```
 ### 把配置文件配置到zookeeper中
 
 ```yaml
@@ -22,10 +25,11 @@ dubbo:
   provider:
     services:
       GreeterProvider:
-        interface: com.apache.dubbo.sample.basic.IGreeter
+        interface: greet.GreetService
 ```
 
-打开本地ZooKeeper客户端查看配置是否成功
+打开本地ZooKeeper客户端查看配置是否成功。
+如果没有预先配置也没关系，示例代码中包含了先将配置推送到配置中心的逻辑。
 
 ### 以zookeeper作为配置中心启动一个实例
 
@@ -59,14 +63,38 @@ if err := srv.Serve(); err != nil {
 }
 ```
 
-### 启动客户端
+### 运行go服务端
+```
+go run ./go-server/cmd/main.go
+```
 
-```shell
-$ go run ./go-client/cmd/main.go
+### 运行go客户端
+
+```
+go run ./go-client/cmd/main.go
+```
+
+### 在运行Java服务端/客户端之前
+```
+mvn clean compile
+```
+
+### 运行Java服务端（windows）
+```
+mvn -pl java-server exec:java "-Dexec.mainClass=org.example.server.ZookeeperJavaServer" 
+```
+
+### 运行Java客户端（windows）
+```
+mvn -pl java-client exec:java "-Dexec.mainClass=org.example.client.ZookeeperJavaClient"
 ```
 
 ### 预期的输出
-
+Go/Java 客户端输出：
 ```
-Greet response: greeting:"hello world"
+Server response: Hello, this is dubbo go/java server! I received: Hello, this is dubbo go/java client!
+```
+Go/Java 服务端输出：
+```
+Received request: Hello, this is dubbo go/java client!
 ```

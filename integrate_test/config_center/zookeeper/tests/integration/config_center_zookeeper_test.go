@@ -31,12 +31,12 @@ import (
 )
 
 func TestSayHello(t *testing.T) {
-	req := &greet.GreetRequest{Name: "hello world"}
+	req := &greet.GreetRequest{Name: "Hello, this is dubbo go client!"}
 
 	ctx := context.Background()
 
 	reply, err := greeterProvider.Greet(ctx, req)
 
 	assert.Nil(t, err)
-	assert.Equal(t, "hello world", reply.Greeting)
+	assert.Equal(t, "Hello, this is dubbo go server! I received: Hello, this is dubbo go client!", reply.Greeting)
 }

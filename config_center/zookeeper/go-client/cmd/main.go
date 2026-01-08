@@ -52,7 +52,7 @@ func main() {
 
 	// configure Dubbo instance
 	zkOption := config_center.WithZookeeper()
-	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-client")
+	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-go-client")
 	addressOption := config_center.WithAddress("127.0.0.1:2181")
 	groupOption := config_center.WithGroup("dubbogo")
 
@@ -82,12 +82,12 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: "hello world"})
+	resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: "Hello, this is dubbo go client!"})
 	if err != nil {
 		logger.Errorf("Failed to call Greet service: %v", err)
 		return
 	}
-	logger.Infof("Greet response: %s", resp)
+	logger.Infof("Server response: %s", resp)
 }
 
 func writeRuleToConfigCenter() error {
@@ -99,7 +99,7 @@ func writeRuleToConfigCenter() error {
 	defer c.Close() // ensure resource cleanup
 
 	valueBytes := []byte(configCenterZKClientConfig)
-	path := "/dubbo/config/dubbogo/dubbo-go-samples-configcenter-zookeeper-client"
+	path := "/dubbo/config/dubbogo/dubbo-go-samples-configcenter-zookeeper-go-client"
 
 	// ensure path starts with '/'
 	if !strings.HasPrefix(path, "/") {
@@ -159,5 +159,5 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: com.apache.dubbo.sample.basic.IGreeter 
+        interface: greet.GreetService 
 `
