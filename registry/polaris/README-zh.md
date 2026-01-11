@@ -18,4 +18,3 @@ $ go run ./go-server/cmd/server.go
 ```shell
 $ go run ./go-client/cmd/client.go
 ```
-
