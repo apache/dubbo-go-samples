@@ -43,5 +43,3 @@ func TestPolarisRegistry(t *testing.T) {
 	assert.NotNil(t, reply)
 	assert.Equal(t, "Dubbo", reply.Greeting)
 }
-
-
