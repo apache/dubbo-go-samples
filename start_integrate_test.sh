@@ -42,6 +42,7 @@ array+=("filter/custom")
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
+array+=("registry/polaris")
 
 array+=("generic")
 
