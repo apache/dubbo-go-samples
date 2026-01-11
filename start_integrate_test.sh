@@ -81,7 +81,6 @@ array+=("tls")
 array+=("async")
 
 # polaris
-array+=("compatibility/polaris/registry")
 array+=("compatibility/polaris/limit")
 
 # error
