@@ -52,7 +52,6 @@
 * `compatibility/config-api`：演示如何在不使用配置文件的情况下，通过 API 使用 Dubbo-go。
 * `compatibility/generic`：泛化调用示例。
 * `compatibility/mesh`：基于代理的服务网格示例，展示如何在 Kubernetes 上结合 Envoy 部署 Dubbo-go 服务。
-* `compatibility/proxyless`：无 Sidecar 的服务网格示例，展示在 Kubernetes 上的部署方式。
 * `compatibility/polaris`:  Dubbo-go 与 polaris 集成示例.
     * `compatibility/polaris/limit`: 在 dubbogo 中快速体验北极星的服务限流能力
     * `compatibility/polaris/registry`: 在 dubbogo 中快速体验北极星的服务注册以及服务发现能力

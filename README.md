@@ -52,7 +52,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `compatibility/config-api`: Shows how to use Dubbo-go via APIs without configuration files.
 * `compatibility/generic`: Generic invocation example.
 * `compatibility/mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
-* `compatibility/proxyless`: Proxyless service mesh example for deploying Dubbo-go services on Kubernetes.
 * `compatibility/polaris`:  Dubbo-go integrate with polaris samples.
     * `compatibility/polaris/limit`: Quickly experience Polaris' service current limiting capabilities in dubbogo
     * `compatibility/polaris/registry`: Quickly experience Polaris' service registration and service discovery capabilities in dubbogo
