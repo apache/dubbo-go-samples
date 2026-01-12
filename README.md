@@ -29,6 +29,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `llm`: Example of integrating Large Language Models (LLMs) with Dubbo-go.
 * `logger`: Logging examples for Dubbo-go applications.
 * `metrics`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
+* `mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `online_boutique`: Microservices “online boutique” demo built with Dubbo-go.
 * `otel/tracing`: Distributed tracing examples using OpenTelemetry.
   * `stdout`: Uses stdout exporter to export tracing data.
@@ -51,7 +52,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `compatibility/apisix`: Example integrating Apache APISIX with Dubbo-go.
 * `compatibility/config-api`: Shows how to use Dubbo-go via APIs without configuration files.
 * `compatibility/generic`: Generic invocation example.
-* `compatibility/mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `compatibility/polaris`:  Dubbo-go integrate with polaris samples.
     * `compatibility/polaris/limit`: Quickly experience Polaris' service current limiting capabilities in dubbogo
     * `compatibility/polaris/registry`: Quickly experience Polaris' service registration and service discovery capabilities in dubbogo
