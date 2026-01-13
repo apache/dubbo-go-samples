@@ -29,6 +29,7 @@
 * `llm`：将大模型（LLM）集成到 Dubbo-go 中的示例。
 * `logger`：Dubbo-go 应用的日志使用示例。
 * `metrics`：展示如何采集并暴露 Dubbo-go 服务的指标，支持 Prometheus Push 和 Pull 两种模式；同时包含用于清理 Push 模式僵尸指标的 `pgw-cleaner` 工具。
+* `mesh`：基于代理的服务网格示例，展示如何在 Kubernetes 上结合 Envoy 部署 Dubbo-go 服务。
 * `online_boutique`：基于 Dubbo-go 构建的微服务 “在线商城” 演示项目。
 * `otel/tracing`：使用 OpenTelemetry 的分布式链路追踪示例。
   * `stdout`：使用 stdout exporter 输出追踪数据。
@@ -50,7 +51,6 @@
 
 * `compatibility/apisix`：Dubbo-go 集成 Apache APISIX 的示例。
 * `compatibility/generic`：泛化调用示例。
-* `compatibility/mesh`：基于代理的服务网格示例，展示如何在 Kubernetes 上结合 Envoy 部署 Dubbo-go 服务。
 * `compatibility/polaris`:  Dubbo-go 与 polaris 集成示例.
     * `compatibility/polaris/limit`: 在 dubbogo 中快速体验北极星的服务限流能力
     * `compatibility/polaris/registry`: 在 dubbogo 中快速体验北极星的服务注册以及服务发现能力

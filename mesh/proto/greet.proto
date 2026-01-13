@@ -18,7 +18,7 @@
 syntax = "proto3";
 package org.apache.dubbogo.samples.api;
 
-option go_package = "./;api";
+option go_package = "github.com/apache/dubbo-go-samples/mesh/proto;greet";
 
 // The greeting service definition.
 service Greeter {
@@ -39,3 +39,4 @@ message User {
   string id = 2;
   int32 age = 3;
 }
+

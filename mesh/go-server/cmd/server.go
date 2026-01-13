@@ -22,26 +22,25 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/compatibility/mesh/go-server/api"
+	greet "github.com/apache/dubbo-go-samples/mesh/proto"
 )
 
-type GreeterProvider struct {
-	api.UnimplementedGreeterServer
-}
+type GreeterProvider struct{}
 
-func (s *GreeterProvider) SayHello(ctx context.Context, in *api.HelloRequest) (*api.User, error) {
+func (s *GreeterProvider) SayHello(ctx context.Context, in *greet.HelloRequest) (*greet.User, error) {
 	logger.Infof("Dubbo3 GreeterProvider get user name = %s\n", in.Name)
-	return &api.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
+	return &greet.User{Name: "Hello " + in.Name, Id: "12345", Age: 21}, nil
 }
 
-func (s *GreeterProvider) SayHelloStream(svr api.Greeter_SayHelloStreamServer) error {
+func (s *GreeterProvider) SayHelloStream(ctx context.Context, svr greet.Greeter_SayHelloStreamServer) error {
 	c, err := svr.Recv()
 	if err != nil {
 		return err
@@ -53,7 +52,7 @@ func (s *GreeterProvider) SayHelloStream(svr api.Greeter_SayHelloStreamServer) e
 	}
 	logger.Infof("Dubbo-go3 GreeterProvider recv 2 user, name = %s\n", c2.Name)
 
-	err = svr.Send(&api.User{
+	err = svr.Send(&greet.User{
 		Name: "hello " + c.Name,
 		Age:  18,
 		Id:   "123456789",
@@ -67,7 +66,7 @@ func (s *GreeterProvider) SayHelloStream(svr api.Greeter_SayHelloStreamServer) e
 	}
 	logger.Infof("Dubbo-go3 GreeterProvider recv 3 user, name = %s\n", c3.Name)
 
-	err = svr.Send(&api.User{
+	err = svr.Send(&greet.User{
 		Name: "hello " + c2.Name,
 		Age:  19,
 		Id:   "123456789",
@@ -78,11 +77,25 @@ func (s *GreeterProvider) SayHelloStream(svr api.Greeter_SayHelloStreamServer) e
 	return nil
 }
 
-// export DUBBO_GO_CONFIG_PATH= PATH_TO_SAMPLES/helloworld/go-server/conf/dubbogo.yml
 func main() {
-	config.SetProviderService(&GreeterProvider{})
-	if err := config.Load(); err != nil {
+	srv, err := server.NewServer(
+		server.WithServerProtocol(
+			protocol.WithTriple(),
+			protocol.WithPort(50052),
+		),
+	)
+	if err != nil {
+		logger.Errorf("create server failed: %v", err)
 		panic(err)
 	}
-	select {}
+
+	if err := greet.RegisterGreeterHandler(srv, &GreeterProvider{}); err != nil {
+		logger.Errorf("register greeter handler failed: %v", err)
+		panic(err)
+	}
+
+	if err := srv.Serve(); err != nil {
+		logger.Errorf("server serve failed: %v", err)
+		panic(err)
+	}
 }

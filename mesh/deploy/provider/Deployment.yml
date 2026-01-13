@@ -20,8 +20,8 @@ spec:
     spec:
       containers:
         - name: server
-          image: apache/dubbo-demo:dubbo-go-mesh-provider_0.0.1
-          imagePullPolicy: Always
+          image: dubbo-go-mesh-provider:latest
+          imagePullPolicy: Never  # Use local image for development
           ports:
             - name: grpc-tri
               containerPort: 50052
