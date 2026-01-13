@@ -45,7 +45,8 @@ type GreetTripleServer struct {
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	// reference ctx to avoid unused parameter warning
 	_ = ctx
-	resp := &greet.GreetResponse{Greeting: req.Name}
+	logger.Info("Received request:" + req.Name)
+	resp := &greet.GreetResponse{Greeting: "Hello, this is dubbo go server!" + " I received: " + req.Name}
 	return resp, nil
 }
 
@@ -62,7 +63,7 @@ func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithConfigCenter(
 			config_center.WithZookeeper(),
-			config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-server"),
+			config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-go-server"),
 			config_center.WithAddress("127.0.0.1:2181"),
 			config_center.WithGroup("dubbogo"),
 		),
@@ -103,7 +104,7 @@ dubbo:
   provider:
     services:
       GreeterProvider:
-        interface: com.apache.dubbo.sample.basic.IGreeter
+        interface: greet.GreetService
 `
 
 // ensurePath Ensure the path exists (removed because it is unused)
@@ -117,7 +118,7 @@ func writeRuleToConfigCenter() error {
 	defer c.Close() // Ensure the connection is closed
 
 	valueBytes := []byte(configCenterZKServerConfig)
-	path := "/dubbo/config/dubbogo/dubbo-go-samples-configcenter-zookeeper-server"
+	path := "/dubbo/config/dubbogo/dubbo-go-samples-configcenter-zookeeper-go-server"
 
 	// Ensure the path starts with '/'
 	if !strings.HasPrefix(path, "/") {

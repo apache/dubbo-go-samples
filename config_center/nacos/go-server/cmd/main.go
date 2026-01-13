@@ -42,12 +42,15 @@ type GreetTripleServer struct {
 }
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	resp := &greet.GreetResponse{Greeting: req.Name}
+	logger.Info("Received request:" + req.Name)
+	resp := &greet.GreetResponse{Greeting: "Hello, this is dubbo go server!" + " I received: " + req.Name}
 	return resp, nil
 }
 
 const configCenterNacosServerConfig = `## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-server', namespace is default
 dubbo:
+  application:
+    name: dubbo-go-provider
   registries:
     demoZK:
       protocol: zookeeper
@@ -60,7 +63,7 @@ dubbo:
   provider:
     services:
       GreeterProvider:
-        interface: com.apache.dubbo.sample.basic.IGreeter
+        interface: greet.GreetService
 `
 
 func main() {
@@ -84,7 +87,7 @@ func main() {
 	}
 
 	success, err := configClient.PublishConfig(vo.ConfigParam{
-		DataId:  "dubbo-go-samples-configcenter-nacos-server",
+		DataId:  "dubbo-go-samples-configcenter-nacos-go-server",
 		Group:   "dubbo",
 		Content: configCenterNacosServerConfig,
 	})
@@ -98,7 +101,7 @@ func main() {
 	time.Sleep(time.Second * 10)
 
 	nacosOption := config_center.WithNacos()
-	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-nacos-server")
+	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-nacos-go-server")
 	addressOption := config_center.WithAddress("127.0.0.1:8848")
 	groupOption := config_center.WithGroup("dubbo")
 	ins, err := dubbo.NewInstance(

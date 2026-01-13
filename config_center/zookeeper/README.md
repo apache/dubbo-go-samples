@@ -5,7 +5,11 @@
 This example shows dubbo-go's dynamic configuration feature with Zookeeper as config-center.
 
 ## 2. How to run
+### Run the following commands under `integrate_test/dockercompose`:
 
+```
+docker compose up -d zookeeper
+```
 ### Configure the configuration file into zookeeper
 
 ```yaml
@@ -22,10 +26,11 @@ dubbo:
   provider:
     services:
       GreeterProvider:
-        interface: com.apache.dubbo.sample.basic.IGreeter
+        interface: greet.GreetService
 ```
 
-Open the local zookeeper client to see if the configuration is successful
+Open the local zookeeper client to see if the configuration is successful.
+If there is no preexisting configuration, that is fine as well, because the sample code already includes logic to first push the configuration to the config center.
 
 ### Start an instance with zookeeper as the configuration center
 
@@ -59,14 +64,39 @@ if err := srv.Serve(); err != nil {
 }
 ```
 
-### Run client
+### Run go server
 
-```shell
+```
+$ go run ./go-server/cmd/main.go
+```
+
+### Run go client
+
+```
 $ go run ./go-client/cmd/main.go
 ```
+### Before run java server/client
+```
+mvn clean compile
+```
+### Run Java server(Windows)
+```
+mvn -pl java-server exec:java "-Dexec.mainClass=org.example.server.ZookeeperJavaServer" 
+```
+
+### Run Java client(Windows)
+```
+mvn -pl java-client exec:java "-Dexec.mainClass=org.example.client.ZookeeperJavaClient"
+```
+
 
 ### Expect output
 
+go/java client output:
 ```
-Greet response: greeting:"hello world"
+Server response: Hello, this is dubbo go/java server! I received: Hello, this is dubbo go/java client!
+```
+go/java server output:
+```
+Received request: Hello, this is dubbo go/java client!
 ```

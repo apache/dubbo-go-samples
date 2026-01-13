@@ -40,6 +40,8 @@ import (
 
 const configCenterNacosClientConfig = `## set in config center, group is 'dubbo', dataid is 'dubbo-go-samples-configcenter-nacos-client', namespace is default
 dubbo:
+  application:
+    name: dubbo-go-consumer
   registries:
     demoZK:
       protocol: zookeeper
@@ -49,7 +51,7 @@ dubbo:
     references:
       GreeterClientImpl:
         protocol: tri
-        interface: com.apache.dubbo.sample.basic.IGreeter 
+        interface: greet.GreetService 
 `
 
 func main() {
@@ -73,7 +75,7 @@ func main() {
 	}
 
 	success, err := configClient.PublishConfig(vo.ConfigParam{
-		DataId:  "dubbo-go-samples-configcenter-nacos-client",
+		DataId:  "dubbo-go-samples-configcenter-nacos-go-client",
 		Group:   "dubbo",
 		Content: configCenterNacosClientConfig,
 	})
@@ -87,7 +89,7 @@ func main() {
 	time.Sleep(time.Second * 10)
 
 	nacosOption := config_center.WithNacos()
-	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-nacos-client")
+	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-nacos-go-client")
 	addressOption := config_center.WithAddress("127.0.0.1:8848")
 	groupOption := config_center.WithGroup("dubbo")
 	ins, err := dubbo.NewInstance(
@@ -107,9 +109,9 @@ func main() {
 		panic(err)
 	}
 
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "Hello, this is dubbo go client!"})
 	if err != nil {
 		logger.Error(err)
 	}
-	logger.Infof("Greet response: %s", resp)
+	logger.Infof("Server response: %s", resp)
 }
