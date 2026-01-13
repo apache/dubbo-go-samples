@@ -49,7 +49,6 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 ### compatibility (legacy Dubbo-go samples)
 
 * `compatibility/apisix`: Example integrating Apache APISIX with Dubbo-go.
-* `compatibility/config-api`: Shows how to use Dubbo-go via APIs without configuration files.
 * `compatibility/generic`: Generic invocation example.
 * `compatibility/mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `compatibility/polaris`:  Dubbo-go integrate with polaris samples.

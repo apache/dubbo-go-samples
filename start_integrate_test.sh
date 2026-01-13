@@ -22,12 +22,6 @@ array+=("helloworld")
 #array+=("game/game")
 #array+=("game/gate")
 
-# config-api
-array+=("compatibility/config-api/rpc/triple")
-#array+=("compatibility/config-api/configcenter/nacos")
-array+=("compatibility/config-api/configcenter/zookeeper")
-array+=("compatibility/config-api/config-merge")
-
 # tracing
 array+=("otel/tracing/stdout")
 array+=("otel/tracing/otlp_http_exporter")
