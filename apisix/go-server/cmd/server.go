@@ -28,9 +28,11 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
 
-	greet "github.com/apache/dubbo-go-samples/apisix/proto"
-
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/apisix/proto"
 )
 
 type GreeterProvider struct{}

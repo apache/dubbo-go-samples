@@ -1,5 +1,7 @@
 # APISIX 整合 Dubbo-Go
 
+[English](README.md) | [中文](README_zh.md)
+
 本示例演示如何使用 Apache APISIX 作为 Dubbo-Go 服务的 API 网关。
 
 ## 概述

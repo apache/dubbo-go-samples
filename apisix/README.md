@@ -1,5 +1,7 @@
 # APISIX Integration with Dubbo-Go
 
+[English](README.md) | [中文](README_zh.md)
+
 This example demonstrates how to use Apache APISIX as an API gateway for Dubbo-Go services.
 
 ## Overview
