@@ -1,5 +1,7 @@
 # 使用 Polaris 作为注册中心
 
+[English](README.md) | [中文](README_zh.md)
+
 本示例展示 dubbo-go 使用 Polaris 作为注册中心的服务发现功能。
 
 ## 如何运行

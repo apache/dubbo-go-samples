@@ -1,5 +1,7 @@
 # Polaris as registry
 
+[English](README.md) | [中文](README_zh.md)
+
 This example shows dubbo-go's service discovery feature with Polaris as registry.
 
 ## How to run
