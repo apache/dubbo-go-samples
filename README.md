@@ -52,13 +52,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 
 * `compatibility/generic`: Generic invocation example.
 * `compatibility/polaris`:  Dubbo-go integrate with polaris samples.
-    * `compatibility/polaris/limit`: Quickly experience Polaris' service current limiting capabilities in dubbogo
     * `compatibility/polaris/router`: Quickly experience Polaris' service routing capabilities in dubbogo
-* `compatibility/rpc`: Dubbo protocol communication examples.
-  * `compatibility/rpc/dubbo`: Dubbo-go 3.0 RPC example between Java and Go.
-  * `compatibility/rpc/grpc`: Dubbo-go RPC example based on gRPC.
-  * `compatibility/rpc/jsonrpc`: Dubbo-go RPC example based on JSON-RPC.
-  * `compatibility/rpc/triple`: Dubbo-go RPC examples based on `hessian2`/`msgpack`/`pb` (protobuf v3)/`pb2` (protobuf v2)/self-defined serialization.
 
 ### Tools
 
