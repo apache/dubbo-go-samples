@@ -36,6 +36,7 @@ array+=("filter/custom")
 # registry
 array+=("registry/zookeeper")
 array+=("registry/nacos")
+array+=("registry/polaris")
 
 array+=("generic")
 
@@ -74,7 +75,6 @@ array+=("tls")
 array+=("async")
 
 # polaris
-array+=("compatibility/polaris/registry")
 array+=("compatibility/polaris/limit")
 
 # error

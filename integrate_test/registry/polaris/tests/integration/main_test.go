@@ -18,48 +18,45 @@
 package integration
 
 import (
-	"context"
+	"os"
 	"testing"
-	"time"
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 )
 
-type UserProviderWithCustomGroupAndVersion struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
+import (
+	greet "github.com/apache/dubbo-go-samples/registry/polaris/proto"
+)
 
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
-
-var userProvider = &UserProvider{}
-var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{}
+var greetService greet.GreetService
 
 func TestMain(m *testing.M) {
-
-	config.SetConsumerService(userProvider)
-	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
-	hessian.RegisterPOJO(&User{})
-	err := config.Load()
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("dubbo_registry_polaris_client"),
+		dubbo.WithRegistry(
+			registry.WithPolaris(),
+			registry.WithAddress("127.0.0.1:8091"),
+			registry.WithNamespace("dubbogo"),
+			registry.WithRegisterInterface(),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+	// configure the params that only client layer cares
+	cli, err := ins.NewClient()
 	if err != nil {
 		panic(err)
 	}
 
+	greetService, err = greet.NewGreetService(cli)
+	if err != nil {
+		panic(err)
+	}
+
+	os.Exit(m.Run())
 }
