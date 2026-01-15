@@ -52,14 +52,7 @@
 
 * `compatibility/generic`：泛化调用示例。
 * `compatibility/polaris`:  Dubbo-go 与 polaris 集成示例.
-    * `compatibility/polaris/limit`: 在 dubbogo 中快速体验北极星的服务限流能力
     * `compatibility/polaris/router`: 在 dubbogo 中快速体验北极星的服务路由能力
-* `compatibility/rpc`：Dubbo 协议通信示例。
-  * `compatibility/rpc/dubbo`：Dubbo-go 3.0 下 Java 与 Go 的 RPC 示例。
-  * `compatibility/rpc/grpc`：基于 gRPC 的 Dubbo-go RPC 示例。
-  * `compatibility/rpc/jsonrpc`：基于 JSON-RPC 的 Dubbo-go RPC 示例。
-  * `compatibility/rpc/triple`：基于 `hessian2` / `msgpack` / `pb`（protobuf v3）/ `pb2`（protobuf v2）/ 自定义序列化 的 Triple 协议示例。
-* `compatibility/tracing`：链路追踪示例。
 
 ### 工具
 

@@ -53,15 +53,6 @@ array+=("streaming")
 array+=("retry")
 
 # rpc
-array+=("compatibility/rpc/dubbo")
-#array+=("compatibility/rpc/triple/codec-extension")
-array+=("compatibility/rpc/triple/hessian2")
-array+=("compatibility/rpc/triple/msgpack")
-array+=("compatibility/rpc/triple/pb/dubbogo-grpc")
-#array+=("compatibility/rpc/grpc")
-array+=("compatibility/rpc/jsonrpc")
-array+=("compatibility/rpc/triple/pb2")
-
 array+=("rpc/grpc")
 array+=("rpc/triple/pb")
 array+=("rpc/triple/pb2")
@@ -73,9 +64,6 @@ array+=("tls")
 
 # async
 array+=("async")
-
-# polaris
-array+=("compatibility/polaris/limit")
 
 # error
 array+=("error")
