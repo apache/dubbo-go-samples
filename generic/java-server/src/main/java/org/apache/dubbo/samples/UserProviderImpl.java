@@ -93,7 +93,7 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public List<User> QueryUsers(List<User> users) {
+    public User[] QueryUsers(User[] users) {
         return users;
     }
 

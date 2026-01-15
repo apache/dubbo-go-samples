@@ -38,7 +38,7 @@ public interface UserProvider {
 
     User QueryUser(User user);
 
-    List<User> QueryUsers(List<User> userObjectList);
+    User[] QueryUsers(User[] userObjectList);
 
     Map<String, User> QueryAll();
 }
