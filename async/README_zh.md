@@ -50,7 +50,13 @@ mvn clean compile
 
 ### 测试：Go 客户端 → Java 服务端
 
-1. **修改 Go 客户端 URL**，在 `go-client/cmd/main.go` 中修改：
+1. **修改 Go 客户端 URL**。Go 客户端默认配置为连接 Go 服务端（端口 `20000`），在 `go-client/cmd/main.go` 中通常如下：
+
+   ```go
+   client.WithClientURL("tri://127.0.0.1:20000"),
+   ```
+
+   为了让 Go 客户端连接到 Java 服务端，请将上述行修改为：
 
    ```go
    client.WithClientURL("tri://127.0.0.1:50051"),

@@ -33,7 +33,9 @@
     </modules>
 
     <properties>
+        <!-- Java-side protoc version used by protobuf-maven-plugin -->
         <protobuf.version>3.21.7</protobuf.version>
+        <!-- Note: Go-side protoc version used to generate user.pb.go is v6.33.1 (keep in sync with Go toolchain) -->
         <grpc.version>1.51.0</grpc.version>
         <dubbo.version>3.3.0-beta.2</dubbo.version>
         <maven.compiler.source>11</maven.compiler.source>

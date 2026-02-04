@@ -51,7 +51,13 @@ mvn clean compile
 
 ### Test: Go client → Java server
 
-1. **Modify the Go client URL** in `go-client/cmd/main.go`:
+1. **Modify the Go client URL**. The Go client is configured by default to connect to the Go server (port `20000`) in `go-client/cmd/main.go`:
+
+   ```go
+   client.WithClientURL("tri://127.0.0.1:20000"),
+   ```
+
+   To connect the Go client to the Java server, change the above line to:
 
    ```go
    client.WithClientURL("tri://127.0.0.1:50051"),

@@ -66,7 +66,9 @@ public class JavaAsyncClient {
         CompletableFuture<SayHelloResponse> future2 = userProviderV2.sayHelloAsync(sayHelloReq);
 
         future2.whenComplete((response, throwable) -> {
-            if (throwable == null) {
+            if (throwable != null) {
+                System.err.println("error: " + throwable.getMessage());
+            } else {
                 System.out.println("sayHello completed");
             }
             latch2.countDown();
