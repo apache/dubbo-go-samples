@@ -15,11 +15,20 @@
  * limitations under the License.
  */
 
+// Generate Go code from this proto file:
+// From the async directory, run:
+//   protoc --go_out=. --go_opt=paths=source_relative \
+//          --go-triple_out=. --go-triple_opt=paths=source_relative \
+//          ./proto/user.proto
+
 syntax = "proto3";
 
-package user;
+package org.apache.dubbo.samples.async.proto;
 
 option go_package = "github.com/apache/dubbo-go-samples/async/proto;user";
+option java_package = "org.apache.dubbo.samples.async.proto";
+option java_multiple_files = true;
+option java_outer_classname = "UserProto";
 
 // Gender enumeration
 enum Gender {
