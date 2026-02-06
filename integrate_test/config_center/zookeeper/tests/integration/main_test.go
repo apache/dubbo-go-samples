@@ -22,15 +22,19 @@ import (
 	"strings"
 	"testing"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
 	"github.com/dubbogo/go-zookeeper/zk"
 
 	perrors "github.com/pkg/errors"
+)
 
+import (
 	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
 )
 
