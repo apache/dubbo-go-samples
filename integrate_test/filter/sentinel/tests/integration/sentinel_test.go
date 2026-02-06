@@ -143,7 +143,6 @@ func TestSentinelConsumerFilter_ErrorCount(t *testing.T) {
 	waitForState(t, listener.OnTransformToOpenChan, time.Second, "open")
 	timer := time.NewTimer(time.Duration(rule.RetryTimeoutMs)*time.Millisecond + 200*time.Millisecond)
 	<-timer.C
-	timer.Stop()
 	pass, block = CallGreetFunConcurrently(greetService.GreetWithChanceOfError, "hello", 1, 50)
 	assert.True(t, pass > 0)
 	assert.True(t, block < 50)

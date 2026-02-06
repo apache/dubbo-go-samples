@@ -143,7 +143,6 @@ func main() {
 	logger.Info("wait circuit breaker HalfOpen window")
 	timer := time.NewTimer(retryTimeout + 200*time.Millisecond)
 	<-timer.C
-	timer.Stop()
 	CallGreetFunConcurrently(svc.GreetWithChanceOfError, "hello world", 1, 300)
 	if !waitForState(listener.halfOpenCh, 5*time.Second) {
 		logger.Warn("wait circuit breaker HalfOpen timeout")
