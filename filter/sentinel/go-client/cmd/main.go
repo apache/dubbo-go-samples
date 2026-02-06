@@ -43,18 +43,43 @@ import (
 type GreetFun func(ctx context.Context, req *greet.GreetRequest, opts ...client.CallOption) (*greet.GreetResponse, error)
 
 type stateChangeTestListener struct {
+	openCh     chan struct{}
+	halfOpenCh chan struct{}
+	closedCh   chan struct{}
 }
 
 func (s *stateChangeTestListener) OnTransformToClosed(prev circuitbreaker.State, rule circuitbreaker.Rule) {
 	logger.Infof("rule.steategy: %+v, From %s to Closed, time: %d\n", rule.Strategy, prev.String(), util.CurrentTimeMillis())
+	s.notify(s.closedCh)
 }
 
 func (s *stateChangeTestListener) OnTransformToOpen(prev circuitbreaker.State, rule circuitbreaker.Rule, snapshot interface{}) {
 	logger.Infof("rule.steategy: %+v, From %s to Open, snapshot: %.2f, time: %d\n", rule.Strategy, prev.String(), snapshot, util.CurrentTimeMillis())
+	s.notify(s.openCh)
 }
 
 func (s *stateChangeTestListener) OnTransformToHalfOpen(prev circuitbreaker.State, rule circuitbreaker.Rule) {
 	logger.Infof("rule.steategy: %+v, From %s to Half-Open, time: %d\n", rule.Strategy, prev.String(), util.CurrentTimeMillis())
+	s.notify(s.halfOpenCh)
+}
+
+func (s *stateChangeTestListener) notify(ch chan struct{}) {
+	if ch == nil {
+		return
+	}
+	select {
+	case ch <- struct{}{}:
+	default:
+	}
+}
+
+func waitForState(ch <-chan struct{}, timeout time.Duration) bool {
+	select {
+	case <-ch:
+		return true
+	case <-time.After(timeout):
+		return false
+	}
 }
 
 func main() {
@@ -69,8 +94,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	listener := &stateChangeTestListener{
+		openCh:     make(chan struct{}, 1),
+		halfOpenCh: make(chan struct{}, 1),
+		closedCh:   make(chan struct{}, 1),
+	}
 	// Register a state change listener so that we could observe the state change of the internal circuit breaker.
-	circuitbreaker.RegisterStateChangeListeners(&stateChangeTestListener{})
+	circuitbreaker.RegisterStateChangeListeners(listener)
 	_, err = circuitbreaker.LoadRules([]*circuitbreaker.Rule{
 		// Statistic time span=1s, recoveryTimeout=1s, maxErrorRatio=40%
 		{
@@ -86,6 +116,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	retryTimeout := 2 * time.Second
 
 	_, err = isolation.LoadRules([]*isolation.Rule{
 		{
@@ -106,10 +137,20 @@ func main() {
 
 	logger.Info("call svc.GreetWithChanceOfError triggers circuit breaker open")
 	CallGreetFunConcurrently(svc.GreetWithChanceOfError, "error", 1, 300)
-	logger.Info("wait circuit breaker HalfOpen")
-	time.Sleep(3 * time.Second)
+	if !waitForState(listener.openCh, 5*time.Second) {
+		logger.Warn("wait circuit breaker Open timeout")
+	}
+	logger.Info("wait circuit breaker HalfOpen window")
+	timer := time.NewTimer(retryTimeout + 200*time.Millisecond)
+	<-timer.C
+	timer.Stop()
 	CallGreetFunConcurrently(svc.GreetWithChanceOfError, "hello world", 1, 300)
-	time.Sleep(10 * time.Second)
+	if !waitForState(listener.halfOpenCh, 5*time.Second) {
+		logger.Warn("wait circuit breaker HalfOpen timeout")
+	}
+	if !waitForState(listener.closedCh, 5*time.Second) {
+		logger.Warn("wait circuit breaker Closed timeout")
+	}
 }
 
 func CallGreetFunConcurrently(f GreetFun, req string, numberOfConcurrently, frequency int) (pass int64, block int64) {

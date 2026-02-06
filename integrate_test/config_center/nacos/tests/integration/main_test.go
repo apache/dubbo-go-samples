@@ -19,21 +19,18 @@ package integration
 
 import (
 	"os"
+	"strings"
 	"testing"
 	"time"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
-)
 
-import (
 	greet "github.com/apache/dubbo-go-samples/config_center/nacos/proto"
 )
 
@@ -85,7 +82,23 @@ func TestMain(m *testing.M) {
 		return
 	}
 
-	time.Sleep(time.Second * 10)
+	deadline := time.Now().Add(10 * time.Second)
+	for {
+		content, err := configClient.GetConfig(vo.ConfigParam{
+			DataId: "dubbo-go-samples-configcenter-nacos-client",
+			Group:  "dubbo",
+		})
+		if err == nil && strings.TrimSpace(content) == strings.TrimSpace(configCenterNacosClientConfig) {
+			break
+		}
+		if time.Now().After(deadline) {
+			if err != nil {
+				panic(err)
+			}
+			panic("wait for config center timeout")
+		}
+		time.Sleep(200 * time.Millisecond)
+	}
 
 	nacosOption := config_center.WithNacos()
 	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-nacos-client")
@@ -107,6 +120,5 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		panic(err)
 	}
-	time.Sleep(3 * time.Second)
 	os.Exit(m.Run())
 }

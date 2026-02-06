@@ -123,42 +123,40 @@ func TestSentinelConsumerFilter_ErrorCount(t *testing.T) {
 	listener.OnTransformToClosedChan = make(chan struct{}, 1)
 	listener.OnTransformToHalfOpenChan = make(chan struct{}, 1)
 	circuitbreaker.RegisterStateChangeListeners(listener)
-	_, err := circuitbreaker.LoadRules([]*circuitbreaker.Rule{
+	rule := &circuitbreaker.Rule{
 		// Statistic time span=0.9s, recoveryTimeout=0.9s, maxErrorCount=50
-		{
-			Resource:                     "dubbo:consumer:greet.SentinelGreetService:::GreetWithChanceOfError()",
-			Strategy:                     circuitbreaker.ErrorCount,
-			RetryTimeoutMs:               900,
-			MinRequestAmount:             10,
-			StatIntervalMs:               900,
-			StatSlidingWindowBucketCount: 10,
-			Threshold:                    50,
-		},
-	})
+		Resource:                     "dubbo:consumer:greet.SentinelGreetService:::GreetWithChanceOfError()",
+		Strategy:                     circuitbreaker.ErrorCount,
+		RetryTimeoutMs:               900,
+		MinRequestAmount:             10,
+		StatIntervalMs:               900,
+		StatSlidingWindowBucketCount: 10,
+		Threshold:                    50,
+	}
+	_, err := circuitbreaker.LoadRules([]*circuitbreaker.Rule{rule})
 	assert.NoError(t, err)
 
 	pass, block := CallGreetFunConcurrently(greetService.GreetWithChanceOfError, "error", 1, 50)
 	assert.True(t, pass == 0)
 	assert.True(t, block == 50)
 
-	select {
-	case <-time.After(time.Second):
-		t.Error()
-	case <-listener.OnTransformToOpenChan:
-	}
-	// wait half open
-	time.Sleep(time.Second)
+	waitForState(t, listener.OnTransformToOpenChan, time.Second, "open")
+	timer := time.NewTimer(time.Duration(rule.RetryTimeoutMs)*time.Millisecond + 200*time.Millisecond)
+	<-timer.C
+	timer.Stop()
 	pass, block = CallGreetFunConcurrently(greetService.GreetWithChanceOfError, "hello", 1, 50)
 	assert.True(t, pass > 0)
 	assert.True(t, block < 50)
+	waitForState(t, listener.OnTransformToHalfOpenChan, time.Second, "half-open")
+	waitForState(t, listener.OnTransformToClosedChan, time.Second, "closed")
+}
+
+func waitForState(t *testing.T, ch <-chan struct{}, timeout time.Duration, name string) {
+	t.Helper()
 	select {
-	case <-time.After(time.Second):
-		t.Error()
-	case <-listener.OnTransformToHalfOpenChan:
-	}
-	select {
-	case <-time.After(time.Second):
-		t.Error()
-	case <-listener.OnTransformToClosedChan:
+	case <-ch:
+		return
+	case <-time.After(timeout):
+		t.Fatalf("wait circuit breaker %s timeout", name)
 	}
 }

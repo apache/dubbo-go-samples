@@ -22,19 +22,15 @@ import (
 	"strings"
 	"testing"
 	"time"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/config_center"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"github.com/dubbogo/go-zookeeper/zk"
 
 	perrors "github.com/pkg/errors"
-)
 
-import (
 	greet "github.com/apache/dubbo-go-samples/config_center/zookeeper/proto"
 )
 
@@ -87,7 +83,9 @@ func TestMain(m *testing.M) {
 		}
 	}
 
-	time.Sleep(time.Second * 10)
+	if err := waitForConfigReady(c, path, valueBytes, 10*time.Second); err != nil {
+		panic(err)
+	}
 
 	zkOption := config_center.WithZookeeper()
 	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-client")
@@ -109,6 +107,23 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		panic(err)
 	}
-	time.Sleep(3 * time.Second)
 	os.Exit(m.Run())
+}
+
+func waitForConfigReady(c *zk.Conn, path string, expected []byte, timeout time.Duration) error {
+	deadline := time.Now().Add(timeout)
+	expectedStr := strings.TrimSpace(string(expected))
+	for {
+		data, _, err := c.Get(path)
+		if err == nil && strings.TrimSpace(string(data)) == expectedStr {
+			return nil
+		}
+		if time.Now().After(deadline) {
+			if err != nil {
+				return perrors.Wrap(err, "wait for config timeout")
+			}
+			return perrors.New("wait for config timeout")
+		}
+		time.Sleep(200 * time.Millisecond)
+	}
 }
