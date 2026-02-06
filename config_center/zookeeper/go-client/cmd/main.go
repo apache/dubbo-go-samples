@@ -47,9 +47,6 @@ func main() {
 	}
 	logger.Info("Successfully wrote config to ZooKeeper")
 
-	// wait for config write to finish
-	time.Sleep(time.Second * 3)
-
 	// configure Dubbo instance
 	zkOption := config_center.WithZookeeper()
 	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-go-client")
@@ -132,7 +129,29 @@ func writeRuleToConfigCenter() error {
 		logger.Info("Created new config node")
 	}
 
+	if err := waitForConfigReady(c, path, valueBytes, 10*time.Second); err != nil {
+		return perrors.Wrap(err, "wait for config ready")
+	}
+
 	return nil
+}
+
+func waitForConfigReady(c *zk.Conn, path string, expected []byte, timeout time.Duration) error {
+	deadline := time.Now().Add(timeout)
+	expectedStr := strings.TrimSpace(string(expected))
+	for {
+		data, _, err := c.Get(path)
+		if err == nil && strings.TrimSpace(string(data)) == expectedStr {
+			return nil
+		}
+		if time.Now().After(deadline) {
+			if err != nil {
+				return perrors.Wrap(err, "wait for config timeout")
+			}
+			return perrors.New("wait for config timeout")
+		}
+		time.Sleep(200 * time.Millisecond)
+	}
 }
 
 // helper function to create parent paths

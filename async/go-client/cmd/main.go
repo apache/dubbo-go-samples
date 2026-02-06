@@ -65,14 +65,31 @@ func main() {
 
 func testAsync() {
 	req := &user.GetUserRequest{Id: "003"}
-	_, err := userProvider.GetUser(context.Background(), req)
-	if err != nil {
-		panic(err)
-	}
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	respCh := make(chan *user.GetUserResponse, 1)
+	errCh := make(chan error, 1)
+
+	go func() {
+		resp, err := userProvider.GetUser(ctx, req)
+		if err != nil {
+			errCh <- err
+			return
+		}
+		respCh <- resp
+	}()
 
 	logger.Info("non-blocking before async callback resp: do something ... ")
 
-	time.Sleep(time.Second)
+	select {
+	case err := <-errCh:
+		panic(err)
+	case resp := <-respCh:
+		logger.Infof("async callback resp: %+v", resp)
+	case <-ctx.Done():
+		logger.Warnf("async callback timeout: %v", ctx.Err())
+	}
 }
 
 func testAsyncOneWay() {
