@@ -8,6 +8,7 @@
 * level:    设置日志的隔离级别
 * rolling:  输出到文件
 * custom: 自定义 logger
+* trace-integration: 集成 OpenTelemetry trace 信息
 
 #### 默认配置
 
@@ -26,6 +27,9 @@ zap 日志格式和级别设置
         max-age: 3
         max-backups: 5
         compress: false
+      trace-integration:
+        enabled: false
+        record-error-to-span: false
 ```
 
 #### 设置隔离级别
@@ -68,4 +72,52 @@ type Logger interface {
 然后调用 SetLogger 方法设置 logger
 ```go
 logger.SetLogger(&customLogger{})
+```
+
+#### 集成 OpenTelemetry trace 信息
+
+logger 支持 OpenTelemetry trace 集成，自动将 trace 信息注入日志。
+
+##### 方式1：New API（推荐）
+
+```go
+ins, err := dubbo.NewInstance(
+    dubbo.WithProtocol(
+        protocol.WithTriple(),
+        protocol.WithPort(20000),
+    ),
+    dubbo.WithLogger(
+        log.WithZap(),
+        log.WithTraceIntegration(true),
+        log.WithRecordErrorToSpan(true),
+    ),
+)
+```
+
+##### 方式2：Old API
+
+```go
+loggerConfig := config.NewLoggerConfigBuilder().
+    SetDriver("zap").
+    SetTraceIntegrationEnabled(true).
+    SetRecordErrorToSpan(true).
+    Build()
+loggerConfig.Init()
+```
+
+##### 使用 CtxLogger 记录日志
+
+```go
+rawLogger := gostLogger.GetLogger()
+ctxLog := rawLogger.(logger.CtxLogger)
+
+ctxLog.CtxInfo(ctx, "hello dubbogo this is info log")
+ctxLog.CtxDebug(ctx, "hello dubbogo this is debug log")
+ctxLog.CtxWarn(ctx, "hello dubbogo this is warn log")
+ctxLog.CtxError(ctx, "hello dubbogo this is error log")
+
+ctxLog.CtxInfof(ctx, "user: %s", "alice")
+ctxLog.CtxDebugf(ctx, "value: %d", 42)
+ctxLog.CtxWarnf(ctx, "latency: %dms", 150)
+ctxLog.CtxErrorf(ctx, "failed: %v", err)
 ```

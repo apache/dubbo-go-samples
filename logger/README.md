@@ -8,6 +8,7 @@ The samples demonstrate how to configure dubbo-go logger using lumberjack
 * level:   set the isolation level of the log
 * rolling: output to file
 * custom: set custom logger
+* trace-integration: integrate OpenTelemetry trace information
 
 #### print to the console by default
 
@@ -26,6 +27,9 @@ zap log format and level settings
         max-age: 3
         max-backups: 5
         compress: false
+      trace-integration:
+        enabled: false
+        record-error-to-span: false
 ```
 
 #### set isolation level
@@ -73,4 +77,52 @@ Then call SetLogger method to set logger
 
 ```go
 logger.SetLogger(&customLogger{})
+```
+
+#### Integrate OpenTelemetry trace information
+
+logger supports OpenTelemetry trace integration, automatically injecting trace information into logs.
+
+##### Method 1: New API (Recommended)
+
+```go
+ins, err := dubbo.NewInstance(
+    dubbo.WithProtocol(
+        protocol.WithTriple(),
+        protocol.WithPort(20000),
+    ),
+    dubbo.WithLogger(
+        log.WithZap(),
+        log.WithTraceIntegration(true),
+        log.WithRecordErrorToSpan(true),
+    ),
+)
+```
+
+##### Method 2: Old API
+
+```go
+loggerConfig := config.NewLoggerConfigBuilder().
+    SetDriver("zap").
+    SetTraceIntegrationEnabled(true).
+    SetRecordErrorToSpan(true).
+    Build()
+loggerConfig.Init()
+```
+
+##### Using CtxLogger
+
+```go
+rawLogger := gostLogger.GetLogger()
+ctxLog := rawLogger.(logger.CtxLogger)
+
+ctxLog.CtxInfo(ctx, "hello dubbogo this is info log")
+ctxLog.CtxDebug(ctx, "hello dubbogo this is debug log")
+ctxLog.CtxWarn(ctx, "hello dubbogo this is warn log")
+ctxLog.CtxError(ctx, "hello dubbogo this is error log")
+
+ctxLog.CtxInfof(ctx, "user: %s", "alice")
+ctxLog.CtxDebugf(ctx, "value: %d", 42)
+ctxLog.CtxWarnf(ctx, "latency: %dms", 150)
+ctxLog.CtxErrorf(ctx, "failed: %v", err)
 ```
