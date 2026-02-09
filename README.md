@@ -29,6 +29,11 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `java_interop`: Demonstrates interoperability between Java and Go Dubbo implementations.
 * `llm`: Example of integrating Large Language Models (LLMs) with Dubbo-go.
 * `logger`: Logging examples for Dubbo-go applications.
+  * `logger/default`: Print to console by default.
+  * `logger/level`: Set log isolation level.
+  * `logger/rolling`: Output to file.
+  * `logger/custom`: Custom logger.
+  * `logger/trace-integration`: Integrate OpenTelemetry trace information, automatically injecting trace_id, span_id and other information into logs.
 * `metrics`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
 * `mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `online_boutique`: Microservices “online boutique” demo built with Dubbo-go.
