@@ -108,14 +108,29 @@ loggerConfig.Init()
 ##### 使用 CtxLogger 记录日志
 
 ```go
+import (
+    "context"
+)
+
+import (
+    gostLogger "github.com/dubbogo/gost/log/logger"
+    "dubbo.apache.org/dubbo-go/v3/logger"
+)
+
+// 获取 CtxLogger
 rawLogger := gostLogger.GetLogger()
 ctxLog := rawLogger.(logger.CtxLogger)
 
+// 创建 context（例如从请求中获取，或包含 trace 信息）
+ctx := context.Background()
+
+// 使用 context 记录日志
 ctxLog.CtxInfo(ctx, "hello dubbogo this is info log")
 ctxLog.CtxDebug(ctx, "hello dubbogo this is debug log")
 ctxLog.CtxWarn(ctx, "hello dubbogo this is warn log")
 ctxLog.CtxError(ctx, "hello dubbogo this is error log")
 
+// 格式化日志
 ctxLog.CtxInfof(ctx, "user: %s", "alice")
 ctxLog.CtxDebugf(ctx, "value: %d", 42)
 ctxLog.CtxWarnf(ctx, "latency: %dms", 150)

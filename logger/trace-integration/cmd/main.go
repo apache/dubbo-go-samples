@@ -59,20 +59,32 @@ func main() {
 
 	// setup OpenTelemetry tracer
 	tp := trace.NewTracerProvider()
+	defer func() {
+		if err := tp.Shutdown(context.Background()); err != nil {
+			panic(err)
+		}
+	}()
 	otel.SetTracerProvider(tp)
 	tracer := tp.Tracer("demo")
 
-	traceCtx, span := tracer.Start(context.Background(), "demo-operation")
-	defer span.End()
-	rawLogger := logger.GetLogger()
-	ctxLog := rawLogger.(log.CtxLogger)
+	// run for 3 seconds
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 	defer cancel()
+
+	// create trace span from the timeout context
+	traceCtx, span := tracer.Start(ctx, "demo-operation")
+	defer span.End()
+
+	// get CtxLogger
+	rawLogger := logger.GetLogger()
+	ctxLog := rawLogger.(log.CtxLogger)
+
 	for {
 		select {
 		case <-ctx.Done():
 			return
 		default:
+			// log with trace context (automatically includes trace_id, span_id)
 			ctxLog.CtxInfo(traceCtx, "hello dubbogo this is info log")
 			ctxLog.CtxDebug(traceCtx, "hello dubbogo this is debug log")
 			ctxLog.CtxWarn(traceCtx, "hello dubbogo this is warn log")

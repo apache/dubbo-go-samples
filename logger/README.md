@@ -113,14 +113,29 @@ loggerConfig.Init()
 ##### Using CtxLogger
 
 ```go
+import (
+    "context"
+)
+
+import (
+    gostLogger "github.com/dubbogo/gost/log/logger"
+    "dubbo.apache.org/dubbo-go/v3/logger"
+)
+
+// Get CtxLogger
 rawLogger := gostLogger.GetLogger()
 ctxLog := rawLogger.(logger.CtxLogger)
 
+// Create a context (e.g., from an incoming request or with trace information)
+ctx := context.Background()
+
+// Log with context
 ctxLog.CtxInfo(ctx, "hello dubbogo this is info log")
 ctxLog.CtxDebug(ctx, "hello dubbogo this is debug log")
 ctxLog.CtxWarn(ctx, "hello dubbogo this is warn log")
 ctxLog.CtxError(ctx, "hello dubbogo this is error log")
 
+// Formatted logging
 ctxLog.CtxInfof(ctx, "user: %s", "alice")
 ctxLog.CtxDebugf(ctx, "value: %d", 42)
 ctxLog.CtxWarnf(ctx, "latency: %dms", 150)
