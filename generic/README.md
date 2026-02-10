@@ -1,22 +1,22 @@
-# Generic Sample (Triple Generic Call)
+# Generic Call Sample
 
 [English](README.md) | [中文](README_zh.md)
 
-This sample demonstrates how to use generic invocation with the Triple protocol for Go-Java interoperability. Generic invocation allows calling remote services without generating stubs or having the service interface locally.
+This sample demonstrates how to use generic invocation with both Dubbo and Triple protocols for Go-Java interoperability. Generic invocation allows calling remote services without generating stubs or having the service interface locally.
 
 ## Layout
 
 ```
 generic/
-├── go-server/      # Go provider listening on :50052
-├── go-client/      # Go consumer with generic invocation
-├── java-server/    # Java provider listening on :50052
+├── go-server/      # Go provider (Triple protocol, port 50052)
+├── go-client/      # Go consumer with generic invocation (direct connection)
+├── java-server/    # Java provider (Triple protocol, port 50052)
 └── java-client/    # Java consumer with generic invocation
 ```
 
 ## Prerequisites
 
-Start ZooKeeper:
+Start ZooKeeper (required by the server for service registration):
 
 ```bash
 docker run -d --name zookeeper -p 2181:2181 zookeeper:3.8
@@ -29,7 +29,7 @@ cd generic/go-server/cmd
 go run .
 ```
 
-The server listens on port `50052` and registers to ZooKeeper.
+The server exposes the Triple protocol on port `50052`, registers to ZooKeeper, and serves `UserProvider` with version `1.0.0` and group `triple`.
 
 ## Run the Go Client
 
@@ -38,7 +38,7 @@ cd generic/go-client/cmd
 go run .
 ```
 
-The client discovers the service via ZooKeeper and uses `client.WithGenericType("true")` to perform generic calls.
+The client uses direct URL connection (`client.WithURL`) to connect to the server and performs generic calls via `cli.NewGenericService`. It tests both Dubbo protocol (port 20000) and Triple protocol (port 50052).
 
 ## Run the Java Server
 
@@ -78,20 +78,21 @@ The client uses `reference.setGeneric("true")` to perform generic calls.
 Server log:
 
 ```
-Generic Go/Java server started on port 50052
+Generic Go server started on port 50052
 Registry: zookeeper://127.0.0.1:2181
 ```
 
 Client log:
 
 ```
-[PASS] GetUser1(String): {id=A003, name=Joe, age=48, ...}
-[PASS] GetUser2(String, String): {id=A003, name=lily, age=48, ...}
+[Triple] GetUser1(userId string) res: {id=A003, name=Joe, age=48, ...}
+[Triple] GetUser2(userId string, name string) res: {id=A003, name=lily, age=48, ...}
 ...
-[OK] All tests passed!
+All generic call tests completed
 ```
 
 ## Notes
 
 - Do NOT start Go Server and Java Server at the same time. Both listen on port 50052.
-- Make sure ZooKeeper is running before starting the server or client.
+- The Go server requires ZooKeeper for service registration.
+- The Go client uses direct URL connection and does not require ZooKeeper.

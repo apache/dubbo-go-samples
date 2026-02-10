@@ -19,6 +19,7 @@ package pkg
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -147,6 +148,6 @@ func (u *UserProvider) Invoke(ctx context.Context, methodName string, types []st
 		return u.QueryAll(ctx)
 	default:
 		logger.Errorf("Unknown method: %s", methodName)
-		return nil, nil
+		return nil, fmt.Errorf("unknown method: %s", methodName)
 	}
 }

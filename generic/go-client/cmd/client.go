@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"os"
 	"time"
 )
 
@@ -26,18 +27,19 @@ import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	"dubbo.apache.org/dubbo-go/v3/config/generic"
+	"dubbo.apache.org/dubbo-go/v3/filter/generic"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
-	"github.com/apache/dubbo-go-samples/generic/go-client/pkg"
-
 	"github.com/dubbogo/gost/log/logger"
 )
 
+import (
+	"github.com/apache/dubbo-go-samples/generic/go-client/pkg"
+)
+
 const (
-	DubboServerURL  = "dubbo://127.0.0.1:20000"
 	TripleServerURL = "tri://127.0.0.1:50052"
 	UserProvider    = "org.apache.dubbo.samples.UserProvider"
 	ServiceVersion  = "1.0.0"
@@ -53,49 +55,12 @@ func main() {
 		panic(err)
 	}
 
-	// Test Dubbo protocol generic call
-	logger.Info("=== Testing Dubbo Protocol Generic Call ===")
-	testDubboProtocol(ins)
-
-	// Test Triple protocol generic call
-	logger.Info("=== Testing Triple Protocol Generic Call ===")
-	testTripleProtocol(ins)
-
-	logger.Info("All generic call tests completed")
-}
-
-func testDubboProtocol(ins *dubbo.Instance) {
-	cli, err := ins.NewClient(
-		client.WithClientProtocolDubbo(),
-		client.WithClientSerialization(constant.Hessian2Serialization),
-	)
-	if err != nil {
-		logger.Errorf("Failed to create Dubbo client: %v", err)
-		return
-	}
-
-	genericService, err := cli.NewGenericService(
-		UserProvider,
-		client.WithURL(DubboServerURL),
-		client.WithVersion(ServiceVersion),
-		client.WithGroup("dubbo"),
-	)
-	if err != nil {
-		logger.Errorf("Failed to create Dubbo generic service: %v", err)
-		return
-	}
-
-	runGenericTests(genericService, "Dubbo")
-}
-
-func testTripleProtocol(ins *dubbo.Instance) {
 	cli, err := ins.NewClient(
 		client.WithClientProtocolTriple(),
 		client.WithClientSerialization(constant.Hessian2Serialization),
 	)
 	if err != nil {
-		logger.Errorf("Failed to create Triple client: %v", err)
-		return
+		panic(err)
 	}
 
 	genericService, err := cli.NewGenericService(
@@ -105,98 +70,94 @@ func testTripleProtocol(ins *dubbo.Instance) {
 		client.WithGroup("triple"),
 	)
 	if err != nil {
-		logger.Errorf("Failed to create Triple generic service: %v", err)
-		return
+		panic(err)
 	}
 
-	runGenericTests(genericService, "Triple")
+	failed := false
+	failed = runGenericTests(genericService) || failed
+
+	if failed {
+		logger.Errorf("Some generic call tests failed")
+		os.Exit(1)
+	}
+	logger.Info("All generic call tests passed")
 }
 
-func runGenericTests(svc *generic.GenericService, protocol string) {
-	// 1. Basic type parameters
-	testBasicTypes(svc, protocol)
-
-	// 2. Array/Collection types
-	testCollectionTypes(svc, protocol)
-
-	// 3. Custom POJO types
-	testPOJOTypes(svc, protocol)
-}
-
-func testBasicTypes(svc *generic.GenericService, protocol string) {
+func runGenericTests(svc *generic.GenericService) bool {
+	failed := false
 	ctx := context.Background()
 
 	// GetUser1(String)
 	result, err := svc.Invoke(ctx, "GetUser1", []string{"java.lang.String"}, []hessian.Object{"A003"})
 	if err != nil {
-		logger.Errorf("[%s] GetUser1 failed: %v", protocol, err)
+		logger.Errorf("GetUser1 failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] GetUser1(userId string) res: %+v", protocol, result)
+		logger.Infof("GetUser1(userId string) res: %+v", result)
 	}
 
 	// GetUser2(String, String)
 	result, err = svc.Invoke(ctx, "GetUser2", []string{"java.lang.String", "java.lang.String"}, []hessian.Object{"A003", "lily"})
 	if err != nil {
-		logger.Errorf("[%s] GetUser2 failed: %v", protocol, err)
+		logger.Errorf("GetUser2 failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] GetUser2(userId string, name string) res: %+v", protocol, result)
+		logger.Infof("GetUser2(userId string, name string) res: %+v", result)
 	}
 
 	// GetUser3(int)
 	result, err = svc.Invoke(ctx, "GetUser3", []string{"int"}, []hessian.Object{int32(1)})
 	if err != nil {
-		logger.Errorf("[%s] GetUser3 failed: %v", protocol, err)
+		logger.Errorf("GetUser3 failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] GetUser3(userCode int) res: %+v", protocol, result)
+		logger.Infof("GetUser3(userCode int) res: %+v", result)
 	}
 
 	// GetUser4(int, String)
 	result, err = svc.Invoke(ctx, "GetUser4", []string{"int", "java.lang.String"}, []hessian.Object{int32(1), "zhangsan"})
 	if err != nil {
-		logger.Errorf("[%s] GetUser4 failed: %v", protocol, err)
+		logger.Errorf("GetUser4 failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] GetUser4(userCode int, name string) res: %+v", protocol, result)
+		logger.Infof("GetUser4(userCode int, name string) res: %+v", result)
 	}
 
 	// GetOneUser()
 	result, err = svc.Invoke(ctx, "GetOneUser", []string{}, []hessian.Object{})
 	if err != nil {
-		logger.Errorf("[%s] GetOneUser failed: %v", protocol, err)
+		logger.Errorf("GetOneUser failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] GetOneUser() res: %+v", protocol, result)
+		logger.Infof("GetOneUser() res: %+v", result)
 	}
-}
-
-func testCollectionTypes(svc *generic.GenericService, protocol string) {
-	ctx := context.Background()
 
 	// GetUsers(String[])
-	result, err := svc.Invoke(ctx, "GetUsers", []string{"[Ljava.lang.String;"}, []hessian.Object{[]string{"001", "002", "003"}})
+	result, err = svc.Invoke(ctx, "GetUsers", []string{"[Ljava.lang.String;"}, []hessian.Object{[]string{"001", "002", "003"}})
 	if err != nil {
-		logger.Errorf("[%s] GetUsers failed: %v", protocol, err)
+		logger.Errorf("GetUsers failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] GetUsers(userIdList []string) res: %+v", protocol, result)
+		logger.Infof("GetUsers(userIdList []string) res: %+v", result)
 	}
 
 	// GetUsersMap(String[])
 	result, err = svc.Invoke(ctx, "GetUsersMap", []string{"[Ljava.lang.String;"}, []hessian.Object{[]string{"001", "002"}})
 	if err != nil {
-		logger.Errorf("[%s] GetUsersMap failed: %v", protocol, err)
+		logger.Errorf("GetUsersMap failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] GetUsersMap(userIdList []string) res: %+v", protocol, result)
+		logger.Infof("GetUsersMap(userIdList []string) res: %+v", result)
 	}
 
 	// QueryAll()
 	result, err = svc.Invoke(ctx, "QueryAll", []string{}, []hessian.Object{})
 	if err != nil {
-		logger.Errorf("[%s] QueryAll failed: %v", protocol, err)
+		logger.Errorf("QueryAll failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] QueryAll() res: %+v", protocol, result)
+		logger.Infof("QueryAll() res: %+v", result)
 	}
-}
-
-func testPOJOTypes(svc *generic.GenericService, protocol string) {
-	ctx := context.Background()
 
 	// QueryUser(User)
 	testUser := &pkg.User{
@@ -205,11 +166,12 @@ func testPOJOTypes(svc *generic.GenericService, protocol string) {
 		Age:  25,
 		Time: time.Now(),
 	}
-	result, err := svc.Invoke(ctx, "QueryUser", []string{"org.apache.dubbo.samples.User"}, []hessian.Object{testUser})
+	result, err = svc.Invoke(ctx, "QueryUser", []string{"org.apache.dubbo.samples.User"}, []hessian.Object{testUser})
 	if err != nil {
-		logger.Errorf("[%s] QueryUser failed: %v", protocol, err)
+		logger.Errorf("QueryUser failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] QueryUser(user *User) res: %+v", protocol, result)
+		logger.Infof("QueryUser(user *User) res: %+v", result)
 	}
 
 	// QueryUsers(User[])
@@ -219,8 +181,11 @@ func testPOJOTypes(svc *generic.GenericService, protocol string) {
 	}
 	result, err = svc.Invoke(ctx, "QueryUsers", []string{"[Lorg.apache.dubbo.samples.User;"}, []hessian.Object{testUsers})
 	if err != nil {
-		logger.Errorf("[%s] QueryUsers failed: %v", protocol, err)
+		logger.Errorf("QueryUsers failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("[%s] QueryUsers(users []*User) res: %+v", protocol, result)
+		logger.Infof("QueryUsers(users []*User) res: %+v", result)
 	}
+
+	return failed
 }

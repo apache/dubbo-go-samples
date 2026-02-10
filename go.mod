@@ -171,7 +171,6 @@ require (
 )
 
 replace (
-	dubbo.apache.org/dubbo-go/v3 => ../dubbo-go
 	go.opentelemetry.io/otel => go.opentelemetry.io/otel v1.26.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace => go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.21.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.21.0
