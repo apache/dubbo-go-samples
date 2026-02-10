@@ -23,15 +23,15 @@ import (
 )
 
 import (
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/sdk/trace"
-
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	log "dubbo.apache.org/dubbo-go/v3/logger"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 
 	"github.com/dubbogo/gost/log/logger"
+
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/sdk/trace"
 )
 
 func main() {
