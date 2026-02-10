@@ -20,7 +20,9 @@ package main
 import (
 	"context"
 	"time"
+)
 
+import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/sdk/trace"
 
