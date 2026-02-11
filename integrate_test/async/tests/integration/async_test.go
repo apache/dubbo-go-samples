@@ -33,10 +33,21 @@ import (
 
 func TestAsync(t *testing.T) {
 	req := &user.GetUserRequest{Id: "003"}
-	_, err := userProvider.GetUser(context.Background(), req)
-	assert.Nil(t, err)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
 
-	time.Sleep(time.Second)
+	done := make(chan error, 1)
+	go func() {
+		_, err := userProvider.GetUser(ctx, req)
+		done <- err
+	}()
+
+	select {
+	case err := <-done:
+		assert.Nil(t, err)
+	case <-ctx.Done():
+		assert.Fail(t, "async call timeout", ctx.Err().Error())
+	}
 }
 
 func TestAsyncOneWay(t *testing.T) {

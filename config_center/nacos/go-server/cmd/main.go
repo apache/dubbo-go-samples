@@ -19,6 +19,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"time"
 )
 
@@ -30,6 +32,7 @@ import (
 	"github.com/dubbogo/gost/log/logger"
 
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
+	"github.com/nacos-group/nacos-sdk-go/v2/clients/config_client"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 )
@@ -86,19 +89,16 @@ func main() {
 		panic(err)
 	}
 
-	success, err := configClient.PublishConfig(vo.ConfigParam{
-		DataId:  "dubbo-go-samples-configcenter-nacos-go-server",
-		Group:   "dubbo",
-		Content: configCenterNacosServerConfig,
-	})
-	if err != nil {
+	if err := publishAndWaitConfig(
+		configClient,
+		"dubbo-go-samples-configcenter-nacos-go-server",
+		"dubbo",
+		configCenterNacosServerConfig,
+		10*time.Second,
+		200*time.Millisecond,
+	); err != nil {
 		panic(err)
 	}
-	if !success {
-		return
-	}
-
-	time.Sleep(time.Second * 10)
 
 	nacosOption := config_center.WithNacos()
 	dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-nacos-go-server")
@@ -121,5 +121,44 @@ func main() {
 
 	if err = srv.Serve(); err != nil {
 		logger.Error(err)
+	}
+}
+
+func publishAndWaitConfig(
+	configClient config_client.IConfigClient,
+	dataID string,
+	group string,
+	content string,
+	timeout time.Duration,
+	pollInterval time.Duration,
+) error {
+	success, err := configClient.PublishConfig(vo.ConfigParam{
+		DataId:  dataID,
+		Group:   group,
+		Content: content,
+	})
+	if err != nil {
+		return err
+	}
+	if !success {
+		return fmt.Errorf("publish config failed")
+	}
+
+	deadline := time.Now().Add(timeout)
+	for {
+		current, err := configClient.GetConfig(vo.ConfigParam{
+			DataId: dataID,
+			Group:  group,
+		})
+		if err == nil && strings.TrimSpace(current) == strings.TrimSpace(content) {
+			return nil
+		}
+		if time.Now().After(deadline) {
+			if err != nil {
+				return err
+			}
+			return fmt.Errorf("wait for config center timeout")
+		}
+		time.Sleep(pollInterval)
 	}
 }
