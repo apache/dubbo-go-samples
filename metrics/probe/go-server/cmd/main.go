@@ -25,17 +25,22 @@ import (
 	"sync/atomic"
 	"syscall"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
-
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/metrics"
 	"dubbo.apache.org/dubbo-go/v3/metrics/probe"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-	"github.com/dubbogo/gost/log/logger"
-	"github.com/pkg/errors"
 
+	"github.com/dubbogo/gost/log/logger"
+
+	"github.com/pkg/errors"
+)
+
+import (
 	greet "github.com/apache/dubbo-go-samples/direct/proto"
 )
 
