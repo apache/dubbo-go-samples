@@ -8,7 +8,7 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	greet "github.com/apache/dubbo-go-samples/router/tag-router/proto"
+	greet "github.com/apache/dubbo-go-samples/router/tag/proto"
 
 	"github.com/dubbogo/gost/log/logger"
 )
@@ -29,7 +29,7 @@ func (srv *GreetServer) Greet(_ context.Context, req *greet.GreetRequest) (*gree
 func main() {
 
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("tag-router-server"),
+		dubbo.WithName("tag-server"),
 		dubbo.WithTag(""), // set application's tag
 		dubbo.WithRegistry(
 			registry.WithNacos(),

@@ -7,7 +7,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
-	greet "github.com/apache/dubbo-go-samples/router/tag-router/proto"
+	greet "github.com/apache/dubbo-go-samples/router/tag/proto"
 
 	"github.com/dubbogo/gost/log/logger"
 )
@@ -18,7 +18,7 @@ const (
 
 func main() {
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("tag-router-client"),
+		dubbo.WithName("tag-client"),
 		dubbo.WithRegistry(
 			registry.WithNacos(),
 			registry.WithAddress(RegistryAddress),
