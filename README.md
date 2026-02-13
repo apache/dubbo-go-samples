@@ -29,7 +29,9 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `java_interop`: Demonstrates interoperability between Java and Go Dubbo implementations.
 * `llm`: Example of integrating Large Language Models (LLMs) with Dubbo-go.
 * `logger`: Logging examples for Dubbo-go applications.
-* `metrics`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
+* `metrics`: Observability-related samples.
+  * `metrics/prometheus_grafana`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
+  * `metrics/probe`: Demonstrates Dubbo-go Kubernetes probe endpoints (`/live`, `/ready`, `/startup`) and deployment usage.
 * `mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `online_boutique`: Microservices “online boutique” demo built with Dubbo-go.
 * `otel/tracing`: Distributed tracing examples using OpenTelemetry.
