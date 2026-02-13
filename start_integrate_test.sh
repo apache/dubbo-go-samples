@@ -88,13 +88,32 @@ if [ "$(docker compose version > /dev/null; echo $?)" -eq 0 ]; then
 fi
 
 cleanup() {
+  echo "::group::> docker down"
   $DOCKER_COMPOSE_CMD -f "$DOCKER_DIR"/docker-compose.yml down >/dev/null 2>&1 || true
+  echo "::endgroup::"
 }
 trap cleanup EXIT
 
+echo "::group::> docker up"
 $DOCKER_COMPOSE_CMD -f "$DOCKER_DIR"/docker-compose.yml up -d
-bash -f "$DOCKER_DIR"/docker-health-check.sh
+echo "::endgroup::"
 
-for ((i = 0; i < ${#array[*]}; i++)); do
-  ./integrate_test.sh "${array[i]}"
+echo "::group::> docker health-check"
+bash -f "$DOCKER_DIR"/docker-health-check.sh
+echo "::endgroup::"
+
+for t in "${array[@]}"; do
+  echo "::group::> start: $t"
+  set +e
+  bash ./integrate_test.sh "$t"
+  result=$?
+  set -e
+  echo "::endgroup::"
+
+  if [ "$result" -ne 0 ]; then
+    echo "[ERROR] failed: $t (exit code: $result)"
+    exit "$result"
+  fi
+
+  echo "> ok: $t"
 done
