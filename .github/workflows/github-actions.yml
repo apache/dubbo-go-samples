@@ -2,90 +2,89 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-      - 'release-*'
-      - 'feature-*'
   pull_request:
-    branches: "*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-
-  build:
-    name: ${{ matrix.os }} - Go ${{ matrix.go_version }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      # If you want to matrix build, you can append the following list.
-      matrix:
-        go_version:
-          - '1.24'
-        os:
-          - ubuntu-latest
+  build-and-integration:
+    name: Build And Integration
+    runs-on: ubuntu-latest
 
     env:
       DING_TOKEN: ${{ secrets.DING_TOKEN }}
       DING_SIGN: ${{ secrets.DING_SIGN }}
 
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v2
+      - name: Check out code
+        uses: actions/checkout@v5
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
         with:
-          go-version: ${{ matrix.go_version }}
-        id: go
+          go-version-file: go.mod
+          cache: true
 
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v4.0.0
-
-      - name: Cache dependencies
+      - name: Cache Go build artifacts
         uses: actions/cache@v4
         with:
-          # Cache
-          path: ~/go/pkg/mod
-          # Cache key
-          key: ${{ runner.os }}-go-${{ matrix.go_version }}-${{ hashFiles('**/go.sum') }}
-          # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
+          path: |
+            ~/.cache/go-build
+            ~/go/bin
+          key: ${{ runner.os }}-go-build-bin-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-${{ matrix.go_version }}-
+            ${{ runner.os }}-go-build-bin-
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Check tool versions
+        run: |
+          go version
+          java -version
+          mvn -version
+
+      - name: Install imports-formatter
+        run: |
+          command -v imports-formatter >/dev/null 2>&1 || go install github.com/dubbogo/tools/cmd/imports-formatter@latest
 
       - name: Get dependencies
         run: |
           go mod tidy
-          # for imports-formatter
-          go install github.com/dubbogo/tools/cmd/imports-formatter@latest
 
-      - name: Format Code
+      - name: Format code
         run: |
-          go fmt ./... && GOROOT=$(go env GOROOT) imports-formatter && git status && [[ -z `git status -s` ]]
-          # diff -u <(echo -n) <(gofmt -d -s .)
+          go fmt ./...
+          GOROOT=$(go env GOROOT) imports-formatter
+          git status
+          [[ -z "$(git status -s)" ]]
 
-      - name: Check License Header
-        uses: apache/skywalking-eyes/header@e1a02359b239bd28de3f6d35fdc870250fa513d5
-
-      - name: Set Go version again to override skywalking
-        uses: actions/setup-go@v2
-        with:
-          go-version: ${{ matrix.go_version }}
-
-      - name: Check Go version
-        run: |
-          go version
+      - name: Check license header
+        uses: apache/skywalking-eyes/header@main
 
       - name: Switch Dubbo-go version
+        shell: bash
         run: |
-          # Acquire information of branch
+          set -euo pipefail
           if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-            BRANCH=${{github.base_ref}}
+            BRANCH=${{ github.base_ref }}
           elif [ "$GITHUB_EVENT_NAME" == "push" ]; then
             BRANCH=$GITHUB_REF_NAME
           else
             echo "$GITHUB_EVENT_NAME event is unsupported right now"
             exit 1
           fi
-          echo "EVENT = $GITHUB_EVENT_NAME, BRANCH = $BRANCH"
-          # Edit the version
+          echo "EVENT=$GITHUB_EVENT_NAME BRANCH=$BRANCH"
           go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH
           go mod tidy
 
-      - name: Integration Test
+      - name: Integration test
         run: |
+          chmod +x start_integrate_test.sh
           ./start_integrate_test.sh

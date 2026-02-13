@@ -24,13 +24,13 @@ Here we use "helloworld" as an example:
 2. **Start register server (e.g. zookeeper)**
    
    ```bash
-   make -f build/Makefile docker-up 
+   make -f Makefile docker-up 
    ```
    
    Once the following messages outputs, the zookeeper server is ready.
    
    ```bash
-   >  Starting dependency services with ./integrate_test/dockercompose/docker-compose.yml
+   >  Starting dependency services with ./docker-compose.yml
    Docker Compose is now in the Docker CLI, try `docker compose up`
    
    Creating network "dockercompose_default" with the default driver
@@ -42,7 +42,7 @@ Here we use "helloworld" as an example:
    To shut it down, simple run
    
    ```bash
-   make -f build/Makefile docker-down
+   make -f Makefile docker-down
    ```
    
 3. **Start server**
@@ -79,36 +79,40 @@ Here we use "helloworld" as an example:
    2021-10-27T00:40:44.879+0800    INFO    cmd/client.go:51        client response result: name:"Hello laurence" id:"12345" age:21
    ```
    
-5. **Integration test**
-   dubbo-go-samples is designed to serve the purposes of not only the showcases of how to use apache/dubbo-go but also the integration-test for apache/dubbo-go. To run integration test for `go-server`, run the following commands:
-
-   Start the server first
+5. **Integration flow (current CI logic)**
+   The integration flow is now script-driven. For each sample, run:
    ```bash
-   cd helloworld/go-server/cmd
-   export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-   go run .
+   ./integrate_test.sh <sample-path>
+   ```
+   Example:
+   ```bash
+   ./integrate_test.sh direct
    ```
 
-   Then switch to the single test directory, set the environment variables, and then execute the single test
+   The script executes the following sequence:
+   1. Start `go-server`
+   2. Run `go-client`
+   3. Run `java-client` (if present)
+   4. Stop `go-server`
+   5. Start `java-server` (if present)
+   6. Run `java-client`
+   7. Run `go-client`
+
+   If Maven (`mvn`) is not installed, all Java phases are skipped automatically and only Go phases run.
+
+   To run the full CI sample list locally:
    ```bash
-   cd integrate_test/helloworld/tests/integration
-   export DUBBO_GO_CONFIG_PATH="../../../../helloworld/go-client/conf/dubbogo.yml"
-   go test -v
+   ./start_integrate_test.sh
    ```
 
-   Once the following messages outputs, the integration tests pass.
-
-   ```bash
-   >  Running integration test for application go-server
-   ...
-   --- PASS: TestSayHello (0.01s)
-   PASS
-   ok      github.com/apache/dubbo-go-samples/integrate_test/helloworld/tests/integration  0.119s
-   ```
+   `start_integrate_test.sh` will:
+   - Start dependencies via root `docker-compose.yml`
+   - Run each sample with `./integrate_test.sh ...`
+   - Tear down dependencies at the end (or on failure)
    
 7. **Shutdown and cleanup**
    ```bash
-   make -f build/Makefile clean docker-down
+   make -f Makefile clean docker-down
    ```
 
 *The following two ways are all relevant to IDE. Intellij GoLand is discussed here as an example.*
@@ -128,7 +132,7 @@ example:
 
 1. **Start up zookeeper server**
 
-   Open "integrate_test/dockercompose/docker-compose.yml", and click ▶︎▶︎ icon in the gutter on the left side of the
+   Open "docker-compose.yml", and click ▶︎▶︎ icon in the gutter on the left side of the
    editor, then "Services" tab should pop up and shows the similar message below:
    ```
    Deploying 'Compose: docker'...
@@ -164,4 +168,3 @@ example:
    ```
 
 If you need to debug either the samples or dubbo-go, you may consider switch to **Debug** instead of **Run** in GoLand. To stop, simply click ◼︎ to shutdown everything.
-

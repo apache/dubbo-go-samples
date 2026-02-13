@@ -17,13 +17,13 @@
 1. **启动注册中心（比如 zookeeper）**
    
    ```bash
-   make -f build/Makefile docker-up 
+   make -f Makefile docker-up 
    ```
    
    当看到类似下面的输出信息时，就表明 zookeeper server 启动就绪了。
    
    ```bash
-   >  Starting dependency services with ./integrate_test/dockercompose/docker-compose.yml
+   >  Starting dependency services with ./docker-compose.yml
    Docker Compose is now in the Docker CLI, try `docker compose up`
    
    Creating network "dockercompose_default" with the default driver
@@ -35,7 +35,7 @@
    如果要停掉注册中心，可以通过运行以下的命令完成:
    
    ```bash
-   make -f build/Makefile docker-down
+   make -f Makefile docker-down
    ```
    
 2. **启动服务提供方**
@@ -70,36 +70,40 @@
    2021-10-27T00:40:44.879+0800    INFO    cmd/client.go:51        client response result: name:"Hello laurence" id:"12345" age:21
    ```
    
-4. **集成测试**
-   本项目 dubbo-go-samples 除了用来展示如何使用 dubbo-go 中的功能和特性之外，还被用于 apache/dubbo-go 的集成测试。可以按照以下的步骤来运行针对 `go-server` 设计的集成测试:
-   
-   首先启动服务方
+4. **集成测试流程（当前 CI 逻辑）**
+   现在的集成测试是脚本驱动的。单个 sample 可执行：
    ```bash
-   cd helloworld/go-server/cmd
-   export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-   go run .
+   ./integrate_test.sh <sample-path>
    ```
-   
-   然后切换到单测目录， 设置环境变量，然后执行单测
+   例如：
    ```bash
-   cd integrate_test/helloworld/tests/integration
-   export DUBBO_GO_CONFIG_PATH="../../../../helloworld/go-client/conf/dubbogo.yml"
-   go test -v
+   ./integrate_test.sh direct
    ```
 
-   当以下信息输出时，说明集成测试通过。
+   脚本会按以下顺序执行：
+   1. 启动 `go-server`
+   2. 运行 `go-client`
+   3. 运行 `java-client`（若存在）
+   4. 停止 `go-server`
+   5. 启动 `java-server`（若存在）
+   6. 运行 `java-client`
+   7. 运行 `go-client`
 
+   如果环境里没有 Maven（`mvn`），会自动跳过所有 Java 阶段，只运行 Go 阶段。
+
+   若要本地执行完整 CI 样例列表：
    ```bash
-   >  Running integration test for application go-server
-   ...
-   --- PASS: TestSayHello (0.01s)
-   PASS
-   ok      github.com/apache/dubbo-go-samples/integrate_test/helloworld/tests/integration  0.119s
+   ./start_integrate_test.sh
    ```
+
+   `start_integrate_test.sh` 会：
+   - 通过仓库根目录 `docker-compose.yml` 启动依赖
+   - 逐个执行 `./integrate_test.sh ...`
+   - 在结束时（或失败时）回收依赖容器
    
 7. **关闭并清理**
    ```bash
-   make -f build/Makefile clean docker-down
+   make -f Makefile clean docker-down
    ```
 
 *以下的两种运行方式都与 IDE 有关。这里我们以 Intellij GoLand 为例来讨论。*
@@ -118,10 +122,10 @@
 
 1. **启动 zookeeper 服务器**
 
-   打开 "integrate_test/dockercompose/docker-compose.yml" 这个文件，然后点击位于编辑器左边 gutter 栏位中的 ▶︎▶︎ 图标运行，"Service" Tab 应当会弹出并输出类似下面的文本信息:
+   打开 "docker-compose.yml" 这个文件，然后点击位于编辑器左边 gutter 栏位中的 ▶︎▶︎ 图标运行，"Service" Tab 应当会弹出并输出类似下面的文本信息:
    ```
    Deploying 'Compose: docker'...
-   /usr/local/bin/docker-compose -f ...integrate_test/dockercompose/docker-compose.yml up -d
+   /usr/local/bin/docker-compose -f ...docker-compose.yml up -d
    Creating network "docker_default" with the default driver
    Creating docker_zookeeper_1 ...
    'Compose: docker' has been deployed successfully.
@@ -147,4 +151,3 @@
    ```
 
 如果需要调试该示例或者 dubbo-go 框架，可以在 IDE 中从 "Run" 切换到 "Debug"。如果要结束的话，直接点击 ◼︎ 就好了。
-
