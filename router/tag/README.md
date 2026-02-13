@@ -3,8 +3,8 @@ This example shows how to use dubbo-go tag router ability.
 
 ## Prerequisites
 
-- Docker and Docker Compose for running Nacos registry
-- Go 1.23+ for Dubbo-Go examples
+- Docker and Docker Compose for running Nacos registry.
+- Go 1.23+ for Dubbo-Go examples.
 
 ## How to run
 

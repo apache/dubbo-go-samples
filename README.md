@@ -37,7 +37,8 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
   * `otlp_http_exporter`: Uses `otlpHttpExporter` to export tracing data, covering `dubbo`/`triple`/`jsonrpc` protocols.
 * `registry`: Examples of using different service registries (e.g., Nacos, Zookeeper).
 * `retry`: Demonstrates retry mechanisms in Dubbo-go RPC calls.
-* `router`: Various Dubbo-go router examples
+* `router`: Various Dubbo-go router examples.
+  * `router/tag`: Dubbo-go tag router examples.
 * `rpc`: Various RPC protocol examples with Dubbo-go.
   * `rpc/dubbo`: Dubbo protocol example, including Java–Go interop.
   * `rpc/grpc`: gRPC protocol example.
