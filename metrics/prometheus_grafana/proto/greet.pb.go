@@ -139,7 +139,7 @@ const file_greet_proto_rawDesc = "" +
 	"\rGreetResponse\x12\x1a\n" +
 	"\bgreeting\x18\x01 \x01(\tR\bgreeting2D\n" +
 	"\fGreetService\x124\n" +
-	"\x05Greet\x12\x13.greet.GreetRequest\x1a\x14.greet.GreetResponse\"\x00B8Z6github.com/apache/dubbo-go-samples/metrics/proto;greetb\x06proto3"
+	"\x05Greet\x12\x13.greet.GreetRequest\x1a\x14.greet.GreetResponse\"\x00B8Z6github.com/apache/dubbo-go-samples/metrics/prometheus_grafana/proto;greetb\x06proto3"
 
 var (
 	file_greet_proto_rawDescOnce sync.Once

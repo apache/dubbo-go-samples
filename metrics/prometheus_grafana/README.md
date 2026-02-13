@@ -76,7 +76,7 @@ First, start the Grafana, Prometheus, and Pushgateway services. We use `docker-c
 
 ```bash
 # Enter the metrics directory
-cd metrics
+cd metrics/prometheus_grafana
 # Start all monitoring services in the background
 docker-compose up -d
 ```
@@ -168,7 +168,7 @@ For details:[tools/pgw-cleaner](../tools/pgw-cleaner/README.md)
 
 - **Cannot connect to `host.docker.internal`**
 
-    - `host.docker.internal` is a built-in feature of Docker. If this address is not accessible, replace the IP address in `metrics/prometheus.yml` and the Grafana data source address with your actual IP address.
+    - `host.docker.internal` is a built-in feature of Docker. If this address is not accessible, replace the IP address in `metrics/prometheus_grafana/prometheus_pull.yml` and the Grafana data source address with your actual IP address.
 
 -----
 
