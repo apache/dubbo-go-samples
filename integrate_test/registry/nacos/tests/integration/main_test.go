@@ -36,7 +36,7 @@ var greetService greet.GreetService
 
 func TestMain(m *testing.M) {
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_registry_zookeeper_client"),
+		dubbo.WithName("dubbo_registry_nacos_client"),
 		dubbo.WithRegistry(
 			registry.WithNacos(),
 			registry.WithAddress("127.0.0.1:8848"),
