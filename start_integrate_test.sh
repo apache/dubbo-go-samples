@@ -38,7 +38,7 @@ array+=("registry/nacos")
 array+=("registry/etcd")
 array+=("registry/polaris")
 
-array+=("generic")
+# array+=("generic")
 
 # timeout
 array+=("timeout")
@@ -54,10 +54,15 @@ array+=("retry")
 
 # rpc
 array+=("rpc/grpc")
-array+=("rpc/triple/pb")
-array+=("rpc/triple/pb2")
-array+=("rpc/triple/pb-json")
 array+=("rpc/multi-protocols")
+array+=("rpc/triple/instance")
+array+=("rpc/triple/old_triple")
+array+=("rpc/triple/pb")
+array+=("rpc/triple/pb-json")
+array+=("rpc/triple/pb2")
+array+=("rpc/triple/reflection")
+array+=("rpc/triple/registry")
+array+=("rpc/triple/stream")
 
 # tls
 array+=("tls")
@@ -70,13 +75,16 @@ array+=("error")
 
 # config_center
 array+=("config_center/nacos")
-array+=("config_center/apollo")
+# array+=("config_center/apollo")
 array+=("config_center/zookeeper")
 
 # config yaml
 array+=("config_yaml")
 
 # service_discovery
+array+=("java_interop/non-protobuf-dubbo")
+array+=("java_interop/non-protobuf-triple")
+array+=("java_interop/protobuf-triple")
 array+=("java_interop/service_discovery/interface")
 array+=("java_interop/service_discovery/service")
 

@@ -17,15 +17,28 @@
 
 package org.apache.dubbo.samples;
 
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.apache.dubbo.config.ProtocolConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.ServiceConfig;
+import org.apache.dubbo.config.bootstrap.DubboBootstrap;
+import org.apache.dubbo.common.constants.CommonConstants;
+import org.apache.dubbo.samples.proto.GreetService;
+import org.apache.dubbo.samples.service.GreetServiceImpl;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-@EnableDubbo
 public class Main {
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        System.setProperty("dubbo.application.register-mode", "instance");
+
+        ServiceConfig<GreetService> service = new ServiceConfig<>();
+        service.setInterface(GreetService.class);
+        service.setRef(new GreetServiceImpl());
+
+        DubboBootstrap.getInstance()
+                .application("greet-java-server")
+                .registry(new RegistryConfig("nacos://127.0.0.1:8848"))
+                .protocol(new ProtocolConfig(CommonConstants.TRIPLE, 20055))
+                .service(service)
+                .start()
+                .await();
     }
 }

@@ -17,10 +17,8 @@
 
 package org.apache.dubbo.samples.service;
 
-import org.apache.dubbo.config.annotation.DubboService;
 import org.apache.dubbo.samples.proto.*;
 
-@DubboService
 public class GreetServiceImpl extends DubboGreetServiceTriple.GreetServiceImplBase {
     @Override
     public GreetResponse greet(GreetRequest request) {

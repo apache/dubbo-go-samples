@@ -6,6 +6,8 @@ English | [中文](README_CN.md)
 
 A collection of runnable Dubbo-go examples covering configuration, registries, observability, interoperability, service mesh, and more.
 
+Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the samples.
+
 ## What It Contains
 
 ### Samples
@@ -27,6 +29,11 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `generic`: Generic invocation examples supporting interoperability between Dubbo-Go and Dubbo Java services, suitable for scenarios without interface information.
 * `integrate_test`: Integration test cases for Dubbo-go samples.
 * `java_interop`: Demonstrates interoperability between Java and Go Dubbo implementations.
+  * `non-protobuf-dubbo`: Java/Go interoperability with the classic Dubbo protocol and non-protobuf payloads (Hessian2 style).
+  * `non-protobuf-triple`: Java/Go interoperability over Triple protocol using non-protobuf payloads.
+  * `protobuf-triple`: Java/Go interoperability over Triple protocol with a shared protobuf contract.
+  * `service_discovery/interface`: Java/Go interoperability with Nacos using interface-level service discovery (Dubbo2 / legacy Dubbo3 model).
+  * `service_discovery/service`: Java/Go interoperability with Nacos using application-level service discovery (Dubbo3 model).
 * `llm`: Example of integrating Large Language Models (LLMs) with Dubbo-go.
 * `logger`: Logging examples for Dubbo-go applications.
 * `metrics`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
@@ -58,14 +65,46 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 
 * `pgw-cleaner`: Operations and maintenance tool for cleaning up zombie metrics in Prometheus Push mode.
 
-## How To Run
+## Integration Test Flow
 
-Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the samples.
+This repository uses a script-driven integration test flow:
+
+1. `start_integrate_test.sh`: run the full sample list (same as CI).
+2. `integrate_test.sh <sample-path>`: run a single sample.
+
+### Run full integration tests
+
+```bash
+./start_integrate_test.sh
+```
+
+This script will:
+
+* Start dependency services from root `docker-compose.yml`.
+* Run dependency health checks.
+* Invoke `./integrate_test.sh ...` for each sample in the list.
+* Tear down dependency containers on exit (success or failure).
+
+### Run a single sample
+
+```bash
+./integrate_test.sh helloworld
+./integrate_test.sh direct
+```
+
+Main steps of `integrate_test.sh`:
+
+1. Start `go-server` (and optional auxiliary Go servers).
+2. Run `go-client`.
+3. Run `java-client` (if present and `mvn` is available).
+4. Stop `go-server`.
+5. Start `java-server` (if present) and wait for port readiness.
+6. Run `java-client` and `go-client` again to verify Go/Java interop.
 
 ## How to Contribute
 
 If you want to add more samples, please follow these steps:
 
-1. Create a new subdirectory and give it an appropriate name for your sample. If you are unsure how to organize your code, follow the layout of the existing samples.
+1. Create a new subdirectory and give it an appropriate name for your sample. If you are unsure how to organize your code, follow the layout of the existing samples and refer to [HOWTO.md](HOWTO.md) for detailed instructions.
 2. Make sure your sample works as expected before submitting a PR, and ensure GitHub CI passes after the PR is submitted. You can refer to the existing samples to learn how to test your sample.
 3. Provide a `README.md` in your sample directory to explain what your sample does and how to run it.

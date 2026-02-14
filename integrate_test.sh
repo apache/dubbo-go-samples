@@ -78,6 +78,22 @@ resolve_config_path() {
   return 1
 }
 
+wait_for_tcp_port() {
+  local host="$1"
+  local port="$2"
+  local timeout_seconds="$3"
+  local elapsed=0
+
+  while [ "$elapsed" -lt "$timeout_seconds" ]; do
+    if timeout 1 bash -c "cat < /dev/null > /dev/tcp/$host/$port" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 1
+    elapsed=$((elapsed + 1))
+  done
+  return 1
+}
+
 run_go_client() {
   if ! compgen -G "$P_DIR/go-client/cmd/*.go" >/dev/null; then
     echo "go-client/cmd/*.go not found in $P_DIR"
@@ -228,10 +244,19 @@ start_java_server_if_present() {
   ) >"$JAVA_SERVER_LOG" 2>&1 &
 
   JAVA_SERVER_PID="$!"
-  sleep 10
+  sleep 3
 
   if ! kill -0 "$JAVA_SERVER_PID" 2>/dev/null; then
     echo "Java server exited unexpectedly. Log:"
+    cat "$JAVA_SERVER_LOG" || true
+    return 1
+  fi
+
+  local java_server_host="${JAVA_SERVER_HOST:-127.0.0.1}"
+  local java_server_port="${JAVA_SERVER_PORT:-20000}"
+  local java_server_wait_timeout="${JAVA_SERVER_READY_TIMEOUT_SECONDS:-60}"
+  if ! wait_for_tcp_port "$java_server_host" "$java_server_port" "$java_server_wait_timeout"; then
+    echo "Java server is running but not ready on ${java_server_host}:${java_server_port} after ${java_server_wait_timeout}s"
     cat "$JAVA_SERVER_LOG" || true
     return 1
   fi
@@ -263,6 +288,11 @@ if start_java_server_if_present; then
   run_java_client_if_present
 
   # 7. go-client
+  if ! kill -0 "$JAVA_SERVER_PID" 2>/dev/null; then
+    echo "Java server exited before final Go client phase. Log:"
+    cat "$JAVA_SERVER_LOG" || true
+    exit 1
+  fi
   run_go_client
 else
   echo "Java server phase skipped"

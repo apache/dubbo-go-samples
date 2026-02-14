@@ -13,14 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PROJECT_NAME = $(shell basename "$(PWD)")
+PROJECT_DIR ?= $(CURDIR)
+PROJECT_NAME ?= $(notdir $(abspath $(PROJECT_DIR)))
 PID = /tmp/.$(PROJECT_NAME).pid
-PROJECT_DIR=$(shell pwd)
 BASE_DIR := $(PROJECT_DIR)/go-server/dist
 DOCKER_DIR := ./integrate_test/dockercompose
 
 SOURCES = $(wildcard $(PROJECT_DIR)/go-server/cmd/*.go)
-GO = go
+GO ?= go
 GO_PATH = $(shell $(GO) env GOPATH)
 GO_OS = $(shell $(GO) env GOOS)
 ifeq ($(GO_OS), darwin)
@@ -85,6 +85,7 @@ license:
 
 .PHONY: all
 all: help
+.DEFAULT_GOAL := help
 help: $(realpath $(firstword $(MAKEFILE_LIST)))
 	@echo
 	@echo " Choose a command run in "$(PROJECT_NAME)":"
@@ -96,16 +97,16 @@ help: $(realpath $(firstword $(MAKEFILE_LIST)))
 .PHONY: build
 build: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
 
-.PHONY: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
-$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME):
+$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME): $(SOURCES)
 	$(info   >  Building application binary: $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME))
-	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) go build $(GCFLAGS) -ldflags=$(LDFLAGS) -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
+	@mkdir -p $(OUT_DIR)
+	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) build $(GCFLAGS) -ldflags=$(LDFLAGS) -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
 
 ## docker-health-check: check services health on docker
 .PHONY: docker-health-check
 docker-health-check:
-	$(info   >  run docker health check with $(INTEGRATE_DIR)/docker/docker-health-check.sh)
-	@-test -f $(INTEGRATE_DIR)/docker/docker-health-check.sh && bash -f $(INTEGRATE_DIR)/docker/docker-health-check.sh
+	$(info   >  run docker health check)
+	@-test -f $(PROJECT_DIR)/docker-health-check.sh && bash -f $(PROJECT_DIR)/docker-health-check.sh
 
 ## docker-up: Shutdown dependency services on docker
 .PHONY: docker-up
@@ -122,53 +123,41 @@ docker-down:
 ## clean: Clean up the output and the binary of the application
 .PHONY: clean
 clean: stop
-	$(info   >  Cleanning up $(OUT_DIR))
+	$(info   >  Cleaning up $(OUT_DIR))
 	@-rm -rf $(OUT_DIR)
-	@-rm $(PID)
+	@-rm -f $(PID)
 
 ## start: Start the application (for server)
 .PHONY: start
 start: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-server/conf/dubbogo.yml
 start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
-	@ls $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)
-	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:4318 -iTCP:50051 | xargs -r kill -9 || true
+	@ls $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) >/dev/null
+	@-pkill -f "$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)" 2>/dev/null || true
+	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:20022 -iTCP:4318 -iTCP:50051 | xargs -r kill -9 || true
 	@sleep 1
 	@-cd $(PROJECT_DIR) && $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
-	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
+	@sed 's/^/  \>  PID: /' $(PID)
 
-## start: print application log (for server)
+## print-server-log: print application log (for server)
 .PHONY: print-server-log
 print-server-log:
 	$(info   >  print server log with $(LOG_FILE))
-	@-cat $(LOG_FILE)
+	@-test -f $(LOG_FILE) && cat $(LOG_FILE) || true
 
 ## run: Run the application (for client)
 .PHONY: run
 run: build
 	$(info   >  Running application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
+	@mkdir -p $(OUT_DIR)
 	@-cd $(PROJECT_DIR) && $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) 2>&1 | tee $(LOG_FILE)
 
 ## stop: Stop running the application (for server)
 .PHONY: stop
 stop:
 	$(info   >  Stopping the application $(PROJECT_NAME))
-	@cat $(PID) | sed "/^/s/^/  \>  Killing PID: /"
-	@-kill `cat $(PID)` 2>/dev/null || true
-	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:4318 -iTCP:50051 | xargs -r kill -9 || true
-
-## integration: Run integration test for this application
-.PHONY: integration
-integration: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-client/conf/dubbogo.yml
-integration:
-	$(info   >  Running integration test for application $(INTEGRATE_DIR))
-	@go clean -testcache
-	@go test -tags integration -v $(INTEGRATE_DIR)/tests/integration/...
-
-## integration-java: Integration java test (for client)
-.PHONY: integration-java
-integration-java:
-	@$(info   >  Running java test $(INTEGRATE_DIR), project name $(PROJECT_NAME))
-	@chmod +x $(INTEGRATE_DIR)/tests/java/run.sh
-	@$(shell )$(INTEGRATE_DIR)/tests/java/run.sh $(PROJECT_DIR)/java-client
-	@exit $(.SHELLSTATUS)
+	@-test -f $(PID) && sed 's/^/  \>  Killing PID: /' $(PID) || true
+	@-test -f $(PID) && kill `cat $(PID)` 2>/dev/null || true
+	@-pkill -f "$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)" 2>/dev/null || true
+	@-rm -f $(PID)
+	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:20022 -iTCP:4318 -iTCP:50051 | xargs -r kill -9 || true

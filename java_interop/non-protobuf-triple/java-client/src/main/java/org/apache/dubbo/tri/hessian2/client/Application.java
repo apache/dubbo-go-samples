@@ -17,8 +17,6 @@
 
 package org.apache.dubbo.tri.hessian2.client;
 
-import java.io.IOException;
-
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.config.bootstrap.builders.ReferenceBuilder;
@@ -26,11 +24,11 @@ import org.apache.dubbo.tri.hessian2.api.GreetRequest;
 import org.apache.dubbo.tri.hessian2.api.GreetingsService;
 
 public class Application {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ReferenceConfig<GreetingsService> reference =
                 ReferenceBuilder.<GreetingsService>newBuilder()
                 .interfaceClass(GreetingsService.class)
-                .url("tri://localhost:50052")
+                .url("tri://localhost:20000")
                 .build();
         DubboBootstrap.getInstance().reference(reference).start();
         GreetingsService service = reference.get();
@@ -40,8 +38,6 @@ public class Application {
         String message = service.greet(request).getGreeting();
 
         System.out.println("Receive result ======> " + message);
-        System.in.read();
-        System.exit(0);
     }
 
 }
