@@ -39,6 +39,7 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `retry`: Demonstrates retry mechanisms in Dubbo-go RPC calls.
 * `router`: Various Dubbo-go router examples.
   * `router/tag`: Dubbo-go tag router examples.
+  * `router/condition`: Dubbo-to condition router examples.
 * `rpc`: Various RPC protocol examples with Dubbo-go.
   * `rpc/dubbo`: Dubbo protocol example, including Java–Go interop.
   * `rpc/grpc`: gRPC protocol example.
