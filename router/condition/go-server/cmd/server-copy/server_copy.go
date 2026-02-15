@@ -46,7 +46,7 @@ type GreetServer struct {
 }
 
 func (srv *GreetServer) Greet(_ context.Context, req *greet.GreetRequest) (rep *greet.GreetResponse, err error) {
-	rep = &greet.GreetResponse{Greeting: req.Name + "from: " + strconv.Itoa(srv.srvPort)}
+	rep = &greet.GreetResponse{Greeting: req.Name + " from: " + strconv.Itoa(srv.srvPort)}
 	return rep, nil
 }
 
