@@ -1,1 +1,5 @@
-mvn -e clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.Main" -Dexec.cleanupDaemonThreads=false
+mvn -e clean compile exec:java \
+  -Dspotless.apply.skip=true \
+  -Dspotless.check.skip=true \
+  -Dexec.mainClass="org.apache.dubbo.samples.Main" \
+  -Dexec.cleanupDaemonThreads=false
