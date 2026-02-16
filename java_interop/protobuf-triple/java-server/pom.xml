@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.19.4</version>
+            <version>3.25.5</version>
         </dependency>
 
         <!-- SLF4J API -->
