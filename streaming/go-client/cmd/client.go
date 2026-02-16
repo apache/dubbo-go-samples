@@ -153,14 +153,16 @@ func testServerStream(cli greet.GreetService) error {
 		return err
 	}
 	count := 0
+	const reqName = "triple"
 	for stream.Recv() {
 		msg := stream.Msg()
 		if msg == nil {
 			return fmt.Errorf("unexpected server stream msg: <nil>")
 		}
 		expectedGo := "triple"
-		expectedJava := fmt.Sprintf("Response %d from serverStream for StreamingClient", count)
-		if msg.Greeting != expectedGo && msg.Greeting != expectedJava {
+		expectedJava := fmt.Sprintf("Response %d from serverStream for %s", count, reqName)
+		legacyExpectedJava := fmt.Sprintf("Response %d from serverStream for StreamingClient", count)
+		if msg.Greeting != expectedGo && msg.Greeting != expectedJava && msg.Greeting != legacyExpectedJava {
 			return fmt.Errorf("unexpected server stream msg: %+v", msg)
 		}
 		count++

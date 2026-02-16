@@ -17,38 +17,32 @@
 
 package org.apache.dubbo.samples;
 
-import java.io.IOException;
-
-import org.apache.dubbo.config.annotation.DubboReference;
-import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.samples.proto.GreetRequest;
 import org.apache.dubbo.samples.proto.GreetResponse;
 import org.apache.dubbo.samples.proto.GreetService;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
-
-@SpringBootApplication
-@EnableDubbo
 public class Main {
-	public static void main(String[] args) {
-		SpringApplication.run(Main.class, args);
-	}
+    public static void main(String[] args) {
+        System.setProperty("dubbo.application.service-discovery.migration", "APPLICATION_FIRST");
 
-	@Component
-	static class CommandLineRunner implements org.springframework.boot.CommandLineRunner {
+        ReferenceConfig<GreetService> reference = new ReferenceConfig<>();
+        reference.setInterface(GreetService.class);
 
-		@DubboReference
-		private GreetService greetService;
+        DubboBootstrap bootstrap = DubboBootstrap.getInstance()
+                .application("greet-java-client")
+                .registry(new RegistryConfig("nacos://127.0.0.1:8848"))
+                .reference(reference)
+                .start();
 
-		@Override
-		public void run(String... args) throws Exception {
-			GreetRequest req = GreetRequest.newBuilder().setName("Mamba").build();
-			System.out.println("dubbo ref started");
-			GreetResponse greet = greetService.greet(req);
-			System.out.println("Greeting:" + greet.getGreeting() + "!!!!!!!!!!!!");
-		}
-	}
+        GreetService greetService = reference.get();
+        GreetRequest req = GreetRequest.newBuilder().setName("Mamba").build();
+        System.out.println("dubbo ref started");
+        GreetResponse greet = greetService.greet(req);
+        System.out.println("Greeting:" + greet.getGreeting() + "!!!!!!!!!!!!");
+
+        bootstrap.stop();
+    }
 }

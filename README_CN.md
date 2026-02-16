@@ -6,6 +6,8 @@
 
 一组可运行的 Dubbo-go 示例，涵盖配置、注册中心、可观测性、互操作性、服务网格等场景。
 
+请参考 [HOWTO_CN.md](HOWTO_CN.md) 获取详细运行说明。
+
 ## 内容概览
 
 ### 示例
@@ -27,6 +29,11 @@
 * `generic`：泛化调用示例，支持 Dubbo-Go 与 Dubbo Java 服务互操作，适用于无接口信息场景。
 * `integrate_test`：Dubbo-go 示例的集成测试用例。
 * `java_interop`：展示 Java 与 Go Dubbo 实现之间的互操作能力。
+  * `non-protobuf-dubbo`：基于经典 Dubbo 协议与非 Protobuf 负载（Hessian2 风格）的 Java/Go 互操作示例。
+  * `non-protobuf-triple`：基于 Triple 协议与非 Protobuf 负载的 Java/Go 互操作示例。
+  * `protobuf-triple`：基于 Triple 协议与共享 Protobuf 契约的 Java/Go 互操作示例。
+  * `service_discovery/interface`：基于 Nacos 的接口级服务发现（Dubbo2 / Dubbo3 旧模型）Java/Go 互操作示例。
+  * `service_discovery/service`：基于 Nacos 的应用级服务发现（Dubbo3 模型）Java/Go 互操作示例。
 * `llm`：将大模型（LLM）集成到 Dubbo-go 中的示例。
 * `logger`：Dubbo-go 应用的日志使用示例。
 * `metrics`：展示如何采集并暴露 Dubbo-go 服务的指标，支持 Prometheus Push 和 Pull 两种模式；同时包含用于清理 Push 模式僵尸指标的 `pgw-cleaner` 工具。
@@ -61,14 +68,46 @@
 
 * `pgw-cleaner`：用于在 Prometheus Push 模式下清理僵尸指标的运维工具。
 
-## 运行示例
+## 集成测试运行流程
 
-请参考 [HOWTO.md](HOWTO.md) 获取运行各个示例的详细说明。
+当前仓库使用脚本驱动的集成测试流程：
+
+1. `start_integrate_test.sh`：执行完整样例列表（与 CI 一致）。
+2. `integrate_test.sh <sample-path>`：执行单个样例。
+
+### 执行全量集成测试
+
+```bash
+./start_integrate_test.sh
+```
+
+该脚本会：
+
+* 启动根目录 `docker-compose.yml` 依赖服务。
+* 进行依赖健康检查。
+* 按样例列表逐个调用 `./integrate_test.sh ...`。
+* 在结束时（成功或失败）回收依赖容器。
+
+### 执行单个样例
+
+```bash
+./integrate_test.sh helloworld
+./integrate_test.sh direct
+```
+
+`integrate_test.sh` 的主要步骤：
+
+1. 启动 `go-server`（以及可能存在的辅助 Go server）。
+2. 运行 `go-client`。
+3. 运行 `java-client`（若存在且本机有 `mvn`）。
+4. 停止 `go-server`。
+5. 启动 `java-server`（若存在），等待端口就绪。
+6. 再运行 `java-client` 和 `go-client`，验证 Go/Java 互通。
 
 ## 如何参与贡献
 
 如果你希望添加更多示例，请按以下步骤进行：
 
-1. 新建一个子目录，并为你的示例取一个合适的名称。如果不确定如何组织代码，可以参考现有示例的目录结构。
+1. 新建一个子目录，并为你的示例取一个合适的名称。如果不确定如何组织代码，可以参考现有示例的目录结构和[HOWTO.md](HOWTO.md)。
 2. 在提交 PR 之前，请确保示例能正常运行；提交 PR 后，也请确保 GitHub CI 能通过。可以参考已有示例了解如何编写和执行测试。
 3. 在你的示例目录下提供一个 `README.md`，说明该示例的功能及运行方式。
