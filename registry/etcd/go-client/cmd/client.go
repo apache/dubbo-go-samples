@@ -15,31 +15,32 @@
  * limitations under the License.
  */
 
-package integration
+package main
 
 import (
-	"os"
-	"testing"
+	"context"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/registry"
+
+	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	greet "github.com/apache/dubbo-go-samples/registry/nacos/proto"
+	greet "github.com/apache/dubbo-go-samples/registry/etcd/proto"
 )
 
-var greetService greet.GreetService
-
-func TestMain(m *testing.M) {
+func main() {
+	// global conception
+	// configure global configurations and common modules
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("dubbo_registry_nacos_client"),
+		dubbo.WithName("dubbo_registry_etcd_client"),
 		dubbo.WithRegistry(
-			registry.WithNacos(),
-			registry.WithAddress("127.0.0.1:8848"),
+			registry.WithEtcdV3(),
+			registry.WithAddress("127.0.0.1:2379"),
 		),
 	)
 	if err != nil {
@@ -51,10 +52,14 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	greetService, err = greet.NewGreetService(cli)
+	svc, err := greet.NewGreetService(cli)
 	if err != nil {
 		panic(err)
 	}
 
-	os.Exit(m.Run())
+	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+	if err != nil {
+		panic(err)
+	}
+	logger.Infof("Greet response: %s", resp)
 }
