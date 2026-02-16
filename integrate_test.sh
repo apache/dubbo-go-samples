@@ -46,13 +46,15 @@ fi
 
 cleanup() {
   local aux_pid
-  for aux_pid in "${GO_AUX_PIDS[@]:-}"; do
-    if [ -n "$aux_pid" ] && kill -0 "$aux_pid" 2>/dev/null; then
-      kill "$aux_pid" 2>/dev/null || true
-      sleep 1
-      kill -9 "$aux_pid" 2>/dev/null || true
-    fi
-  done
+  if [ "${#GO_AUX_PIDS[@]}" -gt 0 ]; then
+    for aux_pid in "${GO_AUX_PIDS[@]}"; do
+      if [ -n "$aux_pid" ] && kill -0 "$aux_pid" 2>/dev/null; then
+        kill "$aux_pid" 2>/dev/null || true
+        sleep 1
+        kill -9 "$aux_pid" 2>/dev/null || true
+      fi
+    done
+  fi
 
   if [ -n "$JAVA_SERVER_PID" ] && kill -0 "$JAVA_SERVER_PID" 2>/dev/null; then
     kill "$JAVA_SERVER_PID" 2>/dev/null || true
