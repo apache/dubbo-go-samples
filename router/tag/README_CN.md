@@ -15,8 +15,8 @@
 在这个示例中，你将运行一个具有tag的server以及一个不具有tag的server。
 
 ```shell
-$ go run ./go-server/cmd/server-base/server.go      # 无标签server
-$ go run ./go-server/cmd/server-tag/server_tag.go   # 有标签server
+$ go run ./go-server/cmd/server.go      # 无标签server
+$ go run ./go-tag-server/cmdserver_tag.go   # 有标签server
 ```
 
 ### 运行客户端（Consumer）

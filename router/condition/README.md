@@ -1,4 +1,5 @@
 # Condition router
+
 This example shows how to use dubbo-go's condition router.
 
 English | [中文](README_CN.md)
@@ -6,27 +7,32 @@ English | [中文](README_CN.md)
 ## Prerequisites
 
 - Docker and docker compose to run Nacos registry.
-- Go 1.23+.
-- Nacos 2.x+.
+- Go Version 1.23+.
+- Nacos Version 2.x+.
 
 ## How to run
 
 ### Run Nacos registry
-Follow this instruction to [install and run Nacos](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/integrations/nacos/).
+
+Follow this instruction
+to [install and run Nacos](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/integrations/nacos/).
 
 ### Run server (Provider)
-In this example, you will run two servers with one running on port 20000 and another 20001.
+
+In this example, you will run two servers on ports 20000 and 20001 respectively.
 
 ```shell
-$ go run ./go-server/cmd/server-base/server.go        # port 20000
-$ go run ./go-server/cmd/server-copy/server_copy.go   # port 20001
+$ go run ./go-server/cmd/server.go            # port 20000
+$ go run ./go-copy-server/cmd/server_copy.go  # port 20001
 ```
 
 ### Run client (Consumer)
-In this example, the client will keep calling Greet method in an infinity loop, and you need to:
 
-- run client, and observe its calling result (with load balance).
-- configure `condition router` configuration in Nacos, and observe the result of calling.
+In this example, the client will keep calling Greet method in an infinity loop. You need to:
+
+- Start the client and observe the load balancing behavior during calls.
+
+- Set up the condition router configuration in the Nacos registry, then observe the client's calls again.
 
 ```shell
 $ go run ./go-client/cmd/client.go
@@ -34,11 +40,11 @@ $ go run ./go-client/cmd/client.go
 
 ### Configuration of Nacos
 
-Create a new configuration with `Data ID` in `condition-server.condition-router` and in `yaml` extension.
+Create a new configuration with the `Data ID` **condition-server.condition-router** and set the format to `yaml`.
 
-you need to set its group in `DEFAULT_GROUP`.
+Set the Group to `DEFAULT_GROUP`.
 
-> Tips: In Nacos, your router configuration name should in such formation {application.name}.{router_type}
+> Note: The naming convention in Nacos is {application.name}.{router_type}.
 
 ```yaml
 configVersion: V3.3.2
@@ -56,6 +62,7 @@ conditions:
 
 ## Expected result
 
-- When the client starts but the configuration for condition router is not set in the Nacos configuration center, 
-  the client will call back and forth between two server endpoints.
-- When the client starts with configuration for condition router in the Nacos, the client will only call one server endpoint.
+- When the client starts without the condition router configuration in Nacos,
+  it will alternate calls between the two server endpoints.
+- When the client starts with the script router configured in Nacos,
+  it will route traffic to only one server endpoint.

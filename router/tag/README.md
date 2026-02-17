@@ -12,11 +12,11 @@ This example shows how to use dubbo-go tag router ability.
 Follow this instruction to [install and start Nacos server](https://dubbo-next.staged.apache.org/zh-cn/overview/reference/integrations/nacos/).
 
 ### Run server
-In this example you need to run two different server with one with tag and another without.
+In this example, you need to run two different server with one with tag and another without.
 
 ```shell
-$ go run ./go-server/cmd/server-base/server.go      # non-tagged server
-$ go run ./go-server/cmd/server-tag/server_tag.go  # tagged server
+$ go run ./go-server/cmd/server.go          # non-tagged server
+$ go run ./go-tag-server/cmd/server_tag.go  # tagged server
 ```
 
 ### Run client
