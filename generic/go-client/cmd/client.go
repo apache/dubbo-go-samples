@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"os"
 	"time"
 )
 
@@ -26,8 +27,8 @@ import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	"dubbo.apache.org/dubbo-go/v3/filter/generic"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"dubbo.apache.org/dubbo-go/v3/registry"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
@@ -39,120 +40,152 @@ import (
 )
 
 const (
-	RegistryAddress    = "127.0.0.1:2181"
-	UserProvider       = "org.apache.dubbo.samples.UserProvider"
-	ServiceVersion     = "1.0.0"
-	ServiceGroupTriple = "dubbo"
+	TripleServerURL = "tri://127.0.0.1:50052"
+	UserProvider    = "org.apache.dubbo.samples.UserProvider"
+	ServiceVersion  = "1.0.0"
 )
-
-func createServiceConnection(cli *client.Client, serviceInterface string) (*client.Connection, error) {
-	return cli.Dial(
-		serviceInterface,
-		client.WithGeneric(),
-		client.WithVersion(ServiceVersion),
-		client.WithGroup(ServiceGroupTriple),
-	)
-}
 
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName("generic-dubbo-client"),
-		dubbo.WithRegistry(
-			registry.WithZookeeper(),
-			registry.WithAddress(RegistryAddress),
-		),
+		dubbo.WithName("generic-go-client"),
 	)
 	if err != nil {
-		logger.Fatalf("Failed to create Dubbo instance: %v", err)
+		panic(err)
 	}
 
-	tripleCli, err := ins.NewClient(
-		client.WithClientProtocolDubbo(),
+	cli, err := ins.NewClient(
+		client.WithClientProtocolTriple(),
 		client.WithClientSerialization(constant.Hessian2Serialization),
 	)
 	if err != nil {
-		logger.Fatalf("Failed to create Dubbo client: %v", err)
+		panic(err)
 	}
 
-	tripleConn, err := createServiceConnection(tripleCli, UserProvider)
+	genericService, err := cli.NewGenericService(
+		UserProvider,
+		client.WithURL(TripleServerURL),
+		client.WithVersion(ServiceVersion),
+		client.WithGroup("triple"),
+	)
 	if err != nil {
-		logger.Fatalf("Failed to create Dubbo connection: %v", err)
+		panic(err)
 	}
 
-	logger.Info("\n=== Testing Dubbo Protocol ===")
-	testUserService(tripleConn)
+	failed := false
+	failed = runGenericTests(genericService) || failed
+
+	if failed {
+		logger.Errorf("Some generic call tests failed")
+		os.Exit(1)
+	}
+	logger.Info("All generic call tests passed")
 }
 
-func testUserService(conn *client.Connection) {
-	call := func(methodName string, params []interface{}) (interface{}, error) {
-		var result interface{}
-		err := conn.CallUnary(
-			context.TODO(),
-			params,
-			&result,
-			methodName,
-		)
-		return result, err
+func runGenericTests(svc *generic.GenericService) bool {
+	failed := false
+	ctx := context.Background()
+
+	// GetUser1(String)
+	result, err := svc.Invoke(ctx, "GetUser1", []string{"java.lang.String"}, []hessian.Object{"A003"})
+	if err != nil {
+		logger.Errorf("GetUser1 failed: %v", err)
+		failed = true
+	} else {
+		logger.Infof("GetUser1(userId string) res: %+v", result)
 	}
 
-	testUserID := "A003"
-	testUserName := "lily"
-	testUserCode := int32(1)
-	testUserIDs := []string{"001", "002", "003", "004"}
+	// GetUser2(String, String)
+	result, err = svc.Invoke(ctx, "GetUser2", []string{"java.lang.String", "java.lang.String"}, []hessian.Object{"A003", "lily"})
+	if err != nil {
+		logger.Errorf("GetUser2 failed: %v", err)
+		failed = true
+	} else {
+		logger.Infof("GetUser2(userId string, name string) res: %+v", result)
+	}
 
+	// GetUser3(int)
+	result, err = svc.Invoke(ctx, "GetUser3", []string{"int"}, []hessian.Object{int32(1)})
+	if err != nil {
+		logger.Errorf("GetUser3 failed: %v", err)
+		failed = true
+	} else {
+		logger.Infof("GetUser3(userCode int) res: %+v", result)
+	}
+
+	// GetUser4(int, String)
+	result, err = svc.Invoke(ctx, "GetUser4", []string{"int", "java.lang.String"}, []hessian.Object{int32(1), "zhangsan"})
+	if err != nil {
+		logger.Errorf("GetUser4 failed: %v", err)
+		failed = true
+	} else {
+		logger.Infof("GetUser4(userCode int, name string) res: %+v", result)
+	}
+
+	// GetOneUser()
+	result, err = svc.Invoke(ctx, "GetOneUser", []string{}, []hessian.Object{})
+	if err != nil {
+		logger.Errorf("GetOneUser failed: %v", err)
+		failed = true
+	} else {
+		logger.Infof("GetOneUser() res: %+v", result)
+	}
+
+	// GetUsers(String[])
+	result, err = svc.Invoke(ctx, "GetUsers", []string{"[Ljava.lang.String;"}, []hessian.Object{[]string{"001", "002", "003"}})
+	if err != nil {
+		logger.Errorf("GetUsers failed: %v", err)
+		failed = true
+	} else {
+		logger.Infof("GetUsers(userIdList []string) res: %+v", result)
+	}
+
+	// GetUsersMap(String[])
+	result, err = svc.Invoke(ctx, "GetUsersMap", []string{"[Ljava.lang.String;"}, []hessian.Object{[]string{"001", "002"}})
+	if err != nil {
+		logger.Errorf("GetUsersMap failed: %v", err)
+		failed = true
+	} else {
+		logger.Infof("GetUsersMap(userIdList []string) res: %+v", result)
+	}
+
+	// QueryAll()
+	result, err = svc.Invoke(ctx, "QueryAll", []string{}, []hessian.Object{})
+	if err != nil {
+		logger.Errorf("QueryAll failed: %v", err)
+		failed = true
+	} else {
+		logger.Infof("QueryAll() res: %+v", result)
+	}
+
+	// QueryUser(User)
 	testUser := &pkg.User{
 		ID:   "3213",
 		Name: "panty",
 		Age:  25,
 		Time: time.Now(),
 	}
-
-	testUsers := []*pkg.User{
-		{
-			ID:   "3212",
-			Name: "XavierNiu",
-			Age:  24,
-			Time: time.Now().Add(4),
-		},
-		{
-			ID:   "3213",
-			Name: "zhangsan",
-			Age:  21,
-			Time: time.Now().Add(4),
-		},
-	}
-
-	result, err := call("GetUser1", []interface{}{testUserID})
-	logResult("GetUser1", result, err)
-
-	result, err = call("GetUser2", []interface{}{testUserID, testUserName})
-	logResult("GetUser2", result, err)
-
-	result, err = call("GetUser3", []interface{}{testUserCode})
-	logResult("GetUser3", result, err)
-
-	result, err = call("GetUser4", []interface{}{testUserCode, "zhangsan"})
-	logResult("GetUser4", result, err)
-
-	result, err = call("GetUsers", []interface{}{testUserIDs})
-	logResult("GetUsers", result, err)
-
-	result, err = call("GetUsersMap", []interface{}{testUserIDs})
-	logResult("GetUsersMap", result, err)
-
-	result, err = call("QueryUser", []interface{}{testUser})
-	logResult("QueryUser", result, err)
-
-	result, err = call("QueryUsers", []interface{}{testUsers})
-	logResult("QueryUsers", result, err)
-}
-
-func logResult(methodName string, result interface{}, err error) {
+	result, err = svc.Invoke(ctx, "QueryUser", []string{"org.apache.dubbo.samples.User"}, []hessian.Object{testUser})
 	if err != nil {
-		logger.Errorf("❌ %s failed: %v", methodName, err)
+		logger.Errorf("QueryUser failed: %v", err)
+		failed = true
 	} else {
-		logger.Infof("✅ %s succeeded: %+v", methodName, result)
+		logger.Infof("QueryUser(user *User) res: %+v", result)
 	}
+
+	// QueryUsers(User[])
+	testUsers := []*pkg.User{
+		{ID: "3212", Name: "XavierNiu", Age: 24, Time: time.Now()},
+		{ID: "3213", Name: "zhangsan", Age: 21, Time: time.Now()},
+	}
+	result, err = svc.Invoke(ctx, "QueryUsers", []string{"[Lorg.apache.dubbo.samples.User;"}, []hessian.Object{testUsers})
+	if err != nil {
+		logger.Errorf("QueryUsers failed: %v", err)
+		failed = true
+	} else {
+		logger.Infof("QueryUsers(users []*User) res: %+v", result)
+	}
+
+	return failed
 }
