@@ -21,8 +21,8 @@
 在这个示例中，你将运行两个服务端，分别在20000以及20001端口上提供服务。
 
 ```shell
-$ go run ./go-server/cmd/server.go            # 20000端口
-$ go run ./go-copy-server/cmd/server_copy.go  # 20001端口
+$ go run ./go-server/cmd/server.go              # 20000端口
+$ go run ./go-node2-server/cmd/server_node2.go  # 20001端口
 ```
 
 ### 运行客户端（Consumer）

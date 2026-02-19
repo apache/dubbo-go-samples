@@ -19,6 +19,8 @@ package main
 
 import (
 	"context"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -71,10 +73,21 @@ func main() {
 		panic(err)
 	}
 
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	ticker := time.NewTicker(5 * time.Second)
+	defer ticker.Stop()
+
 	for {
-		time.Sleep(5 * time.Second) // sleep 5 seconds
-		rep, err := srv.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-		printRes(rep, err)
+		select {
+		case <-ctx.Done():
+			logger.Info("gracefully existing...")
+			return
+		case <-ticker.C:
+			rep, err := srv.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+			printRes(rep, err)
+		}
 	}
 
 }

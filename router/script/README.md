@@ -21,8 +21,8 @@ Follow this instruction to [install and start Nacos server](https://dubbo-next.s
 In this example, you will run two servers providing services on ports 20000 and 20001 respectively.
 
 ```Shell
-$ go run ./go-server/cmd/server.go            # port 20000
-$ go run ./go-copy-server/cmd/server_copy.go  # port 20001
+$ go run ./go-server/cmd/server.go              # port 20000
+$ go run ./go-node2-server/cmd/server_node2.go  # port 20001
 ```
 
 ### Run Client (Consumer)
