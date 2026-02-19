@@ -14,7 +14,7 @@ services:
     networks: [itnet]
 
   nacos:
-    image: nacos/nacos-server:v2.5.2-slim
+    image: nacos/nacos-server:v2.5.2
     environment:
       PREFER_HOST_MODE: hostname
       MODE: standalone
