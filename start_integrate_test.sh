@@ -88,6 +88,9 @@ array+=("java_interop/protobuf-triple")
 array+=("java_interop/service_discovery/interface")
 array+=("java_interop/service_discovery/service")
 
+# router
+array+=("router/tag")
+
 DOCKER_DIR="$(pwd)"
 DOCKER_COMPOSE_CMD="docker-compose"
 
