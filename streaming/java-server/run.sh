@@ -1,3 +1,3 @@
 #!/bin/bash
-mvn clean compile
-mvn exec:java -Dexec.mainClass="org.apache.dubbo.samples.tri.streaming.StreamingServer"
+mvn -q clean compile
+mvn -q exec:java -Dexec.mainClass="org.apache.dubbo.samples.tri.streaming.StreamingServer"

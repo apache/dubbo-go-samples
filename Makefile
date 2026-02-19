@@ -17,23 +17,12 @@ PROJECT_DIR ?= $(CURDIR)
 PROJECT_NAME ?= $(notdir $(abspath $(PROJECT_DIR)))
 PID = /tmp/.$(PROJECT_NAME).pid
 BASE_DIR := $(PROJECT_DIR)/go-server/dist
-DOCKER_DIR := ./integrate_test/dockercompose
 
 SOURCES = $(wildcard $(PROJECT_DIR)/go-server/cmd/*.go)
 GO ?= go
-GO_PATH = $(shell $(GO) env GOPATH)
-GO_OS = $(shell $(GO) env GOOS)
-ifeq ($(GO_OS), darwin)
-    GO_OS = mac
-endif
 
 # shell
 SHELL = /bin/bash
-
-# license
-GO_LICENSE_CHECKER_DIR = license-header-checker-$(GO_OS)
-GO_LICENSE_CHECKER = $(GO_PATH)/bin/license-header-checker
-LICENSE_DIR = /tmp/tools/license
 
 export GO111MODULE ?= on
 export GOSUMDB ?= sum.golang.org
@@ -65,23 +54,10 @@ else
 	LDFLAGS := "-s -w"
 endif
 
-DOCKER_COMPOSE_CMD := docker-compose
-ifeq ($(shell docker compose version > /dev/null; echo $$?), 0)
-	DOCKER_COMPOSE_CMD := docker compose
-endif
-
 OUT_DIR := $(BASE_DIR)/$(GOOS)_$(GOARCH)/$(BUILD_TYPE)
 LOG_FILE := $(OUT_DIR)/$(PROJECT_NAME).log
 
 export APP_LOG_CONF_FILE ?= $(OUT_DIR)/conf/log.yml
-
-.PHONY: license
-license:
-	rm -rf coverage.txt
-	rm -rf license-header-checker*
-	$(GO_LICENSE_CHECKER) -version || (wget https://github.com/lsm-dev/license-header-checker/releases/download/v1.2.0/$(GO_LICENSE_CHECKER_DIR).zip -O $(GO_LICENSE_CHECKER_DIR).zip && unzip -o $(GO_LICENSE_CHECKER_DIR).zip && mkdir -p $(GO_PATH)/bin/ && cp $(GO_LICENSE_CHECKER_DIR)/64bit/license-header-checker $(GO_PATH)/bin/)
-	ls /tmp/tools/license/license.txt || wget -P $(LICENSE_DIR) https://github.com/dubbogo/resources/raw/master/tools/license/license.txt
-	$(GO_LICENSE_CHECKER) -v -a -r -i vendor $(LICENSE_DIR)/license.txt . go && [[ -z `git status -s` ]]
 
 .PHONY: all
 all: help
@@ -102,31 +78,6 @@ $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME): $(SOURCES)
 	@mkdir -p $(OUT_DIR)
 	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) build $(GCFLAGS) -ldflags=$(LDFLAGS) -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
 
-## docker-health-check: check services health on docker
-.PHONY: docker-health-check
-docker-health-check:
-	$(info   >  run docker health check)
-	@-test -f $(PROJECT_DIR)/docker-health-check.sh && bash -f $(PROJECT_DIR)/docker-health-check.sh
-
-## docker-up: Shutdown dependency services on docker
-.PHONY: docker-up
-docker-up:
-	$(info   >  Starting dependency services with $(DOCKER_DIR)/docker-compose.yml)
-	@$(DOCKER_COMPOSE_CMD) -f $(DOCKER_DIR)/docker-compose.yml up -d
-
-## docker-down: Shutdown dependency services on docker
-.PHONY: docker-down
-docker-down:
-	$(info   >  Stopping dependency services with $(DOCKER_DIR)/docker-compose.yml)
-	@$(DOCKER_COMPOSE_CMD) -f $(DOCKER_DIR)/docker-compose.yml down
-
-## clean: Clean up the output and the binary of the application
-.PHONY: clean
-clean: stop
-	$(info   >  Cleaning up $(OUT_DIR))
-	@-rm -rf $(OUT_DIR)
-	@-rm -f $(PID)
-
 ## start: Start the application (for server)
 .PHONY: start
 start: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-server/conf/dubbogo.yml
@@ -138,19 +89,6 @@ start: build
 	@sleep 1
 	@-cd $(PROJECT_DIR) && $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@sed 's/^/  \>  PID: /' $(PID)
-
-## print-server-log: print application log (for server)
-.PHONY: print-server-log
-print-server-log:
-	$(info   >  print server log with $(LOG_FILE))
-	@-test -f $(LOG_FILE) && cat $(LOG_FILE) || true
-
-## run: Run the application (for client)
-.PHONY: run
-run: build
-	$(info   >  Running application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
-	@mkdir -p $(OUT_DIR)
-	@-cd $(PROJECT_DIR) && $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) 2>&1 | tee $(LOG_FILE)
 
 ## stop: Stop running the application (for server)
 .PHONY: stop
