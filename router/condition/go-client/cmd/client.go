@@ -82,20 +82,15 @@ func main() {
 	for {
 		select {
 		case <-ctx.Done():
-			logger.Info("gracefully existing...")
+			logger.Info("gracefully exiting...")
 			return
 		case <-ticker.C:
 			rep, err := srv.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-			printRes(rep, err)
+			if err != nil {
+				logger.Errorf("call greet method failed: %v", err)
+			} else {
+				logger.Infof("receive: %s", rep.GetGreeting())
+			}
 		}
-	}
-
-}
-
-func printRes(rep *greet.GreetResponse, err error) {
-	if err != nil {
-		logger.Errorf("call greet method failed: %v", err)
-	} else {
-		logger.Infof("receive: %s", rep.GetGreeting())
 	}
 }

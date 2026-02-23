@@ -2,7 +2,7 @@
 
 这个例子展示了如何使用dubbo-go的script router功能。
 
-[Enllish](README.md) | 中文
+[English](README.md) | 中文
 
 ## 前置准备
 

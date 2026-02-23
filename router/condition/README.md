@@ -64,5 +64,5 @@ conditions:
 
 - When the client starts without the condition router configuration in Nacos,
   it will alternate calls between the two server endpoints.
-- When the client starts with the script router configured in Nacos,
+- When the client starts with the condition router configured in Nacos,
   it will route traffic to only one server endpoint.

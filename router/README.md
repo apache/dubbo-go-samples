@@ -4,4 +4,4 @@ English | [中文](README_CN.md)
 
 ## Description
 
-This directory includes four types of dubbo-go router function.
+This directory includes multiple types of dubbo-go router function.

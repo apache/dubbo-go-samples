@@ -47,6 +47,7 @@
 * `router`: Dubbo-go 各种 Router 调用示例。
   * `router/tag`: Dubbo-go 的 tag router 使用示例。
   * `router/condition`: Dubbo-go 的 condition router 使用示例。
+  * `router/script`: Dubbo-go 的 script router 使用示例。
 * `rpc`：Dubbo-go 支持的多种 RPC 协议示例。
   * `rpc/dubbo`：Dubbo 协议示例，包含 Java–Go 互操作。
   * `rpc/grpc`：基于 gRPC 协议的示例。

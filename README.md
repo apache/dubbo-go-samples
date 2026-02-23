@@ -46,7 +46,8 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
 * `retry`: Demonstrates retry mechanisms in Dubbo-go RPC calls.
 * `router`: Various Dubbo-go router examples.
   * `router/tag`: Dubbo-go tag router examples.
-  * `router/condition`: Dubbo-to condition router examples.
+  * `router/condition`: Dubbo-go condition router examples.
+  * `router/script`: Dubbo-go script router examples.
 * `rpc`: Various RPC protocol examples with Dubbo-go.
   * `rpc/dubbo`: Dubbo protocol example, including Java–Go interop.
   * `rpc/grpc`: gRPC protocol example.

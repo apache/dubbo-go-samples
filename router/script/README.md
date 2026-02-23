@@ -47,7 +47,7 @@ Set the Group to `DEFAULT_GROUP`.
 
 ```yaml
 scope: "application"
-key: "condition-server"
+key: "script-server"
 enabled: true
 type: "javascript"
 script: |

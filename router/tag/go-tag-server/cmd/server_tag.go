@@ -83,7 +83,7 @@ func main() {
 	if err := srv.Serve(); err != nil {
 		logger.Errorf("server serve failed: %v", err)
 		if strings.Contains(err.Error(), "client not connected") {
-			logger.Errorf("hint: Nacos client not connected (gRPC). Check %s is reachable and gRPC port %d is open (Nacos 2.x default).", RegistryAddress, 20001)
+			logger.Errorf("hint: Nacos client not connected (gRPC). Check %s is reachable and gRPC port %d is open (Nacos 2.x default).", RegistryAddress, 9848)
 		}
 		panic(err)
 	}

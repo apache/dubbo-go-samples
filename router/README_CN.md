@@ -4,4 +4,4 @@
 
 ## 描述
 
-这个文件夹包含了四种dubbo-go router功能的示例。
+这个文件夹包含了 dubbo-go router 功能的多个示例。
