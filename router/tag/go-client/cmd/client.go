@@ -75,26 +75,22 @@ func main() {
 		}
 		ctx := context.WithValue(context.Background(), constant.AttachmentKey, atta)
 
-		resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: name})
+		rep, err := svc.Greet(ctx, &greet.GreetRequest{Name: name})
 		// temporarily cancel checking for result, for PR # 3208 (https://github.com/apache/dubbo-go/pull/3208)
 		// hasn't been merged to main branch yet, thus tag router still not works properly.
 
 		//checkRes(exp, resp.GetGreeting(), err)
-		printRes(resp, err)
+		if err != nil {
+			logger.Errorf("❌ invoke failed: %v", err)
+		} else {
+			logger.Infof("✔ invoke successfully : %v", rep.Greeting)
+		}
 	}
 
 	callGreet("tag with force", "test-tag", "true", "server-with-tag")         // success
 	callGreet("tag with force", "test-tag1", "true", "fail")                   // fail
 	callGreet("tag with no-force", "test-tag1", "false", "server-without-tag") // success
 	callGreet("non-tag", "", "false", "server-without-tag")                    // success
-}
-
-func printRes(rep *greet.GreetResponse, err error) {
-	if err != nil {
-		logger.Errorf("❌ invoke failed: %v", err)
-	} else {
-		logger.Infof("✔ invoke successfully : %v", rep.Greeting)
-	}
 }
 
 func checkRes(exp string, act string, err error) {
