@@ -103,11 +103,7 @@ cleanup() {
 trap cleanup EXIT
 
 echo "::group::> docker up"
-$DOCKER_COMPOSE_CMD -f "$DOCKER_DIR"/docker-compose.yml up -d
-echo "::endgroup::"
-
-echo "::group::> docker health-check"
-bash -f "$DOCKER_DIR"/docker-health-check.sh
+$DOCKER_COMPOSE_CMD -f "$DOCKER_DIR"/docker-compose.yml up -d --wait
 echo "::endgroup::"
 
 for t in "${array[@]}"; do

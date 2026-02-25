@@ -1,1 +1,1 @@
-mvn -e clean package && java -jar target/generic-dubbo-java-server-1.0-SNAPSHOT.jar
+mvn -q -e clean package && java -jar target/generic-dubbo-java-server-1.0-SNAPSHOT.jar
