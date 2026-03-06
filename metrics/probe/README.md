@@ -12,6 +12,8 @@ It showcases how to expose dedicated probe endpoints and how Kubernetes reacts d
 
 ```
 metrics/probe/
+├── go-client/
+│   └── cmd/main.go        # Integration checker for ports/probes/RPC
 ├── go-server/
 │   ├── cmd/main.go        # Application entrypoint
 │   ├── build.sh           # Docker build script
@@ -50,7 +52,21 @@ metrics/probe/
 go run ./metrics/probe/go-server/cmd/main.go
 ```
 
-### 2️Monitor probe endpoints
+### 2️Run the go-client integration checks
+
+```bash
+go run ./metrics/probe/go-client/cmd/main.go
+```
+
+The `go-client` validates:
+
+* Triple port `20000` is reachable.
+* Probe port `22222` is reachable.
+* `/live` returns `200`.
+* `/ready` and `/startup` eventually return `200` after warm-up.
+* One `Greet` RPC call succeeds.
+
+### 3️Monitor probe endpoints
 
 ```bash
 watch -n 1 '

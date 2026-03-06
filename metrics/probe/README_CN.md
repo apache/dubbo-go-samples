@@ -13,6 +13,8 @@
 
 ```
 metrics/probe/
+├── go-client/
+│   └── cmd/main.go              # 集成测试客户端（端口/探针/RPC 校验）
 ├── go-server/
 │   ├── cmd/main.go              # 程序入口
 │   ├── build.sh                 # Docker 构建脚本
@@ -51,6 +53,20 @@ metrics/probe/
 ```bash
 go run ./metrics/probe/go-server/cmd/main.go
 ```
+
+### 运行 go-client 做集成检查
+
+```bash
+go run ./metrics/probe/go-client/cmd/main.go
+```
+
+`go-client` 会依次检查：
+
+* Triple 端口 `20000` 可连接。
+* 探针端口 `22222` 可连接。
+* `/live` 返回 `200`。
+* `/ready`、`/startup` 在预热完成后返回 `200`。
+* 发起一次 `Greet` RPC，确认 Triple 服务可用。
 
 
 ### 观察探针状态
