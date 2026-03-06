@@ -73,6 +73,9 @@ array+=("async")
 # error
 array+=("error")
 
+# metrics
+array+=("metrics/probe")
+
 # config_center
 array+=("config_center/nacos")
 # array+=("config_center/apollo")

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dubbo-go-probe-server
+  labels:
+    app: dubbo-go-probe-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dubbo-go-probe-server
+  template:
+    metadata:
+      labels:
+        app: dubbo-go-probe-server
+    spec:
+      containers:
+        - name: server
+          image: dubbo-go-probe-server:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 20000
+              name: triple
+            - containerPort: 22222
+              name: probe
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: probe
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: probe
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /startup
+              port: probe
+            failureThreshold: 30
+            periodSeconds: 1
