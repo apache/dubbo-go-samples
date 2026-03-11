@@ -4,7 +4,9 @@ go 1.25.0
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.1
+	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/alibaba/sentinel-golang v1.0.4
+	github.com/apache/dubbo-go-extensions v0.0.0-20260312085545-de428af0b99e
 	github.com/apache/dubbo-go-hessian2 v1.12.5
 	github.com/dubbogo/go-zookeeper v1.0.4-0.20211212162352-f9d2183d89d5
 	github.com/dubbogo/gost v1.14.3
@@ -30,7 +32,6 @@ require (
 require (
 	github.com/RoaringBitmap/roaring v1.2.3 // indirect
 	github.com/Workiva/go-datastructures v1.0.52 // indirect
-	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5 // indirect
 	github.com/alibabacloud-go/debug v0.0.0-20190504072949-9472017b5c68 // indirect
 	github.com/alibabacloud-go/tea v1.1.17 // indirect
 	github.com/alibabacloud-go/tea-utils v1.4.4 // indirect
