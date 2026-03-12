@@ -24,5 +24,4 @@ import (
 func init() {
 	// register POJO
 	hessian.RegisterPOJO(&User{})
-	hessian.RegisterPOJO(&UserResponse{})
 }

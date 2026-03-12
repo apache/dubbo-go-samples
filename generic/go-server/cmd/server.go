@@ -18,14 +18,8 @@
 package main
 
 import (
-	"os"
-	"os/signal"
-	"syscall"
-)
-
-import (
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/common"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
@@ -37,97 +31,46 @@ import (
 )
 
 import (
-	pkg2 "github.com/apache/dubbo-go-samples/generic/go-server/pkg"
-)
-
-const (
-	RegistryAddress = "127.0.0.1:2181"
-	ServerName      = "generic-server"
-	DubboServerPort = 20004
+	"github.com/apache/dubbo-go-samples/generic/go-server/pkg"
 )
 
 func main() {
-	hessian.RegisterPOJO(&pkg2.User{})
+	hessian.RegisterPOJO(&pkg.User{})
 
-	ins := createDubboInstance()
-
-	srv, err := ins.NewServer()
-	if err != nil {
-		logger.Fatalf("Failed to create server: %v", err)
-	}
-
-	registerService(srv, &pkg2.UserProvider{})
-
-	go func() {
-		logger.Info("Starting Dubbo Protocol Server...")
-		if err := srv.Serve(); err != nil {
-			logger.Errorf("Dubbo server failed: %v", err)
-		}
-	}()
-
-	waitForShutdown()
-}
-
-func createDubboInstance() *dubbo.Instance {
 	ins, err := dubbo.NewInstance(
-		dubbo.WithName(ServerName),
+		dubbo.WithName("generic-go-server"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
-			registry.WithAddress(RegistryAddress),
+			registry.WithAddress("127.0.0.1:2181"),
 		),
 		dubbo.WithProtocol(
-			protocol.WithID("dubbo"),
-			protocol.WithDubbo(),
-			protocol.WithPort(DubboServerPort),
+			protocol.WithTriple(),
+			protocol.WithPort(50052),
 		),
 	)
 	if err != nil {
-		logger.Fatalf("Failed to create instance: %v", err)
-	}
-	return ins
-}
-
-func registerService(srv *server.Server, service *pkg2.UserProvider) {
-	serviceInfo := &common.ServiceInfo{
-		InterfaceName: "org.apache.dubbo.samples.UserProvider",
-		ServiceType:   service,
-		Methods: []common.MethodInfo{
-			{Name: "GetUser1", Type: "normal", Meta: map[string]interface{}{"params": []string{"java.lang.String"}}},
-			{Name: "GetUser2", Type: "normal", Meta: map[string]interface{}{"params": []string{"java.lang.String", "java.lang.String"}}},
-			{Name: "GetUser3", Type: "normal", Meta: map[string]interface{}{"params": []string{"int"}}},
-			{Name: "GetUser4", Type: "normal", Meta: map[string]interface{}{"params": []string{"int", "java.lang.String"}}},
-			{Name: "GetOneUser", Type: "normal", Meta: map[string]interface{}{"params": []string{}}},
-
-			{Name: "GetUsers", Type: "normal", Meta: map[string]interface{}{"params": []string{"[Ljava.lang.String;"}}},
-			{Name: "GetUsersMap", Type: "normal", Meta: map[string]interface{}{"params": []string{"[Ljava.lang.String;"}}},
-
-			{Name: "QueryUser", Type: "normal", Meta: map[string]interface{}{"params": []string{"org.apache.dubbo.samples.User"}}},
-			{Name: "QueryUsers", Type: "normal", Meta: map[string]interface{}{"params": []string{"[]org.apache.dubbo.samples.User"}}},
-			{Name: "QueryAll", Type: "normal", Meta: map[string]interface{}{"params": []string{}}},
-		},
-		Meta: map[string]interface{}{
-			"version":  "1.0.0",
-			"group":    "dubbo",
-			"protocol": "dubbo",
-		},
+		panic(err)
 	}
 
-	serviceOpts := []server.ServiceOption{
+	srv, err := ins.NewServer(
+		server.WithServerSerialization(constant.Hessian2Serialization),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	if err := srv.RegisterService(&pkg.UserProvider{},
 		server.WithInterface("org.apache.dubbo.samples.UserProvider"),
 		server.WithVersion("1.0.0"),
-		server.WithGroup("dubbo"),
-		server.WithProtocolIDs([]string{"dubbo"}),
+		server.WithGroup("triple"),
+	); err != nil {
+		panic(err)
 	}
 
-	if err := srv.Register(service, serviceInfo, serviceOpts...); err != nil {
-		logger.Fatalf("Failed to register Dubbo service: %v", err)
-	}
-}
+	logger.Info("Generic Go server started on port 50052")
+	logger.Info("Registry: zookeeper://127.0.0.1:2181")
 
-func waitForShutdown() {
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP, syscall.SIGQUIT)
-	sig := <-sigChan
-	logger.Infof("Received signal: %s, shutting down...", sig.String())
-	os.Exit(0)
+	if err := srv.Serve(); err != nil {
+		logger.Errorf("server stopped: %v", err)
+	}
 }

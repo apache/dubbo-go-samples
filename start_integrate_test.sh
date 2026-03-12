@@ -38,7 +38,7 @@ array+=("registry/nacos")
 array+=("registry/etcd")
 array+=("registry/polaris")
 
-# array+=("generic")
+array+=("generic")
 
 # timeout
 array+=("timeout")
