@@ -54,10 +54,6 @@ jobs:
         run: |
           command -v imports-formatter >/dev/null 2>&1 || go install github.com/dubbogo/tools/cmd/imports-formatter@latest
 
-      - name: Get dependencies
-        run: |
-          go mod tidy
-
       - name: Format code
         run: |
           go fmt ./...
@@ -82,6 +78,9 @@ jobs:
           fi
           echo "EVENT=$GITHUB_EVENT_NAME BRANCH=$BRANCH"
           go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH
+      
+      - name: Get dependencies
+        run: |
           go mod tidy
 
       - name: Integration test
