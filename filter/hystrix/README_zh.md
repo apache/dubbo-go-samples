@@ -19,6 +19,7 @@ dubbo:consumer:InterfaceName:group:version:Method(param1,param2)
 ```go
 import (
     "github.com/afex/hystrix-go/hystrix"
+    _ "github.com/apache/dubbo-go-extensions/filter/hystrix"
 )
 
 func init() {
