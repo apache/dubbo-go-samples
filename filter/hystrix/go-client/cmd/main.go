@@ -24,10 +24,11 @@ import (
 )
 
 import (
-	"github.com/afex/hystrix-go/hystrix"
-
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	"github.com/afex/hystrix-go/hystrix"
+
 	_ "github.com/apache/dubbo-go-extensions/filter/hystrix"
 
 	"github.com/dubbogo/gost/log/logger"
