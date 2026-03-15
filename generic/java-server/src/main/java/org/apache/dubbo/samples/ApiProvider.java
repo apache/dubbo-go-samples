@@ -28,6 +28,7 @@ public class ApiProvider {
     private static final int DUBBO_PORT = 20000;
     private static final int TRIPLE_PORT = 50052;
     private static final String SERVICE_VERSION = "1.0.0";
+    private static final String ZOOKEEPER_ADDRESS = "zookeeper://127.0.0.1:2181";
 
     public static void main(String[] args) throws InterruptedException {
         // Dubbo protocol service (group=dubbo)
@@ -46,9 +47,9 @@ public class ApiProvider {
         tripleService.setVersion(SERVICE_VERSION);
         tripleService.setProtocol(new ProtocolConfig("tri", TRIPLE_PORT));
 
-        // Use direct export without registry
+        // Register provider to ZooKeeper
         RegistryConfig registryConfig = new RegistryConfig();
-        registryConfig.setAddress("N/A");
+        registryConfig.setAddress(ZOOKEEPER_ADDRESS);
 
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
         bootstrap.application("generic-java-server")

@@ -2,21 +2,21 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-本示例演示了如何使用 Dubbo 和 Triple 协议进行泛化调用，实现 Go 和 Java 服务之间的互操作。泛化调用允许在没有服务接口定义的情况下调用远程服务。
+本示例演示了如何通过 Triple 协议进行泛化调用，实现 Go 和 Java 服务之间的互操作。泛化调用允许在没有服务接口定义的情况下调用远程服务。
 
 ## 目录结构
 
 ```
 generic/
 ├── go-server/      # Go 服务端（Triple 协议，端口 50052）
-├── go-client/      # Go 客户端，泛化调用（直连模式）
+├── go-client/      # Go 客户端，泛化调用（注册中心发现）
 ├── java-server/    # Java 服务端（Triple 协议，端口 50052）
 └── java-client/    # Java 客户端，泛化调用
 ```
 
 ## 前置条件
 
-启动 ZooKeeper（服务端注册服务时需要）：
+启动 ZooKeeper（服务端注册和客户端发现服务都需要）：
 
 ```bash
 docker run -d --name zookeeper -p 2181:2181 zookeeper:3.8
@@ -38,7 +38,7 @@ cd generic/go-client/cmd
 go run .
 ```
 
-客户端使用直连模式（`client.WithURL`）连接服务端，通过 `cli.NewGenericService` 进行泛化调用。同时测试 Dubbo 协议（端口 20000）和 Triple 协议（端口 50052）。
+客户端通过 ReferenceConfig 的注册中心配置从 ZooKeeper 发现服务，并使用 config/generic.GenericService 进行泛化调用。
 
 ## 启动 Java 服务端
 
@@ -56,7 +56,7 @@ cd generic/java-client
 mvn clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.ApiTripleConsumer"
 ```
 
-客户端使用 `reference.setGeneric("true")` 进行泛化调用。
+客户端使用 `reference.setGeneric("true")` 进行泛化调用，并通过 ZooKeeper 发现服务提供者。
 
 ## 测试方法
 
@@ -95,4 +95,5 @@ All generic call tests completed
 
 - 不要同时启动 Go 服务端和 Java 服务端，它们都监听 50052 端口。
 - Go 服务端需要 ZooKeeper 进行服务注册。
-- Go 客户端使用直连模式，不依赖 ZooKeeper。
+- Java 客户端通过 ZooKeeper 发现服务。
+- Go 客户端通过 ZooKeeper 发现服务。

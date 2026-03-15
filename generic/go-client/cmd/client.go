@@ -24,15 +24,16 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	"dubbo.apache.org/dubbo-go/v3/filter/generic"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/config/generic"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 
 	"github.com/dubbogo/gost/log/logger"
+
+	tpconst "github.com/dubbogo/triple/pkg/common/constant"
 )
 
 import (
@@ -40,38 +41,47 @@ import (
 )
 
 const (
-	TripleServerURL = "tri://127.0.0.1:50052"
-	UserProvider    = "org.apache.dubbo.samples.UserProvider"
-	ServiceVersion  = "1.0.0"
+	AppName          = "generic-go-client"
+	RegistryID       = "zk"
+	ZookeeperAddress = "127.0.0.1:2181"
+	UserProvider     = "org.apache.dubbo.samples.UserProvider"
+	ServiceVersion   = "1.0.0"
 )
 
 func main() {
 	hessian.RegisterPOJO(&pkg.User{})
 
-	ins, err := dubbo.NewInstance(
-		dubbo.WithName("generic-go-client"),
-	)
-	if err != nil {
+	rootConfig := config.NewRootConfigBuilder().
+		SetApplication(
+			config.NewApplicationConfigBuilder().
+				SetName(AppName).
+				Build(),
+		).
+		AddRegistry(RegistryID, &config.RegistryConfig{
+			Protocol: "zookeeper",
+			Address:  ZookeeperAddress,
+		}).
+		Build()
+	if err := config.Load(config.WithRootConfig(rootConfig)); err != nil {
 		panic(err)
 	}
 
-	cli, err := ins.NewClient(
-		client.WithClientProtocolTriple(),
-		client.WithClientSerialization(constant.Hessian2Serialization),
-	)
-	if err != nil {
+	refConf := config.ReferenceConfig{
+		InterfaceName: UserProvider,
+		RegistryIDs:   []string{RegistryID},
+		Protocol:      tpconst.TRIPLE,
+		Cluster:       "failover",
+		Group:         "triple",
+		Version:       ServiceVersion,
+		Serialization: constant.Hessian2Serialization,
+		Generic:       "true",
+	}
+	if err := refConf.Init(rootConfig); err != nil {
 		panic(err)
 	}
+	refConf.GenericLoad(AppName)
 
-	genericService, err := cli.NewGenericService(
-		UserProvider,
-		client.WithURL(TripleServerURL),
-		client.WithVersion(ServiceVersion),
-		client.WithGroup("triple"),
-	)
-	if err != nil {
-		panic(err)
-	}
+	genericService := refConf.GetRPCService().(*generic.GenericService)
 
 	failed := false
 	failed = runGenericTests(genericService) || failed

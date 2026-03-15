@@ -2,21 +2,21 @@
 
 [English](README.md) | [中文](README_zh.md)
 
-This sample demonstrates how to use generic invocation with both Dubbo and Triple protocols for Go-Java interoperability. Generic invocation allows calling remote services without generating stubs or having the service interface locally.
+This sample demonstrates generic invocation over the Triple protocol for Go-Java interoperability. Generic invocation allows calling remote services without generating stubs or having the service interface locally.
 
 ## Layout
 
 ```
 generic/
 ├── go-server/      # Go provider (Triple protocol, port 50052)
-├── go-client/      # Go consumer with generic invocation (direct connection)
+├── go-client/      # Go consumer with generic invocation (registry discovery)
 ├── java-server/    # Java provider (Triple protocol, port 50052)
 └── java-client/    # Java consumer with generic invocation
 ```
 
 ## Prerequisites
 
-Start ZooKeeper (required by the server for service registration):
+Start ZooKeeper (required for server registration and client discovery):
 
 ```bash
 docker run -d --name zookeeper -p 2181:2181 zookeeper:3.8
@@ -38,7 +38,7 @@ cd generic/go-client/cmd
 go run .
 ```
 
-The client uses direct URL connection (`client.WithURL`) to connect to the server and performs generic calls via `cli.NewGenericService`. It tests both Dubbo protocol (port 20000) and Triple protocol (port 50052).
+The client discovers providers from ZooKeeper through the registry field in ReferenceConfig and performs generic calls via config/generic.GenericService.
 
 ## Run the Java Server
 
@@ -56,7 +56,7 @@ cd generic/java-client
 mvn clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.ApiTripleConsumer"
 ```
 
-The client uses `reference.setGeneric("true")` to perform generic calls.
+The client uses `reference.setGeneric("true")` to perform generic calls and discovers providers from ZooKeeper.
 
 ## Tested Methods
 
@@ -95,4 +95,5 @@ All generic call tests completed
 
 - Do NOT start Go Server and Java Server at the same time. Both listen on port 50052.
 - The Go server requires ZooKeeper for service registration.
-- The Go client uses direct URL connection and does not require ZooKeeper.
+- The Java client discovers providers from ZooKeeper.
+- The Go client discovers providers from ZooKeeper.
