@@ -20,7 +20,12 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
 * `context`: Demonstrates passing user data (attachments) via Go `context` between client and server.
 * `error`: Error-handling examples in Dubbo-go.
 * `filter`: Demonstrates the use of built-in and custom filters in Dubbo-go.
+  * `custom`: Implements custom client and server filters.
+  * `hystrix`: Uses `hystrix-go` to demonstrate circuit breaker protection on Dubbo-go calls.
+  * `sentinel`: Demonstrates flow control, isolation, and circuit breaking with Sentinel filters.
   * `polaris/limit`: Uses Polaris as a TPS limiter.
+  * `token`: Demonstrates token-based request validation between consumer and provider.
+  * `tpslimit`: Demonstrates Dubbo-go's built-in TPS limiting filter with custom limit and rejection strategies.
 * `healthcheck`: Service health check example.
 * `helloworld`: Basic “Hello World” example for Dubbo-go, also includes Go–Java interoperability.
 * `http3`: HTTP/3 (QUIC) protocol support example demonstrating how to use Triple protocol with HTTP/3 for high-performance communication between Go and Java services with TLS encryption.

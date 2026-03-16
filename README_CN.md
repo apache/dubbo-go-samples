@@ -20,7 +20,12 @@
 * `context`：演示如何通过 Go 的 `context` 在客户端与服务端之间传递用户数据（attachments）。
 * `error`：Dubbo-go 的错误处理示例。
 * `filter`：演示 Dubbo-go 中内置和自定义 Filter 的使用。
+  * `custom`：实现自定义的客户端和服务端 Filter。
+  * `hystrix`：使用 `hystrix-go` 演示 Dubbo-go 调用中的熔断保护。
+  * `sentinel`：演示基于 Sentinel Filter 的流控、隔离和熔断能力。
   * `polaris/limit`：使用 Polaris 实现 TPS 限流。
+  * `token`：演示消费端与提供端之间基于 token 的请求校验。
+  * `tpslimit`：演示 Dubbo-go 内置 TPSLimit Filter，以及自定义限流和拒绝处理策略。
 * `healthcheck`：服务健康检查示例。
 * `helloworld`：Dubbo-go 最基础的 “Hello World” 示例，同时包含 Go 与 Java 的互操作示例。
 * `http3`：HTTP/3（QUIC）协议支持示例，演示如何通过 Triple 协议使用 HTTP/3 实现 Go 与 Java 服务之间的高性能通信，并支持 TLS 加密。
