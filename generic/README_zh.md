@@ -38,7 +38,7 @@ cd generic/go-client/cmd
 go run .
 ```
 
-客户端通过 ReferenceConfig 的注册中心配置从 ZooKeeper 发现服务，并使用 config/generic.GenericService 进行泛化调用。
+ 客户端通过 RootConfig 中的注册中心配置并在 ReferenceConfig 里通过 `RegistryIDs` 引用，从 ZooKeeper 发现服务，并使用 config/generic.GenericService 进行泛化调用。
 
 ## 启动 Java 服务端
 

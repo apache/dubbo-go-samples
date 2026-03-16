@@ -38,7 +38,7 @@ cd generic/go-client/cmd
 go run .
 ```
 
-The client discovers providers from ZooKeeper through the registry field in ReferenceConfig and performs generic calls via config/generic.GenericService.
+ The client discovers providers from ZooKeeper via the `RegistryIDs` field on `ReferenceConfig` and the registry configured on `RootConfig` (using `AddRegistry`), and performs generic calls via `config/generic.GenericService`
 
 ## Run the Java Server
 
