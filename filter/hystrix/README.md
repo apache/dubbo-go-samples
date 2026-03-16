@@ -12,7 +12,7 @@ This example demonstrates how to use the Hystrix filter in dubbo-go to implement
 
 Use the `hystrix-go` API to configure circuit breaker commands. The resource name format is:
 ```
-dubbo:consumer:InterfaceName:group:version:Method(param1,param2)
+dubbo:consumer:InterfaceName:group:version:Method
 ```
 
 **Client Configuration** (`go-client/cmd/main.go`):
@@ -23,7 +23,7 @@ import (
 )
 
 func init() {
-    // Resource name format: dubbo:consumer:interface:group:version:method(param_types)
+    // Resource name format: dubbo:consumer:InterfaceName:group:version:Method
     cmdName := "dubbo:consumer:greet.GreetService:::Greet"
 
     hystrix.ConfigureCommand(cmdName, hystrix.CommandConfig{
@@ -113,6 +113,6 @@ If the circuit breaker is triggered, wait about 5 seconds (SleepWindow configura
 ## Notes
 
 - Hystrix filter is primarily used on the **client side** to protect callers from downstream service failures
-- Parameter types in the resource name must match the actual method signature
+- The resource name must match the actual interface, group, version, and method name
 - Circuit breaker states: Closed → Open → Half-Open → Closed
 - Configure timeout and concurrency limits appropriately to avoid resource exhaustion

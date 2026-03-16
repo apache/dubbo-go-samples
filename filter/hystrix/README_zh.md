@@ -12,7 +12,7 @@
 
 使用 `hystrix-go` API 配置熔断器命令。资源名称格式为：
 ```
-dubbo:consumer:InterfaceName:group:version:Method(param1,param2)
+dubbo:consumer:InterfaceName:group:version:Method
 ```
 
 **客户端配置** (`go-client/cmd/main.go`):
@@ -23,7 +23,7 @@ import (
 )
 
 func init() {
-    // 资源名称格式: dubbo:consumer:接口名:分组:版本:方法(参数类型)
+    // 资源名称格式: dubbo:consumer:接口名:分组:版本:方法
     cmdName := "dubbo:consumer:greet.GreetService:::Greet"
 
     hystrix.ConfigureCommand(cmdName, hystrix.CommandConfig{
@@ -113,6 +113,6 @@ After-test request 1 failed: hystrix: circuit open
 ## 注意事项
 
 - Hystrix filter 主要用于**客户端**，保护调用方免受下游服务故障的影响
-- 资源名称中的参数类型必须与实际方法签名匹配
+- 资源名称需要与实际接口、分组、版本和方法名保持一致
 - 熔断器状态：关闭 → 打开 → 半开 → 关闭
 - 合理配置超时时间和并发数，避免资源耗尽

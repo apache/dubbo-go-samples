@@ -40,9 +40,8 @@ import (
 
 func init() {
 	// Configure hystrix command for the GreetService.Greet method
-	// Resource name format: dubbo:consumer:InterfaceName:group:version:Method(param1,param2)
-	// For this example: dubbo:consumer:greet.GreetService:::Greet(*greet.GreetRequest)
-	// Note: The actual param type name is determined by dubbo-go's type reflection
+	// Resource name format: dubbo:consumer:InterfaceName:group:version:Method
+	// For this example: dubbo:consumer:greet.GreetService:::Greet
 	cmdName := "dubbo:consumer:greet.GreetService:::Greet"
 
 	hystrix.ConfigureCommand(cmdName, hystrix.CommandConfig{
@@ -74,7 +73,7 @@ func main() {
 	for i := 1; i <= 3; i++ {
 		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: fmt.Sprintf("request-%d", i)})
 		if err != nil {
-			logger.Errorf("Request %d failed: %v", i, err)
+			panic(err)
 		} else {
 			logger.Infof("Request %d success: %s", i, resp.Greeting)
 		}
@@ -86,7 +85,7 @@ func main() {
 		go func(idx int) {
 			resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: fmt.Sprintf("concurrent-%d", idx)})
 			if err != nil {
-				logger.Errorf("Concurrent request %d failed: %v", idx, err)
+				panic(err)
 			} else {
 				logger.Infof("Concurrent request %d success: %s", idx, resp.Greeting)
 			}
@@ -101,7 +100,7 @@ func main() {
 	for i := 1; i <= 5; i++ {
 		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: fmt.Sprintf("after-%d", i)})
 		if err != nil {
-			logger.Errorf("After-test request %d failed (circuit might be open): %v", i, err)
+			panic(err)
 		} else {
 			logger.Infof("After-test request %d success: %s", i, resp.Greeting)
 		}
