@@ -209,10 +209,10 @@ public class ApiTripleConsumer {
 
         if (failed > 0) {
             System.out.println("\n[WARN] Some tests failed!");
+            System.exit(1);
         } else {
             System.out.println("\n[OK] All tests passed!");
+            System.exit(0);
         }
-
-        System.exit(0);
     }
 }
