@@ -22,7 +22,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/registry"
 	"dubbo.apache.org/dubbo-go/v3/server"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
@@ -39,10 +38,6 @@ func main() {
 
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("generic-go-server"),
-		dubbo.WithRegistry(
-			registry.WithZookeeper(),
-			registry.WithAddress("127.0.0.1:2181"),
-		),
 		dubbo.WithProtocol(
 			protocol.WithTriple(),
 			protocol.WithPort(50052),
@@ -67,8 +62,7 @@ func main() {
 		panic(err)
 	}
 
-	logger.Info("Generic Go server started on port 50052")
-	logger.Info("Registry: zookeeper://127.0.0.1:2181")
+	logger.Info("Generic Go server started on port 50052 (no registry, direct connection)")
 
 	if err := srv.Serve(); err != nil {
 		logger.Errorf("server stopped: %v", err)

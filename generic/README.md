@@ -9,18 +9,11 @@ This sample demonstrates generic invocation over the Triple protocol for Go-Java
 ```
 generic/
 ├── go-server/      # Go provider (Triple protocol, port 50052)
-├── go-client/      # Go consumer with generic invocation (registry discovery)
+├── go-client/      # Go consumer with generic invocation (direct URL)
 ├── java-server/    # Java provider (Triple protocol, port 50052)
-└── java-client/    # Java consumer with generic invocation
+└── java-client/    # Java consumer with generic invocation (direct URL)
 ```
 
-## Prerequisites
-
-Start ZooKeeper (required for server registration and client discovery):
-
-```bash
-docker run -d --name zookeeper -p 2181:2181 zookeeper:3.8
-```
 
 ## Run the Go Server
 
@@ -29,7 +22,7 @@ cd generic/go-server/cmd
 go run .
 ```
 
-The server exposes the Triple protocol on port `50052`, registers to ZooKeeper, and serves `UserProvider` with version `1.0.0` and group `triple`.
+The server exposes the Triple protocol on port `50052` and serves `UserProvider` with version `1.0.0` and group `triple`. No registry is required.
 
 ## Run the Go Client
 
@@ -38,7 +31,7 @@ cd generic/go-client/cmd
 go run .
 ```
 
- The client discovers providers from ZooKeeper via the `RegistryIDs` field on `ReferenceConfig` and the registry configured on `RootConfig` (using `AddRegistry`), and performs generic calls via `config/generic.GenericService`
+The client connects directly to `tri://127.0.0.1:50052` via `client.WithClientURL(...)` and performs generic calls through `cli.NewGenericService(...)`.
 
 ## Run the Java Server
 
@@ -56,7 +49,7 @@ cd generic/java-client
 mvn clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.ApiTripleConsumer"
 ```
 
-The client uses `reference.setGeneric("true")` to perform generic calls and discovers providers from ZooKeeper.
+The client uses `reference.setGeneric("true")` and `reference.setUrl("tri://127.0.0.1:50052")` to perform generic calls via direct connection.
 
 ## Tested Methods
 
@@ -79,7 +72,6 @@ Server log:
 
 ```
 Generic Go server started on port 50052
-Registry: zookeeper://127.0.0.1:2181
 ```
 
 Client log:
@@ -94,6 +86,6 @@ All generic call tests completed
 ## Notes
 
 - Do NOT start Go Server and Java Server at the same time. Both listen on port 50052.
-- The Go server requires ZooKeeper for service registration.
-- The Java client discovers providers from ZooKeeper.
-- The Go client discovers providers from ZooKeeper.
+- Neither the Go server nor the Java server requires ZooKeeper; both listen directly on their configured ports.
+- The Java client uses direct connection via `tri://127.0.0.1:50052` (`reference.setUrl(...)`).
+- The Go client uses direct connection via `tri://127.0.0.1:50052`.

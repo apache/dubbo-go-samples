@@ -19,35 +19,33 @@ package org.apache.dubbo.samples;
 
 import org.apache.dubbo.config.ApplicationConfig;
 import org.apache.dubbo.config.ReferenceConfig;
-import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.rpc.service.GenericService;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ApiTripleConsumer {
-    private static final String ZOOKEEPER_ADDRESS = "zookeeper://127.0.0.1:2181";
+    private static final String DIRECT_SERVER_URL = "tri://127.0.0.1:50052";
     private static final String SERVICE_VERSION = "1.0.0";
     private static final String SERVICE_GROUP = "triple";
 
     public static void main(String[] args) {
         System.out.println("\n========== Java Triple Generic Call Test ==========");
-        System.out.println("Registry: " + ZOOKEEPER_ADDRESS);
+        System.out.println("Direct URL: " + DIRECT_SERVER_URL);
         System.out.println();
 
         ReferenceConfig<GenericService> reference = new ReferenceConfig<>();
         reference.setApplication(new ApplicationConfig("generic-java-client"));
-        reference.setRegistry(new RegistryConfig(ZOOKEEPER_ADDRESS));
         reference.setInterface("org.apache.dubbo.samples.UserProvider");
         reference.setGroup(SERVICE_GROUP);
         reference.setVersion(SERVICE_VERSION);
         reference.setGeneric("true");
-        reference.setProtocol("tri");
+        reference.setUrl(DIRECT_SERVER_URL);
         reference.setCheck(false);
 
         GenericService genericService = reference.get();
 
-        System.out.println("Connected to server via ZooKeeper, starting tests...\n");
+        System.out.println("Connected to server via direct URL, starting tests...\n");
 
         int passed = 0;
         int failed = 0;

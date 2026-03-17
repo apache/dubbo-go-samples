@@ -9,18 +9,11 @@
 ```
 generic/
 ├── go-server/      # Go 服务端（Triple 协议，端口 50052）
-├── go-client/      # Go 客户端，泛化调用（注册中心发现）
+├── go-client/      # Go 客户端，泛化调用（直连 URL）
 ├── java-server/    # Java 服务端（Triple 协议，端口 50052）
-└── java-client/    # Java 客户端，泛化调用
+└── java-client/    # Java 客户端，泛化调用（直连 URL）
 ```
 
-## 前置条件
-
-启动 ZooKeeper（服务端注册和客户端发现服务都需要）：
-
-```bash
-docker run -d --name zookeeper -p 2181:2181 zookeeper:3.8
-```
 
 ## 启动 Go 服务端
 
@@ -29,7 +22,7 @@ cd generic/go-server/cmd
 go run .
 ```
 
-服务端通过 Triple 协议监听 `50052` 端口，注册到 ZooKeeper，提供 `UserProvider` 服务（version=1.0.0，group=triple）。
+服务端通过 Triple 协议监听 `50052` 端口，提供 `UserProvider` 服务（version=1.0.0，group=triple），无需注册中心。
 
 ## 启动 Go 客户端
 
@@ -38,7 +31,7 @@ cd generic/go-client/cmd
 go run .
 ```
 
- 客户端通过 RootConfig 中的注册中心配置并在 ReferenceConfig 里通过 `RegistryIDs` 引用，从 ZooKeeper 发现服务，并使用 config/generic.GenericService 进行泛化调用。
+客户端通过 `client.WithClientURL(...)` 直连 `tri://127.0.0.1:50052`，并使用 `cli.NewGenericService(...)` 进行泛化调用。
 
 ## 启动 Java 服务端
 
@@ -56,7 +49,7 @@ cd generic/java-client
 mvn clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.ApiTripleConsumer"
 ```
 
-客户端使用 `reference.setGeneric("true")` 进行泛化调用，并通过 ZooKeeper 发现服务提供者。
+客户端使用 `reference.setGeneric("true")` 并通过 `reference.setUrl("tri://127.0.0.1:50052")` 直连服务端进行泛化调用。
 
 ## 测试方法
 
@@ -79,7 +72,6 @@ mvn clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.ApiTriple
 
 ```
 Generic Go server started on port 50052
-Registry: zookeeper://127.0.0.1:2181
 ```
 
 客户端日志：
@@ -94,6 +86,6 @@ All generic call tests completed
 ## 注意事项
 
 - 不要同时启动 Go 服务端和 Java 服务端，它们都监听 50052 端口。
-- Go 服务端需要 ZooKeeper 进行服务注册。
-- Java 客户端通过 ZooKeeper 发现服务。
-- Go 客户端通过 ZooKeeper 发现服务。
+- Go 服务端和 Java 服务端均无需 ZooKeeper，直接监听各自配置的端口。
+- Java 客户端通过 `reference.setUrl(...)` 直连 `tri://127.0.0.1:50052`。
+- Go 客户端通过 `tri://127.0.0.1:50052` 直连。
