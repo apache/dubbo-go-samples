@@ -31,7 +31,7 @@ cd generic/go-client/cmd
 go run .
 ```
 
-The client connects directly to `tri://127.0.0.1:50052` via `client.WithClientURL(...)` and performs generic calls through `cli.NewGenericService(...)`.
+The client passes `client.WithURL("tri://127.0.0.1:50052")` to `cli.NewGenericService(...)` for a per-service direct connection and performs generic calls through that generic service.
 
 ## Run the Java Server
 

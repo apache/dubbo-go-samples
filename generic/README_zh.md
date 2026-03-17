@@ -31,7 +31,7 @@ cd generic/go-client/cmd
 go run .
 ```
 
-客户端通过 `client.WithClientURL(...)` 直连 `tri://127.0.0.1:50052`，并使用 `cli.NewGenericService(...)` 进行泛化调用。
+客户端在 `cli.NewGenericService(...)` 处通过 `client.WithURL("tri://127.0.0.1:50052")` 为该服务单独配置直连地址，并基于该泛化服务发起调用。
 
 ## 启动 Java 服务端
 

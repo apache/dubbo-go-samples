@@ -59,7 +59,6 @@ func main() {
 	cli, err := ins.NewClient(
 		client.WithClientProtocolTriple(),
 		client.WithClientSerialization(constant.Hessian2Serialization),
-		client.WithClientURL(DirectServerURL),
 	)
 	if err != nil {
 		panic(err)
@@ -67,6 +66,7 @@ func main() {
 
 	genericService, err := cli.NewGenericService(
 		UserProvider,
+		client.WithURL(DirectServerURL),
 		client.WithVersion(ServiceVersion),
 		client.WithGroup(ServiceGroup),
 	)
