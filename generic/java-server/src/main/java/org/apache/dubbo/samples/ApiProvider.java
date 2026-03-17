@@ -25,10 +25,19 @@ import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import java.util.concurrent.CountDownLatch;
 
 public class ApiProvider {
+    private static final int DUBBO_PORT = 20000;    
     private static final int TRIPLE_PORT = 50052;
     private static final String SERVICE_VERSION = "1.0.0";
 
     public static void main(String[] args) throws InterruptedException {
+        // Dubbo protocol service (group=dubbo)
+        ServiceConfig<UserProvider> dubboService = new ServiceConfig<>();
+        dubboService.setInterface(UserProvider.class);
+        dubboService.setRef(new UserProviderImpl());
+        dubboService.setGroup("dubbo");
+        dubboService.setVersion(SERVICE_VERSION);
+        dubboService.setProtocol(new ProtocolConfig("dubbo", DUBBO_PORT));
+
         // Triple protocol service (group=triple)
         ServiceConfig<UserProvider> tripleService = new ServiceConfig<>();
         tripleService.setInterface(UserProvider.class);
@@ -43,10 +52,12 @@ public class ApiProvider {
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
         bootstrap.application("generic-java-server")
                 .registry(registryConfig)
+                .service(dubboService)
                 .service(tripleService)
                 .start();
 
         System.out.println("Generic Java server started (no registry, direct connection):");
+        System.out.println("  - Dubbo protocol on port " + DUBBO_PORT + " (group=dubbo)");
         System.out.println("  - Triple protocol on port " + TRIPLE_PORT + " (group=triple)");
 
         new CountDownLatch(1).await();
