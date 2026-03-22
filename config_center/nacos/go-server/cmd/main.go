@@ -89,14 +89,15 @@ func main() {
 		panic(err)
 	}
 
-	if err := publishAndWaitConfig(
+	err = publishAndWaitConfig(
 		configClient,
 		"dubbo-go-samples-configcenter-nacos-go-server",
 		"dubbo",
 		configCenterNacosServerConfig,
 		10*time.Second,
 		200*time.Millisecond,
-	); err != nil {
+	)
+	if err != nil {
 		panic(err)
 	}
 

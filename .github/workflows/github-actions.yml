@@ -54,19 +54,12 @@ jobs:
         run: |
           command -v imports-formatter >/dev/null 2>&1 || go install github.com/dubbogo/tools/cmd/imports-formatter@latest
 
-      - name: Get dependencies
-        run: |
-          go mod tidy
-
       - name: Format code
         run: |
           go fmt ./...
           GOROOT=$(go env GOROOT) imports-formatter
           git status
           [[ -z "$(git status -s)" ]]
-
-      - name: Check license header
-        uses: apache/skywalking-eyes/header@main
 
       - name: Switch Dubbo-go version
         shell: bash
@@ -83,6 +76,9 @@ jobs:
           echo "EVENT=$GITHUB_EVENT_NAME BRANCH=$BRANCH"
           go mod edit -replace=dubbo.apache.org/dubbo-go/v3=dubbo.apache.org/dubbo-go/v3@$BRANCH
           go mod tidy
+
+      - name: Check license header
+        uses: apache/skywalking-eyes/header@main
 
       - name: Integration test
         run: |

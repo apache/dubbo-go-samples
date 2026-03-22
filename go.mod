@@ -1,6 +1,6 @@
 module github.com/apache/dubbo-go-samples
 
-go 1.24.0
+go 1.25.0
 
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.1

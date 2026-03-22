@@ -104,7 +104,8 @@ func writeRuleToConfigCenter() error {
 	}
 
 	// create parent paths
-	if err := createParentPaths(c, path); err != nil {
+	err = createParentPaths(c, path)
+	if err != nil {
 		return perrors.Wrap(err, "failed to create parent paths")
 	}
 
@@ -129,7 +130,8 @@ func writeRuleToConfigCenter() error {
 		logger.Info("Created new config node")
 	}
 
-	if err := waitForConfigReady(c, path, valueBytes, 10*time.Second); err != nil {
+	err = waitForConfigReady(c, path, valueBytes, 10*time.Second)
+	if err != nil {
 		return perrors.Wrap(err, "wait for config ready")
 	}
 

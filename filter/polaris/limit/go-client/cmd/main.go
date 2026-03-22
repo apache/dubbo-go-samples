@@ -55,8 +55,8 @@ func main() {
 
 	for i := 0; i < 10; i++ {
 		time.Sleep(50 * time.Millisecond)
-		user, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-		if err != nil {
+		user, callErr := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+		if callErr != nil {
 			failCount++
 			continue
 		}
@@ -66,7 +66,7 @@ func main() {
 	}
 	logger.Infof("successCount=%v, failCount=%v\n", successCount, failCount)
 
-	if !(successCount == 1 && failCount == 9) {
+	if successCount != 1 || failCount != 9 {
 		panic("ratelimit expect 1 success and 9 fail")
 	}
 
@@ -84,8 +84,8 @@ func main() {
 
 	for i := 0; i < 10; i++ {
 		time.Sleep(50 * time.Millisecond)
-		user, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-		if err != nil {
+		user, callErr := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+		if callErr != nil {
 			failCount++
 			continue
 		}
@@ -95,7 +95,7 @@ func main() {
 	}
 	logger.Infof("successCount=%v, failCount=%v\n", successCount, failCount)
 
-	if !(successCount == 10 && failCount == 0) {
+	if successCount != 10 || failCount != 0 {
 		panic("ratelimit expect 10 success and 0 fail")
 	}
 }

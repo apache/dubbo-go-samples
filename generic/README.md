@@ -1,88 +1,91 @@
-# Generic Call
+# Generic Call Sample
 
-Generic call is a mechanism that ensures information is correctly transmitted when the client does not have interface information. It generalizes POJOs into generic formats (such as dictionaries, strings), and is generally used in scenarios like integration testing and gateways.
+[English](README.md) | [中文](README_zh.md)
 
-This example demonstrates generic calls between Dubbo-Go and Dubbo Java services, showing how services can interoperate regardless of the language they're implemented in.
+This sample demonstrates generic invocation over the Triple protocol for Go-Java interoperability. Generic invocation allows calling remote services without generating stubs or having the service interface locally.
 
-## Directory Structure
+## Layout
 
-- go-server: Dubbo-Go server example
-- go-client: Dubbo-Go client example with generic calls
-- java-client: Dubbo Java client example
-- java-server: Dubbo Java server example
-- build: For integration test
-
-Dubbo Java examples can be used to test interoperability with Dubbo-Go. You can start java server with go client, or go server with java client for testing.
-
-## Prerequisites
-
-- Docker and Docker Compose for running ZooKeeper registry
-- Go 1.23+ for Dubbo-Go examples
-- Java 8+ and Maven for Dubbo Java examples
-
-## Registry
-
-This example uses ZooKeeper as the registry. The following command starts ZooKeeper from docker, so you need to ensure that docker and docker-compose are installed first.
-
-```shell
-# Start ZooKeeper registry
-docker run -d --name zookeeper -p 2181:2181 zookeeper:3.4.14
+```
+generic/
+├── go-server/      # Go provider (Triple protocol, port 50052)
+├── go-client/      # Go consumer with generic invocation (direct URL)
+├── java-server/    # Java provider (Triple protocol, port 50052)
+└── java-client/    # Java consumer with generic invocation (direct URL)
 ```
 
-## Running the Examples
 
-### Dubbo-Go Server
+## Run the Go Server
 
-Using Dubbo-Go as provider, you can start it from command line tool:
-
-```shell
-cd go-server/cmd && go run server.go
+```bash
+cd generic/go-server/cmd
+go run .
 ```
 
-### Dubbo-Go Client (Generic Call)
+The server exposes the Triple protocol on port `50052` and serves `UserProvider` with version `1.0.0` and group `triple`. No registry is required.
 
-Using Dubbo-Go as consumer with generic calls:
+## Run the Go Client
 
-```shell
-cd go-client/cmd && go run client.go
+```bash
+cd generic/go-client/cmd
+go run .
 ```
 
-### Dubbo Java Server
+The client passes `client.WithURL("tri://127.0.0.1:50052")` to `cli.NewGenericService(...)` for a per-service direct connection and performs generic calls through that generic service.
 
-Using Dubbo Java as provider:
+## Run the Java Server
 
-```shell
-cd java-server/java-server
-mvn clean package
-sh run.sh
+Build and run from the java-server directory:
+
+```bash
+cd generic/java-server
+mvn clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.ApiProvider"
 ```
 
-### Dubbo Java Client
+## Run the Java Client
 
-Using Dubbo Java as consumer:
-
-```shell
-cd java-client/java-client
-mvn clean package
-sh run.sh
+```bash
+cd generic/java-client
+mvn clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.ApiTripleConsumer"
 ```
 
-## Testing Interoperability
+The client uses `reference.setGeneric("true")` and `reference.setUrl("tri://127.0.0.1:50052")` to perform generic calls via direct connection.
 
-This example is designed to test interoperability between Dubbo-Go and Dubbo Java:
+## Tested Methods
 
-1. Start the ZooKeeper registry
-2. Start either go-server or java-server
-3. Run either go-client or java-client to test the generic calls
+| Method | Parameters | Return |
+|--------|------------|--------|
+| GetUser1 | String | User |
+| GetUser2 | String, String | User |
+| GetUser3 | int | User |
+| GetUser4 | int, String | User |
+| GetOneUser | - | User |
+| GetUsers | String[] | User[] |
+| GetUsersMap | String[] | Map<String, User> |
+| QueryUser | User | User |
+| QueryUsers | User[] | User[] |
+| QueryAll | - | Map<String, User> |
 
-The client will make various generic calls to the server, including:
-- GetUser1(String userId)
-- GetUser2(String userId, String name)
-- GetUser3(int userCode)
-- GetUser4(int userCode, String name)
-- GetOneUser()
-- GetUsers(String[] userIdList)
-- GetUsersMap(String[] userIdList)
-- QueryUser(User user)
-- QueryUsers(List<User> userObjectList)
-- QueryAll()
+## Expected Output
+
+Server log:
+
+```
+Generic Go server started on port 50052
+```
+
+Client log:
+
+```
+[Triple] GetUser1(userId string) res: {id=A003, name=Joe, age=48, ...}
+[Triple] GetUser2(userId string, name string) res: {id=A003, name=lily, age=48, ...}
+...
+All generic call tests completed
+```
+
+## Notes
+
+- Do NOT start Go Server and Java Server at the same time. Both listen on port 50052.
+- Neither the Go server nor the Java server requires ZooKeeper; both listen directly on their configured ports.
+- The Java client uses direct connection via `tri://127.0.0.1:50052` (`reference.setUrl(...)`).
+- The Go client uses direct connection via `tri://127.0.0.1:50052`.

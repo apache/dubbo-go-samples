@@ -74,7 +74,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 			apiKey = os.Getenv("OPENAI_API_KEY")
 		}
 		if apiKey == "" {
-			return nil, fmt.Errorf("OpenAI API key is required")
+			return nil, fmt.Errorf("openai API key is required")
 		}
 
 		opts := []openai.Option{
@@ -95,7 +95,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 			apiKey = os.Getenv("ANTHROPIC_API_KEY")
 		}
 		if apiKey == "" {
-			return nil, fmt.Errorf("Anthropic API key is required")
+			return nil, fmt.Errorf("anthropic API key is required")
 		}
 
 		opts := []anthropic.Option{
@@ -116,7 +116,7 @@ func NewLLMService(provider LLMProvider, model string, baseURL string, apiKey st
 			apiKey = os.Getenv("AZURE_OPENAI_API_KEY")
 		}
 		if apiKey == "" {
-			return nil, fmt.Errorf("Azure OpenAI API key is required")
+			return nil, fmt.Errorf("azure OpenAI API key is required")
 		}
 
 		// Azure OpenAI uses OpenAI client with specific configuration

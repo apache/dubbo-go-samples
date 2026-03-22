@@ -19,7 +19,6 @@ package main
 
 import (
 	"context"
-	"strings"
 )
 
 import (
@@ -67,7 +66,7 @@ func main() {
 		panic(err)
 	}
 
-	callGreet := func(name, tag, force, exp string) {
+	callGreet := func(name, tag, force string) {
 		// set tag attachments for invocation
 		atta := map[string]string{
 			constant.Tagkey:      tag,
@@ -79,7 +78,6 @@ func main() {
 		// temporarily cancel checking for result, for PR # 3208 (https://github.com/apache/dubbo-go/pull/3208)
 		// hasn't been merged to main branch yet, thus tag router still not works properly.
 
-		//checkRes(exp, resp.GetGreeting(), err)
 		if err != nil {
 			logger.Errorf("❌ invoke failed: %v", err)
 		} else {
@@ -87,16 +85,8 @@ func main() {
 		}
 	}
 
-	callGreet("tag with force", "test-tag", "true", "server-with-tag")         // success
-	callGreet("tag with force", "test-tag1", "true", "fail")                   // fail
-	callGreet("tag with no-force", "test-tag1", "false", "server-without-tag") // success
-	callGreet("non-tag", "", "false", "server-without-tag")                    // success
-}
-
-func checkRes(exp string, act string, err error) {
-	if (err == nil && exp == "fail") || (err != nil && exp != "fail") {
-		panic("unexpected result!")
-	} else if act != "" && !strings.Contains(act, exp) {
-		panic("unexpected result!")
-	}
+	callGreet("tag with force", "test-tag", "true")      // success
+	callGreet("tag with force", "test-tag1", "true")     // fail
+	callGreet("tag with no-force", "test-tag1", "false") // success
+	callGreet("non-tag", "", "false")                    // success
 }

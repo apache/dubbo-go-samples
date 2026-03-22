@@ -163,7 +163,7 @@ func main() {
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
 		if input != "" {
-			if idx, err := strconv.Atoi(input); err == nil {
+			if idx, convErr := strconv.Atoi(input); convErr == nil {
 				if idx >= 1 && idx <= len(availableModels) {
 					currentModel = availableModels[idx-1]
 				} else {

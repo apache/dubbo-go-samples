@@ -38,7 +38,7 @@ array+=("registry/nacos")
 array+=("registry/etcd")
 array+=("registry/polaris")
 
-# array+=("generic")
+array+=("generic")
 
 # timeout
 array+=("timeout")
@@ -72,6 +72,9 @@ array+=("async")
 
 # error
 array+=("error")
+
+# metrics
+array+=("metrics/probe")
 
 # config_center
 array+=("config_center/nacos")
