@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"os"
 )
 
 import (
@@ -83,6 +84,7 @@ func main() {
 	resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: "static tag router"})
 	if err != nil {
 		logger.Errorf("invoke failed: %v", err)
+		os.Exit(1)
 	} else {
 		logger.Infof("invoke successfully: %v", resp.Greeting)
 	}
