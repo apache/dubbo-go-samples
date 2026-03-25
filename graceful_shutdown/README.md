@@ -12,13 +12,15 @@ This sample does **not** include a registry. That means you can test protocol-le
 
 ## Prerequisites
 
-The sample already points to your local `E:/project/go_project/dubbo/dubbo-go` through `replace` in `go.mod`.
+This sample uses the released `dubbo-go` version declared in `go.mod` by default.
 
-Run all commands from:
+Run all commands from your local checkout of `dubbo-go-samples`:
 
 ```bash
-cd E:/project/go_project/dubbo/dubbo-go-samples/graceful_shutdown
+cd /path/to/dubbo-go-samples/graceful_shutdown
 ```
+
+If you need to verify changes against a local `dubbo-go` working tree, add a temporary `replace` in `go.mod` on your machine only and do not commit it.
 
 ## Quick Start
 

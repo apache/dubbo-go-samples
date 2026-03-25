@@ -146,4 +146,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace dubbo.apache.org/dubbo-go/v3 => E:/project/go_project/dubbo/dubbo-go
