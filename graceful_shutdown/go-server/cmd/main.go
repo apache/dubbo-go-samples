@@ -22,15 +22,19 @@ import (
 	"flag"
 	"fmt"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/graceful_shutdown"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
 
-	greet "github.com/apache/dubbo-go-samples/graceful_shutdown/proto"
-
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/graceful_shutdown/proto"
 )
 
 type GreetProvider struct {

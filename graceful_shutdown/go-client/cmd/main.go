@@ -23,13 +23,17 @@ import (
 	"fmt"
 	"sync/atomic"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
-	greet "github.com/apache/dubbo-go-samples/graceful_shutdown/proto"
-
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/graceful_shutdown/proto"
 )
 
 func main() {
