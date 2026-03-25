@@ -21,17 +21,17 @@
 在两个终端中分别启动下面两个 provider：
 
 ```shell
-$ go run ./provider-untagged/cmd
-$ go run ./provider-gray/cmd
+$ go run ./go-server/cmd/server.go
+$ go run ./go-tag-server/cmd/server_tag.go
 ```
 
-- `provider-untagged` 监听 `:20000`，不带 tag
-- `provider-gray` 监听 `:20002`，并以 `gray` 标签导出服务
+- `go-server` 监听 `:20000`，不带 tag
+- `go-tag-server` 监听 `:20002`，并以 `gray` 标签导出服务
 
 ### 启动 Consumer
 
 ```shell
-$ go run ./consumer/cmd
+$ go run ./go-client/cmd/client.go
 ```
 
 客户端只使用直连 URL：

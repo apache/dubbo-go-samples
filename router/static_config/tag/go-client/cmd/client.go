@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"os"
+	"strings"
 )
 
 import (
@@ -42,6 +43,7 @@ const (
 	tagName           = "gray"
 	grayAddress       = "127.0.0.1:20002"
 	directURL         = "tri://127.0.0.1:20000;tri://127.0.0.1:20002?dubbo.tag=gray"
+	expectedServer    = "server-with-gray-tag"
 )
 
 func main() {
@@ -85,7 +87,12 @@ func main() {
 	if err != nil {
 		logger.Errorf("invoke failed: %v", err)
 		os.Exit(1)
-	} else {
-		logger.Infof("invoke successfully: %v", resp.Greeting)
 	}
+
+	if !strings.Contains(resp.Greeting, expectedServer) {
+		logger.Errorf("invoke routed to unexpected server, want %s, got %q", expectedServer, resp.Greeting)
+		os.Exit(1)
+	}
+
+	logger.Infof("invoke successfully: %v", resp.Greeting)
 }

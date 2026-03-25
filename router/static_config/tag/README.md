@@ -21,17 +21,17 @@ English | [中文](README_CN.md)
 Start two providers in separate terminals:
 
 ```shell
-$ go run ./provider-untagged/cmd
-$ go run ./provider-gray/cmd
+$ go run ./go-server/cmd/server.go
+$ go run ./go-tag-server/cmd/server_tag.go
 ```
 
-- `provider-untagged` listens on `:20000` without a tag
-- `provider-gray` listens on `:20002` and exports the service with tag `gray`
+- `go-server` listens on `:20000` without a tag
+- `go-tag-server` listens on `:20002` and exports the service with tag `gray`
 
 ### Run consumer
 
 ```shell
-$ go run ./consumer/cmd
+$ go run ./go-client/cmd/client.go
 ```
 
 The client uses direct URLs only:

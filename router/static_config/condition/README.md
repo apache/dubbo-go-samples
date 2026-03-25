@@ -21,19 +21,19 @@ English | [中文](README_CN.md)
 Start two providers in separate terminals:
 
 ```shell
-$ go run ./provider-node1/cmd
-$ go run ./provider-node2/cmd
+$ go run ./go-server/cmd/server.go
+$ go run ./go-node2-server/cmd/server_node2.go
 ```
 
-- `provider-node1` listens on `:20000`
-- `provider-node2` listens on `:20001`
+- `go-server` listens on `:20000`
+- `go-node2-server` listens on `:20001`
 
 ### Run consumer
 
-If you want to change the provider addresses, update `directURL` in `consumer/cmd/client.go`.
+If you want to change the provider addresses, update `directURL` in `go-client/cmd/client.go`.
 
 ```shell
-$ go run ./consumer/cmd
+$ go run ./go-client/cmd/client.go
 ```
 
 The client connects to both providers by direct URLs.

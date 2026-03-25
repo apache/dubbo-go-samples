@@ -21,19 +21,19 @@
 在两个终端中分别启动下面两个 provider：
 
 ```shell
-$ go run ./provider-node1/cmd
-$ go run ./provider-node2/cmd
+$ go run ./go-server/cmd/server.go
+$ go run ./go-node2-server/cmd/server_node2.go
 ```
 
-- `provider-node1` 监听 `:20000`
-- `provider-node2` 监听 `:20001`
+- `go-server` 监听 `:20000`
+- `go-node2-server` 监听 `:20001`
 
 ### 启动 Consumer
 
-如果你需要修改 provider 地址，请同步修改 `consumer/cmd/client.go` 中的 `directURL`。
+如果你需要修改 provider 地址，请同步修改 `go-client/cmd/client.go` 中的 `directURL`。
 
 ```shell
-$ go run ./consumer/cmd
+$ go run ./go-client/cmd/client.go
 ```
 
 客户端会通过直连 URL 连接两个 provider。

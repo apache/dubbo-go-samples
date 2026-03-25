@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"os"
+	"strings"
 )
 
 import (
@@ -38,6 +39,7 @@ import (
 const (
 	clientApplication = "static-condition-client"
 	directURL         = "tri://127.0.0.1:20000;tri://127.0.0.1:20001"
+	expectedServer    = "server-node-20000"
 )
 
 func main() {
@@ -74,7 +76,12 @@ func main() {
 	if err != nil {
 		logger.Errorf("invoke failed: %v", err)
 		os.Exit(1)
-	} else {
-		logger.Infof("invoke successfully: %v", resp.Greeting)
 	}
+
+	if !strings.Contains(resp.Greeting, expectedServer) {
+		logger.Errorf("invoke routed to unexpected server, want %s, got %q", expectedServer, resp.Greeting)
+		os.Exit(1)
+	}
+
+	logger.Infof("invoke successfully: %v", resp.Greeting)
 }
