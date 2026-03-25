@@ -21,6 +21,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -43,20 +44,37 @@ func main() {
 	concurrency := flag.Int("concurrency", 1, "number of concurrent request loops")
 	requestTimeout := flag.Duration("request-timeout", 5*time.Second, "per-request timeout")
 	namePrefix := flag.String("name-prefix", "hello", "request name prefix")
+	maxRequests := flag.Int64("max-requests", 0, "maximum number of requests to issue across all workers, 0 means unlimited")
+	minSuccesses := flag.Int64("min-successes", 0, "minimum number of successful requests required before exit")
+	minFailures := flag.Int64("min-failures", 0, "minimum number of failed requests required before exit")
 	flag.Parse()
 
 	logger.Infof("Starting client, addr=%s short=%v concurrency=%d interval=%s request-timeout=%s",
 		*addr, *shortConn, *concurrency, interval.String(), requestTimeout.String())
 
-	var counter atomic.Int64
+	var requestCounter atomic.Int64
+	var successCount atomic.Int64
+	var failureCount atomic.Int64
+	var wg sync.WaitGroup
 	for workerID := 1; workerID <= *concurrency; workerID++ {
-		go runWorker(workerID, *addr, *interval, *shortConn, *requestTimeout, *namePrefix, &counter)
+		wg.Add(1)
+		go func(id int) {
+			defer wg.Done()
+			runWorker(id, *addr, *interval, *shortConn, *requestTimeout, *namePrefix, *maxRequests, &requestCounter, &successCount, &failureCount)
+		}(workerID)
 	}
 
-	select {}
+	wg.Wait()
+
+	if *maxRequests > 0 {
+		successes := successCount.Load()
+		failures := failureCount.Load()
+		validateRequestSummary(*minSuccesses, successes, *minFailures, failures)
+		logger.Infof("Client finished, requests=%d successes=%d failures=%d", requestCounter.Load(), successes, failures)
+	}
 }
 
-func runWorker(workerID int, addr string, interval time.Duration, shortConn bool, requestTimeout time.Duration, namePrefix string, counter *atomic.Int64) {
+func runWorker(workerID int, addr string, interval time.Duration, shortConn bool, requestTimeout time.Duration, namePrefix string, maxRequests int64, requestCounter, successCount, failureCount *atomic.Int64) {
 	var svc greet.GreetService
 	var err error
 
@@ -68,24 +86,31 @@ func runWorker(workerID int, addr string, interval time.Duration, shortConn bool
 	}
 
 	for {
+		requestID, ok := nextRequestID(requestCounter, maxRequests)
+		if !ok {
+			return
+		}
+
 		if shortConn {
 			_, svc, err = newGreetClient(addr)
 		}
 		if err != nil {
+			failureCount.Add(1)
 			logger.Errorf("Worker %d failed to prepare client: %v", workerID, err)
 			time.Sleep(interval)
 			continue
 		}
 
-		requestID := counter.Add(1)
 		name := fmt.Sprintf("%s-%d", namePrefix, requestID)
 		ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 		resp, callErr := svc.Greet(ctx, &greet.GreetRequest{Name: name})
 		cancel()
 
 		if callErr != nil {
+			failureCount.Add(1)
 			logger.Errorf("Worker %d request %d failed: %v", workerID, requestID, callErr)
 		} else {
+			successCount.Add(1)
 			logger.Infof("Worker %d request %d succeeded: %s", workerID, requestID, resp.Greeting)
 		}
 
@@ -104,4 +129,30 @@ func newGreetClient(addr string) (*client.Client, greet.GreetService, error) {
 		return nil, nil, err
 	}
 	return cli, svc, nil
+}
+
+func nextRequestID(counter *atomic.Int64, maxRequests int64) (int64, bool) {
+	if maxRequests == 0 {
+		return counter.Add(1), true
+	}
+
+	for {
+		current := counter.Load()
+		if current >= maxRequests {
+			return 0, false
+		}
+		next := current + 1
+		if counter.CompareAndSwap(current, next) {
+			return next, true
+		}
+	}
+}
+
+func validateRequestSummary(minSuccesses, successes, minFailures, failures int64) {
+	if successes < minSuccesses {
+		panic(fmt.Sprintf("expected at least %d successful requests, got %d", minSuccesses, successes))
+	}
+	if failures < minFailures {
+		panic(fmt.Sprintf("expected at least %d failed requests, got %d", minFailures, failures))
+	}
 }

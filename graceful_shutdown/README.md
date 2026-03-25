@@ -1,39 +1,39 @@
 # Graceful Shutdown Example
 
+English | [中文](README_CN.md)
+
 This sample is intended for manual verification of the Triple graceful shutdown flow in `dubbo-go`.
 
 It is useful for verifying these behaviors:
 - active notice for long connections on Triple
 - passive closing behavior on the consumer side
 - waiting for in-flight provider requests during shutdown
-- the effect of `notify-timeout`, `step-timeout`, `consumer-update-wait`, and `offline-window`
+- the effect of `timeout`, `step-timeout`, `consumer-update-wait`, and `offline-window`
 
 This sample does **not** include a registry. That means you can test protocol-level active notice and request draining, but you cannot directly observe registry unregister propagation in this sample alone.
 
 ## Prerequisites
 
-This sample uses the released `dubbo-go` version declared in `go.mod` by default.
+This sample uses the repository root `go.mod`.
 
 Run all commands from your local checkout of `dubbo-go-samples`:
 
 ```bash
-cd /path/to/dubbo-go-samples/graceful_shutdown
+cd /path/to/dubbo-go-samples
 ```
-
-If you need to verify changes against a local `dubbo-go` working tree, add a temporary `replace` in `go.mod` on your machine only and do not commit it.
 
 ## Quick Start
 
 Start the server in one terminal:
 
 ```bash
-go run ./go-server/cmd -notify-timeout=5s -step-timeout=5s -delay=2s
+go run ./graceful_shutdown/go-server/cmd -timeout=60s -step-timeout=5s -delay=2s
 ```
 
 Start the client in another terminal:
 
 ```bash
-go run ./go-client/cmd -addr=tri://127.0.0.1:20000 -concurrency=3 -interval=300ms -request-timeout=6s
+go run ./graceful_shutdown/go-client/cmd -addr=tri://127.0.0.1:20000 -concurrency=3 -interval=300ms -request-timeout=6s
 ```
 
 Then press `Ctrl+C` in the server terminal.
@@ -54,9 +54,9 @@ If you omit the protocol prefix and only pass `127.0.0.1:20000`, the direct refe
 
 ## Server Flags
 
-`go-server/cmd/main.go` supports these test flags:
+`graceful_shutdown/go-server/cmd/main.go` supports these test flags:
 - `-port=20000`
-- `-notify-timeout=5s`
+- `-timeout=60s`
 - `-step-timeout=3s`
 - `-consumer-update-wait=3s`
 - `-offline-window=3s`
@@ -66,15 +66,20 @@ If you omit the protocol prefix and only pass `127.0.0.1:20000`, the direct refe
 
 ## Client Flags
 
-`go-client/cmd/main.go` supports these test flags:
+`graceful_shutdown/go-client/cmd/main.go` supports these test flags:
 - `-addr=tri://127.0.0.1:20000`
 - `-interval=200ms`
 - `-concurrency=1`
 - `-request-timeout=5s`
 - `-short=true|false`
 - `-name-prefix=hello`
+- `-max-requests=0`
+- `-min-successes=0`
+- `-min-failures=0`
 
 For long-connection testing, keep `-short=false`.
+
+`-max-requests`, `-min-successes`, and `-min-failures` are mainly for automated verification. The client panics if the configured minimum counts are not reached before exit.
 
 ## Recommended Scenarios
 
@@ -82,12 +87,12 @@ For long-connection testing, keep `-short=false`.
 
 Terminal 1:
 ```bash
-go run ./go-server/cmd -notify-timeout=5s
+go run ./graceful_shutdown/go-server/cmd -timeout=60s
 ```
 
 Terminal 2:
 ```bash
-go run ./go-client/cmd -addr=tri://127.0.0.1:20000 -concurrency=1 -interval=200ms
+go run ./graceful_shutdown/go-client/cmd -addr=tri://127.0.0.1:20000 -concurrency=1 -interval=200ms
 ```
 
 Then press `Ctrl+C` in the server terminal.
@@ -101,12 +106,12 @@ What to observe:
 
 Terminal 1:
 ```bash
-go run ./go-server/cmd -delay=2s -step-timeout=5s
+go run ./graceful_shutdown/go-server/cmd -delay=2s -step-timeout=5s
 ```
 
 Terminal 2:
 ```bash
-go run ./go-client/cmd -addr=tri://127.0.0.1:20000 -concurrency=3 -interval=300ms -request-timeout=6s
+go run ./graceful_shutdown/go-client/cmd -addr=tri://127.0.0.1:20000 -concurrency=3 -interval=300ms -request-timeout=6s
 ```
 
 Then press `Ctrl+C` in the server terminal while requests are still running.
@@ -122,49 +127,66 @@ Use a short consumer update wait so shutdown starts rejecting new work earlier w
 
 Terminal 1:
 ```bash
-go run ./go-server/cmd -delay=2s -notify-timeout=2s -step-timeout=2s -consumer-update-wait=0s
+go run ./graceful_shutdown/go-server/cmd -delay=2s -timeout=15s -step-timeout=2s -consumer-update-wait=0s
 ```
 
 Terminal 2:
 ```bash
-go run ./go-client/cmd -addr=tri://127.0.0.1:20000 -concurrency=2 -interval=200ms -request-timeout=4s
+go run ./graceful_shutdown/go-client/cmd -addr=tri://127.0.0.1:20000 -concurrency=2 -interval=200ms -request-timeout=4s
 ```
 
 Then press `Ctrl+C` in the server terminal.
 
 What to observe:
-- server logs print the full graceful shutdown sequence, including `Notify long connection consumers` and `Destroy protocols`
+- server logs print the full graceful shutdown sequence
 - some in-flight requests still complete after shutdown starts
 - newer requests begin to fail earlier than in the default configuration
 - client logs include the Triple active-notice path from `triple-health-watch`
 
-### 4. Tight notify timeout
+### 4. Tight overall timeout
 
 Terminal 1:
 ```bash
-go run ./go-server/cmd -notify-timeout=1s
+go run ./graceful_shutdown/go-server/cmd -timeout=10s -step-timeout=1s
 ```
 
 Terminal 2:
 ```bash
-go run ./go-client/cmd -addr=tri://127.0.0.1:20000
+go run ./graceful_shutdown/go-client/cmd -addr=tri://127.0.0.1:20000
 ```
 
-This is mainly for comparing server logs with a shorter active-notice budget.
+This is mainly for comparing server logs with a tighter overall graceful shutdown budget.
 
 ### 5. Compare long and short connections
 
 Long connection:
 ```bash
-go run ./go-client/cmd -addr=tri://127.0.0.1:20000
+go run ./graceful_shutdown/go-client/cmd -addr=tri://127.0.0.1:20000
 ```
 
 Short connection:
 ```bash
-go run ./go-client/cmd -addr=tri://127.0.0.1:20000 -short=true
+go run ./graceful_shutdown/go-client/cmd -addr=tri://127.0.0.1:20000 -short=true
 ```
 
 Long connections are the more relevant path for active graceful notices.
+
+## Integration Test
+
+This sample is wired into the root integration test flow:
+
+```bash
+./integrate_test.sh graceful_shutdown
+```
+
+The script starts the Triple server, runs the client in the background, waits until at least one request succeeds, and then sends an interrupt signal to trigger graceful shutdown.
+
+Before the client exits, it must observe:
+
+- at least one successful request
+- at least one failed request during shutdown
+
+If those expectations are not met, the client panics so CI fails immediately.
 
 ## Practical Notes
 

@@ -66,7 +66,7 @@ func (p *GreetProvider) Greet(ctx context.Context, req *greet.GreetRequest) (*gr
 
 func main() {
 	port := flag.Int("port", 20000, "triple listen port")
-	notifyTimeout := flag.Duration("notify-timeout", 5*time.Second, "overall timeout budget for active long-connection notices")
+	timeout := flag.Duration("timeout", 60*time.Second, "overall graceful shutdown timeout budget")
 	stepTimeout := flag.Duration("step-timeout", 3*time.Second, "timeout for waiting provider and consumer in-flight requests")
 	consumerUpdateWait := flag.Duration("consumer-update-wait", 3*time.Second, "time to wait for consumers to observe instance changes")
 	offlineWindow := flag.Duration("offline-window", 3*time.Second, "time window for observing late requests after offline")
@@ -74,14 +74,13 @@ func main() {
 	flag.Parse()
 
 	graceful_shutdown.Init(
-		graceful_shutdown.WithTimeout(60*time.Second),
+		graceful_shutdown.WithTimeout(*timeout),
 		graceful_shutdown.WithStepTimeout(*stepTimeout),
-		graceful_shutdown.WithNotifyTimeout(*notifyTimeout),
 		graceful_shutdown.WithConsumerUpdateWaitTime(*consumerUpdateWait),
 		graceful_shutdown.WithOfflineRequestWindowTimeout(*offlineWindow),
 	)
-	logger.Infof("Graceful shutdown initialized, notify-timeout=%s step-timeout=%s consumer-update-wait=%s offline-window=%s request-delay=%s",
-		notifyTimeout.String(), stepTimeout.String(), consumerUpdateWait.String(), offlineWindow.String(), requestDelay.String())
+	logger.Infof("Graceful shutdown initialized, timeout=%s step-timeout=%s consumer-update-wait=%s offline-window=%s request-delay=%s",
+		timeout.String(), stepTimeout.String(), consumerUpdateWait.String(), offlineWindow.String(), requestDelay.String())
 
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
