@@ -51,6 +51,8 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
   * `router/condition`: Dubbo-go condition router examples.
   * `router/script`: Dubbo-go script router examples.
   * `router/polaris`: Quickly experience Polaris' service routing capabilities in Dubbo-go.
+  * `router/static_config/tag`: Dubbo-go static tag router example.
+  * `router/static_config/condition`: Dubbo-go static condition router example.
 * `rpc`: Various RPC protocol examples with Dubbo-go.
   * `rpc/dubbo`: Dubbo protocol example, including Java–Go interop.
   * `rpc/grpc`: gRPC protocol example.
