@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -55,6 +56,15 @@ func init() {
 	logger.Infof("Configured hystrix command: %s", cmdName)
 }
 
+func logGreetResult(stage string, idx int, resp *greet.GreetResponse, err error) {
+	if err != nil {
+		logger.Infof("%s %d failed: %v", stage, idx, err)
+		return
+	}
+
+	logger.Infof("%s %d success: %s", stage, idx, resp.Greeting)
+}
+
 func main() {
 	cli, err := client.NewClient(
 		client.WithClientURL("127.0.0.1:20000"),
@@ -72,35 +82,31 @@ func main() {
 	logger.Info("=== Test 1: Sending normal requests ===")
 	for i := 1; i <= 3; i++ {
 		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: fmt.Sprintf("request-%d", i)})
-		if err != nil {
-			panic(err)
-		} else {
-			logger.Infof("Request %d success: %s", i, resp.Greeting)
-		}
+		logGreetResult("Request", i, resp, err)
 	}
 
 	// Test 2: Multiple concurrent requests to potentially trigger circuit breaker
 	logger.Info("\n=== Test 2: Sending concurrent requests ===")
+	var wg sync.WaitGroup
 	for i := 1; i <= 15; i++ {
+		wg.Add(1)
 		go func(idx int) {
+			defer wg.Done()
+
 			resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: fmt.Sprintf("concurrent-%d", idx)})
-			if err != nil {
-				panic(err)
-			} else {
-				logger.Infof("Concurrent request %d success: %s", idx, resp.Greeting)
-			}
+			logGreetResult("Concurrent request", idx, resp, err)
 		}(i)
 	}
 
-	// Wait for concurrent requests to complete
-	time.Sleep(3 * time.Second)
+	// Wait for concurrent requests to complete before observing circuit state.
+	wg.Wait()
 
 	// Test 3: Try requests after circuit might be open
 	logger.Info("\n=== Test 3: Sending requests after concurrent test ===")
 	for i := 1; i <= 5; i++ {
 		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: fmt.Sprintf("after-%d", i)})
 		if err != nil {
-			panic(err)
+			logger.Infof("After-test request %d failed (circuit might be open): %v", i, err)
 		} else {
 			logger.Infof("After-test request %d success: %s", i, resp.Greeting)
 		}

@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"sync/atomic"
 	"time"
 )
 
@@ -36,18 +37,18 @@ import (
 )
 
 type GreetTripleServer struct {
-	requestCount int
+	requestCount atomic.Int64
 }
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	srv.requestCount++
-	logger.Infof("[%d] Received request: %s", srv.requestCount, req.Name)
+	requestNum := srv.requestCount.Add(1)
+	logger.Infof("[%d] Received request: %s", requestNum, req.Name)
 
 	// Simulate some processing time
 	time.Sleep(100 * time.Millisecond)
 
 	resp := &greet.GreetResponse{
-		Greeting: fmt.Sprintf("Hello, %s! (request #%d)", req.Name, srv.requestCount),
+		Greeting: fmt.Sprintf("Hello, %s! (request #%d)", req.Name, requestNum),
 	}
 	return resp, nil
 }
