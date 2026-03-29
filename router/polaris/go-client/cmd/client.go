@@ -24,58 +24,61 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
-type UserProviderWithCustomGroupAndVersion struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
-
-type UserProvider struct {
-	GetUser func(ctx context.Context, req *User) (rsp *User, err error)
-}
-
-type User struct {
-	ID   string
-	Name string
-	Age  int32
-	Time time.Time
-}
-
-func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
-}
+import (
+	user "github.com/apache/dubbo-go-samples/router/polaris/proto"
+)
 
 func main() {
-	var userProvider = &UserProvider{}
-	var userProviderWithCustomRegistryGroupAndVersion = &UserProviderWithCustomGroupAndVersion{}
-	config.SetConsumerService(userProvider)
-	config.SetConsumerService(userProviderWithCustomRegistryGroupAndVersion)
-	hessian.RegisterPOJO(&User{})
-	err := config.Load()
+	polarisAddr := "127.0.0.1:8091"
+
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName("myApp"),
+		dubbo.WithRegistry(
+			registry.WithPolaris(),
+			registry.WithAddress(polarisAddr),
+			registry.WithNamespace("dubbogo"),
+			registry.WithRegisterInterface(),
+		),
+	)
 	if err != nil {
+		logger.Errorf("new dubbo instance failed: %v", err)
+		panic(err)
+	}
+
+	cli, err := ins.NewClient()
+	if err != nil {
+		logger.Errorf("new client failed: %v", err)
+		panic(err)
+	}
+
+	svc, err := user.NewUserService(cli)
+	if err != nil {
+		logger.Errorf("create user service failed: %v", err)
 		panic(err)
 	}
 
 	logger.Infof("\n\n\nstart to test dubbo")
 
 	uid := os.Getenv("uid")
-	atta := make(map[string]interface{})
-	atta["uid"] = uid
-	reqContext := context.WithValue(context.Background(), constant.DubboCtxKey("attachment"), atta)
 
 	for i := 0; i < 5; i++ {
 		time.Sleep(200 * time.Millisecond)
-		user, err := userProvider.GetUser(reqContext, &User{Name: "Alex001"})
+		req := &user.User{Name: "Alex001"}
+		ctx := context.WithValue(context.Background(), constant.AttachmentKey, map[string]interface{}{
+			"uid": uid,
+		})
+		resp, err := svc.GetUser(ctx, req)
 		if err != nil {
 			panic(err)
 		}
-		logger.Infof("response: %v\n", user)
+		logger.Infof("uid=%s, response: %v\n", uid, resp)
 	}
 }

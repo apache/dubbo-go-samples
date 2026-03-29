@@ -50,6 +50,7 @@
   * `router/tag`: Dubbo-go 的 tag router 使用示例。
   * `router/condition`: Dubbo-go 的 condition router 使用示例。
   * `router/script`: Dubbo-go 的 script router 使用示例。
+  * `router/polaris`：在 Dubbo-go 中快速体验北极星的服务路由能力。
 * `rpc`：Dubbo-go 支持的多种 RPC 协议示例。
   * `rpc/dubbo`：Dubbo 协议示例，包含 Java–Go 互操作。
   * `rpc/grpc`：基于 gRPC 协议的示例。
@@ -64,8 +65,6 @@
 ### compatibility（旧版 Dubbo-go 示例）
 
 * `compatibility/generic`：泛化调用示例。
-* `compatibility/polaris`:  Dubbo-go 与 polaris 集成示例.
-    * `compatibility/polaris/router`: 在 dubbogo 中快速体验北极星的服务路由能力
 
 ### 工具
 
