@@ -62,10 +62,6 @@
 * `tls`：演示如何在 Dubbo-go 中使用 TLS（基于 X.509 证书），实现客户端与服务端之间的加密通信和/或双向认证，同时包含 Go 与 Java 的互操作示例。
 * `transaction/seata-go`：基于 `seata-go` 的分布式事务示例。
 
-### compatibility（旧版 Dubbo-go 示例）
-
-* `compatibility/generic`：泛化调用示例。
-
 ### 工具
 
 * `pgw-cleaner`：用于在 Prometheus Push 模式下清理僵尸指标的运维工具。

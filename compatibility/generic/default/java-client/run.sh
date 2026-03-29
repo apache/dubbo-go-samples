@@ -1,1 +1,0 @@
-mvn -q -e clean compile exec:java -Dexec.mainClass="org.apache.dubbo.samples.ApiConsumer"

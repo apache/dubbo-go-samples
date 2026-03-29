@@ -62,10 +62,6 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
 * `tls`: Demonstrates how to use TLS (based on X.509 certificates) in Dubbo-go to enable encrypted communication and/or mutual authentication between client and server, also includes Go–Java interoperability.
 * `transaction/seata-go`: Distributed transaction example using `seata-go`.
 
-### compatibility (legacy Dubbo-go samples)
-
-* `compatibility/generic`: Generic invocation example.
-
 ### Tools
 
 * `pgw-cleaner`: Operations and maintenance tool for cleaning up zombie metrics in Prometheus Push mode.
