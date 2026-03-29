@@ -31,6 +31,7 @@ array+=("direct")
 # filter
 array+=("filter/token")
 array+=("filter/custom")
+array+=("filter/hystrix")
 
 # registry
 array+=("registry/zookeeper")
