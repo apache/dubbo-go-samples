@@ -61,19 +61,19 @@ svc, err := greet.NewGreetService(cli, client.WithFilter("hystrix_consumer"))
 
 ### 前置条件
 
-1. 启动 Zookeeper（默认：`127.0.0.1:2181`）
+1. 先启动 Go 服务端，并确认 `127.0.0.1:20000` 已经可以接受请求。
 
 ### 启动服务端
 
 ```shell
-cd /home/zb/dubbo-go-samples/filter/hystrix/go-server
+cd filter/hystrix/go-server
 go run ./cmd/main.go
 ```
 
 ### 启动客户端
 
 ```shell
-cd /home/zb/dubbo-go-samples/filter/hystrix/go-client
+cd filter/hystrix/go-client
 go run ./cmd/main.go
 ```
 
