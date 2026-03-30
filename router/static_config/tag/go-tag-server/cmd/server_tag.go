@@ -22,6 +22,7 @@ import (
 )
 
 import (
+	"dubbo.apache.org/dubbo-go/v3"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
@@ -34,8 +35,9 @@ import (
 )
 
 const (
-	triPort    = 20002
-	serverName = "server-with-gray-tag"
+	providerApplication = "static-tag-provider"
+	triPort             = 20002
+	serverName          = "server-with-gray-tag"
 )
 
 type GreetServer struct{}
@@ -48,12 +50,18 @@ func (s *GreetServer) Greet(_ context.Context, req *greet.GreetRequest) (*greet.
 }
 
 func main() {
-	srv, err := server.NewServer(
-		server.WithServerProtocol(
+	ins, err := dubbo.NewInstance(
+		dubbo.WithName(providerApplication),
+		dubbo.WithProtocol(
 			protocol.WithTriple(),
 			protocol.WithPort(triPort),
 		),
 	)
+	if err != nil {
+		panic(err)
+	}
+
+	srv, err := ins.NewServer()
 	if err != nil {
 		panic(err)
 	}

@@ -58,7 +58,7 @@ Static tag router:
 ```go
 dubbo.WithRouter(
     router.WithScope("application"),
-    router.WithKey("static-tag-client"),
+    router.WithKey("static-tag-provider"),
     router.WithForce(false),
     router.WithTags([]global.Tag{
         {

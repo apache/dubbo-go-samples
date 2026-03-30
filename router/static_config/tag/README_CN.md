@@ -58,7 +58,7 @@ INFO ... invoke successfully: receive: static tag router, response from: server-
 ```go
 dubbo.WithRouter(
     router.WithScope("application"),
-    router.WithKey("static-tag-client"),
+    router.WithKey("static-tag-provider"),
     router.WithForce(false),
     router.WithTags([]global.Tag{
         {

@@ -53,7 +53,7 @@ func main() {
 		dubbo.WithName(clientApplication),
 		dubbo.WithRouter(
 			router.WithScope("application"),
-			router.WithKey(clientApplication),
+			router.WithKey("static-tag-provider"),
 			router.WithPriority(100),
 			router.WithForce(false),
 			router.WithTags([]global.Tag{
