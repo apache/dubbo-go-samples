@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -44,6 +45,7 @@ const (
 	grayAddress       = "127.0.0.1:20002"
 	directURL         = "tri://127.0.0.1:20000;tri://127.0.0.1:20002?dubbo.tag=gray"
 	expectedServer    = "server-with-gray-tag"
+	attemptCount      = 5
 )
 
 func main() {
@@ -83,16 +85,21 @@ func main() {
 		constant.Tagkey: tagName,
 	})
 
-	resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: "static tag router"})
-	if err != nil {
-		logger.Errorf("invoke failed: %v", err)
-		os.Exit(1)
-	}
+	for i := 1; i <= attemptCount; i++ {
+		resp, err := svc.Greet(ctx, &greet.GreetRequest{
+			Name: fmt.Sprintf("static tag router attempt %d", i),
+		})
+		if err != nil {
+			logger.Errorf("invoke failed on attempt %d/%d: %v", i, attemptCount, err)
+			os.Exit(1)
+		}
 
-	if !strings.Contains(resp.Greeting, expectedServer) {
-		logger.Errorf("invoke routed to unexpected server, want %s, got %q", expectedServer, resp.Greeting)
-		os.Exit(1)
-	}
+		if !strings.Contains(resp.Greeting, expectedServer) {
+			logger.Errorf("routed to unexpected server on attempt %d/%d, want %s, got %q",
+				i, attemptCount, expectedServer, resp.Greeting)
+			os.Exit(1)
+		}
 
-	logger.Infof("invoke successfully: %v", resp.Greeting)
+		logger.Infof("invoke successfully on attempt %d/%d: %v", i, attemptCount, resp.Greeting)
+	}
 }
