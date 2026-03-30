@@ -27,6 +27,7 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
 * `direct`: Triple point-to-point invocation sample without a registry, also includes Go–Java interoperability.
 * `game`: Game service example.
 * `generic`: Generic invocation examples supporting interoperability between Dubbo-Go and Dubbo Java services, suitable for scenarios without interface information.
+* `graceful_shutdown`: Triple graceful shutdown sample for verifying long-connection notice, in-flight request draining, and shutdown timing knobs.
 * `integrate_test`: Integration test cases for Dubbo-go samples.
 * `java_interop`: Demonstrates interoperability between Java and Go Dubbo implementations.
   * `non-protobuf-dubbo`: Java/Go interoperability with the classic Dubbo protocol and non-protobuf payloads (Hessian2 style).
