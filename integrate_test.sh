@@ -103,12 +103,53 @@ wait_for_tcp_port() {
   local elapsed=0
 
   while [ "$elapsed" -lt "$timeout_seconds" ]; do
-    if timeout 1 bash -c "cat < /dev/null > /dev/tcp/$host/$port" >/dev/null 2>&1; then
+    if python3 - "$host" "$port" <<'PY' >/dev/null 2>&1
+import socket
+import sys
+
+host = sys.argv[1]
+port = int(sys.argv[2])
+
+family = socket.AF_UNSPEC
+type_ = socket.SOCK_STREAM
+
+for af, socktype, proto, _, sockaddr in socket.getaddrinfo(host, port, family, type_):
+    sock = None
+    try:
+        sock = socket.socket(af, socktype, proto)
+        sock.settimeout(1.0)
+        sock.connect(sockaddr)
+        sys.exit(0)
+    except OSError:
+        continue
+    finally:
+        if sock is not None:
+            sock.close()
+
+sys.exit(1)
+PY
+    then
       return 0
     fi
     sleep 1
     elapsed=$((elapsed + 1))
   done
+
+  return 1
+}
+
+get_dubbo_go_version() {
+  awk '/dubbo\.apache\.org\/dubbo-go\/v3/ {print $2; exit}' go.mod
+}
+
+should_skip_graceful_shutdown() {
+  local dubbo_go_version
+  dubbo_go_version="$(get_dubbo_go_version)"
+
+  if [ "$dubbo_go_version" = "v3.3.1" ]; then
+    echo "Skipping graceful_shutdown integration: sample requires dubbo-go v3.3.2+, current version is $dubbo_go_version"
+    return 0
+  fi
 
   return 1
 }
@@ -318,11 +359,29 @@ run_graceful_shutdown_sample() {
   local client_log="/tmp/.${PROJECT_NAME}.go-client.log"
   local server_pid=""
   local client_pid=""
+  local server_bin="/tmp/.${PROJECT_NAME}.go-server.bin"
+  local client_bin="/tmp/.${PROJECT_NAME}.go-client.bin"
+
+  if command -v lsof >/dev/null 2>&1; then
+    lsof -tiTCP:20000 -sTCP:LISTEN | xargs -r kill -9 || true
+  fi
+
+  echo "Building graceful_shutdown Go server..."
+  (
+    cd "$P_DIR"
+    go build -o "$server_bin" ./go-server/cmd
+  )
+
+  echo "Building graceful_shutdown Go client..."
+  (
+    cd "$P_DIR"
+    go build -o "$client_bin" ./go-client/cmd
+  )
 
   echo "Starting graceful_shutdown Go server..."
   (
     cd "$P_DIR"
-    go run ./go-server/cmd -timeout=15s -step-timeout=2s -consumer-update-wait=0s -delay=2s
+    exec "$server_bin" -timeout=15s -step-timeout=2s -consumer-update-wait=0s -delay=2s
   ) >"$GO_SERVER_LOG" 2>&1 &
   server_pid="$!"
   echo "$server_pid" >"$PID_FILE"
@@ -342,7 +401,7 @@ run_graceful_shutdown_sample() {
   echo "Running graceful_shutdown Go client..."
   (
     cd "$P_DIR"
-    go run ./go-client/cmd \
+    exec "$client_bin" \
       -addr=tri://127.0.0.1:20000 \
       -concurrency=2 \
       -interval=200ms \
@@ -395,6 +454,13 @@ main() {
   echo "=========================================="
 
   if [ "$SAMPLE" = "graceful_shutdown" ]; then
+    if should_skip_graceful_shutdown; then
+      echo "=========================================="
+      echo "Sample flow skipped for: $SAMPLE"
+      echo "=========================================="
+      return 0
+    fi
+
     run_graceful_shutdown_sample
     echo "=========================================="
     echo "Sample flow completed for: $SAMPLE"
