@@ -138,22 +138,6 @@ PY
   return 1
 }
 
-get_dubbo_go_version() {
-  awk '/dubbo\.apache\.org\/dubbo-go\/v3/ {print $2; exit}' go.mod
-}
-
-should_skip_graceful_shutdown() {
-  local dubbo_go_version
-  dubbo_go_version="$(get_dubbo_go_version)"
-
-  if [ "$dubbo_go_version" = "v3.3.1" ]; then
-    echo "Skipping graceful_shutdown integration: sample requires dubbo-go v3.3.2+, current version is $dubbo_go_version"
-    return 0
-  fi
-
-  return 1
-}
-
 wait_for_process_exit() {
   local pid="$1"
   local timeout_seconds="$2"
@@ -405,6 +389,7 @@ run_graceful_shutdown_sample() {
       -addr=tri://127.0.0.1:20000 \
       -concurrency=2 \
       -interval=200ms \
+      -short \
       -request-timeout=6s \
       -max-requests=12 \
       -min-successes=1 \
@@ -454,13 +439,6 @@ main() {
   echo "=========================================="
 
   if [ "$SAMPLE" = "graceful_shutdown" ]; then
-    if should_skip_graceful_shutdown; then
-      echo "=========================================="
-      echo "Sample flow skipped for: $SAMPLE"
-      echo "=========================================="
-      return 0
-    fi
-
     run_graceful_shutdown_sample
     echo "=========================================="
     echo "Sample flow completed for: $SAMPLE"
