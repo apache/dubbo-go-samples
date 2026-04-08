@@ -19,13 +19,13 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"strings"
 )
 
 import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-
-	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
@@ -47,62 +47,57 @@ func main() {
 	// Unary
 	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "openapi"})
 	if err != nil {
-		logger.Error(err)
-		return
+		panic(err)
 	}
-	logger.Infof("Greet response: %s", resp.Greeting)
+	fmt.Printf("Greet response: %s\n", resp.Greeting)
 
 	// Server Stream
 	serverStream, err := svc.GreetServerStream(context.Background(), &greet.GreetServerStreamRequest{Name: "openapi"})
 	if err != nil {
-		logger.Error(err)
-		return
+		panic(err)
 	}
 	for serverStream.Recv() {
 		msg := serverStream.Msg()
-		logger.Infof("GreetServerStream response: %s", msg.Greeting)
+		fmt.Printf("GreetServerStream response: %s\n", msg.Greeting)
 	}
 
 	// Client Stream
 	clientStream, err := svc.GreetClientStream(context.Background())
 	if err != nil {
-		logger.Error(err)
-		return
+		panic(err)
 	}
 	for _, name := range []string{"alice", "bob", "charlie"} {
 		if sendErr := clientStream.Send(&greet.GreetClientStreamRequest{Name: name}); sendErr != nil {
-			logger.Error(sendErr)
-			return
+			panic(sendErr)
 		}
 	}
 	clientResp, err := clientStream.CloseAndRecv()
 	if err != nil {
-		logger.Error(err)
-		return
+		panic(err)
 	}
-	logger.Infof("GreetClientStream response: %s", clientResp.Greeting)
+	fmt.Printf("GreetClientStream response: %s\n", clientResp.Greeting)
 
 	// Bidi Stream
 	bidiStream, err := svc.GreetBidiStream(context.Background())
 	if err != nil {
-		logger.Error(err)
-		return
+		panic(err)
 	}
 	for _, name := range []string{"dave", "eve"} {
 		if err := bidiStream.Send(&greet.GreetBidiStreamRequest{Name: name}); err != nil {
-			logger.Error(err)
-			return
+			panic(err)
 		}
 	}
 	if err := bidiStream.CloseRequest(); err != nil {
-		logger.Error(err)
-		return
+		panic(err)
 	}
 	for {
 		msg, err := bidiStream.Recv()
-		if err != nil {
+		if err != nil && strings.Contains(err.Error(), "EOF") {
 			break
 		}
-		logger.Infof("GreetBidiStream response: %s", msg.Greeting)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("GreetBidiStream response: %s\n", msg.Greeting)
 	}
 }
