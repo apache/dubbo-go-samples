@@ -53,10 +53,8 @@ func (srv *GreetTripleServer) GreetServerStream(ctx context.Context, req *greet.
 
 func (srv *GreetTripleServer) GreetClientStream(ctx context.Context, stream greet.GreetService_GreetClientStreamServer) (*greet.GreetClientStreamResponse, error) {
 	var names []string
-	for {
-		if !stream.Recv() {
-			break
-		}
+	for stream.Recv() {
+
 		msg := stream.Msg()
 		names = append(names, msg.Name)
 	}
@@ -142,19 +140,19 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); err != nil {
-		panic(err)
+	if registerErr := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{}); registerErr != nil {
+		panic(registerErr)
 	}
-	if err := demo.RegisterGreetServiceHandler(srv, &DemoTripleServerV1{},
+	if registerErr := demo.RegisterGreetServiceHandler(srv, &DemoTripleServerV1{},
 		server.WithVersion("1.0.0"),
-	); err != nil {
-		panic(err)
+	); registerErr != nil {
+		panic(registerErr)
 	}
-	if err := demo.RegisterGreetServiceHandler(srv, &DemoTripleServerV2{},
+	if registerErr := demo.RegisterGreetServiceHandler(srv, &DemoTripleServerV2{},
 		server.WithOpenAPIGroup("demo-2.0.0"),
 		server.WithVersion("2.0.0"),
-	); err != nil {
-		panic(err)
+	); registerErr != nil {
+		panic(registerErr)
 	}
 
 	srv2, err := server.NewServer(

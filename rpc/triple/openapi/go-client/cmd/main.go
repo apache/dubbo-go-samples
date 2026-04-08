@@ -70,8 +70,8 @@ func main() {
 		return
 	}
 	for _, name := range []string{"alice", "bob", "charlie"} {
-		if err := clientStream.Send(&greet.GreetClientStreamRequest{Name: name}); err != nil {
-			logger.Error(err)
+		if sendErr := clientStream.Send(&greet.GreetClientStreamRequest{Name: name}); sendErr != nil {
+			logger.Error(sendErr)
 			return
 		}
 	}
