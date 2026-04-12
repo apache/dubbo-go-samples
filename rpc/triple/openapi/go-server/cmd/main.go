@@ -26,8 +26,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	triple "dubbo.apache.org/dubbo-go/v3/protocol/triple"
 	"dubbo.apache.org/dubbo-go/v3/server"
-
-	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
@@ -155,35 +153,11 @@ func main() {
 		panic(registerErr)
 	}
 
-	srv2, err := server.NewServer(
-		server.WithServerProtocol(
-			protocol.WithTriple(
-				triple.WithOpenAPI(
-					triple.OpenAPIEnable(),
-					triple.OpenAPIInfoTitle("OpenAPI Service 2"),
-					triple.OpenAPIInfoDescription("Another service with OpenAPI documentation"),
-					triple.OpenAPIInfoVersion("2.0.0"),
-				),
-			),
-			protocol.WithPort(20001),
-		),
-	)
-	if err != nil {
-		panic(err)
-	}
-	if err := demo.RegisterGreetServiceHandler(srv2, &DemoTripleServerV1{}); err != nil {
-		panic(err)
-	}
-	if err := srv2.RegisterService(&UserService{}); err != nil {
+	if err := srv.RegisterService(&UserService{}); err != nil {
 		panic(err)
 	}
 
-	go func() {
-		if err := srv.Serve(); err != nil {
-			logger.Error(err)
-		}
-	}()
-	if err := srv2.Serve(); err != nil {
-		logger.Error(err)
+	if err := srv.Serve(); err != nil {
+		panic(err)
 	}
 }
