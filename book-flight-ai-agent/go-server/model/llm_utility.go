@@ -22,12 +22,8 @@ import (
 )
 
 func RemoveThink(text string) string {
-	re := regexp.MustCompile(`<think>[\s\S]*</think>`)
-	matches := re.FindAllString(text, -1)
-	if len(matches) > 0 {
-		text = text[len(matches[0]):]
-	}
-	return text
+	re := regexp.MustCompile(`(?s)<think>.*?</think>\s*`)
+	return re.ReplaceAllString(text, "")
 }
 
 func MergeMaps[K comparable, V any](m1, m2 map[K]V) map[K]V {

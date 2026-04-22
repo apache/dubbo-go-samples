@@ -6,6 +6,8 @@ English | [中文](README_CN.md)
 
 A collection of runnable Dubbo-go examples covering configuration, registries, observability, interoperability, service mesh, and more.
 
+Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the samples.
+
 ## What It Contains
 
 ### Samples
@@ -18,15 +20,26 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
 * `context`: Demonstrates passing user data (attachments) via Go `context` between client and server.
 * `error`: Error-handling examples in Dubbo-go.
 * `filter`: Demonstrates the use of built-in and custom filters in Dubbo-go.
+  * `custom`: Implements custom client and server filters.
+  * `hystrix`: Uses `hystrix-go` to demonstrate circuit breaker protection on Dubbo-go calls.
+  * `sentinel`: Demonstrates flow control, isolation, and circuit breaking with Sentinel filters.
   * `polaris/limit`: Uses Polaris as a TPS limiter.
+  * `token`: Demonstrates token-based request validation between consumer and provider.
+  * `tpslimit`: Demonstrates Dubbo-go's built-in TPS limiting filter with custom limit and rejection strategies.
 * `healthcheck`: Service health check example.
 * `helloworld`: Basic “Hello World” example for Dubbo-go, also includes Go–Java interoperability.
 * `http3`: HTTP/3 (QUIC) protocol support example demonstrating how to use Triple protocol with HTTP/3 for high-performance communication between Go and Java services with TLS encryption.
 * `direct`: Triple point-to-point invocation sample without a registry, also includes Go–Java interoperability.
 * `game`: Game service example.
 * `generic`: Generic invocation examples supporting interoperability between Dubbo-Go and Dubbo Java services, suitable for scenarios without interface information.
+* `graceful_shutdown`: Triple graceful shutdown sample for verifying long-connection notice, in-flight request draining, and shutdown timing knobs.
 * `integrate_test`: Integration test cases for Dubbo-go samples.
 * `java_interop`: Demonstrates interoperability between Java and Go Dubbo implementations.
+  * `non-protobuf-dubbo`: Java/Go interoperability with the classic Dubbo protocol and non-protobuf payloads (Hessian2 style).
+  * `non-protobuf-triple`: Java/Go interoperability over Triple protocol using non-protobuf payloads.
+  * `protobuf-triple`: Java/Go interoperability over Triple protocol with a shared protobuf contract.
+  * `service_discovery/interface`: Java/Go interoperability with Nacos using interface-level service discovery (Dubbo2 / legacy Dubbo3 model).
+  * `service_discovery/service`: Java/Go interoperability with Nacos using application-level service discovery (Dubbo3 model).
 * `llm`: Example of integrating Large Language Models (LLMs) with Dubbo-go.
 * `logger`: Logging examples for Dubbo-go applications.
   * `logger/default`: Print to console by default.
@@ -34,7 +47,9 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
   * `logger/rolling`: Output to file.
   * `logger/custom`: Custom logger.
   * `logger/trace-integration`: Integrate OpenTelemetry trace information, automatically injecting trace_id, span_id and other information into logs.
-* `metrics`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
+* `metrics`: Observability-related samples.
+  * `metrics/prometheus_grafana`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
+  * `metrics/probe`: Demonstrates Dubbo-go Kubernetes probe endpoints (`/live`, `/ready`, `/startup`) and deployment usage.
 * `mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `online_boutique`: Microservices “online boutique” demo built with Dubbo-go.
 * `otel/tracing`: Distributed tracing examples using OpenTelemetry.
@@ -42,35 +57,69 @@ A collection of runnable Dubbo-go examples covering configuration, registries, o
   * `otlp_http_exporter`: Uses `otlpHttpExporter` to export tracing data, covering `dubbo`/`triple`/`jsonrpc` protocols.
 * `registry`: Examples of using different service registries (e.g., Nacos, Zookeeper).
 * `retry`: Demonstrates retry mechanisms in Dubbo-go RPC calls.
+* `router`: Various Dubbo-go router examples.
+  * `router/tag`: Dubbo-go tag router examples.
+  * `router/condition`: Dubbo-go condition router examples.
+  * `router/script`: Dubbo-go script router examples.
+  * `router/polaris`: Quickly experience Polaris' service routing capabilities in Dubbo-go.
+  * `router/static_config/tag`: Dubbo-go static tag router example.
+  * `router/static_config/condition`: Dubbo-go static condition router example.
 * `rpc`: Various RPC protocol examples with Dubbo-go.
   * `rpc/dubbo`: Dubbo protocol example, including Java–Go interop.
   * `rpc/grpc`: gRPC protocol example.
   * `rpc/jsonrpc`: JSON-RPC protocol example.
   * `rpc/triple`: Triple protocol example with multiple serialization formats.
+  * `rpc/triple/openapi`: Demonstrates how to enable OpenAPI documentation for Triple protocol services, including versioned services and non-IDL services.
 * `streaming`: Streaming RPC example, also includes Go–Java interoperability when both use streaming.
 * `task`: Task scheduling and execution example.
 * `timeout`: Demonstrates timeout handling in Dubbo-go.
 * `tls`: Demonstrates how to use TLS (based on X.509 certificates) in Dubbo-go to enable encrypted communication and/or mutual authentication between client and server, also includes Go–Java interoperability.
 * `transaction/seata-go`: Distributed transaction example using `seata-go`.
 
-### compatibility (legacy Dubbo-go samples)
-
-* `compatibility/generic`: Generic invocation example.
-* `compatibility/polaris`:  Dubbo-go integrate with polaris samples.
-    * `compatibility/polaris/router`: Quickly experience Polaris' service routing capabilities in dubbogo
-
 ### Tools
 
 * `pgw-cleaner`: Operations and maintenance tool for cleaning up zombie metrics in Prometheus Push mode.
 
-## How To Run
+## Integration Test Flow
 
-Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the samples.
+This repository uses a script-driven integration test flow:
+
+1. `start_integrate_test.sh`: run the full sample list (same as CI).
+2. `integrate_test.sh <sample-path>`: run a single sample.
+
+### Run full integration tests
+
+```bash
+./start_integrate_test.sh
+```
+
+This script will:
+
+* Start dependency services from root `docker-compose.yml`.
+* Run dependency health checks.
+* Invoke `./integrate_test.sh ...` for each sample in the list.
+* Tear down dependency containers on exit (success or failure).
+
+### Run a single sample
+
+```bash
+./integrate_test.sh helloworld
+./integrate_test.sh direct
+```
+
+Main steps of `integrate_test.sh`:
+
+1. Start `go-server` (and optional auxiliary Go servers).
+2. Run `go-client`.
+3. Run `java-client` (if present and `mvn` is available).
+4. Stop `go-server`.
+5. Start `java-server` (if present) and wait for port readiness.
+6. Run `java-client` and `go-client` again to verify Go/Java interop.
 
 ## How to Contribute
 
 If you want to add more samples, please follow these steps:
 
-1. Create a new subdirectory and give it an appropriate name for your sample. If you are unsure how to organize your code, follow the layout of the existing samples.
+1. Create a new subdirectory and give it an appropriate name for your sample. If you are unsure how to organize your code, follow the layout of the existing samples and refer to [HOWTO.md](HOWTO.md) for detailed instructions.
 2. Make sure your sample works as expected before submitting a PR, and ensure GitHub CI passes after the PR is submitted. You can refer to the existing samples to learn how to test your sample.
 3. Provide a `README.md` in your sample directory to explain what your sample does and how to run it.

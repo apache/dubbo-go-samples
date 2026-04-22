@@ -5,7 +5,7 @@
 本示例演示Dubbo-Go以ZooKeeper为配置中心来实现动态配置功能
 
 ## 2. 如何运行
-### 在 `integrate_test/dockercompose` 目录下执行：
+### 在 `仓库根目录` 目录下执行：
 ```
 docker compose up -d zookeeper
 ```

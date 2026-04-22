@@ -1,150 +1,148 @@
 # 如何运行
 
-[English](README.md) | 中文
+[English](HOWTO.md) | 中文
 
-目前有三种方式来运行 dubbo-go 的示例:
+目前有两种方式来运行 dubbo-go 的示例:
 
-1. 通过 bash 命令快速开始: 通过简单的命令行启动样例以及进行单元测试
-2. 在 IDE 中快速开始，这也是**推荐**的方式: 在工程 ".run" 子目录下，提供了所有示例的 GoLand 运行配置文件，因此用户可以简单在 IDE 中单击运行所有的示例。
-3. 在 IDE 中手工配置并运行: 为了完整性的目的，也为了万一您不使用 GoLand 而使用其他的 IDE，这里也提供了如何一步一步的配置的指南，帮助用户理解如何在 IDE 中配置，运行或者调试 dubbo-go 的示例。   
+1. 脚本驱动的集成测试（CI 流程）
+2. 不使用脚本的手动运行
 
-### 1. 通过 命令行 快速开始
+## 1. 集成测试（CI 流程）
 
-*前置条件：需要 docker 环境就绪*
+### 1.1 集成测试流程
 
-下面我们将使用 "helloworld" 作为示例:
+当前 CI 使用脚本驱动的集成测试。
 
-1. **启动注册中心（比如 zookeeper）**
-   
+对单个 sample，`./integrate_test.sh <sample-path>` 的执行顺序如下：
+1. 启动 `go-server`
+2. 启动辅助 Go server（`*-server/cmd/*.go`，如 `grpc-server`）
+3. 运行 `go-client`
+4. 运行 `java-client`（如果存在）
+5. 停止 `go-server`
+6. 启动 `java-server`（如果存在）
+7. 运行 `java-client`（如果存在）
+8. 再次运行 `go-client`（验证 Go client 能调用 Java server）
+
+说明：
+- 如果环境中没有 `mvn`，会自动跳过 Java 阶段。
+- Java server 启动后会先做端口就绪检查，再继续执行 Java/Go client 阶段。
+- 默认 Java server 地址是 `127.0.0.1:20000`（可用环境变量覆盖）。
+
+### 1.2 `start_integrate_test.sh` 与 `integrate_test.sh` 使用方式
+
+前置条件：
+- Docker / Docker Compose
+- Go 工具链
+- Maven（可选；如果要执行 Java 阶段则需要）
+
+运行完整 CI 样例列表：
+```bash
+./start_integrate_test.sh
+```
+
+`start_integrate_test.sh` 会：
+- 通过仓库根目录 `docker-compose.yml` 启动依赖
+- 做依赖健康检查
+- 逐个调用 `./integrate_test.sh <sample>`
+- 在退出时（成功或失败）停止依赖
+
+运行单个 sample：
+```bash
+./integrate_test.sh helloworld
+./integrate_test.sh direct
+```
+
+常用环境变量：
+- `GO_CLIENT_TIMEOUT_SECONDS`（默认：`90`）
+- `JAVA_CLIENT_TIMEOUT_SECONDS`（默认：`180`）
+- `JAVA_SERVER_READY_TIMEOUT_SECONDS`（默认：`60`）
+- `JAVA_SERVER_HOST`（默认：`127.0.0.1`）
+- `JAVA_SERVER_PORT`（默认：`20000`）
+
+### 1.3 如何新增一个集成测试 sample
+
+至少需要以下目录：
+- `go-server/cmd/*.go`
+- `go-client/cmd/*.go`
+
+推荐结构：
+- `go-server/conf/dubbogo.yml`（或 `dubbogo.yaml`）
+- `go-client/conf/dubbogo.yml`（或 `dubbogo.yaml`）
+- 可选 Java 互通：
+  - `java-server/run.sh`
+  - `java-client/run.sh`
+
+Java 脚本要求：
+- `java-server/run.sh` 需要保证 server 进程可持续运行（不要依赖后台 stdin）。
+- `java-client/run.sh` 失败时必须返回非 0 退出码。
+
+验证步骤：
+1. 先单独跑 sample：
    ```bash
-   make -f build/Makefile docker-up 
+   ./integrate_test.sh <your-sample-path>
    ```
-   
-   当看到类似下面的输出信息时，就表明 zookeeper server 启动就绪了。
-   
+2. 将 sample 加入 `start_integrate_test.sh` 的 `array` 列表。
+3. 再跑全量：
    ```bash
-   >  Starting dependency services with ./integrate_test/dockercompose/docker-compose.yml
-   Docker Compose is now in the Docker CLI, try `docker compose up`
-   
-   Creating network "dockercompose_default" with the default driver
-   Creating dockercompose_zookeeper_1 ... done
-   Creating etcd                      ... done
-   Creating nacos-standalone          ... done
+   ./start_integrate_test.sh
    ```
-   
-   如果要停掉注册中心，可以通过运行以下的命令完成:
-   
+4. 确保失败路径可见（非 0 退出码、日志清晰）。
+
+## 2. 手动运行（不使用脚本）
+
+本节介绍如何不使用 `start_integrate_test.sh` 和 `integrate_test.sh`，手动运行单个 sample。
+
+示例 sample：`helloworld`
+
+### 2.1 启动依赖
+
+```bash
+cd <PATH OF dubbo-go-samples>
+docker compose -f docker-compose.yml up -d
+```
+
+如果环境使用老版本 compose：
+```bash
+docker-compose -f docker-compose.yml up -d
+```
+
+### 2.2 运行 Go server
+
+新开一个终端：
+```bash
+cd <PATH OF dubbo-go-samples>/helloworld
+export DUBBO_GO_CONFIG_PATH=./go-server/conf/dubbogo.yml
+go run ./go-server/cmd/*.go
+```
+
+### 2.3 运行 Go client
+
+再开一个终端：
+```bash
+cd <PATH OF dubbo-go-samples>/helloworld
+export DUBBO_GO_CONFIG_PATH=./go-client/conf/dubbogo.yml
+go run ./go-client/cmd/*.go
+```
+
+### 2.4 可选：验证 Java 互通
+
+1. 先停止 Go server（Go server 终端中 `Ctrl+C`）。
+2. 启动 Java server：
    ```bash
-   make -f build/Makefile docker-down
+   cd <PATH OF dubbo-go-samples>/helloworld/java-server
+   bash ./run.sh
    ```
-   
-2. **启动服务提供方**
-   
-    ```bash
-    cd helloworld/go-server/cmd
-    export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-    go run .
-    ```
-   
-   当看到类似下面的输出信息时，就表明服务提供方启动就绪了。
-
+3. 运行 Java client：
    ```bash
-   2021/10/27 00:33:10 Connected to 127.0.0.1:2181
-   2021/10/27 00:33:10 Authenticated: id=72057926938066944, timeout=10000
-   2021/10/27 00:33:10 Re-submitting `0` credentials after reconnec
+   cd <PATH OF dubbo-go-samples>/helloworld/java-client
+   bash ./run.sh
    ```
- 
-3. **运行服务调用方**
-   
-    ```bash
-   cd helloworld/go-client/cmd
-   export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-   go run .
-   ```
+4. 再执行一次 Go client（2.3 的终端）验证 Go -> Java 调用。
 
-   当以下的信息输出时，说明 `go-client` 调用 `go-server` 成功。
+### 2.5 清理
 
-   ```bash
-   2021-10-27T00:40:44.879+0800    DEBUG   triple/dubbo3_client.go:106     TripleClient.Invoke: get reply = name:"Hello laurence" id:"12345" age:21 
-   2021-10-27T00:40:44.879+0800    DEBUG   proxy/proxy.go:218      [makeDubboCallProxy] result: name:"Hello laurence" id:"12345" age:21 , err: <nil>
-   2021-10-27T00:40:44.879+0800    INFO    cmd/client.go:51        client response result: name:"Hello laurence" id:"12345" age:21
-   ```
-   
-4. **集成测试**
-   本项目 dubbo-go-samples 除了用来展示如何使用 dubbo-go 中的功能和特性之外，还被用于 apache/dubbo-go 的集成测试。可以按照以下的步骤来运行针对 `go-server` 设计的集成测试:
-   
-   首先启动服务方
-   ```bash
-   cd helloworld/go-server/cmd
-   export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-   go run .
-   ```
-   
-   然后切换到单测目录， 设置环境变量，然后执行单测
-   ```bash
-   cd integrate_test/helloworld/tests/integration
-   export DUBBO_GO_CONFIG_PATH="../../../../helloworld/go-client/conf/dubbogo.yml"
-   go test -v
-   ```
-
-   当以下信息输出时，说明集成测试通过。
-
-   ```bash
-   >  Running integration test for application go-server
-   ...
-   --- PASS: TestSayHello (0.01s)
-   PASS
-   ok      github.com/apache/dubbo-go-samples/integrate_test/helloworld/tests/integration  0.119s
-   ```
-   
-7. **关闭并清理**
-   ```bash
-   make -f build/Makefile clean docker-down
-   ```
-
-*以下的两种运行方式都与 IDE 有关。这里我们以 Intellij GoLand 为例来讨论。*
-
-### 2. 在 IDE 中快速开始
-
-一旦在 GoLand 中打开本项目，可以发现，在 "Run Configuration" 弹出菜单中已经存在了一系列事先配置好了的用来运行相关服务提供方和调用方的选项，例如："helloworld-go-server" 和 "helloworld-go-client"。
-
-![run-configuration.png](.images/run-configurations.png)
-
-可以选择其中的任意一个快速启动相关示例。当然在运行之前，假设需要的注册中心已经事先启动了，不然用例将会失败。您可以选择手动自行启动的方式，也可以利用工程中提供的 "docker-compose.yml" 在启动注册中心的 docker 实例。选择后者的话，可以参考[第三种方式](#3-manually-run-in-ide)中的细节。
-
-### 3. 在 IDE 中手工运行
-
-这里以 *Intellij GoLand* 为例。在 GoLand 中打开 dubbo-go-samples 工程之后，按照以下的步骤来运行/调试本示例:
-
-1. **启动 zookeeper 服务器**
-
-   打开 "integrate_test/dockercompose/docker-compose.yml" 这个文件，然后点击位于编辑器左边 gutter 栏位中的 ▶︎▶︎ 图标运行，"Service" Tab 应当会弹出并输出类似下面的文本信息:
-   ```
-   Deploying 'Compose: docker'...
-   /usr/local/bin/docker-compose -f ...integrate_test/dockercompose/docker-compose.yml up -d
-   Creating network "docker_default" with the default driver
-   Creating docker_zookeeper_1 ...
-   'Compose: docker' has been deployed successfully.
-   ```
-
-2. **启动服务提供方**
-
-   打开 "helloworld/go-server/cmd/server.go" 文件，然后点击左边 gutter 栏位中紧挨着 "main" 函数的 ▶︎ 图标，并从弹出的菜单中选择 "Modify Run Configuration..."，并确保以下配置的准确:
-   * Working Directory: "helloworld/go-server" 目录的绝对路径，比如： */home/dubbo-go-samples/helloworld/go-server*
-   * Environment: DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-
-   这样示例中的服务端就准备就绪，随时可以运行了。
-
-3. **运行服务消费方**
-
-   打开 "helloworld/go-client/cmd/client.go" 这个文件，然后从左边 gutter 栏位中点击紧挨着 "main" 函数的 ▶︎ 图标，然后从弹出的菜单中选择 "Modify Run Configuration..."，并确保以下配置的准确:
-   * Working Directory: "helloworld/go-client" 目录的绝对路径，比如： */home/dubbo-go-samples/helloworld/go-client*
-   * Environment: DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-
-   然后就可以运行并调用远端的服务了，如果调用成功，将会有以下的输出:
-   ```
-   [2021-02-03/16:19:30 main.main: client.go: 66] response result: &{A001 Alex Stocks 18 2020-02-04 16:19:30.422 +0800 CST}
-   ```
-
-如果需要调试该示例或者 dubbo-go 框架，可以在 IDE 中从 "Run" 切换到 "Debug"。如果要结束的话，直接点击 ◼︎ 就好了。
-
+前台进程用 `Ctrl+C` 停止后，执行：
+```bash
+cd <PATH OF dubbo-go-samples>
+docker compose -f docker-compose.yml down
+```

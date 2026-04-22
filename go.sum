@@ -96,6 +96,8 @@ github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kd
 github.com/apache/dubbo-getty v1.4.8/go.mod h1:cPJlbcHUTNTpiboMQjMHhE9XBni11LiBiG8FdrDuVzk=
 github.com/apache/dubbo-getty v1.4.10 h1:ZmkpHJa/qgS0evX2tTNqNCz6rClI/9Wwp7ctyMml82w=
 github.com/apache/dubbo-getty v1.4.10/go.mod h1:V64WqLIxksEgNu5aBJBOxNIvpOZyfUJ7J/DXBlKSUoA=
+github.com/apache/dubbo-go-extensions v0.0.0-20260312085545-de428af0b99e h1:qwdBjqJhwHbRXBtpehiEzilkgFAyZs90e6OC7kNWxwQ=
+github.com/apache/dubbo-go-extensions v0.0.0-20260312085545-de428af0b99e/go.mod h1:vpp1J/MZLQYPNrpzx5PsDFCceUEBkdV8KBHVbEfqr4A=
 github.com/apache/dubbo-go-hessian2 v1.9.1/go.mod h1:xQUjE7F8PX49nm80kChFvepA/AvqAZ0oh/UaB6+6pBE=
 github.com/apache/dubbo-go-hessian2 v1.9.3/go.mod h1:xQUjE7F8PX49nm80kChFvepA/AvqAZ0oh/UaB6+6pBE=
 github.com/apache/dubbo-go-hessian2 v1.11.0/go.mod h1:7rEw9guWABQa6Aqb8HeZcsYPHsOS7XT1qtJvkmI6c5w=

@@ -19,6 +19,7 @@ package pkg
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -115,4 +116,38 @@ func (u *UserProvider) Reference() string {
 
 func (u *UserProvider) MethodMapper(_ context.Context) map[string]string {
 	return map[string]string{}
+}
+
+// Invoke handles generic call via $invoke method
+// Parameters: methodName (string), types ([]string), args ([]interface{})
+func (u *UserProvider) Invoke(ctx context.Context, methodName string, types []string, args []interface{}) (interface{}, error) {
+	logger.Infof("Generic invoke: method=%s, types=%v, args=%v", methodName, types, args)
+
+	switch methodName {
+	case "GetUser1":
+		return u.GetUser1(ctx, args[0].(string))
+	case "GetUser2":
+		return u.GetUser2(ctx, args[0].(string), args[1].(string))
+	case "GetUser3":
+		return u.GetUser3(ctx, args[0].(int32))
+	case "GetUser4":
+		return u.GetUser4(ctx, args[0].(int32), args[1].(string))
+	case "GetOneUser":
+		return u.GetOneUser(ctx)
+	case "GetUsers":
+		return u.GetUsers(ctx, args[0].([]string))
+	case "GetUsersMap":
+		return u.GetUsersMap(ctx, args[0].([]string))
+	case "QueryUser":
+		user := args[0].(*User)
+		return u.QueryUser(ctx, user)
+	case "QueryUsers":
+		users := args[0].([]*User)
+		return u.QueryUsers(ctx, users)
+	case "QueryAll":
+		return u.QueryAll(ctx)
+	default:
+		logger.Errorf("Unknown method: %s", methodName)
+		return nil, fmt.Errorf("unknown method: %s", methodName)
+	}
 }

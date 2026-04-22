@@ -54,13 +54,35 @@ func (stt *SearchFlightTicketTool) Call(ctx context.Context, input string) (stri
 }
 
 func (stt *SearchFlightTicketTool) searchFlightTicket() (string, error) {
-	// Only the departure point is verified here, and other information is not verified
-	if stt.Origin != "北京" {
+	date = stt.Date
+	all := flightInformation()
+
+	var rst []map[string]string
+	for _, info := range all {
+		if stt.Origin != "" && info["origin"] != stt.Origin {
+			continue
+		}
+		if stt.Destination != "" && info["destination"] != stt.Destination {
+			continue
+		}
+		// departure_time format: "date HH:MM", extract last 5 chars for time range filter
+		dep_time := ""
+		if t := info["departure_time"]; len(t) >= 5 {
+			dep_time = t[len(t)-5:]
+		}
+		if stt.DepartureTimeStart != "" && dep_time < stt.DepartureTimeStart {
+			continue
+		}
+		if stt.DepartureTimeEnd != "" && dep_time > stt.DepartureTimeEnd {
+			continue
+		}
+		rst = append(rst, info)
+	}
+
+	if len(rst) == 0 {
 		return "No relevant content was found", nil
 	}
 
-	date = stt.Date
-	rst := flightInformation()
 	rst_json, err := json.Marshal(rst)
 	return string(rst_json), err
 }
@@ -93,63 +115,4 @@ func (ptt *PurchaseFlightTicketTool) purchaseFlightTicket() (string, error) {
 	}
 
 	return fmt.Sprintf("The flight was not found: %v", ptt.FlightNumber), nil
-}
-
-func flightInformation() []map[string]string {
-	return []map[string]string{
-		{
-			"flight_number":  "MU5100",
-			"origin":         "北京",
-			"destination":    "上海",
-			"departure_time": fmt.Sprintf("%v 07:00", date),
-			"arrival_time":   fmt.Sprintf("%v 09:15", date),
-			"price":          "900.00",
-			"seat_type":      "头等舱",
-		},
-		{
-			"flight_number":  "MU6865",
-			"origin":         "北京",
-			"destination":    "上海",
-			"departure_time": fmt.Sprintf("%v 07:20", date),
-			"arrival_time":   fmt.Sprintf("%v 09:25", date),
-			"price":          "1160.00",
-			"seat_type":      "头等舱",
-		},
-		{
-			"flight_number":  "HM7601",
-			"origin":         "北京",
-			"destination":    "上海",
-			"departure_time": fmt.Sprintf("%v 07:30", date),
-			"arrival_time":   fmt.Sprintf("%v 09:55", date),
-			"price":          "1080.00",
-			"seat_type":      "普通舱",
-		},
-		{
-			"flight_number":  "CA1515",
-			"origin":         "北京",
-			"destination":    "上海",
-			"departure_time": fmt.Sprintf("%v 15:45", date),
-			"arrival_time":   fmt.Sprintf("%v 17:55", date),
-			"price":          "1080.00",
-			"seat_type":      "普通舱",
-		},
-		{
-			"flight_number":  "GS9012",
-			"origin":         "北京",
-			"destination":    "上海",
-			"departure_time": fmt.Sprintf("%v 19:00", date),
-			"arrival_time":   fmt.Sprintf("%v 23:00", date),
-			"price":          "1250.00",
-			"seat_type":      "头等舱",
-		},
-		{
-			"flight_number":  "GS9013",
-			"origin":         "北京",
-			"destination":    "上海",
-			"departure_time": fmt.Sprintf("%v 18:30", date),
-			"arrival_time":   fmt.Sprintf("%v 22:00", date),
-			"price":          "1200.00",
-			"seat_type":      "头等舱",
-		},
-	}
 }

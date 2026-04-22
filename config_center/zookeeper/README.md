@@ -5,7 +5,7 @@
 This example shows dubbo-go's dynamic configuration feature with Zookeeper as config-center.
 
 ## 2. How to run
-### Run the following commands under `integrate_test/dockercompose`:
+### Run the following commands under `repo root`:
 
 ```
 docker compose up -d zookeeper

@@ -23,7 +23,7 @@ import (
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/global"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
@@ -68,12 +68,12 @@ func main() {
 
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
 		server.WithTpsLimiter("method-service"),
-		server.WithMethod(
-			config.WithName("Greet"),
-			config.WithTpsLimitRate(5),
-			config.WithTpsLimitInterval(1000),
-			config.WithTpsLimitStrategy("RandomLimitStrategy"),
-		),
+		server.WithMethod(&global.MethodConfig{
+			Name:             "Greet",
+			TpsLimitRate:     "5",
+			TpsLimitInterval: "1000",
+			TpsLimitStrategy: "RandomLimitStrategy",
+		}),
 		server.WithTpsLimitRejectedHandler("DefaultValueHandler"),
 	); err != nil {
 		panic(err)

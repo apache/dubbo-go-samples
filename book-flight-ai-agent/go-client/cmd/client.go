@@ -68,20 +68,20 @@ func handleCommand(cmd string) (resp string) {
 	case cmd == "/list":
 		fmt.Println("Stored contexts (max 3):")
 		for _, ctxID := range contextOrder {
-			respBuilder.WriteString(fmt.Sprintf("- %s\n", ctxID))
+			fmt.Fprintf(&respBuilder, "- %s\n", ctxID)
 		}
 	case strings.HasPrefix(cmd, "/cd "):
 		target := strings.TrimPrefix(cmd, "/cd ")
 		if ctx, exists := contexts[target]; exists {
 			currentCtxID = ctx.ID
-			respBuilder.WriteString(fmt.Sprintf("Switched to context: %s\n", target))
+			fmt.Fprintf(&respBuilder, "Switched to context: %s\n", target)
 		} else {
 			respBuilder.WriteString("Context not found")
 		}
 	case cmd == "/new":
 		newID := createContext()
 		currentCtxID = newID
-		respBuilder.WriteString(fmt.Sprintf("Created new context: %s\n", newID))
+		fmt.Fprintf(&respBuilder, "Created new context: %s\n", newID)
 	default:
 		respBuilder.WriteString("Available commands:\n")
 		respBuilder.WriteString("/? help        - Show this help\n")

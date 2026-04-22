@@ -23,6 +23,8 @@ import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 
+import java.util.concurrent.CountDownLatch;
+
 import greet.DubboGreetServiceTriple;
 import greet.GreetRequest;
 import greet.GreetResponse;
@@ -43,7 +45,7 @@ public class JavaServerApp {
                 .start();
 
         System.out.println("Dubbo Triple Java server started on port 20000");
-        System.in.read();
+        new CountDownLatch(1).await();
     }
 
     /**

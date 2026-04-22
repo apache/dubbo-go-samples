@@ -20,6 +20,7 @@ package actions
 import (
 	"encoding/json"
 	"regexp"
+	"strings"
 )
 
 import (
@@ -29,12 +30,23 @@ import (
 type Action mcp.RequestRPC
 
 func NewAction(text string) Action {
-	re := regexp.MustCompile("```json[^`]*```")
-	matches := re.FindAllString(text, -1)
 	action := Action{}
-	if len(matches) > 0 {
-		match := matches[0][7 : len(matches[0])-3]
-		json.Unmarshal([]byte(match), &action)
+
+	// Try to extract from ```json ... ``` code fence
+	re := regexp.MustCompile("```json([^`]*)```")
+	matches := re.FindStringSubmatch(text)
+	if len(matches) > 1 {
+		jsonStr := strings.ReplaceAll(matches[1], `\n`, "\n")
+		if json.Unmarshal([]byte(jsonStr), &action) == nil {
+			return action
+		}
+	}
+
+	// Fallback: find raw JSON object in text
+	re2 := regexp.MustCompile(`\{[^{}]*\}`)
+	raw := re2.FindString(text)
+	if raw != "" {
+		json.Unmarshal([]byte(raw), &action)
 	}
 	return action
 }

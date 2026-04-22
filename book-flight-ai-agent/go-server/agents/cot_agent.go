@@ -121,10 +121,10 @@ func (react *ReactAgentRunner) GetInputCtx(input string) string {
 	var respBuilder strings.Builder // Use strings.Builder
 	for _, msg := range react.memoryAgent {
 		if val, ok := msg["user"]; ok {
-			respBuilder.WriteString(fmt.Sprintf("\n%v", val))
+			fmt.Fprintf(&respBuilder, "\n%v", val)
 		}
 	}
-	respBuilder.WriteString(fmt.Sprintf("\n%v", input))
+	fmt.Fprintf(&respBuilder, "\n%v", input)
 
 	return strings.TrimSpace(respBuilder.String())
 }
@@ -195,7 +195,7 @@ func (react *ReactAgentRunner) finalStep(
 
 func (react *ReactAgentRunner) execAction(action actions.Action, opts model.Options) string {
 	var err error
-	var observation string = fmt.Sprintf("Can't find tool: %v.", action.Method)
+	observation := fmt.Sprintf("Can't find tool: %v.", action.Method)
 	tool := react.tools.QueryTool(action.Method)
 	if tool != nil {
 		strArgs, _ := json.Marshal(action.Params)

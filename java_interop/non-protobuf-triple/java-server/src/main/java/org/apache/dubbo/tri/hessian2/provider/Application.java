@@ -27,7 +27,7 @@ public class Application {
     public static void main(String[] args) {
         DubboBootstrap.getInstance()
                 .application(ApplicationBuilder.newBuilder().name("non-protobuf-triple").logger("slf4j").build())
-                .protocol(ProtocolBuilder.newBuilder().name("tri").port(50052).build())
+                .protocol(ProtocolBuilder.newBuilder().name("tri").port(20000).build())
                 .service(ServiceBuilder.newBuilder().interfaceClass(GreetingsService.class).ref(new GreetingsServiceImpl()).build())
                 .start()
                 .await();

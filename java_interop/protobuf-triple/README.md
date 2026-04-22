@@ -50,13 +50,13 @@ message HelloReply {
 go run go/go-server/cmd/server.go
 ```
 
-运行以上命令后，go server 运行在 50052 端口，可通过以下命令测试服务运行正常：
+运行以上命令后，go server 运行在 20000 端口，可通过以下命令测试服务运行正常：
 
 ```shell
 curl \
     --header "Content-Type: application/json" \
     --data '{"name": "Dubbo"}' \
-    http://localhost:50052/org.apache.dubbo.sample.Greeter/sayHello
+    http://localhost:20000/org.apache.dubbo.sample.Greeter/sayHello
 ```
 
 2. 启动 java client 
@@ -87,7 +87,7 @@ curl \
 curl \
     --header "Content-Type: application/json" \
     --data '{"name": "Dubbo"}' \
-    http://localhost:50052/org.apache.dubbo.sample.Greeter/sayHello
+    http://localhost:20000/org.apache.dubbo.sample.Greeter/sayHello
 ```
 
 2. 运行 go client

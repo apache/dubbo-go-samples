@@ -1,4 +1,4 @@
-reactPrompt: "
+reactPrompt: "/no_think
 当前的任务执行记录：
 {memory}
 
@@ -73,7 +73,7 @@ summary_prompt: "
 请分析上述对话，特别关注 Human 的关键信息，简要用一句话总结用户的问题或购买机票的真实任务需求，只需要输出总结内容。"
 
 formatInstructions: '
-```json\n\n
+```json
 {
   "method": "Name of the tool/action",
   "params": {
