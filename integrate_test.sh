@@ -65,12 +65,18 @@ kill_if_running() {
 }
 
 cleanup() {
+  local server_pid=""
   local aux_pid
   for aux_pid in "${GO_AUX_PIDS[@]:-}"; do
     kill_if_running "$aux_pid"
   done
 
   kill_if_running "$JAVA_SERVER_PID"
+  if [ -f "$PID_FILE" ]; then
+    server_pid="$(cat "$PID_FILE" 2>/dev/null || true)"
+    kill_if_running "$server_pid"
+    rm -f "$PID_FILE"
+  fi
   run_make_target stop >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
@@ -97,7 +103,65 @@ wait_for_tcp_port() {
   local elapsed=0
 
   while [ "$elapsed" -lt "$timeout_seconds" ]; do
-    if timeout 1 bash -c "cat < /dev/null > /dev/tcp/$host/$port" >/dev/null 2>&1; then
+    if python3 - "$host" "$port" <<'PY' >/dev/null 2>&1
+import socket
+import sys
+
+host = sys.argv[1]
+port = int(sys.argv[2])
+
+family = socket.AF_UNSPEC
+type_ = socket.SOCK_STREAM
+
+for af, socktype, proto, _, sockaddr in socket.getaddrinfo(host, port, family, type_):
+    sock = None
+    try:
+        sock = socket.socket(af, socktype, proto)
+        sock.settimeout(1.0)
+        sock.connect(sockaddr)
+        sys.exit(0)
+    except OSError:
+        continue
+    finally:
+        if sock is not None:
+            sock.close()
+
+sys.exit(1)
+PY
+    then
+      return 0
+    fi
+    sleep 1
+    elapsed=$((elapsed + 1))
+  done
+
+  return 1
+}
+
+wait_for_process_exit() {
+  local pid="$1"
+  local timeout_seconds="$2"
+  local elapsed=0
+
+  while kill -0 "$pid" 2>/dev/null; do
+    if [ "$elapsed" -ge "$timeout_seconds" ]; then
+      return 1
+    fi
+    sleep 1
+    elapsed=$((elapsed + 1))
+  done
+
+  return 0
+}
+
+wait_for_log_pattern() {
+  local log_file="$1"
+  local pattern="$2"
+  local timeout_seconds="$3"
+  local elapsed=0
+
+  while [ "$elapsed" -lt "$timeout_seconds" ]; do
+    if [ -f "$log_file" ] && grep -q "$pattern" "$log_file"; then
       return 0
     fi
     sleep 1
@@ -275,11 +339,112 @@ start_java_server_if_present() {
   return 0
 }
 
+run_graceful_shutdown_sample() {
+  local client_log="/tmp/.${PROJECT_NAME}.go-client.log"
+  local server_pid=""
+  local client_pid=""
+  local server_bin="/tmp/.${PROJECT_NAME}.go-server.bin"
+  local client_bin="/tmp/.${PROJECT_NAME}.go-client.bin"
+
+  if command -v lsof >/dev/null 2>&1; then
+    lsof -tiTCP:20000 -sTCP:LISTEN | xargs -r kill -9 || true
+  fi
+
+  echo "Building graceful_shutdown Go server..."
+  (
+    cd "$P_DIR"
+    go build -o "$server_bin" ./go-server/cmd
+  )
+
+  echo "Building graceful_shutdown Go client..."
+  (
+    cd "$P_DIR"
+    go build -o "$client_bin" ./go-client/cmd
+  )
+
+  echo "Starting graceful_shutdown Go server..."
+  (
+    cd "$P_DIR"
+    exec "$server_bin" -timeout=15s -step-timeout=2s -consumer-update-wait=0s -delay=2s
+  ) >"$GO_SERVER_LOG" 2>&1 &
+  server_pid="$!"
+  echo "$server_pid" >"$PID_FILE"
+
+  if ! wait_for_tcp_port "127.0.0.1" "20000" 30; then
+    echo "graceful_shutdown server did not become ready on 127.0.0.1:20000"
+    cat "$GO_SERVER_LOG" || true
+    return 1
+  fi
+
+  if ! kill -0 "$server_pid" 2>/dev/null; then
+    echo "graceful_shutdown server exited unexpectedly before client start"
+    cat "$GO_SERVER_LOG" || true
+    return 1
+  fi
+
+  echo "Running graceful_shutdown Go client..."
+  (
+    cd "$P_DIR"
+    exec "$client_bin" \
+      -addr=tri://127.0.0.1:20000 \
+      -concurrency=2 \
+      -interval=200ms \
+      -short \
+      -request-timeout=6s \
+      -max-requests=12 \
+      -min-successes=1 \
+      -min-failures=1 \
+      -name-prefix=integration
+  ) >"$client_log" 2>&1 &
+  client_pid="$!"
+
+  if ! wait_for_log_pattern "$client_log" "succeeded" 30; then
+    echo "graceful_shutdown client did not observe a successful request before shutdown"
+    cat "$client_log" || true
+    cat "$GO_SERVER_LOG" || true
+    return 1
+  fi
+
+  echo "Triggering graceful shutdown..."
+  kill -INT "$server_pid" 2>/dev/null || true
+
+  if ! wait "$client_pid"; then
+    echo "graceful_shutdown client exited with failure"
+    cat "$client_log" || true
+    cat "$GO_SERVER_LOG" || true
+    return 1
+  fi
+
+  if ! wait_for_process_exit "$server_pid" 30; then
+    echo "graceful_shutdown server did not exit within 30s after SIGINT"
+    cat "$GO_SERVER_LOG" || true
+    return 1
+  fi
+
+  wait "$server_pid" 2>/dev/null || true
+
+  if ! grep -q "failed" "$client_log"; then
+    echo "graceful_shutdown client did not observe request failures during shutdown"
+    cat "$client_log" || true
+    return 1
+  fi
+
+  echo "graceful_shutdown integration completed"
+}
+
 main() {
   echo "=========================================="
   echo "Starting sample flow for: $SAMPLE"
   echo "Sample directory: $P_DIR"
   echo "=========================================="
+
+  if [ "$SAMPLE" = "graceful_shutdown" ]; then
+    run_graceful_shutdown_sample
+    echo "=========================================="
+    echo "Sample flow completed for: $SAMPLE"
+    echo "=========================================="
+    return 0
+  fi
 
   start_go_server
   start_aux_go_servers

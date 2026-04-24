@@ -31,6 +31,7 @@ array+=("direct")
 # filter
 array+=("filter/token")
 array+=("filter/custom")
+array+=("filter/hystrix")
 
 # registry
 array+=("registry/zookeeper")
@@ -45,6 +46,9 @@ array+=("timeout")
 
 # healthcheck
 array+=("healthcheck")
+
+# graceful shutdown
+array+=("graceful_shutdown")
 
 # streaming
 array+=("streaming")
@@ -63,6 +67,7 @@ array+=("rpc/triple/pb2")
 array+=("rpc/triple/reflection")
 array+=("rpc/triple/registry")
 array+=("rpc/triple/stream")
+array+=("rpc/triple/openapi")
 
 # tls
 array+=("tls")
@@ -93,6 +98,8 @@ array+=("java_interop/service_discovery/service")
 
 # router
 array+=("router/tag")
+array+=("router/static_config/tag")
+array+=("router/static_config/condition")
 
 DOCKER_DIR="$(pwd)"
 DOCKER_COMPOSE_CMD="docker-compose"

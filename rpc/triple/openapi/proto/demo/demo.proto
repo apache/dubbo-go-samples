@@ -15,27 +15,26 @@
  * limitations under the License.
  */
 
-package model
+syntax = "proto3";
 
-import (
-	"regexp"
-)
+package demo;
 
-func RemoveThink(text string) string {
-	re := regexp.MustCompile(`(?s)<think>.*?</think>\s*`)
-	return re.ReplaceAllString(text, "")
+option go_package = "github.com/apache/dubbo-go-samples/rpc/triple/openapi/proto/demo;demo";
+
+message GreetRequest {
+  string name = 1;
+  Node node = 2;
 }
 
-func MergeMaps[K comparable, V any](m1, m2 map[K]V) map[K]V {
-	merged := make(map[K]V)
+message Node {
+  string name = 1;
+  Node child = 2;
+}
 
-	for k, v := range m1 {
-		merged[k] = v
-	}
+message GreetResponse {
+  string greeting = 1;
+}
 
-	for k, v := range m2 {
-		merged[k] = v
-	}
-
-	return merged
+service GreetService {
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
 }

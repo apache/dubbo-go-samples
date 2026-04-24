@@ -20,13 +20,19 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
 * `context`: Demonstrates passing user data (attachments) via Go `context` between client and server.
 * `error`: Error-handling examples in Dubbo-go.
 * `filter`: Demonstrates the use of built-in and custom filters in Dubbo-go.
+  * `custom`: Implements custom client and server filters.
+  * `hystrix`: Uses `hystrix-go` to demonstrate circuit breaker protection on Dubbo-go calls.
+  * `sentinel`: Demonstrates flow control, isolation, and circuit breaking with Sentinel filters.
   * `polaris/limit`: Uses Polaris as a TPS limiter.
+  * `token`: Demonstrates token-based request validation between consumer and provider.
+  * `tpslimit`: Demonstrates Dubbo-go's built-in TPS limiting filter with custom limit and rejection strategies.
 * `healthcheck`: Service health check example.
 * `helloworld`: Basic “Hello World” example for Dubbo-go, also includes Go–Java interoperability.
 * `http3`: HTTP/3 (QUIC) protocol support example demonstrating how to use Triple protocol with HTTP/3 for high-performance communication between Go and Java services with TLS encryption.
 * `direct`: Triple point-to-point invocation sample without a registry, also includes Go–Java interoperability.
 * `game`: Game service example.
 * `generic`: Generic invocation examples supporting interoperability between Dubbo-Go and Dubbo Java services, suitable for scenarios without interface information.
+* `graceful_shutdown`: Triple graceful shutdown sample for verifying long-connection notice, in-flight request draining, and shutdown timing knobs.
 * `integrate_test`: Integration test cases for Dubbo-go samples.
 * `java_interop`: Demonstrates interoperability between Java and Go Dubbo implementations.
   * `non-protobuf-dubbo`: Java/Go interoperability with the classic Dubbo protocol and non-protobuf payloads (Hessian2 style).
@@ -36,6 +42,11 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
   * `service_discovery/service`: Java/Go interoperability with Nacos using application-level service discovery (Dubbo3 model).
 * `llm`: Example of integrating Large Language Models (LLMs) with Dubbo-go.
 * `logger`: Logging examples for Dubbo-go applications.
+  * `logger/default`: Print to console by default.
+  * `logger/level`: Set log isolation level.
+  * `logger/rolling`: Output to file.
+  * `logger/custom`: Custom logger.
+  * `logger/trace-integration`: Integrate OpenTelemetry trace information, automatically injecting trace_id, span_id and other information into logs.
 * `metrics`: Observability-related samples.
   * `metrics/prometheus_grafana`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
   * `metrics/probe`: Demonstrates Dubbo-go Kubernetes probe endpoints (`/live`, `/ready`, `/startup`) and deployment usage.
@@ -51,11 +62,14 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
   * `router/condition`: Dubbo-go condition router examples.
   * `router/script`: Dubbo-go script router examples.
   * `router/polaris`: Quickly experience Polaris' service routing capabilities in Dubbo-go.
+  * `router/static_config/tag`: Dubbo-go static tag router example.
+  * `router/static_config/condition`: Dubbo-go static condition router example.
 * `rpc`: Various RPC protocol examples with Dubbo-go.
   * `rpc/dubbo`: Dubbo protocol example, including Java–Go interop.
   * `rpc/grpc`: gRPC protocol example.
   * `rpc/jsonrpc`: JSON-RPC protocol example.
   * `rpc/triple`: Triple protocol example with multiple serialization formats.
+  * `rpc/triple/openapi`: Demonstrates how to enable OpenAPI documentation for Triple protocol services, including versioned services and non-IDL services.
 * `streaming`: Streaming RPC example, also includes Go–Java interoperability when both use streaming.
 * `task`: Task scheduling and execution example.
 * `timeout`: Demonstrates timeout handling in Dubbo-go.

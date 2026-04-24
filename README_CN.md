@@ -20,13 +20,19 @@
 * `context`：演示如何通过 Go 的 `context` 在客户端与服务端之间传递用户数据（attachments）。
 * `error`：Dubbo-go 的错误处理示例。
 * `filter`：演示 Dubbo-go 中内置和自定义 Filter 的使用。
+  * `custom`：实现自定义的客户端和服务端 Filter。
+  * `hystrix`：使用 `hystrix-go` 演示 Dubbo-go 调用中的熔断保护。
+  * `sentinel`：演示基于 Sentinel Filter 的流控、隔离和熔断能力。
   * `polaris/limit`：使用 Polaris 实现 TPS 限流。
+  * `token`：演示消费端与提供端之间基于 token 的请求校验。
+  * `tpslimit`：演示 Dubbo-go 内置 TPSLimit Filter，以及自定义限流和拒绝处理策略。
 * `healthcheck`：服务健康检查示例。
 * `helloworld`：Dubbo-go 最基础的 “Hello World” 示例，同时包含 Go 与 Java 的互操作示例。
 * `http3`：HTTP/3（QUIC）协议支持示例，演示如何通过 Triple 协议使用 HTTP/3 实现 Go 与 Java 服务之间的高性能通信，并支持 TLS 加密。
 * `direct`：不依赖注册中心的 Triple 点对点调用示例，并包含 Go 与 Java 的互操作示例。
 * `game`：游戏服务示例。
 * `generic`：泛化调用示例，支持 Dubbo-Go 与 Dubbo Java 服务互操作，适用于无接口信息场景。
+* `graceful_shutdown`：Triple 优雅停机示例，用于验证长连接通知、请求排空，以及相关停机时间参数。
 * `integrate_test`：Dubbo-go 示例的集成测试用例。
 * `java_interop`：展示 Java 与 Go Dubbo 实现之间的互操作能力。
   * `non-protobuf-dubbo`：基于经典 Dubbo 协议与非 Protobuf 负载（Hessian2 风格）的 Java/Go 互操作示例。
@@ -36,6 +42,11 @@
   * `service_discovery/service`：基于 Nacos 的应用级服务发现（Dubbo3 模型）Java/Go 互操作示例。
 * `llm`：将大模型（LLM）集成到 Dubbo-go 中的示例。
 * `logger`：Dubbo-go 应用的日志使用示例。
+  * `logger/default`：默认打印到控制台。
+  * `logger/level`：设置日志隔离级别。
+  * `logger/rolling`：输出到文件。
+  * `logger/custom`：自定义 logger。
+  * `logger/trace-integration`：集成 OpenTelemetry trace 信息，自动将 trace_id、span_id 等信息注入日志。
 * `metrics`：可观测性相关示例。
   * `metrics/prometheus_grafana`：展示如何采集并暴露 Dubbo-go 服务指标，支持 Prometheus Push 和 Pull 两种模式；同时包含用于清理 Push 模式僵尸指标的 `pgw-cleaner` 工具。
   * `metrics/probe`：演示 Dubbo-go 在 Kubernetes 场景下的探针端点（`/live`、`/ready`、`/startup`）及部署方式。
@@ -51,11 +62,14 @@
   * `router/condition`: Dubbo-go 的 condition router 使用示例。
   * `router/script`: Dubbo-go 的 script router 使用示例。
   * `router/polaris`：在 Dubbo-go 中快速体验北极星的服务路由能力。
+  * `router/static_config/tag`: 静态配置的 tag router 示例。
+  * `router/static_config/condition`: 静态配置的 condition router 示例。
 * `rpc`：Dubbo-go 支持的多种 RPC 协议示例。
   * `rpc/dubbo`：Dubbo 协议示例，包含 Java–Go 互操作。
   * `rpc/grpc`：基于 gRPC 协议的示例。
   * `rpc/jsonrpc`：基于 JSON-RPC 协议的示例。
   * `rpc/triple`：Triple 协议示例，涵盖多种序列化方式。
+  * `rpc/triple/openapi`：演示如何为 Triple 协议服务启用 OpenAPI 文档，包括多版本服务和非 IDL 服务的注册。
 * `streaming`：流式 RPC 调用示例，并包含了Dubbo-go与Dubbo-java同时使用流式传输的互操作示例。
 * `task`：任务调度与执行示例。
 * `timeout`：Dubbo-go 超时处理示例。

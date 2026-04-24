@@ -15,27 +15,22 @@
  * limitations under the License.
  */
 
-package model
+syntax = "proto3";
 
-import (
-	"regexp"
-)
+package greet;
 
-func RemoveThink(text string) string {
-	re := regexp.MustCompile(`(?s)<think>.*?</think>\s*`)
-	return re.ReplaceAllString(text, "")
+option go_package = "github.com/apache/dubbo-go-samples/graceful_shutdown/proto;greet";
+option java_package = "greet";
+option java_multiple_files = true;
+
+message GreetRequest {
+  string name = 1;
 }
 
-func MergeMaps[K comparable, V any](m1, m2 map[K]V) map[K]V {
-	merged := make(map[K]V)
+message GreetResponse {
+  string greeting = 1;
+}
 
-	for k, v := range m1 {
-		merged[k] = v
-	}
-
-	for k, v := range m2 {
-		merged[k] = v
-	}
-
-	return merged
+service GreetService {
+  rpc Greet(GreetRequest) returns (GreetResponse);
 }
