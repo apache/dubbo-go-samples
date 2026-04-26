@@ -21,8 +21,8 @@
       <h2>LLM Chat</h2>
       <div class="model-selector">
         <label for="model-select"></label><select id="model-select">
-          {{range .OllamaModels}}
-          <option value="{{.}}">{{.}}</option>
+          {{range .Models}}
+          <option value="{{.}}" {{if eq . $.DefaultModel}}selected{{end}}>{{.}}</option>
           {{end}}
         </select>
       </div>

@@ -91,8 +91,8 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"TimeoutSecond": cfg.TimeoutSeconds,
-			"OllamaModels":  cfg.OllamaModels,
-			"DefaultModel":  cfg.OllamaModels[0],
+			"Models":        cfg.LLMModelsList,
+			"DefaultModel":  cfg.ModelName,
 		})
 	})
 	r.POST("/api/chat", h.Chat)
