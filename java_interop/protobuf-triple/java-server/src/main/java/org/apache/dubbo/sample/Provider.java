@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 public class Provider {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         ServiceConfig<Greeter> service =  new ServiceConfig<>();
         service.setInterface(Greeter.class);
         service.setRef(new GreeterImpl());
