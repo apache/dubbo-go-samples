@@ -27,24 +27,19 @@ import (
 	"net/http"
 	"strings"
 	"time"
-)
 
-import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/common"
+
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/otel/trace"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
-
 	"github.com/dubbogo/gost/log/logger"
-
 	"github.com/golang/protobuf/proto"
 
 	collecttracepb "go.opentelemetry.io/proto/otlp/collector/trace/v1"
-)
 
-import (
 	greet "github.com/apache/dubbo-go-samples/otel/tracing/stdout/proto"
 )
 
@@ -121,15 +116,42 @@ func mockOtlpReceiver() {
 			return
 		}
 
-		reqStr := req.String()
-		switch {
-		case strings.Contains(reqStr, "dubbo_otel_server"):
+		var serverCount, clientCount int
+		for _, resourceSpan := range req.GetResourceSpans() {
+			serviceName := ""
+			if resource := resourceSpan.GetResource(); resource != nil {
+				for _, attr := range resource.GetAttributes() {
+					if attr.GetKey() == "service.name" {
+						serviceName = attr.GetValue().GetStringValue()
+						break
+					}
+				}
+			}
+
+			spanCount := 0
+			for _, scopeSpan := range resourceSpan.GetScopeSpans() {
+				spanCount += len(scopeSpan.GetSpans())
+			}
+
+			switch serviceName {
+			case "dubbo_otel_server":
+				serverCount += spanCount
+			case "dubbo_otel_client":
+				clientCount += spanCount
+			}
+		}
+
+		logger.Infof("[receive] server spans: %d, client spans: %d", serverCount, clientCount)
+		for i := 0; i < serverCount; i++ {
 			serverReceivesChan <- true
-		case strings.Contains(reqStr, "dubbo_otel_client"):
+		}
+		for i := 0; i < clientCount; i++ {
 			clientReceivesChan <- true
-		default:
+		}
+
+		if serverCount == 0 && clientCount == 0 {
 			select {
-			case errChan <- errors.New("unknown trace: " + reqStr):
+			case errChan <- errors.New("unknown trace: " + req.String()):
 			default:
 			}
 		}
