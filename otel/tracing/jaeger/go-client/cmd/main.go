@@ -27,12 +27,14 @@ import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/otel/trace"
 
-	greet "github.com/apache/dubbo-go-samples/otel/tracing/jaeger/proto"
-
 	"github.com/dubbogo/gost/log/logger"
 
 	"go.opentelemetry.io/otel"
 	trace2 "go.opentelemetry.io/otel/sdk/trace"
+)
+
+import (
+	greet "github.com/apache/dubbo-go-samples/otel/tracing/jaeger/proto"
 )
 
 func main() {
@@ -66,7 +68,7 @@ func main() {
 	if err != nil {
 		logger.Error(err)
 	}
-	if tp,ok := otel.GetTracerProvider().(*trace2.TracerProvider); ok {
+	if tp, ok := otel.GetTracerProvider().(*trace2.TracerProvider); ok {
 		_ = tp.Shutdown(context.Background())
 	}
 
