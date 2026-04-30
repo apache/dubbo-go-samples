@@ -28,11 +28,9 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
 
-	"github.com/dubbogo/gost/log/logger"
-)
-
-import (
 	greet "github.com/apache/dubbo-go-samples/otel/tracing/jaeger/proto"
+
+	"github.com/dubbogo/gost/log/logger"
 )
 
 type GreetTripleServer struct {

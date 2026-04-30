@@ -2,19 +2,21 @@ package main
 
 import (
 	"context"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/otel/trace"
+
+	greet "github.com/apache/dubbo-go-samples/otel/tracing/stdout/proto"
 
 	"github.com/dubbogo/gost/log/logger"
 
 	"go.opentelemetry.io/otel"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	greet "github.com/apache/dubbo-go-samples/otel/tracing/stdout/proto"
 )
 
 func main() {
