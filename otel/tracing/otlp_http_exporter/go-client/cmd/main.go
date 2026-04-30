@@ -65,7 +65,7 @@ func main() {
 		panic(err)
 	}
 	var dubboResp string
-	if err := conn2.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &dubboResp, "SayHello"); err != nil {
+	if err = conn2.CallUnary(context.Background(), []interface{}{"hello", "new", "dubbo"}, &dubboResp, "SayHello"); err != nil {
 		logger.Error(err)
 	} else {
 		logger.Infof("Dubbo response: %s", dubboResp)
@@ -85,7 +85,7 @@ func main() {
 		panic(err)
 	}
 	var jsonrpcResp string
-	if err := conn3.CallUnary(context.Background(), []interface{}{"hello", "new", "jsonrpc"}, &jsonrpcResp, "SayHello"); err != nil {
+	if err = conn3.CallUnary(context.Background(), []interface{}{"hello", "new", "jsonrpc"}, &jsonrpcResp, "SayHello"); err != nil {
 		logger.Error(err)
 	} else {
 		logger.Infof("JSONRPC response: %s", jsonrpcResp)
