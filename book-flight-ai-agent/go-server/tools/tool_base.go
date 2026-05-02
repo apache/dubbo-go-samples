@@ -61,7 +61,7 @@ func scanStructKeys(obj interface{}) string {
 	}
 
 	t := reflect.TypeOf(obj)
-	if t.Kind() == reflect.Ptr {
+	if t.Kind() == reflect.Pointer {
 		// If it is a pointer, get the value it points to
 		t = t.Elem()
 	}
