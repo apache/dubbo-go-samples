@@ -24,6 +24,7 @@ array+=("helloworld")
 
 # tracing
 array+=("otel/tracing/stdout")
+array+=("otel/tracing/otlp_http_exporter")
 
 # direct
 array+=("direct")
@@ -122,7 +123,11 @@ echo "::endgroup::"
 for t in "${array[@]}"; do
   echo "::group::> start: $t"
   set +e
-  bash ./integrate_test.sh "$t"
+  if [ "$t" = "otel/tracing/otlp_http_exporter" ]; then
+    OTEL_BSP_SCHEDULE_DELAY=100 bash ./integrate_test.sh "$t"
+  else
+    bash ./integrate_test.sh "$t"
+  fi
   result=$?
   set -e
   echo "::endgroup::"
