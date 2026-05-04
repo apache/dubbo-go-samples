@@ -37,19 +37,12 @@ docker network create default_network
 
 ### 2. 启动依赖服务
 
-按顺序启动 etcd、MySQL、Nacos 和 APISIX：
+按顺序启动 etcd、Nacos 和 APISIX：
 
 ```bash
 # 启动 etcd (APISIX 的配置中心)
 cd ./deploy/etcd-compose
 docker compose up -d
-
-# 启动 MySQL (Nacos 的数据库)
-cd ../mysql5.7-compose
-docker compose up -d
-
-# 等待 MySQL 启动完成 (约10秒)
-sleep 10
 
 # 启动 Nacos
 cd ../nacos2.0.3-compose
@@ -64,6 +57,8 @@ docker compose up -d
 
 cd ../../
 ```
+
+> **说明**：本示例的 Nacos 以 standalone 模式运行，使用内嵌 Derby（见 `nacos2.0.3-compose/docker-compose.yml` 中的 `SPRING_DATASOURCE_PLATFORM=derby`），**演示场景下无需启动外部 MySQL**。仓库里仍保留 `mysql5.7-compose` 目录，供希望使用生产级持久化的用户参考；如需启用，先用该目录的 compose 启动 MySQL，再在 Nacos 的 compose 里取消注释 MySQL 相关的环境变量即可。
 
 ### 3. 构建并启动 Dubbo-Go 服务
 

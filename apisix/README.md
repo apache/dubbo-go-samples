@@ -37,19 +37,12 @@ docker network create default_network
 
 ### 2. Start Dependencies
 
-Start etcd, MySQL, Nacos, and APISIX in order:
+Start etcd, Nacos, and APISIX in order:
 
 ```bash
 # Start etcd (APISIX configuration center)
 cd ./deploy/etcd-compose
 docker compose up -d
-
-# Start MySQL (Nacos database)
-cd ../mysql5.7-compose
-docker compose up -d
-
-# Wait for MySQL to be ready (~10 seconds)
-sleep 10
 
 # Start Nacos
 cd ../nacos2.0.3-compose
@@ -64,6 +57,8 @@ docker compose up -d
 
 cd ../../
 ```
+
+> **Note**: This sample runs Nacos in standalone mode with embedded Derby (`SPRING_DATASOURCE_PLATFORM=derby` in `nacos2.0.3-compose/docker-compose.yml`), so **no external MySQL is required for the demo**. A `mysql5.7-compose` directory is kept for users who want a production-like setup; to enable it, start the MySQL compose first and uncomment the MySQL-related env vars in the Nacos compose file.
 
 ### 3. Build and Start Dubbo-Go Service
 
