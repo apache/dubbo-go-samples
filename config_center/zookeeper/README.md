@@ -5,11 +5,17 @@
 This example shows dubbo-go's dynamic configuration feature with Zookeeper as config-center.
 
 ## 2. How to run
-### Run the following commands under `repo root`:
+
+### Start a Zookeeper instance
+
+Make sure a Zookeeper instance is listening on `127.0.0.1:2181`. The simplest way is to start one with Docker:
 
 ```
-docker compose up -d zookeeper
+docker run -d --name zookeeper -p 2181:2181 zookeeper:3.8
 ```
+
+Or follow the [Zookeeper installation guide](https://zookeeper.apache.org/doc/current/zookeeperStarted.html) to install it locally.
+
 ### Configure the configuration file into zookeeper
 
 ```yaml
@@ -22,7 +28,7 @@ dubbo:
   protocols:
     triple:
       name: tri
-      port: 20000
+      port: 50000
   provider:
     services:
       GreeterProvider:
@@ -36,7 +42,7 @@ If there is no preexisting configuration, that is fine as well, because the samp
 
 ```go
 zkOption := config_center.WithZookeeper()
-dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-server")
+dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-go-server")
 addressOption := config_center.WithAddress("127.0.0.1:2181")
 groupOption := config_center.WithGroup("dubbogo")
 ins, err := dubbo.NewInstance(

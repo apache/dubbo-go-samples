@@ -5,10 +5,17 @@
 本示例演示Dubbo-Go以ZooKeeper为配置中心来实现动态配置功能
 
 ## 2. 如何运行
-### 在 `仓库根目录` 目录下执行：
+
+### 启动 Zookeeper 实例
+
+确保有一个 Zookeeper 实例监听在 `127.0.0.1:2181`。最简单的方式是用 Docker 启动一个：
+
 ```
-docker compose up -d zookeeper
+docker run -d --name zookeeper -p 2181:2181 zookeeper:3.8
 ```
+
+或者参考 [Zookeeper 安装文档](https://zookeeper.apache.org/doc/current/zookeeperStarted.html) 在本地安装。
+
 ### 把配置文件配置到zookeeper中
 
 ```yaml
@@ -21,7 +28,7 @@ dubbo:
   protocols:
     triple:
       name: tri
-      port: 20000
+      port: 50000
   provider:
     services:
       GreeterProvider:
@@ -35,7 +42,7 @@ dubbo:
 
 ```go
 zkOption := config_center.WithZookeeper()
-dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-server")
+dataIdOption := config_center.WithDataID("dubbo-go-samples-configcenter-zookeeper-go-server")
 addressOption := config_center.WithAddress("127.0.0.1:2181")
 groupOption := config_center.WithGroup("dubbogo")
 ins, err := dubbo.NewInstance(

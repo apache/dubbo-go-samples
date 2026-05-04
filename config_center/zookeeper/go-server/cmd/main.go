@@ -87,7 +87,7 @@ func main() {
 	}
 }
 
-const configCenterZKServerConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-server', namespace is default
+const configCenterZKServerConfig = `## set in config center, group is 'dubbogo', dataid is 'dubbo-go-samples-configcenter-zookeeper-go-server', namespace is default
 dubbo:
   registries:
     demoZK:
