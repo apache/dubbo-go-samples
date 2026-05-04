@@ -57,11 +57,16 @@ func (h *ChatHandler) Index(c *gin.Context) {
 	if ctxID == nil {
 		ctxID = h.ctxManager.CreateContext()
 		session.Set("current_context", ctxID)
-		session.Save()
+		if err := session.Save(); err != nil {
+			log.Printf("Failed to save session: %v", err)
+		}
 	}
 
+	cfgEnv := conf.GetEnvironment()
 	c.HTML(http.StatusOK, "index.html", gin.H{
-		"title": "LLM Chat",
+		"title":         "LLM Chat",
+		"TimeoutSecond": cfgEnv.TimeOut,
+		"OllamaModel":   cfgEnv.Model,
 	})
 }
 

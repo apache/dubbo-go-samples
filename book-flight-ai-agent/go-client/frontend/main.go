@@ -19,7 +19,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 )
 
 import (
@@ -72,14 +71,8 @@ func main() {
 	ctxManager := service.NewContextManager()
 
 	// register route
-	cfgEnv := conf.GetEnvironment()
 	h := handlers.NewChatHandler(svc, ctxManager)
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"TimeoutSecond": cfgEnv.TimeOut,
-			"OllamaModel":   cfgEnv.Model,
-		})
-	})
+	r.GET("/", h.Index)
 	r.POST("/api/chat", h.Chat)
 	r.POST("/api/context/new", h.NewContext)
 	r.GET("/api/context/list", h.ListContexts)
