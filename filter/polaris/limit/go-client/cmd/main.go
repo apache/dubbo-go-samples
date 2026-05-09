@@ -43,6 +43,8 @@ func main() {
 
 	svc, err := greet.NewGreetService(cli,
 		client.WithInterface("org.apache.dubbo.UserProvider.Test"),
+		client.WithGroup("myInterfaceGroup"),
+		client.WithVersion("myInterfaceVersion"),
 	)
 	if err != nil {
 		panic(err)

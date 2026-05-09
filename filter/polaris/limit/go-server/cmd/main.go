@@ -43,6 +43,12 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 	return resp, nil
 }
 
+type GreetTripleServerTest2 struct{}
+
+func (srv *GreetTripleServerTest2) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	return &greet.GreetResponse{Greeting: req.Name}, nil
+}
+
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("myApp"),
@@ -74,12 +80,14 @@ func main() {
 
 	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
 		server.WithInterface("org.apache.dubbo.UserProvider.Test"),
+		server.WithGroup("myInterfaceGroup"),
+		server.WithVersion("myInterfaceVersion"),
 		server.WithTpsLimiter("polaris-limit"),
 	); err != nil {
 		panic(err)
 	}
 
-	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
+	if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServerTest2{},
 		server.WithInterface("org.apache.dubbo.UserProvider.Test2"),
 		server.WithGroup("myInterfaceGroup"),
 		server.WithVersion("myInterfaceVersion"),
