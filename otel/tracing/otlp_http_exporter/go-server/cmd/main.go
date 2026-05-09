@@ -42,6 +42,7 @@ import (
 	"github.com/golang/protobuf/proto"
 
 	collecttracepb "go.opentelemetry.io/proto/otlp/collector/trace/v1"
+	tracepb "go.opentelemetry.io/proto/otlp/trace/v1"
 )
 
 import (
@@ -69,6 +70,25 @@ var (
 	clientReceivesChan = make(chan bool, 3)
 	errChan            = make(chan error, 6)
 )
+
+func getServiceName(rs *tracepb.ResourceSpans) string {
+	if resource := rs.GetResource(); resource != nil {
+		for _, attr := range resource.GetAttributes() {
+			if attr.GetKey() == "service.name" {
+				return attr.GetValue().GetStringValue()
+			}
+		}
+	}
+	return ""
+}
+
+func getSpanCount(rs *tracepb.ResourceSpans) int {
+	count := 0
+	for _, scopeSpan := range rs.GetScopeSpans() {
+		count += len(scopeSpan.GetSpans())
+	}
+	return count
+}
 
 func mockOtlpReceiver() {
 	mux := http.NewServeMux()
@@ -121,15 +141,30 @@ func mockOtlpReceiver() {
 			return
 		}
 
-		reqStr := req.String()
-		switch {
-		case strings.Contains(reqStr, "dubbo_otel_server"):
+		var serverCount, clientCount int
+		for _, resourceSpan := range req.GetResourceSpans() {
+			serviceName := getServiceName(resourceSpan)
+			spanCount := getSpanCount(resourceSpan)
+
+			switch serviceName {
+			case "dubbo_otel_server":
+				serverCount += spanCount
+			case "dubbo_otel_client":
+				clientCount += spanCount
+			}
+		}
+
+		logger.Infof("[receive] server spans: %d, client spans: %d", serverCount, clientCount)
+		for i := 0; i < serverCount; i++ {
 			serverReceivesChan <- true
-		case strings.Contains(reqStr, "dubbo_otel_client"):
+		}
+		for i := 0; i < clientCount; i++ {
 			clientReceivesChan <- true
-		default:
+		}
+
+		if serverCount == 0 && clientCount == 0 {
 			select {
-			case errChan <- errors.New("unknown trace: " + reqStr):
+			case errChan <- errors.New("unknown trace: " + req.String()):
 			default:
 			}
 		}

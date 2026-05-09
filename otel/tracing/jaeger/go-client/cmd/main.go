@@ -28,6 +28,9 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/otel/trace"
 
 	"github.com/dubbogo/gost/log/logger"
+
+	"go.opentelemetry.io/otel"
+	trace2 "go.opentelemetry.io/otel/sdk/trace"
 )
 
 import (
@@ -65,5 +68,9 @@ func main() {
 	if err != nil {
 		logger.Error(err)
 	}
+	if tp, ok := otel.GetTracerProvider().(*trace2.TracerProvider); ok {
+		_ = tp.Shutdown(context.Background())
+	}
+
 	logger.Infof("Greet response: %s", resp)
 }

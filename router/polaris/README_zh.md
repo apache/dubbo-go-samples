@@ -20,7 +20,7 @@
 
 dubbogo 中的 PolarisMesh PriorityRouter 扩展点实现，能够根据用户配置的服务路由规则，自动的从当前 RPC 调用上下文以及请求信息中识别出需要参与服务路由的请求标签信息。
 
-![](images/dubbogo-route-rule.png)
+![](image/dubbogo-route-rule.png)
 
 ### 运行服务提供者
 

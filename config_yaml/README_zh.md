@@ -32,15 +32,38 @@ cd path_to_dubbogo-sample/config_yaml/proto
 protoc --go_out=. --go-triple_out=. ./greet.proto
 ```
 ### Server
+
+在仓库根目录下运行：
+
 ```bash
+export DUBBO_GO_CONFIG_PATH="$(pwd)/config_yaml/go-server/conf/dubbogo.yml"
+go run ./config_yaml/go-server/cmd/main.go
+```
+
+或者，先 `cd` 到 `cmd` 目录再运行（用相对路径也可以）：
+
+```bash
+cd config_yaml/go-server/cmd
 export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-cd path_to_dubbogo-sample/config_yaml/go-server/cmd
 go run .
 ```
+
+> **注意**：`DUBBO_GO_CONFIG_PATH` 是相对于程序运行时的工作目录解析的，所以 `../conf/dubbogo.yml` 这种相对路径只有在 `cmd` 目录下启动程序时才有效。如果想从其他目录启动，建议使用上面那种绝对路径。
+
 ### Client
+
+在仓库根目录下运行（服务端启动后）：
+
 ```bash
+export DUBBO_GO_CONFIG_PATH="$(pwd)/config_yaml/go-client/conf/dubbogo.yml"
+go run ./config_yaml/go-client/cmd/main.go
+```
+
+或者先 `cd`：
+
+```bash
+cd config_yaml/go-client/cmd
 export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-cd path_to_dubbogo-sample/config_yaml/go-client/cmd
 go run .
 ```
 

@@ -16,7 +16,7 @@
 
 ```shell
 $ go run ./go-server/cmd/server.go          # 无标签server
-$ go run ./go-tag-server/cmdserver_tag.go   # 有标签server
+$ go run ./go-tag-server/cmd/server_tag.go   # 有标签server
 ```
 
 ### 运行客户端（Consumer）

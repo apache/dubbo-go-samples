@@ -31,15 +31,38 @@ cd path_to_dubbogo-sample/config_yaml/proto
 protoc --go_out=. --go-triple_out=. ./greet.proto
 ```
 ### Server
+
+Run from the repository root:
+
 ```bash
+export DUBBO_GO_CONFIG_PATH="$(pwd)/config_yaml/go-server/conf/dubbogo.yml"
+go run ./config_yaml/go-server/cmd/main.go
+```
+
+Or, if you prefer to `cd` into the `cmd` directory first, the relative path also works:
+
+```bash
+cd config_yaml/go-server/cmd
 export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-cd path_to_dubbogo-sample/config_yaml/go-server/cmd
 go run .
 ```
+
+> **Note**: `DUBBO_GO_CONFIG_PATH` is resolved against the working directory of the running process, so a relative value like `../conf/dubbogo.yml` only works when you launch the program from the `cmd` directory. Use an absolute path (as in the first example) to avoid this constraint.
+
 ### Client
+
+Run from the repository root (after the server is up):
+
 ```bash
+export DUBBO_GO_CONFIG_PATH="$(pwd)/config_yaml/go-client/conf/dubbogo.yml"
+go run ./config_yaml/go-client/cmd/main.go
+```
+
+Or, with `cd`:
+
+```bash
+cd config_yaml/go-client/cmd
 export DUBBO_GO_CONFIG_PATH="../conf/dubbogo.yml"
-cd path_to_dubbogo-sample/config_yaml/go-client/cmd
 go run .
 ```
 

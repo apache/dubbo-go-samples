@@ -14,17 +14,17 @@ The test exports the tracing data to a local mock http server.
 go run ./go-server/cmd/main.go
 ```
 
-### Run test (client)
+### Run client
 
 ```shell
-go test -tags integration -v ./tests/integration/... 
+go run ./go-client/cmd/main.go
 ```
 
-If test success, you will see the log like below in the server terminal:
+If successful, you will see the log like below in the server terminal:
 
 ```shell
 2025-09-18 16:22:29	INFO	cmd/main.go:127	server count: 3, client count: 3
 ```
 
-If the test fails, you will see the panic in the server terminal.
+If it fails, you will see the panic in the server terminal.
 

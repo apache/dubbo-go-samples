@@ -14,16 +14,16 @@
 go run ./go-server/cmd/main.go
 ```
 
-### 运行测试（客户端）
+### 运行客户端
 
 ```shell
-go test -tags integration -v ./tests/integration/... 
+go run ./go-client/cmd/main.go
 ```
 
-如果测试成功，你会在服务端终端看到类似如下的日志：
+如果运行成功，你会在服务端终端看到类似如下的日志：
 
 ```shell
 2025-09-18 16:22:29	INFO	cmd/main.go:127	server count: 3, client count: 3
 ```
 
-如果测试失败，你会在服务端终端看到 panic。
+如果运行失败，你会在服务端终端看到 panic。

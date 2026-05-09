@@ -27,7 +27,6 @@ import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
-	"dubbo.apache.org/dubbo-go/v3/filter/generic"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
@@ -64,11 +63,13 @@ func main() {
 		panic(err)
 	}
 
-	genericService, err := cli.NewGenericService(
+	conn, err := cli.Dial(
 		UserProvider,
 		client.WithURL(DirectServerURL),
 		client.WithVersion(ServiceVersion),
 		client.WithGroup(ServiceGroup),
+		client.WithGeneric(),
+		client.WithSerialization(constant.Hessian2Serialization),
 	)
 	if err != nil {
 		panic(err)
@@ -78,7 +79,7 @@ func main() {
 	logger.Info("Connected to server via direct URL, starting tests...")
 
 	failed := false
-	failed = runGenericTests(genericService) || failed
+	failed = runGenericTests(&genericService{conn: conn}) || failed
 
 	if failed {
 		logger.Errorf("Some generic call tests failed")
@@ -87,7 +88,19 @@ func main() {
 	logger.Info("All generic call tests passed")
 }
 
-func runGenericTests(svc *generic.GenericService) bool {
+type genericService struct {
+	conn *client.Connection
+}
+
+func (svc *genericService) Invoke(ctx context.Context, methodName string, types []string, args []hessian.Object) (any, error) {
+	var result any
+	if err := svc.conn.CallUnary(ctx, []any{methodName, types, args}, &result, constant.Generic); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func runGenericTests(svc *genericService) bool {
 	failed := false
 	ctx := context.Background()
 

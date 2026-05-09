@@ -50,7 +50,7 @@ $ go run go-server/cmd/server.go
 The front-end page interacts with the client based on the Gin framework. Run the following command and then visit ```localhost:8080``` to use it:
 
 ```shell
-$ go run go-client/frntend/main.go
+$ go run go-client/frontend/main.go
 ```
 
 ### **Notes**

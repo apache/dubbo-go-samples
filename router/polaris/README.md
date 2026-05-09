@@ -20,7 +20,7 @@ Quickly experience Polaris' service routing capabilities in dubbogo
 
 The implementation of the PolarisMesh PriorityRouter extension point in dubbogo can automatically identify the request label information that needs to participate in service routing from the current RPC call context and request information according to the service route rules configured by the user.
 
-![](images/dubbogo-route-rule.png)
+![](image/dubbogo-route-rule.png)
 
 ### Running the service provider
 
