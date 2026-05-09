@@ -43,7 +43,8 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 	return resp, nil
 }
 
-type GreetTripleServerTest2 struct{}
+type GreetTripleServerTest2 struct {
+}
 
 func (srv *GreetTripleServerTest2) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	return &greet.GreetResponse{Greeting: req.Name}, nil
