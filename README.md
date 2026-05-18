@@ -15,7 +15,7 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
 * `async`: Callback (asynchronous) and one-way RPC examples.
 * `apisix`: Example integrating Apache APISIX with Dubbo-go.
 * `book-flight-ai-agent`: Example of booking flights using an AI agent.
-* `config_center`: Demonstrates how to use different config centers (e.g., Nacos, Zookeeper) for configuration management.
+* `config_center`: Demonstrates how to use different config centers (including Nacos, Zookeeper, apollo) for configuration management.
 * `config_yaml`: Shows how to configure Dubbo-go applications using YAML files.
 * `context`: Demonstrates passing user data (attachments) via Go `context` between client and server.
 * `error`: Error-handling examples in Dubbo-go.
@@ -55,7 +55,7 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
 * `otel/tracing`: Distributed tracing examples using OpenTelemetry.
   * `stdout`: Uses stdout exporter to export tracing data.
   * `otlp_http_exporter`: Uses `otlpHttpExporter` to export tracing data, covering `dubbo`/`triple`/`jsonrpc` protocols.
-* `registry`: Examples of using different service registries (e.g., Nacos, Zookeeper).
+* `registry`: Examples of using different service registries (including Nacos, Zookeeper, etcd, polaris).
 * `retry`: Demonstrates retry mechanisms in Dubbo-go RPC calls.
 * `router`: Various Dubbo-go router examples.
   * `router/tag`: Dubbo-go tag router examples.
