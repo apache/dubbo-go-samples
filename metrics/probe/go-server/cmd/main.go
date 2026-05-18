@@ -44,12 +44,13 @@ import (
 )
 
 const (
-	triplePort         = 20000
-	probePort          = 22222
-	probeLivenessPath  = "/live"
-	probeReadinessPath = "/ready"
-	probeStartupPath   = "/startup"
-	warmupSeconds      = 15
+	triplePort           = 20000
+	probePort            = 22222
+	probeLivenessPath    = "/live"
+	probeReadinessPath   = "/ready"
+	probeStartupPath     = "/startup"
+	warmupSeconds        = 15
+	shutdownDrainSeconds = 6
 )
 
 type ProbeGreetServer struct{}
@@ -137,6 +138,6 @@ func main() {
 	probe.SetReady(false)
 	probe.SetStartupComplete(false)
 
-	// Wait for test to complete
-	time.Sleep(3 * time.Second)
+	// Wait longer than the Kubernetes readinessProbe period so NotReady can be observed.
+	time.Sleep(shutdownDrainSeconds * time.Second)
 }
