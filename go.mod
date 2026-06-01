@@ -2,6 +2,8 @@ module github.com/apache/dubbo-go-samples
 
 go 1.25.0
 
+replace dubbo.apache.org/dubbo-go/v3 v3.3.1 => ../dubbo-go
+
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.3.2-20260419
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5

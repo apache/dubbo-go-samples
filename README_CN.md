@@ -70,6 +70,7 @@
   * `rpc/jsonrpc`：基于 JSON-RPC 协议的示例。
   * `rpc/triple`：Triple 协议示例，涵盖多种序列化方式。
   * `rpc/triple/openapi`：演示如何为 Triple 协议服务启用 OpenAPI 文档，包括多版本服务和非 IDL 服务的注册。
+  * `rpc/rest`：基于 Rest 协议的示例。
 * `streaming`：流式 RPC 调用示例，并包含了Dubbo-go与Dubbo-java同时使用流式传输的互操作示例。
 * `task`：任务调度与执行示例。
 * `timeout`：Dubbo-go 超时处理示例。
