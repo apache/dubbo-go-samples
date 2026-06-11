@@ -66,6 +66,7 @@ func (d *DetailProvider) DeductStock(ctx context.Context, req *api.DeductStockRe
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("shop-detail"),
+		dubbo.WithTag("gray"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),

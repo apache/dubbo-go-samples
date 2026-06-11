@@ -56,6 +56,7 @@ func (o *OrderProvider) SubmitOrder(ctx context.Context, req *api.OrderReq) (*ap
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("shop-order"),
+		dubbo.WithTag("gray"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
