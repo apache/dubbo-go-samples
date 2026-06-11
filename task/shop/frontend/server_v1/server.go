@@ -126,14 +126,7 @@ func (s *ShopServiceProvider) CheckItem(sku int64, username string) (*detailAPI.
 		Sku:      sku,
 		UserName: username,
 	}
-	// add tag
-	ctx := context.Background()
-	atm := map[string]string{
-		"dubbo.tag":       "gray",
-		"dubbo.force.tag": "true",
-	}
-	ctx = context.WithValue(ctx, constant.AttachmentKey, atm)
-	return s.detailService.GetItem(ctx, req)
+	return s.detailService.GetItem(context.Background(), req)
 }
 
 func (s *ShopServiceProvider) CheckItemGray(sku int64, username string) (*detailAPI.Item, error) {
@@ -141,7 +134,14 @@ func (s *ShopServiceProvider) CheckItemGray(sku int64, username string) (*detail
 		Sku:      sku,
 		UserName: username,
 	}
-	return s.detailService.GetItem(context.Background(), req)
+	// add tag for gray routing
+	ctx := context.Background()
+	atm := map[string]string{
+		"dubbo.tag":       "gray",
+		"dubbo.force.tag": "true",
+	}
+	ctx = context.WithValue(ctx, constant.AttachmentKey, atm)
+	return s.detailService.GetItem(ctx, req)
 }
 
 func (s *ShopServiceProvider) SubmitOrder(sku int64, count int, address, phone, receiver string) (*orderAPI.OrderResp, error) {
