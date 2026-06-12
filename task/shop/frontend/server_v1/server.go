@@ -137,8 +137,8 @@ func (s *ShopServiceProvider) CheckItemGray(sku int64, username string) (*detail
 	// add tag for gray routing
 	ctx := context.Background()
 	atm := map[string]string{
-		"dubbo.tag":       "gray",
-		"dubbo.force.tag": "true",
+		constant.Tagkey:      "gray",
+		constant.ForceUseTag: "true",
 	}
 	ctx = context.WithValue(ctx, constant.AttachmentKey, atm)
 	return s.detailService.GetItem(ctx, req)
