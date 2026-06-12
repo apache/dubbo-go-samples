@@ -45,6 +45,7 @@ func (c *CommentProvider) GetComment(ctx context.Context, itemName *api.CommentR
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("shop-comment"),
+		dubbo.WithTag("gray"),
 		dubbo.WithRegistry(
 			registry.WithZookeeper(),
 			registry.WithAddress("127.0.0.1:2181"),
