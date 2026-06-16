@@ -54,6 +54,9 @@ array+=("graceful_shutdown")
 # streaming
 array+=("streaming")
 
+# triple metadata
+array+=("triple_header_trailer")
+
 # retry
 array+=("retry")
 

@@ -73,6 +73,7 @@
 * `streaming`：流式 RPC 调用示例，并包含了Dubbo-go与Dubbo-java同时使用流式传输的互操作示例。
 * `task`：任务调度与执行示例。
 * `timeout`：Dubbo-go 超时处理示例。
+* `triple_header_trailer`：演示 Triple 请求 metadata/attachments 以及基于 `http.Header` 暴露的响应 header / trailer。
 * `tls`：演示如何在 Dubbo-go 中使用 TLS（基于 X.509 证书），实现客户端与服务端之间的加密通信和/或双向认证，同时包含 Go 与 Java 的互操作示例。
 * `transaction/seata-go`：基于 `seata-go` 的分布式事务示例。
 
