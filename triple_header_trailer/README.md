@@ -8,14 +8,14 @@ It covers:
 
 - Client request headers with `triple.NewOutgoingContext` and `triple.AppendToOutgoingContext`
 - Server request metadata with `triple.FromIncomingContext` and generated stream `RequestHeader`
-- Unary response metadata capture with `client.WithResponseHeader` and `client.WithResponseTrailer`
+- Unary response headers and trailers with `triple.SetHeader`, `triple.SetTrailer`, `client.WithResponseHeader`, and `client.WithResponseTrailer`
 - Server stream response headers and trailers with `ResponseHeader` / `ResponseTrailer`
 - Client-side stream response headers and trailers with generated stream methods
 - `http.Header` style key lookup with `Values("X-Sample-Token")`
 
 This is different from the `context` sample. The `context` sample demonstrates Dubbo attachments through `constant.AttachmentKey`. This sample demonstrates Triple metadata APIs exposed as `http.Header`.
 
-For generated Dubbo-Go unary calls, pass `client.WithResponseHeader` and `client.WithResponseTrailer` to capture response metadata for that call. For generated bidi-stream and client-stream calls, pass request metadata before stream creation with `NewOutgoingContext` / `AppendToOutgoingContext`. On the server side, handlers can read the resulting metadata from `triple.FromIncomingContext`; generated stream handlers can also inspect it through `RequestHeader`.
+For generated Dubbo-Go unary calls, the server uses `triple.SetHeader` and `triple.SetTrailer` to attach response metadata, and the client passes `client.WithResponseHeader` and `client.WithResponseTrailer` to capture it for that call. For generated bidi-stream and client-stream calls, pass request metadata before stream creation with `NewOutgoingContext` / `AppendToOutgoingContext`. On the server side, handlers can read the resulting metadata from `triple.FromIncomingContext`; generated stream handlers can also inspect it through `RequestHeader`.
 
 ## Run
 

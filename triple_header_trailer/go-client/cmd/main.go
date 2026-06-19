@@ -38,6 +38,8 @@ import (
 const (
 	tokenHeader       = "X-Sample-Token"
 	modeHeader        = "X-Sample-Mode"
+	unaryResponseKey  = "X-Unary-Response"
+	unaryTrailerKey   = "X-Unary-Trailer"
 	streamResponseKey = "X-Stream-Response"
 	streamTrailerKey  = "X-Stream-Trailer"
 )
@@ -85,12 +87,12 @@ func testUnary(cli greet.GreetService) error {
 		return err
 	}
 	logger.Infof("unary response: %s", resp.Greeting)
-	logger.Infof("unary response header content-type=%q", responseHeader.Get("Content-Type"))
-	logger.Infof("unary response trailer grpc-status=%q", responseTrailer.Get("Grpc-Status"))
-	if responseHeader.Get("Content-Type") == "" {
-		return fmt.Errorf("missing unary response content-type header in %v", responseHeader)
+	logger.Infof("unary response header %s=%v", unaryResponseKey, responseHeader.Values(unaryResponseKey))
+	logger.Infof("unary response trailer %s=%v", unaryTrailerKey, responseTrailer.Values(unaryTrailerKey))
+	if err := requireHeader(responseHeader, unaryResponseKey, "unary-header"); err != nil {
+		return err
 	}
-	return nil
+	return requireHeader(responseTrailer, unaryTrailerKey, "unary-trailer")
 }
 
 func testBidiStream(cli greet.GreetService) error {
