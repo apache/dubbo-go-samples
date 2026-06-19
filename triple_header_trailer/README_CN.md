@@ -8,13 +8,14 @@
 
 - 客户端通过 `triple.NewOutgoingContext` 和 `triple.AppendToOutgoingContext` 发送请求 header
 - 服务端通过 `triple.FromIncomingContext` 和生成流式接口的 `RequestHeader` 读取请求 metadata
+- 客户端 Unary 调用通过 `client.WithResponseHeader` 和 `client.WithResponseTrailer` 捕获响应 metadata
 - 服务端通过流式接口的 `ResponseHeader` / `ResponseTrailer` 设置响应 header / trailer
 - 客户端通过生成的流式接口读取响应 header / trailer
 - 按 `http.Header` 的方式使用 `Values("X-Sample-Token")` 读取 header
 
 这和 `context` 示例不同。`context` 示例演示的是通过 `constant.AttachmentKey` 传递 Dubbo attachments；本示例演示的是 Triple metadata API，并以 `http.Header` 的形式暴露给应用代码。
 
-对于 Dubbo-Go 生成的双向流和客户端流调用，应在创建 stream 前通过 `NewOutgoingContext` / `AppendToOutgoingContext` 传入请求 metadata。服务端 handler 可以通过 `triple.FromIncomingContext` 读取这些 metadata；生成的 stream handler 也可以通过 `RequestHeader` 查看。
+对于 Dubbo-Go 生成的 Unary 调用，客户端通过 `client.WithResponseHeader` 和 `client.WithResponseTrailer` 捕获本次调用的响应 metadata。对于生成的双向流和客户端流调用，应在创建 stream 前通过 `NewOutgoingContext` / `AppendToOutgoingContext` 传入请求 metadata。服务端 handler 可以通过 `triple.FromIncomingContext` 读取这些 metadata；生成的 stream handler 也可以通过 `RequestHeader` 查看。
 
 ## 运行方式
 
@@ -47,5 +48,3 @@ protoc --go_out=. --go_opt=paths=source_relative --go-triple_out=. --go-triple_o
 ## 说明
 
 Triple metadata key 语义上大小写不敏感。在 Go API 层，这些 metadata 以 `http.Header` 暴露，因此应用代码应按标准 `http.Header` 方式使用 `Get` / `Values` 读取。
-
-当前生成的一元 API 直接暴露业务响应消息。因此本示例将请求和响应 metadata 的读写都放在流式调用中演示。

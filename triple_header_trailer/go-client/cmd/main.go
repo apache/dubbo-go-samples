@@ -21,7 +21,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"strings"
 )
 
 import (
@@ -71,12 +70,26 @@ func main() {
 }
 
 func testUnary(cli greet.GreetService) error {
-	// todo: this API haven't been exposed yet, current just make a trivial unary triple call
-	resp, err := cli.Greet(context.Background(), &greet.GreetRequest{Name: "unary"})
+	var responseHeader http.Header
+	var responseTrailer http.Header
+	resp, err := cli.Greet(
+		outgoingContext("unary-token"),
+		&greet.GreetRequest{Name: "unary"},
+		client.WithResponseHeader(&responseHeader),
+		client.WithResponseTrailer(&responseTrailer),
+	)
 	if err != nil {
 		return err
 	}
+	if err := requireGreeting(resp.Greeting, "hello unary, token=unary-token, modes=metadata,trailer-demo"); err != nil {
+		return err
+	}
 	logger.Infof("unary response: %s", resp.Greeting)
+	logger.Infof("unary response header content-type=%q", responseHeader.Get("Content-Type"))
+	logger.Infof("unary response trailer grpc-status=%q", responseTrailer.Get("Grpc-Status"))
+	if responseHeader.Get("Content-Type") == "" {
+		return fmt.Errorf("missing unary response content-type header in %v", responseHeader)
+	}
 	return nil
 }
 
@@ -96,8 +109,8 @@ func testBidiStream(cli greet.GreetService) error {
 	if resp == nil {
 		return fmt.Errorf("unexpected empty bidi response")
 	}
-	if !strings.Contains(resp.Greeting, "token=bidi-token") {
-		return fmt.Errorf("unexpected bidi response metadata: %s", resp.Greeting)
+	if err := requireGreeting(resp.Greeting, "bidi hello bidi, token=bidi-token"); err != nil {
+		return err
 	}
 	logger.Infof("bidi response: %s", resp.Greeting)
 	logger.Infof("bidi response header %s=%v", streamResponseKey, stream.ResponseHeader().Values(streamResponseKey))
@@ -127,8 +140,8 @@ func testClientStream(cli greet.GreetService) error {
 	if err != nil {
 		return err
 	}
-	if !strings.Contains(resp.Greeting, "token=client-stream-token") {
-		return fmt.Errorf("unexpected client-stream response metadata: %s", resp.Greeting)
+	if err := requireGreeting(resp.Greeting, "client-stream hello client,stream, token=client-stream-token"); err != nil {
+		return err
 	}
 	logger.Infof("client-stream response: %s", resp.Greeting)
 	return nil
@@ -141,20 +154,26 @@ func testServerStream(cli greet.GreetService) error {
 	}
 
 	var count int
-	var lastGreeting string
+	expectedGreetings := []string{
+		"server-stream hello server-stream #1, token=server-stream-token",
+		"server-stream hello server-stream #2, token=server-stream-token",
+		"server-stream hello server-stream #3, token=server-stream-token",
+	}
 	for stream.Recv() {
+		if count >= len(expectedGreetings) {
+			return fmt.Errorf("unexpected extra server-stream response: %s", stream.Msg().Greeting)
+		}
+		if err := requireGreeting(stream.Msg().Greeting, expectedGreetings[count]); err != nil {
+			return err
+		}
 		count++
-		lastGreeting = stream.Msg().Greeting
-		logger.Infof("server-stream response #%d: %s", count, lastGreeting)
+		logger.Infof("server-stream response #%d: %s", count, stream.Msg().Greeting)
 	}
 	if stream.Err() != nil {
 		return stream.Err()
 	}
-	if count != 3 {
+	if count != len(expectedGreetings) {
 		return fmt.Errorf("unexpected server-stream response count: %d", count)
-	}
-	if !strings.Contains(lastGreeting, "server-stream hello server-stream #3") {
-		return fmt.Errorf("unexpected server-stream response: %s", lastGreeting)
 	}
 	if err := stream.Close(); err != nil {
 		return err
@@ -173,6 +192,13 @@ func outgoingContext(token string) context.Context {
 		tokenHeader: []string{token},
 	})
 	return triple.AppendToOutgoingContext(ctx, modeHeader, "metadata", modeHeader, "trailer-demo")
+}
+
+func requireGreeting(got string, want string) error {
+	if got != want {
+		return fmt.Errorf("unexpected response: got %q, want %q", got, want)
+	}
+	return nil
 }
 
 func requireHeader(headers http.Header, key string, want string) error {

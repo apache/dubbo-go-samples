@@ -158,6 +158,6 @@ func main() {
 	}
 
 	if err := srv.Serve(); err != nil {
-		logger.Error(err)
+		panic(err)
 	}
 }
