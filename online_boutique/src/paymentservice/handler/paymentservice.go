@@ -24,7 +24,7 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
 
 	"github.com/dubbogo/gost/log/logger"
 
@@ -72,5 +72,5 @@ func (s *PaymentService) Charge(ctx context.Context, in *payment.ChargeRequest) 
 }
 
 func init() {
-	config.SetProviderService(new(PaymentService))
+	dubbo.SetProviderService(new(PaymentService))
 }
