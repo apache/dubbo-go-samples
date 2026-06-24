@@ -22,8 +22,11 @@ import (
 )
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"dubbo.apache.org/dubbo-go/v3/protocol/triple/triple_protocol"
+	"dubbo.apache.org/dubbo-go/v3/server"
 )
 
 import (
@@ -38,9 +41,31 @@ func (srv *GreetDubbo3Server) Greet(ctx context.Context, req *greet.GreetRequest
 	return &greet.GreetResponse{Greeting: req.Name}, nil
 }
 
+var greetServiceInfo = server.ServiceInfo{
+	InterfaceName: "greet.GreetService",
+	ServiceType:   (*greet.GreetServiceServer)(nil),
+	Methods: []server.MethodInfo{
+		{
+			Name: "Greet",
+			Type: constant.CallUnary,
+			ReqInitFunc: func() any {
+				return new(greet.GreetRequest)
+			},
+			MethodFunc: func(ctx context.Context, args []any, handler any) (any, error) {
+				req := args[0].(*greet.GreetRequest)
+				res, err := handler.(greet.GreetServiceServer).Greet(ctx, req)
+				if err != nil {
+					return nil, err
+				}
+				return triple_protocol.NewResponse(res), nil
+			},
+		},
+	},
+}
+
 func main() {
-	config.SetProviderService(&GreetDubbo3Server{})
-	if err := config.Load(); err != nil {
+	dubbo.SetProviderServiceWithInfo(&GreetDubbo3Server{}, &greetServiceInfo)
+	if err := dubbo.Load(dubbo.WithPath("./go-server/conf/dubbogo.yml")); err != nil {
 		panic(err)
 	}
 	select {}

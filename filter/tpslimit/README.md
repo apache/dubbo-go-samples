@@ -23,16 +23,16 @@ Implement the interface "filter.RejectedExecutionHandler" to customize the retur
 Enable tpslimit filter in provider's code using v3 API:
 
 ```go
-import "dubbo.apache.org/dubbo-go/v3/config"
+import "dubbo.apache.org/dubbo-go/v3/global"
 
 if err := greet.RegisterGreetServiceHandler(srv, &GreetTripleServer{},
 	server.WithTpsLimiter("method-service"),
-	server.WithMethod(
-		config.WithName("Greet"),
-		config.WithTpsLimitRate(5),        // must be >0, otherwise the limiter falls back to the default -1 and gets ignored
-		config.WithTpsLimitInterval(1000), // ms
-		config.WithTpsLimitStrategy("RandomLimitStrategy"),
-	),
+	server.WithMethod(&global.MethodConfig{
+		Name:             "Greet",
+		TpsLimitRate:     "5",    // must be >0, otherwise the limiter falls back to the default -1 and gets ignored
+		TpsLimitInterval: "1000", // ms
+		TpsLimitStrategy: "RandomLimitStrategy",
+	}),
 	server.WithTpsLimitRejectedHandler("DefaultValueHandler"),
 ); err != nil {
 	panic(err)
@@ -81,4 +81,3 @@ successCount=<number>, failCount=<number>
 ```
 
 The client will send 60 requests with 200ms intervals. Some requests will be rejected by the TPS limiter, and you'll see both success and failure counts in the final output.
-

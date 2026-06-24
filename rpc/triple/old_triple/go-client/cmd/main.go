@@ -47,7 +47,7 @@ func main() {
 
 	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
 	if err != nil {
-		logger.Error(err)
+		panic(err)
 	}
 	logger.Infof("Greet response: %s", resp)
 }
