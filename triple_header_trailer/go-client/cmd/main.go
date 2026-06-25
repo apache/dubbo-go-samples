@@ -101,7 +101,7 @@ func testBidiStream(cli greet.GreetService) error {
 		return err
 	}
 
-	if err := stream.Send(&greet.GreetStreamRequest{Name: "bidi"}); err != nil {
+	if err = stream.Send(&greet.GreetStreamRequest{Name: "bidi"}); err != nil {
 		return err
 	}
 	resp, err := stream.Recv()
@@ -134,7 +134,7 @@ func testClientStream(cli greet.GreetService) error {
 	}
 
 	for _, name := range []string{"client", "stream"} {
-		if err := stream.Send(&greet.GreetClientStreamRequest{Name: name}); err != nil {
+		if err = stream.Send(&greet.GreetClientStreamRequest{Name: name}); err != nil {
 			return err
 		}
 	}
