@@ -41,11 +41,7 @@ curl -s \
 
 ## REST 映射
 
-Provider URL 只提供网络目标，例如：
-
-```text
-rest://127.0.0.1:20080/org.apache.dubbo.samples.rest.GreetingService
-```
+Provider URL 用于标识可调用的 Dubbo 服务端点（地址 + 接口），例如：`rest://127.0.0.1:20080/org.apache.dubbo.samples.rest.GreetingService`
 
 真正的 REST 调用形态来自 `api/rest_config.go`：
 

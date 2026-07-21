@@ -35,7 +35,7 @@ curl -s \
 
 ## What this proves
 
-The provider URL only supplies the network target, for example `rest://127.0.0.1:20080/org.apache.dubbo.samples.rest.GreetingService`.
+The provider URL identifies the Dubbo service endpoint (address + interface), for example `rest://127.0.0.1:20080/org.apache.dubbo.samples.rest.GreetingService`.
 
 The actual REST call shape comes from the REST method config in `api/rest_config.go`:
 

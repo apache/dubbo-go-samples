@@ -18,9 +18,9 @@
 package api
 
 import (
-	"dubbo.apache.org/dubbo-go/v3/registry"
+	"fmt"
 
-	"github.com/dubbogo/gost/log/logger"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 )
 
 const (
@@ -51,7 +51,7 @@ func RegistryOptions(name string, registryType string) ([]registry.Option, error
 	case RegistryNacos:
 		opts = append(opts, registry.WithNacos(), registry.WithAddress("127.0.0.1:8848"))
 	default:
-		return nil, logger.Errorf("unsupported registry %q, use direct, zookeeper, or nacos", name)
+		return nil, fmt.Errorf("unsupported registry %q, use direct, zookeeper, or nacos", name)
 	}
 
 	opts = append(opts, registry.WithoutUseAsConfigCenter())
@@ -63,7 +63,7 @@ func RegistryOptions(name string, registryType string) ([]registry.Option, error
 	case RegistryTypeAll:
 		opts = append(opts, registry.WithRegisterServiceAndInterface())
 	default:
-		return nil, logger.Errorf("unsupported registry type %q, use interface, service, or all", registryType)
+		return nil, fmt.Errorf("unsupported registry type %q, use interface, service, or all", registryType)
 	}
 	return opts, nil
 }

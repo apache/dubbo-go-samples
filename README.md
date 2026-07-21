@@ -70,7 +70,7 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
   * `rpc/jsonrpc`: JSON-RPC protocol example.
   * `rpc/triple`: Triple protocol example with multiple serialization formats.
   * `rpc/triple/openapi`: Demonstrates how to enable OpenAPI documentation for Triple protocol services, including versioned services and non-IDL services.
-  * `rpc/rest`: Rest protocol example.
+  * `rpc/rest`: REST protocol example.
 * `streaming`: Streaming RPC example, also includes Go–Java interoperability when both use streaming.
 * `task`: Task scheduling and execution example.
 * `timeout`: Demonstrates timeout handling in Dubbo-go.
