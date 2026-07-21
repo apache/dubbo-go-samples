@@ -21,42 +21,33 @@ import (
 	"context"
 	"flag"
 	"time"
+)
 
+import (
 	"dubbo.apache.org/dubbo-go/v3"
 	"dubbo.apache.org/dubbo-go/v3/client"
-
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster/failover"
-
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/cluster/zoneaware"
-
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/loadbalance/random"
-
 	_ "dubbo.apache.org/dubbo-go/v3/cluster/router/condition"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
-
 	_ "dubbo.apache.org/dubbo-go/v3/filter/graceful_shutdown"
-
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/mapping/metadata"
-
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/nacos"
-
 	_ "dubbo.apache.org/dubbo-go/v3/metadata/report/zookeeper"
-
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/dubbo"
-
 	_ "dubbo.apache.org/dubbo-go/v3/protocol/rest"
-
 	_ "dubbo.apache.org/dubbo-go/v3/registry/directory"
-
 	_ "dubbo.apache.org/dubbo-go/v3/registry/nacos"
-
 	_ "dubbo.apache.org/dubbo-go/v3/registry/protocol"
-
 	_ "dubbo.apache.org/dubbo-go/v3/registry/servicediscovery"
-
 	_ "dubbo.apache.org/dubbo-go/v3/registry/zookeeper"
-	"github.com/apache/dubbo-go-samples/rpc/rest/api"
+
 	"github.com/dubbogo/gost/log/logger"
+)
+
+import (
+	"github.com/apache/dubbo-go-samples/rpc/rest/api"
 )
 
 func main() {
