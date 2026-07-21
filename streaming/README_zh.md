@@ -8,7 +8,7 @@
 - Go 与 Java 之间的互通性验证
 
 支持的流式模式：
-- 一元调用 (Unary): 单个请求，单个响应
+- Unary 调用 (Unary): 单个请求，单个响应
 - 双向流 (Bidirectional Stream): 多个请求，多个响应
 - 客户端流 (Client Stream): 多个请求，单个响应
 - 服务端流 (Server Stream): 单个请求，多个响应
@@ -224,7 +224,7 @@ streaming/
 ```java
 public class GreeterImpl extends DubboGreetServiceTriple.GreetServiceImplBase {
     
-    // 一元调用
+    // Unary 调用
     @Override
     public GreetResponse greet(GreetRequest request) {
         return GreetResponse.newBuilder()

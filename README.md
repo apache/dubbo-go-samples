@@ -73,6 +73,7 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
 * `streaming`: Streaming RPC example, also includes Go–Java interoperability when both use streaming.
 * `task`: Task scheduling and execution example.
 * `timeout`: Demonstrates timeout handling in Dubbo-go.
+* `triple_header_trailer`: Demonstrates Triple request metadata/attachments and response headers/trailers exposed through `http.Header`.
 * `tls`: Demonstrates how to use TLS (based on X.509 certificates) in Dubbo-go to enable encrypted communication and/or mutual authentication between client and server, also includes Go–Java interoperability.
 * `transaction/seata-go`: Distributed transaction example using `seata-go`.
 
