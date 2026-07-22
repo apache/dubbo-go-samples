@@ -68,6 +68,7 @@ array+=("rpc/triple/reflection")
 array+=("rpc/triple/registry")
 array+=("rpc/triple/stream")
 array+=("rpc/triple/openapi")
+array+=("rpc/rest")
 
 # tls
 array+=("tls")
