@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"time"
 )
 
@@ -109,6 +110,11 @@ func main() {
 	if err != nil {
 		logger.Error(err)
 		panic(err)
+	}
+
+	if resp.UserID != 101 || resp.Name != "dubbo-go" || resp.TraceID != "trace-rest-basic" {
+		panic(fmt.Errorf("gets an unexpected result: userID=%d name=%s traceID=%s message=%s greeting=%q\n",
+			resp.UserID, resp.Name, resp.TraceID, resp.Message, resp.Greeting))
 	}
 
 	logger.Infof("REST response: userID=%d name=%s traceID=%s message=%s greeting=%q\n",
