@@ -78,6 +78,7 @@ $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME): $(SOURCES)
 	@mkdir -p $(OUT_DIR)
 	@CGO_ENABLED=$(CGO) GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) build $(GCFLAGS) -ldflags=$(LDFLAGS) -o $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) $(SOURCES)
 
+# Port 4318 is owned by sample-level OpenTelemetry dependencies on macOS/OrbStack.
 ## start: Start the application (for server)
 .PHONY: start
 start: export DUBBO_GO_CONFIG_PATH ?= $(PROJECT_DIR)/go-server/conf/dubbogo.yml
@@ -85,7 +86,7 @@ start: build
 	$(info   >  Starting application $(PROJECT_NAME), output is redirected to $(LOG_FILE))
 	@ls $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) >/dev/null
 	@-pkill -f "$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)" 2>/dev/null || true
-	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:20022 -iTCP:4318 -iTCP:50051 -iTCP:50052 | xargs -r kill -9 || true
+	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:20022 -iTCP:50051 -iTCP:50052 | xargs -r kill -9 || true
 	@sleep 1
 	@-cd $(PROJECT_DIR) && $(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME) > $(LOG_FILE) 2>&1 & echo $$! > $(PID)
 	@sed 's/^/  \>  PID: /' $(PID)
@@ -98,4 +99,4 @@ stop:
 	@-test -f $(PID) && kill `cat $(PID)` 2>/dev/null || true
 	@-pkill -f "$(OUT_DIR)/$(PROJECT_NAME)$(EXT_NAME)" 2>/dev/null || true
 	@-rm -f $(PID)
-	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:20022 -iTCP:4318 -iTCP:50051 -iTCP:50052 | xargs -r kill -9 || true
+	@-command -v lsof >/dev/null 2>&1 && lsof -P -sTCP:LISTEN -tiTCP:20000 -iTCP:20001 -iTCP:20002 -iTCP:20022 -iTCP:50051 -iTCP:50052 | xargs -r kill -9 || true

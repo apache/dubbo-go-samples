@@ -78,8 +78,8 @@ go run ./go-server/cmd/main.go --push=false
 首先，启动 Grafana, Prometheus 和 Pushgateway 服务。我们使用 `docker-compose` 来一键完成。
 
 ```bash
-# 进入 metrics 目录
-cd metrics/prometheus_grafana
+# 进入 observability metrics 目录
+cd observability/prometheus_grafana
 # 以后台模式启动所有监控服务
 docker-compose up -d
 ```
@@ -170,7 +170,7 @@ Pushgateway 设计初衷：为短生命周期进程（batch job、cron job）提
     - 在 Prometheus 的查询栏中输入 `dubbo_consumer_requests_succeed_total`，确认能查询到数据。
 
 - **`host.docker.internal` 无法连接**
-    - `host.docker.internal` 是 Docker 的内置功能，如果该地址无法访问，请将 `metrics/prometheus_grafana/prometheus_pull.yml`
+    - `host.docker.internal` 是 Docker 的内置功能，如果该地址无法访问，请将 `observability/prometheus_grafana/prometheus_pull.yml`
       中的Ip地址以及Grafana的数据源地址换为实际的Ip地址。
 
 -----

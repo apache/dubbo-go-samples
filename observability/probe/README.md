@@ -11,7 +11,7 @@ It showcases how to expose dedicated probe endpoints and how Kubernetes reacts d
 ## Project Layout
 
 ```
-metrics/probe/
+observability/probe/
 ├── go-client/
 │   └── cmd/main.go        # Integration checker for ports/probes/RPC
 ├── go-server/
@@ -49,13 +49,13 @@ metrics/probe/
 ### 1️Start the server
 
 ```bash
-go run ./metrics/probe/go-server/cmd/main.go
+go run ./observability/probe/go-server/cmd/main.go
 ```
 
 ### 2️Run the go-client integration checks
 
 ```bash
-go run ./metrics/probe/go-client/cmd/main.go
+go run ./observability/probe/go-client/cmd/main.go
 ```
 
 The `go-client` validates:
@@ -119,7 +119,7 @@ startupProbe:
 From the repository root:
 
 ```bash
-./metrics/probe/go-server/build.sh
+./observability/probe/go-server/build.sh
 ```
 
 
@@ -135,7 +135,7 @@ minikube image load dubbo-go-probe-server:latest
 ### Deploy to Kubernetes
 
 ```bash
-kubectl apply -f metrics/probe/deploy/server-deployment.yml
+kubectl apply -f observability/probe/deploy/server-deployment.yml
 kubectl rollout status deploy/dubbo-go-probe-server
 kubectl get pod -l app=dubbo-go-probe-server
 ```

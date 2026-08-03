@@ -1,0 +1,96 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "id": 1,
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [
+        {"expr": "sum(rate(dubbo_provider_requests_succeed_total[1m]))", "legendFormat": "provider success", "refId": "A"},
+        {"expr": "sum(rate(dubbo_consumer_requests_succeed_total[1m]))", "legendFormat": "consumer success", "refId": "B"}
+      ],
+      "title": "Successful RPC requests",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "ms"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "id": 2,
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [
+        {"expr": "avg(dubbo_provider_rt_milliseconds_p95)", "legendFormat": "provider p95", "refId": "A"}
+      ],
+      "title": "Provider latency p95",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "id": 3,
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [
+        {"expr": "sum(rate(dubbo_provider_requests_business_failed_total[1m]))", "legendFormat": "provider business failures", "refId": "A"},
+        {"expr": "sum(rate(dubbo_consumer_requests_business_failed_total[1m]))", "legendFormat": "consumer business failures", "refId": "B"}
+      ],
+      "title": "Business failures",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "id": 4,
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [
+        {"expr": "sum(dubbo_provider_requests_processing_total)", "legendFormat": "provider in-flight", "refId": "A"},
+        {"expr": "sum(dubbo_consumer_requests_processing_total)", "legendFormat": "consumer in-flight", "refId": "B"}
+      ],
+      "title": "In-flight RPC requests",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+      "id": 5,
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [
+        {"expr": "sum(rate(dubbo_registry_register_requests_failed_total[1m]))", "legendFormat": "registry register failures", "refId": "A"},
+        {"expr": "sum(rate(dubbo_registry_subscribe_num_failed_total[1m]))", "legendFormat": "registry subscribe failures", "refId": "B"}
+      ],
+      "title": "Registry failures",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+      "id": 6,
+      "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [
+        {"expr": "sum(rate(dubbo_provider_requests_failed_service_unavailable_total[1m]))", "legendFormat": "provider unavailable", "refId": "A"},
+        {"expr": "sum(rate(dubbo_consumer_requests_failed_service_unavailable_total[1m]))", "legendFormat": "consumer unavailable", "refId": "B"}
+      ],
+      "title": "Service unavailable failures",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": ["dubbo-go", "observability"],
+  "templating": {"list": []},
+  "time": {"from": "now-15m", "to": "now"},
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Dubbo Go Observability",
+  "uid": "dubbo-go-observability",
+  "version": 1
+}

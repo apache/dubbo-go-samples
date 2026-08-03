@@ -81,8 +81,11 @@ array+=("async")
 # error
 array+=("error")
 
-# metrics
-array+=("metrics/probe")
+# observability samples
+array+=("observability/probe")
+
+# observability integration validation
+array+=("observability/integration")
 
 # config_center
 array+=("config_center/nacos")

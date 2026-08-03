@@ -47,9 +47,10 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
   * `logger/rolling`: Output to file.
   * `logger/custom`: Custom logger.
   * `logger/trace-integration`: Integrate OpenTelemetry trace information, automatically injecting trace_id, span_id and other information into logs.
-* `metrics`: Observability-related samples.
-  * `metrics/prometheus_grafana`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
-  * `metrics/probe`: Demonstrates Dubbo-go Kubernetes probe endpoints (`/live`, `/ready`, `/startup`) and deployment usage.
+* `observability`: Observability samples for Dubbo-go.
+  * `observability/integration`: End-to-end integration-validation sample combining Nacos discovery, Dubbo Triple tracing, an OpenTelemetry Collector, Prometheus/Grafana, and trace-correlated logs.
+  * `observability/prometheus_grafana`: Shows how to collect and expose metrics from Dubbo-go services, supporting both Prometheus Push and Pull modes. Also includes the `pgw-cleaner` tool for cleaning zombie metrics in Push mode.
+  * `observability/probe`: Demonstrates Dubbo-go Kubernetes probe endpoints (`/live`, `/ready`, `/startup`) and deployment usage.
 * `mesh`: Proxy-based service mesh example showing how to deploy Dubbo-go services with Envoy on Kubernetes.
 * `online_boutique`: Microservices “online boutique” demo built with Dubbo-go.
 * `otel/tracing`: Distributed tracing examples using OpenTelemetry.

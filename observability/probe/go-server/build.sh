@@ -27,7 +27,7 @@ cd "$(dirname "$0")/../../.."
 TARGET_OS=${TARGET_OS:-linux}
 TARGET_ARCH=${TARGET_ARCH:-amd64}
 
-CGO_ENABLED=0 GOOS="$TARGET_OS" GOARCH="$TARGET_ARCH" go build -o metrics/probe/go-server/probeApp ./metrics/probe/go-server/cmd/main.go
-docker build -f metrics/probe/go-server/Dockerfile -t dubbo-go-probe-server:latest .
+CGO_ENABLED=0 GOOS="$TARGET_OS" GOARCH="$TARGET_ARCH" go build -o observability/probe/go-server/probeApp ./observability/probe/go-server/cmd/main.go
+docker build -f observability/probe/go-server/Dockerfile -t dubbo-go-probe-server:latest .
 
 echo "Build completed successfully."

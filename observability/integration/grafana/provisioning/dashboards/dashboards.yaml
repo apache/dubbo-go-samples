@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: Dubbo Go observability
+    orgId: 1
+    folder: Dubbo Go
+    type: file
+    disableDeletion: true
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

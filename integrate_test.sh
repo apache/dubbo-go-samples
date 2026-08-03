@@ -44,6 +44,14 @@ JAVA_SERVER_RUN_SH="$(find "$P_DIR" -type f -path '*/java-server*/run.sh' -print
 JAVA_CLIENT_RUN_SH="$(find "$P_DIR" -type f -path '*/java-client*/run.sh' -print -quit || true)"
 JAVA_SERVER_PID=""
 GO_AUX_PIDS=()
+SAMPLE_COMPOSE_FILE=""
+SAMPLE_COMPOSE_SERVICES=()
+DOCKER_COMPOSE_CMD=()
+
+if [ "$SAMPLE" = "observability/integration" ]; then
+  SAMPLE_COMPOSE_FILE="$P_DIR/docker-compose.yaml"
+  SAMPLE_COMPOSE_SERVICES=(jaeger otel-collector prometheus grafana)
+fi
 
 JAVA_ENABLED=true
 if { [ -n "$JAVA_SERVER_RUN_SH" ] || [ -n "$JAVA_CLIENT_RUN_SH" ]; } && ! command -v mvn >/dev/null 2>&1; then
@@ -77,9 +85,183 @@ cleanup() {
     kill_if_running "$server_pid"
     rm -f "$PID_FILE"
   fi
+  stop_sample_dependencies
+  if [ -n "$SAMPLE_COMPOSE_FILE" ]; then
+    wait_for_tcp_port_closed "127.0.0.1" "4318" 30 || true
+  fi
   run_make_target stop >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
+
+start_sample_dependencies() {
+  if [ -z "$SAMPLE_COMPOSE_FILE" ]; then
+    return 0
+  fi
+
+  if ! wait_for_http_url "http://127.0.0.1:8848/nacos/v1/console/health/liveness" 90 5; then
+    echo "Root Nacos liveness did not remain healthy on 127.0.0.1:8848"
+    return 1
+  fi
+  if ! wait_for_tcp_port "127.0.0.1" "9848" 60; then
+    echo "Root Nacos gRPC endpoint did not become ready on 127.0.0.1:9848"
+    return 1
+  fi
+
+  if docker compose version >/dev/null 2>&1; then
+    DOCKER_COMPOSE_CMD=(docker compose)
+  elif command -v docker-compose >/dev/null 2>&1; then
+    DOCKER_COMPOSE_CMD=(docker-compose)
+  else
+    echo "Docker Compose is required for sample dependencies: $SAMPLE"
+    return 1
+  fi
+
+  echo "Starting sample dependencies: ${SAMPLE_COMPOSE_SERVICES[*]}"
+  "${DOCKER_COMPOSE_CMD[@]}" -f "$SAMPLE_COMPOSE_FILE" up -d "${SAMPLE_COMPOSE_SERVICES[@]}"
+
+  if ! wait_for_tcp_port "127.0.0.1" "4318" 60; then
+    echo "OpenTelemetry Collector did not become ready on 127.0.0.1:4318"
+    return 1
+  fi
+  if ! wait_for_tcp_port "127.0.0.1" "9090" 60; then
+    echo "Prometheus did not become ready on 127.0.0.1:9090"
+    return 1
+  fi
+}
+
+stop_sample_dependencies() {
+  if [ -z "$SAMPLE_COMPOSE_FILE" ] || [ "${#DOCKER_COMPOSE_CMD[@]}" -eq 0 ]; then
+    return 0
+  fi
+
+  "${DOCKER_COMPOSE_CMD[@]}" -f "$SAMPLE_COMPOSE_FILE" stop "${SAMPLE_COMPOSE_SERVICES[@]}" >/dev/null 2>&1 || true
+  "${DOCKER_COMPOSE_CMD[@]}" -f "$SAMPLE_COMPOSE_FILE" rm -f "${SAMPLE_COMPOSE_SERVICES[@]}" >/dev/null 2>&1 || true
+}
+
+# verify_observability_semantics asserts that the telemetry pipeline actually
+# received and stored the expected signals before the sample stack is torn
+# down: Prometheus scrape targets are up and have scraped RPC metrics, Jaeger
+# holds a cross-service trace (consumer and provider spans of the same trace),
+# and Grafana reports the provisioned data source and dashboard. Any failed
+# check exits non-zero so a broken scrape target, OTLP endpoint, or dashboard
+# provisioning cannot silently pass the integration.
+verify_observability_semantics() {
+  if [ "$SAMPLE" != "observability/integration" ]; then
+    return 0
+  fi
+
+  echo "Verifying observability telemetry semantics before teardown..."
+  if ! python3 <<'PY'
+import base64
+import json
+import time
+import urllib.request
+
+PROMETHEUS = "http://127.0.0.1:9090"
+JAEGER = "http://127.0.0.1:16686"
+GRAFANA = "http://127.0.0.1:3000"
+GRAFANA_HEADERS = {
+    "Authorization": "Basic " + base64.b64encode(b"admin:admin").decode("ascii"),
+}
+
+
+def fetch(url, headers=None):
+    request = urllib.request.Request(url, headers=headers or {})
+    with urllib.request.urlopen(request, timeout=2) as response:
+        return response.status, response.read()
+
+
+def prometheus_targets_up():
+    _, body = fetch(PROMETHEUS + "/api/v1/targets")
+    jobs = {}
+    for target in json.loads(body)["data"].get("activeTargets", []):
+        jobs.setdefault(target["labels"].get("job"), []).append(target["health"])
+    for job in ("dubbo-observability-server", "dubbo-observability-client"):
+        if "up" not in jobs.get(job, []):
+            return False
+    return True
+
+
+def prometheus_metrics_scraped():
+    _, body = fetch(PROMETHEUS + "/api/v1/query?query=dubbo_provider_requests_succeed_total")
+    result = json.loads(body).get("data", {}).get("result", [])
+    return any(float(series["value"][1]) > 0 for series in result)
+
+
+def jaeger_cross_service_trace():
+    _, body = fetch(JAEGER + "/api/traces?service=dubbo-observability-client&lookback=1h&limit=5")
+    for trace in json.loads(body).get("data", []):
+        processes = {process.get("serviceName") for process in trace.get("processes", {}).values()}
+        if {"dubbo-observability-client", "dubbo-observability-server"} <= processes:
+            return True
+    return False
+
+
+def grafana_provisioned():
+    status, _ = fetch(GRAFANA + "/api/health")
+    if status != 200:
+        return False
+    _, body = fetch(GRAFANA + "/api/datasources/uid/prometheus", GRAFANA_HEADERS)
+    datasource = json.loads(body)
+    if datasource.get("uid") != "prometheus" or datasource.get("type") != "prometheus":
+        return False
+    _, body = fetch(GRAFANA + "/api/datasources/uid/prometheus/health", GRAFANA_HEADERS)
+    if json.loads(body).get("status") != "OK":
+        return False
+    _, body = fetch(
+        GRAFANA + "/api/datasources/proxy/uid/prometheus/api/v1/query"
+        "?query=dubbo_provider_requests_succeed_total",
+        GRAFANA_HEADERS,
+    )
+    query_result = json.loads(body).get("data", {}).get("result", [])
+    if not any(float(series["value"][1]) > 0 for series in query_result):
+        return False
+    status, _ = fetch(
+        GRAFANA + "/api/dashboards/uid/dubbo-go-observability",
+        GRAFANA_HEADERS,
+    )
+    return status == 200
+
+
+checks = [
+    (prometheus_targets_up, "Prometheus scrape targets are up"),
+    (prometheus_metrics_scraped, "Prometheus has scraped dubbo_provider_requests_succeed_total"),
+    (jaeger_cross_service_trace, "Jaeger holds a consumer/provider cross-service trace"),
+    (grafana_provisioned, "Grafana data source and dashboard are provisioned"),
+]
+pending = checks
+last_errors = {}
+deadline = time.monotonic() + 90
+while pending and time.monotonic() < deadline:
+    next_pending = []
+    for check, description in pending:
+        try:
+            if check():
+                print("  ok: " + description)
+                continue
+        except Exception as exc:  # noqa: BLE001
+            last_errors[description] = exc
+        next_pending.append((check, description))
+    pending = next_pending
+    if pending:
+        time.sleep(2)
+
+if pending:
+    for _, description in pending:
+        last_error = last_errors.get(description)
+        suffix = " (last error: %s)" % last_error if last_error else ""
+        print("  failed: " + description + suffix)
+    print("observability semantic verification failed for: " + ", ".join(
+        description for _, description in pending
+    ))
+    raise SystemExit(1)
+PY
+  then
+    echo "Observability telemetry semantic verification failed for: $SAMPLE"
+    return 1
+  fi
+  echo "Observability telemetry semantics verified"
+}
 
 resolve_config_path() {
   local role="$1"
@@ -130,6 +312,79 @@ sys.exit(1)
 PY
     then
       return 0
+    fi
+    sleep 1
+    elapsed=$((elapsed + 1))
+  done
+
+  return 1
+}
+
+wait_for_tcp_port_closed() {
+  local host="$1"
+  local port="$2"
+  local timeout_seconds="$3"
+  local elapsed=0
+
+  while [ "$elapsed" -lt "$timeout_seconds" ]; do
+    if python3 - "$host" "$port" <<'PY' >/dev/null 2>&1
+import socket
+import sys
+
+host = sys.argv[1]
+port = int(sys.argv[2])
+
+for af, socktype, proto, _, sockaddr in socket.getaddrinfo(host, port, socket.AF_UNSPEC, socket.SOCK_STREAM):
+    sock = None
+    try:
+        sock = socket.socket(af, socktype, proto)
+        sock.settimeout(1.0)
+        sock.connect(sockaddr)
+        sys.exit(1)
+    except OSError:
+        continue
+    finally:
+        if sock is not None:
+            sock.close()
+
+sys.exit(0)
+PY
+    then
+      return 0
+    fi
+    sleep 1
+    elapsed=$((elapsed + 1))
+  done
+
+  return 1
+}
+
+wait_for_http_url() {
+  local url="$1"
+  local timeout_seconds="$2"
+  local required_successes="${3:-1}"
+  local elapsed=0
+  local successes=0
+
+  while [ "$elapsed" -lt "$timeout_seconds" ]; do
+    if python3 - "$url" <<'PY' >/dev/null 2>&1
+import sys
+import urllib.request
+
+try:
+    with urllib.request.urlopen(sys.argv[1], timeout=1) as response:
+        if response.status != 200:
+            raise RuntimeError(f"unexpected HTTP status: {response.status}")
+except Exception:
+    sys.exit(1)
+PY
+    then
+      successes=$((successes + 1))
+      if [ "$successes" -ge "$required_successes" ]; then
+        return 0
+      fi
+    else
+      successes=0
     fi
     sleep 1
     elapsed=$((elapsed + 1))
@@ -447,11 +702,27 @@ main() {
   fi
 
   start_go_server
+  start_sample_dependencies
   start_aux_go_servers
 
-  run_go_client
+  if [ "$SAMPLE" = "observability/integration" ]; then
+    if ! run_go_client; then
+      echo "Observability integration client validation failed for: $SAMPLE"
+      return 1
+    fi
+  else
+    run_go_client
+  fi
   run_java_client_if_present
 
+  if ! verify_observability_semantics; then
+    return 1
+  fi
+
+  if [ -n "$SAMPLE_COMPOSE_FILE" ]; then
+    stop_sample_dependencies
+    wait_for_tcp_port_closed "127.0.0.1" "4318" 30 || true
+  fi
   stop_go_server
 
   if start_java_server_if_present; then

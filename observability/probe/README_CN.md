@@ -12,7 +12,7 @@
 ## 项目结构
 
 ```
-metrics/probe/
+observability/probe/
 ├── go-client/
 │   └── cmd/main.go              # 集成测试客户端（端口/探针/RPC 校验）
 ├── go-server/
@@ -51,13 +51,13 @@ metrics/probe/
 ### 启动服务
 
 ```bash
-go run ./metrics/probe/go-server/cmd/main.go
+go run ./observability/probe/go-server/cmd/main.go
 ```
 
 ### 运行 go-client 做集成检查
 
 ```bash
-go run ./metrics/probe/go-client/cmd/main.go
+go run ./observability/probe/go-client/cmd/main.go
 ```
 
 `go-client` 会依次检查：
@@ -127,7 +127,7 @@ startupProbe:
 在仓库根目录执行：
 
 ```bash
-./metrics/probe/go-server/build.sh
+./observability/probe/go-server/build.sh
 ```
 
 
@@ -143,7 +143,7 @@ minikube image load dubbo-go-probe-server:latest
 ### 部署到 Kubernetes
 
 ```bash
-kubectl apply -f metrics/probe/deploy/server-deployment.yml
+kubectl apply -f observability/probe/deploy/server-deployment.yml
 kubectl rollout status deploy/dubbo-go-probe-server
 kubectl get pod -l app=dubbo-go-probe-server
 ```

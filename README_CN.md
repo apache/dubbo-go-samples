@@ -47,9 +47,10 @@
   * `logger/rolling`：输出到文件。
   * `logger/custom`：自定义 logger。
   * `logger/trace-integration`：集成 OpenTelemetry trace 信息，自动将 trace_id、span_id 等信息注入日志。
-* `metrics`：可观测性相关示例。
-  * `metrics/prometheus_grafana`：展示如何采集并暴露 Dubbo-go 服务指标，支持 Prometheus Push 和 Pull 两种模式；同时包含用于清理 Push 模式僵尸指标的 `pgw-cleaner` 工具。
-  * `metrics/probe`：演示 Dubbo-go 在 Kubernetes 场景下的探针端点（`/live`、`/ready`、`/startup`）及部署方式。
+* `observability`：Dubbo-go 可观测性相关样例。
+  * `observability/integration`：端到端可观测性集成验证样例，组合 Nacos 服务发现、Dubbo Triple 链路追踪、OpenTelemetry Collector、Prometheus/Grafana 以及带 Trace 关联的日志。
+  * `observability/prometheus_grafana`：展示如何采集并暴露 Dubbo-go 服务指标，支持 Prometheus Push 和 Pull 两种模式；同时包含用于清理 Push 模式僵尸指标的 `pgw-cleaner` 工具。
+  * `observability/probe`：演示 Dubbo-go 在 Kubernetes 场景下的探针端点（`/live`、`/ready`、`/startup`）及部署方式。
 * `mesh`：基于代理的服务网格示例，展示如何在 Kubernetes 上结合 Envoy 部署 Dubbo-go 服务。
 * `online_boutique`：基于 Dubbo-go 构建的微服务 “在线商城” 演示项目。
 * `otel/tracing`：使用 OpenTelemetry 的分布式链路追踪示例。
