@@ -4,9 +4,6 @@
 
 这个样例是一个集成验证样例，把 Dubbo Go 现有的可观测性能力组合成一条可运行链路：
 
-现有 Metrics 和 Kubernetes 探针样例现在作为兄弟样例统一放在这个
-`observability/` 目录中。本端到端样例专注于跨信号集成和验证，不替换这些已有样例。
-
 ```text
 Nacos 注册中心
        |
@@ -16,10 +13,6 @@ Dubbo Triple 客户端 -> Dubbo Triple 服务端
         +-- Metrics ---------------------------> Prometheus -> Grafana
         +-- 日志 ------------------------------> stdout 中的 trace_id / span_id
 ```
-
-这个样例刻意保持较小，定位是“现有能力的集成验证”，不是核心可观测性实现，
-也不是第二个业务商城。单项能力验证完成后，再使用 `online_boutique` 做更复杂的
-业务链路验收。
 
 ## 目录结构
 
@@ -135,68 +128,3 @@ Grafana 会自动配置 Prometheus 数据源和 `Dubbo Go Observability` Dashboa
 `SpanContext`，并包含和 Jaeger 中相同的 `trace_id`、`span_id`。这个样例刻意只使用
 已发布的 module API；Dubbo-Go 的 `CtxLogger` 集成由专门的
 `logger/trace-integration` 样例覆盖，这里不重复实现。
-
-## 使用本地 dubbo-go 工作树
-
-默认情况下，样例使用仓库根目录 module。要测试未提交的本地 Dubbo Go 修改，
-请创建一个同时包含本地 `dubbo-go` module 和本仓库的临时 Go workspace，然后使用
-`GOWORK` 执行命令：
-
-```bash
-GOWORK=/tmp/dubbo-go-observability.go.work \
-  go run ./observability/integration/go-server/cmd
-
-GOWORK=/tmp/dubbo-go-observability.go.work \
-  go run ./observability/integration/go-client/cmd -requests 20
-```
-
-客户端通过 Nacos 发现服务，而不是使用写死的服务端地址。如果注册中心运行在其他
-主机，可以通过 `DUBBO_OBSERVABILITY_REGISTRY_ADDRESS` 覆盖注册中心地址。
-
-临时 workspace 需要包含：
-
-```text
-/path/to/dubbo-go
-/path/to/dubbo-go-samples
-```
-
-这样不需要把本地文件系统 `replace` 指令写入正式 sample module。
-
-## 验证范围
-
-- 通过 Nacos 服务发现完成 Dubbo Triple consumer 到 provider 的 W3C Trace Context 传播；
-- OTLP HTTP 经 OpenTelemetry Collector 导出到 Jaeger；
-- consumer 和 provider 的 Prometheus RPC Metrics；
-- Grafana 中的成功、失败、不可用、在途请求、注册中心和延迟信号可视化；
-- 包含当前 Trace 标识的应用日志；
-- 同一条流程中的成功请求、业务错误、超时和恢复；
-- 显式请求取消和恢复；
-- 文档化注册中心不可用和服务端不可用演练；
-- 使用未提交的本地 `dubbo-go` 工作树进行测试。
-
-## 故障与恢复演练
-
-样例通过运行时操作复现故障，不向 `dubbo-go` 核心代码加入样例专用的故障逻辑：
-
-1. 服务端业务错误：每第五个请求使用 `error` 作为 name。
-2. 请求超时：使用 `-timeout 1ms` 启动客户端。
-3. 请求取消：使用 `-cancel-after 1ms` 启动客户端。
-4. 服务端不可用：停止服务端进程后发送请求，再重启服务端，确认服务发现和请求恢复。
-5. 注册中心不可用：执行 `docker compose -f observability/integration/docker-compose.yaml stop nacos` 后发送请求，再执行
-   `docker compose -f observability/integration/docker-compose.yaml start nacos`；必要时重启服务端和客户端。
-
-每次演练都检查应用日志、Jaeger 中的 Trace、Consumer/Provider Metrics endpoint
-以及 Grafana Dashboard。
-
-## 边界说明
-
-这个样例只验证当前 `dubbo-go` 能力在一条基于注册中心的 Consumer/Provider 链路
-以及外围遥测管道中的协同工作，不做以下事情：
-
-- 不新增或修改核心 Metrics、Trace、Logger、Metadata 语义；
-- 不替代现有可观测性 Issues 中已经在推进的实现；
-- 不宣称取得 `dubbo-go` 核心代码的 ownership；
-- 不把样例扩展成第二个业务应用。
-
-核心实现应放在 `dubbo-go` 中，并在和对应维护者、贡献者完成协调后，拆分为独立、
-可单独审查的 PR。

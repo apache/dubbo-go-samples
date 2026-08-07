@@ -5,11 +5,6 @@ English | [中文](README_CN.md)
 This is an integration-validation sample. It combines Dubbo Go's existing
 observability capabilities into one runnable flow:
 
-The existing Metrics and Kubernetes probe examples are consolidated under
-this `observability/` directory as sibling samples. This end-to-end sample
-focuses on cross-signal integration and validation without replacing those
-existing examples.
-
 ```text
 Nacos registry
        |
@@ -19,12 +14,6 @@ Dubbo Triple client -> Dubbo Triple server
         +-- Metrics ---------------------------> Prometheus -> Grafana
         +-- Logs ------------------------------> trace_id / span_id in stdout
 ```
-
-The sample is intentionally small. It validates the integration of existing
-capabilities; it does not implement or redefine Dubbo Go's core observability
-semantics. It is not a second business demo. Use `online_boutique` for a larger
-business-flow validation after the individual observability signals have been
-verified here.
 
 ## Layout
 
@@ -148,76 +137,3 @@ client terminals; each application log reads the active OpenTelemetry
 in Jaeger. This sample deliberately uses the published module API. The
 Dubbo-Go `CtxLogger` integration is covered by the dedicated
 `logger/trace-integration` sample and is not reimplemented here.
-
-## Use a local dubbo-go checkout
-
-The sample uses the repository root module by default. To test an uncommitted
-local Dubbo Go change, create a temporary Go workspace that includes both the
-local `dubbo-go` module and this repository, then run the commands with
-`GOWORK`:
-
-```bash
-GOWORK=/tmp/dubbo-go-observability.go.work \
-  go run ./observability/integration/go-server/cmd
-
-GOWORK=/tmp/dubbo-go-observability.go.work \
-  go run ./observability/integration/go-client/cmd -requests 20
-```
-
-The provider is discovered through Nacos rather than a hard-coded provider
-address. Override the registry address with
-`DUBBO_OBSERVABILITY_REGISTRY_ADDRESS` when running the sample on a different
-host.
-
-The temporary workspace must include:
-
-```text
-/path/to/dubbo-go
-/path/to/dubbo-go-samples
-```
-
-This avoids adding a local filesystem `replace` directive to the committed
-sample module.
-
-## What this verifies
-
-- Dubbo Triple consumer-to-provider W3C Trace Context propagation through Nacos discovery;
-- OTLP HTTP export through the OpenTelemetry Collector to Jaeger;
-- Prometheus RPC metrics for both consumer and provider;
-- Grafana visualization of successful, failed, unavailable, in-flight, registry, and latency signals;
-- application logs containing the active Trace identifiers;
-- successful requests, business errors, timeout errors, and recovery in one flow;
-- explicit request cancellation and recovery;
-- registry and provider-unavailable failure drills documented below;
-- local testing against an uncommitted `dubbo-go` checkout.
-
-## Failure and recovery drills
-
-The sample keeps operational failures reproducible without adding failure logic
-to `dubbo-go` core:
-
-1. Provider business error: every fifth request uses the name `error`.
-2. Timeout: run the client with `-timeout 1ms`.
-3. Cancellation: run the client with `-cancel-after 1ms`.
-4. Provider unavailable: stop the provider process, send requests, then restart
-   the provider and verify discovery and requests recover.
-5. Registry unavailable: run `docker compose -f observability/integration/docker-compose.yaml stop nacos`, send requests, then
-   run `docker compose -f observability/integration/docker-compose.yaml start nacos` and restart the provider/client if needed.
-
-For each drill, inspect the application logs, the corresponding Trace in
-Jaeger, the Consumer/Provider Metrics endpoints, and the Grafana dashboard.
-
-## Scope boundary
-
-This sample validates the current `dubbo-go` observability capabilities across
-one registry-backed Consumer/Provider flow and the telemetry pipeline around
-it. It does not:
-
-- add or change core Metrics, Trace, Logger, or Metadata semantics;
-- replace the implementation work tracked by the existing observability issues;
-- claim ownership of core changes in `dubbo-go`;
-- turn the sample into a second business application.
-
-Core implementation changes belong in `dubbo-go` and must be delivered as
-separate, independently reviewable PRs after coordination with the relevant
-maintainers and contributors.
