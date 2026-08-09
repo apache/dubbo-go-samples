@@ -29,6 +29,7 @@ PROJECT_NAME="$(basename "$P_DIR")"
 GO_SERVER_LOG="/tmp/.${PROJECT_NAME}.go-server.log"
 JAVA_SERVER_LOG="/tmp/.${PROJECT_NAME}.java-server.log"
 PID_FILE="/tmp/.${PROJECT_NAME}.pid"
+GO_CLIENT_BIN=""
 GO_CLIENT_TIMEOUT_SECONDS="${GO_CLIENT_TIMEOUT_SECONDS:-90}"
 JAVA_SERVER_READY_TIMEOUT_SECONDS="${JAVA_SERVER_READY_TIMEOUT_SECONDS:-60}"
 JAVA_SERVER_HOST="${JAVA_SERVER_HOST:-127.0.0.1}"
@@ -47,6 +48,7 @@ GO_AUX_PIDS=()
 SAMPLE_COMPOSE_FILE=""
 SAMPLE_COMPOSE_SERVICES=()
 DOCKER_COMPOSE_CMD=()
+OBSERVABILITY_SEMANTICS_VERIFIED=false
 
 if [ "$SAMPLE" = "observability/integration" ]; then
   SAMPLE_COMPOSE_FILE="$P_DIR/docker-compose.yaml"
@@ -88,6 +90,9 @@ cleanup() {
   stop_sample_dependencies
   if [ -n "$SAMPLE_COMPOSE_FILE" ]; then
     wait_for_tcp_port_closed "127.0.0.1" "4318" 30 || true
+  fi
+  if [ -n "$GO_CLIENT_BIN" ]; then
+    rm -f "$GO_CLIENT_BIN"
   fi
   run_make_target stop >/dev/null 2>&1 || true
 }
@@ -150,10 +155,14 @@ verify_observability_semantics() {
     return 0
   fi
 
+  local client_pid="${1:-}"
+
   echo "Verifying observability telemetry semantics before teardown..."
-  if ! python3 <<'PY'
+  if ! python3 - "${client_pid:-}" <<'PY'
 import base64
 import json
+import os
+import sys
 import time
 import urllib.request
 
@@ -233,6 +242,12 @@ pending = checks
 last_errors = {}
 deadline = time.monotonic() + 90
 while pending and time.monotonic() < deadline:
+    if sys.argv[1]:
+        try:
+            os.kill(int(sys.argv[1]), 0)
+        except OSError:
+            print("observability client exited before semantic verification completed")
+            raise SystemExit(1)
     next_pending = []
     for check, description in pending:
         try:
@@ -433,7 +448,15 @@ run_go_client() {
   fi
 
   local client_conf
+  local client_args=()
   client_conf="$(resolve_config_path "go-client" || true)"
+
+  if [ "$SAMPLE" = "observability/integration" ]; then
+    # Keep the client alive while the semantic checks poll its metrics target.
+    # The test stops it only after Prometheus, Jaeger, and Grafana are verified.
+    client_args=(-requests 0 -interval 500ms)
+    GO_CLIENT_BIN="/tmp/.${PROJECT_NAME}.go-client.bin"
+  fi
 
   echo "Running Go client..."
   (
@@ -441,10 +464,27 @@ run_go_client() {
     if [ -n "$client_conf" ]; then
       export DUBBO_GO_CONFIG_PATH="$client_conf"
     fi
-    go run ./go-client/cmd/*.go
+    if [ "$SAMPLE" = "observability/integration" ]; then
+      go build -o "$GO_CLIENT_BIN" ./go-client/cmd
+      exec "$GO_CLIENT_BIN" "${client_args[@]}"
+    fi
+    go run ./go-client/cmd/*.go "${client_args[@]}"
   ) &
   local go_client_pid=$!
   local elapsed=0
+
+  if [ "$SAMPLE" = "observability/integration" ]; then
+    if ! verify_observability_semantics "$go_client_pid"; then
+      echo "Observability telemetry semantic verification failed for: $SAMPLE"
+      kill_if_running "$go_client_pid"
+      wait "$go_client_pid" 2>/dev/null || true
+      return 1
+    fi
+    kill_if_running "$go_client_pid"
+    wait "$go_client_pid" 2>/dev/null || true
+    OBSERVABILITY_SEMANTICS_VERIFIED=true
+    return 0
+  fi
 
   while kill -0 "$go_client_pid" 2>/dev/null; do
     if [ "$elapsed" -ge "$GO_CLIENT_TIMEOUT_SECONDS" ]; then
@@ -705,18 +745,13 @@ main() {
   start_sample_dependencies
   start_aux_go_servers
 
-  if [ "$SAMPLE" = "observability/integration" ]; then
-    if ! run_go_client; then
-      echo "Observability integration client validation failed for: $SAMPLE"
-      return 1
-    fi
-  else
-    run_go_client
-  fi
+  run_go_client
   run_java_client_if_present
 
-  if ! verify_observability_semantics; then
-    return 1
+  if [ "$OBSERVABILITY_SEMANTICS_VERIFIED" != "true" ]; then
+    if ! verify_observability_semantics; then
+      return 1
+    fi
   fi
 
   if [ -n "$SAMPLE_COMPOSE_FILE" ]; then
