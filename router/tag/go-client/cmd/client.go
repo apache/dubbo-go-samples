@@ -75,8 +75,6 @@ func main() {
 		ctx := context.WithValue(context.Background(), constant.AttachmentKey, atta)
 
 		rep, err := svc.Greet(ctx, &greet.GreetRequest{Name: name})
-		// temporarily cancel checking for result, for PR # 3208 (https://github.com/apache/dubbo-go/pull/3208)
-		// hasn't been merged to main branch yet, thus tag router still not works properly.
 
 		if err != nil {
 			logger.Errorf("❌ invoke failed: %v", err)
