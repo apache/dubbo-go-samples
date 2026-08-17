@@ -38,12 +38,13 @@ import (
 )
 
 const (
-	tokenHeader       = "X-Sample-Token"
-	modeHeader        = "X-Sample-Mode"
-	unaryResponseKey  = "X-Unary-Response"
-	unaryTrailerKey   = "X-Unary-Trailer"
-	streamResponseKey = "X-Stream-Response"
-	streamTrailerKey  = "X-Stream-Trailer"
+	tokenHeader        = "X-Sample-Token"
+	modeHeader         = "X-Sample-Mode"
+	unaryResponseKey   = "X-Unary-Response"
+	unarySendHeaderKey = "X-Unary-Send-Response"
+	unaryTrailerKey    = "X-Unary-Trailer"
+	streamResponseKey  = "X-Stream-Response"
+	streamTrailerKey   = "X-Stream-Trailer"
 )
 
 type GreetTripleServer struct{}
@@ -53,6 +54,9 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 	logger.Infof("unary request metadata: token=%q modes=%v", token, modes)
 
 	if err := triple.SetHeader(ctx, http.Header{unaryResponseKey: []string{"unary-header"}}); err != nil {
+		return nil, err
+	}
+	if err := triple.SendHeader(ctx, http.Header{unarySendHeaderKey: []string{"unary-send-header"}}); err != nil {
 		return nil, err
 	}
 	if err := triple.SetTrailer(ctx, http.Header{unaryTrailerKey: []string{"unary-trailer"}}); err != nil {

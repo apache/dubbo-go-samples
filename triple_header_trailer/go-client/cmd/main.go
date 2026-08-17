@@ -38,12 +38,13 @@ import (
 )
 
 const (
-	tokenHeader       = "X-Sample-Token"
-	modeHeader        = "X-Sample-Mode"
-	unaryResponseKey  = "X-Unary-Response"
-	unaryTrailerKey   = "X-Unary-Trailer"
-	streamResponseKey = "X-Stream-Response"
-	streamTrailerKey  = "X-Stream-Trailer"
+	tokenHeader        = "X-Sample-Token"
+	modeHeader         = "X-Sample-Mode"
+	unaryResponseKey   = "X-Unary-Response"
+	unarySendHeaderKey = "X-Unary-Send-Response"
+	unaryTrailerKey    = "X-Unary-Trailer"
+	streamResponseKey  = "X-Stream-Response"
+	streamTrailerKey   = "X-Stream-Trailer"
 )
 
 func main() {
@@ -90,8 +91,12 @@ func testUnary(cli greet.GreetService) error {
 	}
 	logger.Infof("unary response: %s", resp.Greeting)
 	logger.Infof("unary response header %s=%v", unaryResponseKey, responseHeader.Values(unaryResponseKey))
+	logger.Infof("unary response send header %s=%v", unarySendHeaderKey, responseHeader.Values(unarySendHeaderKey))
 	logger.Infof("unary response trailer %s=%v", unaryTrailerKey, responseTrailer.Values(unaryTrailerKey))
 	if err := requireHeader(responseHeader, unaryResponseKey, "unary-header"); err != nil {
+		return err
+	}
+	if err := requireHeader(responseHeader, unarySendHeaderKey, "unary-send-header"); err != nil {
 		return err
 	}
 	return requireHeader(responseTrailer, unaryTrailerKey, "unary-trailer")
