@@ -30,7 +30,7 @@ public class Http3ClientApp {
 
         ReferenceConfig<GreetService> referenceConfig = new ReferenceConfig<>();
         referenceConfig.setInterface(GreetService.class);
-        referenceConfig.setUrl("tri://127.0.0.1:20000");
+        referenceConfig.setUrl("tri://127.0.0.1:20000?connect.timeout=10000");
         referenceConfig.setProtocol("tri");
 
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();

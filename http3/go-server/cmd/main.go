@@ -24,7 +24,6 @@ import (
 import (
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/protocol/triple"
 	"dubbo.apache.org/dubbo-go/v3/server"
 	"dubbo.apache.org/dubbo-go/v3/tls"
 
@@ -32,6 +31,7 @@ import (
 )
 
 import (
+	quic "github.com/apache/dubbo-go-samples/http3/internal/quic"
 	greet "github.com/apache/dubbo-go-samples/http3/proto"
 )
 
@@ -50,12 +50,12 @@ func main() {
 		server.WithServerProtocol(
 			protocol.WithPort(20000),
 			protocol.WithTriple(
-				triple.Http3Enable(),
+				quic.Options()...,
 			),
 		),
 		server.WithServerTLSOption(
-			tls.WithCertFile("../../x509/server2_cert.pem"),
-			tls.WithKeyFile("../../x509/server2_key_pkcs8.pem"),
+			tls.WithCertFile("x509/server2_cert.pem"),
+			tls.WithKeyFile("x509/server2_key_pkcs8.pem"),
 			tls.WithServerName("dubbogo.test.example.com"),
 		),
 	)
