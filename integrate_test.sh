@@ -832,7 +832,14 @@ main() {
   stop_go_server
 
   if start_java_server_if_present; then
-    run_java_client_if_present
+    echo "--- Java server UDP listeners ---"
+    ss -ulnp 2>/dev/null | grep -w "$JAVA_SERVER_PORT" || echo "no UDP listener on port $JAVA_SERVER_PORT"
+
+    if ! run_java_client_if_present; then
+      echo "--- Java server log tail after client failure ---"
+      tail -40 "$JAVA_SERVER_LOG" || true
+      exit 1
+    fi
 
     if ! kill -0 "$JAVA_SERVER_PID" 2>/dev/null; then
       echo "Java server exited before final Go client phase. Log:"
