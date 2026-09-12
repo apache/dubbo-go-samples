@@ -835,11 +835,23 @@ main() {
     echo "--- Java server UDP listeners ---"
     ss -ulnp 2>/dev/null | grep -w "$JAVA_SERVER_PORT" || echo "no UDP listener on port $JAVA_SERVER_PORT"
 
+    TCPDUMP_LOG="/tmp/.${PROJECT_NAME}.tcpdump.log"
+    if [ "$SAMPLE" = "http3" ]; then
+      sudo apt-get install -y tcpdump >/dev/null 2>&1 || true
+      sudo tcpdump -i any -n -c 60 "udp port $JAVA_SERVER_PORT" >"$TCPDUMP_LOG" 2>&1 &
+      TCPDUMP_PID=$!
+    fi
+
     if ! run_java_client_if_present; then
+      sleep 2
+      [ -n "${TCPDUMP_PID:-}" ] && sudo kill "$TCPDUMP_PID" 2>/dev/null
+      echo "--- tcpdump capture (udp port $JAVA_SERVER_PORT) ---"
+      head -50 "$TCPDUMP_LOG" 2>/dev/null || true
       echo "--- Java server log tail after client failure ---"
       tail -40 "$JAVA_SERVER_LOG" || true
       exit 1
     fi
+    [ -n "${TCPDUMP_PID:-}" ] && sudo kill "$TCPDUMP_PID" 2>/dev/null
 
     if ! kill -0 "$JAVA_SERVER_PID" 2>/dev/null; then
       echo "Java server exited before final Go client phase. Log:"
