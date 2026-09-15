@@ -71,6 +71,12 @@ go run ./go-client/cmd
 
 ### Run Java server
 
+> The Java modules build against dubbo `3.3.7-SNAPSHOT`, which carries the HTTP/3 loopback fix
+> ([apache/dubbo#16463](https://github.com/apache/dubbo/pull/16463)). Older releases rewrite a
+> configured `127.0.0.1` to another local address, and QUIC requires the address a client dials to
+> stay stable for the whole handshake, so the Java-to-Java handshake times out on multi-homed hosts.
+> Once `3.3.7` is released, pin it and drop the `apache-snapshots` repository from the poms.
+
 Build all Java modules from the root directory:
 ```shell
 mvn clean compile
