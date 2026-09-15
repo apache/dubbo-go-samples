@@ -607,11 +607,6 @@ start_java_server_if_present() {
     return 1
   fi
 
-  if [ "$SAMPLE" = "http3" ]; then
-    echo "Skipping Java server phase for http3: the java h3 server (dubbo-java NettyHttp3Server) answers QUIC from a different source address than the one dialed, so the java client handshake never completes on CI runners (see the tcpdump capture in PR #1147). Verify manually with java-server/run.sh and java-client/run.sh. Remove this once apache/dubbo fixes the h3 transport."
-    return 1
-  fi
-
   local java_server_dir
   java_server_dir="$(dirname "$JAVA_SERVER_RUN_SH")"
 
@@ -837,26 +832,7 @@ main() {
   stop_go_server
 
   if start_java_server_if_present; then
-    echo "--- Java server UDP listeners ---"
-    ss -ulnp 2>/dev/null | grep -w "$JAVA_SERVER_PORT" || echo "no UDP listener on port $JAVA_SERVER_PORT"
-
-    TCPDUMP_LOG="/tmp/.${PROJECT_NAME}.tcpdump.log"
-    if [ "$SAMPLE" = "http3" ]; then
-      sudo apt-get install -y tcpdump >/dev/null 2>&1 || true
-      sudo tcpdump -i any -n -c 60 "udp port $JAVA_SERVER_PORT" >"$TCPDUMP_LOG" 2>&1 &
-      TCPDUMP_PID=$!
-    fi
-
-    if ! run_java_client_if_present; then
-      sleep 2
-      [ -n "${TCPDUMP_PID:-}" ] && sudo kill "$TCPDUMP_PID" 2>/dev/null
-      echo "--- tcpdump capture (udp port $JAVA_SERVER_PORT) ---"
-      head -50 "$TCPDUMP_LOG" 2>/dev/null || true
-      echo "--- Java server log tail after client failure ---"
-      tail -40 "$JAVA_SERVER_LOG" || true
-      exit 1
-    fi
-    [ -n "${TCPDUMP_PID:-}" ] && sudo kill "$TCPDUMP_PID" 2>/dev/null
+    run_java_client_if_present
 
     if ! kill -0 "$JAVA_SERVER_PID" 2>/dev/null; then
       echo "Java server exited before final Go client phase. Log:"
