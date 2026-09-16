@@ -35,9 +35,7 @@
         <protobuf.version>3.25.5</protobuf.version>
     </properties>
 
-    <!-- dubbo 3.3.7-SNAPSHOT carries the HTTP/3 loopback fix (apache/dubbo#16463): the h3 client
-         keeps the configured loopback address instead of dialing a rewritten local IP, so the
-         java-to-java handshake completes on multi-homed hosts. Switch back to the released
+    <!-- 3.3.7-SNAPSHOT carries the HTTP/3 loopback fix (apache/dubbo#16463); pin the released
          3.3.7 and drop this repository once it is published. -->
     <repositories>
         <repository>

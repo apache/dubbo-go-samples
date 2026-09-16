@@ -631,11 +631,6 @@ start_java_server_if_present() {
     return 1
   fi
 
-  echo "--- Java server UDP listeners on port $JAVA_SERVER_PORT ---"
-  ss -ulnp 2>/dev/null | grep -w "$JAVA_SERVER_PORT" || true
-  echo "--- Java server transport log ---"
-  grep -iE "bind|http3|quic|udp|export" "$JAVA_SERVER_LOG" 2>/dev/null | tail -15 || true
-
   return 0
 }
 
