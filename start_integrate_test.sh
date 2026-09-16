@@ -60,6 +60,9 @@ array+=("triple_header_trailer")
 # retry
 array+=("retry")
 
+# http3
+array+=("http3")
+
 # rpc
 array+=("rpc/grpc")
 array+=("rpc/multi-protocols")

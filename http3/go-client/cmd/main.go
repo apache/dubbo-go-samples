@@ -19,6 +19,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"time"
 )
 
@@ -26,13 +28,13 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
-	"dubbo.apache.org/dubbo-go/v3/protocol/triple"
 	"dubbo.apache.org/dubbo-go/v3/tls"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
+	quic "github.com/apache/dubbo-go-samples/http3/internal/quic"
 	greet "github.com/apache/dubbo-go-samples/http3/proto"
 )
 
@@ -42,9 +44,9 @@ func main() {
 	cli, err := client.NewClient(
 		client.WithClientURL("127.0.0.1:20000"),
 		client.WithClientTLSOption(
-			tls.WithCACertFile("../../x509/server_ca_cert.pem"),
-			tls.WithCertFile("../../x509/server2_cert.pem"),
-			tls.WithKeyFile("../../x509/server2_key_pkcs8.pem"),
+			tls.WithCACertFile("x509/server_ca_cert.pem"),
+			tls.WithCertFile("x509/server2_cert.pem"),
+			tls.WithKeyFile("x509/server2_key_pkcs8.pem"),
 			tls.WithServerName("dubbogo.test.example.com"),
 		),
 		// Enable HTTP/3 support on client side
@@ -52,7 +54,7 @@ func main() {
 		// both HTTP/2 and HTTP/3 with Alt-Svc negotiation
 		client.WithClientProtocol(
 			protocol.WithTriple(
-				triple.Http3Enable(),
+				quic.Options()...,
 			),
 		),
 	)
@@ -80,6 +82,15 @@ func main() {
 
 		if resp == nil {
 			panic("expected greeting response, got empty response")
+		}
+
+		// The greeting must echo the request name and come from an HTTP/3 backend,
+		// e.g. "Hello Go Client, from Go HTTP/3!" or "..., from Java HTTP/3!".
+		const prefix = "Hello Go Client, from "
+		const suffix = "HTTP/3!"
+		if !strings.HasPrefix(resp.Greeting, prefix) || !strings.HasSuffix(resp.Greeting, suffix) {
+			panic(fmt.Sprintf("unexpected greeting %q, want prefix %q and suffix %q",
+				resp.Greeting, prefix, suffix))
 		}
 
 		logger.Infof("Greet response: %s", resp.Greeting)

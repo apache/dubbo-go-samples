@@ -31,9 +31,24 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dubbo.version>3.3.6</dubbo.version>
+        <dubbo.version>3.3.7-SNAPSHOT</dubbo.version>
         <protobuf.version>3.25.5</protobuf.version>
     </properties>
+
+    <!-- 3.3.7-SNAPSHOT carries the HTTP/3 loopback fix (apache/dubbo#16463); pin the released
+         3.3.7 and drop this repository once it is published. -->
+    <repositories>
+        <repository>
+            <id>apache-snapshots</id>
+            <url>https://repository.apache.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>

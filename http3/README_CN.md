@@ -51,8 +51,8 @@
 
 ### 启动Golang服务端
 ```shell
-cd go-server/cmd
-go run main.go
+cd http3
+go run ./go-server/cmd
 ```
 
 测试服务端是否正常：
@@ -65,11 +65,17 @@ curl -k \
 
 ### 启动Golang客户端
 ```shell
-cd go-client/cmd
-go run main.go
+cd http3
+go run ./go-client/cmd
 ```
 
 ### 启动Java服务端
+
+> Java 模块使用 dubbo `3.3.7-SNAPSHOT`，其中包含 HTTP/3 loopback 修复
+> （[apache/dubbo#16463](https://github.com/apache/dubbo/pull/16463)）。更早的版本会把显式配置的
+> `127.0.0.1` 重写成其它本地地址，而 QUIC 要求客户端拨号的地址在握手期间保持稳定，
+> 因此在多网卡机器上 Java 与 Java 之间的握手会超时。`3.3.7` 正式发布后，请改为固定该版本
+> 并移除 pom 中的 `apache-snapshots` 仓库。
 
 从根目录构建所有 Java 模块：
 ```shell
@@ -130,11 +136,23 @@ cd java-client
 
 ### HTTP/3 启用配置
 
-服务配置了 HTTP/3 支持。主要配置参数：
+- Go 服务端和客户端通过代码选项 `triple.WithHttp3Enable()` 启用 HTTP/3；默认开启 Alt-Svc 协商，可用 `triple.WithHttp3Negotiation(false)` 关闭。
+- Java 服务端和客户端通过 `dubbo.properties` 启用 HTTP/3：
+  - `dubbo.protocol.triple.http3.enabled=true` - 启用 HTTP/3 协议
+  - `dubbo.protocol.triple.http3.negotiation=false` - 禁用协议协商（强制使用 HTTP/3）
+- TLS 证书配置用于安全的 QUIC 连接（见 `x509` 目录）
 
-- `protocol.triple.http3.enabled=true` - 启用 HTTP/3 协议
-- `protocol.triple.http3.negotiation=false` - 禁用协议协商（强制使用 HTTP/3）
-- TLS 证书配置用于安全的 QUIC 连接
+### QUIC 传输调优
+
+Go 服务端和客户端均通过 `triple.WithHttp3*` 代码选项配置 QUIC 传输参数：
+
+- `WithHttp3KeepAlivePeriod(30 * time.Second)` - 每 30s 发送一次 QUIC keep-alive 包
+- `WithHttp3MaxIdleTimeout(90 * time.Second)` - 空闲 QUIC 连接 90s 后关闭
+- `WithHttp3MaxIncomingStreams(1024)` / `WithHttp3MaxIncomingUniStreams(1024)` - 并发双向/单向流数量上限
+- `WithHttp3InitialStreamReceiveWindow(512 * 1024)` / `WithHttp3MaxStreamReceiveWindow(2 * 1024 * 1024)` - Stream 级流控接收窗口
+- `WithHttp3InitialConnectionReceiveWindow(2 * 1024 * 1024)` / `WithHttp3MaxConnectionReceiveWindow(8 * 1024 * 1024)` - Connection 级流控接收窗口
+
+所有选项均可选，未设置时回退到 quic-go 默认值。
 
 ### 证书文件
 
