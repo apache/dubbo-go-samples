@@ -1,0 +1,12 @@
+2026-10-16 06:11:46	INFO	cmd/main.go:129	capture: no trace context
+2026-10-16 06:11:46	INFO	cmd/main.go:130	capture: invalid trace context
+2026-10-16 06:11:46	INFO	cmd/main.go:158	sending greet request: name=request-1	{"trace_id": "4521801005095fe385708f5c36a8954c", "span_id": "5c67d0ba5ca1b90e", "trace_flags": "01"}
+2026-10-16 06:11:46	INFO	cmd/main.go:170	greet response: hello request-1	{"trace_id": "4521801005095fe385708f5c36a8954c", "span_id": "5c67d0ba5ca1b90e", "trace_flags": "01"}
+2026-10-16 06:11:46	INFO	cmd/main.go:158	sending greet request: name=request-2	{"trace_id": "b736019599d9755c1ad8533295e84ec8", "span_id": "a8185a0dddbd799d", "trace_flags": "01"}
+2026-10-16 06:11:46	INFO	cmd/main.go:170	greet response: hello request-2	{"trace_id": "b736019599d9755c1ad8533295e84ec8", "span_id": "a8185a0dddbd799d", "trace_flags": "01"}
+2026-10-16 06:11:47	INFO	cmd/main.go:158	sending greet request: name=request-3	{"trace_id": "1b7a2be14256ff2605fb54a78cd03941", "span_id": "454668a042b5bb97", "trace_flags": "01"}
+2026-10-16 06:11:47	INFO	cmd/main.go:170	greet response: hello request-3	{"trace_id": "1b7a2be14256ff2605fb54a78cd03941", "span_id": "454668a042b5bb97", "trace_flags": "01"}
+2026-10-16 06:11:47	INFO	cmd/main.go:158	sending greet request: name=request-4	{"trace_id": "c226733d670118ef6c1fd245532b01ef", "span_id": "762138e1c663cedb", "trace_flags": "01"}
+2026-10-16 06:11:47	INFO	cmd/main.go:170	greet response: hello request-4	{"trace_id": "c226733d670118ef6c1fd245532b01ef", "span_id": "762138e1c663cedb", "trace_flags": "01"}
+2026-10-16 06:11:48	INFO	cmd/main.go:158	sending greet request: name=error	{"trace_id": "69181252c8c571273faa18442d844930", "span_id": "4382962b17860eec", "trace_flags": "01"}
+2026-10-16 06:11:48	INFO	cmd/main.go:172	forced error observed as expected: code_17: observability sample forced error	{"trace_id": "69181252c8c571273faa18442d844930", "span_id": "4382962b17860eec", "trace_flags": "01"}

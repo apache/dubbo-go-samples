@@ -47,6 +47,7 @@ header:
     - '**/*.svg'
     - '**/*.png'
     - '**/*.json'
+    - 'observability/integration/capture/traces.jsonl'
     - '**/*.conf'
     - '**/*.ftl'
     - '**/*.tpl'
