@@ -127,23 +127,3 @@ Grafana 会自动配置 Prometheus 数据源和 `Dubbo Go Observability` Dashboa
 两个应用均通过 `logger.WithTraceIntegration(true)` 启用 SDK 的上下文日志。
 `CtxInfof` / `CtxErrorf` 在 context 含有效 span 时自动写入 `trace_id`、`span_id`，
 没有有效 span 时不输出这些字段。
-
-## 采集并检查字段
-
-先准备可用的 Nacos，再从仓库根目录运行：
-
-```bash
-python3 observability/integration/capture.py /tmp/dubbo-observability-capture
-python3 observability/integration/validate.py /tmp/dubbo-observability-capture
-python3 -m unittest discover -s observability/integration -p 'test_validate.py'
-```
-
-脚本会保存：
-
-- `manifest.json`：SDK 版本、Go 版本、运行参数和导出端点；
-- `provider.prom` / `consumer.prom`：原始 Prometheus 响应；
-- `traces.jsonl`：Collector 文件导出的 OTLP spans；
-- `provider.log` / `consumer.log`：应用日志，含上下文日志调用；
-- `collector.yaml` / `collector.log`：导出配置和诊断输出。
-
-`*.log` 不入库。已提交的快照见 [capture/](capture/)。

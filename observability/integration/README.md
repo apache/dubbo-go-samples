@@ -134,23 +134,3 @@ Grafana provisions the Prometheus datasource and the `Dubbo Go Observability`
 dashboard automatically. Both applications enable the SDK's context logger with
 `logger.WithTraceIntegration(true)`. Calls to `CtxInfof`/`CtxErrorf` include
 `trace_id` and `span_id` only when the context contains a valid span.
-
-## Capture and check the fields
-
-Use an existing Nacos registry, then run:
-
-```bash
-python3 observability/integration/capture.py /tmp/dubbo-observability-capture
-python3 observability/integration/validate.py /tmp/dubbo-observability-capture
-python3 -m unittest discover -s observability/integration -p 'test_validate.py'
-```
-
-The script saves:
-
-- `manifest.json`: SDK version, Go version, settings and exporter endpoints;
-- `provider.prom` / `consumer.prom`: raw Prometheus responses;
-- `traces.jsonl`: actual OTLP spans from the Collector file exporter;
-- `provider.log` / `consumer.log`: application logs, including context logger calls;
-- `collector.yaml` / `collector.log`: exporter configuration and diagnostics.
-
-`*.log` files are not committed. See [capture/](capture/) for the checked-in snapshot.
