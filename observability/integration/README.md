@@ -161,6 +161,13 @@ and keeps the consumer alive long enough to scrape its metrics. It saves:
 - `provider.log` / `consumer.log`: application logs, including context logger calls;
 - `collector.yaml` / `collector.log`: exporter configuration and diagnostics.
 
+[capture/](capture/) checks in `manifest.json`, the Prometheus scrapes,
+`traces.jsonl`, and `collector.yaml`. `provider.log`, `consumer.log`, and
+`collector.log` stay in the `capture.py` output directory. The repository
+ignores `*.log`, so those files are not part of the sample commit.
+`validate.py` still requires the two application logs in the directory it
+checks. The offline tests rebuild the context-log lines from `traces.jsonl`.
+
 **Known result:** the pinned SDK currently labels consumer metrics with the
 provider application name. The capture and validator exit 1 and report this
 mismatch; the other checks still run. See [capture/](capture/) for the actual

@@ -15,7 +15,11 @@
 # limitations under the License.
 
 
-"""Check raw capture files. A missing field or broken correlation fails the run."""
+"""Check raw capture files. A missing field or broken correlation fails the run.
+
+provider.log and consumer.log must already be in the directory. capture.py writes
+them; they are gitignored and are not part of the checked-in snapshot.
+"""
 import argparse
 import json
 import math

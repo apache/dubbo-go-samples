@@ -15,7 +15,12 @@
 # limitations under the License.
 
 
-"""Reject broken correlations using captured RPC data, without a live registry."""
+"""Reject broken correlations using captured RPC data, without a live registry.
+
+The checked-in snapshot does not include provider.log or consumer.log.
+Those files are capture.py output and match the repository *.log ignore.
+This module rebuilds the lines validate() reads from traces.jsonl.
+"""
 import json
 from pathlib import Path
 import re
@@ -30,12 +35,43 @@ from validate import validate
 FIXTURE = Path(__file__).resolve().parent / "capture"
 
 
+def materialize_context_logs(capture):
+    provider = []
+    consumer = [
+        "capture: no trace context",
+        "capture: invalid trace context",
+    ]
+    request = 0
+    for line in (capture / "traces.jsonl").read_text().splitlines():
+        document = json.loads(line)
+        for resource in document.get("resourceSpans", []):
+            service = next((item["value"]["stringValue"]
+                            for item in resource["resource"].get("attributes", [])
+                            if item["key"] == "service.name"), "")
+            for scope in resource.get("scopeSpans", []):
+                for span in scope.get("spans", []):
+                    fields = f'{{"trace_id": "{span["traceId"]}", "span_id": "{span["spanId"]}"}}'
+                    if service == "dubbo-observability-server" and span["kind"] == 2 and span["name"] == "Greet":
+                        provider.append(f"greet request received: name=request {fields}")
+                    elif service == "dubbo-observability-client" and span["kind"] == 1:
+                        request += 1
+                        name = "error" if request % 5 == 0 else f"request-{request}"
+                        consumer.append(f"sending greet request: name={name} {fields}")
+    expected = json.loads((capture / "manifest.json").read_text())["requests"]
+    if len(provider) != expected or request != expected:
+        raise RuntimeError(
+            f"expected {expected} context log lines per side, got provider={len(provider)} consumer={request}")
+    (capture / "provider.log").write_text("\n".join(provider) + "\n")
+    (capture / "consumer.log").write_text("\n".join(consumer) + "\n")
+
+
 class CaptureValidationTest(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.capture = Path(self.temp.name) / "capture"
         shutil.copytree(FIXTURE, self.capture)
+        materialize_context_logs(self.capture)
 
     def edit_spans(self, edit):
         path = self.capture / "traces.jsonl"

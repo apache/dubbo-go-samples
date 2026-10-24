@@ -1,5 +1,0 @@
-2026-10-16 06:11:46	INFO	cmd/main.go:61	greet request received: name=request-1	{"trace_id": "4521801005095fe385708f5c36a8954c", "span_id": "931650255be34732", "trace_flags": "01"}
-2026-10-16 06:11:46	INFO	cmd/main.go:61	greet request received: name=request-2	{"trace_id": "b736019599d9755c1ad8533295e84ec8", "span_id": "de8bf8d3a60817d1", "trace_flags": "01"}
-2026-10-16 06:11:47	INFO	cmd/main.go:61	greet request received: name=request-3	{"trace_id": "1b7a2be14256ff2605fb54a78cd03941", "span_id": "02d488f68d87a722", "trace_flags": "01"}
-2026-10-16 06:11:47	INFO	cmd/main.go:61	greet request received: name=request-4	{"trace_id": "c226733d670118ef6c1fd245532b01ef", "span_id": "7050f5d252acffb8", "trace_flags": "01"}
-2026-10-16 06:11:48	INFO	cmd/main.go:61	greet request received: name=error	{"trace_id": "69181252c8c571273faa18442d844930", "span_id": "0ecc8f58954fd6be", "trace_flags": "01"}

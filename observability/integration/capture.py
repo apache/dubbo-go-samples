@@ -14,7 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Capture one finite run without stopping an existing registry or monitoring stack."""
+"""Capture one finite run without stopping an existing registry or monitoring stack.
+
+Writes provider.log, consumer.log, and collector.log into the output directory.
+The repository ignores *.log, so leave those files out of the checked-in snapshot.
+"""
 import argparse
 import json
 import os

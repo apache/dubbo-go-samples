@@ -145,9 +145,12 @@ python3 -m unittest discover -s observability/integration -p 'test_validate.py'
 需要 Docker、Python 3 和 Go。同一注册中心中请勿同时运行同名应用和服务的其他 provider。
 
 采集使用非空 group `observability` 和 version `1.0.0`，发出四次成功请求和一次业务错误。
-目录中包含原始 Prometheus 响应、OTLP spans、应用日志、Collector 配置及 SDK/Go 版本和端点清单。
+输出目录包含原始 Prometheus 响应、OTLP spans、应用日志、Collector 配置，以及 SDK/Go 版本和端点清单。
+`provider.log`、`consumer.log` 和 `collector.log` 由 `capture.py` 写入该目录。仓库 `.gitignore` 忽略 `*.log`，
+这两份应用日志不进入提交。仓库内的 [capture/](capture/) 只保留 manifest、Prometheus 抓取、`traces.jsonl` 和 Collector 配置。
+`validate.py` 检查的是带日志的采集目录。离线测试会先根据 `traces.jsonl` 重建上下文日志行，再校验这份快照。
 校验覆盖双方计数、QPS/RT、metric 与 trace 字段对应关系、五对 CLIENT/SERVER 的父子关系和错误状态，
-以及 CtxLogger 在有效、无和无效 trace context 下的输出。真实采集节选见 [capture/](capture/)。
+以及 CtxLogger 在有效、无和无效 trace context 下的输出。
 
 **当前结果：** SDK 导出的 consumer metric `application_name` 实际为 provider 应用名，
 与 consumer 的 `service.name` 不同。采集脚本和校验脚本会返回退出码 1 并报告差异，
