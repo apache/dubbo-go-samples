@@ -15,10 +15,6 @@ output directory. They are not committed: the repository ignores `*.log`.
 offline tests rebuild those lines from `traces.jsonl` before checking this
 snapshot, so the suite does not need the log files in git.
 
-```bash
-python3 -m unittest discover -s observability/integration -p 'test_validate.py'
-```
-
 The strict check **exits 1** for this capture. It reports one real mismatch:
 
 | Signal | Consumer application |
@@ -32,18 +28,19 @@ keeps this mismatch visible while checking every other signal. The offline
 tests assert this finding and reject broken service names, missing group labels,
 wrong parents, incorrect failure counts and context logs from the wrong app.
 
-Both sides have 5 total, 4 successful and 1 failed Greet request. QPS was
-`0.20833333333333334`; average RT was `16.4` ms for the provider and `17.2` ms for
-the consumer. These are snapshots, not rate or latency guarantees. Five
-CLIENT/SERVER pairs share trace IDs; the SERVER parent is its CLIENT span. Each
-side has one ERROR RPC span. Valid context log IDs exist in the correct
-application's spans; absent and invalid contexts produce no trace fields.
+The validator checks both sides' counts (5 total, 4 successful, 1 failed), QPS
+and RT series, non-empty group/version labels, and five CLIENT/SERVER span pairs.
+For every pair it compares `service.name` with `application_name`, `rpc.service`
+with `interface`, and `rpc.method` with `method`. The SERVER span must reference
+the CLIENT span in the same trace. Both error spans must have ERROR status.
+Context log IDs must exist in the exported spans; calls without a span or with
+an invalid span context must omit those fields.
 
-Before the SDK pin was updated, a separate run with `v3.3.2-20260910` also failed
-`rpc.service` alignment: the value was
-`observability/observability.GreetService:1.0.0`, while metric `interface` was
-`observability.GreetService`. The pinned merged SDK corrects that field.
+The SDK is pinned to merged commit `e4aabaf27773`. The earlier
+`v3.3.2-20260910` release exports the composite service key as `rpc.service`
+(`observability/observability.GreetService:1.0.0`), so a non-empty group/version
+does not match the `interface` metric label (`observability.GreetService`).
+The pinned SDK corrects that field. No SDK changes are part of this sample.
 
-The consumer application mismatch still needs a runtime fix. Admin pages were
-not tested in this capture. Admin query changes and sliding-window refresh are
-separate work; this snapshot makes no claim about either.
+The consumer application mismatch still needs a runtime fix. This snapshot
+does not cover Admin pages.

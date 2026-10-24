@@ -138,32 +138,12 @@ python3 observability/integration/validate.py /tmp/dubbo-observability-capture
 python3 -m unittest discover -s observability/integration -p 'test_validate.py'
 ```
 
-输出目录必须不存在。注册中心地址可通过
-`DUBBO_OBSERVABILITY_REGISTRY_ADDRESS=127.0.0.1:18848` 指定。
-脚本只启动并清理本次采集的 Collector 和应用进程，不操作已有的注册中心或监控服务。
-默认占用四个连续端口 `24318`–`24321`，可用 `--port-base 25318` 修改。
-需要 Docker、Python 3 和 Go。同一注册中心中请勿同时运行同名应用和服务的其他 provider。
+脚本会保存：
 
-采集使用非空 group `observability` 和 version `1.0.0`，发出四次成功请求和一次业务错误。
-输出目录包含原始 Prometheus 响应、OTLP spans、应用日志、Collector 配置，以及 SDK/Go 版本和端点清单。
-`provider.log`、`consumer.log` 和 `collector.log` 由 `capture.py` 写入该目录。仓库 `.gitignore` 忽略 `*.log`，
-这两份应用日志不进入提交。仓库内的 [capture/](capture/) 只保留 manifest、Prometheus 抓取、`traces.jsonl` 和 Collector 配置。
-`validate.py` 检查的是带日志的采集目录。离线测试会先根据 `traces.jsonl` 重建上下文日志行，再校验这份快照。
-校验覆盖双方计数、QPS/RT、metric 与 trace 字段对应关系、五对 CLIENT/SERVER 的父子关系和错误状态，
-以及 CtxLogger 在有效、无和无效 trace context 下的输出。
+- `manifest.json`：SDK 版本、Go 版本、运行参数和导出端点；
+- `provider.prom` / `consumer.prom`：原始 Prometheus 响应；
+- `traces.jsonl`：Collector 文件导出的 OTLP spans；
+- `provider.log` / `consumer.log`：应用日志，含上下文日志调用；
+- `collector.yaml` / `collector.log`：导出配置和诊断输出。
 
-**当前结果：** SDK 导出的 consumer metric `application_name` 实际为 provider 应用名，
-与 consumer 的 `service.name` 不同。采集脚本和校验脚本会返回退出码 1 并报告差异，
-其余检查仍会执行。样例不通过重写标签或把两进程设成同名来掩盖它；这需要独立运行时修复。
-
-本样例通过 `logger.WithTraceIntegration(true)` 启用 SDK 的上下文日志，使用 `CtxInfof` / `CtxErrorf`。
-SDK 固定在已合并提交 `e4aabaf27773`；旧版 `v3.3.2-20260910` 的 `rpc.service` 含 group/version，
-无法与 metric 的 `interface` 对齐。因此只更新 SDK 的固定版本，不在样例中修改 SDK 行为。
-
-检查 Admin 页面时，使用原有 Compose（含 Jaeger），将 Admin 指向同一 Prometheus/Jaeger。
-按 manifest 中的端点抓取指标，在应用页检查两侧计数和 RT；在服务页选择
-`observability.GreetService` / `Greet` 及上述 group/version；在 trace 页用采集到的 trace ID
-核对双方服务和父子关系。自动采集使用仅写文件的 Collector，不提供 Jaeger 查询接口。
-这些自动检查只验证导出的数据，不代表已经验证 Admin 页面。
-Admin #1591 的查询调整与 dubbo-go #3764/#3765 的滑动窗口刷新仍独立推进，
-本样例不依赖它们；一次 QPS 快照不能证明停止流量后指标会刷新。
+`*.log` 不入库。已提交的快照见 [capture/](capture/)。
