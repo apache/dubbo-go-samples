@@ -44,6 +44,8 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 dubbo.apache.org/dubbo-go/v3 v3.0.2-0.20220508105316-b27ec53b7bab/go.mod h1:Ytn9MtmsFYkpa1bzW/3loUFBgm7eJ3M3+XWRurhbBZc=
 dubbo.apache.org/dubbo-go/v3 v3.3.2-20260910 h1:kV/o9sSFvPEB4wvGWNva44hgaAld8lby2Ue/SMUqiUc=
 dubbo.apache.org/dubbo-go/v3 v3.3.2-20260910/go.mod h1:lCu9UF5uIiN1TFZAGV17e7k+To4z5mo2jQuhTPJQZ+o=
+dubbo.apache.org/dubbo-go/v3 v3.3.3-0.20260911014420-e4aabaf27773 h1:y/rftMmFV0C3PXsY7AKH4LBqKf/sphyDUQjBQ//vBbM=
+dubbo.apache.org/dubbo-go/v3 v3.3.3-0.20260911014420-e4aabaf27773/go.mod h1:lCu9UF5uIiN1TFZAGV17e7k+To4z5mo2jQuhTPJQZ+o=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.1.0 h1:ksErzDEI1khOiGPgpwuI7x2ebx/uXQNw7xJpn9Eq1+I=
 github.com/BurntSushi/toml v1.1.0/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=

@@ -3,7 +3,7 @@ module github.com/apache/dubbo-go-samples
 go 1.25.0
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.3.2-20260910
+	dubbo.apache.org/dubbo-go/v3 v3.3.3-0.20260911014420-e4aabaf27773
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/alibaba/sentinel-golang v1.0.4
 	github.com/apache/dubbo-go-extensions v0.0.0-20260312085545-de428af0b99e

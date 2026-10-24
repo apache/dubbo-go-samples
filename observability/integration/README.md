@@ -131,9 +131,6 @@ docker compose -f observability/integration/docker-compose.yaml down
 - Consumer metrics: <http://localhost:9098/prometheus>
 
 Grafana provisions the Prometheus datasource and the `Dubbo Go Observability`
-dashboard automatically. The application logs remain in the provider and
-client terminals; each application log reads the active OpenTelemetry
-`SpanContext` and includes the same `trace_id` and `span_id` that can be found
-in Jaeger. This sample deliberately uses the published module API. The
-Dubbo-Go `CtxLogger` integration is covered by the dedicated
-`logger/trace-integration` sample and is not reimplemented here.
+dashboard automatically. Both applications enable the SDK's context logger with
+`logger.WithTraceIntegration(true)`. Calls to `CtxInfof`/`CtxErrorf` include
+`trace_id` and `span_id` only when the context contains a valid span.

@@ -1,0 +1,13 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+exporters:
+  file:
+    path: /capture/traces.jsonl
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [file]

@@ -34,12 +34,12 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/protocol/triple/triple_protocol"
 	"dubbo.apache.org/dubbo-go/v3/registry"
+	"dubbo.apache.org/dubbo-go/v3/server"
 
 	"github.com/dubbogo/gost/log/logger"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/observability/integration/internal/tracefields"
 	observability "github.com/apache/dubbo-go-samples/observability/integration/proto"
 )
 
@@ -51,22 +51,23 @@ const (
 type GreetServer struct{}
 
 func (s *GreetServer) Greet(ctx context.Context, req *observability.GreetRequest) (*observability.GreetResponse, error) {
+	ctxLog := logger.GetLogger().(dubbolog.CtxLogger)
 	if req == nil {
 		err := errors.New("observability sample received nil request")
-		logger.Errorf("greet request failed: %v%s", err, tracefields.Fields(ctx))
+		ctxLog.CtxErrorf(ctx, "greet request failed: %v", err)
 		return nil, err
 	}
 
-	logger.Infof("greet request received: name=%s%s", req.GetName(), tracefields.Fields(ctx))
+	ctxLog.CtxInfof(ctx, "greet request received: name=%s", req.GetName())
 
 	if req.GetName() == "error" {
 		err := triple_protocol.NewError(triple_protocol.CodeBizError, errors.New("observability sample forced error"))
-		logger.Errorf("observability sample forced error: %v%s", err, tracefields.Fields(ctx))
+		ctxLog.CtxErrorf(ctx, "observability sample forced error: %v", err)
 		return nil, err
 	}
 
 	time.Sleep(20 * time.Millisecond)
-	logger.Infof("greet request completed%s", tracefields.Fields(ctx))
+	ctxLog.CtxInfof(ctx, "greet request completed")
 	return &observability.GreetResponse{Greeting: "hello " + req.GetName()}, nil
 }
 
@@ -111,16 +112,25 @@ func getEnv(key, fallback string) string {
 	return fallback
 }
 
+func envPort(key string, fallback int) int {
+	port, err := strconv.Atoi(getEnv(key, strconv.Itoa(fallback)))
+	if err != nil {
+		panic(err)
+	}
+	return port
+}
+
 func main() {
 	ins, err := dubbo.NewInstance(
 		dubbo.WithName("dubbo-observability-server"),
 		dubbo.WithRegistry(registryOptions()...),
-		dubbo.WithProtocol(protocol.WithPort(serverPort), protocol.WithTriple()),
+		dubbo.WithProtocol(protocol.WithPort(envPort("DUBBO_OBSERVABILITY_SERVER_PORT", serverPort)), protocol.WithTriple()),
 		dubbo.WithTracing(traceOptions()...),
 		dubbo.WithMetrics(metricsOptions()...),
 		dubbo.WithLogger(
 			dubbolog.WithZap(),
 			dubbolog.WithLevel("debug"),
+			dubbolog.WithTraceIntegration(true),
 		),
 	)
 	if err != nil {
@@ -132,7 +142,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := observability.RegisterGreetServiceHandler(srv, &GreetServer{}); err != nil {
+	if err := observability.RegisterGreetServiceHandler(srv, &GreetServer{}, server.WithGroup("observability"), server.WithVersion("1.0.0")); err != nil {
 		panic(err)
 	}
 

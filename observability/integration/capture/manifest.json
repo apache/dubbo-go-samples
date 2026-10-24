@@ -1,0 +1,24 @@
+{
+  "captured_at": "2026-10-15T22:11:14Z",
+  "go": "go version go1.25.0 darwin/arm64",
+  "sdk": {
+    "Path": "dubbo.apache.org/dubbo-go/v3",
+    "Version": "v3.3.3-0.20260911014420-e4aabaf27773",
+    "Sum": "h1:y/rftMmFV0C3PXsY7AKH4LBqKf/sphyDUQjBQ//vBbM=",
+    "GoModSum": "h1:lCu9UF5uIiN1TFZAGV17e7k+To4z5mo2jQuhTPJQZ+o="
+  },
+  "collector_image": "otel/opentelemetry-collector-contrib:0.104.0",
+  "registry": "127.0.0.1:18848",
+  "otlp_http": "127.0.0.1:24318",
+  "metrics": {
+    "provider": 24319,
+    "consumer": 24320
+  },
+  "rpc_port": 24321,
+  "requests": 5,
+  "successes": 4,
+  "failures": 1,
+  "group": "observability",
+  "version": "1.0.0",
+  "trace_integration_enabled": true
+}
