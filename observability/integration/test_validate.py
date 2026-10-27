@@ -83,27 +83,27 @@ class CaptureValidationTest(unittest.TestCase):
                         edit(span)
         path.write_text("".join(json.dumps(document) + "\n" for document in documents))
 
-    def test_capture_reports_consumer_application_mismatch(self):
+    def test_capture_reports_no_application_mismatch(self):
         result = validate(self.capture)
         self.assertEqual(5, result["rpc_pairs"])
+        self.assertEqual([], result["field_mismatches"])
+
+    def test_cli_succeeds_for_captured_application_match(self):
+        run = subprocess.run([sys.executable, str(FIXTURE.parent / "validate.py"), str(self.capture)],
+                             capture_output=True, text=True)
+        self.assertEqual(0, run.returncode)
+        self.assertEqual([], json.loads(run.stdout)["field_mismatches"])
+
+    def test_mismatched_application_is_reported(self):
+        path = self.capture / "consumer.prom"
+        path.write_text(path.read_text().replace(
+            'application_name="dubbo-observability-client"',
+            'application_name="dubbo-observability-server"'))
         self.assertEqual([{
             "side": "consumer", "field": "service.name/application_name",
             "service.name": "dubbo-observability-client",
             "application_name": "dubbo-observability-server",
-        }], result["field_mismatches"])
-
-    def test_cli_fails_for_captured_application_mismatch(self):
-        run = subprocess.run([sys.executable, str(FIXTURE.parent / "validate.py"), str(self.capture)],
-                             capture_output=True, text=True)
-        self.assertEqual(1, run.returncode)
-        self.assertEqual("consumer", json.loads(run.stdout)["field_mismatches"][0]["side"])
-
-    def test_matching_application_has_no_mismatch(self):
-        path = self.capture / "consumer.prom"
-        path.write_text(path.read_text().replace(
-            'application_name="dubbo-observability-server"',
-            'application_name="dubbo-observability-client"'))
-        self.assertEqual([], validate(self.capture)["field_mismatches"])
+        }], validate(self.capture)["field_mismatches"])
 
     def test_composite_rpc_service_fails(self):
         def edit(span):
@@ -114,7 +114,6 @@ class CaptureValidationTest(unittest.TestCase):
         mismatches = validate(self.capture)["field_mismatches"]
         self.assertEqual({"provider", "consumer"}, {
             item["side"] for item in mismatches if item["field"] == "rpc.service/interface"})
-        self.assertTrue(any(item["field"] == "service.name/application_name" for item in mismatches))
 
     def test_missing_group_fails(self):
         path = self.capture / "provider.prom"
