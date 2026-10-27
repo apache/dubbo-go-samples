@@ -124,7 +124,6 @@ docker compose -f observability/integration/docker-compose.yaml down
 - 客户端 Metrics：<http://localhost:9098/prometheus>
 
 Grafana 会自动配置 Prometheus 数据源和 `Dubbo Go Observability` Dashboard。
-应用日志保留在客户端和服务端终端中；每条应用日志都会读取当前 OpenTelemetry
-`SpanContext`，并包含和 Jaeger 中相同的 `trace_id`、`span_id`。这个样例刻意只使用
-已发布的 module API；Dubbo-Go 的 `CtxLogger` 集成由专门的
-`logger/trace-integration` 样例覆盖，这里不重复实现。
+两个应用均通过 `logger.WithTraceIntegration(true)` 启用 SDK 的上下文日志。
+`CtxInfof` / `CtxErrorf` 在 context 含有效 span 时自动写入 `trace_id`、`span_id`，
+没有有效 span 时不输出这些字段。

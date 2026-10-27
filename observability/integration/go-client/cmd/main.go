@@ -28,6 +28,7 @@ import (
 
 import (
 	"dubbo.apache.org/dubbo-go/v3"
+	"dubbo.apache.org/dubbo-go/v3/client"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	dubbolog "dubbo.apache.org/dubbo-go/v3/logger"
 	"dubbo.apache.org/dubbo-go/v3/metrics"
@@ -39,10 +40,10 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	oteltrace "go.opentelemetry.io/otel/trace"
 )
 
 import (
-	"github.com/apache/dubbo-go-samples/observability/integration/internal/tracefields"
 	"github.com/apache/dubbo-go-samples/observability/integration/internal/verify"
 	observability "github.com/apache/dubbo-go-samples/observability/integration/proto"
 )
@@ -51,6 +52,7 @@ var (
 	requests    = flag.Int("requests", 5, "number of requests to send; 0 runs until interrupted")
 	interval    = flag.Duration("interval", time.Second, "delay between requests")
 	timeout     = flag.Duration("timeout", 0, "per-request timeout; 0 disables the timeout")
+	hold        = flag.Duration("hold", 0, "keep metrics available after requests for this duration")
 	cancelAfter = flag.Duration("cancel-after", 0, "cancel each request after this duration; 0 disables cancellation")
 )
 
@@ -106,6 +108,7 @@ func main() {
 		dubbo.WithLogger(
 			dubbolog.WithZap(),
 			dubbolog.WithLevel("debug"),
+			dubbolog.WithTraceIntegration(true),
 		),
 	)
 	if err != nil {
@@ -117,10 +120,14 @@ func main() {
 		panic(err)
 	}
 
-	svc, err := observability.NewGreetService(cli)
+	svc, err := observability.NewGreetService(cli, client.WithGroup("observability"), client.WithVersion("1.0.0"))
 	if err != nil {
 		panic(err)
 	}
+
+	ctxLog := logger.GetLogger().(dubbolog.CtxLogger)
+	ctxLog.CtxInfo(context.Background(), "capture: no trace context")
+	ctxLog.CtxInfo(oteltrace.ContextWithSpanContext(context.Background(), oteltrace.SpanContext{}), "capture: invalid trace context")
 
 	tracer := otel.Tracer("dubbo-observability-client")
 	strict := *timeout == 0 && *cancelAfter == 0
@@ -148,7 +155,7 @@ func main() {
 		if i%5 == 0 {
 			name = "error"
 		}
-		logger.Infof("sending greet request: name=%s%s", name, tracefields.Fields(ctx))
+		ctxLog.CtxInfof(ctx, "sending greet request: name=%s", name)
 
 		resp, callErr := svc.Greet(ctx, &observability.GreetRequest{Name: name})
 		if strict {
@@ -158,18 +165,18 @@ func main() {
 					span.RecordError(callErr)
 				}
 				span.SetStatus(codes.Error, err.Error())
-				logger.Errorf("greet request contract violation: %v%s", err, tracefields.Fields(ctx))
+				ctxLog.CtxErrorf(ctx, "greet request contract violation: %v", err)
 			} else if callErr == nil {
-				logger.Infof("greet response: %s%s", resp.GetGreeting(), tracefields.Fields(ctx))
+				ctxLog.CtxInfof(ctx, "greet response: %s", resp.GetGreeting())
 			} else {
-				logger.Infof("forced error observed as expected: %v%s", callErr, tracefields.Fields(ctx))
+				ctxLog.CtxInfof(ctx, "forced error observed as expected: %v", callErr)
 			}
 		} else if callErr != nil {
 			span.RecordError(callErr)
 			span.SetStatus(codes.Error, callErr.Error())
-			logger.Errorf("greet request failed: %v%s", callErr, tracefields.Fields(ctx))
+			ctxLog.CtxErrorf(ctx, "greet request failed: %v", callErr)
 		} else {
-			logger.Infof("greet response: %s%s", resp.GetGreeting(), tracefields.Fields(ctx))
+			ctxLog.CtxInfof(ctx, "greet response: %s", resp.GetGreeting())
 		}
 		if cancelTimer != nil {
 			cancelTimer.Stop()
@@ -186,6 +193,8 @@ func main() {
 	if provider, ok := otel.GetTracerProvider().(*sdktrace.TracerProvider); ok {
 		_ = provider.Shutdown(context.Background())
 	}
+	logger.Info("capture: requests complete")
+	time.Sleep(*hold)
 	if contractViolations > 0 {
 		logger.Fatalf("observability integration observed %d contract violations", contractViolations)
 	}
