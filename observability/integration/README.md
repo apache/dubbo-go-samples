@@ -164,6 +164,23 @@ Run the continuous client above and allow at least two Prometheus scrapes before
 inspecting rate-based panels. Quantiles are bucket-interpolated estimates; no
 traffic or missing histograms must not be interpreted as zero latency.
 
+### Validate histogram exports
+
+With the sample's Nacos available, capture a finite run in a new directory:
+
+```bash
+python3 observability/integration/capture.py /tmp/dubbo-histogram-capture
+python3 observability/integration/validate.py /tmp/dubbo-histogram-capture
+python3 -m unittest discover -s observability/integration -p 'test_*.py'
+```
+
+New captures declare `histogram_buckets_seconds` in their manifest. The validator
+checks provider and consumer counts against all five RPCs (four successes and one
+failure), bucket bounds including `+Inf`, cumulative counts, matching RPC labels,
+and a latency sum consistent with the buckets in seconds. The checked-in capture
+predates histograms and remains a regression fixture for the original signals;
+it is not evidence that this new histogram path ran successfully.
+
 ## Inspect the signals
 
 - Jaeger: <http://localhost:16686>

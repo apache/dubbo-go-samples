@@ -150,6 +150,21 @@ histogram_quantile(0.95,
 使用前面的持续调用命令，等待 Prometheus 至少抓取两次，再查看基于 rate 的面板。
 分位数通过桶内插值估算；停流或未采到 Histogram 不代表延迟为零。
 
+### 验证 Histogram 导出
+
+样例的 Nacos 可用后，将一次有限调用的原始数据采集到新目录：
+
+```bash
+python3 observability/integration/capture.py /tmp/dubbo-histogram-capture
+python3 observability/integration/validate.py /tmp/dubbo-histogram-capture
+python3 -m unittest discover -s observability/integration -p 'test_*.py'
+```
+
+新采集的 manifest 包含 `histogram_buckets_seconds`。验证器检查两侧总计数是否包含
+全部 5 次 RPC（4 次成功、1 次失败）、桶边界及 `+Inf`、累计计数、与请求指标一致的标签，
+以及秒单位延迟总和是否符合桶分布。仓库已有的快照采集于 Histogram 功能之前，继续用于
+原有信号的回归测试，不能作为本次 Histogram 已实跑通过的证明。
+
 ## 查看信号
 
 - Jaeger：<http://localhost:16686>

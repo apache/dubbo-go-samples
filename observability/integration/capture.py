@@ -30,7 +30,7 @@ import tempfile
 import time
 import urllib.request
 
-from validate import validate
+from validate import metrics, validate, validate_histogram
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -59,6 +59,32 @@ def fetch(port):
         return response.read()
 
 
+def sdk_metadata(module):
+    """Keep module provenance without publishing machine-local paths."""
+    fields = ("Path", "Version", "Sum", "GoModSum")
+    result = {key: module[key] for key in fields if key in module}
+    replacement = module.get("Replace")
+    if not replacement:
+        return result
+    if replacement.get("Version"):
+        # A versioned replacement lives in the Go module cache, not a Git checkout.
+        result["replacement"] = {key: replacement[key] for key in fields if key in replacement}
+        return result
+
+    local = {"local": True}
+    result["replacement"] = local
+    source = replacement.get("Dir")
+    if source:
+        revision = subprocess.run(["git", "-C", source, "rev-parse", "HEAD"],
+                                  capture_output=True, text=True)
+        if revision.returncode == 0:
+            local["commit"] = revision.stdout.strip()
+            status = subprocess.run(["git", "-C", source, "status", "--porcelain"],
+                                    capture_output=True, text=True, check=True)
+            local["dirty"] = bool(status.stdout.strip())
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path, help="new directory for raw capture files")
@@ -80,27 +106,15 @@ def main():
     manifest = {
         "captured_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "go": subprocess.check_output(["go", "version"], text=True).strip(),
-        "sdk": json.loads(subprocess.check_output(
-            ["go", "list", "-m", "-json", "dubbo.apache.org/dubbo-go/v3"], cwd=ROOT, text=True)),
+        "sdk": sdk_metadata(json.loads(subprocess.check_output(
+            ["go", "list", "-m", "-json", "dubbo.apache.org/dubbo-go/v3"], cwd=ROOT, text=True))),
         "collector_image": IMAGE,
         "registry": registry, "otlp_http": env["DUBBO_OBSERVABILITY_OTLP_ENDPOINT"],
         "metrics": {"provider": provider_port, "consumer": consumer_port},
         "rpc_port": rpc_port, "requests": 5, "successes": 4, "failures": 1,
         "group": "observability", "version": "1.0.0", "trace_integration_enabled": True,
+        "histogram_buckets_seconds": [0.005, 0.01, 0.025, 0.05, 0.1, 0.3, 1],
     }
-    # Avoid storing machine-local module-cache paths in a shareable capture.
-    replacement = manifest["sdk"].get("Replace")
-    manifest["sdk"] = {k: v for k, v in manifest["sdk"].items()
-                       if k in ("Path", "Version", "Sum", "GoModSum")}
-    if replacement:
-        source = replacement.get("Dir")
-        manifest["sdk"]["replacement"] = {key: value for key, value in replacement.items()
-                                            if key in ("Version", "Sum", "GoModSum")}
-        if source:
-            manifest["sdk"]["replacement"]["commit"] = subprocess.check_output(
-                ["git", "-C", source, "rev-parse", "HEAD"], text=True).strip()
-            manifest["sdk"]["replacement"]["dirty"] = bool(subprocess.check_output(
-                ["git", "-C", source, "status", "--porcelain"], text=True).strip())
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     config = f"""receivers:
   otlp:
@@ -146,7 +160,12 @@ service:
                 processes.append(consumer)
                 wait_for(lambda: "capture: requests complete" in (output / "consumer.log").read_text(), processes)
                 for role, port in (("provider", provider_port), ("consumer", consumer_port)):
-                    (output / f"{role}.prom").write_bytes(fetch(port))
+                    def capture_metrics():
+                        (output / f"{role}.prom").write_bytes(fetch(port))
+                        validate_histogram(metrics(output / f"{role}.prom"), role,
+                                           manifest["requests"], manifest["histogram_buckets_seconds"])
+                        return True
+                    wait_for(capture_metrics, processes)
                 if consumer.wait(timeout=15) != 0:
                     raise RuntimeError("RPC contract validation failed; inspect consumer.log")
                 processes.remove(consumer)
