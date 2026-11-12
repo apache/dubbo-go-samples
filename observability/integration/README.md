@@ -121,6 +121,49 @@ monitoring stack when finished:
 docker compose -f observability/integration/docker-compose.yaml down
 ```
 
+### RPC latency histograms
+
+This branch temporarily pins the SDK to the public commit from
+[apache/dubbo-go#3791](https://github.com/apache/dubbo-go/pull/3791).
+Replace that pin with an upstream SDK version containing the feature before merging
+this sample. Older SDK versions do not provide the histogram options below.
+
+Both applications enable cumulative latency histograms independently of
+sliding-window aggregation:
+
+```go
+metrics.WithHistogramEnabled(),
+metrics.WithHistogramBuckets([]float64{0.005, 0.01, 0.025, 0.05, 0.1, 0.3, 1}),
+```
+
+Bucket bounds and observations are in **seconds**. These sample-specific bounds
+include the provider's intentional 20 ms delay; omitting `WithHistogramBuckets`
+uses the SDK defaults (0.1, 0.3, 0.5, 1, 3, 5, 10 seconds).
+The exporter adds a `+Inf` bucket. Histograms record completed successful and
+failed RPCs, with the existing application, IP, interface, method, group and
+version labels; they do not add a `side` label.
+
+Provider and consumer export these metric families respectively:
+
+```text
+dubbo_provider_rt_milliseconds_histogram_seconds_{bucket,sum,count}
+dubbo_consumer_rt_milliseconds_histogram_seconds_{bucket,sum,count}
+```
+
+Despite the legacy `milliseconds` component of the names, the histogram unit is
+seconds. The dashboard displays both latency distributions and aggregated p95/p99
+estimates, rather than averaging per-instance percentiles. For example:
+
+```promql
+histogram_quantile(0.95,
+  sum by (le) (rate(dubbo_provider_rt_milliseconds_histogram_seconds_bucket{job="dubbo-observability-server"}[1m]))
+)
+```
+
+Run the continuous client above and allow at least two Prometheus scrapes before
+inspecting rate-based panels. Quantiles are bucket-interpolated estimates; no
+traffic or missing histograms must not be interpreted as zero latency.
+
 ## Inspect the signals
 
 - Jaeger: <http://localhost:16686>
