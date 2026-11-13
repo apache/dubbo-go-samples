@@ -116,9 +116,6 @@ docker compose -f observability/integration/docker-compose.yaml down
 
 ### RPC 延迟 Histogram
 
-本分支暂时固定到 [apache/dubbo-go#3791](https://github.com/apache/dubbo-go/pull/3791)
-的公开 SDK 提交。合并本样例前，需要改为包含该功能的上游 SDK 版本；旧版本没有下面的开关。
-
 客户端和服务端均开启累计延迟 Histogram，不依赖滑动窗口聚合：
 
 ```go

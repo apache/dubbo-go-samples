@@ -123,11 +123,6 @@ docker compose -f observability/integration/docker-compose.yaml down
 
 ### RPC latency histograms
 
-This branch temporarily pins the SDK to the public commit from
-[apache/dubbo-go#3791](https://github.com/apache/dubbo-go/pull/3791).
-Replace that pin with an upstream SDK version containing the feature before merging
-this sample. Older SDK versions do not provide the histogram options below.
-
 Both applications enable cumulative latency histograms independently of
 sliding-window aggregation:
 
