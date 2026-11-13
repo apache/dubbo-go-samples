@@ -161,20 +161,28 @@ traffic or missing histograms must not be interpreted as zero latency.
 
 ### Validate histogram exports
 
-With the sample's Nacos available, capture a finite run in a new directory:
+The client checks both exporters after its first five requests (four successes
+and one business failure), before sending further traffic. It polls for the
+asynchronous metric updates, then checks count deltas, configured buckets including
+`+Inf`, cumulative counts, RPC labels, and a latency sum consistent with seconds.
+A failed check panics and fails the integration run. Shorter finite runs check
+their actual request count. Timeout/cancellation experiments skip this check.
+
+The standard integration harness waits for this verification before stopping the
+continuous client. For a non-default provider metrics endpoint, pass
+`-provider-metrics-url http://host:port/prometheus` to the client.
+
+The existing capture tool can still record a finite run for Trace, Metric and
+Log correlation:
 
 ```bash
 python3 observability/integration/capture.py /tmp/dubbo-histogram-capture
 python3 observability/integration/validate.py /tmp/dubbo-histogram-capture
-python3 -m unittest discover -s observability/integration -p 'test_*.py'
 ```
 
-New captures declare `histogram_buckets_seconds` in their manifest. The validator
-checks provider and consumer counts against all five RPCs (four successes and one
-failure), bucket bounds including `+Inf`, cumulative counts, matching RPC labels,
-and a latency sum consistent with the buckets in seconds. The checked-in capture
-predates histograms and remains a regression fixture for the original signals;
-it is not evidence that this new histogram path ran successfully.
+Histogram checks run in the Go client, not in a separate Python test suite.
+The checked-in capture predates histograms and remains a regression fixture for
+the original signals; it is not evidence that this Histogram path ran successfully.
 
 ## Inspect the signals
 

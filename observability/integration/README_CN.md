@@ -149,18 +149,23 @@ histogram_quantile(0.95,
 
 ### 验证 Histogram 导出
 
-样例的 Nacos 可用后，将一次有限调用的原始数据采集到新目录：
+客户端在前 5 次调用（4 次成功、1 次业务失败）后暂停发请求，等待两端异步指标更新，
+检查计数增量、包含 `+Inf` 的配置桶、累计计数、RPC 标签和秒单位的延迟总和。
+校验失败会 `panic`，使集成测试失败。少于 5 次的有限调用按实际次数校验；
+超时、主动取消实验不执行这项校验。
+
+标准集成脚本会等到客户端校验成功后，才停止持续调用。服务端指标地址不是默认值时，
+为客户端传入 `-provider-metrics-url http://host:port/prometheus`。
+
+原有捕获工具仍可用于采集有限调用的 Trace、Metric 与 Log 关联数据：
 
 ```bash
 python3 observability/integration/capture.py /tmp/dubbo-histogram-capture
 python3 observability/integration/validate.py /tmp/dubbo-histogram-capture
-python3 -m unittest discover -s observability/integration -p 'test_*.py'
 ```
 
-新采集的 manifest 包含 `histogram_buckets_seconds`。验证器检查两侧总计数是否包含
-全部 5 次 RPC（4 次成功、1 次失败）、桶边界及 `+Inf`、累计计数、与请求指标一致的标签，
-以及秒单位延迟总和是否符合桶分布。仓库已有的快照采集于 Histogram 功能之前，继续用于
-原有信号的回归测试，不能作为本次 Histogram 已实跑通过的证明。
+Histogram 校验由 Go 客户端执行，不依赖单独运行 Python 单测。仓库已有的快照采集于
+Histogram 功能之前，继续用于原有信号的回归测试，不能作为 Histogram 已实跑通过的证明。
 
 ## 查看信号
 

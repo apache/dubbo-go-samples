@@ -30,6 +30,7 @@ GO_SERVER_LOG="/tmp/.${PROJECT_NAME}.go-server.log"
 JAVA_SERVER_LOG="/tmp/.${PROJECT_NAME}.java-server.log"
 PID_FILE="/tmp/.${PROJECT_NAME}.pid"
 GO_CLIENT_BIN=""
+HISTOGRAM_READY_FILE=""
 GO_CLIENT_TIMEOUT_SECONDS="${GO_CLIENT_TIMEOUT_SECONDS:-90}"
 JAVA_SERVER_READY_TIMEOUT_SECONDS="${JAVA_SERVER_READY_TIMEOUT_SECONDS:-60}"
 JAVA_SERVER_HOST="${JAVA_SERVER_HOST:-127.0.0.1}"
@@ -93,6 +94,9 @@ cleanup() {
   fi
   if [ -n "$GO_CLIENT_BIN" ]; then
     rm -f "$GO_CLIENT_BIN"
+  fi
+  if [ -n "$HISTOGRAM_READY_FILE" ]; then
+    rm -f "$HISTOGRAM_READY_FILE"
   fi
   run_make_target stop >/dev/null 2>&1 || true
 }
@@ -158,10 +162,11 @@ verify_observability_semantics() {
   local client_pid="${1:-}"
 
   echo "Verifying observability telemetry semantics before teardown..."
-  if ! python3 - "${client_pid:-}" <<'PY'
+  if ! python3 - "${client_pid:-}" "$HISTOGRAM_READY_FILE" <<'PY'
 import base64
 import json
 import os
+from pathlib import Path
 import sys
 import time
 import urllib.request
@@ -195,6 +200,10 @@ def prometheus_metrics_scraped():
     _, body = fetch(PROMETHEUS + "/api/v1/query?query=dubbo_provider_requests_succeed_total")
     result = json.loads(body).get("data", {}).get("result", [])
     return any(float(series["value"][1]) > 0 for series in result)
+
+
+def histogram_verified_by_client():
+    return bool(sys.argv[2]) and Path(sys.argv[2]).read_text() == "verified\n"
 
 
 def jaeger_cross_service_trace():
@@ -233,6 +242,7 @@ def grafana_provisioned():
 
 
 checks = [
+    (histogram_verified_by_client, "client verified provider/consumer RPC histograms"),
     (prometheus_targets_up, "Prometheus scrape targets are up"),
     (prometheus_metrics_scraped, "Prometheus has scraped dubbo_provider_requests_succeed_total"),
     (jaeger_cross_service_trace, "Jaeger holds a consumer/provider cross-service trace"),
@@ -455,6 +465,8 @@ run_go_client() {
     # Keep the client alive while the semantic checks poll its metrics target.
     # The test stops it only after Prometheus, Jaeger, and Grafana are verified.
     client_args=(-requests 0 -interval 500ms)
+    HISTOGRAM_READY_FILE="$(mktemp /tmp/.observability-histogram.XXXXXX)"
+    client_args+=(-histogram-ready-file "$HISTOGRAM_READY_FILE")
     GO_CLIENT_BIN="/tmp/.${PROJECT_NAME}.go-client.bin"
   fi
 

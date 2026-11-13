@@ -88,14 +88,6 @@ class CaptureValidationTest(unittest.TestCase):
         self.assertEqual(5, result["rpc_pairs"])
         self.assertEqual([], result["field_mismatches"])
 
-    def test_new_histogram_capture_cannot_pass_with_old_metrics(self):
-        path = self.capture / "manifest.json"
-        manifest = json.loads(path.read_text())
-        manifest["histogram_buckets_seconds"] = [0.005, 0.01, 0.025, 0.05, 0.1, 0.3, 1]
-        path.write_text(json.dumps(manifest))
-        with self.assertRaisesRegex(ValueError, "histogram _count"):
-            validate(self.capture)
-
     def test_cli_succeeds_for_captured_application_match(self):
         run = subprocess.run([sys.executable, str(FIXTURE.parent / "validate.py"), str(self.capture)],
                              capture_output=True, text=True)

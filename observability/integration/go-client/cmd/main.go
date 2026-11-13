@@ -49,11 +49,13 @@ import (
 )
 
 var (
-	requests    = flag.Int("requests", 5, "number of requests to send; 0 runs until interrupted")
-	interval    = flag.Duration("interval", time.Second, "delay between requests")
-	timeout     = flag.Duration("timeout", 0, "per-request timeout; 0 disables the timeout")
-	hold        = flag.Duration("hold", 0, "keep metrics available after requests for this duration")
-	cancelAfter = flag.Duration("cancel-after", 0, "cancel each request after this duration; 0 disables cancellation")
+	requests        = flag.Int("requests", 5, "number of requests to send; 0 runs until interrupted")
+	interval        = flag.Duration("interval", time.Second, "delay between requests")
+	timeout         = flag.Duration("timeout", 0, "per-request timeout; 0 disables the timeout")
+	hold            = flag.Duration("hold", 0, "keep metrics available after requests for this duration")
+	cancelAfter     = flag.Duration("cancel-after", 0, "cancel each request after this duration; 0 disables cancellation")
+	providerMetrics = flag.String("provider-metrics-url", "http://127.0.0.1:9099/prometheus", "provider exporter used for Histogram verification")
+	histogramReady  = flag.String("histogram-ready-file", "", "optional integration-harness marker written after Histogram verification")
 )
 
 func traceOptions() []trace.Option {
@@ -67,18 +69,22 @@ func traceOptions() []trace.Option {
 	}
 }
 
-func metricsOptions() []metrics.Option {
+func metricsPort() int {
 	port, err := strconv.Atoi(getEnv("DUBBO_OBSERVABILITY_METRICS_PORT", "9098"))
 	if err != nil {
 		port = 9098
 	}
+	return port
+}
+
+func metricsOptions() []metrics.Option {
 	return []metrics.Option{
 		metrics.WithEnabled(),
 		metrics.WithPrometheus(),
 		metrics.WithPrometheusExporterEnabled(),
 		metrics.WithRegistryEnabled(),
 		metrics.WithMetadataEnabled(),
-		metrics.WithPort(port),
+		metrics.WithPort(metricsPort()),
 		metrics.WithPath("/prometheus"),
 		metrics.WithHistogramEnabled(),
 		metrics.WithHistogramBuckets([]float64{0.005, 0.01, 0.025, 0.05, 0.1, 0.3, 1}),
@@ -134,6 +140,21 @@ func main() {
 	tracer := otel.Tracer("dubbo-observability-client")
 	strict := *timeout == 0 && *cancelAfter == 0
 	contractViolations := 0
+	checkpoint := 5
+	if *requests > 0 && *requests < checkpoint {
+		checkpoint = *requests
+	}
+	var histogramRun *verify.HistogramRun
+	if strict {
+		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+		histogramRun, err = verify.NewHistogramRun(ctx,
+			fmt.Sprintf("http://127.0.0.1:%d/prometheus", metricsPort()), *providerMetrics,
+			[]float64{0.005, 0.01, 0.025, 0.05, 0.1, 0.3, 1})
+		cancel()
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	for i := 1; *requests == 0 || i <= *requests; i++ {
 		requestCtx := context.Background()
@@ -185,6 +206,23 @@ func main() {
 		}
 		span.End()
 		cancel()
+		if strict && i == checkpoint {
+			if contractViolations > 0 {
+				panic(fmt.Sprintf("observability integration observed %d contract violations", contractViolations))
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+			err := histogramRun.Check(ctx, checkpoint, checkpoint/5)
+			cancel()
+			if err != nil {
+				panic(err)
+			}
+			if *histogramReady != "" {
+				if err := os.WriteFile(*histogramReady, []byte("verified\n"), 0600); err != nil {
+					panic(err)
+				}
+			}
+			logger.Info("capture: histogram verification complete")
+		}
 
 		if *requests != 0 && i == *requests {
 			break

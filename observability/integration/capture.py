@@ -30,7 +30,7 @@ import tempfile
 import time
 import urllib.request
 
-from validate import metrics, validate, validate_histogram
+from validate import validate
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -113,7 +113,6 @@ def main():
         "metrics": {"provider": provider_port, "consumer": consumer_port},
         "rpc_port": rpc_port, "requests": 5, "successes": 4, "failures": 1,
         "group": "observability", "version": "1.0.0", "trace_integration_enabled": True,
-        "histogram_buckets_seconds": [0.005, 0.01, 0.025, 0.05, 0.1, 0.3, 1],
     }
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     config = f"""receivers:
@@ -155,17 +154,13 @@ service:
                 # Wait for application-level registry publication before discovery.
                 time.sleep(3)
                 env["DUBBO_OBSERVABILITY_METRICS_PORT"] = str(consumer_port)
-                consumer = subprocess.Popen([binaries["client"], "-requests", "5", "-interval", "500ms", "-hold", "10s"],
+                consumer = subprocess.Popen([binaries["client"], "-requests", "5", "-interval", "500ms", "-hold", "10s",
+                                             "-provider-metrics-url", f"http://127.0.0.1:{provider_port}/prometheus"],
                                             cwd=ROOT, env=env, stdout=consumer_log, stderr=subprocess.STDOUT)
                 processes.append(consumer)
                 wait_for(lambda: "capture: requests complete" in (output / "consumer.log").read_text(), processes)
                 for role, port in (("provider", provider_port), ("consumer", consumer_port)):
-                    def capture_metrics():
-                        (output / f"{role}.prom").write_bytes(fetch(port))
-                        validate_histogram(metrics(output / f"{role}.prom"), role,
-                                           manifest["requests"], manifest["histogram_buckets_seconds"])
-                        return True
-                    wait_for(capture_metrics, processes)
+                    (output / f"{role}.prom").write_bytes(fetch(port))
                 if consumer.wait(timeout=15) != 0:
                     raise RuntimeError("RPC contract validation failed; inspect consumer.log")
                 processes.remove(consumer)

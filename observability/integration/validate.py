@@ -98,8 +98,6 @@ def validate(directory):
         require(single("requests_failed_total") == manifest["failures"], f"{side}: failure count mismatch")
         require(single("qps_total") >= 0, f"{side}: negative QPS")
         require(single("rt_milliseconds_avg") > 0, f"{side}: missing RT")
-        if "histogram_buckets_seconds" in manifest:
-            validate_histogram(data, side, expected, manifest["histogram_buckets_seconds"])
         signal_summary[side] = {"requests": expected, "successes": manifest["successes"],
                                 "failures": manifest["failures"], "qps": single("qps_total"),
                                 "rt_avg_ms": single("rt_milliseconds_avg")}
@@ -140,51 +138,6 @@ def validate(directory):
     result = {"rpc_pairs": expected, "signals": signal_summary, "context_logs": "valid, absent and invalid verified",
               "field_mismatches": field_mismatches}
     return result
-
-
-def validate_histogram(data, side, expected, bounds):
-    prefix = f"dubbo_{side}_rt_milliseconds_histogram_seconds"
-    def one(suffix):
-        samples = data.get(prefix + suffix, [])
-        require(len(samples) == 1, f"{side}: expected one histogram {suffix} series")
-        labels, value = samples[0]
-        require(math.isfinite(value) and value >= 0, f"{side}: invalid histogram {suffix}")
-        return labels, value
-
-    labels, count = one("_count")
-    require(count == expected, f"{side}: histogram count must include success and failure")
-    sum_labels, total = one("_sum")
-    require(sum_labels == labels, f"{side}: histogram sum labels differ")
-    base_labels = data[f"dubbo_{side}_requests_total"][0][0]
-    require(labels == base_labels, f"{side}: histogram labels differ from RPC request labels")
-    require(bool(labels.get("ip")), f"{side}: histogram IP label missing")
-    buckets = {}
-    for bucket_labels, value in data.get(prefix + "_bucket", []):
-        bucket_labels = dict(bucket_labels)
-        raw_bound = bucket_labels.pop("le", None)
-        require(raw_bound is not None, f"{side}: histogram bucket missing le")
-        bound = float(raw_bound)
-        require(bound not in buckets, f"{side}: duplicate histogram bucket")
-        require(bucket_labels == labels, f"{side}: histogram bucket labels differ")
-        require(math.isfinite(value) and value >= 0 and value.is_integer(),
-                f"{side}: invalid histogram bucket count")
-        buckets[bound] = value
-    require(set(buckets) == set(bounds) | {math.inf}, f"{side}: histogram bounds differ")
-    previous = 0
-    lower = 0
-    minimum_sum = 0
-    maximum_sum = 0
-    for bound in sorted(buckets):
-        value = buckets[bound]
-        require(previous <= value <= count, f"{side}: histogram buckets are not cumulative")
-        observations = value - previous
-        minimum_sum += observations * lower
-        if observations:
-            maximum_sum += observations * bound
-        previous = value
-        lower = bound
-    require(buckets[math.inf] == count, f"{side}: histogram +Inf differs from count")
-    require(minimum_sum <= total <= maximum_sum, f"{side}: histogram sum outside bucket bounds (seconds)")
 
 
 def main():
