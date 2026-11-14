@@ -114,6 +114,59 @@ Dashboard，请显式传入 `-requests 0`。
 docker compose -f observability/integration/docker-compose.yaml down
 ```
 
+### RPC 延迟 Histogram
+
+客户端和服务端均开启累计延迟 Histogram，不依赖滑动窗口聚合：
+
+```go
+metrics.WithHistogramEnabled(),
+metrics.WithHistogramBuckets([]float64{0.005, 0.01, 0.025, 0.05, 0.1, 0.3, 1}),
+```
+
+桶边界和记录值的单位都是**秒**。样例选择的桶能区分服务端故意加入的 20 ms 延迟；
+省略 `WithHistogramBuckets` 时，SDK 使用默认桶 0.1、0.3、0.5、1、3、5、10 秒。
+Exporter 自动添加 `+Inf` 桶。成功和失败的已完成 RPC 都会记录，标签沿用应用名、IP、
+接口、方法、group 和 version，不额外添加 `side` 标签。
+
+服务端和客户端分别导出：
+
+```text
+dubbo_provider_rt_milliseconds_histogram_seconds_{bucket,sum,count}
+dubbo_consumer_rt_milliseconds_histogram_seconds_{bucket,sum,count}
+```
+
+名称中的 `milliseconds` 是历史命名，不能据此把 Histogram 当成毫秒。
+Dashboard 展示两侧的延迟分布及聚合 P95/P99 估计值，不再平均各实例的分位数。例如：
+
+```promql
+histogram_quantile(0.95,
+  sum by (le) (rate(dubbo_provider_rt_milliseconds_histogram_seconds_bucket{job="dubbo-observability-server"}[1m]))
+)
+```
+
+使用前面的持续调用命令，等待 Prometheus 至少抓取两次，再查看基于 rate 的面板。
+分位数通过桶内插值估算；停流或未采到 Histogram 不代表延迟为零。
+
+### 验证 Histogram 导出
+
+客户端在前 5 次调用（4 次成功、1 次业务失败）后暂停发请求，等待两端异步指标更新，
+检查计数增量、包含 `+Inf` 的配置桶、累计计数、RPC 标签和秒单位的延迟总和。
+校验失败会 `panic`，使集成测试失败。少于 5 次的有限调用按实际次数校验；
+超时、主动取消实验不执行这项校验。
+
+标准集成脚本会等到客户端校验成功后，才停止持续调用。服务端指标地址不是默认值时，
+为客户端传入 `-provider-metrics-url http://host:port/prometheus`。
+
+原有捕获工具仍可用于采集有限调用的 Trace、Metric 与 Log 关联数据：
+
+```bash
+python3 observability/integration/capture.py /tmp/dubbo-histogram-capture
+python3 observability/integration/validate.py /tmp/dubbo-histogram-capture
+```
+
+Histogram 校验由 Go 客户端执行，不依赖单独运行 Python 单测。仓库已有的快照采集于
+Histogram 功能之前，继续用于原有信号的回归测试，不能作为 Histogram 已实跑通过的证明。
+
 ## 查看信号
 
 - Jaeger：<http://localhost:16686>

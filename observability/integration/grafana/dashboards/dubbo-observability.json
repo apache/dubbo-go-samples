@@ -20,14 +20,17 @@
     },
     {
       "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "fieldConfig": {"defaults": {"unit": "ms"}, "overrides": []},
+      "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
       "id": 2,
       "options": {"legend": {"displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
       "targets": [
-        {"expr": "avg(dubbo_provider_rt_milliseconds_p95)", "legendFormat": "provider p95", "refId": "A"}
+        {"expr": "histogram_quantile(0.95, sum by (le) (rate(dubbo_provider_rt_milliseconds_histogram_seconds_bucket{job=\"dubbo-observability-server\"}[$__rate_interval])))", "legendFormat": "provider p95", "refId": "A"},
+        {"expr": "histogram_quantile(0.99, sum by (le) (rate(dubbo_provider_rt_milliseconds_histogram_seconds_bucket{job=\"dubbo-observability-server\"}[$__rate_interval])))", "legendFormat": "provider p99", "refId": "B"},
+        {"expr": "histogram_quantile(0.95, sum by (le) (rate(dubbo_consumer_rt_milliseconds_histogram_seconds_bucket{job=\"dubbo-observability-client\"}[$__rate_interval])))", "legendFormat": "consumer p95", "refId": "C"},
+        {"expr": "histogram_quantile(0.99, sum by (le) (rate(dubbo_consumer_rt_milliseconds_histogram_seconds_bucket{job=\"dubbo-observability-client\"}[$__rate_interval])))", "legendFormat": "consumer p99", "refId": "D"}
       ],
-      "title": "Provider latency p95",
+      "title": "RPC latency p95 / p99 (histogram estimates)",
       "type": "timeseries"
     },
     {
@@ -81,6 +84,30 @@
       ],
       "title": "Service unavailable failures",
       "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
+      "id": 7,
+      "options": {"calculate": false, "yAxis": {"unit": "s"}},
+      "targets": [
+        {"expr": "sum by (le) (rate(dubbo_provider_rt_milliseconds_histogram_seconds_bucket{job=\"dubbo-observability-server\"}[$__rate_interval]))", "format": "heatmap", "legendFormat": "{{le}}", "refId": "A"}
+      ],
+      "title": "Provider RPC latency distribution",
+      "type": "heatmap"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24},
+      "id": 8,
+      "options": {"calculate": false, "yAxis": {"unit": "s"}},
+      "targets": [
+        {"expr": "sum by (le) (rate(dubbo_consumer_rt_milliseconds_histogram_seconds_bucket{job=\"dubbo-observability-client\"}[$__rate_interval]))", "format": "heatmap", "legendFormat": "{{le}}", "refId": "A"}
+      ],
+      "title": "Consumer RPC latency distribution",
+      "type": "heatmap"
     }
   ],
   "refresh": "5s",
