@@ -24,6 +24,10 @@ if [ -z "${1:-}" ]; then
 fi
 
 SAMPLE="$1"
+if [ "$SAMPLE" = "rpc/triple/compatibility" ]; then
+  exec bash "$(dirname "${BASH_SOURCE[0]}")/rpc/triple/compatibility/run.sh"
+fi
+
 P_DIR="$(pwd)/$SAMPLE"
 PROJECT_NAME="$(basename "$P_DIR")"
 GO_SERVER_LOG="/tmp/.${PROJECT_NAME}.go-server.log"
