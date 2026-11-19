@@ -101,7 +101,8 @@ array+=("config_yaml")
 
 # service_discovery
 array+=("java_interop/non-protobuf-dubbo")
-array+=("java_interop/non-protobuf-triple")
+# Includes the non-Protobuf Java matrix and cross-version Go calls.
+array+=("rpc/triple/compatibility")
 array+=("java_interop/protobuf-triple")
 array+=("java_interop/service_discovery/interface")
 array+=("java_interop/service_discovery/service")
