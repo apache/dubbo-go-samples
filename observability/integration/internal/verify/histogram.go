@@ -173,7 +173,7 @@ func (t histogramTarget) check(after map[string]*dto.MetricFamily, requests, fai
 		return fmt.Errorf("missing Histogram %s", name)
 	}
 	if current.Histogram.SampleCount == nil || current.Histogram.SampleSum == nil {
-		return fmt.Errorf("Histogram count or sum is missing")
+		return fmt.Errorf("histogram count or sum is missing")
 	}
 	labels := metricLabels(current)
 	if !reflect.DeepEqual(labels, metricLabels(request)) || labels["application_name"] != t.application ||
@@ -181,14 +181,14 @@ func (t histogramTarget) check(after map[string]*dto.MetricFamily, requests, fai
 		return fmt.Errorf("unexpected Histogram labels: %v", labels)
 	}
 	if previous != nil && !reflect.DeepEqual(labels, metricLabels(previous)) {
-		return fmt.Errorf("Histogram labels changed during the batch")
+		return fmt.Errorf("histogram labels changed during the batch")
 	}
 	return checkHistogramBuckets(current.GetHistogram(), previous.GetHistogram(), uint64(requests), bounds)
 }
 
 func checkHistogramBuckets(current, before *dto.Histogram, expected uint64, bounds []float64) error {
 	if current.GetSampleCount() < before.GetSampleCount() || current.GetSampleCount()-before.GetSampleCount() != expected {
-		return fmt.Errorf("Histogram count must include every successful and failed RPC")
+		return fmt.Errorf("histogram count must include every successful and failed RPC")
 	}
 	wantBounds := append(append([]float64(nil), bounds...), math.Inf(1))
 	if len(current.GetBucket()) != len(wantBounds) || (before != nil && len(before.GetBucket()) != len(wantBounds)) {
@@ -223,11 +223,11 @@ func checkHistogramBuckets(current, before *dto.Histogram, expected uint64, boun
 		previous, lower = count, bound
 	}
 	if previous != expected {
-		return fmt.Errorf("Histogram +Inf differs from count")
+		return fmt.Errorf("histogram +Inf differs from count")
 	}
 	total := current.GetSampleSum() - before.GetSampleSum()
 	if math.IsNaN(total) || math.IsInf(total, 0) || total < 0 || total < minimum-1e-9 || total > maximum+1e-9 {
-		return fmt.Errorf("Histogram sum %v is outside bucket bounds in seconds", total)
+		return fmt.Errorf("histogram sum %v is outside bucket bounds in seconds", total)
 	}
 	return nil
 }
