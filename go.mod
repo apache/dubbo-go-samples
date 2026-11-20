@@ -3,7 +3,7 @@ module github.com/apache/dubbo-go-samples
 go 1.25.0
 
 require (
-	dubbo.apache.org/dubbo-go/v3 v3.3.3-0.20261027084029-a1aa788a3007
+	dubbo.apache.org/dubbo-go/v3 v3.3.3-0.20261118093608-2b68845f6145
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/alibaba/sentinel-golang v1.0.4
 	github.com/apache/dubbo-go-extensions v0.0.0-20260312085545-de428af0b99e
@@ -170,7 +170,7 @@ require (
 	go.uber.org/mock v0.6.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	go.uber.org/zap v1.28.0 // indirect
-	go.yaml.in/yaml/v4 v4.0.0-rc.6 // indirect
+	go.yaml.in/yaml/v4 v4.0.0-rc.7 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.55.0 // indirect
 	golang.org/x/net v0.58.0 // indirect
