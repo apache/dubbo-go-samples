@@ -71,6 +71,12 @@ go run ./go-client/cmd
 
 ### 启动Java服务端
 
+> Java 模块使用 dubbo `3.3.7-SNAPSHOT`，其中包含 HTTP/3 loopback 修复
+> （[apache/dubbo#16463](https://github.com/apache/dubbo/pull/16463)）。更早的版本会把显式配置的
+> `127.0.0.1` 重写成其它本地地址，而 QUIC 要求客户端拨号的地址在握手期间保持稳定，
+> 因此在多网卡机器上 Java 与 Java 之间的握手会超时。`3.3.7` 正式发布后，请改为固定该版本
+> 并移除 pom 中的 `apache-snapshots` 仓库。
+
 从根目录构建所有 Java 模块：
 ```shell
 mvn clean compile
