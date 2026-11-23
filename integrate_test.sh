@@ -36,6 +36,8 @@ PID_FILE="/tmp/.${PROJECT_NAME}.pid"
 GO_CLIENT_BIN=""
 HISTOGRAM_READY_FILE=""
 GO_CLIENT_TIMEOUT_SECONDS="${GO_CLIENT_TIMEOUT_SECONDS:-90}"
+GO_SERVER_READY_TIMEOUT_SECONDS="${GO_SERVER_READY_TIMEOUT_SECONDS:-15}"
+GO_SERVER_READY_PORTS="${GO_SERVER_READY_PORTS:-20000 20001 20002 20022 50051 50052}"
 JAVA_SERVER_READY_TIMEOUT_SECONDS="${JAVA_SERVER_READY_TIMEOUT_SECONDS:-60}"
 JAVA_SERVER_HOST="${JAVA_SERVER_HOST:-127.0.0.1}"
 JAVA_SERVER_PORT="${JAVA_SERVER_PORT:-20000}"
@@ -349,6 +351,22 @@ PY
   return 1
 }
 
+go_server_ports_ready() {
+  python3 - "$GO_SERVER_READY_PORTS" <<'PY' >/dev/null 2>&1
+import socket
+import sys
+
+for port in sys.argv[1].split():
+    try:
+        with socket.create_connection(("127.0.0.1", int(port)), timeout=0.5):
+            sys.exit(0)
+    except OSError:
+        continue
+
+sys.exit(1)
+PY
+}
+
 wait_for_tcp_port_closed() {
   local host="$1"
   local port="$2"
@@ -584,6 +602,24 @@ start_go_server() {
     [ -f "$app_log" ] && cat "$app_log" || true
     return 1
   fi
+
+  # A fixed sleep is not enough on cold CI runners. Wait until one of the
+  # sample ports accepts connections, then fall back to the previous behavior
+  # for samples that listen on a port that is not listed above.
+  local ready_elapsed=0
+  while [ "$ready_elapsed" -lt "$GO_SERVER_READY_TIMEOUT_SECONDS" ]; do
+    if go_server_ports_ready; then
+      return 0
+    fi
+    if ! kill -0 "$server_pid" 2>/dev/null; then
+      echo "Go server exited before accepting connections: $SAMPLE"
+      cat "$GO_SERVER_LOG" || true
+      return 1
+    fi
+    sleep 1
+    ready_elapsed=$((ready_elapsed + 1))
+  done
+  echo "Go server ports did not accept connections within ${GO_SERVER_READY_TIMEOUT_SECONDS}s, continuing: $SAMPLE"
 }
 
 stop_go_server() {
