@@ -30,8 +30,6 @@ import (
 
 import (
 	dto "github.com/prometheus/client_model/go"
-
-	"github.com/prometheus/common/expfmt"
 )
 
 var sampleBounds = []float64{0.005, 0.01, 0.025, 0.05, 0.1, 0.3, 1}
@@ -63,8 +61,7 @@ func histogramFixture(role string, batches int) string {
 
 func parseFixture(t *testing.T, text string) map[string]*dto.MetricFamily {
 	t.Helper()
-	var parser expfmt.TextParser
-	families, err := parser.TextToMetricFamilies(strings.NewReader(text))
+	families, err := parseMetricFamilies(strings.NewReader(text))
 	if err != nil {
 		t.Fatal(err)
 	}
