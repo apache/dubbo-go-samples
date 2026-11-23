@@ -1,0 +1,26 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+processors:
+  # Grafana's trace-to-metrics links map these span attributes to the
+  # application_name and interface metric labels.
+  transform/dubbo:
+    error_mode: ignore
+    trace_statements:
+      - context: span
+        statements:
+          - set(attributes["dubbo.application"], resource.attributes["service.name"]) where attributes["rpc.system"] == "apache_dubbo"
+          - set(attributes["dubbo.metric.interface"], attributes["rpc.service"]) where attributes["rpc.system"] == "apache_dubbo"
+exporters:
+  otlp/jaeger:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [transform/dubbo]
+      exporters: [otlp/jaeger]

@@ -1,0 +1,119 @@
+# Start with ./start.sh, which builds the Go binaries into .bin first.
+# Ports are published on 127.0.0.1 only: Nacos runs without authentication and
+# Admin uses demo credentials.
+x-dubbo-app: &dubbo-app
+  image: admin-sample-app
+  environment: &dubbo-env
+    NACOS_ADDRESS: nacos:8848
+    OTLP_ENDPOINT: otel-collector:4318
+  depends_on:
+    nacos:
+      condition: service_healthy
+
+services:
+  nacos:
+    image: nacos/nacos-server:v2.5.2
+    environment:
+      MODE: standalone
+      NACOS_AUTH_ENABLE: "false"
+    ports:
+      - "127.0.0.1:8848:8848"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8848/nacos/v1/console/health/readiness"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  dubbo-admin:
+    build: https://github.com/apache/dubbo-admin.git#${DUBBO_ADMIN_REF}
+    image: dubbo-admin-sample:${DUBBO_ADMIN_REF}
+    command: ["run", "-c", "/conf/dubbo-admin.yaml"]
+    volumes:
+      - ./conf/dubbo-admin.yaml:/conf/dubbo-admin.yaml:ro
+    ports:
+      - "127.0.0.1:38080:8888"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8888/api/v1/auth/providers"]
+      interval: 3s
+      retries: 40
+    depends_on:
+      nacos:
+        condition: service_healthy
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    ports:
+      - "127.0.0.1:16686:16686"
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.104.0
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./conf/otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    depends_on:
+      - jaeger
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    volumes:
+      - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "127.0.0.1:9090:9090"
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_SECURITY_ALLOW_EMBEDDING: "true"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "127.0.0.1:3000:3000"
+
+  # Two providers on separate container IPs: Admin disables traffic per IP.
+  # They are healthy once serving, which is after they publish the service
+  # name mapping the consumer looks up at startup.
+  provider-a:
+    <<: *dubbo-app
+    # Builds the image shared by all sample apps. The Nacos client writes its
+    # log and cache directories next to the binary, so /app must be writable.
+    build:
+      context: .bin
+      dockerfile_inline: |
+        FROM alpine:3.20
+        COPY . /app/
+    command: ["/app/go-server"]
+    healthcheck: &provider-health
+      test: ["CMD", "nc", "-z", "127.0.0.1", "20000"]
+      interval: 2s
+      retries: 30
+    environment:
+      <<: *dubbo-env
+      INSTANCE_NAME: provider-a
+
+  provider-b:
+    <<: *dubbo-app
+    command: ["/app/go-server"]
+    healthcheck: *provider-health
+    environment:
+      <<: *dubbo-env
+      INSTANCE_NAME: provider-b
+
+  consumer:
+    <<: *dubbo-app
+    command: ["/app/go-client"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+      provider-a:
+        condition: service_healthy
+      provider-b:
+        condition: service_healthy
+
+  # One-shot checks: docker compose run --rm verify
+  verify:
+    <<: *dubbo-app
+    command: ["/app/verify"]
+    profiles: ["verify"]

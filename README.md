@@ -12,6 +12,7 @@ Please refer to [HOWTO.md](HOWTO.md) for detailed instructions on running the sa
 
 ### Samples
 
+* `admin`: Runs Dubbo-go services under Dubbo Admin and verifies applications, instances, service metadata, debug calls, condition and tag routes, traffic disabling, metrics, and traces end to end.
 * `async`: Callback (asynchronous) and one-way RPC examples.
 * `apisix`: Example integrating Apache APISIX with Dubbo-go.
 * `book-flight-ai-agent`: Example of booking flights using an AI agent.

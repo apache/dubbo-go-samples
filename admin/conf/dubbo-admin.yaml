@@ -1,0 +1,47 @@
+# Dubbo Admin configuration for the local sample. Hostnames resolve inside the
+# compose network, except the dashboard URLs, which the browser opens.
+log:
+  level: info
+  # The image's working directory is not writable by its non-root user.
+  outputPath: /tmp/logs/dubbo-admin.log
+observability:
+  prometheus: http://prometheus:9090
+  grafana: http://localhost:3000
+  jaeger: http://jaeger:16686
+console:
+  port: 8888
+  ginMode: release
+  metricDashboards:
+    application: http://localhost:3000/d/a0b114ca-edf7-4dfe-ac2c-34a4fc545fed?kiosk=1&theme=light
+    instance: http://localhost:3000/d/dcf5defe-d198-4704-9edf-6520838880e9?kiosk=1&theme=light
+    service: http://localhost:3000/d/ec689613-b4a1-45b1-b8bd-9d557059f970?kiosk=1&theme=light
+  traceDashboards:
+    application: http://localhost:3000/d/e968a89b-f03d-42e3-8ad3-930ae815cb0f?kiosk=1&theme=light
+    instance: http://localhost:3000/d/f5f48f75-13ec-489b-88ae-635ae38d8618?kiosk=1&theme=light
+    service: http://localhost:3000/d/b2e178fb-ada3-4d5e-9f54-de99e7f07662?kiosk=1&theme=light
+  auth:
+    user: admin
+    password: dubbo@2025
+    # Local demo only; generate your own with `openssl rand -base64 32`.
+    sessionSecret: admin-sample-local-session-secret-0123456789
+    expirationTime: 3600
+store:
+  type: memory
+discovery:
+  - type: nacos2
+    name: nacos
+    id: nacos
+    # The Nacos client defaults its log and cache directories to the binary's
+    # directory, which the image's non-root user cannot write.
+    address:
+      registry: nacos://nacos:8848?nacos.logDir=/tmp/nacos/log&nacos.cacheDir=/tmp/nacos/cache
+      configCenter: nacos://nacos:8848?nacos.logDir=/tmp/nacos/log&nacos.cacheDir=/tmp/nacos/cache
+      metadataReport: nacos://nacos:8848?nacos.logDir=/tmp/nacos/log&nacos.cacheDir=/tmp/nacos/cache
+    properties:
+      configWatchPeriod: 5
+      serviceWatchPeriod: 5
+# No Kubernetes here: the mock engine watches nothing.
+engine:
+  id: default
+  name: local
+  type: mock

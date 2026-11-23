@@ -1,0 +1,4 @@
+.bin/
+grafana/dashboards/
+# The repository ignores *.env; this one only pins the Dubbo Admin commit.
+!.env
