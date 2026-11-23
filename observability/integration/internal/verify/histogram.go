@@ -31,6 +31,7 @@ import (
 	dto "github.com/prometheus/client_model/go"
 
 	"github.com/prometheus/common/expfmt"
+	"github.com/prometheus/common/model"
 )
 
 type histogramTarget struct {
@@ -108,7 +109,7 @@ func readMetrics(ctx context.Context, url string) (map[string]*dto.MetricFamily,
 	if response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("metrics endpoint returned HTTP %d", response.StatusCode)
 	}
-	var parser expfmt.TextParser
+	parser := expfmt.NewTextParser(model.LegacyValidation)
 	return parser.TextToMetricFamilies(io.LimitReader(response.Body, 8<<20))
 }
 
