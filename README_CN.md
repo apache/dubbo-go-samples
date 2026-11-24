@@ -12,7 +12,7 @@
 
 ### 示例
 
-* `admin`：让 Dubbo-go 服务接入 Dubbo Admin，端到端验证应用、实例、服务元数据、服务调试、条件路由、标签路由、实例禁流、指标和链路追踪。
+* `admin`：让 Dubbo-go 服务接入 [Dubbo-admin](https://github.com/apache/dubbo-admin)，端到端验证应用、实例、服务元数据、服务调试、条件路由、标签路由、实例禁流、指标和链路追踪。
 * `async`：回调（异步）与单向 RPC 调用示例。
 * `apisix`：Dubbo-go 集成 Apache APISIX 的示例。
 * `book-flight-ai-agent`：使用 AI Agent 实现机票预订的示例。

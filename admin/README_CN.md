@@ -108,6 +108,10 @@ all 11 checks passed
 - 在服务的 **调试** 标签页选择一个实例，发送 `[{"name": "admin"}]`。Admin 通过 provider 的
   Triple 反射服务（导入 `dubbo-go/v3/imports` 时默认开启）获取消息字段，并显示响应以及处理它的实例。
 
+![Admin 中 admin-sample-provider 的实例](images/instances.png)
+
+![在 Admin 中调试 Greet](images/debug.png)
+
 ### 条件路由
 
 在 **流量管控 > 条件路由** 中，为服务 `adminsample.GreetService`（版本 `1.0.0`，
@@ -162,6 +166,10 @@ consumer 的 span 上 consumer 链接有数据，provider 的 span 上 provider 
 应用维度的面板还会统计 provider 处理的流式调用：dubbo-go consumer 启动时会向每个 provider
 发起一条 Triple 健康检查流（约 20 秒后结束），Admin 调试页也会发起反射调用。它们会让应用的响应时间显得偏高。
 只看 `Greet` 请查看服务的 **监控** 标签页。
+
+![adminsample.GreetService 的监控标签页](images/service-monitor.png)
+
+![admin-sample-provider 的链路追踪标签页](images/tracing.png)
 
 ## 说明
 

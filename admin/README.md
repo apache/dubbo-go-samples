@@ -117,6 +117,10 @@ same names and turns traffic on `provider-b` back on. Stop everything with
   provider's Triple reflection service, which `dubbo-go/v3/imports` enables,
   and shows the reply with the instance that served it.
 
+![Instances of admin-sample-provider in Admin](images/instances.png)
+
+![Debug call to Greet in Admin](images/debug.png)
+
 ### Condition route
 
 In **Traffic Management > Condition Rule**, create a rule for service
@@ -180,6 +184,10 @@ the Triple health-check watch a dubbo-go consumer opens to each provider when
 it starts, which ends after about 20 seconds, and the reflection calls behind
 Admin's debug page. They make the application's response time look high. The
 service's **Monitor** tab shows `Greet` alone.
+
+![Monitor tab of adminsample.GreetService](images/service-monitor.png)
+
+![Tracing tab of admin-sample-provider](images/tracing.png)
 
 ## Notes
 
