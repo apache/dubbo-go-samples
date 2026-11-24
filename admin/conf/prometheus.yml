@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 5s
+scrape_configs:
+  - job_name: dubbo
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["provider-a:9099", "provider-b:9099", "consumer:9099"]

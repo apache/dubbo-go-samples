@@ -1,0 +1,31 @@
+# The UIDs match the ones referenced by the Dubbo Admin dashboards.
+apiVersion: 1
+datasources:
+  - name: prometheus
+    type: prometheus
+    uid: dubbo-admin-prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+  - name: jaeger
+    type: jaeger
+    uid: fe670vj54q48wc
+    access: proxy
+    url: http://jaeger:16686
+    jsonData:
+      tracesToMetrics:
+        datasourceUid: dubbo-admin-prometheus
+        tags:
+          - key: dubbo.application
+            value: application_name
+          - key: dubbo.metric.interface
+            value: interface
+          - key: rpc.method
+            value: method
+        queries:
+          - name: Provider Request Rate
+            query: sum by (application_name, interface, method) (rate(dubbo_provider_requests_total{$$__tags}[5m]))
+          - name: Consumer Request Rate
+            query: sum by (application_name, interface, method) (rate(dubbo_consumer_requests_total{$$__tags}[5m]))
+        spanStartTimeShift: -5m
+        spanEndTimeShift: 5m
