@@ -19,6 +19,7 @@ package verify
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"math"
@@ -108,8 +109,24 @@ func readMetrics(ctx context.Context, url string) (map[string]*dto.MetricFamily,
 	if response.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("metrics endpoint returned HTTP %d", response.StatusCode)
 	}
-	var parser expfmt.TextParser
-	return parser.TextToMetricFamilies(io.LimitReader(response.Body, 8<<20))
+	return parseMetricFamilies(io.LimitReader(response.Body, 8<<20))
+}
+
+// parseMetricFamilies goes through NewDecoder, which sets the name validation
+// scheme itself; a zero-value TextParser panics on newer prometheus/common.
+func parseMetricFamilies(r io.Reader) (map[string]*dto.MetricFamily, error) {
+	decoder := expfmt.NewDecoder(r, expfmt.NewFormat(expfmt.TypeTextPlain))
+	families := make(map[string]*dto.MetricFamily)
+	for {
+		family := &dto.MetricFamily{}
+		if err := decoder.Decode(family); err != nil {
+			if errors.Is(err, io.EOF) {
+				return families, nil
+			}
+			return nil, err
+		}
+		families[family.GetName()] = family
+	}
 }
 
 func greetMetric(families map[string]*dto.MetricFamily, name string) (*dto.Metric, error) {
